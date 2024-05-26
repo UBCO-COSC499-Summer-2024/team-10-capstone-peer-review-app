@@ -7,7 +7,6 @@
 - Bhavya Bhagchandani
 - Abdul Faiz
 - Josh Farwig
-- Jai Patel
 - Mahir Rahman
 
 ## Project Info

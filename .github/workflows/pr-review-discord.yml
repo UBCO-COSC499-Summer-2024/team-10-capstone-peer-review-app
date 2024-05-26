@@ -13,7 +13,7 @@ jobs:
         declare -A map
         map["JoshFarwig"]="<@239921359847817216>"
         map["mahirr476"]="<@706320638301962291>"
-        map["Bhavya290223"]="<@d788404909107052546>"
+        map["Bhavya290223"]="<@788404909107052546>"
         map["namekeptanonymous"]="<@312212189056466944>"
 
         REVIEWERS=$(echo '${{ toJson(github.event.pull_request.requested_reviewers) }}' | jq -r '.[] | "- " + .login')

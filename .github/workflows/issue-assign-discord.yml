@@ -28,9 +28,9 @@ jobs:
 
         ISSUE_API_URL="${{ github.event.issue.url }}"
         ISSUE_JSON=$(curl -H "Authorization: token ${{ secrets.ISSUE_ASSIGN_DISCORD_GITHUB_TOKEN }}" -X GET $ISSUE_API_URL)
-        ASSIGNEES=$(echo $ISSUE_JSON | jq -r '.assignees[].login')
+        ASSIGNEES=$(echo $ISSUE_JSON | jq -r '.assignees[] | "- " + .login') 
         MENTIONS=""
-        for assignee in $ASSIGNEES; do
+        for assignee in $(echo $ISSUE_JSON | jq -r '.assignees[] | .login'); do
           MENTIONS+="${map[$assignee]}\n"
         done
 

@@ -1,0 +1,44 @@
+name: Discord Notification on PR Review Requested
+
+on:
+  pull_request_review:
+    types: [review_requested]
+
+jobs:
+  discord_notification:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Send notification to Discord
+      run: |
+        declare -A map
+        map["JoshFarwig"]="<@239921359847817216>"
+        map["mahirr476"]="<@706320638301962291>"
+        map["Bhavya290223"]="<@d788404909107052546>"
+        map["namekeptanonymous"]="<@312212189056466944>"
+
+        REVIEWERS=$(echo '${{ toJson(github.event.pull_request.requested_reviewers) }}' | jq -r '.[] | "- " + .login')
+        MENTIONS=""
+        for reviewer in $(echo '${{ toJson(github.event.pull_request.requested_reviewers) }}' | jq -r '.[] | .login'); do
+          MENTIONS+="${map[$reviewer]}\n"
+        done
+
+        curl -H "Content-Type: application/json" \
+             -X POST \
+             -d '{
+               "username": "Github",
+               "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+               "content": "'"${MENTIONS//$'\n'/'\n'}"'",
+               "embeds": [{
+                 "title": "Review Requested on Pull Request",
+                 "url": "${{ github.event.pull_request.html_url }}",
+                 "author": {
+                   "name": "${{ github.event.pull_request.user.login }}",
+                   "icon_url": "${{ github.event.pull_request.user.avatar_url }}"
+                 },
+                 "fields": [
+                   {"name": "Title", "value": "${{ github.event.pull_request.title }}", "inline": false},
+                   {"name": "Requested Reviewers", "value": "'"${REVIEWERS//$'\n'/'\n'}"'", "inline": false}
+                 ]
+               }]
+             }' \
+             ${{ secrets.DISCORD_WEBHOOK_URL }}

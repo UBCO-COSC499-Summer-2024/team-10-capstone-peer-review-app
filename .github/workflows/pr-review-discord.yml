@@ -1,3 +1,9 @@
+# GH Action / Bash Script to send Discord Notifications when a PR review is requested
+
+# First maps all of of the users to their Discord IDs, then loops through a Json array
+# of the reviewers and adds them to a list of embedded discord mentiond (the <@ID> format)
+# The script then sends a notification to Discord with the reviewers mentioned with curl and
+# the data is sent as Discord's embedded json message format
 name: Discord Notification on PR Review Requested
 
 on:
@@ -41,4 +47,4 @@ jobs:
                  ]
                }]
              }' \
-             ${{ secrets.DISCORD_WEBHOOK_URL }}
+             ${{ secrets.PR_REVIEW_DISCORD_WEBHOOK_URL }}

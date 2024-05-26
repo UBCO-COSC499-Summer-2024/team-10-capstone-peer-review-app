@@ -27,7 +27,10 @@ jobs:
         map["namekeptanonymous"]="<@312212189056466944>"
 
         ASSIGNEE=$(echo '${{ toJson(github.event.issue.assignee) }}' | jq -r '.login')
-        MENTION="${map[$ASSIGNEE]}"
+        MENTIONS=""
+        for assignee in $ASSIGNEES; do
+          MENTIONS+="${map[$assignee]}\n"
+        done
 
         curl -H "Content-Type: application/json" \
              -X POST \

@@ -26,29 +26,31 @@ jobs:
         map["Bhavya290223"]="<@788404909107052546>"
         map["namekeptanonymous"]="<@312212189056466944>"
 
-        ASSIGNEE=$(echo '${{ toJson(github.event.issue.assignee) }}' | jq -r '.login')
+        ISSUE_API_URL="${{ github.event.issue.url }}"
+        ISSUE_JSON=$(curl -H "Authorization: token ${{ secrets.ISSUE_ASSIGN_DISCORD_GITHUB_TOKEN }}" -X GET $ISSUE_API_URL)
+        ASSIGNEES=$(echo $ISSUE_JSON | jq -r '.assignees[].login')
         MENTIONS=""
         for assignee in $ASSIGNEES; do
           MENTIONS+="${map[$assignee]}\n"
         done
 
         curl -H "Content-Type: application/json" \
-             -X POST \
-             -d '{
-               "username": "Github",
-               "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
-               "content": "'"${MENTION}"'",
-               "embeds": [{
-                 "title": "Issue Assigned",
-                 "url": "${{ github.event.issue.html_url }}",
-                 "author": {
-                   "name": "${{ github.event.issue.user.login }}",
-                   "icon_url": "${{ github.event.issue.user.avatar_url }}"
-                 },
-                 "fields": [
-                   {"name": "Title", "value": "${{ github.event.issue.title }}", "inline": false},
-                   {"name": "Assignee", "value": "'"${ASSIGNEE}"'", "inline": false}
-                 ]
-               }]
-             }' \
-             ${{ secrets.ISSUE_ASSIGN_DISCORD_WEBHOOK_URL }}
+            -X POST \
+            -d '{
+              "username": "Github",
+              "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+              "content": "'"${MENTIONS//$'\n'/'\n'}"'",
+              "embeds": [{
+                "title": "Issue Assigned",
+                "url": "${{ github.event.issue.html_url }}",
+                "author": {
+                  "name": "${{ github.event.issue.user.login }}",
+                  "icon_url": "${{ github.event.issue.user.avatar_url }}"
+                },
+                "fields": [
+                  {"name": "Title", "value": "${{ github.event.issue.title }}", "inline": false},
+                  {"name": "Assignees", "value": "'"${ASSIGNEES//$'\n'/'\n'}"'", "inline": false}
+                ]
+              }]
+            }' \
+            ${{ secrets.ISSUE_ASSIGN_DISCORD_WEBHOOK_URL }}

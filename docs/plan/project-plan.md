@@ -137,22 +137,24 @@ In the requirements section, make sure to clearly define/describe the **function
   - The system must include clear documentation to support future development and maintenance efforts.
 
 #### User Requirements:
-- Describes what the user needs to do with the system (links to FR)
-- Focus is on the user experience with the system under all scenarios
 
 - Instructors
-  - a
-
+  - The system must provide instructors with a fast, simple, and user-friendly interface for efficient creation of classes, assignments, and associated rubrics.
+  - Instructors must be able to monitor and evaluate both individual student and group performances seamlessly within the system.
+  - Instructors require access to detailed progress reports for both students and classes.
+  
 - Students
-  - a
+  - The system must provide students with an easy-to-use interface for submitting assignments and receiving feedback.
+  - Students must be able to perform peer evaluations anonymously and fairly.
+  - Students must be able to access their submission history and feedback received on assignments.
 
 - Administrators
-  - a
+  - The system must provide administrative functionalities to manage the overall system, including user accounts and system configurations.
 
 #### Technical Requirements:
 - These emerge from the functional requirements to answer the questions: 
--- How will the problem be solved this time and will it be solved technologically and/or procedurally? 
--- Specify how the system needs to be designed and implemented to provide required functionality and fulfill required operational characteristics.
+- How will the problem be solved this time and will it be solved technologically and/or procedurally? 
+- Specify how the system needs to be designed and implemented to provide required functionality and fulfill required operational characteristics.
   
 ## Tech Stack
 Identify the “tech stack” you are using. This includes the technology the user is using to interact with your software (e.g., a web browser, an iPhone, any smartphone, etc.), the technology required to build the interface of your software, the technology required to handle the logic of your software (which may be part of the same framework as the technology for the interface), the technology required to handle any data storage, and the programming language(s) involved. You may also need to use an established API, in which case, say what that is. (Please don’t attempt to build your API in this course as you will need years of development experience to do it right.) You can explain your choices in a paragraph, in a list of bullet points, or a table. Just make sure you identify the full tech stack.

@@ -23,7 +23,7 @@ The unique value proposition of this software is determined by its multi-faceted
 
 This solution stands out from others due to its focus on simple design, efficient security, scalability, and maintainability. It ensures secure login and authentication mechanisms, accessible UI, scalability to accommodate future growth, and ease of maintenance and update. Furthermore, it complies with relevant privacy regulations to protect student data.
 
-Thus it is clear that, this software provides a comprehensive, secure, and user-friendly solution for managing academic activities, making it a valuable tool for educational institutions. It not only enhances the efficiency of academic processes but also enriches the learning experience for students.
+Thus it is clear that, this software provides a comprehensive, secure, and user-friendly solution for facilitating peer reviewed assignments, making it a valuable tool for educational institutions. It not only enhances the efficiency of peer review but also enriches the learning experience for students.
 
 ### High-level project description and boundaries
 

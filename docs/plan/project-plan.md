@@ -42,49 +42,47 @@ To measure sucess, we will track key performance indictors (KPI) -> <span style=
 ## Users, Usage Scenarios and High Level Requirements 
 
 ### Users Groups:
-Provide a a descriotion of the primary users in the system and when their high-level goals are with the system (Hint: there is more than one group for most projects).  Proto-personas will help to identify user groups and their wants/needs. <span style="color: green;">need more details here</span>
+Provide a a descriotion of the primary users in the system and when their high-level goals are with the system (Hint: there is more than one group for most projects).  Proto-personas will help to identify user groups and their wants/needs.
 
-**Students:**
-* Create accounts, log in, and join classes.
-* Submit assignments and receive feedback.
-* Perform anonymous peer reviews.
-* Track their submission statuses and received feedback.
-
-**Instructors:**
-* Create and manage classes and assignments.
-* Develop rubrics for assignments.
-* Assign peer reviews to students.
-* Provide feedback on student submissions.
-* Monitor student progress through dashboards.
-
-**Administrators:**
-* Manage user accounts and system settings.
-* Oversee the overall system health and performance
+- Students
+    - Description: Students are the primary users of the system. They are typically aged between 18-25 and are comfortable with technology but prioritize ease of use.
+    - Goals:
+        - Submit assignments and receive peer review feedback promptly.
+        - Participate in peer reviews and group projects fairly and anonymously.
+        - Track their progress and grades efficiently.
+        - Receive timely notifications about deadlines and important updates.
+- Instructors
+    - Description: University professors or teaching assistants make up the second primary user group. They are typically aged older than students and often manage multiple classes simultaneously.
+    - Goals:
+        - Create and manage assignments and classes effortlessly.
+        - Evaluate student submissions and provide constructive feedback.
+        - Assign and oversee peer reviews and group projects.
+        - Monitor student progress and performance through a comprehensive dashboard.
+- Administrators
+    - Description: University IT staff or academic administrators form the third primary user group. They are typically aged older than students and are responsible for maintaining the system's functionality and ensuring compliance with institutional policies.
+    - Goals:
+        - Manage user accounts and permissions.
+        - Ensure system security and data privacy.
+        - Oversee system maintenance and updates.
 
 ### Envisioned Usage
 What can the user do with your software? If there are multiple user groups, explain it from each of their perspectives. These are what we called *user scenarios* back in COSC 341. Use subsections if needed to make things more clear. Make sure you tell a full story about how the user will use your software. An MVP is a minimal and viable, so don’t go overboard with making things fancy (to claim you’ll put in a ton of extra features and not deliver in the end), and don’t focus solely on one part of your software so that the main purpose isn’t achievable. Scope wisely.  Don't forget about journey lines to describe the user scenarios.  
 
 **Students:** 
-* Login and Account Creation: Students create accounts or log in using their credentials. If they forget their password, they can reset it via email.
-* Class Enrollment: Students join classes using a code or invitation link provided by their instructor.
-* Assignment Submission: Students submit their assignments before the deadline in various formats (PDF, DOCX, etc.).
-* Peer Reviews: After the submission deadline, students anonymously review a set number of their peers' assignments based on the rubric provided.
-* Tracking Progress: Students can view their assignment statuses and feedback received on their dashboards.
+  Students will begin by creating/registering their accounts or logging in using their credentials. Once logged in, they will be presented with their personalized class dashboard, where they can view vital class/assignment information. Furthermore, the user's dashboard will utilize graphical quick link cards, links, buttons, etc to provide quick links and further enhance the user experience. Within each class, students can view assignments and submission deadlines. A deadline will exist for each assignment and the student can view the deadline date/time for each assignment on the assignments tab. Similarly, there will be a peer-review tab that hosts assignments that are allocated to the logged-in user by the instructor (with deadlines) and the student can view every assignment they are required to peer-review.  After the submission deadline passes, students will participate in the peer review process by anonymously reviewing a set number of their peers' assignments based on the instructor-defined rubric. They will fill out the rubric and provide constructive feedback ensuring they meet the minimum required evaluations. Students can navigate to a peer-review tab to view any assignments allocated towards themselves to submit a peer review. When ready to submit a peer review, students will upload their reviewed assignments (e.g. PDF, DOCX, PPT, Weblinks, etc) to the submission portal for the assignment to be handed off to the instructor. Students can view their progress and submission statuses, and access feedback through opening up the assignment which provides a view of specific details related to that assignment. 
+
 
 **Instructors:**
-* Class and Assignment Creation: Instructors create classes and assignments, specifying deadlines and rubrics.
-* Assignment Management: Instructors monitor submissions and set up peer review assignments.
-* Feedback Provision: After the submission deadline, instructors review and provide feedback on student submissions.
-* Progress Monitoring: Instructors use their dashboards to track student progress and assignment statuses.
+  Instructors will begin by creating/registering their accounts or logging in using their credentials. On initial account creation, the instructor will have a generic student account but, all users will be greeted with a visual prompt asking whether the user is an instructor. This graphical prompt will lead to a form for applying as an instructor (for the system), the instructor will click on the visual prompt to fill out the personalized instructor information form and submit the information to be reviewed by the admin to be granted instructor roles. Once the admin approves the role, instructors will be presented with their personalized class dashboard, where they can view vital information regarding the classes they are hosting. Furthermore, the instructor's dashboard will utilize graphical quick link cards, buttons, prompts, etc, to provide quick access to frequently needed information and also enhance the user experience. The instructor will navigate to a class page to view all currently active classes and will have the option to create a new class. The instructor can create a new class by clicking "Add a new class" and filling out relevant information such as name, term start/end dates, number of students for class, and an email list to send out an invitation for the class to the students the instructor wishes to invite. The platform will allow instructors to monitor each class's assignment submission in real time, ensuring all students meet deadlines. Once submissions are complete, instructors will assign peer reviews, either manually or using the system's random assignment feature. Instructors can also provide their own feedback on student submissions and monitor the peer-review process to ensure fairness and completeness. Instructors also can view a roster of the class enrolees and can assign the role of "teaching assistant" to whoever joins the class as a supporting role to the instructor.  
+
+**Teaching Assistants:** <span style="color: green">**maybe???**</span>
+  Teaching assistants (TAs) will begin by logging into the platform using their credentials. Once logged in, TAs will navigate to the class dashboard where they have been assigned. Unlike instructors, TAs will not have the capability to create new classes or assign tasks, but they will have comprehensive access to view class activities. This includes visibility into assignment submissions, peer reviews, and overall student progress. TAs will see detailed information about each student's submissions and peer reviews, including the names of the students involved, providing a non-anonymous review environment for their oversight. TAs will assist instructors by monitoring the submission process, ensuring students meet deadlines, and providing additional feedback on assignments where necessary. They will also help identify students who may be struggling or need extra assistance based on the submission and review data available to them. 
 
 **Administrators:**
-* User Management: Administrators manage user accounts, ensuring that students, instructors, and other administrators have the appropriate access.
-* System Settings: Administrators configure system settings and maintain overall system health.
-* Monitoring: Administrators monitor user activities and system performance to ensure smooth operation.
+An admin user will login via the login portal and will have access to various administrative controls. An admin will be able to oversee transactions of user accounts, ensruing that students, instructors, and other administartors have appropriate access levels, differentiated abilities, and reivew instructor requested applications for a instructor role to be assigned when new applications are sent in for review. Administrators will configure system settings, manage class and assignment storage/data, ensure software maintenance, and manage database capacity issues. Admins will montior system performance and monitor user activity logs to ensure platform is running smoothly. Admins can solve request tickets from instructors to review user activity log and solve general scheduling problems, verify communication data (idea is that if someone says they submitted on time, but the system markedd the assignment  late, the admin can receive a request from an instructor to view the acitivty log to verify the user's comments).  <span style="color: red"> we should review this more to figure out what exaclty they should be focusing on </span>.
 
 
 ### Requirements:
-In the requirements section, make sure to clearly define/describe the **functional** requirements (what the system will do), **non-functional** requirements (performane/development), **user requirements (what the users will be able to do with the system and **technical** requirements.  These requirements will be used to develop the detailed uses in the design and form your feature list.
 
 #### Functional Requirements:
 

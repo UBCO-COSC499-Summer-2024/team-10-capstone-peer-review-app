@@ -42,7 +42,6 @@ To measure sucess, we will track key performance indictors (KPI) -> <span style=
 ## Users, Usage Scenarios and High Level Requirements 
 
 ### Users Groups:
-Provide a a descriotion of the primary users in the system and when their high-level goals are with the system (Hint: there is more than one group for most projects).  Proto-personas will help to identify user groups and their wants/needs.
 
 - Students
     - Description: Students are the primary users of the system. They are typically aged between 18-25 and are comfortable with technology but prioritize ease of use.
@@ -66,7 +65,6 @@ Provide a a descriotion of the primary users in the system and when their high-l
         - Oversee system maintenance and updates.
 
 ### Envisioned Usage
-What can the user do with your software? If there are multiple user groups, explain it from each of their perspectives. These are what we called *user scenarios* back in COSC 341. Use subsections if needed to make things more clear. Make sure you tell a full story about how the user will use your software. An MVP is a minimal and viable, so don’t go overboard with making things fancy (to claim you’ll put in a ton of extra features and not deliver in the end), and don’t focus solely on one part of your software so that the main purpose isn’t achievable. Scope wisely.  Don't forget about journey lines to describe the user scenarios.  
 
 **Students:** 
   Students will begin by creating/registering their accounts or logging in using their credentials. Once logged in, they will be presented with their personalized class dashboard, where they can view vital class/assignment information. Furthermore, the user's dashboard will utilize graphical quick link cards, links, buttons, etc to provide quick links and further enhance the user experience. Within each class, students can view assignments and submission deadlines. A deadline will exist for each assignment and the student can view the deadline date/time for each assignment on the assignments tab. Similarly, there will be a peer-review tab that hosts assignments that are allocated to the logged-in user by the instructor (with deadlines) and the student can view every assignment they are required to peer-review.  After the submission deadline passes, students will participate in the peer review process by anonymously reviewing a set number of their peers' assignments based on the instructor-defined rubric. They will fill out the rubric and provide constructive feedback ensuring they meet the minimum required evaluations. Students can navigate to a peer-review tab to view any assignments allocated towards themselves to submit a peer review. When ready to submit a peer review, students will upload their reviewed assignments (e.g. PDF, DOCX, PPT, Weblinks, etc) to the submission portal for the assignment to be handed off to the instructor. Students can view their progress and submission statuses, and access feedback through opening up the assignment which provides a view of specific details related to that assignment. 

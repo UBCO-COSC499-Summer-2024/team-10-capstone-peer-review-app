@@ -13,56 +13,230 @@
 
 ### Project purpose or justification (UVP)
 
-What is the purpose of this software? What problem does it solve? What is the unique value proposition? Why is your solution better than others?
+This software aims to enhance assignment grading by applying a peer-review system that allows consistent and reliable feedback from peers from a learning institution. It aims to simplify the workflow for students, instructors, and administrators by providing an intuitive and efficient platform for managing assignments, peer reviews, the creation of rubrics and progress tracking, and many other vital tools for the instructors and students to benefit the process. This system aims to provide a system prone to bias when grading assignments and a chance for multiple perspectives before submitting a final grade. Our system aims to be easy to use and easy to integrate for learning institutions to rapidly adopt within their learning ecosystem.
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla. Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum.
+**User Value Proposition**: The system offers an intuitive architecture including differentiated user roles. This makes it easy for students to submit assignments, instructors to create and manage them, and administrators to oversee the system functions. 
+
+**Automated Peer Reviews**: Ensures fair and anonymous peer reviews by following specific rubrics that are assigned by instructors for each assignemnt that is created. The rubric is distributed to each peer-reviewr for each specific assignment and grades are collected for further user/instructor views. 
+
+**Comprehensive Progress Tracking**: Allows students and instructors to monitor progress effectively and ensure timely submissions of peer-reviews.  
+
 
 ### High-level project description and boundaries
 
-Describe your MVP in a few statements and identify the boundaries of the system. 
+The MVP will include User management with account creation, login, role-baed access control, assignment creation, submission, viewing, and feedback platforms, Allow for anonymity amongst peer-reviewers and reviewees, Exhibits progress tracking dashboards that are differentiated for students and instructors, and will host basic admin controls for user and system management.
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla. Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum.
+The boundaries of the system will not initially include advanced features such as PDF/image editing for peer reviews (only edits through local machine and resubmission of edited files), the focus will be tailored for larger screen accessibility with mobile responsiveness but not a dedicated mobile app, and Data back up and disaster recovery plans will not be considered for the scope of the MVP.
 
 ### Measurable project objectives and related success criteria (scope of project)
 
-Make sure to use simple but precise statement of goals for the project that will be included when it the project is completed.  Rememeber that goals must be clear and measurable and **SMART**.  It should be clearly understood what success means to the project and how the success will be measured (as a high level, what is success?). 
+<span style="color: red;">The primary goals for this project </span> are to create an intuitive, efficient, and secure platform for managing assignments, assigning students to certain assignments for peer-review (on a rotational basis among a class), and allowing instructors to create and manage classes that host various capabilites related towards managing/viewing assignemnts. Success for this project means achieving successfulla ccount creations and authentication services for students, instructors, teaching assistants, and administrators which ensure role-based access control that is implemented to effectively simulate a typical class structure. This will aim to provide a streamlined process for assignemnt submissions and peer-reviewed feedback. Specifically, our goals are: 
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla. Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum.
+Additionally, we aim to provide instructors with comprehensive dashboards for montiotring sutdent progres and assignment statuses, while maintaining system security and data privacy. 
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla. Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum.
+To measure success, we will track key performance indictors (KPI) -> <span style="color: red;">(list of indicators....) -> </span> and these snippits of informataion will be viewable and differentiated towards a differentiated dashboard depending on the user role, we aim to have a quick and easy to use system and will allow a user to reach any vital destination within 5-7 clicks, <span style="color: red;">etc etc... (we should discuss these in person)</span>
 
 ## Users, Usage Scenarios and High Level Requirements 
 
 ### Users Groups:
-Provide a a descriotion of the primary users in the system and when their high-level goals are with the system (Hint: there is more than one group for most projects).  Proto-personas will help to identify user groups and their wants/needs. 
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla. Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum.
+- Students
+    - Description: Students are the primary users of the system. They are typically aged between 18-25 and are comfortable with technology but prioritize ease of use.
+    - Goals:
+        - Submit assignments and receive peer review feedback promptly.
+        - Participate in peer reviews and group projects fairly and anonymously.
+        - Track their progress and grades efficiently.
+        - Receive timely notifications about deadlines and important updates.
+- Instructors
+    - Description: University professors or teaching assistants make up the second primary user group. They are typically aged older than students and often manage multiple classes simultaneously.
+    - Goals:
+        - Create and manage assignments and classes effortlessly.
+        - Evaluate student submissions and provide constructive feedback.
+        - Assign and oversee peer reviews and group projects.
+        - Monitor student progress and performance through a comprehensive dashboard.
+- Administrators
+    - Description: University IT staff or academic administrators form the third primary user group. They are typically aged older than students and are responsible for maintaining the system's functionality and ensuring compliance with institutional policies.
+    - Goals:
+        - Manage user accounts and permissions.
+        - Ensure system security and data privacy.
+        - Oversee system maintenance and updates.
 
 ### Envisioned Usage
-What can the user do with your software? If there are multiple user groups, explain it from each of their perspectives. These are what we called *user scenarios* back in COSC 341. Use subsections if needed to make things more clear. Make sure you tell a full story about how the user will use your software. An MVP is a minimal and viable, so don’t go overboard with making things fancy (to claim you’ll put in a ton of extra features and not deliver in the end), and don’t focus solely on one part of your software so that the main purpose isn’t achievable. Scope wisely.  Don't forget about journey lines to describe the user scenarios.  
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla. Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum.
+**Students:** 
+  Students will begin by creating/registering their accounts or logging in using their credentials. Once logged in, they will be presented with their personalized class dashboard, where they can view vital class/assignment information. Furthermore, the user's dashboard will utilize graphical quick link cards, links, buttons, etc to provide quick links and further enhance the user experience. Within each class, students can view assignments and submission deadlines. A deadline will exist for each assignment and the student can view the deadline date/time for each assignment on the assignments tab. Similarly, there will be a peer-review tab that hosts assignments that are allocated to the logged-in user by the instructor (with deadlines) and the student can view every assignment they are required to peer-review.  After the submission deadline passes, students will participate in the peer review process by anonymously reviewing a set number of their peers' assignments based on the instructor-defined rubric. They will fill out the rubric and provide constructive feedback ensuring they meet the minimum required evaluations. Students can navigate to a peer-review tab to view any assignments allocated towards themselves to submit a peer review. When ready to submit a peer review, students will upload their reviewed assignments to the submission portal for the assignment to be handed off to the instructor. Students can view their progress and submission statuses, and access feedback through opening up the assignment which provides a view of specific details related to that assignment. 
+
+**Instructors:**
+    Instructors will begin by creating/registering their accounts or logging in using their credentials. On initial account creation, the instructor will have a generic student account but, all users will be greeted with a visual prompt asking whether the user is an instructor. This graphical prompt will lead to a form for applying as an instructor (for the system), the instructor will click on the visual prompt to fill out the personalized instructor information form and submit the information to be reviewed by the admin to be granted instructor roles. Once the admin approves the role, instructors will be presented with their personalized class dashboard, where they can view vital information regarding the classes they are hosting. Furthermore, the instructor's dashboard will utilize graphical quick link cards, buttons, prompts, etc, to provide quick access to frequently needed information and also enhance the user experience. The instructor will navigate to a class page to view all currently active classes and will have the option to create a new class. The instructor can create a new class by clicking "Add a new class" and filling out relevant information such as name, term start/end dates, number of students for class, and an email list to invite the class to the students the instructor wishes to invite. The platform will allow instructors to monitor each class's assignment submission in real time, ensuring all students meet deadlines. Once submissions are complete, instructors will assign peer reviews. Instructors can also provide their feedback on student submissions and monitor the peer-review process to ensure fairness and completeness. 
+
+**Administrators:**
+An admin user will login via the login portal and will have access to various administrative controls. An admin will be able to oversee transactions of user accounts, ensuring that students, instructors, and other administrators have appropriate access levels and differentiated abilities, and review instructor-requested applications for an instructor role to be assigned when new applications are sent in for review. Administrators will configure system settings, manage class and assignment storage/data, ensure software maintenance, and manage database capacity issues. Admins will monitor system performance and monitor user activity logs to ensure the platform is running smoothly. Admins can review user feedback forms to further maintain and improve the system.
 
 ### Requirements:
-In the requirements section, make sure to clearly define/describe the **functional** requirements (what the system will do), **non-functional** requirements (performane/development), **user requirements (what the users will be able to do with the system and **technical** requirements.  These requirements will be used to develop the detailed uses in the design and form your feature list.
+
 #### Functional Requirements:
-- Describe the characteristics of the final deliverable in ordinary non-technical language
-- Should be understandable to the customers
-- Functional requirements are what you want the deliverable to do
+
+- User Management
+  - Account Creation and Authentication
+    - Users (students, instructors, administrators) must be able to create accounts, log in, and reset passwords securely.
+    - The admin must be able to grant instructor permissions.
+  - Role-Based Access Control
+    - The system must provide different functionalities based on user roles (student, instructor, administrator).
+    - The system must allow students and instructors to reset their passwords via a "Forgot Password" feature in the login/signup process.
+    - The system must enable navigation for assignments and classes.
+    - The system must allow instructors to add or remove classes and add or remove students from classes.
+    - The system must allow students to view and join classes.
+    - The system must support notifications via Email.
+
+- Assignment Management
+  - Assignment Creation
+    - Instructors must be able to create assignments for their classes.
+    - Instructors must be able to create a rubric associated with each assignment.
+  - Submission Handling
+    - Students must be able to upload assignments in various formats.
+  - Deadline Management
+    - The system must allow instructors to set and manage deadlines for assignments.
+    - The system must activate the peer evaluation section after the assignment submission deadline.
+  - Feedback Mechanism
+    - Instructors must be able to provide feedback on student submissions, which students must be able to view.
+    - Students must be able to communicate with the instructor to comment on assignment submission and other concerns.
+    - The system must require students to provide a minimum amount of constructive evaluation for each assignment to be counted towards their grade.
+
+- Peer Review Process
+  - Peer Assignment Distribution
+    - Instructors must be able to assign peer reviews to students, ensuring each student reviews a predetermined number of their peers' assignments.
+  - Anonymous Reviews
+    - The peer review process must be anonymous to ensure fairness.
+  - Feedback Submission
+    - Students must be able to submit reviews and feedback on their peers' work.
+    - Students must fill out an associated rubric set by the instructor for each assignment.
+
+- Group Project Evaluations
+  - Group Formation
+    - Instructors and students must be able to create and manage student groups for projects.
+  - Individual Contribution Evaluation
+    - Students must be able to evaluate their peers' contributions within group projects anonymously.
+  - Fairness Mechanism
+    - The system must include mechanisms to ensure fair evaluation of individual contributions.
+    - The system must allow instructors to set a percentage of an assignment's grade to be based on peer feedback.
+    - Instructors must be notified or have the ability to view peer-reviewed submissions to ensure they are done fairly and on time.
+
+- Progress Monitoring
+  - Dashboard for Instructors
+    - The system must provide a comprehensive dashboard for instructors to monitor student progress and assignment statuses.
+    - The instructor's dashboard must include:
+      - Instructor Class Dashboard
+      - Instructor Assignment Dashboard
+  - Student Progress Tracking
+    - Students must be able to track their own assignment submission statuses and received feedback.
+    - The student's dashboard must include:
+      - Student Class Dashboard
+      - Student Assignment Dashboard
+      - Individual Assignment View (including a split view of the assignment, the rubric, and a place to upload the assignment)
+
+- System Maintenance
+  - Admin Control
+    - Administrators must be able to manage user accounts, system settings, and maintain overall system health.
+    - Administrators must be able to receive and respond to user reports.
 
 #### Non-functional Requirements:
-- Specify criteria that can be used to judge the final product or service that your project delivers
-- List restrictions or constraints to be placed on the deliverable and how to build it; remember that this is intended to restrict the number of solutions that will meet a set of requirements.
+
+- Security
+  - The system must implement secure login and authentication mechanisms, including password encryption using Passport.js.
+  - The system must ensure data protection and privacy by using TLS handshakes and other encryption techniques.
+  - The system must comply with local regulations as necessary such as GDPR and FERPA.
+
+- Usability
+  - The system must have an intuitive and accessible user interface suitable for all user roles.
+  - The system must be responsive and function well on both mobile and desktop devices.
+
+- Scalability
+  - The system must be scalable to accommodate future growth in the number of users and data volume.
+
+- Reliability
+  - The system must ensure high availability and minimal downtime.
+  - The system must be tested to handle simultaneous use, ensuring that multiple users can make edits without causing application errors or data inconsistencies.
+
+- Maintainability
+  - The system must be easy to maintain and update.
+  - The system must include clear documentation to support future development and maintenance efforts.
 
 #### User Requirements:
-- Describes what the user needs to do with the system (links to FR)
-- Focus is on the user experience with the system under all scenarios
+
+- Instructors
+  - The system must provide instructors with a fast, simple, and user-friendly interface for efficient creation of classes, assignments, and associated rubrics.
+  - Instructors must be able to monitor and evaluate both individual student and group performances seamlessly within the system.
+  - Instructors require access to detailed progress reports for both students and classes.
+  
+- Students
+  - The system must provide students with an easy-to-use interface for submitting assignments and receiving feedback.
+  - Students must be able to perform peer evaluations anonymously and fairly.
+  - Students must be able to access their submission history and feedback received on assignments.
+
+- Administrators
+  - The system must provide administrative functionalities to manage the overall system, including user accounts and system configurations.
+  - The system must also provide administrators the ability to receive and respond to user reports.
 
 #### Technical Requirements:
-- These emerge from the functional requirements to answer the questions: 
--- How will the problem be solved this time and will it be solved technologically and/or procedurally? 
--- Specify how the system needs to be designed and implemented to provide required functionality and fulfill required operational characteristics.
+
+- Frontend Requirements
+
+  - Project Setup
+    - Bundler: Use Vite for dependency management and project bundling.
+    - Framework: Use React for building the user interface.
+      - Routing: Utilize React-Router-Dom for routing.
+    - Styling: Implement TailwindCSS for styling.
+    - Icons: Integrate Heroicons for icons.
+    - UI Components: Use HeadlessUI for ready-to-go components such as buttons, forms, and modals.
   
+  - Compatibility
+    - Ensure compatibility with all major web browsers.
+    - Ensure the application is responsive and works seamlessly on mobile devices.
+
+- Backend Requirements
+
+  - Framework and Server
+    - Framework: Use Node.js.
+    - Server: Use Express.js for handling server-side logic and APIs.
+  
+  - Database
+    - Type: Use a relational database – PostgreSQL.
+    - ORM: Use an ORM to communicate with the database using JavaScript queries.
+      - Preferred ORMs: Drizzle ORM or Prisma ORM for fast and efficient queries.
+
+- API Development
+  - Type: Develop RESTful APIs using Express.js.
+  - Security: Ensure APIs are secure and efficient.
+
+- Testing and Deployment
+  
+  - Automated Testing
+
+    - Frameworks: 
+      - Use Jest for unit tests and integration tests.
+      - Use Cypress for end-to-end (e2e) testing.
+    - Test Coverage: Implement both regression and unit tests to ensure reliability and prevent regressions.
+  
+  - CI Pipeline
+    - Use Drone CI/Travis CI for continuous integration.
+
+- Other Libraries and Tools
+
+  - Authentication
+    - Use Passport.js for authentication, allowing for multiple authentication paradigms.
+
+  - File Handling
+    - PDF Viewing: Use PDF.js.
+
+- Compliance
+
+  - Privacy Regulations
+    - Ensure the application complies with local privacy regulations (e.g., GDPR, FERPA) to protect user data.
+  
+  - Data Security
+    - Encryption: Implement data encryption to ensure data security.
+
+
 ## Tech Stack
 Identify the “tech stack” you are using. This includes the technology the user is using to interact with your software (e.g., a web browser, an iPhone, any smartphone, etc.), the technology required to build the interface of your software, the technology required to handle the logic of your software (which may be part of the same framework as the technology for the interface), the technology required to handle any data storage, and the programming language(s) involved. You may also need to use an established API, in which case, say what that is. (Please don’t attempt to build your API in this course as you will need years of development experience to do it right.) You can explain your choices in a paragraph, in a list of bullet points, or a table. Just make sure you identify the full tech stack.
 For each choice you make, provide a short justification based on the current trends in the industry. For example, don’t choose an outdated technology because you learned it in a course. Also, don’t choose a technology because one of the team members knows it well. You need to make choices that are good for the project and that meet the client’s needs, otherwise, you will be asked to change those choices.  Consider risk analysis. 

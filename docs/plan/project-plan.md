@@ -206,7 +206,7 @@ An admin user will login via the login portal and will have access to various ad
 
 - API Development
   - Type: Develop RESTful APIs using Express.js.
-  - Security: Ensure APIs are secure and efficient. Research and implement pre-built security functionalities in Express.js.
+  - Security: Ensure APIs are secure and efficient.
 
 - Testing and Deployment
   
@@ -217,9 +217,8 @@ An admin user will login via the login portal and will have access to various ad
       - Use Cypress for end-to-end (e2e) testing.
     - Test Coverage: Implement both regression and unit tests to ensure reliability and prevent regressions.
   
-  - CI/CD Pipelines
-    - Use Drone CI for continuous integration.
-    - Use Heroku for deployment and updates.
+  - CI Pipeline
+    - Use Drone CI/Travis CI for continuous integration.
 
 - Other Libraries and Tools
 
@@ -236,9 +235,6 @@ An admin user will login via the login portal and will have access to various ad
   
   - Data Security
     - Encryption: Implement data encryption to ensure data security.
-    - Password Hashing: Use MD5 hashing for passwords.
-    - Consent Management: Implement consent management to meet compliance requirements.
-    - Audit Logging: Implement audit logging for tracking user actions and meeting compliance standards.
 
 
 ## Tech Stack

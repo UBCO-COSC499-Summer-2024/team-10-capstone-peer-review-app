@@ -86,7 +86,7 @@ An admin user will login via the login portal and will have access to various ad
     - The system must enable navigation for assignments and classes.
     - The system must allow instructors to add or remove classes and add or remove students from classes.
     - The system must allow students to view and join classes.
-    - The system must support notifications either via Email.
+    - The system must support notifications via Email.
 
 - Assignment Management
   - Assignment Creation

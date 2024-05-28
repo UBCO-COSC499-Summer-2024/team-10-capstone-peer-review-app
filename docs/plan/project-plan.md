@@ -36,7 +36,26 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibu
 ### Users Groups:
 Provide a a descriotion of the primary users in the system and when their high-level goals are with the system (Hint: there is more than one group for most projects).  Proto-personas will help to identify user groups and their wants/needs. 
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla. Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum.
+- Students
+    - Description: Students are the primary users of the system. They are typically aged between 18-25 and are comfortable with technology but prioritize ease of use.
+    - Goals:
+        - Submit assignments and receive peer review feedback promptly.
+        - Participate in peer reviews and group projects fairly and anonymously.
+        - Track their progress and grades efficiently.
+        - Receive timely notifications about deadlines and important updates.
+- Instructors
+    - Description: University professors or teaching assistants make up the second primary user group. They are typically aged older than students and often manage multiple classes simultaneously.
+    - Goals:
+        - Create and manage assignments and classes effortlessly.
+        - Evaluate student submissions and provide constructive feedback.
+        - Assign and oversee peer reviews and group projects.
+        - Monitor student progress and performance through a comprehensive dashboard.
+- Administrators
+    - Description: University IT staff or academic administrators form the third primary user group. They are typically aged older than students and are responsible for maintaining the system's functionality and ensuring compliance with institutional policies.
+    - Goals:
+        - Manage user accounts and permissions.
+        - Ensure system security and data privacy.
+        - Oversee system maintenance and updates.
 
 ### Envisioned Usage
 What can the user do with your software? If there are multiple user groups, explain it from each of their perspectives. These are what we called *user scenarios* back in COSC 341. Use subsections if needed to make things more clear. Make sure you tell a full story about how the user will use your software. An MVP is a minimal and viable, so don’t go overboard with making things fancy (to claim you’ll put in a ton of extra features and not deliver in the end), and don’t focus solely on one part of your software so that the main purpose isn’t achievable. Scope wisely.  Don't forget about journey lines to describe the user scenarios.  
@@ -44,7 +63,6 @@ What can the user do with your software? If there are multiple user groups, expl
 Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla. Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum.
 
 ### Requirements:
-In the requirements section, make sure to clearly define/describe the **functional** requirements (what the system will do), **non-functional** requirements (performane/development), **user requirements (what the users will be able to do with the system and **technical** requirements.  These requirements will be used to develop the detailed uses in the design and form your feature list.
 
 #### Functional Requirements:
 

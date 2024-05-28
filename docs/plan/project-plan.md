@@ -146,10 +146,6 @@ An admin user will login via the login portal and will have access to various ad
   - The system must ensure data protection and privacy by using TLS handshakes and other encryption techniques.
   - The system must comply with local regulations as necessary such as GDPR and FERPA.
 
-- Performance
-  - The system must ensure quick load times with a target of less than 10 seconds and smooth user interactions.
-  - The system must provide clear indicators (e.g., progress bars or cycling loads) when data is being loaded.
-
 - Usability
   - The system must have an intuitive and accessible user interface suitable for all user roles.
   - The system must be responsive and function well on both mobile and desktop devices.

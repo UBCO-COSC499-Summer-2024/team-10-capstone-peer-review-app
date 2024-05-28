@@ -12,7 +12,6 @@
 ## Overview:
 
 ### Project purpose or justification (UVP)
-What is the purpose of this software? What problem does it solve? What is the unique value proposition? Why is your solution better than others?
 
 This software aims to enhance assignment grading by applying a peer-review system that allows consistent and reliable feedback from peers from a learning institution. It aims to simplify the workflow for students, instructors, and administrators by providing an intuitive and efficient platform for managing assignments, peer reviews, the creation of rubrics and progress tracking, and many other vital tools for the instructors and students to benefit the process. This system aims to provide a system prone to bias when grading assignments and a chance for multiple perspectives before submitting a final grade. Our system aims to be easy to use and easy to integrate for learning institutions to rapidly adopt within their learning ecosystem.
 
@@ -25,13 +24,11 @@ This software aims to enhance assignment grading by applying a peer-review syste
 
 ### High-level project description and boundaries
 
-Describe your MVP in a few statements and identify the boundaries of the system. 
+The MVP will include User management with account creation, login, role-baed access control, assignment creation, submission, viewing, and feedback platforms, Allow for anonymity amongst peer-reviewers and reviewees, Exhibits progress tracking dashboards that are differentiated for students and instructors, and will host basic admin controls for user and system management.
 
-The MVP will include User management with account creation, login, role-baed access control, assignment creation, submission, viewing, and feedback platforms, Allow for anonymity amongst peer-reviewers and reviewees, Exhibits progress tracking dashboards that are differentiated for students and instructors, and will host basic admin controls for user and system management. The boundaries of the system will not initially include advanced features such as PDF/image editing for peer reviews (only edits through local machine and resubmission of edited files), the focus will be tailored for larger screen accessibility with mobile responsiveness but not a dedicated mobile app, and Data back up and disaster recovery plans will not be considered for the scope of the MVP.
+The boundaries of the system will not initially include advanced features such as PDF/image editing for peer reviews (only edits through local machine and resubmission of edited files), the focus will be tailored for larger screen accessibility with mobile responsiveness but not a dedicated mobile app, and Data back up and disaster recovery plans will not be considered for the scope of the MVP.
 
 ### Measurable project objectives and related success criteria (scope of project)
-
-Make sure to use simple but precise statement of goals for the project that will be included when it the project is completed.  Rememeber that goals must be clear and measurable and **SMART**.  It should be clearly understood what success means to the project and how the success will be measured (as a high level, what is success?). 
 
 <span style="color: red;">The primary goals for this project </span> are to create an intuitive, efficient, and secure platform for managing assignments, assigning students to certain assignments for peer-review (on a rotational basis among a class), and allowing instructors to create and manage classes that host various capabilites related towards managing/viewing assignemnts. Success for this project means achieving successfulla ccount creations and authentication services for students, instructors, teaching assistants, and administrators which ensure role-based access control that is implemented to effectively simulate a typical class structure. This will aim to provide a streamlined process for assignemnt submissions and peer-reviewed feedback. Specifically, our goals are: 
 

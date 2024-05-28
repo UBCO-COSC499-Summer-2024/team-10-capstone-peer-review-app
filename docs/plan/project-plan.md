@@ -137,6 +137,7 @@ An admin user will login via the login portal and will have access to various ad
 - System Maintenance
   - Admin Control
     - Administrators must be able to manage user accounts, system settings, and maintain overall system health.
+    - Administrators must be able to receive and respond to user reports.
 
 #### Non-functional Requirements:
 

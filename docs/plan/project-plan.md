@@ -151,7 +151,7 @@ An admin user will login via the login portal and will have access to various ad
   - The system must be responsive and function well on both mobile and desktop devices.
 
 - Scalability
-  - The system must be scalable to accommodate future growth in the number of users and data volume by Dockerizing the system.
+  - The system must be scalable to accommodate future growth in the number of users and data volume.
 
 - Reliability
   - The system must ensure high availability and minimal downtime.
@@ -175,6 +175,7 @@ An admin user will login via the login portal and will have access to various ad
 
 - Administrators
   - The system must provide administrative functionalities to manage the overall system, including user accounts and system configurations.
+  - The system must also provide administrators the ability to receive and respond to user reports.
 
 #### Technical Requirements:
 

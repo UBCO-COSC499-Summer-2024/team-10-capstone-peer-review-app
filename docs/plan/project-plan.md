@@ -15,33 +15,115 @@
 
 What is the purpose of this software? What problem does it solve? What is the unique value proposition? Why is your solution better than others?
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla. Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum.
+The proposed software is an educational platform designed to expedite the process of assignment and deadline management, facilitate peer review, and progress monitoring for use in an academic institution. 
+
+The primary purpose of this software is to facilitate better interaction between students, instructors, and administrators. Its objective is to solve the challenges associated with managing assignments, conducting peer reviews efficiently, evaluating group projects, and tracking progress of each and every student.
+
+The unique value proposition of this software is determined by its multi-faceted suite of features created to the needs of all users specified. For all of them, the features are: account creation, accessing course lists and engage in courses.For instructors, it offers a user-friendly UI for creating/deleting courses, assignments, rubrics, create peer evaluation, form groups as well as a dashboard for monitoring student progress. For students, it provides an simple interface for submitting assignments, performing peer evaluations, as well as tracking their submissions and feedbacks. For administrators, it enables the ability to manage the overall system, including user accounts and system configurations and health.
+
+This solution stands out from others due to its focus on simple design, efficient security, scalability, and maintainability. It ensures secure login and authentication mechanisms, accessible UI, scalability to accommodate future growth, and ease of maintenance and update. Furthermore, it complies with relevant privacy regulations to protect student data.
+
+Thus it is clear that, this software provides a comprehensive, secure, and user-friendly solution for managing academic activities, making it a valuable tool for educational institutions. It not only enhances the efficiency of academic processes but also enriches the learning experience for students.
 
 ### High-level project description and boundaries
 
 Describe your MVP in a few statements and identify the boundaries of the system. 
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla. Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum.
+The Minimum Viable Product (MVP) for this project is an educational platform that facilitates user account management, assignment management, peer review process, group project and peer evaluations, progress monitoring, and system maintenance. 
+
+The MVP will allow users (students, instructors, administrators) to create accounts, log in, and reset passwords securely. Instructors will be able to create courses, groups, and assignments. Students will be able to upload assignments and submit feedback on their peers' work anonymously. Administrators will be able to manage user accounts, system settings, and maintain the overall system health.
+
+The boundaries of the system include secure login and authentication mechanisms, quick load times, accessible user interface, scalability to accommodate future growth, and ease of maintenance and update. The system will be developed using JavaScript, with Vite Project Bundler, React.JS for building the UI, Node.js with Express.js for handling server-side logic, and a RDBMS like PostgreSQL for data storage. The system will comply with relevant privacy regulations to protect student data.
 
 ### Measurable project objectives and related success criteria (scope of project)
 
-Make sure to use simple but precise statement of goals for the project that will be included when it the project is completed.  Rememeber that goals must be clear and measurable and **SMART**.  It should be clearly understood what success means to the project and how the success will be measured (as a high level, what is success?). 
+Make sure to use simple but precise statement of goals for the project that will be included when it the project is completed.  Remember that goals must be clear and measurable and **SMART**.  It should be clearly understood what success means to the project and how the success will be measured (as a high level, what is success?). 
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla. Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum.
+**Project Objectives:**
+1. **User Management**: Develop a secure and simple user management system that allows account creation, authentication, and role-based control. Success will be measured by the system's ability to handle these tasks without errors and with accuracy.
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla. Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum.
+2. **Assignment Management**: Implement a vast assignment management system that supports assignment creation, submission, deadline management, and feedback mechanisms. Success will be measured by the system's ability to manage assignments effectively and provide accurate feedback on time.
+
+3. **Peer Review Process**: Develop an anonymous peer review process that allows students to review their peers' assignments. Success will be measured by the fairness and anonymity of the reviews and its use.
+
+4. **Group Project Evaluations**: Implement a system for managing group projects and peer evaluations. Success will be measured by the system's ability to form groups, assign tasks, and fairly and anonymously give peer feedbacks.
+
+5. **Progress Monitoring**: Create a dashboard for instructors and students to monitor progress and assignment statuses. Success will be measured by the accuracy of the information provided on the dashboard.
+
+6. **System Maintenance**: Develop a system maintenance module that allows administrators to manage user accounts, system settings, and maintain overall system health. Success will be measured by the the absence of critical errors.
+
+**Success Criteria:**
+1. **Security**: The system will have secure login and authentication mechanisms, ensuring data protection and privacy. Success will be measured by the absence of security breaches and compliance with decided regulations.
+
+2. **Usability**: The system will have an intuitive and accessible UI. Success will be measured by user satisfaction and the ease of use.
+
+3. **Scalability**: The system will be scalable to accommodate future growth. Success will be measured by the system's ability to handle new data volume and user count without making it less efficient.
+
+4. **Reliability**: The system will have high reliability and minimal downtime. Success will be measured by the absence of critical failures.
+
+5. **Maintainability**: The system will be easy to maintain and update. Success will be measured by the ease of implementing updates and the clarity in documentation.
 
 ## Users, Usage Scenarios and High Level Requirements 
 
 ### Users Groups:
-Provide a a descriotion of the primary users in the system and when their high-level goals are with the system (Hint: there is more than one group for most projects).  Proto-personas will help to identify user groups and their wants/needs. 
+Provide a a description of the primary users in the system and when their high-level goals are with the system (Hint: there is more than one group for most projects).  Proto-personas will help to identify user groups and their wants/needs. 
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla. Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum.
+The primary users of the system can be categorized into three groups: Instructors, Students, and Administrators. Here are their descriptions and high-level goals:
+
+1. **Instructors**: These are the techers who will be creating classes, assignments, groups and rubrics. Their high-level goals with the system are:
+    - To have a user-friendly, simple, fast, and efficient interface for managing classes and assignments.
+    - To be able to monitor and evaluate both individual and group performances easily.
+    - To give/take access to/from assignment reports for students and classes.
+
+2. **Students**: These are the learners who will be joining classes, submitting assignments, and receiving feedback. Their high-level goals with the system are:
+    - To have an easy-to-use interface for managing their assignments and receiving feedback.
+    - To be able to perform peer evaluations anonymously and fairly.
+    - To have access to their submission history and feedback received.
+
+3. **Administrators**: These are the system managers who will be overseeing the overall system, including user accounts and system configurations. Their high-level goals with the system are:
+    - To have the ability to manage the overall system effectively and efficiently.
+    - To ensure the system is secure, reliable, and maintains high performance.
+    - To ensure the system is scalable and can accommodate future growth.
+
+These proto-personas help us understand the needs and wants of each user group, enabling us to design and develop a system that meets their specific requirements. It's important to note that the needs of these user groups may evolve over time, and the system should be flexible enough to accommodate these changes.
 
 ### Envisioned Usage
 What can the user do with your software? If there are multiple user groups, explain it from each of their perspectives. These are what we called *user scenarios* back in COSC 341. Use subsections if needed to make things more clear. Make sure you tell a full story about how the user will use your software. An MVP is a minimal and viable, so don’t go overboard with making things fancy (to claim you’ll put in a ton of extra features and not deliver in the end), and don’t focus solely on one part of your software so that the main purpose isn’t achievable. Scope wisely.  Don't forget about journey lines to describe the user scenarios.  
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla. Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum.
+Here are the user scenarios for each user group:
+
+1. **Instructors**
+    - **Scenario**: An instructor wants to create a new class and add assignments.
+        - The instructor logs into the system using their credentials.
+        - They navigate to the "Create Class" section and fill in the necessary details to create a new class.
+        - Once the class is created, they navigate to the "Add Assignment" section within the class.
+        - They fill in the assignment details and set a deadline for the assignment.
+        - The system confirms the creation of the assignment and adds it to the class.
+    - **Scenario**: An instructor wants to monitor student progress.
+        - The instructor logs into the system and navigates to the "Dashboard".
+        - They select a class to view the progress of the students.
+        - The system displays a comprehensive report of student progress and assignment statuses.
+
+2. **Students**
+    - **Scenario**: A student wants to submit an assignment.
+        - The student logs into the system and navigates to their class.
+        - They select the assignment they want to submit.
+        - They upload their assignment in the required format and submit it.
+        - The system confirms the successful submission of the assignment.
+    - **Scenario**: A student wants to review feedback on their assignment.
+        - The student logs into the system and navigates to their class.
+        - They select the assignment they want to review.
+        - The system displays the feedback provided by the instructor.
+
+3. **Administrators**
+    - **Scenario**: An administrator wants to manage user accounts.
+        - The administrator logs into the system and navigates to the "User Management" section.
+        - They can view all user accounts, and have the ability to activate, deactivate, or modify user accounts.
+    - **Scenario**: An administrator wants to monitor system health.
+        - The administrator logs into the system and navigates to the "System Health" section.
+        - The system displays information about system performance, uptime, and any ongoing issues.
+
+These scenarios provide a high-level overview of how different user groups will interact with the system. They highlight the key functionalities of the system from the perspective of each user group. Please note that these are simplified scenarios and the actual user journey may involve more steps and interactions. The aim is to develop a minimal viable product (MVP) that fulfills these core scenarios effectively and efficiently. Additional features and enhancements can be added in future iterations based on user feedback and requirements.
 
 ### Requirements:
 In the requirements section, make sure to clearly define/describe the **functional** requirements (what the system will do), **non-functional** requirements (performane/development), **user requirements (what the users will be able to do with the system and **technical** requirements.  These requirements will be used to develop the detailed uses in the design and form your feature list.

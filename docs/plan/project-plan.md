@@ -86,7 +86,7 @@ An admin user will login via the login portal and will have access to various ad
     - The system must enable navigation for assignments and classes.
     - The system must allow instructors to add or remove classes and add or remove students from classes.
     - The system must allow students to view and join classes.
-    - The system must support notifications either via SMS or Email.
+    - The system must support notifications either via Email.
 
 - Assignment Management
   - Assignment Creation
@@ -99,7 +99,7 @@ An admin user will login via the login portal and will have access to various ad
     - The system must activate the peer evaluation section after the assignment submission deadline.
   - Feedback Mechanism
     - Instructors must be able to provide feedback on student submissions, which students must be able to view.
-    - Students must be able to provide comments on submissions, which instructors must be able to view.
+    - Students must be able to communicate with the instructor to comment on assignment submission and other concerns.
     - The system must require students to provide a minimum amount of constructive evaluation for each assignment to be counted towards their grade.
 
 - Peer Review Process

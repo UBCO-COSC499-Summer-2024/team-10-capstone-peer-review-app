@@ -152,10 +152,69 @@ In the requirements section, make sure to clearly define/describe the **function
   - The system must provide administrative functionalities to manage the overall system, including user accounts and system configurations.
 
 #### Technical Requirements:
-- These emerge from the functional requirements to answer the questions: 
-- How will the problem be solved this time and will it be solved technologically and/or procedurally? 
-- Specify how the system needs to be designed and implemented to provide required functionality and fulfill required operational characteristics.
+
+- Frontend Requirements
+
+  - Project Setup
+    - Bundler: Use Vite for dependency management and project bundling.
+    - Framework: Use React for building the user interface.
+      - Routing: Utilize React-Router-Dom for routing.
+    - Styling: Implement TailwindCSS for styling.
+    - Icons: Integrate Heroicons for icons.
+    - UI Components: Use HeadlessUI for ready-to-go components such as buttons, forms, and modals.
   
+  - Compatibility
+    - Ensure compatibility with all major web browsers.
+    - Ensure the application is responsive and works seamlessly on mobile devices.
+
+- Backend Requirements
+
+  - Framework and Server
+    - Framework: Use Node.js.
+    - Server: Use Express.js for handling server-side logic and APIs.
+  
+  - Database
+    - Type: Use a relational database – PostgreSQL.
+    - ORM: Use an ORM to communicate with the database using JavaScript queries.
+      - Preferred ORMs: Drizzle ORM or Prisma ORM for fast and efficient queries.
+
+- API Development
+  - Type: Develop RESTful APIs using Express.js.
+  - Security: Ensure APIs are secure and efficient. Research and implement pre-built security functionalities in Express.js.
+
+- Testing and Deployment
+  
+  - Automated Testing
+
+    - Frameworks: 
+      - Use Jest for unit tests and integration tests.
+      - Use Cypress for end-to-end (e2e) testing.
+    - Test Coverage: Implement both regression and unit tests to ensure reliability and prevent regressions.
+  
+  - CI/CD Pipelines
+    - Use Drone CI for continuous integration.
+    - Use Heroku for deployment and updates.
+
+- Other Libraries and Tools
+
+  - Authentication
+    - Use Passport.js for authentication, allowing for multiple authentication paradigms.
+
+  - File Handling
+    - PDF Viewing: Use PDF.js.
+
+- Compliance
+
+  - Privacy Regulations
+    - Ensure the application complies with local privacy regulations (e.g., GDPR, FERPA) to protect user data.
+  
+  - Data Security
+    - Encryption: Implement data encryption to ensure data security.
+    - Password Hashing: Use MD5 hashing for passwords.
+    - Consent Management: Implement consent management to meet compliance requirements.
+    - Audit Logging: Implement audit logging for tracking user actions and meeting compliance standards.
+
+
 ## Tech Stack
 Identify the “tech stack” you are using. This includes the technology the user is using to interact with your software (e.g., a web browser, an iPhone, any smartphone, etc.), the technology required to build the interface of your software, the technology required to handle the logic of your software (which may be part of the same framework as the technology for the interface), the technology required to handle any data storage, and the programming language(s) involved. You may also need to use an established API, in which case, say what that is. (Please don’t attempt to build your API in this course as you will need years of development experience to do it right.) You can explain your choices in a paragraph, in a list of bullet points, or a table. Just make sure you identify the full tech stack.
 For each choice you make, provide a short justification based on the current trends in the industry. For example, don’t choose an outdated technology because you learned it in a course. Also, don’t choose a technology because one of the team members knows it well. You need to make choices that are good for the project and that meet the client’s needs, otherwise, you will be asked to change those choices.  Consider risk analysis. 

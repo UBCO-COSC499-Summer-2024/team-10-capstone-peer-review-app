@@ -247,8 +247,7 @@ In the requirements section, make sure to clearly define/describe the **function
 | --- | --- |
 | May 29th | Project Plan Submission |
 |  | A short video presentation describing the user groups and requirements for the project. This will be reviewed by your client and the team will receive feedback. |
-| June 5th | Design Submission: Aim to have a design of the project and the system architecture planned out. Use cases need to be fully developed.
-The general user interface design needs to be implemented by this point (mock-ups). This includes having a consistent layout, color scheme, text fonts, etc., and showing how the user will interact with the system should be demonstrated. It is crucial to show the tests pass for your system here.  |
+| June 5th | Design Submission: Aim to have a design of the project and the system architecture planned out. Use cases need to be fully developed. The general user interface design needs to be implemented by this point (mock-ups). This includes having a consistent layout, color scheme, text fonts, etc., and showing how the user will interact with the system should be demonstrated. It is crucial to show the tests pass for your system here.  |
 |  | A short video presentation describing the design for the project. This will be reviewed by your client and the team will receive feedback. |
 | June 14th | Mini-Presentations: A short description of the parts of the envisioned usage you plan to deliver for this milestone. Should not require additional explanation beyond what was already in your envisioned usage. This description should only be a few lines of text long. Aim to have 3 features working for this milestone (e.g., user log-in with credentials and permissions counts as 1 feature). Remember that features also need to be tested. |
 | July 5th | MVP Mini-Presentations: A short description of the parts of the envisioned usage you plan to deliver for this milestone. Should not require additional explanation beyond what was already in your envisioned usage. This description should only be a few lines of text long. Aim to have close to 50% of the features working for this milestone. Remember that features also need to be tested. Clients will be invited to presentations. |
@@ -262,12 +261,9 @@ The general user interface design needs to be implemented by this point (mock-up
 
 | Category | Bhavya Bhagchandani | Abdul Faiz | Josh Farwig | Mahir Rahman |
 | --- | --- | --- | --- | --- |
-| Experience |  | React.js, JS, Bootstrap, CSS, PHP, Node.js, MySQL, Tailwind, Firebase |  | React JS, Tailwind, CSS, NodeJS, MySQL, NoSQL, Cloudinary, Figma,  |
-| Good At |  | Bootstrap, CSS, PHP, JS, MySQL, Firebase |  | React JS, Tailwind, JS, UI/UX, Figma |
-| Expect to Learn |  | Express.js, PostgreSQL, Passport.js, Docker |  | PostgreSQL, 
-Docker, 
-Passport.js
- |
+| Experience | React.js, JS, Bootstrap, HTML5/CSS, PHP, Node.js, Express.js PostgreSQL, jQuery, EJS, MongoDB | React.js, JS, Bootstrap, CSS, PHP, Node.js, MySQL, Tailwind, Firebase |  | React JS, Tailwind, CSS, NodeJS, MySQL, NoSQL, Cloudinary, Figma,  |
+| Good At | PHP, Node.js, Express.js PostgreSQL, jQuery | Bootstrap, CSS, PHP, JS, MySQL, Firebase |  | React JS, Tailwind, JS, UI/UX, Figma |
+| Expect to Learn | Docker, TailwindCSS, Vite, DigitalOcean | Express.js, PostgreSQL, Passport.js, Docker |  | PostgreSQL, Docker, Passport.js |
 
 ### **Task Distribution**
 

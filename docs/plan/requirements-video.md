@@ -116,27 +116,28 @@ Let’s explore how each user group will interact with the system through a few 
 - **User Management**
 
     - Users must be able to create accounts, log in, and reset passwords securely.
-    - Admins should grant instructor permissions and manage user roles effectively.
+    - Admins must be able to grant instructor permissions.
+    - The system must be able to notify all users via email.
+ 
+- **Peer Review Process**
+
+    - Peer reviews are a core part of our system. Instructors should be able to assign peer review assignments to students, ensuring each student reviews a set number of their peers' submissions.
+    - To maintain fairness, reviews must be anonymous, and students should be able to submit feedback with the help of the assignment's pre-defined rubric.
+
+- **Progress Monitoring**
+
+    - Progress monitoring is key. We need comprehensive dashboards for both instructors and students to track progress and assignment statuses (i.e. if they're graded or not) effectively.
 
 - **Assignment Management**
 
     - Instructors need to create assignments with associated rubrics, and students should be able to submit their work in various formats.
-    - The system should handle deadlines efficiently and activate peer reviews post-deadline.
+    - The system should handle deadlines by activating the peer review system for the students post-deadline.
     - Plus, there should be mechanisms in place for instructors to provide feedback on student submissions and for students to communicate with instructors regarding their assignments.
-
-- **Peer Review Process**
-
-    - Peer reviews are a core part of our system. Instructors should be able to distribute peer review assignments to students, ensuring each student reviews a set number of their peers' submissions.
-    - To maintain fairness, reviews must be anonymous, and students should be able to submit feedback based on predefined rubrics.
 
 - **Group Project Evaluations**
 
-    - For group projects, it's essential to facilitate group formation and management by both instructors and students.
-    - Individual contributions within groups should be evaluated anonymously to ensure fairness in grading.
-
-- **Progress Monitoring**
-
-    - Lastly, progress monitoring is key. We need comprehensive dashboards for both instructors and students to track progress and assignment statuses effectively.
+    - Both students and instructors must be able to create and manage groups.
+    - Peer reviews within groups must be done anonymously along-with using fairness mechanisms such as the instructor checking peer-reviewed submissions to ensure fairness in grading.
 
 ### User Requirements (Abdul)
 

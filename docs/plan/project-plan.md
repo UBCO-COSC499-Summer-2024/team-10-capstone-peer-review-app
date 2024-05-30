@@ -361,8 +361,6 @@ These scenarios provide a high-level overview of how different user groups will 
     - *Justification*: Passport.js is a flexible and modular authentication middleware for Node.js, supporting various authentication strategies.
 - **File Handling**: PDF.js
     - *Justification*: PDF.js is a popular library for rendering PDFs in web applications.
-- **Compliance and Security**: GDPR, FERPA, and/or other similar regulations
-    - *Justification*: Compliance with data privacy regulations ensures the protection of user data and adherence to legal standards.
 
 ### **High-Level Risks**
 
@@ -387,14 +385,18 @@ These scenarios provide a high-level overview of how different user groups will 
 
 ### **Summary Milestone Schedule**
 
+
 | Milestone | Deliverable |
 | --- | --- |
 | May 29th | Project Plan Submission |
 |  | A short video presentation describing the user groups and requirements for the project. This will be reviewed by your client and the team will receive feedback. |
-| June 5th | Design Submission: Aim to have a design of the project and the system architecture planned out. Use cases need to be fully developed. The general user interface design needs to be implemented by this point (mock-ups). This includes having a consistent layout, color scheme, text fonts, etc., and showing how the user will interact with the system should be demonstrated. It is crucial to show the tests pass for your system here.  |
+| June 5th | Design Submission: Aim to have a design of the project and the system architecture planned out. Use cases need to be fully developed. The general user interface design needs to be implemented by this point (mock-ups). This includes having a consistent layout, color scheme, text fonts, etc., and showing how the user will interact with the system should be demonstrated. It is crucial to show the tests pass for your system here. |
+|  | The system architecture at the base level will include a backend running with Node and Express JS which will connect to a Front-End user interface, A database, and an ORM to facilitate database management, An authentication microservice, and an admin management interface. These modules will interact with each other as separate modules that create an environment for data exchange among them and facilitate data management for our peer-reviewing application. Our system design aims to have multiple pages such as a Login/Register view, Dashboard view, Class views, Assignment/Peer-review view, settings view, and other components to easily host the required features for our application. The views/pages will also integrate role-based access to change a view depending on the user type signed in. |
 |  | A short video presentation describing the design for the project. This will be reviewed by your client and the team will receive feedback. |
 | June 14th | Mini-Presentations: A short description of the parts of the envisioned usage you plan to deliver for this milestone. Should not require additional explanation beyond what was already in your envisioned usage. This description should only be a few lines of text long. Aim to have 3 features working for this milestone (e.g., user log-in with credentials and permissions counts as 1 feature). Remember that features also need to be tested. |
+|  | For this milestone, we will determine a few key features. First, we will implement the user interface and backend functionalities for our login component with credentials and role-based permissions, ensuring that students, instructors, and administrators can all log in. Second, we will create the user interface for instructor assignment creation and student assignment submission, with students able to view and submit these assignments through their dashboards. Third, we will create the user interface for creating and managing instructor classes. These features will be thoroughly tested and run with mock data hosting with students able to view and submit assignments for classes and instructors able to create and view classes with a general focus on seamless user experience. |
 | July 5th | MVP Mini-Presentations: A short description of the parts of the envisioned usage you plan to deliver for this milestone. Should not require additional explanation beyond what was already in your envisioned usage. This description should only be a few lines of text long. Aim to have close to 50% of the features working for this milestone. Remember that features also need to be tested. Clients will be invited to presentations. |
+| | For this milestone, we will present a secure user login with role-based permissions, assignment creation and submission, and class creation and allocation. Additionally, we will create database connectivity to implement class/assignment functionalities for instructors and students, allowing instructors to create and manage classes, and both user types to also have a basic progress monitoring dashboard for statuses and feedback. These features will be thoroughly tested to ensure they function correctly and provide a seamless user experience.  |
 | July 19th | Peer testing and feedback: Aim to have an additional two features implemented and tested per team member. As the software gets bigger, you will need to be more careful about planning your time for code reviews, integration, and regression testing. |
 | August 2nd | Test-O-Rama: Full scale system and user testing with everyone |
 | August 9th | Final project submission and group presentations: Details to follow |
@@ -405,9 +407,9 @@ These scenarios provide a high-level overview of how different user groups will 
 
 | Category | Bhavya Bhagchandani | Abdul Faiz | Josh Farwig | Mahir Rahman |
 | --- | --- | --- | --- | --- |
-| Experience | React.js, JS, Bootstrap, HTML5/CSS, PHP, Node.js, Express.js PostgreSQL, jQuery, EJS, MongoDB | React.js, JS, Bootstrap, CSS, PHP, Node.js, MySQL, Tailwind, Firebase |  | React JS, Tailwind, CSS, NodeJS, MySQL, NoSQL, Cloudinary, Figma,  |
-| Good At | PHP, Node.js, Express.js PostgreSQL, jQuery | Bootstrap, CSS, PHP, JS, MySQL, Firebase |  | React JS, Tailwind, JS, UI/UX, Figma |
-| Expect to Learn | Docker, TailwindCSS, Vite, DigitalOcean | Express.js, PostgreSQL, Passport.js, Docker |  | PostgreSQL, Docker, Passport.js |
+| Experience | React.js, JS, Bootstrap, HTML5/CSS, PHP, Node.js, Express.js PostgreSQL, jQuery, EJS, MongoDB | React.js, JS, Bootstrap, CSS, PHP, Node.js, MySQL, Tailwind, Firebase | React, JS, TS, PHP, Node.JS, MySQL, Next.JS, TailwindCSS | React JS, Tailwind, CSS, NodeJS, MySQL, NoSQL, Cloudinary, Figma,  |
+| Good At | PHP, Node.js, Express.js PostgreSQL, jQuery | Bootstrap, CSS, PHP, JS, MySQL, Firebase | React, JS, MySQL, UI/UX, Backend Functionalites | React JS, Tailwind, JS, UI/UX, Figma |
+| Expect to Learn | Docker, TailwindCSS, Vite, DigitalOcean | Express.js, PostgreSQL, Passport.js, Docker | PostgreSQL, Express.JS, Passport.JS, Vite, Drone CI | PostgreSQL, Docker, Passport.js |
 
 ### **Task Distribution**
 

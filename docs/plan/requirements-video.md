@@ -115,11 +115,9 @@ Let’s explore how each user group will interact with the system through a few 
 
 **Students**: Students will create an account or log in to see a personalized dashboard showing class and assignment information. They can submit assignments and participate in peer reviews anonymously. For example, Emily logs in, selects her class, uploads her assignment, and receives a confirmation. Later, she can log in again to view feedback on her submitted work.
 
-**Instructors**: Instructors will create an account, apply for instructor roles, and manage their classes through a personalized dashboard. Instructors would be able to create a new class, add assignments, set deadlines, and monitor student progress. They can log in, create a class, add an assignment, set the deadline, and receive confirmation.
+**Instructors**: Instructors will create an account, apply for instructor roles, and manage their classes through a personalized dashboard. For instance, Sarah can create a new class, add assignments, set deadlines, and monitor student progress. She logs in, creates a class, adds an assignment, sets the deadline, and receives confirmation. Sarah can also check the progress of her students via her dashboard.
 
-**Administrators**: Administrators will log in to access administrative controls, manage user accounts, and monitor system health. Admins would be able to activate or deactivate user accounts, assign instructor roles, and keep an eye on system performance.
-
-These scenarios highlight how each user group will effectively interact with the system, ensuring a smooth and efficient experience tailored to their specific needs.
+**Administrators**: Administrators will log in to access administrative controls, manage user accounts, and monitor system health. For example, Michael can activate or deactivate user accounts, assign instructor roles, and keep an eye on system performance. For instance, he logs in, navigates to user management, and modifies user accounts as needed and responds to any user reports.
 
 ## 5. Requirements
 

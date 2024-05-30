@@ -408,20 +408,15 @@ These scenarios provide a high-level overview of how different user groups will 
 | --- | --- |
 | May 29th | Project Plan Submission |
 |  | A short video presentation describing the user groups and requirements for the project. This will be reviewed by your client and the team will receive feedback. |
-| June 5th | Design Submission: Aim to have a design of the project and the system architecture planned out. Use cases need to be fully developed. The general user interface design needs to be implemented by this point (mock-ups). This includes having a consistent layout, color scheme, text fonts, etc., and showing how the user will interact with the system should be demonstrated. It is crucial to show the tests pass for your system here. |
-|  | The system architecture at the base level will include a backend running with Node and Express JS which will connect to a Front-End user interface, A database, and an ORM to facilitate database management, An authentication microservice, and an admin management interface. These modules will interact with each other as separate modules that create an environment for data exchange among them and facilitate data management for our peer-reviewing application. Our system design aims to have multiple pages such as a Login/Register view, Dashboard view, Class views, Assignment/Peer-review view, settings view, and other components to easily host the required features for our application. The views/pages will also integrate role-based access to change a view depending on the user type signed in. |
-|  | A short video presentation describing the design for the project. This will be reviewed by your client and the team will receive feedback. |
-| June 14th | Mini-Presentations: A short description of the parts of the envisioned usage you plan to deliver for this milestone. Should not require additional explanation beyond what was already in your envisioned usage. This description should only be a few lines of text long. Aim to have 3 features working for this milestone (e.g., user log-in with credentials and permissions counts as 1 feature). Remember that features also need to be tested. |
-|  | For this milestone, we will determine a few key features. First, we will implement the user interface and backend functionalities for our login component with credentials and role-based permissions, ensuring that students, instructors, and administrators can all log in. Second, we will create the user interface for instructor assignment creation and student assignment submission, with students able to view and submit these assignments through their dashboards. Third, we will create the user interface for creating and managing instructor classes. These features will be thoroughly tested and run with mock data hosting with students able to view and submit assignments for classes and instructors able to create and view classes with a general focus on seamless user experience. |
-| July 5th | MVP Mini-Presentations: A short description of the parts of the envisioned usage you plan to deliver for this milestone. Should not require additional explanation beyond what was already in your envisioned usage. This description should only be a few lines of text long. Aim to have close to 50% of the features working for this milestone. Remember that features also need to be tested. Clients will be invited to presentations. |
-| | For this milestone, we will present a secure user login with role-based permissions, assignment creation and submission, and class creation and allocation. Additionally, we will create database connectivity to implement class/assignment functionalities for instructors and students, allowing instructors to create and manage classes, and both user types to also have a basic progress monitoring dashboard for statuses and feedback. These features will be thoroughly tested to ensure they function correctly and provide a seamless user experience.  |
-| July 19th | Peer testing and feedback: Aim to have an additional two features implemented and tested per team member. As the software gets bigger, you will need to be more careful about planning your time for code reviews, integration, and regression testing. |
+| June 5th | Design Submission: The system architecture at the base level will include a backend running with Node and Express JS which will connect to a Front-End user interface, A database, and an ORM to facilitate database management, An authentication microservice, and an admin management interface. These modules will interact with each other as separate modules that create an environment for data exchange among them and facilitate data management for our peer-reviewing application. Our system design aims to have multiple pages such as a Login/Register view, Dashboard view, Class views, Assignment/Peer-review view, settings view, and other components to easily host the required features for our application. The views/pages will also integrate role-based access to change a view depending on the user type signed in. |
+|  | A short video presentation describing the Architecture / Design of our Application. |
+| June 14th | Mini-Presentations: For this milestone, we will determine a few key features. First, we will implement the user interface and backend functionalities for our login component with credentials and role-based permissions, ensuring that students, instructors, and administrators can all log in. Second, we will create the user interface for instructor assignment creation and student assignment submission, with students able to view and submit these assignments through their dashboards. Third, we will create the user interface for creating and managing instructor classes. These features will be thoroughly tested and run with mock data hosting with students able to view and submit assignments for classes and instructors able to create and view classes with a general focus on seamless user experience. |
+| July 5th | MVP Mini-Presentations: For this milestone, we will present a secure user login with role-based permissions, assignment creation and submission, and class creation and allocation. Additionally, we will create database connectivity to implement class/assignment functionalities for instructors and students, allowing instructors to create and manage classes, and both user types to also have a basic progress monitoring dashboard for statuses and feedback. These features will be thoroughly tested to ensure they function correctly and provide a seamless user experience.  |
+| July 19th | Peer testing and feedback: For this Milestone, we intend to portray most of our Admin functionalities and Peer-review functionalities. Regression and Integration Testing will be necessary at this point. |
 | August 2nd | Test-O-Rama: Full scale system and user testing with everyone |
 | August 9th | Final project submission and group presentations: Details to follow |
 
 ### **Teamwork Planning and Anticipated Hurdles**
-
-### **Team Strengths and Areas for Improvement**
 
 | Category | Bhavya Bhagchandani | Abdul Faiz | Josh Farwig | Mahir Rahman |
 | --- | --- | --- | --- | --- |
@@ -433,30 +428,29 @@ These scenarios provide a high-level overview of how different user groups will 
 
 | Category of Work/Features | Bhavya Bhagchandani | Abdul Faiz | Josh Farwig | Mahir Rahman |
 | --- | --- | --- | --- | --- |
-| Project Management: Kanban Board Maintenance | ✔️ |  | ✔️ |  |
-| System Architecture Design |  | ✔️ | ✔️ | ✔️ |
-| User Interface Design | ✔️ | ✔️ |  |  |
-| CSS Development | ✔️ |  |  | ✔️ |
-| Feature 1 | ✔️ |  |  |  |
-| Feature 2 | ✔️ |  |  |  |
-| Database setup |  | ✔️ | ✔️ |  |
-| Presentation Preparation | ✔️ |  |  | ✔️ |
-| Design Video Creation |  | ✔️ | ✔️ |  |
-| Design Video Editing | ✔️ | ✔️ |  |  |
-| Design Report | ✔️ |  |  |  |
-| Final Video Creation | ✔️ |  |  | ✔️ |
-| Final Video Editing | ✔️ |  |  | ✔️ |
-| Final Team Report |  | ✔️ |  |  |
+| Project Management: Kanban Board Maintenance | ✔️ | ✔️ | ✔️ | ✔️ |
+| System Architecture Design | ✔️ | ✔️ | ✔️ | ✔️ |
+| User Interface Design | ✔️ | ✔️ | ✔️ | ✔️ |
+| Presentation Preparation | ✔️ | ✔️ | ✔️ | ✔️ |
+| Design Video Creation |  | ✔️ |  | ✔️ |
+| Design Video Editing |  |  | ✔️ | ✔️ |
+| Design Report | ✔️ | ✔️ | ✔️ |✔️  |
+| UI/CSS/Component Development |  | ✔️ | ✔️ | ✔️ |
+| UI Testing |  | ✔️ |  | ✔️ |
+| Backend Testing | ✔️ |  | ✔️ |  |
+| Drone CI Setup |  | ✔️ | ✔️ |  |
+| PostgreSQL Development | ✔️ |  | ✔️ |  |
+| RESTful API Development | ✔️ |  | ✔️ |  |
+| Final Video Creation | ✔️ | ✔️ |  | ✔️ |
+| Final Video Editing | ✔️ |  | ✔️ | ✔️ |
+| Final Team Report | ✔️ | ✔️ | ✔️ | ✔️ |
 | Final Individual Report | ✔️ | ✔️ | ✔️ | ✔️ |
 
 ### **Explanation of Task Distribution**
-
-- **Project Management**: Bhavya and Josh will maintain the Kanban board, ensuring that tasks are well-organized and progress is tracked.
-- **System Architecture Design**: Abdul, Josh, and Mahir will collaborate on designing the system architecture, leveraging their expertise in backend and full-stack development.
-- **User Interface and CSS Development**: Bhavya and Josh will focus on designing the user interface and developing the CSS to ensure a consistent and appealing look.
-- **Feature Development**: Features will be distributed based on team members' strengths, with Bhavya and Mahir focusing on frontend features and Abdul on backend features.
-- **Database Setup**: Abdul and Josh will handle the database setup, ensuring efficient data storage and retrieval.
+- **Project Management**: All team-members will maintain the Kanban board, ensuring that tasks are well-organized and progress is tracked. The team will take a weekly pull-based strategy where tasks will be issued, assigned and organized at the start of a sprint.
+- **System Architecture Design**: All team-members will collaborate on designing the system architecture, leveraging their expertises in backend and full-stack development.
+- **UI/CSS/React Component Development**: Abdul and Mahir will focus on designing the user interface (Figma / TailwindCSS) and developing re-usable React components to ensure a consistent and appealing look.
+- **Feature Development**: Features will be distributed based on team members' strengths, with Abdul and Mahir focusing mainly on frontend features and Bhavya and Josh focusing mainly on backend features.
+- **PostgreSQL/API Development**: Bhavya and Josh will handle the database and API functionalities to ensure safe and efficient data management / access.
 - **Presentation Preparation and Video Creation/Editing**: Bhavya, Josh, and Mahir will prepare presentations and create/edit videos, using their experience in project management and design.
-- **Reports**: Team members will contribute to both team and individual reports, ensuring comprehensive documentation of the project.
-
-This distribution ensures that each team member can leverage their strengths while also learning and improving in other areas.
+- **Reports**: All team-members will contribute to both team and individual reports, ensuring comprehensive documentation of the project.

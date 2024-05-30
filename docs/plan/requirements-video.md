@@ -97,7 +97,7 @@ Today, we will present the planned key requirements and functionalities of our p
 - "Our primary objectives include creating an intuitive, efficient, and secure platform for managing assignments and peer reviews, implementing role-based access control, and streamlining assignment submission and peer-reviewed feedback processes."
 - "Success will be measured by effective account creation and authentication services, role-based access control, user-friendly dashboards for monitoring progress and assignment statuses, and robust system security and data privacy measures."
 
-## 4. User Groups and Usage Scenarios
+## 4. User Groups and Usage Scenarios 
 - "Our main user groups are students, instructors, and administrators. Students will use the platform to submit assignments, participate in peer reviews, create groups and participate in group peer reviews, and track their progress."
 - "Instructors will create and manage assignments, classes, and groups, oversee peer reviews, and monitor student progress. Administrators will manage user accounts, ensure system security, perform maintenance tasks, and respond to user reports."
 
@@ -111,7 +111,7 @@ Let’s explore how each user group will interact with the system through a few 
 
 ## 5. Requirements
 
-### Functional Requirements
+### Functional Requirements (Abdul)
 
 - **User Management**
 
@@ -138,7 +138,7 @@ Let’s explore how each user group will interact with the system through a few 
 
     - Lastly, progress monitoring is key. We need comprehensive dashboards for both instructors and students to track progress and assignment statuses effectively.
 
-### User Requirements
+### User Requirements (Abdul)
 
 - **Students**: Students will need a user-friendly interface for submitting assignments and receiving feedback, anonymous and fair peer evaluations, and access to submission history and received feedback.
 

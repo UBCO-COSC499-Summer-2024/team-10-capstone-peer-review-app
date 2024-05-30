@@ -125,14 +125,13 @@ An admin user will login via the login portal and will have access to various ad
   - Dashboard for Instructors
     - The system must provide a comprehensive dashboard for instructors to monitor student progress and assignment statuses.
     - The instructor's dashboard must include:
-      - Instructor Class Dashboard
-      - Instructor Assignment Dashboard
+      - Overall stats of the classroom categorizes by strong and weak grade areas 
+      - Option to view individual student's progress tracking
   - Student Progress Tracking
     - Students must be able to track their own assignment submission statuses and received feedback.
     - The student's dashboard must include:
-      - Student Class Dashboard
-      - Student Assignment Dashboard
-      - Individual Assignment View (including a split view of the assignment, the rubric, and a place to upload the assignment)
+      - Overall stats of strong and weak grade areas  
+      - Lists of assignments with submission and feedback statuses
 
 - System Maintenance
   - Admin Control

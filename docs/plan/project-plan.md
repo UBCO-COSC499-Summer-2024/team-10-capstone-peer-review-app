@@ -13,64 +13,148 @@
 
 ### Project purpose or justification (UVP)
 
-This software aims to enhance assignment grading by applying a peer-review system that allows consistent and reliable feedback from peers from a learning institution. It aims to simplify the workflow for students, instructors, and administrators by providing an intuitive and efficient platform for managing assignments, peer reviews, the creation of rubrics and progress tracking, and many other vital tools for the instructors and students to benefit the process. This system aims to provide a system prone to bias when grading assignments and a chance for multiple perspectives before submitting a final grade. Our system aims to be easy to use and easy to integrate for learning institutions to rapidly adopt within their learning ecosystem.
+The proposed software is an educational platform designed to expedite the process of assignment and deadline management, facilitate peer review, and progress monitoring for use in an academic institution.
 
-**User Value Proposition**: The system offers an intuitive architecture including differentiated user roles. This makes it easy for students to submit assignments, instructors to create and manage them, and administrators to oversee the system functions. 
+The primary purpose of this software is to facilitate better interaction between students, instructors, and administrators. Its objective is to solve the challenges associated with managing assignments, conducting peer reviews efficiently, evaluating group projects, and tracking progress of each and every student.
 
-**Automated Peer Reviews**: Ensures fair and anonymous peer reviews by following specific rubrics that are assigned by instructors for each assignemnt that is created. The rubric is distributed to each peer-reviewr for each specific assignment and grades are collected for further user/instructor views. 
+The unique value proposition of this software is determined by its multi-faceted suite of features created to the needs of all users specified. For all of them, the features are: account creation, accessing course lists and engage in courses. For instructors, it offers a user-friendly UI for creating/deleting courses, assignments, rubrics, create peer evaluation, form groups as well as a dashboard for monitoring student progress. For students, it provides an simple interface for submitting assignments, performing peer evaluations, as well as tracking their submissions and feedbacks. For administrators, it enables the ability to manage the overall system, including user accounts and system configurations and health.
 
-**Comprehensive Progress Tracking**: Allows students and instructors to monitor progress effectively and ensure timely submissions of peer-reviews.  
+This solution stands out from others due to its focus on simple design, efficient security, scalability, and maintainability. It ensures secure login and authentication mechanisms, accessible UI, scalability to accommodate future growth, and ease of maintenance and update. Furthermore, it complies with relevant privacy regulations to protect student data.
 
+Thus it is clear that, this software provides a comprehensive, secure, and user-friendly solution for facilitating peer reviewed assignments, making it a valuable tool for educational institutions. It not only enhances the efficiency of peer review but also enriches the learning experience for students.
 
 ### High-level project description and boundaries
 
-The MVP will include User management with account creation, login, role-baed access control, assignment creation, submission, viewing, and feedback platforms, Allow for anonymity amongst peer-reviewers and reviewees, Exhibits progress tracking dashboards that are differentiated for students and instructors, and will host basic admin controls for user and system management.
+The Minimum Viable Product (MVP) for this project is an educational platform that facilitates user account management, assignment management, peer review process, group project and peer evaluations, progress monitoring, and system maintenance.
 
-The boundaries of the system will not initially include advanced features such as PDF/image editing for peer reviews (only edits through local machine and resubmission of edited files), the focus will be tailored for larger screen accessibility with mobile responsiveness but not a dedicated mobile app, and Data back up and disaster recovery plans will not be considered for the scope of the MVP.
+The MVP will allow users (students, instructors, administrators) to create accounts, log in, and reset passwords securely. Instructors will be able to create courses, groups, and assignments. Students will be able to upload assignments and submit feedback on their peers' work anonymously. Administrators will be able to manage user accounts, system settings, and maintain the overall system health. Admins must also have the ability to receive and respond to user reports.
+
+The boundaries of the system include secure login and authentication mechanisms, quick load times, accessible user interface, scalability to accommodate future growth, and ease of maintenance and update. The system will be developed using JavaScript, with Vite Project Bundler, React.JS for building the UI, Node.js with Express.js for handling server-side logic, and a RDBMS like PostgreSQL for data storage. The system will comply with relevant privacy regulations to protect student data.
 
 ### Measurable project objectives and related success criteria (scope of project)
 
-<span style="color: red;">The primary goals for this project </span> are to create an intuitive, efficient, and secure platform for managing assignments, assigning students to certain assignments for peer-review (on a rotational basis among a class), and allowing instructors to create and manage classes that host various capabilites related towards managing/viewing assignemnts. Success for this project means achieving successfulla ccount creations and authentication services for students, instructors, teaching assistants, and administrators which ensure role-based access control that is implemented to effectively simulate a typical class structure. This will aim to provide a streamlined process for assignemnt submissions and peer-reviewed feedback. Specifically, our goals are: 
+**Project Objectives:**
 
-Additionally, we aim to provide instructors with comprehensive dashboards for montiotring sutdent progres and assignment statuses, while maintaining system security and data privacy. 
+1. **User Management**: Develop a secure and simple user management system that allows account creation, authentication, and role-based control. Success will be measured by the system's ability to handle these tasks without errors and with accuracy.
+2. **Assignment Management**: Implement a vast assignment management system that supports assignment creation, submission, deadline management, and feedback mechanisms. Success will be measured by the system's ability to manage assignments effectively and provide accurate feedback on time.
+3. **Peer Review Process**: Develop an anonymous peer review process that allows students to review their peers' assignments. Success will be measured by the fairness and anonymity of the reviews and its use.
+4. **Group Project Evaluations**: Implement a system for managing group projects and peer evaluations. Success will be measured by the system's ability to form groups, assign tasks, and fairly and anonymously give peer feedbacks.
+5. **Progress Monitoring**: Create a dashboard for instructors and students to monitor progress and assignment statuses. Success will be measured by the accuracy of the information provided on the dashboard.
+6. **System Maintenance**: Develop a system maintenance module that allows administrators to manage user accounts, system settings, receive & respond to user reports and maintain overall system health. Success will be measured by the the absence of critical errors.
 
-To measure success, we will track key performance indictors (KPI) -> <span style="color: red;">(list of indicators....) -> </span> and these snippits of informataion will be viewable and differentiated towards a differentiated dashboard depending on the user role, we aim to have a quick and easy to use system and will allow a user to reach any vital destination within 5-7 clicks, <span style="color: red;">etc etc... (we should discuss these in person)</span>
+**Success Criteria:**
 
-## Users, Usage Scenarios and High Level Requirements 
+1. **Security**: The system will have secure login and authentication mechanisms, ensuring data protection and privacy. Success will be measured by the absence of security breaches and compliance with decided regulations.
+2. **Usability**: The system will have an intuitive and accessible UI. Success will be measured by user satisfaction and the ease of use.
+3. **Scalability**: The system will be scalable to accommodate future growth. Success will be measured by the system's ability to handle new data volume and user count without making it less efficient.
+4. **Reliability**: The system will have high reliability and minimal downtime. Success will be measured by the absence of critical failures.
+5. **Maintainability**: The system will be easy to maintain and update. Success will be measured by the ease of implementing updates and the clarity in documentation.
+
+## Users, Usage Scenarios and High Level Requirements
 
 ### Users Groups:
 
-- Students
-    - Description: Students are the primary users of the system. They are typically aged between 18-25 and are comfortable with technology but prioritize ease of use.
-    - Goals:
-        - Submit assignments and receive peer review feedback promptly.
-        - Participate in peer reviews and group projects fairly and anonymously.
-        - Track their progress and grades efficiently.
-        - Receive timely notifications about deadlines and important updates.
-- Instructors
-    - Description: University professors or teaching assistants make up the second primary user group. They are typically aged older than students and often manage multiple classes simultaneously.
-    - Goals:
-        - Create and manage assignments and classes effortlessly.
-        - Evaluate student submissions and provide constructive feedback.
-        - Assign and oversee peer reviews and group projects.
-        - Monitor student progress and performance through a comprehensive dashboard.
-- Administrators
-    - Description: University IT staff or academic administrators form the third primary user group. They are typically aged older than students and are responsible for maintaining the system's functionality and ensuring compliance with institutional policies.
-    - Goals:
-        - Manage user accounts and permissions.
-        - Ensure system security and data privacy.
-        - Oversee system maintenance and updates.
+The primary users of the system can be categorized into three groups: Instructors, Students, and Administrators. Here are their descriptions and high-level goals:
+
+1. **Students**: These are the learners who will be joining classes, submitting assignments, and receiving feedback. Their high-level goals with the system are:
+    - To have an easy-to-use interface for managing & submitting their assignments and receiving feedback.
+    - To be able to perform peer evaluations anonymously and fairly.
+    - To have access to their submission history and feedback received.
+    
+    **Proto-Persona**:
+    
+    - **Name**: Emily Johnson
+    - **Age**: 20
+    - **Major**: Computer Science
+    - **Tech Proficiency**: High
+    - **Needs**:
+        - An intuitive dashboard to view upcoming assignments and deadlines.
+        - Simple and straightforward submission process for assignments.
+        - Ability to review and rate peers' submissions anonymously.
+        - Access to detailed feedback and grades for personal improvement.
+    - **Pain Points**:
+        - Difficulty navigating complex interfaces.
+        - Lack of clarity in assignment requirements and deadlines.
+        - Inability to view past submissions and feedback easily.
+2. **Instructors**: These are the teachers who will be creating classes, assignments, groups and rubrics. Their high-level goals with the system are:
+    - To have a user-friendly, simple, fast, and efficient interface for managing classes and assignments.
+    - To be able to monitor and evaluate both individual and group performances easily.
+    - To give/take access to/from assignments for students and classes.
+    
+    **Proto-Persona**:
+    
+    - **Name**: Sarah Thompson
+    - **Age**: 45
+    - **Subject**: English Literature
+    - **Tech Proficiency**: Medium
+    - **Needs**:
+        - A streamlined process for creating and assigning coursework.
+        - Tools to track student progress and participation.
+        - Easy access to analytics and reports on student performance.
+        - Flexibility in managing group assignments and peer reviews.
+    - **Pain Points**:
+        - Time-consuming setup of assignments and grading rubrics.
+        - Difficulty in tracking and managing large volumes of student data.
+        - Limited tools for monitoring group dynamics and individual contributions.
+3. **Administrators**: These are the system managers who will be overseeing the overall system, including user accounts and system configurations. Their high-level goals with the system are:
+    - To have the ability to manage the overall system effectively and efficiently.
+    - To ensure the system is secure, reliable, and maintains high performance.
+    - To ensure the system is scalable and can accommodate future growth.
+    - To receive and respond to user reports.
+    
+    **Proto-Persona**:
+    
+    - **Name**: Michael Lee
+    - **Age**: 38
+    - **Position**: IT Manager
+    - **Tech Proficiency**: High
+    - **Needs**:
+        - Comprehensive tools for user account management and system configuration.
+        - Robust security measures to protect sensitive data.
+        - Monitoring tools to track system performance and identify potential issues.
+        - Scalability to support increasing numbers of users and data.
+    - **Pain Points**:
+        - Managing user permissions and ensuring data privacy.
+        - Keeping the system updated and secure against emerging threats.
+        - Balancing performance with the need for new features and enhancements.
+
+These proto-personas help us understand the needs and wants of each user group, enabling us to design and develop a system that meets their specific requirements. It's important to note that the needs of these user groups may evolve over time, and the system should be flexible enough to accommodate these changes.
 
 ### Envisioned Usage
 
-**Students:** 
-  Students will begin by creating/registering their accounts or logging in using their credentials. Once logged in, they will be presented with their personalized class dashboard, where they can view vital class/assignment information. Furthermore, the user's dashboard will utilize graphical quick link cards, links, buttons, etc to provide quick links and further enhance the user experience. Within each class, students can view assignments and submission deadlines. A deadline will exist for each assignment and the student can view the deadline date/time for each assignment on the assignments tab. Similarly, there will be a peer-review tab that hosts assignments that are allocated to the logged-in user by the instructor (with deadlines) and the student can view every assignment they are required to peer-review.  After the submission deadline passes, students will participate in the peer review process by anonymously reviewing a set number of their peers' assignments based on the instructor-defined rubric. They will fill out the rubric and provide constructive feedback ensuring they meet the minimum required evaluations. Students can navigate to a peer-review tab to view any assignments allocated towards themselves to submit a peer review. When ready to submit a peer review, students will upload their reviewed assignments to the submission portal for the assignment to be handed off to the instructor. Students can view their progress and submission statuses, and access feedback through opening up the assignment which provides a view of specific details related to that assignment. 
+Here are the user scenarios for each user group:
 
-**Instructors:**
-    Instructors will begin by creating/registering their accounts or logging in using their credentials. On initial account creation, the instructor will have a generic student account but, all users will be greeted with a visual prompt asking whether the user is an instructor. This graphical prompt will lead to a form for applying as an instructor (for the system), the instructor will click on the visual prompt to fill out the personalized instructor information form and submit the information to be reviewed by the admin to be granted instructor roles. Once the admin approves the role, instructors will be presented with their personalized class dashboard, where they can view vital information regarding the classes they are hosting. Furthermore, the instructor's dashboard will utilize graphical quick link cards, buttons, prompts, etc, to provide quick access to frequently needed information and also enhance the user experience. The instructor will navigate to a class page to view all currently active classes and will have the option to create a new class. The instructor can create a new class by clicking "Add a new class" and filling out relevant information such as name, term start/end dates, number of students for class, and an email list to invite the class to the students the instructor wishes to invite. The platform will allow instructors to monitor each class's assignment submission in real time, ensuring all students meet deadlines. Once submissions are complete, instructors will assign peer reviews. Instructors can also provide their feedback on student submissions and monitor the peer-review process to ensure fairness and completeness. 
+1. **Students:** Students will begin by creating/registering their accounts or logging in using their credentials. Once logged in, they will be presented with their personalized class dashboard, where they can view vital class/assignment information. Furthermore, the user's dashboard will utilize graphical quick link cards, links, buttons, etc to quickly navigate and further enhance the user experience. Within each class, students can view assignments and submission deadlines. A deadline will exist for each assignment and the student can view the deadline date/time for each assignment on the assignments tab. Similarly, there will be a peer-review tab that hosts assignments that are allocated to the current user by the instructor and the student can view every assignment they are required to peer-review. After the submission deadline passes, students will participate in the peer review process by anonymously reviewing a set number of their peers' assignments based on the instructor-defined rubric.
+    - **Scenario**: A student wants to submit an assignment.
+        - The student logs into the system and navigates to their class.
+        - They select the assignment they want to submit.
+        - They upload their assignment in the required format and submit it.
+        - The system confirms the successful submission of the assignment.
+    - **Scenario**: A student wants to review feedback on their assignment.
+        - The student logs into the system and navigates to their class.
+        - They select the assignment they want to review.
+        - The system displays the feedback provided by the instructor.
+2. **Instructors:** Instructors will begin by creating/registering their accounts or logging in using their credentials. On initial account creation, the instructor will have a generic student account but, all users will be greeted with a visual prompt asking whether the user is an instructor. This graphical prompt will lead to a form for applying as an instructor (for the system), the instructor will click on the visual prompt to fill out the personalized instructor information form and submit the information to be reviewed by the admin to be granted instructor roles. Once the admin approves the role, instructors will be presented with their personalized class dashboard, where they can view vital information regarding the classes they are hosting. Furthermore, the instructor's dashboard will utilize graphical quick link cards, buttons, prompts, etc, to provide quick access to frequently needed information and also enhance the user experience. The instructor will navigate to a class page to view all currently active classes and will have the option to create a new class.
+    - **Scenario**: An instructor wants to create a new class and add assignments.
+        - The instructor logs into the system using their credentials.
+        - They navigate to the "Create Class" section and fill in the necessary details to create a new class.
+        - Once the class is created, they navigate to the "Add Assignment" section within the class.
+        - They fill in the assignment details and set a deadline for the assignment.
+        - The system confirms the creation of the assignment and adds it to the class.
+    - **Scenario**: An instructor wants to monitor student progress.
+        - The instructor logs into the system and navigates to the "Dashboard".
+        - They select a class to view the progress of the students.
+        - The system displays a comprehensive report of student progress and assignment statuses.
+3. **Administrators:** An admin user will login via the login portal and will have access to various administrative controls. An admin will be able to oversee transactions of user accounts. Administrators will configure system settings, manage class and assignment storage/data, ensure software maintenance. Admins can review user feedback forms to further maintain and improve the system. 
+    - **Scenario**: An administrator wants to manage user accounts.
+        - The administrator logs into the system and navigates to the "User Management" section.
+        - They can view all user accounts, and have the ability to activate, deactivate, or modify user accounts.
+        - They can assign instructor roles for users who submitted an instructor form
+    - **Scenario**: An administrator wants to monitor system health.
+        - The administrator logs into the system and navigates to the "System Health" section.
+        - The system displays information about system performance, uptime, and any ongoing issues.
 
-**Administrators:**
-An admin user will login via the login portal and will have access to various administrative controls. An admin will be able to oversee transactions of user accounts, ensuring that students, instructors, and other administrators have appropriate access levels and differentiated abilities, and review instructor-requested applications for an instructor role to be assigned when new applications are sent in for review. Administrators will configure system settings, manage class and assignment storage/data, ensure software maintenance, and manage database capacity issues. Admins will monitor system performance and monitor user activity logs to ensure the platform is running smoothly. Admins can review user feedback forms to further maintain and improve the system.
+These scenarios provide a high-level overview of how different user groups will interact with the system. They highlight the key functionalities of the system from the perspective of each user group. Please note that these are simplified scenarios and the actual user journey may involve more steps and interactions. The aim is to develop a minimal viable product (MVP) that fulfils these core scenarios effectively and efficiently. Additional features and enhancements can be added in future iterations based on user feedback and requirements.
 
 ### Requirements:
 
@@ -212,7 +296,6 @@ An admin user will login via the login portal and will have access to various ad
     - Styling: Implement TailwindCSS for styling.
     - Icons: Integrate Heroicons for icons.
     - UI Components: Use shadcn/ui for customizable and ready-to-go components such as buttons, forms, and modals.
-  
   - Compatibility
     - Ensure compatibility with all major web browsers.
     - Ensure the application is responsive and works seamlessly on mobile devices.
@@ -255,63 +338,125 @@ An admin user will login via the login portal and will have access to various ad
 - Data Security
   - Encryption: Implement data encryption techniques such as password hashing to ensure data security.
 
+### **Tech Stack**
 
-## Tech Stack
-Identify the “tech stack” you are using. This includes the technology the user is using to interact with your software (e.g., a web browser, an iPhone, any smartphone, etc.), the technology required to build the interface of your software, the technology required to handle the logic of your software (which may be part of the same framework as the technology for the interface), the technology required to handle any data storage, and the programming language(s) involved. You may also need to use an established API, in which case, say what that is. (Please don’t attempt to build your API in this course as you will need years of development experience to do it right.) You can explain your choices in a paragraph, in a list of bullet points, or a table. Just make sure you identify the full tech stack.
-For each choice you make, provide a short justification based on the current trends in the industry. For example, don’t choose an outdated technology because you learned it in a course. Also, don’t choose a technology because one of the team members knows it well. You need to make choices that are good for the project and that meet the client’s needs, otherwise, you will be asked to change those choices.  Consider risk analysis. 
+### **User Interaction Technology**
 
-## High-level risks
-Describe and analyze any risks identified or associated with the project. 
+- **Web Browser**: Users will interact with the Peer Review Application via web browsers (e.g., Chrome, Firefox, Safari).
+    - *Justification*: Web browsers are universally accessible, require no additional installation, and provide a consistent user experience across devices.
 
-## Assumptions and constraints
-What assumptions is the project team making and what are the constraints for the project?
+### **Interface Technology**
 
-## Summary milestone schedule
+- **Frontend Framework**: React
+    - *Justification*: React is a popular and widely used JavaScript library for building user interfaces, known for its flexibility and component-based architecture.
+- **Styling**: TailwindCSS
+    - *Justification*: TailwindCSS provides a utility-first CSS framework that helps in creating responsive and customizable designs quickly.
+- **Routing**: React-Router-Dom
+    - *Justification*: React-Router-Dom is a standard library for routing in React applications, enabling the creation of dynamic and multi-page web applications.
 
-Identify the major milestones in your solution and align them to the course timeline. In particular, what will you have ready to present and/or submit for the following deadlines? List the anticipated features you will have for each milestone, and we will help you scope things out in advance and along the way. Use the table below and just fill in the appropriate text to describe what you expect to submit for each deliverable. Use the placeholder text in there to guide you on the expected length of the deliverable descriptions. You may also use bullet points to clearly identify the features associated with each milestone (which means your table will be lengthier, but that’s okay).  The dates are correct for the milestones.  
+### **Logic Handling Technology**
 
-|  Milestone  | Deliverable |
-| :-------------: | ------------- |
-|  May 29th  | Project Plan Submission |
-| May 29th  | A short video presenation decribing the user groups and requirements for the project.  This will be reviewed by your client and the team will receive feedback. |
-| June 5th  | Design Submission: Same type of description here. Aim to have a design of the project and the system architecture planned out. Use cases need to be fully developed.  The general user interface design needs to be implemented by this point (mock-ups). This includes having a consistent layout, color scheme, text fonts, etc., and showing how the user will interact with the system should be demonstrated. It is crucial to show the tests pass for your system here. |
-| June 5th  |  A short video presenation decribing the design for the project.  This will be reviewed by your client and the team will receive feedback. |
-| June 14th  | Mini-Presentations: A short description of the parts of the envisioned usage you plan to deliver for this milestone. Should not require additional explanation beyond what was already in your envisioned usage. This description should only be a few lines of text long. Aim to have 3 features working for this milestone (e.g., user log-in with credentials and permissions counts as 1 feature). Remember that features also need to be tested.  |
-| July 5th  | MVP Mini-Presentations: A short description of the parts of the envisioned usage you plan to deliver for this milestone. Should not require additional explanation beyond what was already in your envisioned usage. This description should only be a few lines of text long. Aim to have close to 50% of the features working for this milestone.  Remember that features also need to be tested. Clients will be invited to presentations.|
-| July 19th  | Peer testing and feedback: Aim to have an additional two features implemented and tested **per** team member. As the software gets bigger, you will need to be more careful about planning your time for code reviews, integration, and regression testing. |
-| August 2nd  | Test-O-Rama: Full scale system and user testing with everyone |
-| August 9th  |  Final project submission and group presentions: Details to follow |
+- **Backend Framework**: Node.js with Express.js
+    - *Justification*: Node.js allows for server-side JavaScript execution, making it easy to build scalable network applications. Express.js is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications.
 
-## Teamwork Planning and Anticipated Hurdles
-Based on the teamwork icebreaker survey, talk about the different types of work involved in a software development project. Start thinking about what you are good at as a way to get to know your teammates better. At the same time, know your limits so you can identify which areas you need to learn more about. These will be different for everyone. But in the end, you all have strengths and you all have areas where you can improve. Think about what those are, and think about how you can contribute to the team project. Nobody is expected to know everything, and you will be expected to learn (just some things, not everything).
-Use the table below to help line up everyone’s strengths and areas of improvement together. The table should give the reader some context and explanation about the values in your table.
+### **Data Storage Technology**
 
-For **experience** provide a description of a previous project that would be similar to the technical difficulty of this project’s proposal.  None, if nothing
-For **good At**, list of skills relevant to the project that you think you are good at and can contribute to the project.  These could be soft skills, such as communication, planning, project management, and presentation.  Consider different aspects: design, coding, testing, and documentation. It is not just about the code.  You can be good at multiple things. List them all! It doesn’t mean you have to do it all.  Don’t ever leave this blank! Everyone is good at something!
+- **Database**: PostgreSQL
+    - *Justification*: PostgreSQL is a powerful, open-source relational database system known for its reliability, robustness, and performance.
 
-|  Category  | Team Member 1 | Team Member 2 | Team Member 3 | Team Member 4 | Team Member 5 | Team Member 6 | 
-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
-|  **Experience**  |  |  |  |  |  |  | 
-|  **Good At**  |  |  |  |  |  |  | 
-|  **Expect to learn**  | Don’t ever leave this blank! We are all learning.  | Understanding your limits is important. Where do you expect you will need help? | It may not be technical skills. You may be a good coder but never worked with people in a team. Maybe you built a web- site but not used a framework. | It may also be a theoretical concept you already learned but never applied in practice. | Think about different project aspects: design, data security, web security, IDE tools, inte- gration testing, CICD, etc. There will be something. | Don’t ever leave this blank! We are all learning. | 
+### **Programming Languages**
 
-Use this opportunity to discuss with your team who **may** do what in the project. Make use of everyone’s skill set and discuss each person’s role and responsibilities by considering how everyone will contribute.  Remember to identify project work (some examples are listed below at the top of the table) and course deliverables (the bottom half of the table). You might want to change the rows depending on what suits your project and team.  Understand that no one person will own a single task.  Recall that this is just an incomplete example.  Please explain how things are assigned in the caption below the table, or put the explanation into a separate paragraph so the reader understands why things are done this way and how to interpret your table. 
+- **Frontend**: JavaScript (React)
+    - *Justification*: JavaScript is essential for building interactive web applications and is widely supported across all web browsers.
+- **Backend**: JavaScript (Node.js)
+    - *Justification*: Using JavaScript for both frontend and backend development provides a consistent language environment, streamlining development and maintenance.
 
-|  Category of Work/Features  | Team Member 1 | Team Member 2 | Team Member 3 | Team Member 4 | Team Member 5 | Team Member 6 | 
-| ------------- | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: |
-|  **Project Management: Kanban Board Maintenance**  | :heavy_check_mark:  |  | :heavy_check_mark:  |  |  |  | 
-|  **System Architecture Designt**  |  | :heavy_check_mark:  | :heavy_check_mark:  | :heavy_check_mark:  |  |  | 
-|  **User Interface Design**  | :heavy_check_mark:  | :heavy_check_mark: |  |  |  |  | 
-|  **CSS Development**  | :heavy_check_mark:  |  |  |  |  | :heavy_check_mark:  | 
-|  **Feature 1**  | :heavy_check_mark:  |  |  |  |  |  | 
-|  **Feature 2**  | :heavy_check_mark:  |  |  |  |  |  | 
-|  **...**  |  |  |  |  |  |  | 
-|  **Database setup**  |  |  | :heavy_check_mark:  | :heavy_check_mark:  |  |  | 
-|  **Presentation Preparation**  | :heavy_check_mark:  |  |  | :heavy_check_mark:  |  |  | 
-|  **Design Video Creation**  |  | :heavy_check_mark:  | :heavy_check_mark:  |  |  |  | 
-|  **Design Video Editing**  | :heavy_check_mark:  | :heavy_check_mark:  |  |  |  |  | 
-|  **Design Report**  | :heavy_check_mark:  |  |  |  |  |  | 
-|  **Final Video Creation**  | :heavy_check_mark:  |  |  |  |  | :heavy_check_mark:  | 
-|  **Final Video Editing**  | :heavy_check_mark:  |  |  |  |  | :heavy_check_mark:  | 
-|  **Final Team Report**  |  | :heavy_check_mark:  |  |  |  |  | 
-|  **Final Individual Report**  |  :heavy_check_mark: |  :heavy_check_mark: |  :heavy_check_mark: |  :heavy_check_mark: |  :heavy_check_mark: |  :heavy_check_mark: | 
+### **API and Additional Libraries**
+
+- **API Development**: RESTful APIs using Express.js
+    - *Justification*: RESTful APIs are standard for web services, providing a straightforward way to interact with the backend services.
+- **Authentication**: Passport.js
+    - *Justification*: Passport.js is a flexible and modular authentication middleware for Node.js, supporting various authentication strategies.
+- **File Handling**: PDF.js
+    - *Justification*: PDF.js is a popular library for rendering PDFs in web applications.
+
+### **High-Level Risks**
+
+1. **Data Security and Privacy**
+    - *Risk*: Potential breaches of sensitive user data.
+    - *Mitigation*: Implement robust security measures, such as data encryption, secure authentication, and regular security audits.
+2. **Scalability**
+    - *Risk*: Application performance issues as the number of users grows.
+    - *Mitigation*: Design the system with scalability in mind, using efficient database queries, load balancing, and optimizing code performance.
+
+### **Assumptions and Constraints**
+
+- **Assumptions**:
+    - Users have access to modern web browsers.
+    - Institutions will support the integration of the application within their existing systems.
+    - Client prefers using free/open-source services or libraries
+- **Constraints**:
+    - Limited time and resources for development.
+    - Compliance with data privacy regulations (GDPR, FERPA).
+    - Ensuring cross-browser compatibility and responsiveness.
+    - Lack of access to paid libraries or services to include in the web-app.
+
+### **Summary Milestone Schedule**
+
+
+| Milestone | Deliverable |
+| --- | --- |
+| May 29th | Project Plan Submission |
+|  | A short video presentation describing the user groups and requirements for the project. This will be reviewed by your client and the team will receive feedback. |
+| June 5th | Design Submission: Aim to have a design of the project and the system architecture planned out. Use cases need to be fully developed. The general user interface design needs to be implemented by this point (mock-ups). This includes having a consistent layout, color scheme, text fonts, etc., and showing how the user will interact with the system should be demonstrated. It is crucial to show the tests pass for your system here. |
+|  | The system architecture at the base level will include a backend running with Node and Express JS which will connect to a Front-End user interface, A database, and an ORM to facilitate database management, An authentication microservice, and an admin management interface. These modules will interact with each other as separate modules that create an environment for data exchange among them and facilitate data management for our peer-reviewing application. Our system design aims to have multiple pages such as a Login/Register view, Dashboard view, Class views, Assignment/Peer-review view, settings view, and other components to easily host the required features for our application. The views/pages will also integrate role-based access to change a view depending on the user type signed in. |
+|  | A short video presentation describing the design for the project. This will be reviewed by your client and the team will receive feedback. |
+| June 14th | Mini-Presentations: A short description of the parts of the envisioned usage you plan to deliver for this milestone. Should not require additional explanation beyond what was already in your envisioned usage. This description should only be a few lines of text long. Aim to have 3 features working for this milestone (e.g., user log-in with credentials and permissions counts as 1 feature). Remember that features also need to be tested. |
+|  | For this milestone, we will determine a few key features. First, we will implement the user interface and backend functionalities for our login component with credentials and role-based permissions, ensuring that students, instructors, and administrators can all log in. Second, we will create the user interface for instructor assignment creation and student assignment submission, with students able to view and submit these assignments through their dashboards. Third, we will create the user interface for creating and managing instructor classes. These features will be thoroughly tested and run with mock data hosting with students able to view and submit assignments for classes and instructors able to create and view classes with a general focus on seamless user experience. |
+| July 5th | MVP Mini-Presentations: A short description of the parts of the envisioned usage you plan to deliver for this milestone. Should not require additional explanation beyond what was already in your envisioned usage. This description should only be a few lines of text long. Aim to have close to 50% of the features working for this milestone. Remember that features also need to be tested. Clients will be invited to presentations. |
+| | For this milestone, we will present a secure user login with role-based permissions, assignment creation and submission, and class creation and allocation. Additionally, we will create database connectivity to implement class/assignment functionalities for instructors and students, allowing instructors to create and manage classes, and both user types to also have a basic progress monitoring dashboard for statuses and feedback. These features will be thoroughly tested to ensure they function correctly and provide a seamless user experience.  |
+| July 19th | Peer testing and feedback: Aim to have an additional two features implemented and tested per team member. As the software gets bigger, you will need to be more careful about planning your time for code reviews, integration, and regression testing. |
+| August 2nd | Test-O-Rama: Full scale system and user testing with everyone |
+| August 9th | Final project submission and group presentations: Details to follow |
+
+### **Teamwork Planning and Anticipated Hurdles**
+
+### **Team Strengths and Areas for Improvement**
+
+| Category | Bhavya Bhagchandani | Abdul Faiz | Josh Farwig | Mahir Rahman |
+| --- | --- | --- | --- | --- |
+| Experience | React.js, JS, Bootstrap, HTML5/CSS, PHP, Node.js, Express.js PostgreSQL, jQuery, EJS, MongoDB | React.js, JS, Bootstrap, CSS, PHP, Node.js, MySQL, Tailwind, Firebase | React, JS, TS, PHP, Node.JS, MySQL, Next.JS, TailwindCSS | React JS, Tailwind, CSS, NodeJS, MySQL, NoSQL, Cloudinary, Figma,  |
+| Good At | PHP, Node.js, Express.js PostgreSQL, jQuery | Bootstrap, CSS, PHP, JS, MySQL, Firebase | React, JS, MySQL, UI/UX, Backend Functionalites | React JS, Tailwind, JS, UI/UX, Figma |
+| Expect to Learn | Docker, TailwindCSS, Vite, DigitalOcean | Express.js, PostgreSQL, Passport.js, Docker | PostgreSQL, Express.JS, Passport.JS, Vite, Drone CI | PostgreSQL, Docker, Passport.js |
+
+### **Task Distribution**
+
+| Category of Work/Features | Bhavya Bhagchandani | Abdul Faiz | Josh Farwig | Mahir Rahman |
+| --- | --- | --- | --- | --- |
+| Project Management: Kanban Board Maintenance | ✔️ |  | ✔️ |  |
+| System Architecture Design |  | ✔️ | ✔️ | ✔️ |
+| User Interface Design | ✔️ | ✔️ |  |  |
+| CSS Development | ✔️ |  |  | ✔️ |
+| Feature 1 | ✔️ |  |  |  |
+| Feature 2 | ✔️ |  |  |  |
+| Database setup |  | ✔️ | ✔️ |  |
+| Presentation Preparation | ✔️ |  |  | ✔️ |
+| Design Video Creation |  | ✔️ | ✔️ |  |
+| Design Video Editing | ✔️ | ✔️ |  |  |
+| Design Report | ✔️ |  |  |  |
+| Final Video Creation | ✔️ |  |  | ✔️ |
+| Final Video Editing | ✔️ |  |  | ✔️ |
+| Final Team Report |  | ✔️ |  |  |
+| Final Individual Report | ✔️ | ✔️ | ✔️ | ✔️ |
+
+### **Explanation of Task Distribution**
+
+- **Project Management**: Bhavya and Josh will maintain the Kanban board, ensuring that tasks are well-organized and progress is tracked.
+- **System Architecture Design**: Abdul, Josh, and Mahir will collaborate on designing the system architecture, leveraging their expertise in backend and full-stack development.
+- **User Interface and CSS Development**: Bhavya and Josh will focus on designing the user interface and developing the CSS to ensure a consistent and appealing look.
+- **Feature Development**: Features will be distributed based on team members' strengths, with Bhavya and Mahir focusing on frontend features and Abdul on backend features.
+- **Database Setup**: Abdul and Josh will handle the database setup, ensuring efficient data storage and retrieval.
+- **Presentation Preparation and Video Creation/Editing**: Bhavya, Josh, and Mahir will prepare presentations and create/edit videos, using their experience in project management and design.
+- **Reports**: Team members will contribute to both team and individual reports, ensuring comprehensive documentation of the project.
+
+This distribution ensures that each team member can leverage their strengths while also learning and improving in other areas.

@@ -149,7 +149,7 @@ Let’s explore how each user group will interact with the system through a few 
 
 - **Administrators**: Admins will need administrative functionalities to manage the overall system, user accounts, and configurations, and the ability to respond to user reports efficiently.
 
-### Technical Requirements
+### Technical Requirements (Josh)
 
 **Frontend Requirements**
 
@@ -175,7 +175,7 @@ Let’s explore how each user group will interact with the system through a few 
 - In addition to the core technologies, we'll use Passport.js for authentication and PDF.js for PDF viewing.
 - We would also ensure compliance with privacy regulations like the GDPR and FERPA as needed and implement data encryption for security.
 
-## 6. Conclusion
+## 6. Conclusion (Josh)
 
 - In summary, our Peer Review Application aims to streamline the peer review process, ensuring fairness and providing comprehensive tools for students, instructors, and administrators. Our project is designed to meet the specific needs of each user group, with robust functional and technical requirements to ensure a seamless experience.
 

@@ -183,8 +183,8 @@ These scenarios provide a high-level overview of how different user groups will 
     - The system must activate the peer evaluation section after the assignment submission deadline.
   - Feedback Mechanism
     - Instructors must be able to provide feedback on student submissions, which students must be able to view.
-    - Students must be able to communicate with the instructor to comment on assignment submission and other concerns.
-    - The system must require students to provide a minimum amount of constructive evaluation for each assignment to be counted towards their grade.
+    - Students must be able to view feedback from Instructors as well as peers.
+
 
 - Peer Review Process
   - Peer Assignment Distribution
@@ -209,14 +209,13 @@ These scenarios provide a high-level overview of how different user groups will 
   - Dashboard for Instructors
     - The system must provide a comprehensive dashboard for instructors to monitor student progress and assignment statuses.
     - The instructor's dashboard must include:
-      - Instructor Class Dashboard
-      - Instructor Assignment Dashboard
+      - Overall stats of the classroom categorizes by strong and weak grade areas 
+      - Option to view individual student's progress tracking
   - Student Progress Tracking
     - Students must be able to track their own assignment submission statuses and received feedback.
     - The student's dashboard must include:
-      - Student Class Dashboard
-      - Student Assignment Dashboard
-      - Individual Assignment View (including a split view of the assignment, the rubric, and a place to upload the assignment)
+      - Overall stats of strong and weak grade areas  
+      - Lists of assignments with submission and feedback statuses
 
 - System Maintenance
   - Admin Control
@@ -247,19 +246,44 @@ These scenarios provide a high-level overview of how different user groups will 
 
 #### User Requirements:
 
-- Instructors
-  - The system must provide instructors with a fast, simple, and user-friendly interface for efficient creation of classes, assignments, and associated rubrics.
-  - Instructors must be able to monitor and evaluate both individual student and group performances seamlessly within the system.
-  - Instructors require access to detailed progress reports for both students and classes.
-  
+- All Users
+  - Users (students, instructors, administrators) must be able to create accounts.
+  - Users must be able to securely log in to their accounts.
+  - Students and/or Instructors must be able to reset their passwords via a "Forgot Password" feature during the login/signup process.
+  - Students and/or Instructors must be able to create and manage student groups for projects.
+  - All users must be able to navigate through assignments and classes.
+  - All users must get notifications via email.
+
 - Students
-  - The system must provide students with an easy-to-use interface for submitting assignments and receiving feedback.
-  - Students must be able to perform peer evaluations anonymously and fairly.
-  - Students must be able to access their submission history and feedback received on assignments.
+  - Students must be able to view and join classes.
+  - Students must be able to upload assignments in various formats.
+  - Students must be able to view feedback provided by instructors.
+  - Students must be able to submit reviews and feedback on their peers' work anonymously.
+  - Students must fill out an associated rubric set by the instructor for each assignment.
+  - Students must be able to evaluate their peers' contributions within group projects anonymously.
+  - Students must be able to track their own assignment submission statuses and received feedback.
+  - The student's dashboard must include overall stats of strong and weak grade areas.
+  - The student's dashboard must include lists of assignments with submission and feedback statuses.
+
+- Instructors
+  - Instructors must be able to add or remove classes and add or remove students from classes.
+  - Instructors must be able to create assignments for their classes.
+  - Instructors must be able to create rubrics associated with each assignment.
+  - Instructors must be able to set and manage deadlines for assignments.
+  - Instructors must be able to provide feedback on student submissions.
+  - Instructors must be able to assign peer reviews to students, ensuring each student reviews a predetermined number of their peers' assignments.
+  - Instructors and students must be able to create and manage student groups for projects.
+  - Instructors must be able to set a percentage of an assignment's grade to be based on peer feedback.
+  - Instructors must be notified or have the ability to view peer-reviewed submissions to ensure they are done fairly and on time.
+  - The instructor's dashboard must include overall stats of the classroom categorized by strong and weak grade areas.
+  - The instructor's dashboard must include an option to view individual student's progress tracking.
 
 - Administrators
-  - The system must provide administrative functionalities to manage the overall system, including user accounts and system configurations.
-  - The system must also provide administrators the ability to receive and respond to user reports.
+  - Administrators must be able to grant instructor permissions.
+  - Administrators must be able to manage user accounts.
+  - Administrators must be able to manage system settings.
+  - Administrators must be able to receive and respond to user reports.
+
 
 #### Technical Requirements:
 
@@ -271,8 +295,7 @@ These scenarios provide a high-level overview of how different user groups will 
       - Routing: Utilize React-Router-Dom for routing.
     - Styling: Implement TailwindCSS for styling.
     - Icons: Integrate Heroicons for icons.
-    - UI Components: Use HeadlessUI for ready-to-go components such as buttons, forms, and modals.
-   
+    - UI Components: Use shadcn/ui for customizable and ready-to-go components such as buttons, forms, and modals.
   - Compatibility
     - Ensure compatibility with all major web browsers.
     - Ensure the application is responsive and works seamlessly on mobile devices.
@@ -302,7 +325,7 @@ These scenarios provide a high-level overview of how different user groups will 
     - Test Coverage: Implement both regression and unit tests to ensure reliability and prevent regressions.
   
   - CI Pipeline
-    - Use Drone CI/Travis CI for continuous integration.
+    - Use Drone CI for continuous integration.
 
 - Other Libraries and Tools
 
@@ -312,13 +335,8 @@ These scenarios provide a high-level overview of how different user groups will 
   - File Handling
     - PDF Viewing: Use PDF.js.
 
-- Compliance
-
-  - Privacy Regulations
-    - Ensure the application complies with local privacy regulations (e.g., GDPR, FERPA) to protect user data.
-  
-  - Data Security
-    - Encryption: Implement data encryption to ensure data security.
+- Data Security
+  - Encryption: Implement data encryption techniques such as password hashing to ensure data security.
 
 ### **Tech Stack**
 

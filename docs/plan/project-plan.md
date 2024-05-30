@@ -211,7 +211,7 @@ An admin user will login via the login portal and will have access to various ad
       - Routing: Utilize React-Router-Dom for routing.
     - Styling: Implement TailwindCSS for styling.
     - Icons: Integrate Heroicons for icons.
-    - UI Components: Use HeadlessUI for ready-to-go components such as buttons, forms, and modals.
+    - UI Components: Use shadcn/ui for customizable and ready-to-go components such as buttons, forms, and modals.
   
   - Compatibility
     - Ensure compatibility with all major web browsers.

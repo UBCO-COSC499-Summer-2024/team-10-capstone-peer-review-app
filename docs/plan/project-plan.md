@@ -157,25 +157,169 @@ Here are the user scenarios for each user group:
 These scenarios provide a high-level overview of how different user groups will interact with the system. They highlight the key functionalities of the system from the perspective of each user group. Please note that these are simplified scenarios and the actual user journey may involve more steps and interactions. The aim is to develop a minimal viable product (MVP) that fulfils these core scenarios effectively and efficiently. Additional features and enhancements can be added in future iterations based on user feedback and requirements.
 
 ### Requirements:
-In the requirements section, make sure to clearly define/describe the **functional** requirements (what the system will do), **non-functional** requirements (performane/development), **user requirements (what the users will be able to do with the system and **technical** requirements.  These requirements will be used to develop the detailed uses in the design and form your feature list.
+
 #### Functional Requirements:
-- Describe the characteristics of the final deliverable in ordinary non-technical language
-- Should be understandable to the customers
-- Functional requirements are what you want the deliverable to do
+
+- User Management
+  - Account Creation and Authentication
+    - Users (students, instructors, administrators) must be able to create accounts, log in, and reset passwords securely.
+    - The admin must be able to grant instructor permissions.
+  - Role-Based Access Control
+    - The system must provide different functionalities based on user roles (student, instructor, administrator).
+    - The system must allow students and instructors to reset their passwords via a "Forgot Password" feature in the login/signup process.
+    - The system must enable navigation for assignments and classes.
+    - The system must allow instructors to add or remove classes and add or remove students from classes.
+    - The system must allow students to view and join classes.
+    - The system must support notifications via Email.
+
+- Assignment Management
+  - Assignment Creation
+    - Instructors must be able to create assignments for their classes.
+    - Instructors must be able to create a rubric associated with each assignment.
+  - Submission Handling
+    - Students must be able to upload assignments in various formats.
+  - Deadline Management
+    - The system must allow instructors to set and manage deadlines for assignments.
+    - The system must activate the peer evaluation section after the assignment submission deadline.
+  - Feedback Mechanism
+    - Instructors must be able to provide feedback on student submissions, which students must be able to view.
+    - Students must be able to communicate with the instructor to comment on assignment submission and other concerns.
+    - The system must require students to provide a minimum amount of constructive evaluation for each assignment to be counted towards their grade.
+
+- Peer Review Process
+  - Peer Assignment Distribution
+    - Instructors must be able to assign peer reviews to students, ensuring each student reviews a predetermined number of their peers' assignments.
+  - Anonymous Reviews
+    - The peer review process must be anonymous to ensure fairness.
+  - Feedback Submission
+    - Students must be able to submit reviews and feedback on their peers' work.
+    - Students must fill out an associated rubric set by the instructor for each assignment.
+
+- Group Project Evaluations
+  - Group Formation
+    - Instructors and students must be able to create and manage student groups for projects.
+  - Individual Contribution Evaluation
+    - Students must be able to evaluate their peers' contributions within group projects anonymously.
+  - Fairness Mechanism
+    - The system must include mechanisms to ensure fair evaluation of individual contributions.
+    - The system must allow instructors to set a percentage of an assignment's grade to be based on peer feedback.
+    - Instructors must be notified or have the ability to view peer-reviewed submissions to ensure they are done fairly and on time.
+
+- Progress Monitoring
+  - Dashboard for Instructors
+    - The system must provide a comprehensive dashboard for instructors to monitor student progress and assignment statuses.
+    - The instructor's dashboard must include:
+      - Instructor Class Dashboard
+      - Instructor Assignment Dashboard
+  - Student Progress Tracking
+    - Students must be able to track their own assignment submission statuses and received feedback.
+    - The student's dashboard must include:
+      - Student Class Dashboard
+      - Student Assignment Dashboard
+      - Individual Assignment View (including a split view of the assignment, the rubric, and a place to upload the assignment)
+
+- System Maintenance
+  - Admin Control
+    - Administrators must be able to manage user accounts, system settings, and maintain overall system health.
+    - Administrators must be able to receive and respond to user reports.
 
 #### Non-functional Requirements:
-- Specify criteria that can be used to judge the final product or service that your project delivers
-- List restrictions or constraints to be placed on the deliverable and how to build it; remember that this is intended to restrict the number of solutions that will meet a set of requirements.
+
+- Security
+  - The system must implement secure login and authentication mechanisms, including password encryption using Passport.js.
+  - The system must ensure data protection and privacy by using TLS handshakes and other encryption techniques.
+  - The system must comply with local regulations as necessary such as GDPR and FERPA.
+
+- Usability
+  - The system must have an intuitive and accessible user interface suitable for all user roles.
+  - The system must be responsive and function well on both mobile and desktop devices.
+
+- Scalability
+  - The system must be scalable to accommodate future growth in the number of users and data volume.
+
+- Reliability
+  - The system must ensure high availability and minimal downtime.
+  - The system must be tested to handle simultaneous use, ensuring that multiple users can make edits without causing application errors or data inconsistencies.
+
+- Maintainability
+  - The system must be easy to maintain and update.
+  - The system must include clear documentation to support future development and maintenance efforts.
 
 #### User Requirements:
-- Describes what the user needs to do with the system (links to FR)
-- Focus is on the user experience with the system under all scenarios
+
+- Instructors
+  - The system must provide instructors with a fast, simple, and user-friendly interface for efficient creation of classes, assignments, and associated rubrics.
+  - Instructors must be able to monitor and evaluate both individual student and group performances seamlessly within the system.
+  - Instructors require access to detailed progress reports for both students and classes.
+  
+- Students
+  - The system must provide students with an easy-to-use interface for submitting assignments and receiving feedback.
+  - Students must be able to perform peer evaluations anonymously and fairly.
+  - Students must be able to access their submission history and feedback received on assignments.
+
+- Administrators
+  - The system must provide administrative functionalities to manage the overall system, including user accounts and system configurations.
+  - The system must also provide administrators the ability to receive and respond to user reports.
 
 #### Technical Requirements:
-- These emerge from the functional requirements to answer the questions: 
--- How will the problem be solved this time and will it be solved technologically and/or procedurally? 
--- Specify how the system needs to be designed and implemented to provide required functionality and fulfill required operational characteristics.
+
+- Frontend Requirements
+
+  - Project Setup
+    - Bundler: Use Vite for dependency management and project bundling.
+    - Framework: Use React for building the user interface.
+      - Routing: Utilize React-Router-Dom for routing.
+    - Styling: Implement TailwindCSS for styling.
+    - Icons: Integrate Heroicons for icons.
+    - UI Components: Use HeadlessUI for ready-to-go components such as buttons, forms, and modals.
+   
+  - Compatibility
+    - Ensure compatibility with all major web browsers.
+    - Ensure the application is responsive and works seamlessly on mobile devices.
+
+- Backend Requirements
+
+  - Framework and Server
+    - Framework: Use Node.js.
+    - Server: Use Express.js for handling server-side logic and APIs.
   
+  - Database
+    - Type: Use a relational database – PostgreSQL.
+    - ORM: Use an ORM to communicate with the database using JavaScript queries.
+      - Preferred ORMs: Drizzle ORM or Prisma ORM for fast and efficient queries.
+
+- API Development
+  - Type: Develop RESTful APIs using Express.js.
+  - Security: Ensure APIs are secure and efficient.
+
+- Testing and Deployment
+  
+  - Automated Testing
+
+    - Frameworks: 
+      - Use Jest for unit tests and integration tests.
+      - Use Cypress for end-to-end (e2e) testing.
+    - Test Coverage: Implement both regression and unit tests to ensure reliability and prevent regressions.
+  
+  - CI Pipeline
+    - Use Drone CI/Travis CI for continuous integration.
+
+- Other Libraries and Tools
+
+  - Authentication
+    - Use Passport.js for authentication, allowing for multiple authentication paradigms.
+
+  - File Handling
+    - PDF Viewing: Use PDF.js.
+
+- Compliance
+
+  - Privacy Regulations
+    - Ensure the application complies with local privacy regulations (e.g., GDPR, FERPA) to protect user data.
+  
+  - Data Security
+    - Encryption: Implement data encryption to ensure data security.
+
 ### **Tech Stack**
 
 ### **User Interaction Technology**

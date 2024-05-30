@@ -84,33 +84,108 @@ This software aims to enhance assignment grading by applying a peer-review syste
 # Script for the Video Presentation
 
 ## 1. Introduction
-- Hello, we're team number 10! We're working on the Peer Review Application project as our Capstone Project. My name is [Name], and I'm joined by my teammates Bhavya Bhagchandani, Abdul Faiz, Josh Farwig, and Mahir Rahman.
-- Today, we will present the planned key requirements and functionalities of our project.
+
+Hello, we are team number 10, working on the Peer Review Application. My name is [Name], and I'm joined by my teammates Bhavya Bhagchandani, Abdul Faiz, Josh Farwig, and Mahir Rahman.
+
+Today, we will present the planned key requirements and functionalities of our project.
 
 ## 2. Project Purpose and Unique Value Proposition (UVP)
-- "The purpose of our Peer Review Application is to enhance assignment grading through a peer-review system, simplifying workflows for students, instructors, and administrators. Our system aims to provide consistent and reliable feedback from multiple perspectives."
-- "Our unique value proposition lies in our intuitive architecture with differentiated user roles, an automated peer review system ensuring fair and anonymous evaluations, and comprehensive progress tracking for both students and instructors."
+
+The purpose of our Peer Review Application is to enhance assignment grading through a peer-review system, simplifying workflows for students, instructors, and administrators. Our system aims to provide consistent and reliable feedback from multiple perspectives. Our unique value proposition lies in our intuitive architecture, automated peer reviews ensuring fairness, and comprehensive progress tracking for both students and instructors.
 
 ## 3. Measurable Project Objectives and Success Criteria
-- "Our primary objectives include creating an intuitive, efficient, and secure platform for managing assignments and peer reviews, implementing role-based access control, and streamlining assignment submission and peer-reviewed feedback processes."
-- "Success will be measured by effective account creation and authentication services, role-based access control, user-friendly dashboards for monitoring progress and assignment statuses, and robust system security and data privacy measures."
+
+Our primary objectives include creating an intuitive, efficient, and secure platform for managing assignments and peer reviews, implementing role-based access control, and streamlining assignment submission processes. Success will be measured by effective account creation and authentication services, user-friendly dashboards for monitoring progress, and robust system security and data privacy measures.
 
 ## 4. User Groups and Usage Scenarios
-- "Our main user groups are students, instructors, and administrators. Students will use the platform to submit assignments, participate in peer reviews, create groups and participate in group peer reviews, and track their progress."
-- "Instructors will create and manage assignments, classes, and groups, oversee peer reviews, and monitor student progress. Administrators will manage user accounts, ensure system security, perform maintenance tasks, and respond to user reports."
-- "Specific usage scenarios include students registering and logging in, viewing class dashboards, submitting assignments, and participating in peer reviews. Instructors will register, log in, create classes and assignments, assign peer reviews, and monitor progress. Administrators will manage accounts, system settings, and maintenance tasks, as well as receive and respond to user reports."
 
-## 5. Functional Requirements
-- "Our functional requirements include user management features like account creation, login, password reset, and role-based access control, along with notifications via Email."
-- "Assignment management functionalities allow instructors to create and manage assignments and rubrics, handle submissions in various formats, manage deadlines, and provide feedback. The peer review process includes the distribution of assignments, anonymous reviews, and feedback submission."
-- "We also have group project evaluations, where instructors and students can create and manage groups, participate in anonymous peer reviews within groups, and ensure fairness through fairness mechanisms."
-- "Progress monitoring features include comprehensive dashboards for both instructors and students to track progress and assignment statuses."
+### User Groups
 
-## 6. Technical Requirements
-- "Our frontend requirements involve using Vite, React, React-Router-Dom, TailwindCSS, Heroicons, and HeadlessUI to ensure a seamless user experience across major web browsers and mobile devices."
-- "The backend will utilize Node.js, Express.js, and PostgreSQL, with RESTful APIs for secure communication. We will use Drizzle ORM or Prisma ORM for database operations. Automated testing will be conducted with Jest and Cypress, and we will implement CI/CD pipelines with Drone CI and deploy on Heroku."
-- "Additional libraries and tools include Passport.js for authentication, PDF.js for viewing PDF files, and compliance with regulations as requested by the client, such as GDPR and FERPA for data security."
+The primary users of our system are Students, Instructors, and Administrators. Let’s delve into their needs and goals.
 
-## 7. Conclusion
-- "In summary, our Peer Review Application aims to provide an efficient and secure platform for managing assignments and peer reviews, with intuitive user interfaces and robust technical foundations."
-- "We welcome your feedback and look forward to discussing how our system can best meet your needs. Thank you for your time and attention."
+**Students**: Students will be joining classes, submitting assignments, and receiving feedback. Their main goals are to manage and submit assignments easily, perform peer evaluations anonymously and fairly, and access their submission history and feedback.
+
+**Instructors**: Instructors will be creating classes, assignments, groups, and rubrics. They need a user-friendly interface for managing classes and assignments, monitoring student performance, and managing group dynamics.
+
+**Administrators**: Administrators oversee the system, managing user accounts and system configurations. They need effective tools for managing the system, ensuring security and scalability, and responding to user reports.
+
+### Envisioned Usage
+
+Let’s explore how each user group will interact with the system through a few scenarios.
+
+**Students**: Students will create an account or log in to see a personalized dashboard showing class and assignment information. They can submit assignments and participate in peer reviews anonymously. For example, Emily logs in, selects her class, uploads her assignment, and receives a confirmation. Later, she can log in again to view feedback on her submitted work.
+
+**Instructors**: Instructors will create an account, apply for instructor roles, and manage their classes through a personalized dashboard. Instructors would be able to create a new class, add assignments, set deadlines, and monitor student progress. They can log in, create a class, add an assignment, set the deadline, and receive confirmation.
+
+**Administrators**: Administrators will log in to access administrative controls, manage user accounts, and monitor system health. Admins would be able to activate or deactivate user accounts, assign instructor roles, and keep an eye on system performance.
+
+These scenarios highlight how each user group will effectively interact with the system, ensuring a smooth and efficient experience tailored to their specific needs.
+
+## 5. Requirements
+
+### Functional Requirements
+
+- **User Management**
+
+    - Users must be able to create accounts, log in, and reset passwords securely.
+    - Admins should grant instructor permissions and manage user roles effectively.
+
+- **Assignment Management**
+
+    - Instructors need to create assignments with associated rubrics, and students should be able to submit their work in various formats.
+    - The system should handle deadlines efficiently and activate peer reviews post-deadline.
+    - Plus, there should be mechanisms in place for instructors to provide feedback on student submissions and for students to communicate with instructors regarding their assignments.
+
+- **Peer Review Process**
+
+    - Peer reviews are a core part of our system. Instructors should be able to distribute peer review assignments to students, ensuring each student reviews a set number of their peers' submissions.
+    - To maintain fairness, reviews must be anonymous, and students should be able to submit feedback based on predefined rubrics.
+
+- **Group Project Evaluations**
+
+    - For group projects, it's essential to facilitate group formation and management by both instructors and students.
+    - Individual contributions within groups should be evaluated anonymously to ensure fairness in grading.
+
+- **Progress Monitoring**
+
+    - Lastly, progress monitoring is key. We need comprehensive dashboards for both instructors and students to track progress and assignment statuses effectively.
+
+### User Requirements
+
+- **Students**: Students will need a user-friendly interface for submitting assignments and receiving feedback, anonymous and fair peer evaluations, and access to submission history and received feedback.
+
+- **Instructors**: They need a fast, simple, and user-friendly interface for creating classes, assignments, and rubrics. Monitoring and evaluating individual and group performances should be seamless. Detailed progress reports for both students and classes are essential.
+
+- **Administrators**: Admins will need administrative functionalities to manage the overall system, user accounts, and configurations, and the ability to respond to user reports efficiently.
+
+### Technical Requirements
+
+**Frontend Requirements**
+
+- On the frontend, we'll use a combination of Vite, React, TailwindCSS, Heroicons, and HeadlessUI to create a seamless user experience.
+- It's essential to ensure compatibility with major web browsers and responsiveness on mobile devices.
+
+**Backend Requirements**
+
+- For the backend, we'll rely on Node.js and Express.js to handle server-side logic and APIs.
+- Our database of choice will be PostgreSQL, and we'll use Drizzle ORM or Prisma ORM for efficient database operations.
+
+**API Development**
+
+- We'll develop RESTful APIs with secure and efficient communication protocols to ensure smooth interactions between the frontend and backend.
+
+**Testing and Deployment**
+
+- To ensure the reliability and stability of our system, we'll implement automated testing using Jest and Cypress.
+- Continuous integration with Drone CI or Travis CI will allow us to streamline the deployment process and catch any issues early on.
+
+**Other Libraries and Tools**
+
+- In addition to the core technologies, we'll use Passport.js for authentication and PDF.js for PDF viewing.
+- We would also ensure compliance with privacy regulations like the GDPR and FERPA as needed and implement data encryption for security.
+
+## 6. Conclusion
+
+- In summary, our Peer Review Application aims to streamline the peer review process, ensuring fairness and providing comprehensive tools for students, instructors, and administrators. Our project is designed to meet the specific needs of each user group, with robust functional and technical requirements to ensure a seamless experience.
+
+- We welcome your feedback and look forward to discussing how our system can best meet your needs. Thank you for your time and attention.

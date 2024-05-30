@@ -141,11 +141,11 @@ Let’s explore how each user group will interact with the system through a few 
 
 ### User Requirements (Abdul)
 
-- **All Users:** All users must be able to create accounts, log in, and reset their password via an easy-to-use interface. They must all also be able to navigate through assignments and classes, and get notifications via email.
+- **All Users:** All users must be able to create accounts, log in, and reset their password via an easy-to-use interface. They must all also be able to navigate through their assignments and classes, and get notifications via email.
 
-- **Students**: Students will need a user-friendly interface for submitting assignments and receiving feedback from their instructor, participate in anonymous and fair peer evaluations, and have access to submission history. They also need to be able to fill out a rubric for each peer review they do on an assignment, and track their own assignment submission statuses (grades).
+- **Students**: Students will need a user-friendly interface for submitting assignments and receiving feedback from their instructor, participate in anonymous and fair peer evaluations, and have access to their assignment submission history. They also need to be able to fill out a rubric for each peer review they do, and track their own assignment submission statuses (grades).
 
-- **Instructors**: They need a fast, simple, and user-friendly interface for creating classes, assignments, student groups, and rubrics. They must be able to set deadlines and the rubric for the assignments they upload as well. Monitoring and evaluating individual and group performances should be seamless. They also need to make a rubric for each assignment they upload, be able to give feedback to the student as well, and be able to oversee the peer review process. The instructor's dashboard must also allow them to see an individual student's progress.
+- **Instructors**: They need a fast, simple, and user-friendly interface for creating classes, assignments, student groups, and rubrics for each assignment they upload. They also need to be able to give feedback to the student as well, and be able to oversee the peer review process. Monitoring and evaluating individual and group performances should be seamless as well.
 
 - **Administrators**: Admins will need administrative functionalities to manage the overall system, user accounts, and configurations, and the ability to respond to user reports efficiently.
 

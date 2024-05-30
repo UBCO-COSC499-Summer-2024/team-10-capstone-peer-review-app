@@ -140,9 +140,11 @@ Let’s explore how each user group will interact with the system through a few 
 
 ### User Requirements (Abdul)
 
-- **Students**: Students will need a user-friendly interface for submitting assignments and receiving feedback, anonymous and fair peer evaluations, and access to submission history and received feedback.
+- **All Users:** All users must be able to create accounts, log in securely, and reset their password via the 'Forgot Password' feature. They must all also be able to navigate through assignments and classes, and get notifications via email.
 
-- **Instructors**: They need a fast, simple, and user-friendly interface for creating classes, assignments, and rubrics. Monitoring and evaluating individual and group performances should be seamless. Detailed progress reports for both students and classes are essential.
+- **Students**: Students will need a user-friendly interface for submitting assignments and receiving feedback from their instructor, participate in anonymous and fair peer evaluations, and have access to submission history. They also need to be able to fill out a rubric for each peer review they do on an assignment, and track their own assignment submission statuses (grades).
+
+- **Instructors**: They need a fast, simple, and user-friendly interface for creating classes, assignments, student groups, and rubrics. They must be able to set deadlines and the rubric for the assignments they upload as well. Monitoring and evaluating individual and group performances should be seamless. They also need to make a rubric for each assignment they upload, be able to give feedback to the student as well, and be able to oversee the peer review process. The instructor's dashboard must also allow them to see an individual student's tracking.
 
 - **Administrators**: Admins will need administrative functionalities to manage the overall system, user accounts, and configurations, and the ability to respond to user reports efficiently.
 

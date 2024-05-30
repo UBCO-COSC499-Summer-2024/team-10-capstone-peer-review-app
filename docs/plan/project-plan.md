@@ -217,8 +217,6 @@ In the requirements section, make sure to clearly define/describe the **function
     - *Justification*: Passport.js is a flexible and modular authentication middleware for Node.js, supporting various authentication strategies.
 - **File Handling**: PDF.js
     - *Justification*: PDF.js is a popular library for rendering PDFs in web applications.
-- **Compliance and Security**: GDPR, FERPA, and/or other similar regulations
-    - *Justification*: Compliance with data privacy regulations ensures the protection of user data and adherence to legal standards.
 
 ### **High-Level Risks**
 
@@ -265,9 +263,9 @@ In the requirements section, make sure to clearly define/describe the **function
 
 | Category | Bhavya Bhagchandani | Abdul Faiz | Josh Farwig | Mahir Rahman |
 | --- | --- | --- | --- | --- |
-| Experience | React.js, JS, Bootstrap, HTML5/CSS, PHP, Node.js, Express.js PostgreSQL, jQuery, EJS, MongoDB | React.js, JS, Bootstrap, CSS, PHP, Node.js, MySQL, Tailwind, Firebase |  | React JS, Tailwind, CSS, NodeJS, MySQL, NoSQL, Cloudinary, Figma,  |
-| Good At | PHP, Node.js, Express.js PostgreSQL, jQuery | Bootstrap, CSS, PHP, JS, MySQL, Firebase |  | React JS, Tailwind, JS, UI/UX, Figma |
-| Expect to Learn | Docker, TailwindCSS, Vite, DigitalOcean | Express.js, PostgreSQL, Passport.js, Docker |  | PostgreSQL, Docker, Passport.js |
+| Experience | React.js, JS, Bootstrap, HTML5/CSS, PHP, Node.js, Express.js PostgreSQL, jQuery, EJS, MongoDB | React.js, JS, Bootstrap, CSS, PHP, Node.js, MySQL, Tailwind, Firebase | React, JS, TS, PHP, Node.JS, MySQL, Next.JS, TailwindCSS | React JS, Tailwind, CSS, NodeJS, MySQL, NoSQL, Cloudinary, Figma,  |
+| Good At | PHP, Node.js, Express.js PostgreSQL, jQuery | Bootstrap, CSS, PHP, JS, MySQL, Firebase | React, JS, MySQL, UI/UX, Backend Functionalites | React JS, Tailwind, JS, UI/UX, Figma |
+| Expect to Learn | Docker, TailwindCSS, Vite, DigitalOcean | Express.js, PostgreSQL, Passport.js, Docker | PostgreSQL, Express.JS, Passport.JS, Vite, Drone CI | PostgreSQL, Docker, Passport.js |
 
 ### **Task Distribution**
 

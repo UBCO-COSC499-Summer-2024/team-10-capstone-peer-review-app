@@ -257,9 +257,7 @@ In the requirements section, make sure to clearly define/describe the **function
 | August 2nd | Test-O-Rama: Full scale system and user testing with everyone |
 | August 9th | Final project submission and group presentations: Details to follow |
 
-## **Teamwork Planning and Anticipated Hurdles**
-
-### **Team Strengths and Areas for Improvement**
+### **Teamwork Planning and Anticipated Hurdles**
 
 | Category | Bhavya Bhagchandani | Abdul Faiz | Josh Farwig | Mahir Rahman |
 | --- | --- | --- | --- | --- |
@@ -281,7 +279,7 @@ In the requirements section, make sure to clearly define/describe the **function
 | UI/CSS/Component Development |  | ✔️ | ✔️ | ✔️ |
 | UI Testing |  | ✔️ |  | ✔️ |
 | Backend Testing | ✔️ |  | ✔️ |  |
-| Drone CI Setup |  | | ✔️ |  |
+| Drone CI Setup |  | ✔️ | ✔️ |  |
 | PostgreSQL Development | ✔️ |  | ✔️ |  |
 | RESTful API Development | ✔️ |  | ✔️ |  |
 | Final Video Creation | ✔️ | ✔️ |  | ✔️ |
@@ -290,7 +288,6 @@ In the requirements section, make sure to clearly define/describe the **function
 | Final Individual Report | ✔️ | ✔️ | ✔️ | ✔️ |
 
 ### **Explanation of Task Distribution**
-
 - **Project Management**: All team-members will maintain the Kanban board, ensuring that tasks are well-organized and progress is tracked. The team will take a weekly pull-based strategy where tasks will be issued, assigned and organized at the start of a sprint.
 - **System Architecture Design**: All team-members will collaborate on designing the system architecture, leveraging their expertises in backend and full-stack development.
 - **UI/CSS/React Component Development**: Abdul and Mahir will focus on designing the user interface (Figma / TailwindCSS) and developing re-usable React components to ensure a consistent and appealing look.

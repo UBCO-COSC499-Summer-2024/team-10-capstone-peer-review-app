@@ -241,7 +241,7 @@ An admin user will login via the login portal and will have access to various ad
     - Test Coverage: Implement both regression and unit tests to ensure reliability and prevent regressions.
   
   - CI Pipeline
-    - Use Drone CI/Travis CI for continuous integration.
+    - Use Drone CI for continuous integration.
 
 - Other Libraries and Tools
 
@@ -251,13 +251,8 @@ An admin user will login via the login portal and will have access to various ad
   - File Handling
     - PDF Viewing: Use PDF.js.
 
-- Compliance
-
-  - Privacy Regulations
-    - Ensure the application complies with local privacy regulations (e.g., GDPR, FERPA) to protect user data.
-  
-  - Data Security
-    - Encryption: Implement data encryption to ensure data security.
+- Data Security
+  - Encryption: Implement data encryption techniques such as password hashing to ensure data security.
 
 
 ## Tech Stack

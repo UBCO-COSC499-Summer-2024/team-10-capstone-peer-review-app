@@ -99,7 +99,8 @@ An admin user will login via the login portal and will have access to various ad
     - The system must activate the peer evaluation section after the assignment submission deadline.
   - Feedback Mechanism
     - Instructors must be able to provide feedback on student submissions, which students must be able to view.
-    - Students must be able to view feedback from Instructors as well as peers
+    - Students must be able to view feedback from Instructors as well as peers.
+
 
 - Peer Review Process
   - Peer Assignment Distribution

@@ -1,31 +1,91 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Weekly Report Automation
 
-# Controls when the workflow will run
 on:
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 1' # Runs at midnight every Monday
+  issue_comment:
+    types: [created]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  weekly_report:
+    if: github.event.issue_comment.body == 'autolog'
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      - name: Check out repository
+        uses: actions/checkout@v4
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Gather issues from the past 7 days
+        id: gather_issues
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          issues=$(gh issue list --state all --search "updated:>=$(date -d '7 days ago' +'%Y-%m-%d')" --json number,title,assignees)
+          echo "::set-output name=issues::$issues"
+
+      - name: Generate issue list view for each member
+        id: generate_issue_list
+        run: |
+          issues=${{ steps.gather_issues.outputs.issues }}
+          declare -A member_issues
+
+          for member in JoshFarwig mahirr476 Bhavya290223 namekeptanonymous; do
+            member_issues[$member]=""
+          done
+
+          for row in $(echo "${issues}" | jq -r '.[] | @base64'); do
+            _jq() {
+              echo ${row} | base64 --decode | jq -r ${1}
+            }
+
+            assignees=$(_jq '.assignees[].login')
+            title=$(_jq '.title')
+            number=$(_jq '.number')
+
+            for assignee in $assignees; do
+              member_issues[$assignee]+="- #$number: $title\n"
+            done
+          done
+
+          for member in "${!member_issues[@]}"; do
+            echo -e "${member}:\n${member_issues[$member]}\n"
+          done
+
+          echo "::set-output name=member_issues::$(declare -p member_issues)"
+
+      - name: Create burnup chart
+        id: create_burnup_chart
+        run: |
+          # Assuming you have a script or tool to generate the burnup chart
+          # Replace this with the actual command to generate your chart
+          ./generate_burnup_chart.sh
+          echo "::set-output name=burnup_chart_path::burnup_chart.png"
+
+      - name: Send report to Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          member_issues=${{ steps.generate_issue_list.outputs.member_issues }}
+          burnup_chart_path=${{ steps.create_burnup_chart.outputs.burnup_chart_path }}
+
+          # Constructing the Discord message
+          message_content="**Weekly Report**\n\n"
+          for member in JoshFarwig mahirr476 Bhavya290223 namekeptanonymous; do
+            member_content=$(echo "$member_issues" | jq -r ".[$member]")
+            message_content+="**$member**:\n$member_content\n"
+          done
+
+          # Send the message to Discord
+          curl -H "Content-Type: application/json" \
+            -X POST \
+            -d '{
+              "username": "Github Actions",
+              "content": "'"${message_content//$'\n'/'\n'}"'",
+              "embeds": [{
+                "title": "Burnup Chart",
+                "image": {
+                  "url": "attachment://burnup_chart.png"
+                }
+              }]
+            }' \
+            -F "file1=@$burnup_chart_path;type=image/png" \
+            $DISCORD_WEBHOOK_URL

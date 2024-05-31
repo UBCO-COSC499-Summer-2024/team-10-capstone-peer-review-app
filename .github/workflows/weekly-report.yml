@@ -9,7 +9,6 @@ on:
 
 jobs:
   weekly_report:
-    if: github.event.issue_comment.body == 'autolog'
     runs-on: ubuntu-latest
 
     steps:
@@ -31,6 +30,9 @@ jobs:
         run: |
           issues=$(gh issue list --state all --search "updated:>=$(date -d '7 days ago' +'%Y-%m-%d')" --json number,title,assignees)
           echo "::set-output name=issues::$issues"
+      - name: Debug Gathered Issues
+        run: |
+          echo "Gathered Issues: ${{ steps.gather_issues.outputs.issues }}"
 
       - name: Generate issue list view for each member
         id: generate_issue_list
@@ -62,6 +64,10 @@ jobs:
 
           echo "::set-output name=member_issues::$(declare -p member_issues)"
 
+      - name: Debug Member Issues
+        run: |
+          echo "Member Issues: ${{ steps.generate_issue_list.outputs.member_issues }}"
+
       - name: Send report to Discord
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.AUTO_LOG_DISCORD_WEBHOOK_URL }}
@@ -78,10 +84,13 @@ jobs:
           echo "Message Content: $message_content"
 
           # Send the message to Discord
-          curl -H "Content-Type: application/json" \
+          response=$(curl -w "%{http_code}" -H "Content-Type: application/json" \
             -X POST \
             -d '{
               "username": "Github Actions",
               "content": "'"${message_content//$'\n'/'\n'}"'"
             }' \
-            $DISCORD_WEBHOOK_URL
+            $DISCORD_WEBHOOK_URL)
+          http_code=$(tail -n1 <<< "$response")
+          echo "HTTP Response Code: $http_code"
+          echo "Response: ${response::-3}"  # Remove the HTTP code from the response for logging

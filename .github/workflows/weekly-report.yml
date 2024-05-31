@@ -16,6 +16,16 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas matplotlib
+
       - name: Gather issues from the past 7 days
         id: gather_issues
         run: |
@@ -55,9 +65,7 @@ jobs:
       - name: Create burnup chart
         id: create_burnup_chart
         run: |
-          # Assuming you have a script or tool to generate the burnup chart
-          # Replace this with the actual command to generate your chart
-          ./generate_burnup_chart.sh
+          python ./.github/workflows/generate_burnup_chart.py
           echo "::set-output name=burnup_chart_path::burnup_chart.png"
 
       - name: Send report to Discord

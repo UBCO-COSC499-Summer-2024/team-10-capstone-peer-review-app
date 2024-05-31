@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pandas matplotlib
+          pip install pandas matplotlib jq
 
       - name: Gather issues from the past 7 days
         id: gather_issues
@@ -35,7 +35,7 @@ jobs:
       - name: Generate issue list view for each member
         id: generate_issue_list
         run: |
-          issues=${{ steps.gather_issues.outputs.issues }}
+          issues='${{ steps.gather_issues.outputs.issues }}'
           declare -A member_issues
 
           for member in JoshFarwig mahirr476 Bhavya290223 namekeptanonymous; do
@@ -66,21 +66,22 @@ jobs:
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.AUTO_LOG_DISCORD_WEBHOOK_URL }}
         run: |
-          member_issues=${{ steps.generate_issue_list.outputs.member_issues }}
+          member_issues=$(echo '${{ steps.generate_issue_list.outputs.member_issues }}' | jq -r 'to_entries | map("\(.key): \(.value|tostring)") | .[]')
 
           # Constructing the Discord message
           message_content="**Weekly Report**\n\n"
           for member in JoshFarwig mahirr476 Bhavya290223 namekeptanonymous; do
-            member_content=$(echo "$member_issues" | jq -r ".[$member]")
+            member_content=$(echo "$member_issues" | grep "^$member: " | cut -d' ' -f2-)
             message_content+="**$member**:\n$member_content\n"
           done
+
+          echo "Message Content: $message_content"
 
           # Send the message to Discord
           curl -H "Content-Type: application/json" \
             -X POST \
             -d '{
               "username": "Github Actions",
-              "content": "'"${message_content//$'\n'/'\n'}"'",
+              "content": "'"${message_content//$'\n'/'\n'}"'"
             }' \
-            -F "file1=@$burnup_chart_path;type=image/png" \
             $DISCORD_WEBHOOK_URL

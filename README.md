@@ -9,4 +9,4 @@
 - Josh Farwig
 - Mahir Rahman
 
-## This file hosts only the weekly team and individual logs
+## This branch hosts only the weekly team and individual logs

@@ -3,7 +3,7 @@ name: Weekly Report Automation
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * 1' # Runs at midnight every Monday
+    - cron: '30 0 * * 5' # Runs at midnight every Friday
   issue_comment:
     types: [created]
 
@@ -27,9 +27,13 @@ jobs:
 
       - name: Gather issues from the past 7 days
         id: gather_issues
+        env:
+          ISSUE_ASSIGN_DISCORD_GITHUB_TOKEN: ${{ secrets.ISSUE_ASSIGN_DISCORD_GITHUB_TOKEN }}
         run: |
-          issues=$(gh issue list --state all --search "updated:>=$(date -d '7 days ago' +'%Y-%m-%d')" --json number,title,assignees)
-          echo "::set-output name=issues::$issues"
+          ISSUE_API_URL="https://api.github.com/repos/${{ github.repository }}/issues"
+          ISSUES_JSON=$(curl -H "Authorization: token ${{ secrets.ISSUE_ASSIGN_DISCORD_GITHUB_TOKEN }}" -X GET "$ISSUE_API_URL?since=$(date -d '7 days ago' -u +'%Y-%m-%dT%H:%M:%SZ')&state=all")
+          echo "::set-output name=issues::$ISSUES_JSON"
+
       - name: Debug Gathered Issues
         run: |
           echo "Gathered Issues: ${{ steps.gather_issues.outputs.issues }}"
@@ -38,6 +42,7 @@ jobs:
         id: generate_issue_list
         run: |
           issues='${{ steps.gather_issues.outputs.issues }}'
+          echo "Issues JSON: $issues"
           declare -A member_issues
 
           for member in JoshFarwig mahirr476 Bhavya290223 namekeptanonymous; do

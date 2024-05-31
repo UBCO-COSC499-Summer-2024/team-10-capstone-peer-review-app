@@ -64,7 +64,7 @@ jobs:
 
       - name: Send report to Discord
         env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.AUTO_LOG_DISCORD_WEBHOOK_URL }}
         run: |
           member_issues=${{ steps.generate_issue_list.outputs.member_issues }}
 

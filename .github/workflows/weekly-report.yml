@@ -62,18 +62,11 @@ jobs:
 
           echo "::set-output name=member_issues::$(declare -p member_issues)"
 
-      - name: Create burnup chart
-        id: create_burnup_chart
-        run: |
-          python ./.github/workflows/generate_burnup_chart.py
-          echo "::set-output name=burnup_chart_path::burnup_chart.png"
-
       - name: Send report to Discord
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           member_issues=${{ steps.generate_issue_list.outputs.member_issues }}
-          burnup_chart_path=${{ steps.create_burnup_chart.outputs.burnup_chart_path }}
 
           # Constructing the Discord message
           message_content="**Weekly Report**\n\n"
@@ -88,12 +81,6 @@ jobs:
             -d '{
               "username": "Github Actions",
               "content": "'"${message_content//$'\n'/'\n'}"'",
-              "embeds": [{
-                "title": "Burnup Chart",
-                "image": {
-                  "url": "attachment://burnup_chart.png"
-                }
-              }]
             }' \
             -F "file1=@$burnup_chart_path;type=image/png" \
             $DISCORD_WEBHOOK_URL

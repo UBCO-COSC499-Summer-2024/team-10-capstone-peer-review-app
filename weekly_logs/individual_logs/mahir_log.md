@@ -1,11 +1,10 @@
 # Mahir Rahman's Individual Work Logs
-task timings are estimated.
 
-May 31: 
+May 31st: 
 - Started working on weekly-log automation process on GitHub actions - 3h
     - Spent a lot of time working with python scripts before moving to GitHub actions, I wasn’t aware of actions so I wasted a little time on python
     - YML document was created but ran into a GitHub token problem (not sure how to create one) however, Josh, my team member has good experience with this so I left him a note to help me fix my bugs.
-    - Started UI wireframe design on figma - 1hr
+- Started UI wireframe design on figma - 1hr
     - Planning skeleton build of UI - 1hr
  
 May 30th:
@@ -19,7 +18,7 @@ May 30th:
     - Submitted the compiled video on canvas
  
 May 29th: 
-- Joined team meeting to discuss a run through of the entire project plan document - 2.5hr
+- Joined team meeting to discuss a run-through of the entire project plan document - 2.5hr
     - Made several edits and figured out what works/what doesn't with the entire team
 - Created an outline for Project Requirements Video - 30min
 

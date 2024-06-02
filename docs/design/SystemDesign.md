@@ -24,11 +24,11 @@ The team is required to create comprehensive Level 0 and Level 1 Data Flow Diagr
 
 ### Level 0 DFD
 
-![Level 0 DFD](photos/level0dfd.jpg)
+![Level 0 DFD](images/level0dfd.jpg)
 
 ### Level 1 DFD
 
-![Level 1 DFD](photos/level1dfd.jpg)
+![Level 1 DFD](images/level1dfd.jpg)
 
 ## User Interface (UI) Design
 

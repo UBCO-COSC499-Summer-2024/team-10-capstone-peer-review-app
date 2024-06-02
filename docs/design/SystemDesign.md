@@ -20,7 +20,15 @@ Provide an ER diagram of the entities and relationships you anticipate having in
 
 ## Data Flow Diagram (Level 0/Level 1)
 
-The team is required to create comprehensive Level 0 and Level 1 Data Flow Diagrams (DFDs) to visually represent the system’s data flow, including key processes, data stores, and data movements.  The deliverables will include a high-level context diagram, a detailed Level 1 DFD, and supporting documentation to facilitate the understanding of data movement within the system.   Remember that within a L1 DFD, the same general level of abstraction should apply to all processes (review 310 notes for guidance),
+The team is required to create comprehensive Level 0 and Level 1 Data Flow Diagrams (DFDs) to visually represent the system’s data flow, including key processes, data stores, and data movements.  The deliverables will include a high-level context diagram, a detailed Level 1 DFD, and supporting documentation to facilitate the understanding of data movement within the system.   Remember that within a L1 DFD, the same general level of abstraction should apply to all processes (review 310 notes for guidance).
+
+### Level 0 DFD
+
+![Level 0 DFD](photos/level0dfd.jpg)
+
+### Level 1 DFD
+
+![Level 1 DFD](photos/level1dfd.jpg)
 
 ## User Interface (UI) Design
 

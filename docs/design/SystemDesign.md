@@ -26,6 +26,8 @@ The team is required to create comprehensive Level 0 and Level 1 Data Flow Diagr
 
 ![Level 0 DFD](images/level0dfd.jpg)
 
+Here, we have the Level 0 DFD representing the PeerGrade system! We have the three main user types represented here as well: Students, Instructors, and Administrators. The PeerGrade system acts as the central process, facilitating data flows such as: Students submit assignments, receive feedback, request to join classes, and create groups, while instructors manage assignments, provide feedback, and create classroom and groups. Admins oversee system management, process reports, and upgrade user permissions.
+
 ### Level 1 DFD
 
 ![Level 1 DFD](images/level1dfd.jpg)

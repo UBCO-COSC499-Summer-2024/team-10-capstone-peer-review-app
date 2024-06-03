@@ -120,6 +120,163 @@ Extending from your requirements, the team will need to develop a set of usage s
 |                 | 1. Administrator receives the report. |
 | Description:    | This use case describes how users send reports to the administrator. |
 
+| ID:             | 6                             |
+|-----------------|-------------------------------|
+| Name:           | Submit Assignment             |
+| Actor(s):       | Student                       |
+| Flow of Events: |                               |
+|                 | 1. Student navigates to the assignment submission page. |
+|                 | 2. Student uploads the assignment file. |
+|                 | 3. Student submits the assignment. |
+|                 | 4. System records the submission and notifies the instructor. |
+| Pre-Conditions: |                               |
+|                 | 1. Student must be logged into the system. |
+|                 | 2. Student must be enrolled in the course. |
+| Post-Conditions:|                               |
+|                 | 1. Assignment is submitted and recorded. |
+| Description:    | This use case describes how students submit assignments. |
+
+| ID:             | 6.a                           |
+|-----------------|-------------------------------|
+| Name:           | Comments b/w Instructor & Student   |
+| Actor(s):       | Student                       |
+| Flow of Events: |                               |
+|                 | 1. Student/instructor navigates to the comments section of a particular assignment's page. |
+|                 | 2. Student/instructor writes the comment. |
+|                 | 3. Student/instructor submits the comment. |
+|                 | 4. System sends the comment to the Student/instructor. |
+| Pre-Conditions: |                               |
+|                 | 1. Student/instructor must be logged into the system. |
+| Post-Conditions:|                               |
+|                 | 1. Student/instructor receives the comment. |
+| Description:    | This use case describes how students & instructors can send comments to each other under a certain assignment. |
+
+| ID:             | 7                             |
+|-----------------|-------------------------------|
+| Name:           | View Assignment Feedback      |
+| Actor(s):       | Student                       |
+| Flow of Events: |                               |
+|                 | 1. Student navigates to a particular assignment's page. |
+|                 | 2. Student is able to see comments next to where their submission is displayed. |
+| Pre-Conditions: |                               |
+|                 | 1. Student has submitted the assignment. |
+|                 | 2. Instructor has given the student feedback on their assignment. |
+| Post-Conditions:|                               |
+|                 | 1. Student will have seen their submission's feedback. |
+| Description:    | This use case describes how students will be able to see their instructor's feedback on their assignment submissions. |
+
+| ID:             | 8                             |
+|-----------------|-------------------------------|
+| Name:           | View Assignments & its Details|
+| Actor(s):       | Student                     |
+| Flow of Events: |                               |
+|                 | 1. Student navigates to the assignments page. |
+|                 | 2. Student selects a specific assignment to view its details. |
+|                 | 3. System displays the assignment details, including instructions, due date, and the rubric. |
+| Pre-Conditions: |                               |
+|                 | 1. Student must be logged into the system and be enrolled in a class. |
+|                 | 1. Instructor must have upload an assignment for the class. |
+| Post-Conditions:|                               |
+|                 | 1. Student views the details of the selected assignment. |
+| Description:    | This use case describes how students view details of their assignments. |
+
+| ID:             | 9.a                           |
+|-----------------|-------------------------------|
+| Name:           | Send Peer Review Feedback    |
+| Actor(s):       | Student                     |
+| Flow of Events: |                               |
+|                 | 1. Student navigates to the peer review feedback section for a specific submission. |
+|                 | 2. Student provides feedback on the submission according to provided guidelines. |
+|                 | 3. Student submits the feedback. |
+| Pre-Conditions: |                               |
+|                 | 1. Student must be logged into the system. |
+| Post-Conditions:|                               |
+|                 | 1. Feedback is submitted to the system. |
+| Description:    | This use case describes how students send feedback during the peer review process. |
+
+| ID:             | 9.b                           |
+|-----------------|-------------------------------|
+| Name:           | View Peer Review Feedback    |
+| Actor(s):       | Student                     |
+| Flow of Events: |                               |
+|                 | 1. Student navigates to the peer review feedback section for their submission. |
+|                 | 2. System displays feedback received from peers. |
+| Pre-Conditions: |                               |
+|                 | 1. Student must be logged into the system. |
+| Post-Conditions:|                               |
+|                 | 1. Student views feedback received from peers. |
+| Description:    | This use case describes how students view feedback received during the peer review process. |
+
+| ID:             | 9.c                           |
+|-----------------|-------------------------------|
+| Name:           | Assign Peer Review Submissions |
+| Actor(s):       | Instructor                  |
+| Flow of Events: |                               |
+|                 | 1. Instructor navigates to the peer review assignment settings. |
+|                 | 2. Instructor assigns submissions to students for peer review. |
+| Pre-Conditions: |                               |
+|                 | 1. Instructor must be logged into the system. |
+|                 | 2. Peer review process must be enabled for the assignment. |
+| Post-Conditions:|                               |
+|                 | 1. Submissions are assigned to students for peer review. |
+| Description:    | This use case describes how instructors assign submissions to students for peer review. |
+
+| ID:             | 9.d                           |
+|-----------------|-------------------------------|
+| Name:           | Manage Peer Review Submissions |
+| Actor(s):       | Instructor                  |
+| Flow of Events: |                               |
+|                 | 1. Instructor navigates to the peer review assignment settings. |
+|                 | 2. Instructor manages submissions assigned for peer review, which may include reviewing, reassigning, or closing the peer review process. |
+| Pre-Conditions: |                               |
+|                 | 1. Instructor must be logged into the system. |
+|                 | 2. Peer review process must be enabled for the assignment. |
+| Post-Conditions:|                               |
+|                 | 1. Peer review submissions are managed according to instructor actions. |
+| Description:    | This use case describes how instructors manage submissions assigned for peer review. |
+
+| ID:             | 10                            |
+|-----------------|-------------------------------|
+| Name:           | Request to Become Instructor |
+| Actor(s):       | Student                     |
+| Flow of Events: |                               |
+|                 | 1. Student navigates to the "Request Instructor" section on the Settings page. |
+|                 | 2. Student fills out the request form. |
+|                 | 3. Student submits the request. |
+| Pre-Conditions: |                               |
+|                 | 1. Student must be logged into the system. |
+| Post-Conditions:|                               |
+|                 | 1. Request is submitted for review. |
+| Description:    | This use case describes how students request to become an instructor. |
+
+| ID:             | 11                            |
+|-----------------|-------------------------------|
+| Name:           | Create New Group             |
+| Actor(s):       | Student, Instructor         |
+| Flow of Events: |                               |
+|                 | 1. User navigates to the "Create Group" section on their class's page. |
+|                 | 2. User provides group details like name, description, and members. |
+|                 | 3. User submits the form to create the group. |
+| Pre-Conditions: |                               |
+|                 | 1. User must be logged into the system. |
+| Post-Conditions:|                               |
+|                 | 1. New group is created. |
+| Description:    | This use case describes how users create a new group. |
+
+| ID:             | 12                            |
+|-----------------|-------------------------------|
+| Name:           | Manage Group                 |
+| Actor(s):       | Student, Instructor         |
+| Flow of Events: |                               |
+|                 | 1. User navigates to the group in question under 'Groups' on the class' page. |
+|                 | 2. User selects a group to manage. |
+|                 | 3. User performs actions like adding/removing members, changing group settings, etc. |
+| Pre-Conditions: |                               |
+|                 | 1. User must be logged into the system. |
+| Post-Conditions:|                               |
+|                 | 1. Group settings are updated as per user actions. |
+| Description:    | This use case describes how users manage a group they are part of. |
+
 
 ## Database Design 
 

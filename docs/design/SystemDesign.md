@@ -14,6 +14,54 @@ Recall the system architecture slides and tell us which architecture pattern you
 
 Extending from your requirements, the team will need to develop a set of usage scenarios for each user group documented as properly dressed use cases  (including diagrams following the UML syntax and descriptions as presented in class).   You may also want to include journey lines with some use cases. 
 
+| Use Case ID | Use Case Name                        | Actor(s)            |
+|-------------|--------------------------------------|---------------------|
+| 1           | Register Account                     | All Users           |
+| 2           | Login Account                        | All Users           |
+| 3           | Forgot Password                      | All Users           |
+| 4           | View List of Courses                 | All Users           |
+| 5           | Send Reports to Admin                | All Users           |
+| 6           | Submit Assignment                    | Student             |
+| 6.a         | Comments b/w Instructor & Student    | Student, Instructor |
+| 7           | View Assignment Feedback             | Student             |
+| 8           | View Assignments & its Details       | Student             |
+| 10          | Participate in Peer Review           | Student             |
+| 10.a        | Send Peer Review Feedback            | Student             |
+| 10.b        | View Peer Review Feedback            | Student             |
+| 10.c        | Assign Peer Review Submissions       | Instructor          |
+| 10.d        | Manage Peer Review Submissions       | Instructor          |
+| 12          | Request to Become Instructor         | Student             |
+| 13          | Create New Group                     | Student, Instructor |
+| 14          | Manage Group                         | Student, Instructor |
+| 15          | Join Group                           | Student             |
+| 17          | Create New Class                     | Instructor          |
+| 18          | Manage Class                         | Instructor          |
+| 18.a        | Kick Students from Class             | Instructor          |
+| 18.b        | Add Students to Class                | Instructor          |
+| 19          | Upload Assignment                    | Instructor          |
+| 19.a        | Add Assignment Rubric                | Instructor          |
+| 20          | View Class Dashboard                 | Student, Instructor |
+| 21          | View Student's Dashboard (Progress)  | Student, Instructor |
+| 22          | Manage User Accounts                 | Administrator       |
+| 23          | Monitor System Health                | Administrator       |
+| 24          | Configure System Settings            | Administrator       |
+| 25          | Review Instructor Perms Applications | Administrator       |
+| 26          | Delete & Hide Classes                | Administrator       |
+| 27          | View User Reports                    | Administrator       |
+
+| ID:             |                               |
+|-----------------|-------------------------------|
+| Name:           |                               |
+| Actor(s):       |                               |
+| Flow of Events: |                               |
+|                 | 1.                            |
+| Pre-Conditions: |                               |
+|                 | 1.                            |
+|                 | 2.                            |
+| Post-Conditions:|                               |
+|                 | 1.                            |
+| Description:    |                               |
+
 ## Database Design 
 
 Provide an ER diagram of the entities and relationships you anticipate having in your system (this will most likely change, but you need a starting point).  In a few sentences, explain why the data is modelled this way and what is the purpose of each table/attribute.  For this part, you only need to have ONE diagram and an explanation.

@@ -25,42 +25,101 @@ Extending from your requirements, the team will need to develop a set of usage s
 | 6.a         | Comments b/w Instructor & Student    | Student, Instructor |
 | 7           | View Assignment Feedback             | Student             |
 | 8           | View Assignments & its Details       | Student             |
-| 10          | Participate in Peer Review           | Student             |
-| 10.a        | Send Peer Review Feedback            | Student             |
-| 10.b        | View Peer Review Feedback            | Student             |
-| 10.c        | Assign Peer Review Submissions       | Instructor          |
-| 10.d        | Manage Peer Review Submissions       | Instructor          |
-| 12          | Request to Become Instructor         | Student             |
-| 13          | Create New Group                     | Student, Instructor |
-| 14          | Manage Group                         | Student, Instructor |
-| 15          | Join Group                           | Student             |
-| 17          | Create New Class                     | Instructor          |
-| 18          | Manage Class                         | Instructor          |
-| 18.a        | Kick Students from Class             | Instructor          |
-| 18.b        | Add Students to Class                | Instructor          |
-| 19          | Upload Assignment                    | Instructor          |
-| 19.a        | Add Assignment Rubric                | Instructor          |
-| 20          | View Class Dashboard                 | Student, Instructor |
-| 21          | View Student's Dashboard (Progress)  | Student, Instructor |
-| 22          | Manage User Accounts                 | Administrator       |
-| 23          | Monitor System Health                | Administrator       |
-| 24          | Configure System Settings            | Administrator       |
-| 25          | Review Instructor Perms Applications | Administrator       |
-| 26          | Delete & Hide Classes                | Administrator       |
-| 27          | View User Reports                    | Administrator       |
+| 9          | Participate in Peer Review           | Student             |
+| 9.a        | Send Peer Review Feedback            | Student             |
+| 9.b        | View Peer Review Feedback            | Student             |
+| 9.c        | Assign Peer Review Submissions       | Instructor          |
+| 9.d        | Manage Peer Review Submissions       | Instructor          |
+| 10          | Request to Become Instructor         | Student             |
+| 11          | Create New Group                     | Student, Instructor |
+| 12          | Manage Group                         | Student, Instructor |
+| 13          | Join Group                           | Student             |
+| 14          | Create New Class                     | Instructor          |
+| 15          | Manage Class                         | Instructor          |
+| 15.a        | Kick Students from Class             | Instructor          |
+| 15.b        | Add Students to Class                | Instructor          |
+| 16          | Upload Assignment                    | Instructor          |
+| 16.a        | Add Assignment Rubric                | Instructor          |
+| 17          | View Class Dashboard                 | Student, Instructor |
+| 18          | View Student's Dashboard (Progress)  | Student, Instructor |
+| 19          | Manage User Accounts                 | Administrator       |
+| 20          | Monitor System Health                | Administrator       |
+| 21          | Configure System Settings            | Administrator       |
+| 22          | Review Instructor Perms Applications | Administrator       |
+| 23          | Delete & Hide Classes                | Administrator       |
+| 24          | View User Reports                    | Administrator       |
 
-| ID:             |                               |
+| ID:             | 1                             |
 |-----------------|-------------------------------|
-| Name:           |                               |
-| Actor(s):       |                               |
+| Name:           | Register Account              |
+| Actor(s):       | All Users                     |
 | Flow of Events: |                               |
-|                 | 1.                            |
+|                 | 1. User navigates to the registration page. |
+|                 | 2. User fills out the registration form and submits it. |
+|                 | 4. System creates a new account and sends a confirmation email. |
 | Pre-Conditions: |                               |
-|                 | 1.                            |
-|                 | 2.                            |
+|                 | 1. User must have a valid email address. |
 | Post-Conditions:|                               |
-|                 | 1.                            |
-| Description:    |                               |
+|                 | 1. A new account is created. |
+| Description:    | This use case describes how a new user registers for an account. |
+
+| ID:             | 2                             |
+|-----------------|-------------------------------|
+| Name:           | Login Account                 |
+| Actor(s):       | All Users                     |
+| Flow of Events: |                               |
+|                 | 1. User navigates to the login page. |
+|                 | 2. User enters their credentials and submits the form. |
+|                 | 3. System authenticates the user and grants access. |
+| Pre-Conditions: |                               |
+|                 | 1. User must be registered. |
+|                 | 2. User must have valid login credentials. |
+| Post-Conditions:|                               |
+|                 | 1. User is logged into the system. |
+| Description:    | This use case describes how a user logs into their account. |
+
+| ID:             | 3                             |
+|-----------------|-------------------------------|
+| Name:           | Forgot Password               |
+| Actor(s):       | All Users                     |
+| Flow of Events: |                               |
+|                 | 1. User navigates to the forgot password page. |
+|                 | 2. User enters their registered email address and submits the form. |
+|                 | 3. System sends a password reset link to the user's email. |
+| Pre-Conditions: |                               |
+|                 | 1. User must be registered. |
+| Post-Conditions:|                               |
+|                 | 1. User receives a password reset link. |
+| Description:    | This use case describes how a user requests a password reset. |
+
+| ID:             | 4                             |
+|-----------------|-------------------------------|
+| Name:           | View List of Courses          |
+| Actor(s):       | All Users                     |
+| Flow of Events: |                               |
+|                 | 1. User navigates to the courses page. |
+|                 | 2. System displays a list of available courses. |
+|                 | 3. User can now search for a specific course. |
+| Pre-Conditions: |                               |
+|                 | 1. User must be logged into the system. |
+| Post-Conditions:|                               |
+|                 | 1. User views the list of available courses. |
+| Description:    | This use case describes how users view the list of available courses. |
+
+| ID:             | 5                             |
+|-----------------|-------------------------------|
+| Name:           | Send Reports to Admin         |
+| Actor(s):       | All Users                     |
+| Flow of Events: |                               |
+|                 | 1. User clicks the report button (which is present on every page). |
+|                 | 2. User fills out the report form and submits it. |
+|                 | 3. System sends the report to the administrator. |
+| Pre-Conditions: |                               |
+|                 | 1. User must be logged into the system. |
+| Post-Conditions:|                               |
+|                 | 1. Administrator receives the report. |
+| Description:    | This use case describes how users send reports to the administrator. |
+
 
 ## Database Design 
 

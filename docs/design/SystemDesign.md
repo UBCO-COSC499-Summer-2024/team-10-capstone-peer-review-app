@@ -39,14 +39,13 @@ Extending from your requirements, the team will need to develop a set of usage s
 | 15.a        | Kick Students from Class             | Instructor          |
 | 15.b        | Add Students to Class                | Instructor          |
 | 16          | Upload Assignment                    | Instructor          |
-| 16.a        | Add Assignment Rubric                | Instructor          |
 | 17          | View Class Dashboard                 | Student, Instructor |
-| 18          | View Student's Dashboard (Progress)  | Student, Instructor |
+| 18          | View Student's Progress              | Student, Instructor |
 | 19          | Manage User Accounts                 | Administrator       |
 | 20          | Monitor System Health                | Administrator       |
 | 21          | Configure System Settings            | Administrator       |
 | 22          | Review Instructor Perms Applications | Administrator       |
-| 23          | Delete & Hide Classes                | Administrator       |
+| 23          | Delete Classes                       | Administrator       |
 | 24          | View User Reports                    | Administrator       |
 
 | ID:             | 1                             |
@@ -276,6 +275,203 @@ Extending from your requirements, the team will need to develop a set of usage s
 | Post-Conditions:|                               |
 |                 | 1. Group settings are updated as per user actions. |
 | Description:    | This use case describes how users manage a group they are part of. |
+
+| ID:             | 13                             |
+|-----------------|-------------------------------|
+| Name:           | Join Group                    |
+| Actor(s):       | Student                       |
+| Flow of Events: |                               |
+|                 | 1. Student navigates to the groups page. |
+|                 | 2. Student selects the group they wish to join. |
+|                 | 3. System adds the student to the group. |
+| Pre-Conditions: |                               |
+|                 | 1. Student must be logged into the system. |
+| Post-Conditions:|                               |
+|                 | 1. Student joins the group or a join request is sent. |
+| Description:    | This use case describes how students join a group. |
+
+| ID:             | 14                             |
+|-----------------|-------------------------------|
+| Name:           | Create New Class              |
+| Actor(s):       | Instructor                    |
+| Flow of Events: |                               |
+|                 | 1. Instructor clicks the '+' button on the Classes page. |
+|                 | 2. Instructor fills out the class details and submits the form. |
+|                 | 3. System creates the new class and adds it to the instructor's dashboard. |
+| Pre-Conditions: |                               |
+|                 | 1. Instructor must be logged into the system. |
+| Post-Conditions:|                               |
+|                 | 1. A new class is created. |
+| Description:    | This use case describes how instructors create a new class. |
+
+| ID:             | 15                             |
+|-----------------|-------------------------------|
+| Name:           | Manage Class                  |
+| Actor(s):       | Instructor                    |
+| Flow of Events: |                               |
+|                 | 1. Instructor navigates to the particular class' page. |
+|                 | 2. Instructor clicks the Edit button. |
+|                 | 3. Instructor can edit class details, add/remove students, etc. |
+| Pre-Conditions: |                               |
+|                 | 1. Instructor must be logged into the system. |
+| Post-Conditions:|                               |
+|                 | 1. Class settings are updated as per instructor actions. |
+| Description:    | This use case describes how instructors manage a class. |
+
+| ID:             | 15.a                           |
+|-----------------|-------------------------------|
+| Name:           | Kick Students from Class      |
+| Actor(s):       | Instructor                    |
+| Flow of Events: |                               |
+|                 | 1. Instructor navigates to the People section on the class' page. |
+|                 | 2. Instructor clicks the Kick button present next to each student they wish to remove. |
+|                 | 3. System removes the selected students from the class. |
+| Pre-Conditions: |                               |
+|                 | 1. Instructor must be logged into the system. |
+| Post-Conditions:|                               |
+|                 | 1. Selected students are removed from the class. |
+| Description:    | This use case describes how instructors remove students from a class. |
+
+| ID:             | 15.b                           |
+|-----------------|-------------------------------|
+| Name:           | Add Students to Class         |
+| Actor(s):       | Instructor                    |
+| Flow of Events: |                               |
+|                 | 1. Instructor navigates to the People section on the class' page. |
+|                 | 2. Instructor selects the students to be added to the class from a list of all Students in the system. |
+|                 | 3. System adds the selected students to the class. |
+| Pre-Conditions: |                               |
+|                 | 1. Instructor must be logged into the system. |
+| Post-Conditions:|                               |
+|                 | 1. Selected students are added to the class. |
+| Description:    | This use case describes how instructors add students to a class. |
+
+| ID:             | 16                             |
+|-----------------|-------------------------------|
+| Name:           | Upload Assignment             |
+| Actor(s):       | Instructor                    |
+| Flow of Events: |                               |
+|                 | 1. Instructor navigates to the class's Edit/Data page. |
+|                 | 2. Instructor clicks the Add Assignment button. |
+|                 | 3. Instructor fills out the assignment details (incl. rubric) and uploads any necessary files. |
+|                 | 4. Instructor submits the assignment. |
+|                 | 5. System makes the assignment available to students in the class. |
+| Pre-Conditions: |                               |
+|                 | 1. Instructor must be logged into the system. |
+| Post-Conditions:|                               |
+|                 | 1. Assignment is uploaded and available to students. |
+| Description:    | This use case describes how instructors upload assignments for their classes. |
+
+| ID:             | 17                             |
+|-----------------|-------------------------------|
+| Name:           | View Class Dashboard          |
+| Actor(s):       | Student, Instructor           |
+| Flow of Events: |                               |
+|                 | 1. User navigates to the class' home page. |
+|                 | 2. System displays an overview of the class, including assignments, announcements, and grades. |
+| Pre-Conditions: |                               |
+|                 | 1. User must be logged into the system. |
+|                 | 2. User must be enrolled in or teaching the class. |
+| Post-Conditions:|                               |
+|                 | 1. User views the class dashboard. |
+| Description:    | This use case describes how users view the dashboard of a class they are enrolled in or teaching. |
+
+| ID:             | 18                             |
+|-----------------|-------------------------------|
+| Name:           | View Student's Progress |
+| Actor(s):       | Student, Instructor           |
+| Flow of Events: |                               |
+|                 | 1. Student navigates to their class' page and goes to the People section. |
+|                 | 2. Instructor clicks on a student whose stats they wish to see. |
+|                 | 3. System displays an overview of the student's progress, including completed assignments, grades, and feedback. |
+| Pre-Conditions: |                               |
+|                 | 1. User must be logged into the system. |
+| Post-Conditions:|                               |
+|                 | 1. User views the student's progress. |
+| Description:    | This use case describes how users view a student's progress dashboard. |
+
+| ID:             | 19                             |
+|-----------------|-------------------------------|
+| Name:           | Manage User Accounts          |
+| Actor(s):       | Administrator                 |
+| Flow of Events: |                               |
+|                 | 1. Administrator navigates to the user accounts management page. |
+|                 | 2. Administrator performs actions like creating, editing, or deleting user accounts. |
+| Pre-Conditions: |                               |
+|                 | 1. Administrator must be logged into the system. |
+| Post-Conditions:|                               |
+|                 | 1. User accounts are managed as per administrator actions. |
+| Description:    | This use case describes how administrators manage user accounts. |
+
+| ID:             | 20                             |
+|-----------------|-------------------------------|
+| Name:           | Monitor System Health         |
+| Actor(s):       | Administrator                 |
+| Flow of Events: |                               |
+|                 | 1. Administrator navigates to the system health monitoring page. |
+|                 | 2. System displays the current status of various system components. |
+| Pre-Conditions: |                               |
+|                 | 1. Administrator must be logged into the system. |
+| Post-Conditions:|                               |
+|                 | 1. Administrator monitors the health of the system. |
+| Description:    | This use case describes how administrators monitor the health of the system. |
+
+| ID:             | 21                             |
+|-----------------|-------------------------------|
+| Name:           | Configure System Settings     |
+| Actor(s):       | Administrator                 |
+| Flow of Events: |                               |
+|                 | 1. Administrator navigates to the Settings page. |
+|                 | 2. Administrator changes settings as needed. |
+|                 | 3. Administrator saves the changes. |
+| Pre-Conditions: |                               |
+|                 | 1. Administrator must be logged into the system. |
+| Post-Conditions:|                               |
+|                 | 1. System settings are updated. |
+| Description:    | This use case describes how administrators configure system settings. |
+
+| ID:             | 22                             |
+|-----------------|-------------------------------|
+| Name:           | Review Instructor Perms Applications |
+| Actor(s):       | Administrator                 |
+| Flow of Events: |                               |
+|                 | 1. Administrator receives e-mails of the permissions upgrade requests submitted by Users. |
+|                 | 2. Administrator reviews the submitted applications. |
+|                 | 3. Administrator approves (by upgrading User to Instructor) or rejects the applications. |
+| Pre-Conditions: |                               |
+|                 | 1. Administrator must be logged into the system. |
+| Post-Conditions:|                               |
+|                 | 1. Applications are approved or rejected. |
+| Description:    | This use case describes how administrators review and respond to applications for instructor permissions. |
+
+| ID:             | 23                             |
+|-----------------|-------------------------------|
+| Name:           | Delete Classes         |
+| Actor(s):       | Administrator                 |
+| Flow of Events: |                               |
+|                 | 1. Administrator navigates to the class' Data/Edit page. |
+|                 | 2. Administrator clicks the Delete button. |
+|                 | 3. Administrator confirms the action. |
+|                 | 4. System deletes the selected classes. |
+| Pre-Conditions: |                               |
+|                 | 1. Administrator must be logged into the system. |
+| Post-Conditions:|                               |
+|                 | 1. Selected classes are deleted. |
+| Description:    | This use case describes how administrators delete classes. |
+
+| ID:             | 24                             |
+|-----------------|-------------------------------|
+| Name:           | View User Reports             |
+| Actor(s):       | Administrator                 |
+| Flow of Events: |                               |
+|                 | 1. Administrator navigates to the user reports page. |
+|                 | 2. System displays the reports submitted by users. |
+| Pre-Conditions: |                               |
+|                 | 1. Administrator must be logged into the system. |
+| Post-Conditions:|                               |
+|                 | 1. Administrator views the user reports. |
+| Description:    | This use case describes how administrators view reports submitted by users. |
+
 
 
 ## Database Design 

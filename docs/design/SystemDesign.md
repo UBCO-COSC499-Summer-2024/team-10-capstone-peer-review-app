@@ -472,7 +472,9 @@ Extending from your requirements, the team will need to develop a set of usage s
 |                 | 1. Administrator views the user reports. |
 | Description:    | This use case describes how administrators view reports submitted by users. |
 
+### Use Case Diagram
 
+![UML Use Case Diagram](images/use-case-diagram.png)
 
 ## Database Design 
 

@@ -25,11 +25,11 @@ Extending from your requirements, the team will need to develop a set of usage s
 | 6.a         | Comments b/w Instructor & Student    | Student, Instructor |
 | 7           | View Assignment Feedback             | Student             |
 | 8           | View Assignments & its Details       | Student             |
-| 9          | Participate in Peer Review           | Student             |
-| 9.a        | Send Peer Review Feedback            | Student             |
-| 9.b        | View Peer Review Feedback            | Student             |
-| 9.c        | Assign Peer Review Submissions       | Instructor          |
-| 9.d        | Manage Peer Review Submissions       | Instructor          |
+| 9           | Participate in Peer Review           | Student             |
+| 9.a         | Send Peer Review Feedback            | Student             |
+| 9.b         | View Peer Review Feedback            | Student             |
+| 9.c         | Assign Peer Review Submissions       | Instructor          |
+| 9.d         | Manage Peer Review Submissions       | Instructor          |
 | 10          | Request to Become Instructor         | Student             |
 | 11          | Create New Group                     | Student, Instructor |
 | 12          | Manage Group                         | Student, Instructor |
@@ -41,11 +41,11 @@ Extending from your requirements, the team will need to develop a set of usage s
 | 16          | Upload Assignment                    | Instructor          |
 | 17          | View Class Dashboard                 | Student, Instructor |
 | 18          | View Student's Progress              | Student, Instructor |
-| 19          | Manage User Accounts                 | Administrator       |
-| 20          | Monitor System Health                | Administrator       |
-| 21          | Configure System Settings            | Administrator       |
-| 22          | Review Instructor Perms Applications | Administrator       |
-| 23          | Delete Classes                       | Administrator       |
+| 19          | Delete Classes                       | Instructor, Administrator |
+| 20          | Manage User Accounts                 | Administrator       |
+| 21          | Monitor System Health                | Administrator       |
+| 22          | Configure System Settings            | Administrator       |
+| 23          | Review Instructor Perms Applications | Administrator       |
 | 24          | View User Reports                    | Administrator       |
 
 | ID:             | 1                             |
@@ -96,8 +96,8 @@ Extending from your requirements, the team will need to develop a set of usage s
 | Name:           | View List of Courses          |
 | Actor(s):       | All Users                     |
 | Flow of Events: |                               |
-|                 | 1. User navigates to the courses page. |
-|                 | 2. System displays a list of available courses. |
+|                 | 1. User navigates to the Classes page. |
+|                 | 2. System displays a list of courses they're enrolled in (Student), classes they teach (Instructor), or all courses (Admin). |
 |                 | 3. User can now search for a specific course. |
 | Pre-Conditions: |                               |
 |                 | 1. User must be logged into the system. |
@@ -391,6 +391,21 @@ Extending from your requirements, the team will need to develop a set of usage s
 | Description:    | This use case describes how users view a student's progress dashboard. |
 
 | ID:             | 19                             |
+|-----------------|--------------------------------|
+| Name:           | Delete Classes                 |
+| Actor(s):       | Instructor, Administrator      |
+| Flow of Events: |                                |
+|                 | 1. Instructor/Administrator navigates to the Classes (My Classrooms) page. |
+|                 | 2. Instructor/Administrator clicks the Delete button. |
+|                 | 3. Instructor/Administrator confirms the action. |
+|                 | 4. System deletes the selected classes. |
+| Pre-Conditions: |                                |
+|                 | 1. Instructor/Administrator must be logged into the system. |
+| Post-Conditions:|                                |
+|                 | 1. Selected classes are deleted. |
+| Description:    | This use case describes how instructors/administrators delete classes. |
+
+| ID:             | 20                             |
 |-----------------|-------------------------------|
 | Name:           | Manage User Accounts          |
 | Actor(s):       | Administrator                 |
@@ -403,7 +418,7 @@ Extending from your requirements, the team will need to develop a set of usage s
 |                 | 1. User accounts are managed as per administrator actions. |
 | Description:    | This use case describes how administrators manage user accounts. |
 
-| ID:             | 20                             |
+| ID:             | 21                             |
 |-----------------|-------------------------------|
 | Name:           | Monitor System Health         |
 | Actor(s):       | Administrator                 |
@@ -416,7 +431,7 @@ Extending from your requirements, the team will need to develop a set of usage s
 |                 | 1. Administrator monitors the health of the system. |
 | Description:    | This use case describes how administrators monitor the health of the system. |
 
-| ID:             | 21                             |
+| ID:             | 22                             |
 |-----------------|-------------------------------|
 | Name:           | Configure System Settings     |
 | Actor(s):       | Administrator                 |
@@ -430,7 +445,7 @@ Extending from your requirements, the team will need to develop a set of usage s
 |                 | 1. System settings are updated. |
 | Description:    | This use case describes how administrators configure system settings. |
 
-| ID:             | 22                             |
+| ID:             | 23                             |
 |-----------------|-------------------------------|
 | Name:           | Review Instructor Perms Applications |
 | Actor(s):       | Administrator                 |
@@ -444,20 +459,6 @@ Extending from your requirements, the team will need to develop a set of usage s
 |                 | 1. Applications are approved or rejected. |
 | Description:    | This use case describes how administrators review and respond to applications for instructor permissions. |
 
-| ID:             | 23                             |
-|-----------------|-------------------------------|
-| Name:           | Delete Classes         |
-| Actor(s):       | Administrator                 |
-| Flow of Events: |                               |
-|                 | 1. Administrator navigates to the class' Data/Edit page. |
-|                 | 2. Administrator clicks the Delete button. |
-|                 | 3. Administrator confirms the action. |
-|                 | 4. System deletes the selected classes. |
-| Pre-Conditions: |                               |
-|                 | 1. Administrator must be logged into the system. |
-| Post-Conditions:|                               |
-|                 | 1. Selected classes are deleted. |
-| Description:    | This use case describes how administrators delete classes. |
 
 | ID:             | 24                             |
 |-----------------|-------------------------------|

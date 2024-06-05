@@ -25,3 +25,39 @@ The team is required to create comprehensive Level 0 and Level 1 Data Flow Diagr
 ## User Interface (UI) Design
 
 The team is required to put forward a series of UI mock-ups that will be used as starting points for the design of the system   They can be minimal but the team will need to  have at least made some choices about the interaction flow of the application.  You should consider the different major aspects of user interactions and develop UI mockups for those (think about the different features/use cases and what pages are needed; you will have a number most likely).  Additionally, create a diagram to explain the navigation flow for the MVP  prototype (and any alternate flows).  When considering your UI, think about usability, accessibility, desktop and mobile uses.  As a team, you will need to discuss design choices for the system.
+
+## Dashboard UI
+<img width="906" alt="Screenshot 2024-06-05 at 11 36 14 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/f144ba3c-d8fe-4bef-8bfb-1f78ff5e40de">
+
+## Classes UI
+<img width="917" alt="Screenshot 2024-06-05 at 11 36 41 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/57704142-60d1-4803-8cfa-97f8d3d1dded">
+<img width="913" alt="Screenshot 2024-06-05 at 11 37 32 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/ec91fc32-aee2-4c9e-b48f-436b306410c1">
+<img width="914" alt="Screenshot 2024-06-05 at 11 37 45 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/10ff23b7-ad18-42e1-96c6-bd655c4b7b59">
+<img width="907" alt="Screenshot 2024-06-05 at 11 38 04 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/a12e871f-a94e-4adf-8f8b-835c90bbe996">
+
+## Assignment Page UI
+<img width="917" alt="Screenshot 2024-06-05 at 11 44 06 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/06c3c038-fa60-4d8a-aed2-85cadab1eab3">
+<img width="911" alt="Screenshot 2024-06-05 at 11 44 40 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/90b0babb-4e7a-48be-8703-fbbb6747c611">
+
+## Peer-Reviews UI
+<img width="867" alt="Screenshot 2024-06-05 at 11 47 00 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/201785d3-b009-4939-9941-b12e40368498">
+
+## Viewing/submitting review UI
+<img width="868" alt="Screenshot 2024-06-05 at 11 48 01 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/d7140ba7-0a89-4da7-b756-6a811c09f958">
+
+## Settings UI
+<img width="871" alt="Screenshot 2024-06-05 at 11 52 38 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/4040d184-01d7-45ce-b806-7e351bb0988f">
+
+
+# Instructor Views:
+## Classes UI 
+<img width="904" alt="Screenshot 2024-06-05 at 11 39 08 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/672ea999-a4c1-44ad-8552-0f2ef2f5f247">
+<img width="677" alt="Screenshot 2024-06-05 at 11 39 59 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/2497745d-d75a-4508-9c46-b6d2de4f67d1">
+
+## Uploading Assignment 
+<img width="888" alt="Screenshot 2024-06-05 at 11 40 32 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/351ca4d0-592b-437a-b1e9-ceb847a2ad6e">
+## component for selecting peer-reviewers for assignments:
+<img width="146" alt="Screenshot 2024-06-05 at 11 42 05 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/f5c0713d-3fd1-42a1-9e49-09d67555f7a1">
+
+## People view
+<img width="917" alt="Screenshot 2024-06-05 at 11 41 32 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/7a08a995-b055-43a2-bc63-9f68da0942d6">

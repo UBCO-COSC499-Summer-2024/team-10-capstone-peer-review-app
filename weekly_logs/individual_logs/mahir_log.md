@@ -1,4 +1,6 @@
 # Mahir Rahman's Individual Work Logs
+<img width="1218" alt="Screenshot 2024-06-05 at 10 28 05 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/5f06e8aa-c868-4b97-ac0d-6f31f837fd28">
+<img width="1215" alt="Screenshot 2024-06-05 at 10 28 18 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/a94b364f-0929-4296-acc6-bcacd64986df">
 
 May 31st: 
 - Started working on weekly-log automation process on GitHub actions - 3h

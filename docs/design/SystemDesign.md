@@ -28,6 +28,9 @@ The team is required to put forward a series of UI mock-ups that will be used as
 
 ### Please use the following Figma link for a comprehensive view of our UI: https://www.figma.com/design/DDBLqkl7hRm70yKNdcwFI1/PeerGrade---T10-team-library?node-id=0-1&t=YI9mMfqX5viX6LEv-1
 
+MVP Flow diagram:
+![MVP Flow Diagram](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/8d64fb6e-3f9d-42dd-83e0-fe74c0d3c2c6)
+
 * Our client has expressed that only desktop views are required for this project therefore, no mobile views have been created.
 
 # PeerGrade Wireframes:

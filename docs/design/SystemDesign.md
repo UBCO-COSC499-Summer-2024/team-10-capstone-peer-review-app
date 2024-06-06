@@ -26,38 +26,75 @@ The team is required to create comprehensive Level 0 and Level 1 Data Flow Diagr
 
 The team is required to put forward a series of UI mock-ups that will be used as starting points for the design of the system   They can be minimal but the team will need to  have at least made some choices about the interaction flow of the application.  You should consider the different major aspects of user interactions and develop UI mockups for those (think about the different features/use cases and what pages are needed; you will have a number most likely).  Additionally, create a diagram to explain the navigation flow for the MVP  prototype (and any alternate flows).  When considering your UI, think about usability, accessibility, desktop and mobile uses.  As a team, you will need to discuss design choices for the system.
 
+### Please use the following Figma link for a comprehensive view of our UI: https://www.figma.com/design/DDBLqkl7hRm70yKNdcwFI1/PeerGrade---T10-team-library?node-id=0-1&t=YI9mMfqX5viX6LEv-1
+
+* Our client has expressed that only desktop views are required for this project therefore, no mobile views have been created.
+
+# PeerGrade Wireframes:
+## Login UI
+* A nice-to-have feature - CWL type login to use and enter the platform however, the bare minimum will provide an authenticated login service with user differentiation of student/instructor/admin.
+![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/cb7b65e5-6d55-45c3-9b1c-a9c6f14d8447)
+
 ## Dashboard UI
-<img width="906" alt="Screenshot 2024-06-05 at 11 36 14 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/f144ba3c-d8fe-4bef-8bfb-1f78ff5e40de">
+* The Dashboard page is the first page accessed after a successful user login. It facilitates easy access to active classes and upcoming assignments with further navigation hosted on the navbar. The navbar also includes a notifications panel for viewing recent changes related to the user account and an avatar to identify the user who is logged in. 
+![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/e544ba98-23c9-4109-b7a9-35736bcc481a)
 
 ## Classes UI
-<img width="917" alt="Screenshot 2024-06-05 at 11 36 41 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/57704142-60d1-4803-8cfa-97f8d3d1dded">
-<img width="913" alt="Screenshot 2024-06-05 at 11 37 32 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/ec91fc32-aee2-4c9e-b48f-436b306410c1">
-<img width="914" alt="Screenshot 2024-06-05 at 11 37 45 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/10ff23b7-ad18-42e1-96c6-bd655c4b7b59">
-<img width="907" alt="Screenshot 2024-06-05 at 11 38 04 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/a12e871f-a94e-4adf-8f8b-835c90bbe996">
+The Class page consists of a variety of data and access links:
+1. A classroom navigation for the Home Page, Grades Page, Peoples Page, Groups Page, and Files Page.
+2. (nice to have) Announcement panels for recent class announcements and new assignment notifications.
+3. Categorized panels to differentiate assignments by weeks/units/however the instructor may name the categories on creation.
+4. Class statistics (Class grade view card, average peer grade card)
+5. (nice to have) Side action buttons
+6. (nice to have) To do a panel
+![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/64e882a5-22f6-4d53-920d-6fdfd3943be4)
+* Hovering over the document icon presents an info message related to the document progress status in terms of grading (For example: "is being graded", "graded", "peer-review grades pending", etc)
+![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/865c271d-da5f-4932-9306-f9d5ca64fc69)
+
+![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/1a9e3d0f-7830-4e6e-8bb3-b1efe35b5265)
+
+![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/e1716e9d-8ee9-4d86-b1f5-5afdab28d618)
+
 
 ## Assignment Page UI
-<img width="917" alt="Screenshot 2024-06-05 at 11 44 06 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/06c3c038-fa60-4d8a-aed2-85cadab1eab3">
-<img width="911" alt="Screenshot 2024-06-05 at 11 44 40 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/90b0babb-4e7a-48be-8703-fbbb6747c611">
+The assignments page hosts the functionality to view assignment details and submit an assignment. A nice-to-have feature will be hosting assignment comments.
+* Under the comments panel, we have a submission attempts view to view all attempted file submissions submitted by the user/student
+![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/2b1bfe83-854b-4138-b43c-6685d9958890)
+
+![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/baad3305-1970-4469-bc35-8381908c22ff)
+
 
 ## Peer-Reviews UI
-<img width="867" alt="Screenshot 2024-06-05 at 11 47 00 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/201785d3-b009-4939-9941-b12e40368498">
+* A view to see all peer reviews assigned to a student.
+* host a card view and a list view.
+* A search bar to filter search assignment titles and view filtered results
+* A drop-down menu to select a class and view a specific class's peer-reviewed assignments.
+![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/6dc10997-561c-493e-b57f-61b2c9256f7f)
+![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/69c7961e-2b17-49c9-bca8-417d44849ced)
+
 
 ## Viewing/submitting review UI
-<img width="868" alt="Screenshot 2024-06-05 at 11 48 01 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/d7140ba7-0a89-4da7-b756-6a811c09f958">
+* A view to view the assignment and download a peer-reviewed document (and view the rubric marks) of each peer-reviewer that leaves a review.
+* A filter bar to select a specific review to view (if not selected, it is listed in date-time order).
+![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/cc8e53f6-7117-4d36-904b-23c126519666)
 
 ## Settings UI
-<img width="871" alt="Screenshot 2024-06-05 at 11 52 38 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/4040d184-01d7-45ce-b806-7e351bb0988f">
-
+* A settings panel to edit user-related details (name, email, change password) and our primary panel for admins to view system maintenance and management-related details
+![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/c36bb5d5-2737-41d7-8f3a-17dd0a25a3bc)
 
 # Instructor Views:
 ## Classes UI 
-<img width="904" alt="Screenshot 2024-06-05 at 11 39 08 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/672ea999-a4c1-44ad-8552-0f2ef2f5f247">
-<img width="677" alt="Screenshot 2024-06-05 at 11 39 59 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/2497745d-d75a-4508-9c46-b6d2de4f67d1">
+* A page to manage all classes created by the instructor and the ability to create a new class
+![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/e62e9fc0-ddda-4983-a32c-a6c1a30920f4)
+![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/24f26d4c-7925-4b27-a697-8851b402194a)
+
+
+Each tab for announcements, category tabs for assignments, and adding category features will be enabled for instructors to add information wherever necessary.
+![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/0c1b0b00-1354-4c62-be44-f2a22b91c628)
 
 ## Uploading Assignment 
-<img width="888" alt="Screenshot 2024-06-05 at 11 40 32 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/351ca4d0-592b-437a-b1e9-ceb847a2ad6e">
-## component for selecting peer-reviewers for assignments:
-<img width="146" alt="Screenshot 2024-06-05 at 11 42 05 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/f5c0713d-3fd1-42a1-9e49-09d67555f7a1">
+* An Upload assignment page for instructors to fill out assignment and rubric details and manage review selection processes for class students.
+![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/5ffe83ee-5d3a-4f06-acab-9886410b261e)
 
-## People view
-<img width="917" alt="Screenshot 2024-06-05 at 11 41 32 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/7a08a995-b055-43a2-bc63-9f68da0942d6">
+## component for selecting peer-reviewers for assignments:
+![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/1798bb20-c01f-45db-b19e-09fae6839c75)

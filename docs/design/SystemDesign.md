@@ -2,13 +2,19 @@
 
 ## Introduction
 
-Start with a brief introduction of **what** you are building, reminding the reader of the high-level usage scenarios (project purpose).   Complete each section with the required components.  Don't forget that you can include [images in your markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#images).  
+In this project, we are developing a user-friendly educational platform designed to streamline the classroom experience for both teachers and students. Our application focuses primarily on the peer-review and assignment management processes, making it easy for teachers to create and manage assignments while enabling students to submit their work and participate in peer reviews. Additionally, the platform includes classroom management features, allowing teachers to organize classes and enroll students. Grading management is also a key aspect, providing tools for teachers to grade assignments efficiently and deliver feedback to students. By providing an integrated tool for these tasks, we aim to enhance the educational process through efficient classroom management, timely notifications, and effective communication between all participants.
 
-Start each section with a lead-in, detailing what it is.  Also, do not just have a collection of images.   Each diagram must be explained clearly. **Do not assume that the reader understands the intentions of your designs**.
+**High-Level Usage Scenarios**: 
+1. **User Management**: Secure registration, login, and profile management.
+2. **Classroom Management**: Create and manage classes, enroll students.
+3. **Assignment Management**: Create assignments, track submissions.
+4. **Submission Process**: Submit assignments, view submission status.
+5. **Review Management**: Conduct peer reviews, provide feedback.
+6. **Notification Services**: Receive email and in-app notifications.
 
 ## System Architecture Design 
 
-For our Project, we will be applying a hybrid of the **Modular Monolith** and **Microservices** architecture patterns. Since we are not sure about the feasabilty or difficulty of a micro-services approach, we are going to start the development process with a standard 3-part architecture: **Front-end service, Back-end service, and a Database**. The Front-end service, or **Client Web Interfaces** will be a React based web-server which will serve front-end content and communicate with the back-end VIA api endpoints. The Back-end service, or the **Core Service Monolith** will provide all of the functionailites of the application and will be seperated into **modules**. These main modules/services are:
+For our project, we will be applying a hybrid of the **Modular Monolith** and **Microservices** architecture patterns. Since we are not sure about the feasabilty or difficulty of a micro-services approach, we are going to start the development process with a standard 3-part architecture: **Front-end service, Back-end service, and a Database**. The Front-end service, or **Client Web Interfaces** will be a React based web-server which will serve front-end content and communicate with the back-end VIA api endpoints. The Back-end service, or the **Core Service Monolith** will provide all of the functionailites of the application and will be seperated into **modules**. These main modules/services are:
 
 * The ***API Gateway / Reverse Proxy*** module...
 >    * will facilitate communication between the client (**Front-end service**) and the backend services (**Core Service Monolith**). It will handle routing of requests to the appropriate modules and provide a single entry point for all client requests (may also load balance and rate limit). Additionally, it will manage authentication and authorization by directing these requests to the Authentication module.

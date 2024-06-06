@@ -10,7 +10,7 @@ DB Structure and Tables:
    
    c. one to many with submission, group review
    
-3. **Class**: Holds details about classes, including the instructor, start and end dates, term description and class size.
+2. **Class**: Holds details about classes, including the instructor, start and end dates, term description and class size.
    
    *Relationships*:
    
@@ -18,7 +18,7 @@ DB Structure and Tables:
    
    b. one to many with group
    
-4. **Assignment**: Contains assignment information such as title, description, due date, instructions, file type required, rubric infoand evaluation type.
+3. **Assignment**: Contains assignment information such as title, description, due date, instructions, file type required, rubric infoand evaluation type.
    
    *Relationships*:
    
@@ -26,32 +26,32 @@ DB Structure and Tables:
    
    b. one to one with group project
    
-5. **Submission**: Records submissions for assignments, including the student, asignment, submission date, file path (if necessary) feedback, and marks.
+4. **Submission**: Records submissions for assignments, including the student, asignment, submission date, file path (if necessary) feedback, and marks.
    
-6. **PeerReview**: Captures peer reviews for submissions, including reviewer, review text, date, and rating.
+5. **PeerReview**: Captures peer reviews for submissions, including reviewer, review text, date, and rating.
 
    *Relationships*:
    
    a. many to one with submission and user
    
-7. **GroupProject**: Details group projects, linking assignments to groups and students.
+6. **GroupProject**: Details group projects, linking assignments to groups and students.
    
-8. **Group**: Represents groups within projects, linking projects to classes and students.
-    
-    *Relationships*:
-    
+7. **Group**: Represents groups within projects, linking projects to classes and students.
+
+   *Relationships*:
+
    a. one to many with group project
    
-10. **GroupReview**: Stores reviews of group projects, including reviewer, project, reviewed student, review text, date and rating.
+8. **GroupReview**: Stores reviews of group projects, including reviewer, project, reviewed student, review text, date and rating.
 
    *Relationships*:
     
    a. one to many with group project
    
-11. **Rubric**: Defines rubrics for assignments, including a title and description and criteria
+9. **Rubric**: Defines rubrics for assignments, including a title and description and criteria
 
-    *Relationships*:
+   *Relationships*:
     
    a.one to many with assignmen and criteria
    
-11. **Criteria**: Defines the single criteria in a rubric including description, high to med to low marks, user assigned marks for grading and feedback.
+10. **Criteria**: Defines the single criteria in a rubric including description, high to med to low marks, user assigned marks for grading and feedback.

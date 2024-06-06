@@ -1,6 +1,7 @@
 DB Structure and Tables:
 
 1. **User**: Stores information about users including their role (student, instructor, admin) and User names, password, name, email and group number
+   
    *Relationships*:
    a. Many to many (student) and one to many (instructor) with class
    b. Many to many with group and group project

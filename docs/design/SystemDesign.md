@@ -477,6 +477,8 @@ Extending from your requirements, the team will need to develop a set of usage s
 
 ![UML Use Case Diagram](images/use-case-diagram.png)
 
+This Use Case Diagram illustrates an educational platform's functionalities and user interactions. It identifies five user roles: All Users, Unregistered Users, Students, Instructors, and Administrators. All Users can perform basic actions like logging in, viewing courses, and sending reports. Unregistered Users can register to become Students, who can then participate in peer reviews, submit assignments, and request to become Instructors. Instructors manage assignments, peer reviews, classes, and student groups, and can communicate directly with students. Administrators oversee the platform's operation, managing user accounts, reviewing instructor applications, monitoring system health, and configuring system settings. The diagram also shows dependencies between actions, such as how viewing peer review feedback includes participating in peer reviews and sending feedback.
+
 ## Database Design 
 
 Provide an ER diagram of the entities and relationships you anticipate having in your system (this will most likely change, but you need a starting point).  In a few sentences, explain why the data is modelled this way and what is the purpose of each table/attribute.  For this part, you only need to have ONE diagram and an explanation.

@@ -24,13 +24,23 @@ The team is required to create comprehensive Level 0 and Level 1 Data Flow Diagr
 
 ### Level 0 DFD
 
-![Level 0 DFD](images/level0dfd.jpg)
+Here, we have the Level 0 DFD representing the PeerGrade system! We have the three main user types represented here as well: Students, Instructors, and Administrators. The PeerGrade system acts as the central process, facilitating data flows such as: Students submit assignments, receive feedback, request to join classes, and create groups, while instructors manage assignments, provide feedback, and create classroom and groups. Admins oversee system management, process reports, and upgrade user 
 
-Here, we have the Level 0 DFD representing the PeerGrade system! We have the three main user types represented here as well: Students, Instructors, and Administrators. The PeerGrade system acts as the central process, facilitating data flows such as: Students submit assignments, receive feedback, request to join classes, and create groups, while instructors manage assignments, provide feedback, and create classroom and groups. Admins oversee system management, process reports, and upgrade user permissions.
+![Level 0 DFD](images/level0dfd.jpg)
 
 ### Level 1 DFD
 
-![Level 1 DFD](images/level1dfd.jpg)
+For the Level 1 DFD, Entites stay the same as Student (Default User), Instructor, and Admin. Within the Level 1 DFD there are 8 main processes (Classroom, Authorization, Authentication, Student Assignment, Instructor Assignment, Review, Notification, and System Management). These processes are meant to be similar to the modules of the Modular Monolith design, and can be mappped as such: 
+
+* **Authentication module** = *Authorization and Authentication Process*
+* **Notification module** = *Notification and System Management Process*
+* **Main module** = *Classroom, User, and Instructor Assignment Process*
+* **Submission module** = *Student Assignment Process*
+* **Feedback module** = *Review Process* 
+
+The system border is represented as a *dotted line*. The Data-stores are represented as *pink rectangles* and together they represent all represent the database. Any :red_square: **pink data flow** represents the *storage and retrevial* of data from a Data-Store. Any :blue_square: **blue data flow** represents a data flow that ***ALL*** users can perform. 
+
+![Level 1 DFD](./images/dfd-level1.png)
 
 ## User Interface (UI) Design
 

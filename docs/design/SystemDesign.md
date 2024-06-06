@@ -540,16 +540,11 @@ The system border is represented as a *dotted line*. The Data-stores are represe
 
 ## User Interface (UI) Design
 
-The team is required to put forward a series of UI mock-ups that will be used as starting points for the design of the system   They can be minimal but the team will need to  have at least made some choices about the interaction flow of the application.  You should consider the different major aspects of user interactions and develop UI mockups for those (think about the different features/use cases and what pages are needed; you will have a number most likely).  Additionally, create a diagram to explain the navigation flow for the MVP  prototype (and any alternate flows).  When considering your UI, think about usability, accessibility, desktop and mobile uses.  As a team, you will need to discuss design choices for the system.
 
-### Please use the following Figma link for a comprehensive view of our UI: https://www.figma.com/design/DDBLqkl7hRm70yKNdcwFI1/PeerGrade---T10-team-library?node-id=0-1&t=YI9mMfqX5viX6LEv-1
+### Please use the following [Figma link](https://www.figma.com/design/DDBLqkl7hRm70yKNdcwFI1/PeerGrade---T10-team-library?node-id=0-1&t=YI9mMfqX5viX6LEv-1) for a comprehensive view of our UI
 
 MVP Flow diagram:
 ![MVP Flow diagram](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/a17dba87-d306-4835-956a-07fe8786e38d)
-
-
-
-
 
 # PeerGrade Wireframes:
 * Our client has expressed that only desktop views are required for this project therefore, no mobile views have been created.

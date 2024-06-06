@@ -29,11 +29,15 @@ The team is required to put forward a series of UI mock-ups that will be used as
 ### Please use the following Figma link for a comprehensive view of our UI: https://www.figma.com/design/DDBLqkl7hRm70yKNdcwFI1/PeerGrade---T10-team-library?node-id=0-1&t=YI9mMfqX5viX6LEv-1
 
 MVP Flow diagram:
-![MVP Flow Diagram](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/8d64fb6e-3f9d-42dd-83e0-fe74c0d3c2c6)
+![MVP Flow diagram](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/a17dba87-d306-4835-956a-07fe8786e38d)
 
-* Our client has expressed that only desktop views are required for this project therefore, no mobile views have been created.
+
+
+
 
 # PeerGrade Wireframes:
+* Our client has expressed that only desktop views are required for this project therefore, no mobile views have been created.
+  
 ## Login UI
 * A nice-to-have feature - CWL type login to use and enter the platform however, the bare minimum will provide an authenticated login service with user differentiation of student/instructor/admin.
 ![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/cb7b65e5-6d55-45c3-9b1c-a9c6f14d8447)

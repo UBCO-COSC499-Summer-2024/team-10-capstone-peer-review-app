@@ -25,7 +25,7 @@ DB Structure and Tables:
    b. one to one with group project
 7. **Submission**: Records submissions for assignments, including the student, asignment, submission date, file path (if necessary) feedback, and marks. 
 8. **PeerReview**: Captures peer reviews for submissions, including reviewer, review text, date, and rating.
-   
+
    *Relationships*:
    
    a. many to one with submission and user

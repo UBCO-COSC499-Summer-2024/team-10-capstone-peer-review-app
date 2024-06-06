@@ -518,7 +518,27 @@ Provide an ER diagram of the entities and relationships you anticipate having in
 
 ## Data Flow Diagram (Level 0/Level 1)
 
-The team is required to create comprehensive Level 0 and Level 1 Data Flow Diagrams (DFDs) to visually represent the system’s data flow, including key processes, data stores, and data movements.  The deliverables will include a high-level context diagram, a detailed Level 1 DFD, and supporting documentation to facilitate the understanding of data movement within the system.   Remember that within a L1 DFD, the same general level of abstraction should apply to all processes (review 310 notes for guidance),
+The team is required to create comprehensive Level 0 and Level 1 Data Flow Diagrams (DFDs) to visually represent the system’s data flow, including key processes, data stores, and data movements.  The deliverables will include a high-level context diagram, a detailed Level 1 DFD, and supporting documentation to facilitate the understanding of data movement within the system.   Remember that within a L1 DFD, the same general level of abstraction should apply to all processes (review 310 notes for guidance).
+
+### Level 0 DFD
+
+Here, we have the Level 0 DFD representing the PeerGrade system! We have the three main user types represented here as well: Students, Instructors, and Administrators. The PeerGrade system acts as the central process, facilitating data flows such as: Students submit assignments, receive feedback, request to join classes, and create groups, while instructors manage assignments, provide feedback, and create classroom and groups. Admins oversee system management, process reports, and upgrade user 
+
+![Level 0 DFD](images/level0dfd.jpg)
+
+### Level 1 DFD
+
+For the Level 1 DFD, Entites stay the same as Student (Default User), Instructor, and Admin. Within the Level 1 DFD there are 8 main processes (Classroom, Authorization, Authentication, Student Assignment, Instructor Assignment, Review, Notification, and System Management). These processes are meant to be similar to the modules of the Modular Monolith design, and can be mappped as such: 
+
+* **Authentication module** = *Authorization and Authentication Process*
+* **Notification module** = *Notification and System Management Process*
+* **Main module** = *Classroom, User, and Instructor Assignment Process*
+* **Submission module** = *Student Assignment Process*
+* **Feedback module** = *Review Process* 
+
+The system border is represented as a *dotted line*. The Data-stores are represented as *pink rectangles* and together they represent all represent the database. Any :red_square: **pink data flow** represents the *storage and retrevial* of data from a Data-Store. Any :blue_square: **blue data flow** represents a data flow that ***ALL*** users can perform. 
+
+![Level 1 DFD](./images/dfd-level1.png)
 
 ## User Interface (UI) Design
 

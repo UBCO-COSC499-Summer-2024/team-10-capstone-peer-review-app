@@ -36,11 +36,15 @@ DB Structure and Tables:
     
    a. one to many with group project
 13. **GroupReview**: Stores reviews of group projects, including reviewer, project, reviewed student, review text, date and rating.
-    *Relationships*:
+
+   *Relationships*:
     
    a. one to many with group project
+   
 15. **Rubric**: Defines rubrics for assignments, including a title and description and criteria
+
     *Relationships*:
     
    a.one to many with assignmen and criteria
+   
 17. **Criteria**: Defines the single criteria in a rubric including description, high to med to low marks, user assigned marks for grading and feedback.

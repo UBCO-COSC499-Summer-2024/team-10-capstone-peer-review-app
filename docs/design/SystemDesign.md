@@ -12,8 +12,6 @@ Recall the system architecture slides and tell us which architecture pattern you
 
 ## Use Case Models
 
-Extending from your requirements, the team will need to develop a set of usage scenarios for each user group documented as properly dressed use cases  (including diagrams following the UML syntax and descriptions as presented in class).   You may also want to include journey lines with some use cases. 
-
 | Use Case ID | Use Case Name                        | Actor(s)            |
 |-------------|--------------------------------------|---------------------|
 | 1           | Register Account                     | All Users           |

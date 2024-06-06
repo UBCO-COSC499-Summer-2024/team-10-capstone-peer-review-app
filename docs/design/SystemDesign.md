@@ -2,13 +2,48 @@
 
 ## Introduction
 
-Start with a brief introduction of **what** you are building, reminding the reader of the high-level usage scenarios (project purpose).   Complete each section with the required components.  Don't forget that you can include [images in your markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#images).  
+In this project, we are developing a user-friendly educational platform designed to streamline the classroom experience for both teachers and students. Our application focuses primarily on the peer-review and assignment management processes, making it easy for teachers to create and manage assignments while enabling students to submit their work and participate in peer reviews. Additionally, the platform includes classroom management features, allowing teachers to organize classes and enroll students. Grading management is also a key aspect, providing tools for teachers to grade assignments efficiently and deliver feedback to students. By providing an integrated tool for these tasks, we aim to enhance the educational process through efficient classroom management, timely notifications, and effective communication between all participants.
 
-Start each section with a lead-in, detailing what it is.  Also, do not just have a collection of images.   Each diagram must be explained clearly. **Do not assume that the reader understands the intentions of your designs**.
+**High-Level Usage Scenarios**: 
+1. **User Management**: Secure registration, login, and profile management.
+2. **Classroom Management**: Create and manage classes, enroll students.
+3. **Assignment Management**: Create assignments, track submissions.
+4. **Submission Process**: Submit assignments, view submission status.
+5. **Review Management**: Conduct peer reviews, provide feedback.
+6. **Notification Services**: Receive email and in-app notifications.
 
-## System Architecture Design
+## System Architecture Design 
 
-Recall the system architecture slides and tell us which architecture pattern you are using and why (it may also be something not in the slides or be a combination). Provide more details about the components you have written, and where these components fit in the overall architecture so we can visualize how you have decomposed your system. Basically, this should all be captured in ONE diagram with the components on them and a few sentences explaining (i) why you chose this architecture and (ii) why the components are where you put them. If you want to just focus on a certain aspect of your system and not show the entire architecture for your system in the diagram, that should be fine as well.
+For our project, we will be applying a hybrid of the **Modular Monolith** and **Microservices** architecture patterns. Since we are not sure about the feasabilty or difficulty of a micro-services approach, we are going to start the development process with a standard 3-part architecture: **Front-end service, Back-end service, and a Database**. The Front-end service, or **Client Web Interfaces** will be a React based web-server which will serve front-end content and communicate with the back-end VIA api endpoints. The Back-end service, or the **Core Service Monolith** will provide all of the functionailites of the application and will be seperated into **modules**. These main modules/services are:
+
+* The ***API Gateway / Reverse Proxy*** module...
+>    * will facilitate communication between the client (**Front-end service**) and the backend services (**Core Service Monolith**). It will handle routing of requests to the appropriate modules and provide a single entry point for all client requests (may also load balance and rate limit). Additionally, it will manage authentication and authorization by directing these requests to the Authentication module.
+* The ***Authentication*** module... 
+>    * will manage user login, registration, and authentication processes. It will handle JWT generation and validation (passport.js), ensuring secure access to the application's resources. It will also manage user roles and permissions, providing role-based access control to different parts of the **Core Service Monolith**. 
+* The ***Notification*** module...
+>    * will be responsible for sending notifications to users. This will include email notifications for account verification, password reset, assignment dead-lines, and review updates. It will interface with an SMTP server or a third-party email service provider to send out these notifications.
+* The ***Main*** module... (User, Assignment, and Classroom Operations)
+>    * will handle the core instructor and basic user functionalites. This module will manage user profiles, user group assignments, class creation and enrollment, and the creation and management of assignments.
+* The ***Submission*** module...
+>    * will manage the process of students submitting assignments. This module will handle repeat submissions, various submission formats and restrict submissions to certian file-types. It will also manage the status of submissions and provide feedback to users on their submissions
+* The ***Feedback*** module...
+>    * will handle the creation and management of feedback on assignment submissions. It will allow reviewers to provide comments and grades on submitted assignments. This module will ensure that feedback is stored and associated with the correct submission and user. 
+
+Since the **Modular Monolith** approach doesn't have to consider isolated inter-service communication, a highly complex API gateway, or other complexities when developing a microservices application, it seems like the best approach to start for development (We can just start developing features on the back-end and begin splitting them into modules). As we continue, if we are making modules quickly, generally isolated, and not extremely overloaded nor complex, we may shift into more of a **Microservices** approach since they favor scalability and also relability (if one of your services goes down, the rest can still run).
+
+> :star: *The dotted lines outside a service represent a docker container*
+
+## System Architecture Design: *Modular Monolith*
+
+![Modular Monolith](./images/system-arch-v1.png)
+
+## System Architecture Design: *Modular Monolith w/ Microservices*
+
+![Modular Monolith w/ Microservices](./images/system-arch-v2.png)
+
+## System Architecture Design: *Microservices*
+
+![Microservices](./images/system-arch-v3.png)
 
 ## Use Case Models
 

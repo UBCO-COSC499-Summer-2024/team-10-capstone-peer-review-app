@@ -543,7 +543,7 @@ The system border is represented as a *dotted line*. The Data-stores are represe
 
 ### Please use the following [Figma link](https://www.figma.com/design/DDBLqkl7hRm70yKNdcwFI1/PeerGrade---T10-team-library?node-id=0-1&t=YI9mMfqX5viX6LEv-1) for a comprehensive view of our UI
 
-MVP Flow diagram:
+## MVP Flow diagram:
 ![MVP Flow diagram](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/a17dba87-d306-4835-956a-07fe8786e38d)
 
 # PeerGrade Wireframes:

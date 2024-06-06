@@ -514,7 +514,29 @@ This Use Case Diagram illustrates an educational platform's functionalities and 
 
 ## Database Design 
 
-Provide an ER diagram of the entities and relationships you anticipate having in your system (this will most likely change, but you need a starting point).  In a few sentences, explain why the data is modelled this way and what is the purpose of each table/attribute.  For this part, you only need to have ONE diagram and an explanation.
+![db-design](./images/db-diagram.png)
+
+* ***User***: Stores information about users including their role (student, instructor, admin) and associated class.
+
+* ***Class***: Holds details about classes, including the instructor, start and end dates, and class size.
+
+* ***Assignment***: Contains assignment information such as title, description, due date, and evaluation type.
+
+* ***Submission***: Records submissions for assignments, including the student, submission date, feedback, and marks
+.
+* ***PeerReview***: Captures peer reviews for submissions, including reviewer, review text, date, and rating.
+
+* ***GroupProject***: Details group projects, linking assignments to groups and students.
+
+* ***Group***: Represents groups within projects, linking projects to classes and students.
+
+* ***GroupReview***: Stores reviews of group projects, including reviewer, project, reviewed student, review text, and rating.
+
+* ***Rubric***: Defines rubrics for assignments, including a title and description.
+
+* ***Categories***: Lists categories within rubrics, each with a title, description, and maximum mark.
+
+* ***CategoryMarks***: Records the marks given by students for each category within a submission, linking submissions, categories, and students.
 
 ## Data Flow Diagram (Level 0/Level 1)
 
@@ -539,7 +561,6 @@ The system border is represented as a *dotted line*. The Data-stores are represe
 ![Level 1 DFD](./images/dfd-level1.png)
 
 ## User Interface (UI) Design
-
 
 ### Please use the following [Figma link](https://www.figma.com/design/DDBLqkl7hRm70yKNdcwFI1/PeerGrade---T10-team-library?node-id=0-1&t=YI9mMfqX5viX6LEv-1) for a comprehensive view of our UI
 

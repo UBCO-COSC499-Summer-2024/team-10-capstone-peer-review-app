@@ -1,12 +1,31 @@
 // src/pages/Dashboard.jsx
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import ClassCard from '@/components/class/ClassCard';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import AssignmentRow from "@/components/assign/AssignmentRow";
 import { classesData, assignmentsData } from '../lib/data';
+import { Button } from "@/components/ui/button";
+import { ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
 
 function AssignmentTable({ title, forReview }) {
-  const filteredAssignments = assignmentsData.filter(assignment => assignment.forReview === forReview);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sortOrder, setSortOrder] = useState('asc');
+  const itemsPerPage = 5;
+
+  const filteredAssignments = assignmentsData
+    .filter(assignment => assignment.forReview === forReview)
+    .sort((a, b) => {
+      const dateA = new Date(a.dueDate);
+      const dateB = new Date(b.dueDate);
+      return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+    });
+
+  const totalPages = Math.ceil(filteredAssignments.length / itemsPerPage);
+  const currentAssignments = filteredAssignments.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  const handleSort = () => {
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+  };
 
   return (
     <div className="w-full bg-white shadow-md rounded-lg">
@@ -15,24 +34,46 @@ function AssignmentTable({ title, forReview }) {
           <TableRow>
             <TableHead className="text-left">{title}</TableHead>
           </TableRow>
+          <TableRow>
+            <TableHead className="text-left">Assignment Name</TableHead>
+            <TableHead className="text-left">Class Name</TableHead>
+            {forReview ? (
+              <TableHead className="text-left flex items-center cursor-pointer" onClick={handleSort}>
+                P-Review Due Date {sortOrder === 'asc' ? <ArrowUp className="ml-1 h-5 w-5" /> : <ArrowDown className="ml-1 h-5 w-5" />}
+              </TableHead>
+            ) : (
+              <TableHead className="text-left flex items-center cursor-pointer" onClick={handleSort}>
+                Due Date {sortOrder === 'asc' ? <ArrowUp className="ml-1" /> : <ArrowDown className="ml-1" />}
+              </TableHead>
+            )}
+            <TableHead className="text-left">Actions</TableHead>
+          </TableRow>
         </TableHeader>
         <TableBody>
-        {filteredAssignments.map((assignment, index) => (
+          {currentAssignments.map((assignment, index) => (
             <TableRow key={index}>
-              <TableCell className="p-0">
-                <AssignmentRow
-                  id={assignment.id}
-                  name={assignment.name}
-                  className={assignment.className}
-                  dueDate={assignment.dueDate}
-                  peerReviewDueDate={assignment.peerReviewDueDate}
-                  forReview={assignment.forReview}
-                />
+              <TableCell className="p-2">{assignment.name}</TableCell>
+              <TableCell className="p-2">{assignment.className}</TableCell>
+              {forReview && <TableCell className="p-2">{assignment.peerReviewDueDate}</TableCell>}
+              {!forReview && <TableCell className="p-2">{assignment.dueDate}</TableCell>}
+              <TableCell className="p-2">
+                <Link to={forReview ? `/assignedPR/${assignment.id}` : `/assignment/${assignment.id}`} className="bg-green-100 text-blue-500 px-2 py-1 rounded-md">
+                  {forReview ? 'Review' : 'Open'}
+                </Link>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+      <div className="flex justify-between p-4">
+        <Button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
+          Previous
+        </Button>
+        <span>Page {currentPage} of {totalPages}</span>
+        <Button onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages}>
+          Next
+        </Button>
+      </div>
     </div>
   );
 }

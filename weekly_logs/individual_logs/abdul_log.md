@@ -1,4 +1,4 @@
-# Abdul Faiz's Individual Work Logs
+# Abdul Faiz's Individual Work Logs - Week 1
 Task timings are estimated.
 
 June 1
@@ -16,4 +16,9 @@ June 3
 
 June 4
 
-- Worked on the Use Cases section + Use Case diagram in the Design document - 20 minutes
+- Worked on the Use Cases section + Use Case diagram in the Design document - 20 mins
+
+June 5
+
+- Added initial project files to the dev branch - 30 mins
+- Worked on adding finishing touches to the Use Case section in the Design document - 1.25 hrs

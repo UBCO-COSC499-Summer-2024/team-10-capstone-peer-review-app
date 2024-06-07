@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Routes, Route, useLocation  } from 'react-rout
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Classes from './pages/Classes';
+import Class from './pages/Class';
+import Assignment from './pages/Assignment';
+import AssignedPR from './pages/AssignedPR';
 import PeerReview from './pages/PeerReview';
 import Settings from './pages/Settings';
 import AppNavbar from './components/Navbar';
@@ -27,7 +30,7 @@ function App() {
     const isLoginPage = location.pathname === "/";
   
     return (
-      <main className="flex items-center bg-gray-100 justify-center flex-col">
+      <main className="flex w-full items-center bg-gray-100 justify-center flex-col">
         {!isLoginPage && <AppNavbar/>}
         <div className="flex justify-center flex-1">
           {children}
@@ -43,6 +46,9 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/classes" element={<Classes />} />
+          <Route path="/class/:classId" element={<Class />} />
+          <Route path="/assignment/:assignmentId" element={<Assignment />} />
+          <Route path="/assignedPR/:assignmentId" element={<AssignedPR />} />
           <Route path="/peer-review" element={<PeerReview />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>

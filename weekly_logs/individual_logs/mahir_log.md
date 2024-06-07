@@ -1,5 +1,6 @@
 # Mahir Rahman's Individual Work Logs
 June 6-7th: 
+![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/87c640dd-4090-431f-81ff-817569ca0eb7)
 ![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/847fef60-c366-4202-9f1e-e0082df9e47e)
 
 - (App skeleton ticket) Got the vite app skeleton up (blank starting navigation pages created) and completed a demo login page that directs a blank dashboard with a navbar that works.

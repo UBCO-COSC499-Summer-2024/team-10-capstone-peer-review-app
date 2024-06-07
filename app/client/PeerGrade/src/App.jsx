@@ -1,4 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import Classes from './pages/Classes';
+import PeerReview from './pages/PeerReview';
+import Settings from './pages/Settings';
+import AppNavbar from './components/Navbar';
+
 
 function App() {
   const [message, setMessage] = useState('');
@@ -16,9 +24,19 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <main className="App">
       <h1>{message}</h1>
-    </div>
+      <Router>
+        <AppNavbar/>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/classes" element={<Classes />} />
+          <Route path="/peer-review" element={<PeerReview />} />
+          <Route path="/settings" element={<Settings />} />
+        </Routes>
+    </Router>
+    </main>
   );
 }
 

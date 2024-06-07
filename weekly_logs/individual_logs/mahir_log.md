@@ -1,13 +1,21 @@
 # Mahir Rahman's Individual Work Logs
-June 7th: 
-- (App skeleton ticket) Got the app skeleton up and running with a login page that directs blank page with a navbar that works.
-- (Dashboard component) Created a rough outline of the dashboard UI and got shadCN to work properly (had to read through a lot of documentation for setting up)
+June 6-7th: 
 ![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/847fef60-c366-4202-9f1e-e0082df9e47e)
 
-June 3-5th: 
+- (App skeleton ticket) Got the vite app skeleton up (blank starting navigation pages created) and completed a demo login page that directs a blank dashboard with a navbar that works.
+    - ![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/8521b5b0-75d8-49c1-b45c-5c103430f834)
+- (Dashboard component) After the skeleton was finished, I started creating a rough outline of the dashboard UI and got shadCN to work properly (had to read through a lot of documentation for setting up)
+    - ![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/da0ca2aa-4b48-4b2a-bb0d-e2611f489373)
+
+
+June 1-5th: 
 - mainly worked on Figma UI for our design document and also component interactions to show potential user experience flows for the design video requirement
+- interaction of components ticket also included a lot of small UI edits and around 20mins of tutorials on interaction flows on Figma
 <img width="1218" alt="Screenshot 2024-06-05 at 10 28 05 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/5f06e8aa-c868-4b97-ac0d-6f31f837fd28">
 <img width="1211" alt="Screenshot 2024-06-05 at 10 29 52 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/bf5ce97a-70ad-4d88-9232-ff271dce8c66">
+
+![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/65b59782-a9a7-44d5-83fb-487cacbc78a2)
+
 
 May 31st: 
 - Started working on weekly-log automation process on GitHub actions - 3h

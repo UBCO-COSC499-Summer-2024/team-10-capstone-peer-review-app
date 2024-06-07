@@ -1,6 +1,6 @@
 #  Weekly Personal Log 
 
-## Week 1: (May 26th - June 1st) 
+## Cycle 1: (May 26th - June 1st) 
 
 ## Tasks / Features Worked on From Issues Board: 
 - User Requirements Refactoring - May 29th
@@ -23,5 +23,28 @@
 - Complete Entire Design Document
 - Start setting up Dev containers / Docker enviroment of system architecture
   - Check dockerhub for existing structures
+- Start setting up Drone CI
+
+- ## Cycle 2: (May 2nd - June 8th) 
+
+## Tasks / Features Worked on From Issues Board: 
+- System Architecture Design - June 2nd, 3rd,4th
+- Level 1 DFD - June 2nd, 3rd, 4th
+- Automated Personal Logs - June 6th, June 7th
+- Design Video - June 7th
+
+## Completed: 
+- System Architecture Design - June 2nd, 3rd,4th
+- Level 1 DFD - June 2nd, 3rd, 4th
+
+## Not Completed:  
+- Automated Personal Logs - June 6th, June 7th
+- Design Video - June 7th
+
+## Goals For Next Week: 
+- Automated Personal Logs (Almost Done)
+- Start setting up Dev containers / Docker enviroment of system architecture
+  - Check dockerhub for existing structures
+- Set up basic login / register user flow with authentication
 - Start setting up Drone CI 
 

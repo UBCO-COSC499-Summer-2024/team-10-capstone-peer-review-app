@@ -65,8 +65,8 @@ function Dashboard() {
         />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <AssignmentTable />
-        <AssignmentTable />
+        <AssignmentTable title={"Upcoming Assignments"} />
+        <AssignmentTable title={"Upcoming Reviews"}/>
       </div>
     </div>
   );

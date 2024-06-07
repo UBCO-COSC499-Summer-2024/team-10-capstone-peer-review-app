@@ -1,6 +1,8 @@
-![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/847fef60-c366-4202-9f1e-e0082df9e47e)
-
 # Mahir Rahman's Individual Work Logs
+June 7th: 
+- (App skeleton ticket) Got the app skeleton up and running with a login page that directs blank page with a navbar that works.
+- (Dashboard component) Created a rough outline of the dashboard UI and got shadCN to work properly (had to read through a lot of documentation for setting up)
+![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/847fef60-c366-4202-9f1e-e0082df9e47e)
 <img width="1218" alt="Screenshot 2024-06-05 at 10 28 05 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/5f06e8aa-c868-4b97-ac0d-6f31f837fd28">
 <img width="1211" alt="Screenshot 2024-06-05 at 10 29 52 AM" src="https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/bf5ce97a-70ad-4d88-9232-ff271dce8c66">
 

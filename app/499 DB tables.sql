@@ -91,19 +91,31 @@ CREATE TABLE GroupReview (
   FOREIGN KEY (student_id) REFERENCES Users(user_id)
 );
 
-CREATE TABLE Rubric (
-  rubric_id INTEGER SERIAL PRIMARY KEY,
-  title VARCHAR(50),
+CREATE TABLE Rubrics (
+  rubric_id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
   description TEXT,
-  criteria_id INTEGER
+  created_by INT,
+  FOREIGN KEY (created_by) REFERENCES Users(user_id)
 );
 
 CREATE TABLE Criteria (
-  criteria_id INTEGER SERIAL PRIMARY KEY,
-  description TEXT,
-  high INTEGER,
-  med INTEGER,
-  low INTEGER,
-  input_marks INTEGER,
-  feedback TEXT
+  criteria_id SERIAL PRIMARY KEY,
+  rubric_id INT NOT NULL,
+  FOREIGN KEY (rubric_id) REFERENCES Rubrics(rubric_id),
+  description TEXT NOT NULL,
+  weight INT
 );
+CREATE TABLE GradingLevels (
+  grading_level_id SERIAL PRIMARY KEY,
+  description VARCHAR(255) NOT NULL,
+  points INT
+);
+CREATE TABLE AssignmentRubrics (
+  assignment_rubric_id SERIAL PRIMARY KEY,
+  assignment_id INT NOT NULL,
+  FOREIGN KEY (assignment_id) REFERENCES Assignments(assignment_id),
+  rubric_id INT NOT NULL,
+  FOREIGN KEY (rubric_id) REFERENCES Rubrics(rubric_id)
+);
+

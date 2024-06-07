@@ -57,7 +57,7 @@ const components = [
 
 export default function AppNavbar() {
   return (
-    <NavigationMenu className="flex items-center justify-between">
+    <NavigationMenu className="flex items-center justify-between w-full bg-white">
       <NavigationMenuList>
         <NavigationMenuItem>
           <Link to="/dashboard" className={navigationMenuTriggerStyle()}>
@@ -67,7 +67,7 @@ export default function AppNavbar() {
         <NavigationMenuItem>
           <NavigationMenuTrigger>Peer-Reviews</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+            <ul className="bg-white grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
               <li className="row-span-3">
                 <NavigationMenuLink asChild>
                   <Link
@@ -100,7 +100,7 @@ export default function AppNavbar() {
         <NavigationMenuItem>
           <NavigationMenuTrigger>Classes</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+            <ul className="bg-white grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
               {components.map((component) => (
                 <ListItem
                   key={component.title}

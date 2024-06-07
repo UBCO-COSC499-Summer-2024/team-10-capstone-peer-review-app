@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation  } from 'react-router-dom';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Classes from './pages/Classes';
 import PeerReview from './pages/PeerReview';
 import Settings from './pages/Settings';
 import AppNavbar from './components/Navbar';
-
 
 function App() {
   const [message, setMessage] = useState('');
@@ -23,11 +22,23 @@ function App() {
       .catch(error => console.error('Fetch error:', error));
   }, []);
 
+  function MainLayout({ children }) {
+    const location = useLocation();
+    const isLoginPage = location.pathname === "/";
+  
+    return (
+      <main className="flex items-center bg-gray-100 justify-center flex-col">
+        {!isLoginPage && <AppNavbar/>}
+        <div className="flex justify-center flex-1">
+          {children}
+        </div>
+      </main>
+    );
+  }
+
   return (
-    <main className="App">
-      {/* <h1>{message}</h1> */}
-      <Router>
-        <AppNavbar/>
+    <Router>
+      <MainLayout>
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -35,9 +46,10 @@ function App() {
           <Route path="/peer-review" element={<PeerReview />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>
+      </MainLayout>
     </Router>
-    </main>
   );
 }
+
 
 export default App;

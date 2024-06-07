@@ -4,7 +4,7 @@ from pytz import timezone
 import os
 import requests
 
-g = Github(os.getenv('AUTOMATED_LOGS_TOKEN'))
+g = Github(os.getenv('GITHUB_TOKEN'))
 
 api_key = os.getenv('CLOCKIFY_API_KEY')
 

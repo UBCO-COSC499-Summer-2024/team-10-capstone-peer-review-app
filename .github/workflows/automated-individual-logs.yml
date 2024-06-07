@@ -29,13 +29,13 @@ jobs:
 
     - name: Run Automated Individual Logs Script
       env:
-        AUTOMATED_LOGS_TOKEN : ${{ secrets.AUTOMATED_LOGS_TOKEN }}
+        GITHUB_TOKEN : ${{ secrets.GITHUB_TOKEN }}
         CLOCKIFY_API_KEY : ${{ secrets.CLOCKIFY_API_KEY }}
       run: python .github/workflows/scripts/automated-individual-logs.py
 
     - name: Commit and push changes
       env:
-        AUTOMATED_LOGS_TOKEN : ${{ secrets.AUTOMATED_LOGS_TOKEN }}
+        GITHUB_TOKEN : ${{ secrets.GITHUB_TOKEN }}
       run: |
         git config --global user.email "ghactions@gmail.com"
         git config --global user.name "Automated Individual Logs"

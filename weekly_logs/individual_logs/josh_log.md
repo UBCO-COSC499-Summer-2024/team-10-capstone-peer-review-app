@@ -25,7 +25,7 @@
   - Check dockerhub for existing structures
 - Start setting up Drone CI
 
-- ## Cycle 2: (May 2nd - June 8th) 
+## Cycle 2: (May 2nd - June 8th) 
 
 ## Tasks / Features Worked on From Issues Board: 
 - System Architecture Design - June 2nd, 3rd,4th

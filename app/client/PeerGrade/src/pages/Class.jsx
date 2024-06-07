@@ -10,10 +10,14 @@ import {
   MenubarItem,
 } from "@/components/ui/menubar";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+// import { Button } from '@/components/ui/button';
 
 const Class = () => {
   const { classId } = useParams();
   const classItem = classesData.find((item) => item.id === classId);
+  // const handleBackClick = () => {
+  //   navigate(-1); // This will navigate the user to the previous page
+  // };
 
   if (!classItem) {
     return <div>Class not found</div>;
@@ -24,25 +28,37 @@ const Class = () => {
 
   return (
     <div className="w-screen mx-5 p-6">
+            {/* <Button onClick={handleBackClick}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-8">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+</svg>
+</Button> */}
+
       <div className="flex flex-col gap-4 bg-gray-200 p-4 mb-6 rounded-lg">
         <h1 className="text-3xl font-bold">{classItem.name}: {classItem.instructor}</h1>
-        <Menubar>
-          <MenubarMenu>
-            <MenubarTrigger className="hover:bg-gray-300">HOME</MenubarTrigger>
-          </MenubarMenu>
-          <MenubarMenu>
-            <MenubarTrigger className="hover:bg-gray-300">GRADES</MenubarTrigger>
-          </MenubarMenu>
-          <MenubarMenu>
-            <MenubarTrigger className="hover:bg-gray-300">PEOPLE</MenubarTrigger>
-          </MenubarMenu>
-          <MenubarMenu>
-            <MenubarTrigger className="hover:bg-gray-300">GROUPS</MenubarTrigger>
-          </MenubarMenu>
-          <MenubarMenu>
-            <MenubarTrigger className="hover:bg-gray-300">FILES</MenubarTrigger>
-          </MenubarMenu>
-        </Menubar>
+        <div className="flex rounded-lg">
+        <div className="flex justify-between items-center">
+          <Menubar>
+            <MenubarMenu>
+              <MenubarTrigger className="border border-gray-600  rounded-lg hover:bg-gray-300">HOME</MenubarTrigger>
+            </MenubarMenu>
+            <MenubarMenu>
+              <MenubarTrigger className="border border-gray-600  rounded-lg hover:bg-gray-300">GRADES</MenubarTrigger>
+            </MenubarMenu>
+            <MenubarMenu>
+              <MenubarTrigger className="border border-gray-600  rounded-lg hover:bg-gray-300">PEOPLE</MenubarTrigger>
+            </MenubarMenu>
+            <MenubarMenu>
+              <MenubarTrigger className="border border-gray-600  rounded-lg hover:bg-gray-300">GROUPS</MenubarTrigger>
+            </MenubarMenu>
+            <MenubarMenu>
+              <MenubarTrigger className="border border-gray-600  rounded-lg hover:bg-gray-300">FILES</MenubarTrigger>
+            </MenubarMenu>
+            <MenubarMenu>
+              <MenubarTrigger className="border border-gray-600  rounded-lg hover:bg-gray-300">CONTACTS</MenubarTrigger>
+            </MenubarMenu>
+          </Menubar>
+        </div>
+      </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">

@@ -1,6 +1,6 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import { classesData } from '../lib/data';
+import { useParams, Link } from 'react-router-dom';
+import { classesData, assignmentsData } from '../lib/data';
 import ClassCard from '../components/class/ClassCard';
 import {
   Menubar,
@@ -9,7 +9,7 @@ import {
   MenubarContent,
   MenubarItem,
 } from "@/components/ui/menubar";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 const Class = () => {
   const { classId } = useParams();
@@ -18,6 +18,9 @@ const Class = () => {
   if (!classItem) {
     return <div>Class not found</div>;
   }
+
+  const classAssignments = assignmentsData.filter(assignment => assignment.className === classItem.name);
+  const categories = [...new Set(classAssignments.map(assignment => assignment.category))];
 
   return (
     <div className="w-screen mx-5 p-6">
@@ -49,28 +52,26 @@ const Class = () => {
             </CardHeader>
             <CardContent className="bg-gray-100 p-4 rounded">No recent announcements</CardContent>
           </Card>
-          <Card className="bg-white p-4 shadow-md">
-            <CardHeader>
-              <CardTitle className="text-xl font-bold mb-2">Unit 1: Integrals and Differentiation</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="flex items-center space-x-2 bg-gray-100 p-2 rounded">
-                <span>Assignment 1</span>
-              </div>
-              <div className="flex items-center space-x-2 bg-gray-100 p-2 rounded">
-                <span>Assignment 2</span>
-              </div>
-              <div className="flex items-center space-x-2 bg-gray-100 p-2 rounded">
-                <span>Assignment 3</span>
-              </div>
-              <div className="flex items-center space-x-2 bg-gray-100 p-2 rounded">
-                <span>Assignment 4</span>
-              </div>
-              <div className="flex items-center space-x-2 bg-gray-100 p-2 rounded">
-                <span>Assignment 5</span>
-              </div>
-            </CardContent>
-          </Card>
+          {categories.map((category, index) => (
+            <Card key={index} className="bg-white p-4 shadow-md mb-6">
+              <CardHeader>
+                <CardTitle className="text-xl font-bold mb-2">{category}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {classAssignments
+                  .filter(assignment => assignment.category === category)
+                  .map((assignment) => (
+                    <Link
+                      key={assignment.id}
+                      to={`/assignment/${assignment.id}`}
+                      className="flex items-center space-x-2 bg-gray-100 p-2 rounded hover:bg-gray-200 transition-colors"
+                    >
+                      <span>{assignment.name}</span>
+                    </Link>
+                  ))}
+              </CardContent>
+            </Card>
+          ))}
         </div>
         <div className="space-y-6">
           <Card className="bg-white p-4 shadow-md">

@@ -37,7 +37,22 @@ now = datetime.now(tz)
 start_date = now - timedelta(days=2)  # Last Tuesday
 end_date = now 
 # else: # throw error if today is not Tuesday or Thursday  
-#     raise ValueError('This script should only be run on Tuesdays or Thursdays')
+#     raise ValueError('This script should only be run on Tuesdays or Thursdays') 
+
+# Read the count from the file
+try:
+    with open('count.txt', 'r') as f:
+        count = int(f.read())
+except FileNotFoundError:
+    count = 0
+
+# Increment the count
+count += 1
+
+# Write the count back to the file
+with open('count.txt', 'w') as f:
+    f.write(str(count))
+
 
 for name, user_info in users.items():
 
@@ -95,7 +110,8 @@ for name, user_info in users.items():
     # Write the data to a file
     filename = f'weekly_logs/individual_logs/{name}_log.md'
     with open(filename, 'a') as f:
-        f.write(f'\n# Log for {start_date.strftime("%A, %B %d, %Y, %I:%M %p")} - {end_date.strftime("%A, %B %d, %Y, %I:%M %p")}\n\n')
+        f.write(f'\n# {name}\'s Log for Cycle {count}\n\n')
+        f.write(f'\n## {start_date.strftime("%A, %B %d, %Y, %I:%M %p")} - {end_date.strftime("%A, %B %d, %Y, %I:%M %p")}\n\n')
         f.write('\n## Tasks worked on this cycle:\n')
 
         for issue in issues:

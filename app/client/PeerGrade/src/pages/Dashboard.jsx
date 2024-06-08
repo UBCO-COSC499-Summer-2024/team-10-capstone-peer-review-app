@@ -39,11 +39,11 @@ function AssignmentTable({ title, forReview }) {
             <TableHead className="text-left">Class Name</TableHead>
             {forReview ? (
               <TableHead className="text-left flex items-center cursor-pointer" onClick={handleSort}>
-                P-Review Due Date {sortOrder === 'asc' ? <ArrowUp className="ml-1 h-5 w-5" /> : <ArrowDown className="ml-1 h-5 w-5" />}
+                Review Due {sortOrder === 'asc' ? <ArrowUp className="ml-1 h-5 w-5" /> : <ArrowDown className="ml-1 h-5 w-5" />}
               </TableHead>
             ) : (
               <TableHead className="text-left flex items-center cursor-pointer" onClick={handleSort}>
-                Due Date {sortOrder === 'asc' ? <ArrowUp className="ml-1" /> : <ArrowDown className="ml-1" />}
+                Due {sortOrder === 'asc' ? <ArrowUp className="ml-1" /> : <ArrowDown className="ml-1" />}
               </TableHead>
             )}
             <TableHead className="text-left">Actions</TableHead>

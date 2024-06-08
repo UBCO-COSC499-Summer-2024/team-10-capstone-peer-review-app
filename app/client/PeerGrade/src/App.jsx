@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation  } from 'react-router-dom';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import Classes from './pages/Classes';
 import Class from './pages/Class';
 import Assignment from './pages/Assignment';
 import AssignedPR from './pages/AssignedPR';
@@ -45,7 +44,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/classes" element={<Classes />} />
           <Route path="/class/:classId" element={<Class />} />
           <Route path="/assignment/:assignmentId" element={<Assignment />} />
           <Route path="/assignedPR/:assignmentId" element={<AssignedPR />} />

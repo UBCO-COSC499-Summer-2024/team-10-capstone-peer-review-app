@@ -304,3 +304,268 @@ export const assignmentsData = [
     category: "Unit 4: Interaction Design"
   },
 ];
+
+
+export const peopleData = {
+  instructors: [
+    { id: '1', name: 'John Doe' },
+    { id: '2', name: 'Jane Smith' }
+  ],
+  students: [
+    { id: '3', name: 'Alice Johnson' },
+    { id: '4', name: 'Bob Brown' },
+    { id: '5', name: 'Charlie Davis' },
+    { id: '6', name: 'Diana Evans' },
+    { id: '7', name: 'Eve Foster' }
+  ]
+};
+
+export const groupsData = [
+  {
+    id: '1',
+    name: 'Group 1',
+    members: [
+      { id: '1', name: 'John Doe' },
+      { id: '2', name: 'Jane Smith' },
+      { id: '3', name: 'Alice Johnson' },
+      { id: '4', name: 'Bob Brown' }
+    ]
+  },
+  {
+    id: '2',
+    name: 'Group 2',
+    members: [
+      { id: '5', name: 'Charlie Davis' },
+      { id: '6', name: 'Diana Evans' },
+      { id: '7', name: 'Eve Foster' },
+      { id: '8', name: 'Frank Green' }
+    ]
+  }
+  // Add more groups as needed
+];
+export const filesData = [
+  {
+    id: '1',
+    name: 'Assignment 1 Submission',
+    type: 'assignment',
+    classId: '1',
+    uploadedDate: '03/14/25',
+    uploadedBy: 'John Doe',
+  },
+  {
+    id: '2',
+    name: 'Peer Review Document',
+    type: 'peer-review',
+    classId: '1',
+    uploadedDate: '03/15/25',
+    uploadedBy: 'Jane Smith',
+  },
+  {
+    id: '3',
+    name: 'Assignment 2 Submission',
+    type: 'assignment',
+    classId: '2',
+    uploadedDate: '04/12/25',
+    uploadedBy: 'Alice Johnson',
+  },
+  {
+    id: '4',
+    name: 'Project Report',
+    type: 'project',
+    classId: '3',
+    uploadedDate: '05/01/25',
+    uploadedBy: 'Bob Brown',
+  },
+  {
+    id: '5',
+    name: 'Assignment 3 Submission',
+    type: 'assignment',
+    classId: '1',
+    uploadedDate: '05/10/25',
+    uploadedBy: 'Charlie Davis',
+  },
+  {
+    id: '6',
+    name: 'Research Paper',
+    type: 'research',
+    classId: '4',
+    uploadedDate: '06/01/25',
+    uploadedBy: 'Diana Evans',
+  },
+  {
+    id: '7',
+    name: 'Assignment 4 Submission',
+    type: 'assignment',
+    classId: '3',
+    uploadedDate: '06/20/25',
+    uploadedBy: 'Eve Foster',
+  },
+  {
+    id: '8',
+    name: 'Peer Review Feedback',
+    type: 'peer-review',
+    classId: '2',
+    uploadedDate: '06/25/25',
+    uploadedBy: 'Frank Green',
+  },
+  {
+    id: '9',
+    name: 'Final Project Presentation',
+    type: 'presentation',
+    classId: '5',
+    uploadedDate: '07/01/25',
+    uploadedBy: 'Grace Hall',
+  },
+  {
+    id: '10',
+    name: 'Midterm Exam Submission',
+    type: 'exam',
+    classId: '2',
+    uploadedDate: '04/20/25',
+    uploadedBy: 'Henry James',
+  },
+  {
+    id: '11',
+    name: 'Assignment 5 Submission',
+    type: 'assignment',
+    classId: '1',
+    uploadedDate: '07/10/25',
+    uploadedBy: 'Ivy King',
+  },
+  {
+    id: '12',
+    name: 'Lab Report 1',
+    type: 'lab',
+    classId: '4',
+    uploadedDate: '02/20/25',
+    uploadedBy: 'Jack Lee',
+  },
+  {
+    id: '13',
+    name: 'Final Exam Submission',
+    type: 'exam',
+    classId: '3',
+    uploadedDate: '06/30/25',
+    uploadedBy: 'Karen Miller',
+  },
+  {
+    id: '14',
+    name: 'Assignment 6 Submission',
+    type: 'assignment',
+    classId: '5',
+    uploadedDate: '08/05/25',
+    uploadedBy: 'Leo Nelson',
+  },
+  {
+    id: '15',
+    name: 'Project Proposal',
+    type: 'project',
+    classId: '2',
+    uploadedDate: '02/25/25',
+    uploadedBy: 'Mona Oliver',
+  },
+  {
+    id: '16',
+    name: 'Peer Review Summary',
+    type: 'peer-review',
+    classId: '4',
+    uploadedDate: '03/15/25',
+    uploadedBy: 'Nina Perry',
+  },
+  {
+    id: '17',
+    name: 'Quiz 1 Submission',
+    type: 'quiz',
+    classId: '5',
+    uploadedDate: '01/10/25',
+    uploadedBy: 'Oscar Quinn',
+  },
+  {
+    id: '18',
+    name: 'Assignment 7 Submission',
+    type: 'assignment',
+    classId: '3',
+    uploadedDate: '05/25/25',
+    uploadedBy: 'Paul Roberts',
+  },
+  {
+    id: '19',
+    name: 'Case Study Report',
+    type: 'case-study',
+    classId: '1',
+    uploadedDate: '04/15/25',
+    uploadedBy: 'Quinn Stevens',
+  },
+  {
+    id: '20',
+    name: 'Assignment 8 Submission',
+    type: 'assignment',
+    classId: '2',
+    uploadedDate: '03/05/25',
+    uploadedBy: 'Rachel Taylor',
+  },
+  {
+    id: '21',
+    name: 'Term Paper',
+    type: 'paper',
+    classId: '4',
+    uploadedDate: '05/10/25',
+    uploadedBy: 'Sam Underwood',
+  },
+  {
+    id: '22',
+    name: 'Assignment 9 Submission',
+    type: 'assignment',
+    classId: '5',
+    uploadedDate: '06/05/25',
+    uploadedBy: 'Tina Vincent',
+  },
+  {
+    id: '23',
+    name: 'Research Proposal',
+    type: 'research',
+    classId: '1',
+    uploadedDate: '02/15/25',
+    uploadedBy: 'Uma White',
+  },
+  {
+    id: '24',
+    name: 'Assignment 10 Submission',
+    type: 'assignment',
+    classId: '3',
+    uploadedDate: '07/20/25',
+    uploadedBy: 'Victor Xander',
+  },
+  {
+    id: '25',
+    name: 'Literature Review',
+    type: 'review',
+    classId: '2',
+    uploadedDate: '05/01/25',
+    uploadedBy: 'Wendy Young',
+  },
+  {
+    id: '26',
+    name: 'Assignment 11 Submission',
+    type: 'assignment',
+    classId: '4',
+    uploadedDate: '06/25/25',
+    uploadedBy: 'Xander Zane',
+  },
+  {
+    id: '27',
+    name: 'Field Study Report',
+    type: 'report',
+    classId: '5',
+    uploadedDate: '03/20/25',
+    uploadedBy: 'Yara Adams',
+  },
+  {
+    id: '28',
+    name: 'Assignment 12 Submission',
+    type: 'assignment',
+    classId: '3',
+    uploadedDate: '04/25/25',
+    uploadedBy: 'Zach Brown',
+  }
+];

@@ -2,6 +2,11 @@ The actual source files of a software project are usually stored inside the src 
 
 Installation: 
 
+## Docker deployment
+Navigate to this directory (stay here if you're already here) and run in terminal:
+
+- docker-compose up
+
 ## Server Setup:
 navigate to app/server then run in terminal:
 

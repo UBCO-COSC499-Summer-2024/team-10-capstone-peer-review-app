@@ -1,2 +1,3 @@
 /app/client/PeerGrade/node_modules
 /app/server/node_modules
+/app/database/

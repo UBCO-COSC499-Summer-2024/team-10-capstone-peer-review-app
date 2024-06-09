@@ -19,3 +19,4 @@ navigate to app/client/PeerGrade then run in terminal
 
 - npm i
 - npm run dev
+

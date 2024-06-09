@@ -10,6 +10,6 @@
     "tsx": false,
     "aliases": {
       "utils": "@/lib/utils",
-      "components": "@/components"
+      "components": "src/components"
     }
   }

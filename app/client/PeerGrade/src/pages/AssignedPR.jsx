@@ -58,7 +58,7 @@ const AssignedPR = () => {
             <CardContent className="bg-gray-100 p-4 rounded relative">
               <div className={`bg-white border border-gray-200 overflow-hidden transition-all duration-300 ${expanded.box1 ? '' : 'h-32'} flex justify-center items-center`}>
                 {/* Preview content */}
-                <PDFViewer url="https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK" />
+                <PDFViewer url="https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK" scale="1"/>
               </div>
               <div className="flex justify-center mt-2">
                 <Button variant="link" onClick={() => toggleExpand('box1')}>
@@ -75,7 +75,7 @@ const AssignedPR = () => {
             <CardContent className="bg-gray-100 p-4 rounded relative">
               <div className={`bg-white border border-gray-200 overflow-hidden transition-all duration-300 ${expanded.box2 ? '' : 'h-32'} flex justify-center items-center`}>
                 {/* Preview content */}
-                <PDFViewer url="https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK" />
+                <PDFViewer url="https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK" scale="1"/>
               </div>
               <div className="flex justify-center mt-2">
                 <Button variant="link" onClick={() => toggleExpand('box2')}>

@@ -5,7 +5,8 @@ import * as pdfjs from 'pdfjs-dist';
 
 pdfjs.GlobalWorkerOptions.workerSrc = '../../../node_modules/pdfjs-dist/build/pdf.worker.min.mjs';
 
-const pdfviewer = ({ url }) => {
+const PDFViewer = ({ url, scale }) => {
+  if (isNaN(scale)) scale = 1;
   const canvasRef = useRef(null);
   const [pageNumber, setPageNumber] = useState(1); // State to keep track of current page number
   const [numPages, setNumPages] = useState(null); // State to store the total number of pages
@@ -19,7 +20,7 @@ const pdfviewer = ({ url }) => {
       const pdf = await loadingTask.promise;
       setNumPages(pdf.numPages); // Set the total number of pages
       const page = await pdf.getPage(pageNumber);
-      const viewport = page.getViewport({ scale: 1 });
+      const viewport = page.getViewport({ scale: scale });
       const canvas = canvasRef.current;
   
       // Check if canvas and its context are defined
@@ -54,7 +55,7 @@ const pdfviewer = ({ url }) => {
         renderTask.cancel();
       }
     };
-  }, [url, pageNumber, canvasRef.current]); // Reload PDF when URL or pageNumber changes
+  }, [url, pageNumber, scale, canvasRef.current]); // Reload PDF when URL or pageNumber changes
   
 
   const goToPreviousPage = () => {
@@ -119,4 +120,4 @@ const pdfviewer = ({ url }) => {
   );
 };
 
-export default pdfviewer;
+export default PDFViewer;

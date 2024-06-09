@@ -97,9 +97,9 @@ const PDFViewer = ({ url, scale }) => {
   };
 
   return (
-    <div>
-      <canvas ref={canvasRef} className="w-full max-w-md mx-auto"></canvas>
-      <div className='w-full flex justify-between items-center flex-row p-3'>
+    <div className='flex justify-between items-center flex-col'>
+      <canvas ref={canvasRef} className="w-full mx-auto"></canvas>
+      <div className='w-full flex justify-between items-center flex-row p-3 max-w-sm'>
         <Button variant="outline" onClick={goToPreviousPage} disabled={pageNumber === 1}>Previous</Button>
         {numPages !== null && (
           <div>

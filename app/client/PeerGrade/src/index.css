@@ -6,3 +6,13 @@
 * {
     font-family: "Nunito Sans", sans-serif;
 }
+
+.hide-arrows {
+    -moz-appearance: textfield;
+}
+
+.hide-arrows::-webkit-outer-spin-button,
+.hide-arrows::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+} 

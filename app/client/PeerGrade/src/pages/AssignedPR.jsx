@@ -1,5 +1,5 @@
 // src/pages/AssignedPR.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { assignmentsData } from '../lib/data';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -7,12 +7,27 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, ChevronLeft } from 'lucide-react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import PDFViewer from '@/components/ui/PDFViewer';
 
 const AssignedPR = () => {
   const { assignmentId } = useParams();
   const assignment = assignmentsData.find((item) => item.id === assignmentId);
 
   const [expanded, setExpanded] = useState({ box1: false, box2: false });
+  const [maxHeight, setMaxHeight] = useState({ box1: '0px', box2: '0px' });
+
+  const contentRef1 = useRef(null);
+  const contentRef2 = useRef(null);
+
+  useEffect(() => {
+    if (contentRef1.current && contentRef2.current) {
+      setMaxHeight({
+        box1: `${contentRef1.current.scrollHeight}px`,
+        box2: `${contentRef2.current.scrollHeight}px`
+      });
+    }
+  }, []);
+
 
   if (!assignment) {
     return <div>Assignment not found</div>;
@@ -38,12 +53,12 @@ const AssignedPR = () => {
           <Card className="bg-white p-4 shadow-md mb-6">
             <CardHeader className="flex justify-between items-center">
               <CardTitle className="text-lg font-bold">Peer Review Document 1</CardTitle>
-              <Button variant="outline">download</Button>
+              <Button variant="outline">Download</Button>
             </CardHeader>
             <CardContent className="bg-gray-100 p-4 rounded relative">
-              <div className={`bg-white border border-gray-200 overflow-hidden transition-all duration-300 ${expanded.box1 ? 'h-64' : 'h-32'}`}>
+              <div className={`bg-white border border-gray-200 overflow-hidden transition-all duration-300 ${expanded.box1 ? '' : 'h-32'} flex justify-center items-center`}>
                 {/* Preview content */}
-                <p className="text-gray-500 p-2">This is a preview of the peer-review document.</p>
+                <PDFViewer url="https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK" />
               </div>
               <div className="flex justify-center mt-2">
                 <Button variant="link" onClick={() => toggleExpand('box1')}>
@@ -55,12 +70,12 @@ const AssignedPR = () => {
           <Card className="bg-white p-4 shadow-md mb-6">
             <CardHeader className="flex justify-between items-center">
               <CardTitle className="text-lg font-bold">Peer Review Document 2</CardTitle>
-              <Button variant="outline">download</Button>
+              <Button variant="outline">Download</Button>
             </CardHeader>
             <CardContent className="bg-gray-100 p-4 rounded relative">
-              <div className={`bg-white border border-gray-200 overflow-hidden transition-all duration-300 ${expanded.box2 ? 'h-64' : 'h-32'}`}>
+              <div className={`bg-white border border-gray-200 overflow-hidden transition-all duration-300 ${expanded.box2 ? '' : 'h-32'} flex justify-center items-center`}>
                 {/* Preview content */}
-                <p className="text-gray-500 p-2">This is a preview of the peer-review document.</p>
+                <PDFViewer url="https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK" />
               </div>
               <div className="flex justify-center mt-2">
                 <Button variant="link" onClick={() => toggleExpand('box2')}>

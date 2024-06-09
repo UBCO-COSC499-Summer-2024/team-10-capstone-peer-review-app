@@ -2,16 +2,24 @@
   "name": "app",
   "version": "1.0.0",
   "description": "The actual source files of a software project are usually stored inside the src folder. Alternatively, you can put them into the lib (if you're developing a library), or into the app folder (if your application's source files are not supposed to be compiled).",
-  "main": "index.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "lint-fix": "eslint . --ext js,jsx --report-unused-disable-directives --fix",
+    "format": "prettier --write './**/*.{js,jsx}'",
+    "format-and-lint": "npm run format && npm run lint-fix"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "eslint": "^9.4.0",
+    "prettier": "^3.3.1"
   }
 }

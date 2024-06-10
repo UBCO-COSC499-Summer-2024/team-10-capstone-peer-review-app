@@ -14,6 +14,7 @@ jobs:
     - name: Checkout to logs branch
       uses: actions/checkout@v2
       with:
+        token: ${{ secrets.AUTOMATED_LOG_TOKEN }}
         ref: 'logs'
 
     - name: Set up Python
@@ -34,13 +35,11 @@ jobs:
       run: python .github/workflows/scripts/automated-individual-logs.py
 
     - name: Commit and push changes
-      env:
-        AUTOMATED_LOG_TOKEN : ${{ secrets.AUTOMATED_LOG_TOKEN }}
       run: |
         git config --global user.email "ghactions@gmail.com"
         git config --global user.name "Automated Individual Logs"
         git add -A
         git commit -m "Create Log template"
-        git push https://${{ secrets.AUTOMATED_LOG_TOKEN }}@github.com/${{ github.repository }}.git
+        git push
 
   

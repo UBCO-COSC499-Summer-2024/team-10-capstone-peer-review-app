@@ -4,13 +4,11 @@
     "browser": true,
     "node": true
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended", 
-    // "plugin:react-redux/recommended",
-    "eslint-config-prettier"
-  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    } 
+  }, 
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module", 
@@ -18,13 +16,17 @@
       "jsx": true
     }
   },
-  "settings": {
-    "react": {
-      "version": "detect"
-    }
-  },
   "plugins": [
-    "react-refresh"
+    "react-refresh", 
+    "react-redux"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:import/errors",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended", 
+    "plugin:react-redux/recommended",
+    "eslint-config-prettier"
   ],
   "rules": {
     "react-refresh/only-export-components": [
@@ -33,14 +35,15 @@
         "allowConstantExport": true
       }
     ],
+    "react/prop-types": "off", // disable prop-types, we arent type checking, this could be an issue later on
+    "import/no-unresolved": "off", // Doesn't recognize aliases, so ingore this rule
     "react/jsx-uses-react": "off", // disables the rule that checks whether 'React' is in scope when using JSX
     "react/react-in-jsx-scope": "off", // ditto, dont need to manually import React in every component file 
-    "no-unused-vars": ["error"], // disallow unused variables,
+    "no-unused-vars": ["warn"], // disallow unused variables,
     "eqeqeq": ["error"], // require the use of === and !==, 
     "curly": ["error"], // enforce consistent brace style for all control statements
     "camelcase": ["error"], // enforce camelcase naming convention
-    "no-trailing-spaces": ["error"], // disallow trailing whitespace at the end of lines
-    "no-commonjs": "error" // disallow CommonJS `require` and `module.exports`
+    "import/no-commonjs":["error"] // disallow CommonJS `require` and `module.exports`
   } 
 
 }

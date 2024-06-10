@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, ChevronLeft } from 'lucide-react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import PDFViewer from '@/components/ui/PDFViewer';
+import PDFViewer from '@/components/assign/PDFViewer';
 
 const AssignedPR = () => {
   const { assignmentId } = useParams();

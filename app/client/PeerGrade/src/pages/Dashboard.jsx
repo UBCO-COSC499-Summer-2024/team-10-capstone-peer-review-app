@@ -1,22 +1,22 @@
-// src/pages/Dashboard.jsx
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ClassCard from '@/components/class/ClassCard';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { classesData, assignmentsData } from '../lib/data';
+import { iClass as classesData, assignment as assignmentsData, user } from '@/lib/dbData';
 import { Button } from "@/components/ui/button";
-import {  ArrowUp, ArrowDown } from 'lucide-react';
+import { ArrowUp, ArrowDown } from 'lucide-react';
 
 function AssignmentTable({ title, forReview }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState('asc');
   const itemsPerPage = 5;
 
+  // Filter and sort assignments based on review status
   const filteredAssignments = assignmentsData
-    .filter(assignment => assignment.forReview === forReview)
+    .filter(assignment => (forReview ? assignment.evaluation_type === 'peer' : true))
     .sort((a, b) => {
-      const dateA = new Date(a.dueDate);
-      const dateB = new Date(b.dueDate);
+      const dateA = new Date(forReview ? a.due_date : a.due_date);
+      const dateB = new Date(forReview ? b.due_date : b.due_date);
       return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
     });
 
@@ -52,12 +52,12 @@ function AssignmentTable({ title, forReview }) {
         <TableBody>
           {currentAssignments.map((assignment, index) => (
             <TableRow key={index}>
-              <TableCell className="p-2">{assignment.name}</TableCell>
-              <TableCell className="p-2">{assignment.className}</TableCell>
-              {forReview && <TableCell className="p-2">{assignment.peerReviewDueDate}</TableCell>}
-              {!forReview && <TableCell className="p-2">{assignment.dueDate}</TableCell>}
+              <TableCell className="p-2">{assignment.title}</TableCell>
+              <TableCell className="p-2">{classesData.find(classItem => classItem.class_id === assignment.class_id)?.classname}</TableCell>
+              {forReview && <TableCell className="p-2">{assignment.due_date.toLocaleDateString()}</TableCell>}
+              {!forReview && <TableCell className="p-2">{assignment.due_date.toLocaleDateString()}</TableCell>}
               <TableCell className="p-2">
-                <Link to={forReview ? `/assignedPR/${assignment.id}` : `/assignment/${assignment.id}`} className="bg-green-100 text-blue-500 px-2 py-1 rounded-md">
+                <Link to={forReview ? `/assignedPR/${assignment.assignment_id}` : `/assignment/${assignment.assignment_id}`} className="bg-green-100 text-blue-500 px-2 py-1 rounded-md">
                   {forReview ? 'Review' : 'Open'}
                 </Link>
               </TableCell>
@@ -79,19 +79,25 @@ function AssignmentTable({ title, forReview }) {
 }
 
 function Dashboard() {
+  // Assuming the user is the second one in the users array for this example
+  const currentUser = user[1]; // This should be replaced with actual user retrieval logic
+
+  // Filter classes based on user class_ids
+  const userClasses = classesData.filter(classItem => currentUser.class_id.includes(classItem.class_id));
+
   return (
     <div className="py-6 space-y-6">
       <h1 className="text-2xl font-bold">Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {classesData.map((classItem) => (
+        {userClasses.map((classItem) => (
           <ClassCard
-            key={classItem.id}
-            classId={classItem.id}
-            className={classItem.name}
-            instructor={classItem.instructor}
-            numStudents={classItem.numStudents}
-            numAssignments={classItem.numAssignments}
-            numPeerReviews={classItem.numPeerReviews}
+            key={classItem.class_id}
+            classId={classItem.class_id}
+            className={classItem.classname}
+            instructor={user.find(instructor => instructor.user_id === classItem.instructor_id)?.firstname + ' ' + user.find(instructor => instructor.user_id === classItem.instructor_id)?.lastname}
+            numStudents={user.filter(student => student.class_id.includes(classItem.class_id)).length}
+            numAssignments={assignmentsData.filter(assignment => assignment.class_id === classItem.class_id).length}
+            numPeerReviews={assignmentsData.filter(assignment => assignment.class_id === classItem.class_id && assignment.evaluation_type === 'peer').length}
           />
         ))}
       </div>

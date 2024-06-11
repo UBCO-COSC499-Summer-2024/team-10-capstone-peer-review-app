@@ -15,19 +15,21 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Button } from "./ui/button";
 import { Avatar } from "./ui/avatar";
-import { classesData, assignmentsData } from '../lib/data';
+import { iClass as classesData, assignment as assignmentsData, user } from '@/lib/dbData';
 
 export default function AppNavbar() {
   const location = useLocation();
-  
-  // Filter and sort assignments for review
-  const reviewAssignments = assignmentsData
-    .filter(assignment => assignment.forReview)
-    .sort((a, b) => new Date(a.peerReviewDueDate) - new Date(b.peerReviewDueDate))
-    .slice(0, 3);
+  //REDUX: This should be replaced with actual user retrieval logic (0 = admin, 1 = student)
+  const currentUser = user[2]; // 
 
-  // Count the number of assignments marked for review
-  const reviewsPendingCount = assignmentsData.filter(assignment => assignment.forReview).length;
+  // Filter classes based on user class_ids
+  const userClasses = classesData.filter(classItem => currentUser.class_id.includes(classItem.class_id));
+
+  // Filter assignments based on user class_ids and evaluation_type 'peer'
+  const userReviewAssignments = assignmentsData
+    .filter(assignment => currentUser.class_id.includes(assignment.class_id) && assignment.evaluation_type === 'peer')
+    .sort((a, b) => new Date(a.due_date) - new Date(b.due_date))
+    .slice(0, 3);
 
   const isActive = (path) => location.pathname === path;
 
@@ -43,44 +45,49 @@ export default function AppNavbar() {
           <NavigationMenuItem>
             <NavigationMenuTrigger>
               <NavigationMenuItem>
-                <Link to="/peer-review" className={cn(navigationMenuTriggerStyle(), isActive('/peer-review') && 'font-bold border-b-4')}>
-                  Peer-Review
-                </Link>
-            </NavigationMenuItem>
+                  <Link to="/peer-review" className={cn(navigationMenuTriggerStyle(), isActive('/peer-review') && 'font-bold border-b-4')}>
+                    Peer-Review
+                  </Link>
+              </NavigationMenuItem>
             </NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="bg-white grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                {reviewAssignments.map((assignment) => (
+                {userReviewAssignments.map((assignment) => (
                   <ListItem
-                    key={assignment.id}
-                    title={assignment.name}
-                    href={`/assignedPR/${assignment.id}`}
+                    key={assignment.assignment_id}
+                    title={assignment.title}
+                    href={`/assignedPR/${assignment.assignment_id}`}
                   >
-                    {assignment.shortDesc}
+                    {assignment.description}
                   </ListItem>
                 ))}
               </ul>
             </NavigationMenuContent>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuTrigger>
-            <NavigationMenuItem>
-                <Link to="/classes" className={cn(navigationMenuTriggerStyle(), isActive('/classes') && 'font-bold border-b-4')}>
-                  Classes
-                </Link>
-            </NavigationMenuItem>
+            <NavigationMenuTrigger className={cn(isActive('/classes') || isActive('/manageclasses') && 'font-bold border-b-4')}>
+              Classes
             </NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="bg-white grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                {classesData.map((classItem) => (
+                {userClasses.map((classItem) => (
                   <ListItem
-                    key={classItem.id}
-                    title={classItem.name}
-                    href={`/class/${classItem.id}`}
+                    key={classItem.class_id}
+                    title={classItem.classname}
+                    href={currentUser.type === 'student' ? `/class/${classItem.class_id}` : `/manageclasses/${classItem.class_id}`}
                   >
-                    {classItem.instructor}
+                    {classItem.description}
                   </ListItem>
                 ))}
+                {(currentUser.type === 'instructor' || currentUser.type === 'admin') && (
+                  <ListItem
+                    title="Manage Classes"
+                    href="/manageclasses"
+                    className="bg-blue-100"
+                  >
+                    Administer classes and assignments.
+                  </ListItem>
+                )}
               </ul>
             </NavigationMenuContent>
           </NavigationMenuItem>

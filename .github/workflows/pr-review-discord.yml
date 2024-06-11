@@ -37,7 +37,7 @@ jobs:
              -d '{
                "username": "Github",
                "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
-               "content": "'"${MENTIONS//$'\n'/'\n'}"'",
+               "content": "\""${MENTIONS//$'\n'/'\n'}"\"",
                "embeds": [{
                  "title": "Review Requested on Pull Request",
                  "url": "${{ github.event.pull_request.html_url }}",
@@ -47,7 +47,7 @@ jobs:
                  },
                  "fields": [
                    {"name": "Title", "value": "${{ github.event.pull_request.title }}", "inline": false},
-                   {"name": "Requested Reviewers", "value": "'"${REVIEWERS//$'\n'/'\n'}"'", "inline": false}
+                   {"name": "Requested Reviewers", "value": "\""${REVIEWERS//$'\n'/'\n'}"\"", "inline": false}
                  ]
                }]
              }' \

@@ -4,55 +4,53 @@ from pytz import timezone
 import os
 import requests
 
+# PAT for the automated-log-workflow
 g = Github(os.getenv('AUTOMATED_LOG_TOKEN'))
-
+# Api key for clockify
 api_key = os.getenv('CLOCKIFY_API_KEY')
-
+# Repo for the workflow
 repo = g.get_repo("UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app")
-
+# Timezone for the log ceration
 tz = timezone('America/Vancouver')
-
+# Url for the clockify api
 base_url = 'https://api.clockify.me/api/v1'
-
+# Https headers for the clockify api
 headers = {
     'X-Api-Key': api_key
 }
-
+# id of the workspace in clockify
 workspace_id = '664d8e0fe973a23fc5fda5a0'
 
 # List of usernames and their associated names
 users = {
-    # 'mahir': {'username': 'mahirr476', 'clockify_id': '664d8e0fe973a23fc5fda59f'},
+    'mahir': {'username': 'mahirr476', 'clockify_id': '664d8e0fe973a23fc5fda59f'},
     'josh': {'username': 'JoshFarwig', 'clockify_id': '664d1549831d3f5360a7fe2b'}, 
-    # 'bhavya': {'username': 'Bhavya290223', 'clockify_id': '664e1af8e973a23fc5173dd1'},
-    # 'abdul': {'username': 'namekeptanonymous', 'clockify_id': '664e1b16e8ad8876980027d2'}, 
+    'bhavya': {'username': 'Bhavya290223', 'clockify_id': '664e1af8e973a23fc5173dd1'},
+    'abdul': {'username': 'namekeptanonymous', 'clockify_id': '664e1b16e8ad8876980027d2'}, 
 }
 
 # Get the current date and time
 now = datetime.now(tz)
-# if now.weekday() == 1:  # If today is Tuesday
-#     start_date = now - timedelta(days=4)  # Last Thursday
-#     end_date = now
-# elif now.weekday() == 3:  # If today is Thursday
-start_date = now - timedelta(days=2)  # Last Tuesday
-end_date = now 
-# else: # throw error if today is not Tuesday or Thursday  
-#     raise ValueError('This script should only be run on Tuesdays or Thursdays') 
+if now.weekday() == 1:  # If today is Tuesday
+    start_date = now - timedelta(days=4)  # Last Thursday
+    end_date = now
+elif now.weekday() == 3:  # If today is Thursday
+    start_date = now - timedelta(days=2)  # Last Tuesday
+    end_date = now 
+else: # throw error if today is not Tuesday or Thursday  
+    raise ValueError('This script should only be run on Tuesdays or Thursdays') 
 
-# Read the count from the file
+# Read the cycle count from count-for-cycle.txt
 try:
-    with open('count.txt', 'r') as f:
+    with open('./github/workflows/scripts/count-for-cycle.txt', 'r') as f:
         count = int(f.read())
+
+    count += 1
+
+    with open('./github/workflows/scripts/count-for-cycle.txt', 'w') as f:
+        f.write(str(count))
 except FileNotFoundError:
-    count = 0
-
-# Increment the count
-count += 1
-
-# Write the count back to the file
-with open('count.txt', 'w') as f:
-    f.write(str(count))
-
+    raise ValueError('FILE R/W ERR') 
 
 for name, user_info in users.items():
 
@@ -77,7 +75,7 @@ for name, user_info in users.items():
     # Api call to get the time entries for the user
     response = requests.get(f'{base_url}/workspaces/{workspace_id}/user/{clockify_id}/time-entries', headers=headers)
 
-    # If the request was successful, parse the data
+    # If the request was successful, parse the data from clockify
     if response.status_code == 200:
         time_entries = response.json()
         # Group the time entries by description
@@ -85,10 +83,10 @@ for name, user_info in users.items():
 
         for time_entry in time_entries:
             description = time_entry['description']
-
+            # Convert the start and end times to the UTM-7, make it timezone aware
             start_time = datetime.strptime(time_entry['timeInterval']['start'], '%Y-%m-%dT%H:%M:%SZ')
             start_time = start_time.replace(tzinfo=timezone('UTC')).astimezone(tz)
-
+            # If the time entry is still ongoing, we consider its duration as 0 for the total duration calculation
             if time_entry['timeInterval']['end']:
                 end_time = datetime.strptime(time_entry['timeInterval']['end'], '%Y-%m-%dT%H:%M:%SZ')
                 end_time = end_time.replace(tzinfo=timezone('UTC')).astimezone(tz)
@@ -107,13 +105,18 @@ for name, user_info in users.items():
         # Calculate the total duration for each description
         total_durations = {description: round(sum(time_entry['duration'] for time_entry in time_entries), 1) for description, time_entries in grouped_time_entries.items()}
       
-    # Write the data to a file
     filename = f'weekly_logs/individual_logs/{name}_log.md'
-    with open(filename, 'a') as f:
+    
+    # Read existing content from the file
+    with open(filename, 'r') as f:
+        old_content = f.read()
+    # Write the log template to top of the file
+    with open(filename, 'w') as f:
         f.write(f'\n# {name}\'s Log for Cycle {count}\n\n')
         f.write(f'\n## {start_date.strftime("%A, %B %d, %Y, %I:%M %p")} - {end_date.strftime("%A, %B %d, %Y, %I:%M %p")}\n\n')
         f.write('\n## Tasks worked on this cycle:\n')
 
+        # Write all issues worked on closed and not closed
         for issue in issues:
             if issue.pull_request is None:
                 f.write(f'&nbsp; &nbsp; :orange_circle: **Issue-[{issue.number}]({issue.html_url})**: {issue.title}  \n  \n')
@@ -122,6 +125,7 @@ for name, user_info in users.items():
                     labels = [label.name for label in issue.labels]
                     f.write(f'&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: {", ".join(labels)} \n  \n')
     
+        # Write all time entries from clockify
         f.write('\n## Time entries from Clockify on this cycle:\n') 
         for description, time_entries in grouped_time_entries.items():
             f.write(f'&nbsp; &nbsp; :watch: **{description}** *(Total duration: {total_durations[description]} hours)*  \n  \n')
@@ -135,27 +139,34 @@ for name, user_info in users.items():
                     duration = 'Ongoing'
                 f.write(f'&nbsp; &nbsp; &nbsp; &nbsp; :clock10: {start_time} - {end_time} *({duration})*  \n  \n')
 
+        # Write all pull requests worked on this cycle  
         f.write('\n## Features worked on this cycle:\n')
         for pull in user_pulls:
             f.write(f'&nbsp; &nbsp; :white_check_mark: **PR-[{pull.number}]({pull.html_url})**: {pull.title}  \n  \n')
         
+        # Write all closed issues in the this cycle
         f.write('\n## Completed tasks:\n')
         for issue in closed_issues:
             if issue.pull_request is None:
                 f.write(f'&nbsp; &nbsp; :purple_circle: **Issue-[{issue.number}]({issue.html_url})**: {issue.title}  \n  \n')
-
+        
+        # Write every open issued (Even from previous cycles)
         f.write('\n## In-progress tasks:\n')
         for issue in open_issues:
             if issue.pull_request is None:
                 f.write(f'&nbsp; &nbsp; :green_circle: **Issue-[{issue.number}]({issue.html_url})**: {issue.title}  \n  \n')
         
+        # Template for goals
         f.write('\n## Recap on goals from last cycle\n')
         f.write('* \n')
         f.write('* \n')
         f.write('* \n')
-
+        # Template for goals
         f.write('\n## Goals for next cycle\n')
         f.write('* \n')
         f.write('* \n')
         f.write('* \n')
+
+        # Append the old content to the new content in order to new logs on top
+        f.write(old_content)
 

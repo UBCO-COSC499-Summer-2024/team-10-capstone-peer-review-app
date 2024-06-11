@@ -5,7 +5,7 @@ import ClassCard from '@/components/class/ClassCard';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { classesData, assignmentsData } from '../lib/data';
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
+import {  ArrowUp, ArrowDown } from 'lucide-react';
 
 function AssignmentTable({ title, forReview }) {
   const [currentPage, setCurrentPage] = useState(1);

@@ -35,7 +35,6 @@ const RegisterCard = ({ onSwitchToLogin }) => {
     };
 
     addUser(newUser);
-    console.log('Registered new user:', newUser);
     onSwitchToLogin(); // Switch back to login after registration
   };
 

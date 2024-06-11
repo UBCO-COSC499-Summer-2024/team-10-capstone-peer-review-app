@@ -6,7 +6,7 @@ services:
       context: ./client/PeerGrade
       dockerfile: Dockerfile
     env_file:
-      - ./client/PeerGrade/frontend.env
+      - ./client/PeerGrade/.env
     ports:
       - "${FRONTEND_PORT}:${FRONTEND_PORT}"
     volumes:
@@ -21,7 +21,7 @@ services:
       context: ./server
       dockerfile: Dockerfile
     env_file:
-      - ./server/backend.env
+      - ./server/.env
     ports:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
     volumes:
@@ -34,7 +34,7 @@ services:
     image: postgres:latest
     restart: always
     env_file:
-      - ./database.env
+      - ./server/.env
     ports:
       - "${DB_PORT}:${DB_PORT}"
     volumes:

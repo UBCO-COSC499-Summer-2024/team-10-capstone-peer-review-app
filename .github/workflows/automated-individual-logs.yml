@@ -2,10 +2,10 @@ name: Automated Individual Logs Workflow
 
 on:
   schedule:
-    - cron: '0 0 * * 2,4'  # This will run the workflow at 5pm on Wednesdays and Fridays UTC-7 (12am UTC)  
-  workflow_dispatch:
-    branches:
-      - logs
+    - cron: '0 22 * * 2,4'  # This will run the workflow at 3PM UTC-7 (12am UTC)  
+  workflow_dispatch: # Comment out to disable manual triggering for testing purposes
+    branches: # // 
+      - logs #  //
 
 jobs:
   build:
@@ -39,7 +39,7 @@ jobs:
         git config --global user.email "ghactions@gmail.com"
         git config --global user.name "Automated Individual Logs"
         git add -A
-        git commit -m "Create Log template"
+        git commit -m "Created Log templates: make sure to fill them out and review eachother's commits!"
         git push
 
   

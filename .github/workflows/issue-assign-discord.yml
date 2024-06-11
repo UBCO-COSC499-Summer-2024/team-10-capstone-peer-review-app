@@ -48,7 +48,7 @@ jobs:
                   "icon_url": "${{ github.event.issue.user.avatar_url }}"
                 },
                 "fields": [
-                  {"name": "Title", "value": "${{ github.event.issue.title }}", "inline": false},
+                  {"name": "Title", "value": "${{ github.event.issue.title | jq -R . }}", "inline": false},
                   {"name": "Assignees", "value": "'"${ASSIGNEES//$'\n'/'\n'}"'", "inline": false}
                 ]
               }]

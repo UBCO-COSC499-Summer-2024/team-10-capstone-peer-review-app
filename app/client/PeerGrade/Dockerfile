@@ -1,7 +1,6 @@
 FROM node:22-slim
 
 ENV CI=true
-ENV PORT=3000
 
 # Set the working directory
 WORKDIR /usr/client/
@@ -13,7 +12,11 @@ COPY . /usr/client/
 # Install app dependencies
 RUN npm install
 
-EXPOSE 3000
+# Use an environment variable for the port
+ARG PORT
+ENV PORT=$FRONTEND_PORT
+
+EXPOSE $PORT
 
 # Start the application
 CMD ["npm", "run", "dev"]

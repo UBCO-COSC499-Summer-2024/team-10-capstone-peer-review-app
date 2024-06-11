@@ -1,10 +1,14 @@
+version: '3'
 services:
+
   client:
     build:
       context: ./client/PeerGrade
       dockerfile: Dockerfile
+    env_file:
+      - ./client/PeerGrade/frontend.env
     ports:
-      - "3000:3000"
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
     volumes:
       - ./client/PeerGrade:/usr/client
       - client-node-modules:/usr/client/node_modules
@@ -16,23 +20,23 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
+    env_file:
+      - ./server/backend.env
     ports:
-      - "5000:5000"
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
     volumes:
       - ./server:/usr/server
       - server-node-modules:/usr/server/node_modules
     depends_on:
       - postgres
-    
+
   postgres:
     image: postgres:latest
     restart: always
-    environment:
-      POSTGRES_DB: COSC 499
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123456ab
+    env_file:
+      - ./database.env
     ports:
-      - "5433:5433"
+      - "${DB_PORT}:${DB_PORT}"
     volumes:
       - ./database:/var/lib/postgresql/data
 

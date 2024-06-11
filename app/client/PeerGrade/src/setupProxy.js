@@ -1,11 +1,17 @@
-const { createProxyMiddleware } = require("http-proxy-middleware");
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
-module.exports = function (app) {
+import dotenv from 'dotenv'; 
+
+dotenv.config();
+
+const setupProxy = function (app) {
 	app.use(
 		"/api",
 		createProxyMiddleware({
-			target: "http://localhost:5000",
+			target: `http://localhost:${process.env.BACKEND_PORT}`,
 			changeOrigin: true
 		})
 	);
 };
+
+export default setupProxy;

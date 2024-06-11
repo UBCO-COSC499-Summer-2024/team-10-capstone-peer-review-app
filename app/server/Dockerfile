@@ -10,7 +10,11 @@ COPY . /usr/server/
 # Install app dependencies
 RUN npm install
 
-EXPOSE 5000
+# Use an environment variable for the port
+ARG PORT
+ENV PORT=$BACKEND_PORT
+
+EXPOSE $PORT
 
 # Start the application
 CMD ["npm", "start"]

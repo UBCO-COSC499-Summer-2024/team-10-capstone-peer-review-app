@@ -8,7 +8,7 @@ export const user = [
         lastname: "User",
         email: "test@gmail.com",
         class_id: 1,
-        type: "student"
+        type: "admin"
       },
       {
         user_id: 2,

@@ -4,11 +4,6 @@
     "browser": true,
     "node": true
   },
-  "settings": {
-    "react": {
-      "version": "detect"
-    } 
-  }, 
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module", 
@@ -16,9 +11,20 @@
       "jsx": true
     }
   },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },     
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx"]
+      }
+    }
+  }, 
   "plugins": [
     "react-refresh", 
-    "react-redux"
+    "react-redux", 
+    "import"
   ],
   "extends": [
     "eslint:recommended",
@@ -35,15 +41,19 @@
         "allowConstantExport": true
       }
     ],
-    "react/prop-types": "off", // disable prop-types, we arent type checking, this could be an issue later on
-    "import/no-unresolved": "off", // Doesn't recognize aliases, so ingore this rule
-    "react/jsx-uses-react": "off", // disables the rule that checks whether 'React' is in scope when using JSX
-    "react/react-in-jsx-scope": "off", // ditto, dont need to manually import React in every component file 
-    "no-unused-vars": ["warn"], // disallow unused variables,
-    "eqeqeq": ["error"], // require the use of === and !==, 
-    "curly": ["error"], // enforce consistent brace style for all control statements
-    "camelcase": ["error"], // enforce camelcase naming convention
-    "import/no-commonjs":["error"] // disallow CommonJS `require` and `module.exports`
+      // add plugin-node and plugin-jest?
+      "react/prop-types": "off", // disable prop-types, we arent type checking, this could be an issue later on
+      "react/jsx-uses-react": "off", // disables the rule that checks whether 'React' is in scope when using JSX
+      "react/react-in-jsx-scope": "off", // ditto, dont need to manually import React in every component file 
+      "import/no-unresolved": "off", // Doesn't recognize aliases, not sure how to fix this
+      "import/no-commonjs":["error"], // disallow CommonJS `require` and `module.exports`
+      "no-unused-vars": ["warn"], // warn unused variables,
+      "no-undef": ["warn"], // warn undef variables 
+      "no-const-assign": ["error"], // disallow reassigning const variables
+      "no-var": ["error"], // require let or const instead of var
+      "eqeqeq": ["error"], // require the use of === and !==, 
+      "curly": ["error"], // enforce consistent brace style for all control statements
+      "camelcase": ["error"] // enforce camelcase naming convention
   } 
 
 }

@@ -1,0 +1,15 @@
+// For more information on jsconfig.json,
+// visit https://code.visualstudio.com/docs/languages/jsconfig
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["*"], 
+    }, 
+    "target": "ESNext", 
+    "module": "ESNext", 
+  }, 
+  "exclude": [
+    "node_modules",
+]
+}

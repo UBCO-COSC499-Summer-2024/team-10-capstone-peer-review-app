@@ -1,8 +1,18 @@
 {
     "root": true,
     "env": {
-      "browser": true,
       "node": true
+    },
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+    },
+    "settings": {
+      "import/resolver": {
+        "node": {
+          "extensions": [".js"]
+        }
+      }
     },
     "plugins": [
       "import"
@@ -12,16 +22,17 @@
       "plugin:import/errors",
       "eslint-config-prettier"
     ],
-    "parserOptions": {
-      "ecmaVersion": "latest",
-      "sourceType": "module"
-    },
     "rules": {
-      "no-unused-vars": ["warn"], // disallow unused variables,
+      // Maybe add plugin-node, plugin-security, plugin-jest? 
+      "import/no-unresolved": "off", // Doesn't recognize aliases, not sure how to fix this
+      "import/no-commonjs":["error"], // disallow CommonJS `require` and `module.exports`
+      "no-unused-vars": ["warn"], // warn unused variables,
+      "no-undef": ["warn"], // warn undef variables 
+      "no-const-assign": ["error"], // disallow reassigning const variables
+      "no-var": ["error"], // require let or const instead of var
       "eqeqeq": ["error"], // require the use of === and !==, 
       "curly": ["error"], // enforce consistent brace style for all control statements
-      "camelcase": ["error"], // enforce camelcase naming convention
-      "import/no-commonjs":["error"] // disallow CommonJS `require` and `module.exports`
+      "camelcase": ["error"] // enforce camelcase naming convention
     } 
   
   }

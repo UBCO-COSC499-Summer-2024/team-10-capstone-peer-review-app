@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config(); 
 
 const app = express();
-const BACKEND_PORT = process.env.BACKEND_PORT || 5000;
+const BACKEND_PORT = process.env.BACKEND_PORT;
 
 app.get("/api", (req, res) => {
 	res.json({ message: "Hello from the server!" });

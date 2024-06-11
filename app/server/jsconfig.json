@@ -4,12 +4,12 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["*"], 
+      "@/*": ["src/*"], 
     }, 
     "target": "ESNext", 
     "module": "ESNext", 
   }, 
-  "exclude": [
-    "node_modules",
+  "include": [
+    "src/**/*"
 ]
 }

@@ -1,0 +1,263 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// TODOS: 
+// - ENROLLEMENT and GROUP INVITES AND REQUESTS 
+// - NOTIFICATION STATUSES? 
+// - SUBMISSION, PEER REVIEW, INSTRUCTOR REVIEW, GROUP REVIEW STATUSES?
+
+// User Models
+
+model Student {
+  studentId     String           @id @default(uuid())
+  username      String           @unique
+  password      String
+  email         String           @unique
+  firstname     String
+  lastname      String
+  classes       StudentInClass[]
+  submissions   Submission[]
+  peerReviews   PeerReview[]
+  studentGroups StudentInGroup[]
+}
+
+// Need to refactor last references to others tables, depending on what we want instructors to be able to pull up
+model Instructor {
+  instructorId       String              @id @default(uuid())
+  username           String              @unique
+  password           String
+  email              String              @unique
+  firstname          String
+  lastname           String
+  isAdmin            Boolean             @default(false)
+  classes            InstructorInClass[]
+  assignmentsCreated Assignment[]        @relation("AssignmentCreatedByInstructor") // Assignments created by the instructor
+  rubricsCreated     Rubric[]            @relation("RubricCreatedByInstructor") // Rubrics created by the instructor
+}
+
+// Class and Assignment Models
+
+model Class {
+  classId         String              @id @default(uuid())
+  classname       String
+  description     String?
+  startDate       DateTime
+  endDate         DateTime
+  term            String
+  classSize       Int
+  studentsInClass StudentInClass[]
+  instructors     InstructorInClass[]
+  Assignments     Assignment[]
+  GroupProjects   GroupProject[]
+}
+
+model StudentInClass {
+  studentId String
+  classId   String
+  Student   Student @relation(fields: [studentId], references: [studentId])
+  Class     Class   @relation(fields: [classId], references: [classId])
+
+  @@id([studentId, classId])
+}
+
+model InstructorInClass {
+  instructorId String
+  classId      String
+  Instructor   Instructor @relation(fields: [instructorId], references: [instructorId])
+  Class        Class      @relation(fields: [classId], references: [classId])
+
+  @@id([instructorId, classId])
+}
+
+// Group Invite / Enrollment Requests Tables
+
+model Assignment {
+  assignmentId          String         @id @default(uuid())
+  classId               String
+  createdByInstructorId String
+  title                 String
+  description           String?
+  dueDate               DateTime
+  maxSumissions         Int            @default(1)
+  isGroupAssignment     Boolean        @default(false)
+  fileType              String?
+  classes               Class          @relation(fields: [classId], references: [classId])
+  Rubric                Rubric[] // An assignment can have multiple rubrics, I.E a group rubric an assignment rubric   
+  createdByInstructor   Instructor     @relation("AssignmentCreatedByInstructor", fields: [createdByInstructorId], references: [instructorId])
+  Submissions           Submission[]
+  GroupProjects         GroupProject[]
+}
+
+// Group Models
+
+model GroupProject {
+  groupProjectId   String            @id @default(uuid())
+  assignmentId     String
+  classId          String
+  groupName        String
+  assignment       Assignment        @relation(fields: [assignmentId], references: [assignmentId])
+  class            Class             @relation(fields: [classId], references: [classId])
+  StudentGroups    StudentInGroup[] // Students in the group
+  GroupReviews     GroupReview[] // Reviews from the group
+  GroupSubmissions GroupSubmission[]
+}
+
+model StudentInGroup {
+  studentId      String
+  groupProjectId String
+  Student        Student      @relation(fields: [studentId], references: [studentId])
+  GroupProject   GroupProject @relation(fields: [groupProjectId], references: [groupProjectId])
+
+  @@id([studentId, groupProjectId])
+}
+
+// Submission Models
+
+model Submission {
+  submissionId       String             @id @default(uuid())
+  assignmentId       String
+  studentId          String
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  sumbissionFilePath String
+  sumbissionType     SubmissionType // Either a File or a URL, we need to discuss file storage options
+  submissionDate     DateTime
+  grade              Int? // Final grade of the Submission, Graded by the instructor
+  assignment         Assignment         @relation(fields: [assignmentId], references: [assignmentId])
+  student            Student            @relation(fields: [studentId], references: [studentId])
+  peerReviews        PeerReview[]
+  instructorReviews  InstructorReview[]
+}
+
+model GroupSubmission {
+  submissionId       String         @id @default(uuid())
+  grouppProjectId    String
+  assignmentId       String
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  submittedBy        String // The studentId of the student who made the submission
+  submissionFilePath String
+  submissionType     SubmissionType // Either a File or a URL, we need to discuss file storage options
+  submissionDate     DateTime
+  grade              Int? // Final grade of the Submission, Graded by the instructor
+  assignment         Assignment     @relation(fields: [assignmentId], references: [assignmentId])
+  groupProject       GroupProject   @relation(fields: [grouppProjectId], references: [groupProjectId])
+  submittedByStudent Student        @relation(fields: [submittedBy], references: [studentId])
+}
+
+// Review Models
+
+model PeerReview {
+  reviewId          String     @id @default(uuid())
+  submissionId      String
+  studentReviewerId String
+  revieweeId        String
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  reviewGrade       Int // Final grade of the review 
+  submission        Submission @relation(fields: [submissionId], references: [submissionId])
+  reviewerStudent   Student    @relation(fields: [studentReviewerId], references: [studentId])
+  reviewee          Student    @relation(fields: [revieweeId], references: [studentId])
+}
+
+model InstructorReview {
+  instructorReviewId   String     @id @default(uuid())
+  submissionId         String
+  instructorReviewerId String
+  revieweeId           String
+  createdAt            DateTime   @default(now())
+  updatedAt            DateTime   @updatedAt
+  submission           Submission @relation(fields: [submissionId], references: [submissionId])
+  reviewerInstructor   Instructor @relation(fields: [instructorReviewerId], references: [instructorId])
+  reviewee             Student    @relation(fields: [revieweeId], references: [studentId])
+}
+
+model GroupReview {
+  groupReviewId      String       @id @default(uuid())
+  projectId          String
+  rubricId           String
+  StudentReviewerId  String
+  revieweeId         String
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  reviewerStudent    Student?     @relation("ReviewerStudent", fields: [reviewerId], references: [studentId])
+  reviewerInstructor Instructor?  @relation(fields: [reviewerId], references: [instructorId], map: "UniqueReviewerInstructor")
+  project            GroupProject @relation(fields: [projectId], references: [projectId])
+  student            Student      @relation("ReviewedStudent", fields: [studentId], references: [studentId])
+}
+
+// Rubric and Criterion Models
+model Rubric {
+  rubricId            String      @id @default(uuid())
+  assignmentId        String      @unique
+  instructorId        String
+  title               String
+  description         String?
+  criteria            Criterion[]
+  createdByInstructor Instructor  @relation("RubricCreatedByInstructor", fields: [instructorId], references: [instructorId])
+  assignment          Assignment  @relation(fields: [assignmentId], references: [assignmentId])
+}
+
+model Criterion {
+  criterionId     String           @id @default(uuid())
+  rubricId        String
+  title           String
+  maxMark         Int
+  criteronRatings CriteronRating[]
+  rubric          Rubric           @relation(fields: [rubricId], references: [rubricId])
+}
+
+model CriteronRating {
+  id          String    @id @default(uuid())
+  criterionId String
+  description String
+  points      Int // Points are auto generated by server-side logic based on the number of ratings and rank
+  rank        Int // Rank of ratings I.E. 1, 2, 3, 4, 5: Where 1 = Best and 5 = Worst
+  criterion   Criterion @relation(fields: [criterionId], references: [criterionId])
+}
+
+// Criterion Grade Models
+
+model StudentCriterionGrade {
+  studentCreiteronGradeId String     @id @default(uuid())
+  criterionId             String
+  studentReviewerId       String
+  peerReviewId            String
+  score                   Int
+  textEntry               String
+  criterion               Criterion  @relation(fields: [criterionId], references: [id])
+  stundentReivewer        Student    @relation(fields: [studentReviewerId], references: [id])
+  peerReview              PeerReview @relation(fields: [peerReviewId], references: [id])
+}
+
+model InstructorCriterionGrade {
+  instructorCreiteronGradeId String           @id @default(uuid())
+  criterionId                String
+  instructorReviewerId       String
+  instructorReviewId         String
+  score                      Int
+  textEntry                  String
+  criterion                  Criterion        @relation(fields: [criterionId], references: [id])
+  instructorReivewer         Instructor       @relation(fields: [instructorReviewerId], references: [id])
+  instructorReview           InstructorReview @relation(fields: [instructorReviewId], references: [id])
+}
+
+// Request / Status Models 
+// I.e. Enrollment, Group Invites, Intructor to Admin Requests
+
+enum SubmissionType {
+  FILE
+  URL
+}

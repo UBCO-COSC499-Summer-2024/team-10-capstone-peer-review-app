@@ -17,7 +17,7 @@ node_modules
 .DS_Store
 *.suo
 *.ntvs*
-*.njsproj
+*.njsprojs
 *.sln
 *.sw?
-.env
+*.env

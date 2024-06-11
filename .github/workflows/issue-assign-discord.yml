@@ -41,7 +41,7 @@ jobs:
             -d '{
               "username": "Github",
               "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
-              "content": "${MENTIONS}",
+              "content": "'"${MENTIONS//$'\n'/'\n'}"'",
               "embeds": [{
                 "title": "Issue Assigned",
                 "url": "${{ github.event.issue.html_url }}",
@@ -51,7 +51,7 @@ jobs:
                 },
                 "fields": [
                   {"name": "Title", "value": "'"${ISSUE_TITLE_ESCAPED//$'\n'/'\n'}"'", "inline": false},
-                  {"name": "Assignees", "value": "${ASSIGNEES}", "inline": false}
+                  {"name": "Assignees", "value": "'"${ASSIGNEES//$'\n'/'\n'}"'"", "inline": false}
                 ]
               }]
             }' \

@@ -15,10 +15,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  discord_notification:
+  discord_notification_issue_assigned:
     runs-on: ubuntu-latest
     steps:
-    - name: Send notification to Discord
+    - name: Send notification to Discord on Issue Assigned
       run: |
         declare -A map 
         map["JoshFarwig"]="<@239921359847817216>"
@@ -34,12 +34,14 @@ jobs:
           MENTIONS+="${map[$assignee]}\n"
         done
 
+        issue_title=$(echo "${{ github.event.issue.title }}" | jq -Rs .)
+
         curl -H "Content-Type: application/json" \
             -X POST \
             -d '{
               "username": "Github",
               "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
-              "content": "'"${MENTIONS//$'\n'/'\n'}"'",
+              "content": "${MENTIONS}",
               "embeds": [{
                 "title": "Issue Assigned",
                 "url": "${{ github.event.issue.html_url }}",
@@ -48,8 +50,8 @@ jobs:
                   "icon_url": "${{ github.event.issue.user.avatar_url }}"
                 },
                 "fields": [
-                  {"name": "Title", "value": "${{ github.event.issue.title | jq -R . }}", "inline": false},
-                  {"name": "Assignees", "value": "'"${ASSIGNEES//$'\n'/'\n'}"'", "inline": false}
+                  {"name": "Title", "value": "${issue_title}", "inline": false},
+                  {"name": "Assignees", "value": "${ASSIGNEES}", "inline": false}
                 ]
               }]
             }' \

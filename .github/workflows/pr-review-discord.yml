@@ -15,10 +15,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  discord_notification:
+  discord_notification_pr_review_requested:
     runs-on: ubuntu-latest
     steps:
-    - name: Send notification to Discord
+    - name: Send notification to Discord on PR Review Request 
       run: |
         declare -A map
         map["JoshFarwig"]="<@239921359847817216>"
@@ -32,12 +32,14 @@ jobs:
           MENTIONS+="${map[$reviewer]}\n"
         done
 
+        pr_title=$(echo "${{ github.event.pull_request.title }}" | jq -Rs .)
+
         curl -H "Content-Type: application/json" \
              -X POST \
              -d '{
                "username": "Github",
                "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
-               "content": "\""${MENTIONS//$'\n'/'\n'}"\"",
+               "content": "${MENTIONS}",
                "embeds": [{
                  "title": "Review Requested on Pull Request",
                  "url": "${{ github.event.pull_request.html_url }}",
@@ -46,8 +48,8 @@ jobs:
                    "icon_url": "${{ github.event.pull_request.user.avatar_url }}"
                  },
                  "fields": [
-                   {"name": "Title", "value": "${{ github.event.pull_request.title | jq -R . }}", "inline": false},
-                   {"name": "Requested Reviewers", "value": "\""${REVIEWERS//$'\n'/'\n'}"\"", "inline": false}
+                   {"name": "Title", "value": "${pr_title}", "inline": false},
+                   {"name": "Requested Reviewers", "value": "${REVIEWERS}", "inline": false}
                  ]
                }]
              }' \

@@ -23,10 +23,10 @@ workspace_id = '664d8e0fe973a23fc5fda5a0'
 
 # List of usernames and their associated names
 users = {
-    'mahir': {'username': 'mahirr476', 'clockify_id': '664d8e0fe973a23fc5fda59f'},
-    'josh': {'username': 'JoshFarwig', 'clockify_id': '664d1549831d3f5360a7fe2b'}, 
-    'bhavya': {'username': 'Bhavya290223', 'clockify_id': '664e1af8e973a23fc5173dd1'},
-    'abdul': {'username': 'namekeptanonymous', 'clockify_id': '664e1b16e8ad8876980027d2'}, 
+    'Mahir': {'username': 'mahirr476', 'clockify_id': '664d8e0fe973a23fc5fda59f'},
+    'Josh': {'username': 'JoshFarwig', 'clockify_id': '664d1549831d3f5360a7fe2b'}, 
+    'Bhavya': {'username': 'Bhavya290223', 'clockify_id': '664e1af8e973a23fc5173dd1'},
+    'Abdul': {'username': 'namekeptanonymous', 'clockify_id': '664e1b16e8ad8876980027d2'}, 
 }
 
 # Get the current date and time

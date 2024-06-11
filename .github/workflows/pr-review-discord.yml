@@ -26,43 +26,31 @@ jobs:
         map["Bhavya290223"]="<@788404909107052546>"
         map["namekeptanonymous"]="<@312212189056466944>"
 
-        REVIEWERS=$(echo '${{ toJson(github.event.pull_request.requested_reviewers) }}' | grep -o '"login": "[^"]*' | grep -o '[^"]*$' | sed 's/^/- /')
+        REVIEWERS=$(echo '${{ toJson(github.event.pull_request.requested_reviewers) }}' | jq -r '.[] | "- " + .login')
         MENTIONS=""
-        for reviewer in $(echo '${{ toJson(github.event.pull_request.requested_reviewers) }}' | grep -o '"login": "[^"]*' | grep -o '[^"]*$'); do
+        for reviewer in $(echo '${{ toJson(github.event.pull_request.requested_reviewers) }}' | jq -r '.[] | .login'); do
           MENTIONS+="${map[$reviewer]}\n"
         done
 
-        # Escape the PR title
-        PR_TITLE=$(echo "${{ github.event.pull_request.title }}" | sed 's/"/\\"/g')
-        # Escape the REVIEWERS and MENTIONS strings
-        REVIEWERS_ESCAPED=$(echo "$REVIEWERS" | sed ':a;N;$!ba;s/\n/\\n/g')
-        MENTIONS_ESCAPED=$(echo "$MENTIONS" | sed ':a;N;$!ba;s/\n/\\n/g')
-
-        JSON_PAYLOAD=$(cat <<EOF
-{
-  "username": "Github",
-  "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
-  "content": "$MENTIONS_ESCAPED",
-  "embeds": [{
-    "title": "Review Requested on Pull Request",
-    "url": "${{ github.event.pull_request.html_url }}",
-    "author": {
-      "name": "${{ github.event.pull_request.user.login }}",
-      "icon_url": "${{ github.event.pull_request.user.avatar_url }}"
-    },
-    "fields": [
-      {"name": "Title", "value": "$PR_TITLE", "inline": false},
-      {"name": "Requested Reviewers", "value": "$REVIEWERS_ESCAPED", "inline": false}
-    ]
-  }]
-}
-EOF
-        )
-
-        # Debugging: Output the JSON payload to the console
-        echo "$JSON_PAYLOAD"
+        PR_TITLE=$(echo "${{ github.event.pull_request.title }}" | sed 's/"/\\"/g' | sed "s/'/\\'/g" | sed 's/`/\\`/g')
 
         curl -H "Content-Type: application/json" \
              -X POST \
-             -d "$JSON_PAYLOAD" \
+             -d '{
+               "username": "Github",
+               "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+               "content": "'"${MENTIONS//$'\n'/'\n'}"'",
+               "embeds": [{
+                 "title": "Review Requested on Pull Request",
+                 "url": "${{ github.event.pull_request.html_url }}",
+                 "author": {
+                   "name": "${{ github.event.pull_request.user.login }}",
+                   "icon_url": "${{ github.event.pull_request.user.avatar_url }}"
+                 },
+                 "fields": [
+                   {"name": "Title", "value": "'"${PR_TITLE//$'\n'/'\n'}"'", "inline": false},
+                   {"name": "Requested Reviewers", "value": "'"${REVIEWERS//$'\n'/'\n'}"'", "inline": false}
+                 ]
+               }]
+             }' \
              ${{ secrets.PR_REVIEW_DISCORD_WEBHOOK_URL }}

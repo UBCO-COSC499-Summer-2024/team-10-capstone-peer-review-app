@@ -34,7 +34,7 @@ jobs:
           MENTIONS+="${map[$assignee]}\n"
         done
 
-        issue_title=$(echo "${{ github.event.issue.title }}" | jq -Rs .)
+        ISSUE_TITLE_ESCAPED=$(echo "${{ github.event.issue.title }}" | sed 's/"/\\"/g' | sed "s/'/\\'/g" | sed 's/`/\\`/g')
 
         curl -H "Content-Type: application/json" \
             -X POST \
@@ -50,7 +50,7 @@ jobs:
                   "icon_url": "${{ github.event.issue.user.avatar_url }}"
                 },
                 "fields": [
-                  {"name": "Title", "value": "${issue_title}", "inline": false},
+                  {"name": "Title", "value": "'"${ISSUE_TITLE_ESCAPED//$'\n'/'\n'}"'", "inline": false},
                   {"name": "Assignees", "value": "${ASSIGNEES}", "inline": false}
                 ]
               }]

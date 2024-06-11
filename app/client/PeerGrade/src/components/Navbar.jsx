@@ -20,7 +20,7 @@ import { iClass as classesData, assignment as assignmentsData, user } from '@/li
 export default function AppNavbar() {
   const location = useLocation();
   //REDUX: This should be replaced with actual user retrieval logic (0 = admin, 1 = student)
-  const currentUser = user[2]; // 
+  const currentUser = user[0]; // 
 
   // Filter classes based on user class_ids
   const userClasses = classesData.filter(classItem => currentUser.class_id.includes(classItem.class_id));
@@ -74,7 +74,7 @@ export default function AppNavbar() {
                   <ListItem
                     key={classItem.class_id}
                     title={classItem.classname}
-                    href={currentUser.type === 'student' ? `/class/${classItem.class_id}` : `/manageclasses/${classItem.class_id}`}
+                    href={`/class/${classItem.class_id}`}
                   >
                     {classItem.description}
                   </ListItem>

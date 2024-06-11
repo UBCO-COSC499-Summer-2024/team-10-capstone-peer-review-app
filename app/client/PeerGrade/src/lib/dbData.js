@@ -7,7 +7,7 @@ export const user = [
         firstname: "Test",
         lastname: "User",
         email: "test@gmail.com",
-        class_id: 1,
+        class_id: [1,2,3],
         type: "admin"
       },
       {
@@ -17,7 +17,7 @@ export const user = [
         firstname: "John",
         lastname: "Doe",
         email: "jdoe@example.com",
-        class_id: 1,
+        class_id: [1,2],
         type: "student"
       },
       {
@@ -27,7 +27,7 @@ export const user = [
         firstname: "Alice",
         lastname: "Smith",
         email: "asmith@example.com",
-        class_id: 2,
+        class_id: [2,3],
         type: "instructor"
       },
       {
@@ -37,11 +37,14 @@ export const user = [
         firstname: "Mike",
         lastname: "Johnson",
         email: "mjohnson@example.com",
-        class_id: 1,
+        class_id: [1,3],
         type: "student"
       },
-
 ]
+
+export const addUser = (newUser) => {
+    user.push(newUser);
+  };
 
 export const iClass = [
     {

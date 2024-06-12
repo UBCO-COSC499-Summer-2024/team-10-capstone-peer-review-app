@@ -13,8 +13,8 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { Button } from "./ui/button";
-import { Avatar } from "./ui/avatar";
+import { Button } from "../ui/button";
+import { Avatar } from "../ui/avatar";
 import { iClass as classesData, assignment as assignmentsData, user } from '@/lib/dbData';
 
 export default function AppNavbar() {
@@ -82,7 +82,7 @@ export default function AppNavbar() {
                 {(currentUser.type === 'instructor' || currentUser.type === 'admin') && (
                   <ListItem
                     title="Manage Classes"
-                    href="/manageclasses"
+                    href="/manageclass"
                     className="bg-blue-100"
                   >
                     Administer classes and assignments.

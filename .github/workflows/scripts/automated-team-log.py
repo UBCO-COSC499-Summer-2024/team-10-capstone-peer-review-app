@@ -103,16 +103,16 @@ def generate_burnup_chart():
     closed_issues = [issue for issue in issues if issue['state'] == 'closed']
 
     dates = pd.date_range(start=first_issue_start_date, end=end_date_no_tz)
-    total_issues = []
+    opened_issues = []
     completed_issues = []
     
     for date in dates:
-        total = sum(1 for issue in issues if issue['state'] == 'open' or issue['state'] == 'closed')
-        completed = sum(1 for issue in closed_issues if issue['closed_at'] <= date)
-        total_issues.append(total)
+        opened = sum(1 for issue in issues if issue['state'] == 'open')
+        completed = sum(1 for issue in closed_issues if issue.closed_at <= date)
+        opened_issues.append(opened)
         completed_issues.append(completed)
     
-    plt.plot(dates, total_issues, label='Total Issues')
+    plt.plot(dates, opened_issues, label='Opened Issues')
     plt.plot(dates, completed_issues, label='Completed Issues')
     plt.xlabel('Date')
     plt.ylabel('Number of Issues')

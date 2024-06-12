@@ -74,7 +74,6 @@ const AssignmentCreation = () => {
   const onSubmit = (data) => {
     const simplifiedData = {
       ...data,
-      dueDate: data.dueDate ? format(data.dueDate, "PPP") : null,
       file: selectedFileName,
     };
 

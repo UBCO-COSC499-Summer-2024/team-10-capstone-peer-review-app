@@ -1,5 +1,8 @@
 **Week 2 ( June 2 to June 8)**
 
+![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/81191818/b2afe7db-76bf-4db0-8153-b893720f2dd0)
+
+
 ![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/81191818/f014ec02-155b-4754-ad9d-2fd43887eb40)
 
 Worked on creating the backend setup using PostgreSQL and created a DB design and documentation as well 1 hr

@@ -166,6 +166,7 @@ for name, user_info in users.items():
         f.write('* \n')
         f.write('* \n')
         f.write('* \n')
+        f.write('  \n  \n')
 
         # Append the old content to the new content in order to new logs on top
         f.write(old_content)

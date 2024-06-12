@@ -7,7 +7,7 @@ export const user = [
         firstname: "Test",
         lastname: "User",
         email: "test@gmail.com",
-        class_id: [1,2,3],
+        class_id: [1,2,3,4,5,6,7,8,9,10],
         type: "admin"
       },
       {
@@ -17,7 +17,7 @@ export const user = [
         firstname: "John",
         lastname: "Doe",
         email: "jdoe@example.com",
-        class_id: [1,2],
+        class_id: [1,3,7],
         type: "student"
       },
       {
@@ -27,7 +27,7 @@ export const user = [
         firstname: "Alice",
         lastname: "Smith",
         email: "asmith@example.com",
-        class_id: [2,3],
+        class_id: [2,3,8,9],
         type: "instructor"
       },
       {
@@ -37,7 +37,7 @@ export const user = [
         firstname: "Mike",
         lastname: "Johnson",
         email: "mjohnson@example.com",
-        class_id: [1,3],
+        class_id: [1,3,10],
         type: "student"
       },
 ]
@@ -47,17 +47,17 @@ export const addUser = (newUser) => {
   };
 
 export const iClass = [
-    {
+  {
     class_id: 1,
     instructor_id: 1,
-    classname: "testClass",
-    description: "testDesc",
+    classname: "ART 101",
+    description: "Introduction to Art.",
     start: Date.now,
     term: "Winter",
     end: Date.now, 
     size: 50, 
-    },
-    {
+},
+{
     class_id: 2,
     instructor_id: 3,
     classname: "COSC 414",
@@ -66,8 +66,8 @@ export const iClass = [
     term: "Spring 2025",
     end: new Date(2025, 5, 10),
     size: 30
-    },
-    {
+},
+{
     class_id: 3,
     instructor_id: 3,
     classname: "MATH 222",
@@ -76,7 +76,77 @@ export const iClass = [
     term: "Spring 2025",
     end: new Date(2025, 5, 10),
     size: 25
-    },
+},
+{
+    class_id: 4,
+    instructor_id: 2,
+    classname: "PHYS 101",
+    description: "Introduction to Physics.",
+    start: new Date(2025, 8, 1),
+    term: "Fall 2025",
+    end: new Date(2025, 11, 15),
+    size: 40
+},
+{
+    class_id: 5,
+    instructor_id: 4,
+    classname: "CHEM 110",
+    description: "General Chemistry.",
+    start: new Date(2025, 8, 1),
+    term: "Fall 2025",
+    end: new Date(2025, 11, 15),
+    size: 35
+},
+{
+    class_id: 6,
+    instructor_id: 3,
+    classname: "BIOL 101",
+    description: "Introduction to Biology.",
+    start: new Date(2025, 0, 10),
+    term: "Spring 2025",
+    end: new Date(2025, 5, 10),
+    size: 45
+},
+{
+    class_id: 7,
+    instructor_id: 2,
+    classname: "HIST 201",
+    description: "World History.",
+    start: new Date(2025, 8, 1),
+    term: "Fall 2025",
+    end: new Date(2025, 11, 15),
+    size: 50
+},
+{
+    class_id: 8,
+    instructor_id: 1,
+    classname: "ENGL 101",
+    description: "Introduction to English Literature.",
+    start: new Date(2025, 8, 1),
+    term: "Fall 2025",
+    end: new Date(2025, 11, 15),
+    size: 40
+},
+{
+    class_id: 9,
+    instructor_id: 4,
+    classname: "ECON 101",
+    description: "Principles of Economics.",
+    start: new Date(2025, 0, 10),
+    term: "Spring 2025",
+    end: new Date(2025, 5, 10),
+    size: 30
+},
+{
+    class_id: 10,
+    instructor_id: 3,
+    classname: "PSYC 101",
+    description: "Introduction to Psychology.",
+    start: new Date(2025, 8, 1),
+    term: "Fall 2025",
+    end: new Date(2025, 11, 15),
+    size: 50
+},
 
 ]
 

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import ClassCard from '@/components/class/ClassCard';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { iClass as classesData, assignment as assignmentsData, user } from '@/lib/dbData';
@@ -80,7 +81,7 @@ function AssignmentTable({ title, forReview }) {
 
 function Dashboard() {
   // Assuming the user is the second one in the users array for this example
-  const currentUser = user[1]; // This should be replaced with actual user retrieval logic
+  const currentUser = useSelector((state) => state.user.currentUser); //redux user state
 
   // Filter classes based on user class_ids
   const userClasses = classesData.filter(classItem => currentUser.class_id.includes(classItem.class_id));

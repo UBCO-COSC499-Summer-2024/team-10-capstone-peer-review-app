@@ -3,11 +3,13 @@ import { BrowserRouter as Router, Routes, Route, useLocation  } from 'react-rout
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Class from './pages/Class';
+import AssignmentCreation from './pages/classNav/AssignmentCreation';
 import Assignment from './pages/Assignment';
 import AssignedPR from './pages/AssignedPR';
 import PeerReview from './pages/PeerReview';
 import Settings from './pages/Settings';
 import AppNavbar from './components/Navbar';
+import { Toaster } from "@/components/ui/toaster";
 
 function App() {
   const [message, setMessage] = useState('');
@@ -34,6 +36,7 @@ function App() {
         <div className="flex justify-center flex-1">
           {children}
         </div>
+        <Toaster />
       </main>
     );
   }
@@ -45,6 +48,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/class/:classId" element={<Class />} />
+          <Route path="/class/createAssignment" element={<AssignmentCreation />} />
           <Route path="/assignment/:assignmentId" element={<Assignment />} />
           <Route path="/assignedPR/:assignmentId" element={<AssignedPR />} />
           <Route path="/peer-review" element={<PeerReview />} />

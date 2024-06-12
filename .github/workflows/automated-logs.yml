@@ -3,6 +3,7 @@ name: Automated Logs Workflow
 on:
   schedule:
     - cron: '0 0 * * 2,4'  # This will run the workflow at 5PM UTC-7 on tuesdays and thursdays (12am UTC) 
+  workflow_dispatch:
     
 jobs:
   build:

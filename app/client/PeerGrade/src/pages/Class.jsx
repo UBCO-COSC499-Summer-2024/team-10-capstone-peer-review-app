@@ -1,7 +1,6 @@
-// src/pages/Class.jsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { classesData, assignmentsData } from '../lib/data';
+import { iClass as classesData, assignment as assignmentsData, Categories as categoriesData, user } from '@/lib/dbData';
 import {
   Menubar,
   MenubarMenu,
@@ -15,15 +14,15 @@ import People from './classNav/People';
 
 const Class = () => {
   const { classId } = useParams();
-  const classItem = classesData.find((item) => item.id === classId);
+  const classItem = classesData.find((item) => item.class_id === parseInt(classId));
   const [currentView, setCurrentView] = useState('home');
 
   if (!classItem) {
     return <div>Class not found</div>;
   }
 
-  const classAssignments = assignmentsData.filter(assignment => assignment.className === classItem.name);
-  const categories = [...new Set(classAssignments.map(assignment => assignment.category))];
+  const classAssignments = assignmentsData.filter(assignment => assignment.class_id === classItem.class_id);
+  const categories = categoriesData.filter(category => classAssignments.some(assignment => assignment.assignment_id === category.rubric_id));
 
   const renderContent = () => {
     switch (currentView) {
@@ -47,18 +46,18 @@ const Class = () => {
             {categories.map((category, index) => (
               <Card key={index} className="bg-white p-4 shadow-md mb-6">
                 <CardHeader>
-                  <CardTitle className="text-xl font-bold mb-2">{category}</CardTitle>
+                  <CardTitle className="text-xl font-bold mb-2">{category.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
                   {classAssignments
-                    .filter(assignment => assignment.category === category)
+                    .filter(assignment => assignment.assignment_id === category.rubric_id)
                     .map((assignment) => (
                       <Link
-                        key={assignment.id}
-                        to={`/assignment/${assignment.id}`}
+                        key={assignment.assignment_id}
+                        to={`/assignment/${assignment.assignment_id}`}
                         className="flex items-center space-x-2 bg-gray-100 p-2 rounded hover:bg-gray-200 transition-colors"
                       >
-                        <span>{assignment.name}</span>
+                        <span>{assignment.title}</span>
                       </Link>
                     ))}
                 </CardContent>
@@ -72,7 +71,7 @@ const Class = () => {
   return (
     <div className="w-screen mx-5 p-6">
       <div className="flex flex-col gap-4 bg-gray-200 p-4 mb-6 rounded-lg">
-        <h1 className="text-3xl font-bold">{classItem.name}: {classItem.instructor}</h1>
+        <h1 className="text-3xl font-bold">{classItem.classname}: {user.find(instructor => instructor.user_id === classItem.instructor_id)?.firstname + ' ' + user.find(instructor => instructor.user_id === classItem.instructor_id)?.lastname}</h1>
         <div className="flex rounded-lg">
           <div className="flex justify-between items-center">
             <Menubar>

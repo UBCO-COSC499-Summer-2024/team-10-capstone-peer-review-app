@@ -7,7 +7,8 @@ import Assignment from './pages/Assignment';
 import AssignedPR from './pages/AssignedPR';
 import PeerReview from './pages/PeerReview';
 import Settings from './pages/Settings';
-import AppNavbar from './components/Navbar';
+import AppNavbar from './components/global/Navbar';
+import ManageClass from './pages/ManageClass';
 
 function App() {
   const [message, setMessage] = useState('');
@@ -45,6 +46,8 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/class/:classId" element={<Class />} />
+          <Route path="/class/:classId" element={<Class />} />
+          <Route path="/manageClass" element={<ManageClass />} />
           <Route path="/assignment/:assignmentId" element={<Assignment />} />
           <Route path="/assignedPR/:assignmentId" element={<AssignedPR />} />
           <Route path="/peer-review" element={<PeerReview />} />

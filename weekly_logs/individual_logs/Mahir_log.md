@@ -1,3 +1,141 @@
+
+# Mahir's Log for Cycle 4
+
+
+## Friday, June 07, 2024, 06:53 PM - Tuesday, June 11, 2024, 06:53 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :orange_circle: **Issue-[84](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/84)**: Post MVP Milestone Database Refactor With TA or Prof  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[78](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/78)**: Implement Redux to facilitate session states  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[70](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/70)**: Instructor Assignment Creation UI  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[69](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/69)**: Instructor Class Management UI  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[68](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/68)**: Student Assignment Submission UI  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[66](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/66)**: Fix UI Design bugs  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug 
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[65](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/65)**: Differentiated User Login (mock data)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[49](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/49)**: Dashboard UI React Component  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[47](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/47)**: Settings UI React Component  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[46](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/46)**: Peer-review React UI component  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[45](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/45)**: Class UI React Component  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[44](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/44)**: Design Video Requirement   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: documentation 
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[35](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/35)**: Create Automated workflow for individual logs   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **#65 / Differentiated User Login (mock Data)** *(Total duration: 3.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 11, 2024, 03:21 AM - Tuesday, June 11, 2024, 05:16 AM *(1.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 11, 2024, 01:30 AM - Tuesday, June 11, 2024, 01:58 AM *(0.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, June 10, 2024, 10:18 PM - Monday, June 10, 2024, 11:20 PM *(1.0 hours)*  
+  
+&nbsp; &nbsp; :watch: **docker setup issues** *(Total duration: 0.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, June 10, 2024, 03:50 PM - Monday, June 10, 2024, 04:24 PM *(0.6 hours)*  
+  
+&nbsp; &nbsp; :watch: **Team meeting** *(Total duration: 0.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, June 10, 2024, 10:40 AM - Monday, June 10, 2024, 11:00 AM *(0.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **Reviewing Pull requests/Managing and creating new tickets** *(Total duration: 0.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 09, 2024, 09:20 PM - Sunday, June 09, 2024, 09:40 PM *(0.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **Design Video recording and full video compilation** *(Total duration: 2.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, June 07, 2024, 09:11 PM - Friday, June 07, 2024, 11:28 PM *(2.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **Front-end UI development** *(Total duration: 2.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, June 07, 2024, 07:00 PM - Friday, June 07, 2024, 09:16 PM *(2.3 hours)*  
+  
+
+## Features worked on this cycle:
+&nbsp; &nbsp; :white_check_mark: **PR-[79](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/79)**: Registration/User Differentiated login  
+  
+&nbsp; &nbsp; :white_check_mark: **PR-[60](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/60)**: Full System UI component Creation (UI components/37)   
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[68](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/68)**: Student Assignment Submission UI  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[49](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/49)**: Dashboard UI React Component  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[47](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/47)**: Settings UI React Component  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[46](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/46)**: Peer-review React UI component  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[45](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/45)**: Class UI React Component  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[44](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/44)**: Design Video Requirement   
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[35](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/35)**: Create Automated workflow for individual logs   
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :green_circle: **Issue-[84](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/84)**: Post MVP Milestone Database Refactor With TA or Prof  
+  
+&nbsp; &nbsp; :green_circle: **Issue-[78](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/78)**: Implement Redux to facilitate session states  
+  
+&nbsp; &nbsp; :green_circle: **Issue-[70](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/70)**: Instructor Assignment Creation UI  
+  
+&nbsp; &nbsp; :green_circle: **Issue-[69](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/69)**: Instructor Class Management UI  
+  
+&nbsp; &nbsp; :green_circle: **Issue-[66](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/66)**: Fix UI Design bugs  
+  
+&nbsp; &nbsp; :green_circle: **Issue-[65](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/65)**: Differentiated User Login (mock data)  
+  
+&nbsp; &nbsp; :green_circle: **Issue-[16](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/16)**: Create Automated Weekly Log Workflow   
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
 # Mahir Rahman's Individual Work Logs
 ## Wednesday (6/7- 6/12)
 ### Timesheet

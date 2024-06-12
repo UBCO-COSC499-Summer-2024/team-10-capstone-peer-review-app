@@ -1,3 +1,105 @@
+
+# Abdul's Log for Cycle 4
+
+
+## Friday, June 07, 2024, 06:53 PM - Tuesday, June 11, 2024, 06:53 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :orange_circle: **Issue-[84](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/84)**: Post MVP Milestone Database Refactor With TA or Prof  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[71](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/71)**: Add PDF Viewing to the Assignment Page  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[70](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/70)**: Instructor Assignment Creation UI  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[68](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/68)**: Student Assignment Submission UI  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[61](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/61)**: Base PDF Viewing functionality  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[50](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/50)**: Dockerization of the Project Code  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[47](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/47)**: Settings UI React Component  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[46](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/46)**: Peer-review React UI component  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[45](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/45)**: Class UI React Component  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[44](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/44)**: Design Video Requirement   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: documentation 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Adding Instructor Add Assignment UI** *(Total duration: 3.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 11, 2024, 06:24 PM - Ongoing *(Ongoing)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 11, 2024, 03:15 PM - Tuesday, June 11, 2024, 06:24 PM *(3.1 hours)*  
+  
+&nbsp; &nbsp; :watch: **Adding PDFViewer to each Assignment's page** *(Total duration: 1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, June 10, 2024, 12:14 PM - Monday, June 10, 2024, 01:15 PM *(1.0 hours)*  
+  
+&nbsp; &nbsp; :watch: **Adding PDF Viewer to the Peer Review section of the web-app** *(Total duration: 3.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 09, 2024, 08:41 PM - Monday, June 10, 2024, 12:13 AM *(3.5 hours)*  
+  
+
+## Features worked on this cycle:
+&nbsp; &nbsp; :white_check_mark: **PR-[73](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/73)**: Added base PDF viewer to each Assignment's page  
+  
+&nbsp; &nbsp; :white_check_mark: **PR-[62](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/62)**: Adds base PDF viewing functionality via PDF.js to the Peer Review page  
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[68](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/68)**: Student Assignment Submission UI  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[61](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/61)**: Base PDF Viewing functionality  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[50](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/50)**: Dockerization of the Project Code  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[47](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/47)**: Settings UI React Component  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[46](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/46)**: Peer-review React UI component  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[45](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/45)**: Class UI React Component  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[44](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/44)**: Design Video Requirement   
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :green_circle: **Issue-[84](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/84)**: Post MVP Milestone Database Refactor With TA or Prof  
+  
+&nbsp; &nbsp; :green_circle: **Issue-[71](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/71)**: Add PDF Viewing to the Assignment Page  
+  
+&nbsp; &nbsp; :green_circle: **Issue-[70](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/70)**: Instructor Assignment Creation UI  
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
 # Abdul Faiz's Individual Work Logs
 
 ## Wednesday (6/7 - 6/12)

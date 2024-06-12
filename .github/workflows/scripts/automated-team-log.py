@@ -146,7 +146,7 @@ with open(filename, 'w') as f:
     # Write all issues worked on
     f.write('\n## All tasks (issues) worked on this cycle:\n')
     for issue in issues_all:
-        if issue.pull_request is None:
+        if 'pull_request' in issue and issue['pull_request'] is None:
             f.write(f'&nbsp; &nbsp; :large_blue_circle: **Issue-[{issue.number}]({issue.html_url})**: {issue.title}  \n  \n') 
 
             if issue.assignees:
@@ -176,7 +176,7 @@ with open(filename, 'w') as f:
 
     f.write('\n## Completed tasks (closed issues) on this cycle:\n')
     for issue in issues_closed:
-        if issue.pull_request is None:
+        if 'pull_request' in issue and issue['pull_request'] is None:
             f.write(f'&nbsp; &nbsp; :purple_circle: **Issue-[{issue.number}]({issue.html_url})**: {issue.title}  \n  \n') 
 
             if issue.assignees:
@@ -185,7 +185,7 @@ with open(filename, 'w') as f:
 
     f.write('\n## Task (issues in-progress) assignments for next cycle \n') 
     for issue in issues_open:
-        if issue.pull_request is None:
+        if 'pull_request' in issue and issue['pull_request'] is None:
             f.write(f'&nbsp; &nbsp; :orange_circle: **Issue-[{issue.number}]({issue.html_url})**: {issue.title}  \n  \n') 
 
             if issue.assignees:

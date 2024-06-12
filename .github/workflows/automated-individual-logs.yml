@@ -6,16 +6,17 @@ on:
   workflow_dispatch: # Comment out to disable manual triggering for testing purposes
     branches: # // 
       - logs #  //
+      - logsReview # //
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout to logs branch
+    - name: Checkout to logsReview branch
       uses: actions/checkout@v2
       with:
         token: ${{ secrets.AUTOMATED_LOG_TOKEN }}
-        ref: 'logs'
+        ref: 'logsReview'
 
     - name: Set up Python
       uses: actions/setup-python@v2

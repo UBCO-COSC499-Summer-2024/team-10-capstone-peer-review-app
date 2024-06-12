@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { user as users } from "@/lib/dbData";
+import { setCurrentUser } from '@/lib/redux/slices/userSlice';
 
 const LoginCard = ({ onSwitchToRegister }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -18,6 +21,7 @@ const LoginCard = ({ onSwitchToRegister }) => {
     if (user) {
       console.log(`Logged in as: ${user.type}`);
       setError('');
+      dispatch(setCurrentUser(user)); // Dispatch the action to set the current user
       navigate('/dashboard');
     } else {
       setError('Invalid email or password');

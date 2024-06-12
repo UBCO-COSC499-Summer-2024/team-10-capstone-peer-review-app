@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useSelector } from 'react-redux';
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Bell } from "lucide-react";
@@ -15,12 +16,11 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
-import { iClass as classesData, assignment as assignmentsData, user } from '@/lib/dbData';
+import { iClass as classesData, assignment as assignmentsData } from '@/lib/dbData';
 
 export default function AppNavbar() {
   const location = useLocation();
-  //REDUX: This should be replaced with actual user retrieval logic (0 = admin, 1 = student)
-  const currentUser = user[0]; // 
+  const currentUser = useSelector((state) => state.user.currentUser); //redux user state
 
   // Filter classes based on user class_ids
   const userClasses = classesData.filter(classItem => currentUser.class_id.includes(classItem.class_id));

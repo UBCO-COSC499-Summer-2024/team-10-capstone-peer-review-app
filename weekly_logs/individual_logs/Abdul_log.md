@@ -18,10 +18,6 @@
   
 &nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
   
-&nbsp; &nbsp; :orange_circle: **Issue-[68](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/68)**: Student Assignment Submission UI  
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
-  
 &nbsp; &nbsp; :orange_circle: **Issue-[61](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/61)**: Base PDF Viewing functionality  
   
 &nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
@@ -46,7 +42,9 @@
   
 
 ## Time entries from Clockify on this cycle:
-&nbsp; &nbsp; :watch: **Adding Instructor Add Assignment UI** *(Total duration: 5.5 hours)*  
+&nbsp; &nbsp; :watch: **Adding Instructor Add Assignment UI** *(Total duration: 6.5 hours)*  
+
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 12, 2024, 01:52 AM - Tuesday, June 12, 2024, 02:58 AM *(1.0 hours)*  
   
 &nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 11, 2024, 06:24 PM - Tuesday, June 11, 2024, 08:50 PM *(2.5 hours)*  
   

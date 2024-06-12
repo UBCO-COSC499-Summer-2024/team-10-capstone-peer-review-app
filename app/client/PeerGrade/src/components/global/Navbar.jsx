@@ -13,8 +13,8 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { Button } from "../ui/button";
-import { Avatar } from "../ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Avatar } from "@/components/ui/avatar";
 import { iClass as classesData, assignment as assignmentsData, user } from '@/lib/dbData';
 
 export default function AppNavbar() {

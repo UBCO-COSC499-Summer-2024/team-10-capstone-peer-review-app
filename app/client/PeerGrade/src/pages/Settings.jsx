@@ -1,5 +1,5 @@
 // src/pages/Settings.jsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -14,11 +14,11 @@ const Settings = () => {
     <div className="w-screen mx-5 p-6">
       <Tabs value={selectedTab} onValueChange={setSelectedTab} className="max-w-5xl mx-auto">
         <TabsList className="flex justify-between mb-6">
-          <TabsTrigger value="profile">Profile</TabsTrigger>
-          <TabsTrigger value="account">Account</TabsTrigger>
-          <TabsTrigger value="notifications">Notifications</TabsTrigger>
-          <TabsTrigger value="privacy">Privacy</TabsTrigger>
-          <TabsTrigger value="integrations">Integrations</TabsTrigger>
+          <TabsTrigger value="profile"><Button variant="outline">Profile</Button></TabsTrigger>
+          <TabsTrigger value="account"><Button variant="outline">Account</Button></TabsTrigger>
+          <TabsTrigger value="notifications"><Button variant="outline">Notifications</Button></TabsTrigger>
+          <TabsTrigger value="privacy"><Button variant="outline">Privacy</Button></TabsTrigger>
+          <TabsTrigger value="integrations"><Button variant="outline">Integrations</Button></TabsTrigger>
         </TabsList>
 
         <TabsContent value="profile">

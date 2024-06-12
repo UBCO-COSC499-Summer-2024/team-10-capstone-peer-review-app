@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginCard from '@/components/login/LoginCard';
 import RegisterCard from '@/components/login/RegisterCard';

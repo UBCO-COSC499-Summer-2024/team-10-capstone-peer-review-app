@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { assignment as assignmentsData, submission as submissionsData } from '../lib/dbData';
+import { assignment as assignmentsData, submission as submissionsData } from '@/lib/dbData';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";

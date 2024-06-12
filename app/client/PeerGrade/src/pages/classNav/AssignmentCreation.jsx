@@ -233,6 +233,7 @@ const AssignmentCreation = () => {
               <input
                 type="file"
                 ref={fileInputRef}
+                accept=".pdf"
                 style={{ display: 'none' }}
                 onChange={handleFileChange}
               />
@@ -243,7 +244,7 @@ const AssignmentCreation = () => {
                 </Button>
                 {selectedFileName && <span>{selectedFileName}</span>}
               </div>
-              <FormDescription>Attach any files related to the assignment.</FormDescription>
+              <FormDescription>Attach any PDF files related to the assignment.</FormDescription>
               <FormMessage />
             </FormItem>
             <Button type="submit" className='bg-primary text-white'>Submit</Button>

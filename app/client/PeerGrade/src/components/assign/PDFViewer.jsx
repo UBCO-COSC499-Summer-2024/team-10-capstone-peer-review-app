@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import 'react-circular-progressbar/dist/styles.css';
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import * as pdfjs from 'pdfjs-dist';
 
 pdfjs.GlobalWorkerOptions.workerSrc = '../../../node_modules/pdfjs-dist/build/pdf.worker.min.mjs';
@@ -97,8 +97,8 @@ const PDFViewer = ({ url, scale }) => {
   };
 
   return (
-    <div className='flex justify-between items-center flex-col'>
-      <canvas ref={canvasRef} className="w-full mx-auto"></canvas>
+    <div className='flex justify-center items-center flex-col'>
+      <canvas ref={canvasRef} className="w-full mx-auto rounded-md"></canvas>
       <div className='w-full flex justify-between items-center flex-row p-3 max-w-sm'>
         <Button variant="outline" onClick={goToPreviousPage} disabled={pageNumber === 1}>Previous</Button>
         {numPages !== null && (

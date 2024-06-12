@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { user as users } from "@/lib/dbData";
 import { setCurrentUser } from '@/lib/redux/hooks/userSlice';
+import logo from '@/assets/logo-no-background.svg'; 
 
 const LoginCard = ({ onSwitchToRegister }) => {
   const navigate = useNavigate();
@@ -31,10 +32,11 @@ const LoginCard = ({ onSwitchToRegister }) => {
   return (
     <Card className="w-full max-w-md p-8 space-y-8 bg-white shadow-md rounded-lg">
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-bold">Login</CardTitle>
-        <CardDescription className="text-gray-600">Please enter your credentials to login</CardDescription>
+      <CardTitle className="text-2xl font-bold">
+          <img src={logo} alt="App Logo" className="mx-auto h-full" />
+        </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="">
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email address</label>

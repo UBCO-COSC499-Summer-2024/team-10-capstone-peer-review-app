@@ -1,0 +1,1 @@
+// Template file for all user routes 

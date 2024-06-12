@@ -38,17 +38,16 @@ model Student {
 
 // Need to refactor last references to others tables, depending on what we want instructors to be able to pull up
 model Instructor {
-  instructorId       String              @id @default(uuid())
-  username           String              @unique
-  password           String
-  email              String              @unique
-  firstname          String
-  lastname           String
+  instructorId      String             @id @default(uuid())
+  username          String             @unique
+  password          String
+  email             String             @unique
+  firstname         String
+  lastname          String
   // isAdmin            Boolean             @default(false) // Create separate admin model?
-  classes            InstructorInClass[]
-  assignmentsCreated Assignment[]        @relation("AssignmentCreatedByInstructor") // Assignments created by the instructor
-  rubricsCreated     Rubric[]            @relation("RubricCreatedByInstructor") // Rubrics created by the instructor
-  instructorReviews  InstructorReview[]  @relation("ReviewerInstructor")
+  classes           Class[]            @relation("TaughtBy") // Classes the instructor is teaching
+  rubricsCreated    Rubric[]           @relation("RubricCreatedByInstructor") // Rubrics created by the instructor
+  instructorReviews InstructorReview[] @relation("ReviewerInstructor")
 }
 
 // Admin General Crud operations 
@@ -56,7 +55,8 @@ model Instructor {
 // Class and Assignment Models
 
 model Class {
-  classId         String              @id @default(uuid())
+  classId         String           @id @default(uuid())
+  instructorId    String
   classname       String
   description     String?
   startDate       DateTime
@@ -64,7 +64,7 @@ model Class {
   term            String
   classSize       Int
   studentsInClass StudentInClass[]
-  instructors     InstructorInClass[]
+  instructor      Instructor       @relation("TaughtBy", fields: [instructorId], references: [instructorId])
   Assignments     Assignment[]
   GroupProjects   GroupProject[]
 }
@@ -78,15 +78,18 @@ model StudentInClass {
   @@id([studentId, classId])
 }
 
-model InstructorInClass {
-  instructorId String
-  classId      String
-  Instructor   Instructor @relation(fields: [instructorId], references: [instructorId])
-  Class        Class      @relation(fields: [classId], references: [classId])
+// Removing, Single instructor for a class, Admin can which instructors are associated with a class
 
-  @@id([instructorId, classId])
-}
+// model InstructorInClass {
+//   instructorId String
+//   classId      String
+//   Instructor   Instructor @relation(fields: [instructorId], references: [instructorId])
+//   Class        Class      @relation(fields: [classId], references: [classId])
 
+//   @@id([instructorId, classId])
+// }
+
+// Make a many to many relationship with rubric 
 model Assignment {
   assignmentId          String         @id @default(uuid())
   classId               String
@@ -98,7 +101,6 @@ model Assignment {
   fileType              String?
   classes               Class          @relation(fields: [classId], references: [classId])
   Rubric                Rubric[] // An assignment can have multiple rubrics, I.E a group review rubric vs an assignment rubric   
-  createdByInstructor   Instructor     @relation("AssignmentCreatedByInstructor", fields: [createdByInstructorId], references: [instructorId])
   Submissions           Submission[]
   GroupProjects         GroupProject[]
 }
@@ -119,8 +121,8 @@ model GroupProject {
 model StudentInGroup {
   studentId      String
   groupProjectId String
-  Student        Student      @relation(fields: [studentId], references: [studentId])
-  GroupProject   GroupProject @relation(fields: [groupProjectId], references: [groupProjectId])
+  student        Student      @relation(fields: [studentId], references: [studentId])
+  groupProject   GroupProject @relation(fields: [groupProjectId], references: [groupProjectId])
 
   @@id([studentId, groupProjectId])
 }
@@ -136,7 +138,7 @@ model Submission {
   updatedAt          DateTime           @updatedAt
   sumbissionFilePath String
   sumbissionType     SubmissionType // Either a File or a URL, we need to discuss file storage options
-  grade              Int? // Final grade of the Submission, Graded by the instructor
+  finalGrade         Int? // Final grade of the Submission, default to the instructor grade?
   assignment         Assignment         @relation(fields: [assignmentId], references: [assignmentId])
   student            Student            @relation(fields: [studentId], references: [studentId])
   peerReviews        PeerReview[] // Reviews from peers
@@ -167,7 +169,7 @@ model PeerReview {
   revieweeId             String
   createdAt              DateTime                @default(now())
   updatedAt              DateTime                @updatedAt
-  reviewGrade            Int // Final grade of the review 
+  peerReviewGrade        Int // Total grade of the review = sum of reviewerCriteronGrades
   submission             Submission              @relation(fields: [submissionId], references: [submissionId])
   reviewerStudent        Student                 @relation("Reviewer", fields: [studentReviewerId], references: [studentId])
   reviewee               Student                 @relation("Reviewee", fields: [revieweeId], references: [studentId])
@@ -181,10 +183,11 @@ model InstructorReview {
   revieweeId               String
   createdAt                DateTime                   @default(now())
   updatedAt                DateTime                   @updatedAt
+  instructorReviewGrade    Int // Total grade of the review = sum of instructorCriteronGrades
   submission               Submission                 @relation(fields: [submissionId], references: [submissionId])
   reviewerInstructor       Instructor                 @relation("ReviewerInstructor", fields: [instructorReviewerId], references: [instructorId])
   reviewee                 Student                    @relation("RevieweeStudent", fields: [revieweeId], references: [studentId])
-  InstructorCriterionGrade InstructorCriterionGrade[]
+  instructorCriterionGrade InstructorCriterionGrade[]
 }
 
 // TODO refactor / reimplment GroupReview
@@ -203,6 +206,8 @@ model InstructorReview {
 // }
 
 // Rubric and Criterion Models
+
+// Make a many to many relationship with assignment
 model Rubric {
   rubricId            String            @id @default(uuid())
   assignmentId        String            @unique

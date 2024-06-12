@@ -1,7 +1,6 @@
-// src/pages/AssignedPR.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { assignmentsData } from '../lib/data';
+import { assignment as assignmentsData, iClass as classesData, submission as submissionsData, user as usersData } from '../lib/dbData';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, ChevronLeft } from 'lucide-react';
@@ -11,7 +10,7 @@ import PDFViewer from '@/components/assign/PDFViewer';
 
 const AssignedPR = () => {
   const { assignmentId } = useParams();
-  const assignment = assignmentsData.find((item) => item.id === assignmentId);
+  const assignment = assignmentsData.find((item) => item.assignment_id === parseInt(assignmentId));
 
   const [expanded, setExpanded] = useState({ box1: false, box2: false });
   const [maxHeight, setMaxHeight] = useState({ box1: '0px', box2: '0px' });
@@ -28,10 +27,12 @@ const AssignedPR = () => {
     }
   }, []);
 
-
   if (!assignment) {
     return <div>Assignment not found</div>;
   }
+
+  const classItem = classesData.find(classItem => classItem.class_id === assignment.class_id);
+  const instructor = usersData.find(user => user.user_id === classItem.instructor_id);
 
   const toggleExpand = (box) => {
     setExpanded((prev) => ({ ...prev, [box]: !prev[box] }));
@@ -43,7 +44,7 @@ const AssignedPR = () => {
         <Link to="/peer-review" className="text-xl">
           <ChevronLeft className="h-6 w-6" />
         </Link>
-        <h1 className="text-2xl font-bold">{assignment.className}: {assignment.name}</h1>
+        <h1 className="text-2xl font-bold">{classItem.classname}: {assignment.title}</h1>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
@@ -58,7 +59,7 @@ const AssignedPR = () => {
             <CardContent className="bg-gray-100 p-4 rounded relative">
               <div className={`bg-white border border-gray-200 overflow-hidden transition-all duration-300 ${expanded.box1 ? '' : 'h-32'} flex justify-center items-center`}>
                 {/* Preview content */}
-                <PDFViewer url="https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK" scale="1"/>
+                <PDFViewer url="https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK" scale="1" />
               </div>
               <div className="flex justify-center mt-2">
                 <Button variant="link" onClick={() => toggleExpand('box1')}>
@@ -75,7 +76,7 @@ const AssignedPR = () => {
             <CardContent className="bg-gray-100 p-4 rounded relative">
               <div className={`bg-white border border-gray-200 overflow-hidden transition-all duration-300 ${expanded.box2 ? '' : 'h-32'} flex justify-center items-center`}>
                 {/* Preview content */}
-                <PDFViewer url="https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK" scale="1"/>
+                <PDFViewer url="https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK" scale="1" />
               </div>
               <div className="flex justify-center mt-2">
                 <Button variant="link" onClick={() => toggleExpand('box2')}>

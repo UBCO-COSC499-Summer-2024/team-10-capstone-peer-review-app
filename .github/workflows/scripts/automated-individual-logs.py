@@ -42,12 +42,12 @@ else: # throw error if today is not Tuesday or Thursday
 
 # Read the cycle count from count-for-cycle.txt
 try:
-    with open('count-for-cycle.txt', 'r') as f:
+    with open('.github/workflows/scripts/count-for-cycle.txt', 'r') as f:
         count = int(f.read())
 
     count += 1
 
-    with open('count-for-cycle.txt', 'w') as f:
+    with open('.github/workflows/scripts/count-for-cycle.txt', 'w') as f:
         f.write(str(count))
 except FileNotFoundError:
     raise ValueError('FILE R/W ERR') 
@@ -166,6 +166,7 @@ for name, user_info in users.items():
         f.write('* \n')
         f.write('* \n')
         f.write('* \n')
+        f.write('\n')
 
         # Append the old content to the new content in order to new logs on top
         f.write(old_content)

@@ -1,16 +1,15 @@
-// src/pages/Assignment.jsx
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { assignmentsData } from '../lib/data';
+import { assignment as assignmentsData, submission as submissionsData } from '../lib/dbData';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Menubar, MenubarMenu, MenubarTrigger, MenubarContent, MenubarItem } from "@/components/ui/menubar";
+import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 import { Textarea } from "@/components/ui/textarea";
 
 const Assignment = () => {
   const { assignmentId } = useParams();
-  const assignment = assignmentsData.find((item) => item.id === assignmentId);
+  const assignment = assignmentsData.find((item) => item.assignment_id === parseInt(assignmentId));
   const navigate = useNavigate();
 
   const [isSubmitCardVisible, setSubmitCardVisible] = useState(false);
@@ -23,31 +22,32 @@ const Assignment = () => {
     navigate(-1); // This will navigate the user to the previous page
   };
 
+  // Filter submissions for the current assignment
+  const assignmentSubmissions = submissionsData.filter(submission => submission.assignment_id === assignment.assignment_id);
+
   return (
     <div className="w-screen mx-5 p-6">
-
-      <div className="flex rounded-lg">
-      <Button onClick={handleBackClick}>←</Button>
-
-        <div className="flex justify-between items-center">
+      <div className="flex rounded-lg mb-6">
+        <Button onClick={handleBackClick}>←</Button>
+        <div className="flex justify-between items-center ml-4">
           <Menubar>
             <MenubarMenu>
-              <MenubarTrigger className="border border-gray-600  rounded-lg hover:bg-gray-300">HOME</MenubarTrigger>
+              <MenubarTrigger className="border border-gray-600 rounded-lg hover:bg-gray-300">HOME</MenubarTrigger>
             </MenubarMenu>
             <MenubarMenu>
-              <MenubarTrigger className="border border-gray-600  rounded-lg hover:bg-gray-300">GRADES</MenubarTrigger>
+              <MenubarTrigger className="border border-gray-600 rounded-lg hover:bg-gray-300">GRADES</MenubarTrigger>
             </MenubarMenu>
             <MenubarMenu>
-              <MenubarTrigger className="border border-gray-600  rounded-lg hover:bg-gray-300">PEOPLE</MenubarTrigger>
+              <MenubarTrigger className="border border-gray-600 rounded-lg hover:bg-gray-300">PEOPLE</MenubarTrigger>
             </MenubarMenu>
             <MenubarMenu>
-              <MenubarTrigger className="border border-gray-600  rounded-lg hover:bg-gray-300">GROUPS</MenubarTrigger>
+              <MenubarTrigger className="border border-gray-600 rounded-lg hover:bg-gray-300">GROUPS</MenubarTrigger>
             </MenubarMenu>
             <MenubarMenu>
-              <MenubarTrigger className="border border-gray-600  rounded-lg hover:bg-gray-300">FILES</MenubarTrigger>
+              <MenubarTrigger className="border border-gray-600 rounded-lg hover:bg-gray-300">FILES</MenubarTrigger>
             </MenubarMenu>
             <MenubarMenu>
-              <MenubarTrigger className="border border-gray-600  rounded-lg hover:bg-gray-300">CONTACTS</MenubarTrigger>
+              <MenubarTrigger className="border border-gray-600 rounded-lg hover:bg-gray-300">CONTACTS</MenubarTrigger>
             </MenubarMenu>
           </Menubar>
         </div>
@@ -56,14 +56,14 @@ const Assignment = () => {
         <div className="lg:col-span-3 bg-gray-100 p-4 rounded">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg font-bold">{assignment.name}</CardTitle>
+              <CardTitle className="text-lg font-bold">{assignment.title}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex justify-between mb-4">
                 <div>
-                  <p>Due: {assignment.dueDate}</p>
+                  <p>Due: {new Date(assignment.due_date).toLocaleDateString()}</p>
                   <p>Attempts: 3</p>
-                  <p>Required File Type: PDF</p>
+                  <p>Required File Type: {assignment.file_type.toUpperCase()}</p>
                 </div>
                 <Button onClick={() => setSubmitCardVisible(true)} className="bg-red-200">Submit</Button>
               </div>
@@ -80,9 +80,11 @@ const Assignment = () => {
               <CardTitle className="text-xl font-bold mb-2">Submissions</CardTitle>
             </CardHeader>
             <CardContent className="bg-gray-100 p-4 rounded">
-              <p>Submission 1: File.pdf - 03/12/25</p>
-              <p>Submission 2: File2.pdf - 03/14/25</p>
-              <p>Submission 3: File3.pdf - 03/16/25</p>
+              {assignmentSubmissions.map((submission, index) => (
+                <p key={index}>
+                  Submission {index + 1}: {submission.file_path.split('/').pop()} - {new Date(submission.submission_date).toLocaleDateString()}
+                </p>
+              ))}
             </CardContent>
           </Card>
         </div>

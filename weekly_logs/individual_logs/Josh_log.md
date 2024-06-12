@@ -112,14 +112,13 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Completed Automated Person Logs
+* Worked with the team to setup some docker-compose setup, in 67/prisma_api_setup env vars have been included 
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Need to create basic express.js template with organized routes and middle-ware
+* Need to complete login / register workflow for students
+
 ## Cycle 2: (May 2nd - June 8th) 
 
 ## Tasks / Features Worked on From Issues Board: 

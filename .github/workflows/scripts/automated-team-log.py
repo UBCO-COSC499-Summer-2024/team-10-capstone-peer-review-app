@@ -105,7 +105,7 @@ def generate_burnup_chart():
     dates = pd.date_range(start=first_issue_start_date, end=end_date_no_tz)
     opened_issues = []
     completed_issues = []
-    
+    # closed_at doesnt exist.. need to find work around or just paste the image
     for date in dates:
         opened = sum(1 for issue in issues if issue['state'] == 'open')
         completed = sum(1 for issue in closed_issues if issue.closed_at <= date)
@@ -129,7 +129,7 @@ issues_closed = fetch_issues('closed', start_date)
 # prs_all = fetch_prs('all', start_date)
 # prs_closed = fetch_prs('closed', start_date)
 clockify_entries = fetch_clockify_time_entries()
-generate_burnup_chart()
+# generate_burnup_chart()
 
 # Write the logs to a single file
 filename = 'weekly_logs/team_log.md'
@@ -193,8 +193,8 @@ with open(filename, 'w') as f:
                 f.write(f'&nbsp; &nbsp; &nbsp; &nbsp; :computer: **Assignees**: {", ".join(assignees)}  \n  \n')
 
     f.write('\n## Burn-Up Chart \n') 
-    # removing this for now TODO: find a way to get issue_closed at date
-    f.write(f'![Burn-Up Chart for cycle {count}](burnup_charts/burnup_chart_cycle_{count}.png)  \n  \n') 
+    # # removing this for now TODO: find a way to get issue_closed at date
+    # f.write(f'![Burn-Up Chart for cycle {count}](burnup_charts/burnup_chart_cycle_{count}.png)  \n  \n') 
 
     # AUTOMATION TODO? 
     f.write('\n## Test Reports \n') 

@@ -72,6 +72,8 @@ for name, user_info in users.items():
     # Filter the pull requests by the user and the date range
     user_pulls = [pull for pull in pulls if pull.user.login == github_username and start_date <= pull.created_at <= end_date]
 
+    merged_user_pulls = [pull for pull in pulls if pull.user.login == github_username and start_date <= pull.created_at <= end_date and pull.merged]
+
     # Api call to get the time entries for the user
     response = requests.get(f'{base_url}/workspaces/{workspace_id}/user/{clockify_id}/time-entries', headers=headers)
 
@@ -114,12 +116,12 @@ for name, user_info in users.items():
     with open(filename, 'w') as f:
         f.write(f'\n# {name}\'s Log for Cycle {count}\n\n')
         f.write(f'\n## {start_date.strftime("%A, %B %d, %Y, %I:%M %p")} - {end_date.strftime("%A, %B %d, %Y, %I:%M %p")}\n\n')
-        f.write('\n## Tasks worked on this cycle:\n')
 
         # Write all issues worked on closed and not closed
+        f.write('\n## Tasks worked on this cycle:\n')
         for issue in issues:
             if issue.pull_request is None:
-                f.write(f'&nbsp; &nbsp; :orange_circle: **Issue-[{issue.number}]({issue.html_url})**: {issue.title}  \n  \n')
+                f.write(f'&nbsp; &nbsp; :large_blue_circle: **Issue-[{issue.number}]({issue.html_url})**: {issue.title}  \n  \n')
 
                 if issue.labels: 
                     labels = [label.name for label in issue.labels]
@@ -140,10 +142,14 @@ for name, user_info in users.items():
                 f.write(f'&nbsp; &nbsp; &nbsp; &nbsp; :clock10: {start_time} - {end_time} *({duration})*  \n  \n')
 
         # Write all pull requests worked on this cycle  
-        f.write('\n## Features worked on this cycle:\n')
+        f.write('\n## All Features worked on this cycle:\n')
         for pull in user_pulls:
-            f.write(f'&nbsp; &nbsp; :white_check_mark: **PR-[{pull.number}]({pull.html_url})**: {pull.title}  \n  \n')
-        
+            f.write(f'&nbsp; &nbsp; :arrows_clockwise: **PR-[{pull.number}]({pull.html_url})**: {pull.title}  \n  \n') 
+
+        f.write('\n## Features completed on this cycle:\n')
+        for pull in merged_user_pulls:
+            f.write(f'&nbsp; &nbsp; :arrow_heading_up: **PR-[{pull.number}]({pull.html_url})**: {pull.title}  \n  \n') 
+
         # Write all closed issues in the this cycle
         f.write('\n## Completed tasks:\n')
         for issue in closed_issues:
@@ -154,7 +160,7 @@ for name, user_info in users.items():
         f.write('\n## In-progress tasks:\n')
         for issue in open_issues:
             if issue.pull_request is None:
-                f.write(f'&nbsp; &nbsp; :green_circle: **Issue-[{issue.number}]({issue.html_url})**: {issue.title}  \n  \n')
+                f.write(f'&nbsp; &nbsp; :orange_circle: **Issue-[{issue.number}]({issue.html_url})**: {issue.title}  \n  \n')
         
         # Template for goals
         f.write('\n## Recap on goals from last cycle\n')
@@ -171,3 +177,4 @@ for name, user_info in users.items():
         # Append the old content to the new content in order to new logs on top
         f.write(old_content)
 
+ 

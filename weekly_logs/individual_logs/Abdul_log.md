@@ -2,7 +2,7 @@
 # Abdul's Log for Cycle 4
 
 
-## Friday, June 07, 2024, 06:53 PM - Tuesday, June 11, 2024, 06:53 PM
+## Friday, June 07, 2024, 06:53 PM - Tuesday, June 11, 2024, 08:50 PM
 
 
 ## Tasks worked on this cycle:
@@ -46,11 +46,11 @@
   
 
 ## Time entries from Clockify on this cycle:
-&nbsp; &nbsp; :watch: **Adding Instructor Add Assignment UI** *(Total duration: 3.1 hours)*  
+&nbsp; &nbsp; :watch: **Adding Instructor Add Assignment UI** *(Total duration: 5.5 hours)*  
   
-&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 11, 2024, 06:24 PM - Ongoing *(Ongoing)*  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 11, 2024, 06:24 PM - Tuesday, June 11, 2024, 08:50 PM *(2.5 hours)*  
   
-&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 11, 2024, 03:15 PM - Tuesday, June 11, 2024, 06:24 PM *(3.1 hours)*  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 11, 2024, 03:15 PM - Tuesday, June 11, 2024, 06:24 PM *(3.0 hours)*  
   
 &nbsp; &nbsp; :watch: **Adding PDFViewer to each Assignment's page** *(Total duration: 1.0 hours)*  
   
@@ -92,40 +92,13 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
-
-## Goals for next cycle
-* 
-* 
-* 
-# Abdul Faiz's Individual Work Logs
-
-## Wednesday (6/7 - 6/12)
-
-### Timesheet - Clockify Report
-![img1](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/113662431/cc88f230-0f0a-4fc2-ad3a-a2b7c2ed442d)
-![img2](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/113662431/164c4b13-8fe5-4a70-afdc-6b97a2092b88)
-![img3](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/113662431/77af42e8-2b08-49fb-b905-412ee0c3b872)
-
-### Current Tasks
-  * #1: Add base PDF Viewing to the Assignment Page
-  * #2: Instructor-only Assignment Creation UI
-  * #3: Student-only Assignment Submission UI
-
-### Progress Update (since 6/7/2024)
-
-![img4](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/113662431/804a63e7-2dcf-4dae-b38c-cf85a801f975)
-
-### Cycle Goal Review (Reflection: what went well, what was done, what didn't; Retrospective: how is the process going and why?)
-Worked on adding a PDF Viewer but I couldn't really fully complete it considering that we haven't implemented the database yet. Once that's done, I plan to add support for the PDFViewer component to be able to get a PDF using an id, right from the database. We're having some tech issues with our development environments which is why we're looking into testing dev environments and seeing if they work for us. Seeing as we have dockerization up and running, we may not end up needing it in the end as everyone should have the same environment to develop in.
+Worked on adding a PDF Viewer but I couldn't really fully complete it considering that we haven't implemented the database yet. Once that's done, I plan to add support for the PDFViewer component to be able to get a PDF using an id, right from the database once we have that up and running. We're having some tech issues with our development environments which is why we're looking into testing dev environments and seeing if they work for us. Seeing as we have dockerization up and running, we may not end up needing it in the end as everyone should have the same environment to develop in.
 All in all, I hope to do a lot more work once the database is up and running!
 
-### Next Cycle Goals (What are you going to accomplish during the next cycle)
-  * Get PDF Viewing working by having it retrieve the PDF doc straight from the database and display it by accepting a document id.
-  * Develop UI for the assignment creation/submission, and other parts of the project that may not have been done yet.
-  * Recap the UI work that has been done so far by the other team members just to make sure I'm on the same page as them.
+## Goals for next cycle
+* Get PDF Viewing working by having it retrieve the PDF doc straight from the database and display it by accepting a document id.
+* Develop UI for the assignment creation/submission, and other parts of the project that may not have been done yet.
+* Recap the UI work that has been done so far by the other team members just to make sure I'm on the same page as them.
 
 ## Friday (6/5 - 6/7)
 

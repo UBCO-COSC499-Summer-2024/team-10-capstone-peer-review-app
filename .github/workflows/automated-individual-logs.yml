@@ -39,4 +39,15 @@ jobs:
         git commit -m "Created Log templates: make sure to fill them out and review eachother's commits!"
         git push
 
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.AUTOMATED_LOG_TOKEN }}
+        title: "Review for Individual Logs"
+        body: "This is an automated pull request to facilitate reviews and merge changes from logsReview into logs."
+        branch: "logsReview"
+        base: "logs"
+
+
+
   

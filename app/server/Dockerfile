@@ -10,11 +10,14 @@ COPY . /usr/server/
 # Install app dependencies
 RUN npm install
 
+# TODO prisma migrate deploy
+
 # Use an environment variable for the port
 ARG PORT
 ENV PORT=$BACKEND_PORT
 
 EXPOSE $PORT
 
-# Start the application
-CMD ["npm", "start"]
+# CHANGE TO CMD ["npm", "start"] for production
+# Start the application with nodemon for develpoment 
+CMD ["npm", "run", "dev"]

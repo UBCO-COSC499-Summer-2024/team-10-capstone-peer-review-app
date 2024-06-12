@@ -134,6 +134,11 @@ const AssignmentCreation = () => {
                   <p className="text-xs text-gray-500 mt-1">The assignment will be due at 11:59 PM on the selected date. The assignment will then be open for peer review right after the due date.</p>
                 </div>
                 <div>
+                  <label className="block text-sm font-medium text-gray-700">Rubric Details</label>
+                  <Textarea />
+                  <p className="text-xs text-gray-500 mt-1">This is the text that will contain the assignment's rubric details.</p>
+                </div>
+                <div>
                   <label className="block text-sm font-medium text-gray-700">Upload File</label>
                   <input
                     type="file"
@@ -150,7 +155,6 @@ const AssignmentCreation = () => {
                       <span className='text-gray-500'>{selectedFileName}</span>
                     )}
                   </div>
-                  
                   <p className="text-xs text-gray-500 mt-1">Upload the files for the assignment here.</p>
                 </div>
                 <Button>

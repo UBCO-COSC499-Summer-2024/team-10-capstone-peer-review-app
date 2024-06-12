@@ -12,6 +12,8 @@ import Grades from './classNav/Grades';
 import Groups from './classNav/Groups';
 import Files from './classNav/Files';
 import People from './classNav/People';
+import AssignmentCreation from './classNav/AssignmentCreation';
+import { Button } from '@/components/ui/button';
 
 const Class = () => {
   const { classId } = useParams();
@@ -35,6 +37,8 @@ const Class = () => {
         return <Groups />;
       case 'files':
         return <Files />;
+      case 'assignmentCreation':
+        return <AssignmentCreation />;
       default:
         return (
           <>
@@ -100,6 +104,11 @@ const Class = () => {
           {renderContent()}
         </div>
         <div className="space-y-6">
+          {currentView!='assignmentCreation' &&
+            <Button variant="outline" onClick={() => setCurrentView('assignmentCreation')} className="w-full bg-white">
+              Create Assignment
+            </Button>
+          }
           <Card className="bg-white p-4 shadow-md">
             <CardContent className="text-center">
               <span className="block text-4xl font-bold">98%</span>

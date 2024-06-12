@@ -8,41 +8,45 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: '#1b2433',
+          foreground: '#FFFFFF',
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-        warning: {
-          DEFAULT: "hsl(var(--warning))",
-          foreground: "hsl(var(--warning-foreground))",
+          DEFAULT: '#DC2626',
+          foreground: '#FFFFFF',
         },
         success: {
-          DEFAULT: "hsl(var(--success))",
-          foreground: "hsl(var(--success-foreground))",
+          DEFAULT: '#34D399',
+          foreground: '#FFFFFF',
         },
+        warning: {
+          DEFAULT: '#FBBF24',
+          foreground: '#000000',
+        },
+        background: {
+          DEFAULT: "#FFFFFF",
+          foreground: "#1C232E"
+        },
+        muted: {
+          DEFAULT: "#F4F8FB",
+          foreground: "#758196"
+        },
+        popover: {
+          DEFAULT: "#FFFFFF",
+          foreground: "#1C232E"
+        },
+        card: {
+          DEFAULT: "#FFFFFF",
+          foreground: "#1C232E"
+        },
+        accent: {
+          DEFAULT: "#F4F8FB",
+          foreground: "#1C232E"
+        },
+        secondary: {
+          DEFAULT: "#F4F8FB",
+          foreground: "#1C232E"
+        }
       },
       keyframes: {
         "accordion-down": {

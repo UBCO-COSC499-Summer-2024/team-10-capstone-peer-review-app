@@ -7,41 +7,6 @@
     font-family: "Nunito Sans", sans-serif;
 }
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 47.4% 11.2%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 47.4% 11.2%;
-
-    --primary: #1b2433;
-    --primary-foreground: #FFFFFF;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: #DC2626;
-    --destructive-foreground: #FFFFFF;
-
-    --warning: #FBBF24;
-    --warning-foreground: #000000;
-
-    --success: #34D399;
-    --success-foreground: #FFFFFF;
-  }
-}
-
-
 .hide-arrows {
     -moz-appearance: textfield;
 }

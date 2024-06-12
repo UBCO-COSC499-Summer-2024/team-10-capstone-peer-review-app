@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { user as users } from "@/lib/dbData";
-import { setCurrentUser } from '@/lib/redux/slices/userSlice';
+import { setCurrentUser } from '@/lib/redux/hooks/userSlice';
 
 const LoginCard = ({ onSwitchToRegister }) => {
   const navigate = useNavigate();

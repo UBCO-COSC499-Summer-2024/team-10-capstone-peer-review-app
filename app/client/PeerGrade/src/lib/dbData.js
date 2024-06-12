@@ -152,36 +152,117 @@ export const iClass = [
 
 export const assignment = [
     {
-        assignment_id: 1,
-        class_id: 1,
-        title: "Integral Calculations",
-        description: "Assignment on integral calculations.",
-        due_date: new Date(2025, 2, 14),
-        instructions: "Solve all the integrals in the given worksheet.",
-        file_type: "pdf",
-        evaluation_type: "peer"
-      },
-      {
-        assignment_id: 2,
-        class_id: 1,
-        title: "Differential Equations",
-        description: "Assignment on differential equations.",
-        due_date: new Date(2025, 3, 10),
-        instructions: "Solve the differential equations in the worksheet.",
-        file_type: "pdf",
-        evaluation_type: "peer"
-      },
-      {
-        assignment_id: 3,
-        class_id: 2,
-        title: "Linear Algebra Basics",
-        description: "Assignment on the basics of linear algebra.",
-        due_date: new Date(2025, 3, 20),
-        instructions: "Complete the problems on linear algebra.",
-        file_type: "pdf",
-        evaluation_type: "peer"
-      },
+      assignment_id: 1,
+      class_id: 1,
+      title: "Integral Calculations",
+      description: "Assignment on integral calculations.",
+      due_date: new Date(2025, 2, 14),
+      instructions: "Solve all the integrals in the given worksheet.",
+      file_type: "pdf",
+      evaluation_type: "peer"
+  },
+  {
+      assignment_id: 2,
+      class_id: 1,
+      title: "Differential Equations",
+      description: "Assignment on differential equations.",
+      due_date: new Date(2025, 3, 10),
+      instructions: "Solve the differential equations in the worksheet.",
+      file_type: "pdf",
+      evaluation_type: "peer"
+  },
+  {
+      assignment_id: 3,
+      class_id: 2,
+      title: "Linear Algebra Basics",
+      description: "Assignment on the basics of linear algebra.",
+      due_date: new Date(2025, 3, 20),
+      instructions: "Complete the problems on linear algebra.",
+      file_type: "pdf",
+      evaluation_type: "peer"
+  },
+  {
+      assignment_id: 4,
+      class_id: 2,
+      title: "Matrix Operations",
+      description: "Assignment on matrix operations.",
+      due_date: new Date(2025, 4, 5),
+      instructions: "Solve the matrix operation problems in the worksheet.",
+      file_type: "pdf",
+      evaluation_type: "instructor"
+  },
+  {
+      assignment_id: 5,
+      class_id: 3,
+      title: "Vector Spaces",
+      description: "Assignment on vector spaces.",
+      due_date: new Date(2025, 4, 25),
+      instructions: "Explain the concept of vector spaces and solve related problems.",
+      file_type: "docx",
+      evaluation_type: "peer"
+  },
+  {
+      assignment_id: 6,
+      class_id: 3,
+      title: "Eigenvalues and Eigenvectors",
+      description: "Assignment on eigenvalues and eigenvectors.",
+      due_date: new Date(2025, 5, 15),
+      instructions: "Find eigenvalues and eigenvectors for given matrices.",
+      file_type: "pdf",
+      evaluation_type: "instructor"
+  },
+  {
+      assignment_id: 7,
+      class_id: 4,
+      title: "Newton's Laws",
+      description: "Assignment on Newton's Laws of Motion.",
+      due_date: new Date(2025, 2, 25),
+      instructions: "Explain and solve problems related to Newton's Laws.",
+      file_type: "pdf",
+      evaluation_type: "peer"
+  },
+  {
+      assignment_id: 8,
+      class_id: 4,
+      title: "Work and Energy",
+      description: "Assignment on work and energy concepts.",
+      due_date: new Date(2025, 3, 15),
+      instructions: "Solve problems related to work and energy.",
+      file_type: "docx",
+      evaluation_type: "instructor"
+  },
+  {
+      assignment_id: 9,
+      class_id: 5,
+      title: "Chemical Reactions",
+      description: "Assignment on different types of chemical reactions.",
+      due_date: new Date(2025, 2, 20),
+      instructions: "Identify and balance chemical reactions.",
+      file_type: "pdf",
+      evaluation_type: "peer"
+  },
+  {
+      assignment_id: 10,
+      class_id: 5,
+      title: "Mole Concept",
+      description: "Assignment on the mole concept in chemistry.",
+      due_date: new Date(2025, 3, 10),
+      instructions: "Solve problems related to the mole concept.",
+      file_type: "pdf",
+      evaluation_type: "instructor"
+  },
+  {
+      assignment_id: 11,
+      class_id: 6,
+      title: "Cell Structure",
+      description: "Assignment on cell structure and functions.",
+      due_date: new Date(2025, 3, 30),
+      instructions: "Describe the structure and function of different cell organelles.",
+      file_type: "pdf",
+      evaluation_type: "peer"
+  },
 ]
+
 export const submission = [
     {
         submission_id: 1,

@@ -80,9 +80,8 @@ function AssignmentTable({ title, forReview }) {
 }
 
 function Dashboard() {
-  // Assuming the user is the second one in the users array for this example
   const currentUser = useSelector((state) => state.user.currentUser); //redux user state
-
+  
   // Filter classes based on user class_ids
   const userClasses = classesData.filter(classItem => currentUser.class_id.includes(classItem.class_id));
 

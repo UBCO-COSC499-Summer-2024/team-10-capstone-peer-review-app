@@ -26,15 +26,16 @@ navigate to app/server then run in terminal:
 
 #### For Setting up Prisma Local Development: 
 Run the commands (depending on Workflow): 
-- npx prisma generate 
+- 1st: npx prisma generate 
     - this generates the Prisma client -> the communication between postgreSQL and Prisma ORM
-- npx prisma db push 
-    - syncs changes to schema tables to the database, run everytime changes happen on schema.prisma or once during setup
+- 2nd: npx prisma db push 
+    - syncs changes to schema tables to the database 
+    - run everytime changes happen on schema.prisma 
 
 
 ## Client Setup: 
 navigate to app/client/PeerGrade then run in terminal 
 
 - npm i
-- npm run dev
+- npm run dev 
 

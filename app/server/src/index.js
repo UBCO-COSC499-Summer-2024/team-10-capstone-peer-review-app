@@ -1,5 +1,5 @@
 import express from "express";
-import dotenv from "dotenv"; 
+import dotenv from "dotenv" 
 import { PrismaClient } from "@prisma/client"; 
 import {
 	usersRouter, 

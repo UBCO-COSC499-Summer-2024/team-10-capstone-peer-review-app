@@ -12,14 +12,18 @@
     "lint-fix": "eslint . --ext js --report-unused-disable-directives --fix",
     "format": "prettier --write './**/*.js'",
     "format-and-lint": "npm run format && npm run lint-fix"
-  },
+  }, 
+  "_moduleAliases": {
+    "@": "src/*"
+  }, 
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.15.0",
     "dotenv": "^16.4.5",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "module-alias": "^2.2.3"
   },
   "devDependencies": {
     "eslint": "^8.0.0",

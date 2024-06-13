@@ -7,6 +7,9 @@ import {
 // make sure to add module aliases ,nodejs doen't support module aliases 
 } from "@/routes";
 
+// Enable alias rendering in the project
+import "module-alias/register"; 
+
 // Once dotenv.config() is called, env vars are available in process.env to all files. 
 // No need to import dotenv in other files.
 dotenv.config(); 
@@ -19,7 +22,6 @@ const BACKEND_PORT = process.env.BACKEND_PORT;
 export const prisma = new PrismaClient();
 
 // Make sure to include any middleare before the routes if you want the middleware to apply to the routes
-
 
 // Middlewares
 

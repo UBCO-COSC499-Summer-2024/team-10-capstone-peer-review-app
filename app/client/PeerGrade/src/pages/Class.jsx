@@ -11,6 +11,8 @@ import Grades from './classNav/Grades';
 import Groups from './classNav/Groups';
 import Files from './classNav/Files';
 import People from './classNav/People';
+import AssignmentCreation from './classNav/AssignmentCreation';
+import { Button } from '@/components/ui/button';
 
 const Class = () => {
   const { classId } = useParams();
@@ -34,6 +36,8 @@ const Class = () => {
         return <Groups />;
       case 'files':
         return <Files />;
+      case 'assignmentCreation':
+        return <AssignmentCreation />;
       default:
         return (
           <>
@@ -74,7 +78,7 @@ const Class = () => {
         <h1 className="text-3xl font-bold">{classItem.classname}: {user.find(instructor => instructor.user_id === classItem.instructor_id)?.firstname + ' ' + user.find(instructor => instructor.user_id === classItem.instructor_id)?.lastname}</h1>
         <div className="flex rounded-lg">
           <div className="flex justify-between items-center">
-            <Menubar>
+            <Menubar className='bg-gray-200'>
               <MenubarMenu>
                 <MenubarTrigger className="border border-gray-600 rounded-lg hover:bg-gray-300" onClick={() => setCurrentView('home')}>HOME</MenubarTrigger>
               </MenubarMenu>
@@ -99,6 +103,11 @@ const Class = () => {
           {renderContent()}
         </div>
         <div className="space-y-6">
+          {currentView!='assignmentCreation' &&
+            <Button variant="outline" onClick={() => setCurrentView('assignmentCreation')} className="w-full bg-white">
+              Create Assignment
+            </Button>
+          }
           <Card className="bg-white p-4 shadow-md">
             <CardContent className="text-center">
               <span className="block text-4xl font-bold">98%</span>

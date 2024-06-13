@@ -29,7 +29,7 @@ function AssignmentTable({ title, forReview }) {
   };
 
   return (
-    <div className="w-full bg-white shadow-md rounded-lg">
+    <div className="size-full bg-white shadow-md rounded-lg">
       <Table>
         <TableHeader>
           <TableRow>
@@ -67,11 +67,11 @@ function AssignmentTable({ title, forReview }) {
         </TableBody>
       </Table>
       <div className="flex justify-between p-4">
-        <Button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
+        <Button variant="outline" onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
           Previous
         </Button>
         <span>Page {currentPage} of {totalPages}</span>
-        <Button onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages}>
+        <Button variant="outline" onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages}>
           Next
         </Button>
       </div>
@@ -86,7 +86,7 @@ function Dashboard() {
   const userClasses = classesData.filter(classItem => currentUser.class_id.includes(classItem.class_id));
 
   return (
-    <div className="py-6 space-y-6">
+    <div className="md:mx-10 py-6 space-y-6">
       <h1 className="text-2xl font-bold">Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {userClasses.map((classItem) => (

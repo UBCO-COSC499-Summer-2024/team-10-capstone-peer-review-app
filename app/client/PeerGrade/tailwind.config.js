@@ -26,6 +26,10 @@ export default {
           DEFAULT: '#FBBF24', // Light yellow
           foreground: '#000000', // Black foreground color
         },
+        colored: {
+          DEFAULT: '#00d1b9', // teal
+          foreground: '#000000', // Black foreground color
+        },
         // Add other custom colors if needed
       },
     },

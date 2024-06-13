@@ -15,7 +15,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
-import { Avatar } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { iClass as classesData, assignment as assignmentsData } from '@/lib/dbData';
 
 export default function AppNavbar() {
@@ -34,20 +34,23 @@ export default function AppNavbar() {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <div className="w-full py-3 bg-white shadow-md">
+    <div className="w-full py-3 bg-gray-900 shadow-md px-5">
       <NavigationMenu className="flex items-center justify-between w-full max-w-screen-xl mx-auto ">
         <NavigationMenuList className="flex space-x-4">
-          <NavigationMenuItem>
-            <Link to="/dashboard" className={cn(navigationMenuTriggerStyle(), isActive('/dashboard') && 'font-bold border-b-4')}>
+          {/* <NavigationMenuItem>
+            logo here
+          </NavigationMenuItem> */}
+          <NavigationMenuItem className="text-white hover:text-colored ">
+            <Link to="/dashboard" className={cn(navigationMenuTriggerStyle(), isActive('/dashboard') && 'font-bold text-colored')}>
               Dashboard
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
             <NavigationMenuTrigger>
-              <NavigationMenuItem>
-                  <Link to="/peer-review" className={cn(navigationMenuTriggerStyle(), isActive('/peer-review') && 'font-bold border-b-4')}>
-                    Peer-Review
-                  </Link>
+              <NavigationMenuItem className="text-white hover:text-colored">
+                <Link to="/peer-review" className={cn(navigationMenuTriggerStyle(), isActive('/peer-review') && 'font-bold text-colored')}>
+                      Peer-Review
+                </Link>
               </NavigationMenuItem>
             </NavigationMenuTrigger>
             <NavigationMenuContent>
@@ -65,8 +68,8 @@ export default function AppNavbar() {
             </NavigationMenuContent>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuTrigger className={cn(isActive('/classes') || isActive('/manageclasses') && 'font-bold border-b-4')}>
-              Classes
+            <NavigationMenuTrigger className={cn(isActive('/classes') || isActive('/manageclasses') && 'font-bold text-colored')}>
+              <span className="text-white hover:text-colored">Classes</span>
             </NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="bg-white grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
@@ -91,22 +94,46 @@ export default function AppNavbar() {
               </ul>
             </NavigationMenuContent>
           </NavigationMenuItem>
-          <NavigationMenuItem>
-            <Link to="/settings" className={cn(navigationMenuTriggerStyle(), isActive('/settings') && 'font-bold border-b-4')}>
+          <NavigationMenuItem className="text-white hover:text-colored">
+            <Link to="/settings" className={cn(navigationMenuTriggerStyle(), isActive('/settings') && 'font-bold text-colored')}>
               Settings
             </Link>
           </NavigationMenuItem>
         </NavigationMenuList>
         <div className="flex items-center space-x-4">
-          <Link to={"/"}>
-            <Button variant="outline" className="bg-red-100" size="icon">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
-              </svg>
-            </Button>
-          </Link>
-          <Button variant="outline" size="icon" className="bg-indigo-100"><Bell className="w-5 text-gray-700" /></Button>
-          <Link to={"/settings"}><Avatar className="w-9 h-9 bg-gray-200 rounded-full shadow-md" /></Link>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>
+              <Avatar className="w-9 h-9 bg-black border border-white rounded-full shadow-md">
+                <AvatarFallback>
+                  {currentUser && `${currentUser.firstname.charAt(0)}${currentUser.lastname.charAt(0)}`}
+                </AvatarFallback>
+              </Avatar>
+            </NavigationMenuTrigger>
+            <NavigationMenuContent className="absolute r-0">
+              <div className="flex bg-white grid  md:grid-cols-1 lg:w-[300px] flex-col space-y-2 p-4">
+                <div className="bg-white shadow rounded-md p-4">
+                  <h3 className="text-lg font-semibold">Notifications</h3>
+                  <p>No new notifications</p>
+                </div>
+                <Button variant="link" className="w-full text-left">
+                  <Link to={"/"} className="flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
+                    </svg>
+                    <span>Logout</span>
+                  </Link>
+                </Button>
+                <Button variant="link" className="w-full text-left">
+                  <Link to={"/help"} className="flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m9 1.5v-13a2.25 2.25 0 0 0-2.25-2.25h-13A2.25 2.25 0 0 0 6 4.5v1.25m9.75 13v.75m0-6.5h.008v.008H15.75v-.008Z" />
+                    </svg>
+                    <span>Request Help</span>
+                  </Link>
+                </Button>
+              </div>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
         </div>
       </NavigationMenu>
     </div>

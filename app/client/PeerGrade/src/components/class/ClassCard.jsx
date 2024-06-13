@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom';
 const ClassCard = ({ classId, className, instructor, numStudents, numAssignments, numPeerReviews }) => {
   return (
     <Link to={`/class/${classId}`}>
-      <Card className="w-full p-1 flex items-center justify-between bg-white shadow-md rounded-lg hover:shadow-lg ">
-        <CardHeader  className=" border-r-3">
-          <CardTitle className="text-xl font-bold">{className}</CardTitle>
-          <CardDescription className="text-gray-500">{instructor}</CardDescription>
+      <Card className="w-full flex lg:flex-col items-start justify-between bg-white shadow-md rounded-lg hover:shadow-lg ">
+        <CardHeader  className="bg-gray-900 rounded-t-lg text-white w-full">
+          <CardTitle className="text-xl font-bold text-colored">{className}</CardTitle>
+          <CardDescription className="text-gray-300">{instructor}</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col space-y-2">
           <div className="flex items-center space-x-2">

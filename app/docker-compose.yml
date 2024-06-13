@@ -1,48 +1,54 @@
 services:
 
-  client:
-    build:
-      context: ./client/PeerGrade
-      dockerfile: Dockerfile
+  db:
+    image: postgres:latest
     env_file:
-      - ./client/PeerGrade/.env
+      - ./server/.env
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
-      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+      - "${DB_PORT}:5432"
     volumes:
-      - ./client/PeerGrade:/usr/client
-      - client-node-modules:/usr/client/node_modules
-    depends_on:
-      - server
-      - postgres
+      - db-data:/var/lib/postgresql/data
 
   server:
     build:
       context: ./server
       dockerfile: Dockerfile
+      args:
+      - BACKEND_PORT=${BACKEND_PORT} 
+      - DB_NAME=${DB_NAME} 
+      - DB_PORT=${DB_PORT} 
     env_file:
       - ./server/.env
     ports:
-      - "${BACKEND_PORT}:${BACKEND_PORT}"
+      - "${BACKEND_PORT}:5001"
     volumes:
       - ./server:/usr/server
       - server-node-modules:/usr/server/node_modules
     depends_on:
-      - postgres
+      - db 
 
-  postgres:
-    image: postgres:latest
-    restart: always
+  client:
+    build:
+      context: ./client/PeerGrade
+      dockerfile: Dockerfile
+      args:
+        - FRONTEND_PORT=${FRONTEND_PORT}
     env_file:
-      - ./server/.env
-    environment:
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - ./client/PeerGrade/.env
     ports:
-      - "${DB_PORT}:${DB_PORT}"
+      - "${FRONTEND_PORT}:3000"
     volumes:
-      - ./database:/var/lib/postgresql/data
+      - ./client/PeerGrade:/usr/client
+      - client-node-modules:/usr/client/node_modules
+    depends_on:
+      - server
+      - db
 
 volumes:
   client-node-modules:
   server-node-modules:
+  db-data: 

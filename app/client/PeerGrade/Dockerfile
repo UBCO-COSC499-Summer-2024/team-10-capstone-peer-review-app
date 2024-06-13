@@ -1,5 +1,7 @@
 FROM node:22-slim
 
+ARG FRONTEND_PORT
+
 ENV CI=true
 
 # Set the working directory
@@ -13,10 +15,8 @@ COPY . /usr/client/
 RUN npm install
 
 # Use an environment variable for the port
-ARG PORT
-ENV PORT=$FRONTEND_PORT
 
-EXPOSE $PORT
+EXPOSE ${FRONTEND_PORT}
 
 # Start the application
 CMD ["npm", "run", "dev"]

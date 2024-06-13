@@ -1,7 +1,17 @@
-FROM node:22-slim
+
+# IDK why but node-18 does not create the openssl issue
+FROM node:22-slim 
+ARG DB_PORT 
+ARG DB_NAME
+ARG BACKEND_PORT
+
+# Need these for Prisma to work on container 
+# Make sure to test these around later on. 
+RUN apt-get update -y
+RUN apt-get install -y openssl
 
 # Set the working directory
-WORKDIR /usr/server/
+WORKDIR /usr/server/ 
 
 # Copy the application source code & other project files to the working directory
 # Note: This ignores the folders and files specified in the .dockerignore file.
@@ -10,14 +20,15 @@ COPY . /usr/server/
 # Install app dependencies
 RUN npm install
 
-# TODO prisma migrate deploy
+## TODO prisma migrate deploy
 
-# Use an environment variable for the port
-ARG PORT
-ENV PORT=$BACKEND_PORT
+EXPOSE ${BACKEND_PORT} 
 
-EXPOSE $PORT
+# Npx prisma generate, NPX prisma db push, and NPX prisma migrate deploy MUST be executed during runtime 
+# Since these commands require the database to be fully up and running 
+# even with the depend ons: in the docker-compose, this build file doesn't wait for 
+# the databse to be fully up and running, it just waits for the container to start
 
-# CHANGE TO CMD ["npm", "start"] for production
-# Start the application with nodemon for develpoment 
-CMD ["npm", "run", "dev"]
+# Nodemon also freaks out on prisma and gives lib issues during start if you run npm run dev not sure why
+
+CMD npx prisma generate && npx prisma db push && npm start

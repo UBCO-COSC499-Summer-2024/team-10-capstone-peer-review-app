@@ -16,16 +16,18 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
-import { iClass as classesData, assignment as assignmentsData } from '@/lib/dbData';
+import { iClass as classesData, assignment as assignmentsData } from '@/lib/dbData'; //DB CALLS - ignore the iClass as classdata, ssignment as assigndata, this was just easier for me when i switched to redux (nothing to do with db)
 
 export default function AppNavbar() {
   const location = useLocation();
-  const currentUser = useSelector((state) => state.user.currentUser); //redux user state
+  const currentUser = useSelector((state) => state.user.currentUser); //REDUX: user state, after user state stored in login, it has that user logged info saved
 
   // Filter classes based on user class_ids
+  //DB PROCESS userClasses should be a list of classes that are related to the user, userid should be used to find the list of classes and stored in const userClasses. 
   const userClasses = classesData.filter(classItem => currentUser.class_id.includes(classItem.class_id));
 
   // Filter assignments based on user class_ids and evaluation_type 'peer'
+  //DB PROCESS userReviewAssignments should be a list of reviews that are related to the user, user.reviews should be used to find the list of reviews and should be stored in userReviewAssignemnts. 
   const userReviewAssignments = assignmentsData
     .filter(assignment => currentUser.class_id.includes(assignment.class_id) && assignment.evaluation_type === 'peer')
     .sort((a, b) => new Date(a.due_date) - new Date(b.due_date))

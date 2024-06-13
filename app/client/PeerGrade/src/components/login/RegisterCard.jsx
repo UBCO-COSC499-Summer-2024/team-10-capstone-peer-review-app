@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { user as users, addUser } from "@/lib/dbData";
+import { user as users, addUser } from "@/lib/dbData"; //DB call user, IGNORE: addUser (mock data call)
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 
 const RegisterCard = ({ onSwitchToLogin }) => {
@@ -33,7 +33,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
       setError('')
     }
 
-    const newUser = {
+    const newUser = { //DB PROCESS new user creation to input into the db
       user_id: users.length + 1,
       username: email.split('@')[0], // Example username derived from email
       password,
@@ -41,10 +41,11 @@ const RegisterCard = ({ onSwitchToLogin }) => {
       lastname: lastName,
       email,
       class_id: [], // Empty class ID
-      type: "student"
+      type: "student" // 'role' starts off as student
+      //add extra fields here to match the db changes
     };
 
-    addUser(newUser);
+    addUser(newUser); //DB PROCESS: Add the user to the database here
     onSwitchToLogin(); // Switch back to login after registration
   };
 

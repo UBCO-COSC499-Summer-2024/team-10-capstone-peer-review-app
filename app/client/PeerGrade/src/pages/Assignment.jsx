@@ -31,7 +31,7 @@ const Assignment = () => {
       <div className="flex rounded-lg mb-6">
         <Button onClick={handleBackClick}>←</Button>
         <div className="flex justify-between items-center ml-4">
-          <Menubar>
+          <Menubar className='bg-transparent'>
             <MenubarMenu>
               <MenubarTrigger className="border border-gray-600 rounded-lg hover:bg-gray-300">HOME</MenubarTrigger>
             </MenubarMenu>

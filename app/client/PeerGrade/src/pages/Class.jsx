@@ -78,7 +78,7 @@ const Class = () => {
         <h1 className="text-3xl font-bold">{classItem.classname}: {user.find(instructor => instructor.user_id === classItem.instructor_id)?.firstname + ' ' + user.find(instructor => instructor.user_id === classItem.instructor_id)?.lastname}</h1>
         <div className="flex rounded-lg">
           <div className="flex justify-between items-center">
-            <Menubar>
+            <Menubar className='bg-gray-200'>
               <MenubarMenu>
                 <MenubarTrigger className="border border-gray-600 rounded-lg hover:bg-gray-300" onClick={() => setCurrentView('home')}>HOME</MenubarTrigger>
               </MenubarMenu>

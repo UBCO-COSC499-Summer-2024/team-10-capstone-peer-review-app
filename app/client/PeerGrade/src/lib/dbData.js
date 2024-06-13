@@ -4,11 +4,16 @@ export const user = [
         user_id: 1,
         username: "testUser",
         password: "Password123",
+        email: "test@gmail.com",
         firstname: "Test",
         lastname: "User",
-        email: "test@gmail.com",
-        class_id: [1,2,3,4,5,6,7,8,9,10],
-        type: "admin"
+        type: "admin", // role
+        class_id: [1,2,3,4,5,6,7,8,9,10], //classes
+        submissions: [], 
+        reviewsDone: [],
+        reviewsReceived: [],
+        classesInstructed: [],
+        Rubric: [],
       },
       {
         user_id: 2,

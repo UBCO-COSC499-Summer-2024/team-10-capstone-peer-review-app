@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { user as users } from "@/lib/dbData";
-import { setCurrentUser } from '@/lib/redux/hooks/userSlice';
+import { user as users } from "@/lib/dbData"; // DB CALL: this is user data being pulled from the 'db'
+import { setCurrentUser } from '@/lib/redux/hooks/userSlice'; //REDUX slice
 
 const LoginCard = ({ onSwitchToRegister }) => {
   const navigate = useNavigate();
@@ -14,14 +14,22 @@ const LoginCard = ({ onSwitchToRegister }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Find user by email and password
+
+    // Password validation regex: 8 characters, 1 uppercase, 1 lowercase, 1 special character
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+      setError('Password must be at least 8 characters long, with at least one uppercase letter, one lowercase letter, one number, and one special character.');
+      return;
+    }
+
+    // DB PROCESS: Find user by email and password process stored under const user.
     const user = users.find(user => user.email === email && user.password === password);
-    
+
     if (user) {
       console.log(`Logged in as: ${user.type}`);
       setError('');
-      dispatch(setCurrentUser(user)); // Dispatch the action to set the current user
+      dispatch(setCurrentUser(user)); // REDUX: sets current user to state with redux dispatch call 
       navigate('/dashboard');
     } else {
       setError('Invalid email or password');

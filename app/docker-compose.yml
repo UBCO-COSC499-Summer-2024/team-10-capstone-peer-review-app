@@ -16,7 +16,7 @@ services:
   server:
     build:
       context: ./server
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.local
       args:
       - BACKEND_PORT=${BACKEND_PORT} 
       - DB_NAME=${DB_NAME} 

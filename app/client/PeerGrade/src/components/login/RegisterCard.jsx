@@ -37,7 +37,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
       lastname: lastName,
       email,
       class_id: [], // Empty class ID
-      type: value
+      type: isNaN(value) ? "student" : value
     };
 
     addUser(newUser);

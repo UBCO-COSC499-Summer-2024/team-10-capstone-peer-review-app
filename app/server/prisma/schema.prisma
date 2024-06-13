@@ -37,17 +37,19 @@ datasource db {
 // }
 
 model User {
-  userId          String        @id @default(uuid())
-  username        String        @unique
-  password        String
-  email           String        @unique
-  firstname       String
-  lastname        String
-  role            UserRole
-  classes         UserInClass[]
-  submissions     Submission[]
-  reviewsDone     Review[]      @relation("Reviewer")
-  reviewsRecieved Review[]      @relation("Reviewee")
+  userId            String        @id @default(uuid())
+  username          String        @unique
+  password          String
+  email             String        @unique
+  firstname         String
+  lastname          String
+  role              UserRole
+  classes           UserInClass[]
+  submissions       Submission[]
+  reviewsDone       Review[]      @relation("Reviewer")
+  reviewsRecieved   Review[]      @relation("Reviewee")
+  classesInstructed Class[]       @relation("InstructorClasses")
+  Rubric            Rubric[]
 }
 
 // // Need to refactor last references to others tables, depending on what we want instructors to be able to pull up
@@ -70,7 +72,7 @@ model User {
 
 model Class {
   classId      String        @id @default(uuid())
-  instructorId String
+  instructorId String        @unique
   classname    String
   description  String?
   startDate    DateTime
@@ -79,7 +81,7 @@ model Class {
   classSize    Int
   usersInClass UserInClass[]
   Assignments  Assignment[]
-  instructor   User          @relation(fields: [instructorId], references: [instructorId]) // Only one instructor per class
+  instructor   User          @relation("InstructorClasses", fields: [instructorId], references: [userId]) // Only one instructor per class
 }
 
 model UserInClass {

@@ -43,7 +43,7 @@ model User {
   email             String        @unique
   firstname         String
   lastname          String
-  role              UserRole
+  role              UserRole      @default(STUDENT)
   classes           UserInClass[]
   submissions       Submission[]
   reviewsDone       Review[]      @relation("Reviewer")

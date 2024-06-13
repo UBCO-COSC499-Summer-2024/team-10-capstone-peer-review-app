@@ -1,1 +1,0 @@
-// Config File template for prisma client / dotenv loading 

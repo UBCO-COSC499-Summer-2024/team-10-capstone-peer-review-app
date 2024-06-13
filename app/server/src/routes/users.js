@@ -1,6 +1,7 @@
 import express from "express"; 
 import { prisma } from "@/index";
 
+
 const router = express.Router();
 
 // return all users

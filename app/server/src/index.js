@@ -3,7 +3,8 @@ import dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client"; 
 import {
 	usersRouter, 
-	authRouter
+	authRouter 
+// make sure to add module aliases ,nodejs doen't support module aliases 
 } from "@/routes";
 
 // Once dotenv.config() is called, env vars are available in process.env to all files. 
@@ -18,9 +19,16 @@ const BACKEND_PORT = process.env.BACKEND_PORT;
 export const prisma = new PrismaClient();
 
 // Make sure to include any middleare before the routes if you want the middleware to apply to the routes
+
+
+// Middlewares
+
 app.use(express.json()); // Parse JSON bodies with express middleware
+
+// Routers 
+
 app.use("/users", usersRouter);
-app.use("/auth", authRouter);
+app.use("/auth", authRouter); 
 
 app.listen(BACKEND_PORT, () => {
 	console.log(`Server is running on port ${BACKEND_PORT}`);

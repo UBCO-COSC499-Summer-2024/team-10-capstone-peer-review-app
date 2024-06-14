@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ClassCard from '@/components/class/ClassCard';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { iClass as classesData, assignment as assignmentsData, user } from '@/lib/dbData';
+import { iClass as classesData, assignment as assignmentsData, user } from '@/lib/dbData'; //DB CALL
 import { Button } from "@/components/ui/button";
 import { ArrowUp, ArrowDown } from 'lucide-react';
 
@@ -13,6 +13,7 @@ function AssignmentTable({ title, forReview }) {
   const itemsPerPage = 5;
 
   // Filter and sort assignments based on review status
+  // DB PROCESS, store user relaated reviews to this variable, filtered is referreing to assignemnts that the user has assigned as a review to do
   const filteredAssignments = assignmentsData
     .filter(assignment => (forReview ? assignment.evaluation_type === 'peer' : true))
     .sort((a, b) => {
@@ -22,6 +23,8 @@ function AssignmentTable({ title, forReview }) {
     });
 
   const totalPages = Math.ceil(filteredAssignments.length / itemsPerPage);
+
+  // DB PROCESS, store user related assignments to this variable.
   const currentAssignments = filteredAssignments.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const handleSort = () => {

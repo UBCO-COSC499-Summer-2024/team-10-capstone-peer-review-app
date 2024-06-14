@@ -1,40 +1,24 @@
+from github import Github, Project
 from datetime import datetime, timedelta
 from pytz import timezone
 import os
 import requests
 
-# Function to remove milliseconds from the time string
-def remove_milliseconds(time_string):
-    if '.' in time_string:
-        return time_string.split('.')[0] + 'Z'
-    return time_string
-
-# Function to remove milliseconds from the time string
-def remove_milliseconds(time_string):
-    if '.' in time_string:
-        return time_string.split('.')[0] + 'Z'
-    return time_string
-
-# Function to parse time without milliseconds
-def parse_time(time_string):
-    return datetime.strptime(remove_milliseconds(time_string), '%Y-%m-%dT%H:%M:%SZ')
-
 # PAT for the automated-log-workflow
 g = Github(os.getenv('AUTOMATED_LOG_TOKEN'))
-# API key for clockify
+# Api key for clockify
 api_key = os.getenv('CLOCKIFY_API_KEY')
 # Repo for the workflow
 repo = g.get_repo("UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app")
-# Timezone for the log creation
-# Timezone for the log creation
+# Timezone for the log ceration
 tz = timezone('America/Vancouver')
-# URL for the clockify API
+# Url for the clockify api
 base_url = 'https://api.clockify.me/api/v1'
-# HTTPS headers for the clockify API
+# Https headers for the clockify api
 headers = {
     'X-Api-Key': api_key
 }
-# ID of the workspace in clockify
+# id of the workspace in clockify
 workspace_id = '664d8e0fe973a23fc5fda5a0'
 
 # List of usernames and their associated names
@@ -47,16 +31,14 @@ users = {
 
 # Get the current date and time
 now = datetime.now(tz)
-start_date = now - timedelta(days=2)  # Last Tuesday
-end_date = now 
-# if now.weekday() == 1:  # If today is Tuesday
-#     start_date = now - timedelta(days=4)  # Last Thursday
-#     end_date = now
-# elif now.weekday() == 3:  # If today is Thursday
-start_date = now - timedelta(days=2)  # Last Tuesday
-end_date = now 
-# else: # throw error if today is not Tuesday or Thursday  
-#     raise ValueError('This script should only be run on Tuesdays or Thursdays') 
+if now.weekday() == 1:  # If today is Tuesday
+    start_date = now - timedelta(days=4)  # Last Thursday
+    end_date = now
+elif now.weekday() == 3:  # If today is Thursday
+    start_date = now - timedelta(days=2)  # Last Tuesday
+    end_date = now 
+else: # throw error if today is not Tuesday or Thursday  
+    raise ValueError('This script should only be run on Tuesdays or Thursdays') 
 
 # Read the cycle count from count-for-cycle.txt
 try:
@@ -92,7 +74,7 @@ for name, user_info in users.items():
 
     merged_user_pulls = [pull for pull in pulls if pull.user.login == github_username and start_date <= pull.created_at <= end_date and pull.merged]
 
-    # API call to get the time entries for the user
+    # Api call to get the time entries for the user
     response = requests.get(f'{base_url}/workspaces/{workspace_id}/user/{clockify_id}/time-entries', headers=headers)
 
     # If the request was successful, parse the data from clockify
@@ -104,18 +86,15 @@ for name, user_info in users.items():
         for time_entry in time_entries:
             description = time_entry['description']
             # Convert the start and end times to the UTM-7, make it timezone aware
-            start_time = datetime.strptime(remove_milliseconds(time_entry['timeInterval']['start']), '%Y-%m-%dT%H:%M:%SZ')
-            start_time = parse_time(time_entry['timeInterval']['start'])
+            start_time = datetime.strptime(time_entry['timeInterval']['start'], '%Y-%m-%dT%H:%M:%SZ')
             start_time = start_time.replace(tzinfo=timezone('UTC')).astimezone(tz)
             # If the time entry is still ongoing, we consider its duration as 0 for the total duration calculation
             if time_entry['timeInterval']['end']:
-                end_time = datetime.strptime(remove_milliseconds(time_entry['timeInterval']['end']), '%Y-%m-%dT%H:%M:%SZ')
-                end_time = parse_time(time_entry['timeInterval']['end'])
+                end_time = datetime.strptime(time_entry['timeInterval']['end'], '%Y-%m-%dT%H:%M:%SZ')
                 end_time = end_time.replace(tzinfo=timezone('UTC')).astimezone(tz)
                 duration = (end_time - start_time).total_seconds() / 3600  # Convert duration to hours
             else:
-                end_time = "Ongoing"
-                end_time = "Ongoing"
+                end_time = "Ongoing"; 
                 duration = 0  # If the time entry is still ongoing, we consider its duration as 0 for the total duration calculation
 
             # If the start time is within the date range, add the time entry to the dictionary
@@ -171,13 +150,13 @@ for name, user_info in users.items():
         for pull in merged_user_pulls:
             f.write(f'&nbsp; &nbsp; :arrow_heading_up: **PR-[{pull.number}]({pull.html_url})**: {pull.title}  \n  \n') 
 
-        # Write all closed issues in this cycle
+        # Write all closed issues in the this cycle
         f.write('\n## Completed tasks:\n')
         for issue in closed_issues:
             if issue.pull_request is None:
                 f.write(f'&nbsp; &nbsp; :purple_circle: **Issue-[{issue.number}]({issue.html_url})**: {issue.title}  \n  \n')
         
-        # Write every open issue (Even from previous cycles)
+        # Write every open issued (Even from previous cycles)
         f.write('\n## In-progress tasks:\n')
         for issue in open_issues:
             if issue.pull_request is None:
@@ -198,3 +177,4 @@ for name, user_info in users.items():
         # Append the old content to the new content in order to new logs on top
         f.write(old_content)
 
+ 

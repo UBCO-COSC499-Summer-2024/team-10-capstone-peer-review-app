@@ -22,9 +22,9 @@
   
 
 ## Overall Burn-up Chart of Tasks
+Can't get burn up chart from insights anymore... Github Team issue?
 ![Burn-Up Chart for c-4](./team_log_images/burnup_charts/burnup_chart_c4.png)  
   
-
 ## Test Reports for c-4
 
 #### Front-end Testing for c-4
@@ -32,8 +32,8 @@
   
 
 #### Back-end Testing for c-4
-![Burn-Up Chart for c-4](weekly_logs/team_log_images/back_end_tests/back_end_tests_c4.png)  
-  
+No Back-end tests yet, tried writing some for register / login last night but couldn't get them 
+to pass.
   
   
 # Team 10's Log for Cycle 3

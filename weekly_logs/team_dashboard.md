@@ -6,35 +6,32 @@
 
 
 ### Major features worked on in c-4
-*  
-  
-*  
-  
-*  
+*    Login / Register Functionalities 
+*    Basic Api Endpoints setup
+*    Authentication and Session Management 
+*    Class Create, Assignment Create UI, other UI bug fixes 
+*    Dockerization of Prisma / integration into docker network 
+*    Testing for UI
   
 
 ### Major features completed in c-4
-*  
-  
-*  
-  
-*  
+*    Login / Register Functionalities 
+*    Authentication and Session Management 
+*    Class Create, Assignment Create UI, other UI bug fixes 
+*    Testing for UI
   
 
 ### Major features to work on for c-5
-*  
-  
-*  
-  
-*  
+*  Integration of UI and API, many bugs and breaks right now
+*  Integrating Prisma into docker with having it explode
+*  Other UI bug fixes
   
 
-### Team Issues and Hurdles for c-5
-*  
-  
-*  
-  
-*  
+### Team Issues and Hurdles for c-4
+*  Some of our teammates are concerned with the technical debt of working with Prisma, 
+there may be future downsides and difficulties to working with this techonology
+*  Dockerization of Prisma has proven to be difficult and buggy
+*  Not working efficiently for the back-end, need to get a good branching workflow
   
 
 ### Clockify Dashboard for this Week

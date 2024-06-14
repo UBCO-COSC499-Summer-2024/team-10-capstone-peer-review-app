@@ -1,5 +1,5 @@
 
-# Josh's Log for Cycle 5
+# Josh's Log for Cycle 4
 
 
 ## Wednesday, June 12, 2024, 01:07 AM - Friday, June 14, 2024, 01:07 AM
@@ -90,15 +90,17 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Last cycle I was hoping to get most of the basic api-endpoints setup along with 
+some login / register and authentication features running, although I was able to get this set up, it breaks with the UI and we need to spend this weekend sifting through it to get everything working. On the bright side, express essions and cookies work and user data can be stored in cookies
+* I wanted to create endpoints for class creation, assignment creation, rubric creation / middleware for role based access however wasn't able to get to it due to issues with setting up
+Prisma in a docker-network
+* Going forward I need to look into how to set up prisma in a docker network, and how to reference other containers on the network, look into why some containers can't be accessed by their container_name
 
 ## Goals for next cycle
-* 
-* 
-* 
-  
+* Refactor UI and integrate with api so that after a user logs into the dashboard it doesn't break
+* Refactor Docker network to work with Prisma
+* Create basic endpoints for instructor operations i.e. class creation, assignment creation, read all assignments etc. 
+* Create some basic role-based access middle-ware
   
 
 # Josh's Log for Cycle 3

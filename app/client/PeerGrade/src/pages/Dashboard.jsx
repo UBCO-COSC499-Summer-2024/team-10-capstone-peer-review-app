@@ -86,7 +86,7 @@ function Dashboard() {
   const currentUser = useSelector((state) => state.user.currentUser); //redux user state
   
   // Filter classes based on user class_ids
-  const userClasses = classesData.filter(classItem => currentUser.class_id.includes(classItem.class_id));
+  const userClasses = currentUser && currentUser.class_id ? classesData.filter(classItem => currentUser.class_id.includes(classItem.class_id)) : [];
 
   return (
     <div className="py-6 space-y-6">

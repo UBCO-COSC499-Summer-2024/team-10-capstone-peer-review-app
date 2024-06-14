@@ -1,8 +1,13 @@
 import { useState } from 'react';
+import { cn } from "@/lib/utils";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { user as users, addUser } from "@/lib/dbData"; //DB call user, IGNORE: addUser (mock data call)
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
+import { user as users, addUser } from "@/lib/dbData";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
+import { ChevronDown as ChevronDownIcon, ChevronUp as ChevronUpIcon, Check as CheckIcon } from "lucide-react";
 
 const RegisterCard = ({ onSwitchToLogin }) => {
   const [firstName, setFirstName] = useState('');
@@ -14,6 +19,8 @@ const RegisterCard = ({ onSwitchToLogin }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [error, setError] = useState('');
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,13 +48,27 @@ const RegisterCard = ({ onSwitchToLogin }) => {
       lastname: lastName,
       email,
       class_id: [], // Empty class ID
-      type: "student" // 'role' starts off as student
-      //add extra fields here to match the db changes
+      type: isNaN(value) ? "student" : value
     };
 
     addUser(newUser); //DB PROCESS: Add the user to the database here
     onSwitchToLogin(); // Switch back to login after registration
   };
+
+  const dropdown_options = [
+    {
+      value: "student",
+      label: "Student",
+    },
+    {
+      value: "instructor",
+      label: "Instructor",
+    },
+    {
+      value: "admin",
+      label: "Admin",
+    }
+  ];
 
   return (
     <Card className="w-full max-w-md p-8 space-y-8 bg-white shadow-md rounded-lg">
@@ -140,6 +161,53 @@ const RegisterCard = ({ onSwitchToLogin }) => {
                 {confirmPasswordVisible ? <EyeSlashIcon className="h-5 w-5 text-gray-500" /> : <EyeIcon className="h-5 w-5 text-gray-500" />}
               </button>
             </div>
+          </div>
+          <div>
+          <label htmlFor="selectUserType" className="block text-sm font-medium text-gray-700">Select User Type (debug):</label>
+            <Popover open={open} onOpenChange={setOpen} id='selectUserType'>
+              <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={open}
+                    className="w-[200px] justify-between bg-white mt-1"
+                  >
+                    {value
+                      ? dropdown_options.find((option) => option.value === value)?.label
+                      : "Select option..."}
+                    {open
+                      ? <ChevronUpIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      : <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    }
+                  </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[200px] p-0 rounded-md">
+                <Command>
+                  <CommandList>
+                    <CommandGroup>
+                      {dropdown_options.map((option) => (
+                        <CommandItem
+                          key={option.value}
+                          value={option.value}
+                          onSelect={(currentValue) => {
+                            setValue(currentValue === value ? "" : currentValue);
+                            setOpen(false);
+                          }}
+                        >
+                          {option.label}
+                          <CheckIcon
+                            className={cn(
+                              "ml-auto h-4 w-4",
+                              value === option.value ? "opacity-100" : "opacity-0"
+                            )}
+                          />
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
           </div>
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <div className='flex justify-center'>

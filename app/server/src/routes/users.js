@@ -14,7 +14,7 @@ const usersRouter = (prisma) => {
         const { id } = req.params;
         const user = await prisma.user.findUnique({
             where: {
-                id: id,
+                userId: id,
             },
         });
         res.json(user);

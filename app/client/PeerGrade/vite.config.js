@@ -19,14 +19,14 @@ export default defineConfig({
 	},
 
 	server: {
-		host: "0.0.0.0",
+		host: "localhost",
 		port: 3000,
 		proxy: {
-			// HARD-CODED USE ENV VARS TODO 
-			// Still not working?  
-			// For docker container, will have to figure out how to refence container
-			// by container_name? 
-			"/api": "http://localhost:5001"
+			"/api": { 
+				target: "http://localhost:5001", 
+				changeOrigin: true,
+				rewrite: (path) => path.replace(/^\/api/, '')
+			}
 		}
 	}
 });

@@ -10,7 +10,7 @@
   
 
 ## Tasks currently in Progress for c-4:
-![Tasks in progress for c-4](./team_log_images/in_progress_issue/in_progress_issues_c4.png)  
+![Tasks in progress for c-4](./team_log_images/in_progress_issues/in_progress_issues_c4.png)  
   
 
 ## Tasks currently in Review for c-4:
@@ -28,7 +28,7 @@ Can't get burn up chart from insights anymore... Github Team issue?
 ## Test Reports for c-4
 
 #### Front-end Testing for c-4
-![Front-end Tests for c-4](weekly_logs/team_log_images/front_end_tests/front_end_tests_c4.png)  
+![Front-end Tests for c-4](./team_log_images/front_end_tests/front_end_tests_c4.png)  
   
 
 #### Back-end Testing for c-4

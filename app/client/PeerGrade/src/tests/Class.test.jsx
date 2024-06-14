@@ -1,7 +1,9 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Class from '@/pages/Class';
+import configureMockStore from 'redux-mock-store';
 
 // Mock the useParams hook and data imports
 jest.mock('react-router-dom', () => ({
@@ -37,12 +39,23 @@ jest.mock('@/lib/dbData', () => ({
   ]
 }));
 
+const mockStore = configureMockStore();
+const store = mockStore({
+  user: {
+    currentUser: { user_id: 1, firstname: 'John', lastname: 'Doe' }, // Mocked user state
+  },
+  // Add other keys as needed
+});
+
+
 describe('Class component', () => {
   test('renders with class name and instructor', () => {
     render(
-      <Router>
-        <Class />
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <Class />
+        </Router>
+      </Provider>
     );
 
     // Check if class name and instructor are rendered
@@ -54,9 +67,11 @@ describe('Class component', () => {
     jest.spyOn(require('react-router-dom'), 'useParams').mockReturnValue({ classId: '999' });
 
     render(
-      <Router>
-        <Class />
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <Class />
+        </Router>
+      </Provider>
     );
 
     // Check if "Class not found" text is rendered
@@ -66,9 +81,11 @@ describe('Class component', () => {
   test('renders categories and assignments when currentView is "home"', async () => {
     jest.spyOn(require('react-router-dom'), 'useParams').mockReturnValue({ classId: '1' });
     render(
-      <Router>
-        <Class />
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <Class />
+        </Router>
+      </Provider>
     );
 
     // Wait for the component to render

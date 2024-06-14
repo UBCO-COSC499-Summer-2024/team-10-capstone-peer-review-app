@@ -44,13 +44,11 @@ test('renders Grades component without crashing', () => {
   // Check if the correct number of TableRow components are rendered
   const rows = screen.getAllByRole('row');
   expect(rows).toHaveLength(userSubmissionsMock.length + 1); // +1 for the header row
-  console.log(document.body.innerHTML);
 });
 
 test('renders Grades row with mock data', () => {
     render(<Grades classAssignments={classAssignmentsMock} />);
   
     // Check if the correct number of TableRow components are rendered
-    console.log(document.body.innerHTML);
     expect(screen.getByText('Integral Calculations')).toBeInTheDocument();
   });

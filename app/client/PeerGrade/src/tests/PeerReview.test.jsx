@@ -111,10 +111,10 @@ jest.mock('@/lib/dbData', () => ({
     });
   
     it('displays assignment cards', () => {
-      const assignment1Title = screen.getByText('Class A: Assignment 1');
-      const assignment2Title = screen.getByText('Class B: Assignment 2');
-      expect(assignment1Title).toBeInTheDocument();
-      expect(assignment2Title).toBeInTheDocument();
+      expect(screen.getByText('Assignment 1')).toBeInTheDocument();
+      expect(screen.getByText('Description 1')).toBeInTheDocument();
+      expect(screen.getByText('Assignment 2')).toBeInTheDocument();
+      expect(screen.getByText('Description 2')).toBeInTheDocument();
     });
   
     // it('allows switching between document and list view', () => {
@@ -133,8 +133,10 @@ jest.mock('@/lib/dbData', () => ({
   
     it('searches assignments by title or class name', () => {
       fireEvent.change(screen.getByPlaceholderText('Search...'), { target: { value: 'Assignment 1' } });
-      expect(screen.getByText('Class A: Assignment 1')).toBeInTheDocument();
-      expect(screen.queryByText('Class B: Assignment 2')).not.toBeInTheDocument();
+      expect(screen.getByText('Assignment 1')).toBeInTheDocument();
+      expect(screen.getByText('Description 1')).toBeInTheDocument();
+      expect(screen.queryByText('Assignment 2')).not.toBeInTheDocument();
+      expect(screen.queryByText('Assignment 2')).not.toBeInTheDocument();
     });
   
     // it('navigates to assignment details when "Open" link is clicked', async () => {

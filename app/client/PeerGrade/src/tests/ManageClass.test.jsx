@@ -7,6 +7,7 @@ import configureStore from 'redux-mock-store';
 
 describe('ManageClass component', () => {
   const mockStore = configureStore([]);
+  
 
   test('should render ManageClass component for instructor', () => {
     const initialState = {

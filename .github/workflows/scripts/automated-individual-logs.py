@@ -1,8 +1,17 @@
-from github import Github, Project
 from datetime import datetime, timedelta
 from pytz import timezone
 import os
 import requests
+
+# Function to remove milliseconds from the time string
+def remove_milliseconds(time_string):
+    if '.' in time_string:
+        return time_string.split('.')[0] + 'Z'
+    return time_string
+
+# Function to parse time without milliseconds
+def parse_time(time_string):
+    return datetime.strptime(remove_milliseconds(time_string), '%Y-%m-%dT%H:%M:%SZ')
 
 # PAT for the automated-log-workflow
 g = Github(os.getenv('AUTOMATED_LOG_TOKEN'))
@@ -10,7 +19,7 @@ g = Github(os.getenv('AUTOMATED_LOG_TOKEN'))
 api_key = os.getenv('CLOCKIFY_API_KEY')
 # Repo for the workflow
 repo = g.get_repo("UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app")
-# Timezone for the log ceration
+# Timezone for the log creation
 tz = timezone('America/Vancouver')
 # Url for the clockify api
 base_url = 'https://api.clockify.me/api/v1'
@@ -86,15 +95,15 @@ for name, user_info in users.items():
         for time_entry in time_entries:
             description = time_entry['description']
             # Convert the start and end times to the UTM-7, make it timezone aware
-            start_time = datetime.strptime(time_entry['timeInterval']['start'], '%Y-%m-%dT%H:%M:%SZ')
+            start_time = parse_time(time_entry['timeInterval']['start'])
             start_time = start_time.replace(tzinfo=timezone('UTC')).astimezone(tz)
             # If the time entry is still ongoing, we consider its duration as 0 for the total duration calculation
             if time_entry['timeInterval']['end']:
-                end_time = datetime.strptime(time_entry['timeInterval']['end'], '%Y-%m-%dT%H:%M:%SZ')
+                end_time = parse_time(time_entry['timeInterval']['end'])
                 end_time = end_time.replace(tzinfo=timezone('UTC')).astimezone(tz)
                 duration = (end_time - start_time).total_seconds() / 3600  # Convert duration to hours
             else:
-                end_time = "Ongoing"; 
+                end_time = "Ongoing"
                 duration = 0  # If the time entry is still ongoing, we consider its duration as 0 for the total duration calculation
 
             # If the start time is within the date range, add the time entry to the dictionary
@@ -176,5 +185,3 @@ for name, user_info in users.items():
 
         # Append the old content to the new content in order to new logs on top
         f.write(old_content)
-
- 

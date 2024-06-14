@@ -17,13 +17,13 @@ const LoginCard = ({ onSwitchToRegister }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Password validation regex: 8 characters, 1 uppercase, 1 lowercase, 1 special character
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    // // Password validation regex: 8 characters, 1 uppercase, 1 lowercase, 1 special character
+    // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-    if (!passwordRegex.test(password)) {
-      setError('Password must be at least 8 characters long, with at least one uppercase letter, one lowercase letter, one number, and one special character.');
-      return;
-    }
+    // if (!passwordRegex.test(password)) {
+    //   setError('Password must be at least 8 characters long, with at least one uppercase letter, one lowercase letter, one number, and one special character.');
+    //   return;
+    // }
 
     // DB PROCESS: Find user by email and password process stored under const user.
     const user = users.find(user => user.email === email && user.password === password);

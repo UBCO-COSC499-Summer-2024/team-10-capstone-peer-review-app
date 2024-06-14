@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import {useSelector} from 'react-redux'
 import { useParams, Link } from 'react-router-dom';
 import { iClass as classesData, assignment as assignmentsData, Categories as categoriesData, user } from '@/lib/dbData';
 import {
@@ -18,6 +19,7 @@ const Class = () => {
   const { classId } = useParams();
   const classItem = classesData.find((item) => item.class_id === parseInt(classId));
   const [currentView, setCurrentView] = useState('home');
+  const currentUser = useSelector((state) => state.user.currentUser); //REDUX: user state, after user state stored in login, it has that user logged info saved
 
   if (!classItem) {
     return <div>Class not found</div>;
@@ -73,7 +75,7 @@ const Class = () => {
   };
 
   return (
-    <div className="w-screen mx-5 p-6">
+    <div className="w-screen main-container mx-5 p-6">
       <div className="flex flex-col gap-4 bg-gray-200 p-4 mb-6 rounded-lg">
         <h1 className="text-3xl font-bold">{classItem.classname}: {user.find(instructor => instructor.user_id === classItem.instructor_id)?.firstname + ' ' + user.find(instructor => instructor.user_id === classItem.instructor_id)?.lastname}</h1>
         <div className="flex rounded-lg">
@@ -103,7 +105,7 @@ const Class = () => {
           {renderContent()}
         </div>
         <div className="space-y-6">
-          {currentView!='assignmentCreation' &&
+          {(currentUser.type === 'instructor' || currentUser.type === 'admin') && currentView!='assignmentCreation' &&
             <Button variant="outline" onClick={() => setCurrentView('assignmentCreation')} className="w-full bg-white">
               Create Assignment
             </Button>

@@ -4,13 +4,20 @@ from pytz import timezone
 import os
 import requests
 
+# Function to parse time with optional milliseconds
+def parse_time(time_string):
+    try:
+        return datetime.strptime(time_string, '%Y-%m-%dT%H:%M:%S.%fZ')
+    except ValueError:
+        return datetime.strptime(time_string, '%Y-%m-%dT%H:%M:%SZ')
+
 # PAT for the automated-log-workflow
 g = Github(os.getenv('AUTOMATED_LOG_TOKEN'))
 # Api key for clockify
 api_key = os.getenv('CLOCKIFY_API_KEY')
 # Repo for the workflow
 repo = g.get_repo("UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app")
-# Timezone for the log ceration
+# Timezone for the log creation
 tz = timezone('America/Vancouver')
 # Url for the clockify api
 base_url = 'https://api.clockify.me/api/v1'
@@ -31,14 +38,14 @@ users = {
 
 # Get the current date and time
 now = datetime.now(tz)
-if now.weekday() == 1:  # If today is Tuesday
-    start_date = now - timedelta(days=4)  # Last Thursday
-    end_date = now
-elif now.weekday() == 3:  # If today is Thursday
-    start_date = now - timedelta(days=2)  # Last Tuesday
-    end_date = now 
-else: # throw error if today is not Tuesday or Thursday  
-    raise ValueError('This script should only be run on Tuesdays or Thursdays') 
+# if now.weekday() == 1:  # If today is Tuesday
+#     start_date = now - timedelta(days=4)  # Last Thursday
+#     end_date = now
+# elif now.weekday() == 3:  # If today is Thursday
+start_date = now - timedelta(days=2)  # Last Tuesday
+end_date = now 
+# else: # throw error if today is not Tuesday or Thursday  
+#     raise ValueError('This script should only be run on Tuesdays or Thursdays') 
 
 # Read the cycle count from count-for-cycle.txt
 try:
@@ -86,15 +93,15 @@ for name, user_info in users.items():
         for time_entry in time_entries:
             description = time_entry['description']
             # Convert the start and end times to the UTM-7, make it timezone aware
-            start_time = datetime.strptime(time_entry['timeInterval']['start'], '%Y-%m-%dT%H:%M:%SZ')
+            start_time = parse_time(time_entry['timeInterval']['start'])
             start_time = start_time.replace(tzinfo=timezone('UTC')).astimezone(tz)
             # If the time entry is still ongoing, we consider its duration as 0 for the total duration calculation
             if time_entry['timeInterval']['end']:
-                end_time = datetime.strptime(time_entry['timeInterval']['end'], '%Y-%m-%dT%H:%M:%SZ')
+                end_time = parse_time(time_entry['timeInterval']['end'])
                 end_time = end_time.replace(tzinfo=timezone('UTC')).astimezone(tz)
                 duration = (end_time - start_time).total_seconds() / 3600  # Convert duration to hours
             else:
-                end_time = "Ongoing"; 
+                end_time = "Ongoing"
                 duration = 0  # If the time entry is still ongoing, we consider its duration as 0 for the total duration calculation
 
             # If the start time is within the date range, add the time entry to the dictionary
@@ -154,27 +161,4 @@ for name, user_info in users.items():
         f.write('\n## Completed tasks:\n')
         for issue in closed_issues:
             if issue.pull_request is None:
-                f.write(f'&nbsp; &nbsp; :purple_circle: **Issue-[{issue.number}]({issue.html_url})**: {issue.title}  \n  \n')
-        
-        # Write every open issued (Even from previous cycles)
-        f.write('\n## In-progress tasks:\n')
-        for issue in open_issues:
-            if issue.pull_request is None:
-                f.write(f'&nbsp; &nbsp; :orange_circle: **Issue-[{issue.number}]({issue.html_url})**: {issue.title}  \n  \n')
-        
-        # Template for goals
-        f.write('\n## Recap on goals from last cycle\n')
-        f.write('* \n')
-        f.write('* \n')
-        f.write('* \n')
-        # Template for goals
-        f.write('\n## Goals for next cycle\n')
-        f.write('* \n')
-        f.write('* \n')
-        f.write('* \n')
-        f.write('  \n  \n')
-
-        # Append the old content to the new content in order to new logs on top
-        f.write(old_content)
-
- 
+                f.write(f'&nbsp; &nbsp; :purple_circle: **Issue-[{issue.number}]

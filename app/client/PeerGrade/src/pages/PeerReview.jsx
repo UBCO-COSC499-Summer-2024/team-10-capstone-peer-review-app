@@ -23,7 +23,7 @@ const PeerReview = () => {
     );
 
   return (
-    <div className="w-screen p-6">
+    <div className="main-container w-screen p-6">
       <h1 className="text-2xl font-bold mb-4">Peer Reviews</h1>
 
       <div className="flex justify-end items-center mb-6">
@@ -82,9 +82,9 @@ const PeerReview = () => {
         {filteredAssignments.map(assignment => {
           const className = classesData.find(classItem => classItem.class_id === assignment.class_id)?.classname || 'Unknown Class';
           return (
-            <Card key={assignment.assignment_id} className="w-full p-4 bg-white shadow-md rounded-lg">
-              <CardHeader className="mb-4">
-                <CardTitle className="text-xl font-bold">{className}: {assignment.title}</CardTitle>
+            <Card key={assignment.assignment_id} className={`w-full ${view === 'doc_view'? "": "flex justify-between"} bg-white shadow-md rounded-lg`}>
+              <CardHeader>
+                <CardTitle>{assignment.title}</CardTitle>
                 <CardDescription className="text-gray-500">{assignment.description}</CardDescription>
               </CardHeader>
               <CardContent className="flex flex-col space-y-2">

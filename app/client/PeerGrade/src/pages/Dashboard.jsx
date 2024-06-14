@@ -89,7 +89,7 @@ function Dashboard() {
   const userClasses = currentUser && currentUser.class_id ? classesData.filter(classItem => currentUser.class_id.includes(classItem.class_id)) : [];
 
   return (
-    <div className="py-6 space-y-6">
+    <div className="w-full main-container py-6 space-y-6">
       <h1 className="text-2xl font-bold">Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {userClasses.map((classItem) => (

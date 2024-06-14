@@ -24,7 +24,8 @@ export default function AppNavbar() {
 
   // Filter classes based on user class_ids
   //DB PROCESS userClasses should be a list of classes that are related to the user, userid should be used to find the list of classes and stored in const userClasses. 
-  const userClasses = classesData.filter(classItem => currentUser.class_id.includes(classItem.class_id));
+  const userClasses = classesData.filter(classItem => currentUser.classes.includes(classItem.class_id));
+  console.log(currentUser)
 
   // Filter assignments based on user class_ids and evaluation_type 'peer'
   //DB PROCESS userReviewAssignments should be a list of reviews that are related to the user, user.reviews should be used to find the list of reviews and should be stored in userReviewAssignemnts. 

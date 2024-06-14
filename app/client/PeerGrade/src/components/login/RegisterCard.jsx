@@ -25,12 +25,12 @@ const RegisterCard = ({ onSwitchToLogin }) => {
     e.preventDefault();
 
     // Password validation regex: 8 characters, 1 uppercase, 1 lowercase, 1 special character
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-    if (!passwordRegex.test(password)) {
-      setError('Password must be at least 8 characters long, with at least one uppercase letter, one lowercase letter, one number, and one special character.');
-      return;
-    }
+    // if (!passwordRegex.test(password)) {
+    //   setError('Password must be at least 8 characters long, with at least one uppercase letter, one lowercase letter, one number, and one special character.');
+    //   return;
+    // }
 
     if (password !== confirmPassword) {
       setError('Passwords do not match');
@@ -39,32 +39,53 @@ const RegisterCard = ({ onSwitchToLogin }) => {
       setError('')
     }
 
-    const newUser = { //DB PROCESS new user creation to input into the db
-      user_id: users.length + 1,
-      username: email.split('@')[0], // Example username derived from email
-      password,
+    const createUser = async (newUser) => {
+      try {
+        const response = await fetch('http://localhost:3000/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newUser),
+        });
+    
+        if (!response.ok) {
+          console.error('HTTP error! status: ', response.status);
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+    
+    const newUser = {
+      username: "testuser", 
+      password: password,
+      email: email,
       firstname: firstName,
       lastname: lastName,
-      email,
-      class_id: [], // Empty class ID
-      type: value === "student" || value === "instructor" || value === "admin" ? value : "student"
+      role: value 
     };
 
-    addUser(newUser); //DB PROCESS: Add the user to the database here
+  
+    createUser(newUser); //DB PROCESS: Add the user to the database here
     onSwitchToLogin(); // Switch back to login after registration
   };
 
   const dropdown_options = [
     {
-      value: "student",
+      value: "STUDENT",
       label: "Student",
     },
     {
-      value: "instructor",
+      value: "INSTRUCTOR",
       label: "Instructor",
     },
     {
-      value: "admin",
+      value: "ADMIN",
       label: "Admin",
     }
   ];

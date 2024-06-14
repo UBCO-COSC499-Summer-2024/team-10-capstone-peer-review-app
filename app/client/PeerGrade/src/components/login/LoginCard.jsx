@@ -14,8 +14,6 @@ const LoginCard = ({ onSwitchToRegister }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
 
     // // Password validation regex: 8 characters, 1 uppercase, 1 lowercase, 1 special character
     // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -25,18 +23,36 @@ const LoginCard = ({ onSwitchToRegister }) => {
     //   return;
     // }
 
-    // DB PROCESS: Find user by email and password process stored under const user.
-    const user = users.find(user => user.email === email && user.password === password);
-
-    if (user) {
-      console.log(`Logged in as: ${user.type}`);
-      setError('');
-      dispatch(setCurrentUser(user)); // REDUX: sets current user to state with redux dispatch call 
-      navigate('/dashboard');
-    } else {
-      setError('Invalid email or password');
-    }
-  };
+    const handleSubmit = (e) => {
+      e.preventDefault();
+    
+      // Create a fetch request to the /login endpoint
+      fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.message) {
+          setError(data.message);
+        } else {
+          console.log(`Logged in as: ${data.role}`);
+          setError('');
+          dispatch(setCurrentUser(data)); // REDUX: sets current user to state with redux dispatch call 
+          navigate('/dashboard');
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        setError('An error occurred while logging in');
+      });
+    };
 
   return (
     <Card className="w-full max-w-md p-8 space-y-8 bg-white shadow-md rounded-lg">

@@ -65,6 +65,66 @@ pool.connect((err, client, done) => {
   }
 });
 
+const login = `<form action="/login" method="POST">
+            <div>
+              <label for="email">Email</label>
+              <input type="email" name="username">
+            </div>
+            <div>
+              <label for="password">Password</label>
+              <input type="password" name="password">
+            </div>
+            <button type="submit">Login</button>
+          </form>`;
+
+const register = `<form action="/register" method="POST">
+
+            <div>
+              <label for="username">Username</label>
+              <input type="text" name="username">
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input type="email" name="email">
+            </div>
+            <div>
+              <label for="password">Password</label>
+              <input type="password" name="password">
+            </div>
+
+            <div>
+              <label for="firstname">First name:</label>
+              <input type="text" name="firstname">
+            </div>
+
+            <div>
+              <label for="lastname">Last name:</label>
+              <input type="text" name="lastname">
+            </div>
+
+            <div>
+              <label for="user_type">Role:</label><br>
+              <select name="user_type">
+                  <option value="student">Student</option>
+                  <option value="instructor">Instructor</option>
+                  <option value="admin">Admin</option>
+              </select><br>
+            </div>
+
+            <button type="submit">Register</button>
+          </form>`;
+
+const auth = `<h1>Hello!</h1>
+      <p>Welcome to Auth page.</p>
+      <hr>
+      <a href="/logout" role="button">Log Out</a>`;
+
+const home = `<h1">Home</h1>
+    <p>Please login</p>
+    <hr>
+    <a href="/register" role="button">Register</a>
+    <a href="/login" role="button">Login</a>`;
+
 async function checkUserByEmail(email) {
   const user = await prisma.user.findFirst({
     where: {
@@ -75,21 +135,21 @@ async function checkUserByEmail(email) {
 }
 
 app.get("/", (req, res) => {
-  res.render("home.ejs");
+  res.send(home);
 });
 
 app.get("/login", (req, res) => {
-  res.render("login.ejs");
+  res.send(login);
 });
 
 app.get("/register", (req, res) => {
-  res.render("register.ejs");
+  res.send(register);
 });
 
 app.get("/home", (req, res) => {
   // console.log(req.user);
   if (req.isAuthenticated()) {
-    res.render("secrets.ejs");
+    res.send(auth);
   } else { 
     res.redirect("/login");
   }

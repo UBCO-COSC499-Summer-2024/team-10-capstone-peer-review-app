@@ -64,14 +64,14 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* I feel like we made quite a bit of progress on the UI front! I still need to integrate quite a bit of it with the backend though.
+* Testing took a bit to initially setup but adding new test cases (especially those that contain cases for functionality we haven't implemented yet) should be relatively easy.
+* Overall, I'm happy with the amount of time & work I did for the project this cycle.
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Get Drone CI & automated testing working (on Drone CI if it's a thing since GitHub Actions is limited)
+* Work on tests to be more comprehensive and include future functionality testing before it's too late.
+* Work more on making the front-end elements easily work with the backend and on new features!
   
   
 

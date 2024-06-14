@@ -2,3 +2,4 @@ node_modules/
 /app/database/
 *.env 
 *.DS_Store
+*.vite

@@ -124,12 +124,14 @@
 ## Recap on goals from last cycle
 * completed login and authentication for account authentication with Passport.js and Bcrypt.js
 * uses Prisma ORM to establish DB connections
-* Refactor DB to make it more clean and effective 
+* Refactor DB to make it more clean and effective
+* Overall DB is going good, needs a little additions here and there but overall speed is good
 
 ## Goals for next cycle
 * Testing DB
-* integrating DB with frontend
+* complete integrating DB with frontend
 * testing routes and Node.js functionalities
+* Possibly adding new DB queries to make it a wholesome app
 **Week 2 ( June 2 to June 8)**
 
 ![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/81191818/b2afe7db-76bf-4db0-8153-b893720f2dd0)

@@ -30,7 +30,7 @@ users = {
 }
 
 # Get the current date and time
-# now = datetime.now(tz)
+now = datetime.now(tz)
 # if now.weekday() == 1:  # If today is Tuesday
 #     start_date = now - timedelta(days=4)  # Last Thursday
 #     end_date = now

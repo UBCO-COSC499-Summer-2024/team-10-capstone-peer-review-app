@@ -4,7 +4,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import { user as users, addUser } from "@/lib/dbData"; //DB call user, IGNORE: addUser (mock data call)
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
-import { user as users, addUser } from "@/lib/dbData";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
 import { ChevronDown as ChevronDownIcon, ChevronUp as ChevronUpIcon, Check as CheckIcon } from "lucide-react";

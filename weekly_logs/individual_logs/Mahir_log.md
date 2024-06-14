@@ -1,5 +1,123 @@
 
-# Mahir's Log for Cycle 3
+# Mahir's Log for Cycle 5
+
+
+## Wednesday, June 12, 2024, 01:07 AM - Friday, June 14, 2024, 01:07 AM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[108](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/108)**: Redux - More slices   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[102](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/102)**: UI code cleanup  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[78](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/78)**: Implement Redux to facilitate session states  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[70](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/70)**: Instructor Assignment Creation UI  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[69](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/69)**: Instructor Class Management UI  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[66](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/66)**: Fix UI Design bugs  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[65](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/65)**: Differentiated User Login (mock data)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **#108 Redux - More slices** *(Total duration: 0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, June 14, 2024, 12:52 AM - Ongoing *(Ongoing)*  
+  
+&nbsp; &nbsp; :watch: **MVP Mini Presentation outline** *(Total duration: 0.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, June 14, 2024, 12:01 AM - Friday, June 14, 2024, 12:07 AM *(0.1 hours)*  
+  
+&nbsp; &nbsp; :watch: **102/ more cleanup/added redux changes** *(Total duration: 2.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 13, 2024, 08:46 PM - Thursday, June 13, 2024, 10:47 PM *(2.0 hours)*  
+  
+&nbsp; &nbsp; :watch: **#102/ #69/ UI code cleanup + Class management UI** *(Total duration: 1.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 13, 2024, 03:36 PM - Thursday, June 13, 2024, 05:08 PM *(1.5 hours)*  
+  
+&nbsp; &nbsp; :watch: **#66/updating UI designs + editing logs** *(Total duration: 2.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 12, 2024, 03:51 AM - Wednesday, June 12, 2024, 05:50 AM *(2.0 hours)*  
+  
+&nbsp; &nbsp; :watch: **#78/Redux Implementation** *(Total duration: 1.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 12, 2024, 02:30 AM - Wednesday, June 12, 2024, 02:54 AM *(0.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 12, 2024, 01:15 AM - Wednesday, June 12, 2024, 02:24 AM *(1.2 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[106](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/106)**: Assignment Create User Differentiated + Design cleanup  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[104](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/104)**: Password Regex for Login/Register + UI code comments/cleanup  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[103](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/103)**: Instructor Class Management UI  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[106](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/106)**: Assignment Create User Differentiated + Design cleanup  
+  
+&nbsp; &nbsp; :arrow_heading_up: **PR-[104](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/104)**: Password Regex for Login/Register + UI code comments/cleanup  
+  
+&nbsp; &nbsp; :arrow_heading_up: **PR-[103](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/103)**: Instructor Class Management UI  
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[102](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/102)**: UI code cleanup  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[78](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/78)**: Implement Redux to facilitate session states  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[70](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/70)**: Instructor Assignment Creation UI  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[69](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/69)**: Instructor Class Management UI  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[66](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/66)**: Fix UI Design bugs  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[65](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/65)**: Differentiated User Login (mock data)  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[108](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/108)**: Redux - More slices   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[84](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/84)**: Post MVP Milestone Database Refactor With TA or Prof  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[16](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/16)**: Create Automated Weekly Log Workflow   
+  
+
+## Recap on goals from last cycle
+* Redux was implemented however, since the DB linking has not been completed, I decided not to go extensive with more redux development
+* I was able to fix many of the major design bugs and implemented minor design upgrades throughout the entire UI
+* Prisma linking to the UI has been a nightmare. Josh and I spent the entire night until class presentation time to get this running. Our login authentication worked but we still have a lot more linking logic to get the other services up and running. 
+
+## Goals for next cycle
+* Finish linking the database to the UI
+* Create more redux slices/states for easier data retrieval (on the client side) 
+* Implement assignment creation, class creation, and peer-review features.
+* Catch up on documentation on all components and middleware implemented.
+* I will focus on code organization and design upgrades if I have more time than expected.
+
+## Reflection: 
+* The last 2 days we had to deal with a mountain load of bugs. Prisma ORM was more challenging to deal with than we expected however Josh put in countless hours to debug the backend problems and after that, both Josh and I spent the entire night integrating the UI with the backend, and it is safe to say that we had a roller coaster of a night... I'm super happy because, with an hour left before our presentations, we finally got the major functions up and running (for the most part). Josh and I have agreed to get the rest of the API fetch integrations up and running within the next few days.
+
+
+# Mahir's Log for Cycle 
 
 
 ## Friday, June 07, 2024, 06:53 PM - Tuesday, June 11, 2024, 06:53 PM

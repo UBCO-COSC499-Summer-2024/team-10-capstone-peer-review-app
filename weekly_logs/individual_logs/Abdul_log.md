@@ -1,4 +1,80 @@
 
+# Abdul's Log for Cycle 4
+
+
+## Wednesday, June 12, 2024, 01:07 AM - Friday, June 14, 2024, 01:07 AM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[96](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/96)**: Add tests to Pages  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[94](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/94)**: Add tests to components (that are not shadcn UI elements!)  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[71](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/71)**: Add PDF Viewing to the Assignment Page  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[70](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/70)**: Instructor Assignment Creation UI  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Working on Tests for the Frontend** *(Total duration: 9.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 13, 2024, 09:30 PM - Friday, June 14, 2024, 12:18 AM *(2.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 13, 2024, 04:36 PM - Thursday, June 13, 2024, 09:21 PM *(4.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 12, 2024, 09:00 PM - Wednesday, June 12, 2024, 10:52 PM *(1.9 hours)*  
+  
+&nbsp; &nbsp; :watch: **Adding Debug options to Register Card** *(Total duration: 0.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 12, 2024, 07:13 PM - Wednesday, June 12, 2024, 07:38 PM *(0.4 hours)*  
+  
+&nbsp; &nbsp; :watch: **Adding Instructor Add Assignment UI** *(Total duration: 2.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 12, 2024, 03:23 PM - Wednesday, June 12, 2024, 04:24 PM *(1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 12, 2024, 01:52 AM - Wednesday, June 12, 2024, 02:58 AM *(1.1 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[107](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/107)**: Add tests to the code (excluding two)  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[100](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/100)**: Add dropdown to choose user type when registering (for debug only)  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[100](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/100)**: Add dropdown to choose user type when registering (for debug only)  
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[71](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/71)**: Add PDF Viewing to the Assignment Page  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[70](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/70)**: Instructor Assignment Creation UI  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[96](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/96)**: Add tests to Pages  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[94](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/94)**: Add tests to components (that are not shadcn UI elements!)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[84](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/84)**: Post MVP Milestone Database Refactor With TA or Prof  
+  
+
+## Recap on goals from last cycle
+* I feel like we made quite a bit of progress on the UI front! I still need to integrate quite a bit of it with the backend though.
+* Testing took a bit to initially setup but adding new test cases (especially those that contain cases for functionality we haven't implemented yet) should be relatively easy.
+* Overall, I'm happy with the amount of time & work I did for the project this cycle.
+
+## Goals for next cycle
+* Get Drone CI & automated testing working (on Drone CI if it's a thing since GitHub Actions is limited)
+* Work on tests to be more comprehensive and include future functionality testing before it's too late.
+* Work more on making the front-end elements easily work with the backend and on new features!
+  
+  
+
 # Abdul's Log for Cycle 3
 
 

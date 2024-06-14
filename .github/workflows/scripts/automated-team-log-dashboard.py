@@ -3,8 +3,6 @@ from datetime import datetime, timedelta
 from pytz import timezone
 import os
 import requests
-import matplotlib.pyplot as plt
-import pandas as pd
 
 # PAT for the automated-log-workflow
 g = Github(os.getenv('AUTOMATED_LOG_TOKEN'))
@@ -13,14 +11,14 @@ tz = timezone('America/Vancouver')
 
 # Get the current date and time
 now = datetime.now(tz)
-if now.weekday() == 1:  # If today is Tuesday
-    start_date = now - timedelta(days=4)  # Last Thursday
-    end_date = now
-elif now.weekday() == 3:  # If today is Thursday 
-    start_date = now - timedelta(days=2)  # Last Tuesday
-    end_date = now 
-else: # throw error if today is not Tuesday or Thursday  
-    raise ValueError('This script should only be run on Tuesdays or Thursdays') 
+# if now.weekday() == 1:  # If today is Tuesday
+#     start_date = now - timedelta(days=4)  # Last Thursday
+#     end_date = now
+# elif now.weekday() == 3:  # If today is Thursday 
+start_date = now - timedelta(days=2)  # Last Tuesday
+end_date = now 
+# else: # throw error if today is not Tuesday or Thursday  
+#     raise ValueError('This script should only be run on Tuesdays or Thursdays') 
 
 # Get cycle number
 try:

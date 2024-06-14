@@ -1,4 +1,108 @@
 
+# Josh's Log for Cycle 4
+
+
+## Wednesday, June 12, 2024, 01:07 AM - Friday, June 14, 2024, 01:07 AM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[105](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/105)**: Create class api endpoint w/ associated tests   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature, type: api 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[101](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/101)**: psql docker err FATAL: role "root" does not exist, database "root" does not exist  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[98](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/98)**: DB password matching  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: database 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[97](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/97)**: DB tables abstraction  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: database 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[93](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/93)**: refactor automated team logs bc aint no way u making it that hard again  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug, type: refactor 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **login / register prisma refactor** *(Total duration: 1.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 13, 2024, 10:49 PM - Friday, June 14, 2024, 12:03 AM *(1.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **Debuggin Prisma with Docker** *(Total duration: 4.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 13, 2024, 06:54 PM - Thursday, June 13, 2024, 08:31 PM *(1.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 13, 2024, 03:21 PM - Thursday, June 13, 2024, 03:21 PM *(0.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 13, 2024, 03:21 PM - Thursday, June 13, 2024, 04:14 PM *(0.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 13, 2024, 08:25 AM - Thursday, June 13, 2024, 10:50 AM *(2.4 hours)*  
+  
+&nbsp; &nbsp; :watch: **Class Creation Api endpoint** *(Total duration: 1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 13, 2024, 05:54 PM - Thursday, June 13, 2024, 06:54 PM *(1.0 hours)*  
+  
+&nbsp; &nbsp; :watch: **Setting up basic Api endpoints** *(Total duration: 1.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 12, 2024, 05:13 PM - Wednesday, June 12, 2024, 06:41 PM *(1.5 hours)*  
+  
+&nbsp; &nbsp; :watch: **Prisma Database Refactor** *(Total duration: 0.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 12, 2024, 04:49 PM - Wednesday, June 12, 2024, 05:13 PM *(0.4 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[99](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/99)**: made auto teamlog/dashboard gen much easier...  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[99](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/99)**: made auto teamlog/dashboard gen much easier...  
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[93](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/93)**: refactor automated team logs bc aint no way u making it that hard again  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[105](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/105)**: Create class api endpoint w/ associated tests   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[101](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/101)**: psql docker err FATAL: role "root" does not exist, database "root" does not exist  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[98](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/98)**: DB password matching  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[97](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/97)**: DB tables abstraction  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[85](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/85)**: Refactor Disc PR notifications to accommodate ready for review from draft PRs, not necessarily assigning   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[84](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/84)**: Post MVP Milestone Database Refactor With TA or Prof  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[67](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/67)**: Prisma / Dotenv Setup, Prisma CRUD endpoints   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[51](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/51)**: DatabaseCRUDops  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[48](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/48)**: Authorization Service: Login / Role based access api endpoints  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[16](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/16)**: Create Automated Weekly Log Workflow   
+  
+
+## Recap on goals from last cycle
+* Last cycle I was hoping to get most of the basic api-endpoints setup along with 
+some login / register and authentication features running, although I was able to get this set up, it breaks with the UI and we need to spend this weekend sifting through it to get everything working. On the bright side, express essions and cookies work and user data can be stored in cookies
+* I wanted to create endpoints for class creation, assignment creation, rubric creation / middleware for role based access however wasn't able to get to it due to issues with setting up
+Prisma in a docker-network
+* Going forward I need to look into how to set up prisma in a docker network, and how to reference other containers on the network, look into why some containers can't be accessed by their container_name
+
+## Goals for next cycle
+* Refactor UI and integrate with api so that after a user logs into the dashboard it doesn't break
+* Refactor Docker network to work with Prisma
+* Create basic endpoints for instructor operations i.e. class creation, assignment creation, read all assignments etc. 
+* Create some basic role-based access middle-ware
+  
+
 # Josh's Log for Cycle 3
 
 

@@ -16,3 +16,7 @@
   -webkit-appearance: none;
   margin: 0;
 } 
+
+svg {
+    flex-shrink: 0;
+}

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 import { Textarea } from "@/components/ui/textarea";
+import PDFViewer from '@/components/assign/PDFViewer';
 
 const Assignment = () => {
   const { assignmentId } = useParams();
@@ -30,7 +31,7 @@ const Assignment = () => {
       <div className="flex rounded-lg mb-6">
         <Button onClick={handleBackClick}>←</Button>
         <div className="flex justify-between items-center ml-4">
-          <Menubar>
+          <Menubar className='bg-transparent'>
             <MenubarMenu>
               <MenubarTrigger className="border border-gray-600 rounded-lg hover:bg-gray-300">HOME</MenubarTrigger>
             </MenubarMenu>
@@ -54,7 +55,7 @@ const Assignment = () => {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         <div className="lg:col-span-3 bg-gray-100 p-4 rounded">
-          <Card>
+          <Card className="mb-8">
             <CardHeader>
               <CardTitle className="text-lg font-bold">{assignment.title}</CardTitle>
             </CardHeader>
@@ -70,6 +71,9 @@ const Assignment = () => {
               <p className="mb-2">{assignment.description}</p>
             </CardContent>
           </Card>
+          <div className='white rounded-md flex justify-center items-center'>
+            <PDFViewer url="https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK" scale="1"/>
+          </div>
         </div>
         <div className="space-y-6">
           <Card className="bg-white p-4 shadow-md">

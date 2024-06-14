@@ -3,14 +3,19 @@ import { assignment as assignmentsData, iClass as classesData } from '@/lib/dbDa
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import {
+	DropdownMenu,
+	DropdownMenuTrigger,
+	DropdownMenuContent,
+	DropdownMenuItem
+} from "@/components/ui/dropdown-menu";
 import { Search } from "lucide-react";
 import { Link } from 'react-router-dom';
 
 const PeerReview = () => {
-  const [view, setView] = useState('doc_view');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterClass, setFilterClass] = useState('');
+	const [view, setView] = useState("doc_view");
+	const [searchTerm, setSearchTerm] = useState("");
+	const [filterClass, setFilterClass] = useState("");
 
   const filteredAssignments = assignmentsData
     .filter(assignment => assignment.evaluation_type === 'peer')

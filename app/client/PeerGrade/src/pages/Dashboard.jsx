@@ -8,9 +8,9 @@ import { Button } from "@/components/ui/button";
 import { ArrowUp, ArrowDown } from 'lucide-react';
 
 function AssignmentTable({ title, forReview }) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [sortOrder, setSortOrder] = useState('asc');
-  const itemsPerPage = 5;
+	const [currentPage, setCurrentPage] = useState(1);
+	const [sortOrder, setSortOrder] = useState("asc");
+	const itemsPerPage = 5;
 
   // Filter and sort assignments based on review status
   // DB PROCESS, store user relaated reviews to this variable, filtered is referreing to assignemnts that the user has assigned as a review to do
@@ -27,9 +27,9 @@ function AssignmentTable({ title, forReview }) {
   // DB PROCESS, store user related assignments to this variable.
   const currentAssignments = filteredAssignments.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-  const handleSort = () => {
-    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-  };
+	const handleSort = () => {
+		setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+	};
 
   return (
     <div className="w-full bg-white shadow-md rounded-lg">

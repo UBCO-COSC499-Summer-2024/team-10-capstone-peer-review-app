@@ -13,15 +13,15 @@ const Assignment = () => {
   const assignment = assignmentsData.find((item) => item.assignment_id === parseInt(assignmentId));
   const navigate = useNavigate();
 
-  const [isSubmitCardVisible, setSubmitCardVisible] = useState(false);
+	const [isSubmitCardVisible, setSubmitCardVisible] = useState(false);
 
-  if (!assignment) {
-    return <div>Assignment not found</div>;
-  }
+	if (!assignment) {
+		return <div>Assignment not found</div>;
+	}
 
-  const handleBackClick = () => {
-    navigate(-1); // This will navigate the user to the previous page
-  };
+	const handleBackClick = () => {
+		navigate(-1); // This will navigate the user to the previous page
+	};
 
   // Filter submissions for the current assignment
   const assignmentSubmissions = submissionsData.filter(submission => submission.assignment_id === assignment.assignment_id);

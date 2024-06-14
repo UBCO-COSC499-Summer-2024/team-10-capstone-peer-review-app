@@ -1,5 +1,6 @@
 // For more information on jsconfig.json,
 // visit https://code.visualstudio.com/docs/languages/jsconfig
+
 /* 
 THIS FILE SHOULD NOT BE PUSHED TO PROD 
 jsconig.json is used to unify js config for the dev process on vs-code.   
@@ -8,18 +9,15 @@ This file is often shared among team members to ensure consistent
 behavior of the JavaScript language service across different editors and IDEs, such as Visual Studio Code. 
 */
 {
-    "compilerOptions": {
-      "baseUrl": ".",
-      "paths": {
-        "@/*": ["src/*"], 
-      }, 
-      "target": "ESNext", 
-      "module": "ESNext", 
-      "jsx": "react", 
-      "checkJs": false, 
-    }, 
-    "include": [
-      "src/**/*"
+  "compilerOptions": {
+    "baseUrl": ".",
+    // "paths": {
+    //   "@/*": ["src/*"], 
+    // }, 
+    "target": "ESNext", 
+    "module": "ESNext", 
+  }, 
+  "include": [
+    "src/**/*"
   ]
-  }
-
+}

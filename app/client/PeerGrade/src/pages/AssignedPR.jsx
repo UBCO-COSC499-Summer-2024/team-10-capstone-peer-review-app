@@ -27,9 +27,9 @@ const AssignedPR = () => {
     setMaxHeight(newMaxHeights);
   }, [contentRefs.current]);
 
-  if (!assignment) {
-    return <div>Assignment not found</div>;
-  }
+	if (!assignment) {
+		return <div>Assignment not found</div>;
+	}
 
   const classItem = classesData.find(classItem => classItem.class_id === assignment.class_id);
   const instructor = usersData.find(user => user.user_id === classItem.instructor_id);

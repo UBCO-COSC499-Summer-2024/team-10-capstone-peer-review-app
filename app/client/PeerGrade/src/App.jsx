@@ -13,19 +13,19 @@ import ManageClass from './pages/ManageClass';
 import { Toaster } from "@/components/ui/toaster";
 
 function App() {
-  const [message, setMessage] = useState('');
+	const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    fetch('/api')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => setMessage(data.message))
-      .catch(error => console.error('Fetch error:', error));
-  }, []);
+	useEffect(() => {
+		fetch("/api")
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Network response was not ok");
+				}
+				return response.json();
+			})
+			.then((data) => setMessage(data.message))
+			.catch((error) => console.error("Fetch error:", error));
+	}, []);
 
   function MainLayout({ children }) {
     const location = useLocation();
@@ -49,7 +49,6 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/class/:classId" element={<Class />} />
-          <Route path="/class/:classId" element={<Class />} />
           <Route path="/class/createAssignment" element={<AssignmentCreation />} />
           <Route path="/manageClass" element={<ManageClass />} />
           <Route path="/assignment/:assignmentId" element={<Assignment />} />
@@ -61,6 +60,5 @@ function App() {
     </Router>
   );
 }
-
 
 export default App;

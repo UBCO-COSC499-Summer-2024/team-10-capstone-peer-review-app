@@ -97,52 +97,52 @@ const Settings = () => {
           </Card>
         </TabsContent>
 
-        <TabsContent value="account">
-          <Card className="p-4">
-            <CardHeader>
-              <CardTitle>Account Settings</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>Account settings content goes here.</p>
-            </CardContent>
-          </Card>
-        </TabsContent>
+				<TabsContent value="account">
+					<Card className="p-4">
+						<CardHeader>
+							<CardTitle>Account Settings</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<p>Account settings content goes here.</p>
+						</CardContent>
+					</Card>
+				</TabsContent>
 
-        <TabsContent value="notifications">
-          <Card className="p-4">
-            <CardHeader>
-              <CardTitle>Notification Settings</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>Notification settings content goes here.</p>
-            </CardContent>
-          </Card>
-        </TabsContent>
+				<TabsContent value="notifications">
+					<Card className="p-4">
+						<CardHeader>
+							<CardTitle>Notification Settings</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<p>Notification settings content goes here.</p>
+						</CardContent>
+					</Card>
+				</TabsContent>
 
-        <TabsContent value="privacy">
-          <Card className="p-4">
-            <CardHeader>
-              <CardTitle>Privacy Settings</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>Privacy settings content goes here.</p>
-            </CardContent>
-          </Card>
-        </TabsContent>
+				<TabsContent value="privacy">
+					<Card className="p-4">
+						<CardHeader>
+							<CardTitle>Privacy Settings</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<p>Privacy settings content goes here.</p>
+						</CardContent>
+					</Card>
+				</TabsContent>
 
-        <TabsContent value="integrations">
-          <Card className="p-4">
-            <CardHeader>
-              <CardTitle>Integrations</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>Integrations content goes here.</p>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
-    </div>
-  );
+				<TabsContent value="integrations">
+					<Card className="p-4">
+						<CardHeader>
+							<CardTitle>Integrations</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<p>Integrations content goes here.</p>
+						</CardContent>
+					</Card>
+				</TabsContent>
+			</Tabs>
+		</div>
+	);
 };
 
 export default Settings;

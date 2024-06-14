@@ -21,9 +21,9 @@ const Class = () => {
   const [currentView, setCurrentView] = useState('home');
   const currentUser = useSelector((state) => state.user.currentUser); //REDUX: user state, after user state stored in login, it has that user logged info saved
 
-  if (!classItem) {
-    return <div>Class not found</div>;
-  }
+	if (!classItem) {
+		return <div>Class not found</div>;
+	}
 
   const classAssignments = assignmentsData.filter(assignment => assignment.class_id === classItem.class_id);
   const categories = categoriesData.filter(category => classAssignments.some(assignment => assignment.assignment_id === category.rubric_id));

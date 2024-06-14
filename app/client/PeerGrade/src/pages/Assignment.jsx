@@ -27,7 +27,7 @@ const Assignment = () => {
   const assignmentSubmissions = submissionsData.filter(submission => submission.assignment_id === assignment.assignment_id);
 
   return (
-    <div className="w-screen mx-5 p-6">
+    <div className="w-screen main-container mx-5 p-6">
       <div className="flex rounded-lg mb-6">
         <Button onClick={handleBackClick}>←</Button>
         <div className="flex justify-between items-center ml-4">

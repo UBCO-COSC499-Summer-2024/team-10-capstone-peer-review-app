@@ -44,7 +44,7 @@ const AssignedPR = () => {
   };
 
   return (
-    <div className="w-screen mx-5 p-6">
+    <div className="w-screen main-container mx-5 p-6">
       <div className="flex items-center space-x-4 mb-4">
         <Link to="/peer-review" className="text-xl">
           <ChevronLeft className="h-6 w-6" />

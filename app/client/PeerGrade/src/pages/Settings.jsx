@@ -27,11 +27,11 @@ const Settings = () => {
     <div className="w-screen mx-5 p-6">
       <Tabs value={selectedTab} onValueChange={setSelectedTab} className="max-w-5xl mx-auto">
         <TabsList className="flex justify-between mb-6">
-          <TabsTrigger value="profile"><Button variant="outline">Profile</Button></TabsTrigger>
-          <TabsTrigger value="account"><Button variant="outline">Account</Button></TabsTrigger>
-          <TabsTrigger value="notifications"><Button variant="outline">Notifications</Button></TabsTrigger>
-          <TabsTrigger value="privacy"><Button variant="outline">Privacy</Button></TabsTrigger>
-          <TabsTrigger value="integrations"><Button variant="outline">Integrations</Button></TabsTrigger>
+          <TabsTrigger value="profile">Profile</TabsTrigger>
+          <TabsTrigger value="account">Account</TabsTrigger>
+          <TabsTrigger value="notifications">Notifications</TabsTrigger>
+          <TabsTrigger value="privacy">Privacy</TabsTrigger>
+          <TabsTrigger value="integrations">Integrations</TabsTrigger>
         </TabsList>
 
         <TabsContent value="profile">
@@ -45,8 +45,9 @@ const Settings = () => {
               <h2 className="text-xl font-semibold mb-4">Profile</h2>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Username</label>
+                  <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
                   <Input 
+                    id="username"
                     type="text" 
                     value={username} 
                     onChange={(e) => setUsername(e.target.value)} 
@@ -54,8 +55,9 @@ const Settings = () => {
                   <p className="text-xs text-gray-500 mt-1">This is your public display name. It can be your real name or a pseudonym. You can only change this once every 30 days.</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Email</label>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
                   <Input 
+                    id="email"
                     type="email" 
                     value={email} 
                     onChange={(e) => setEmail(e.target.value)} 
@@ -63,8 +65,9 @@ const Settings = () => {
                   <p className="text-xs text-gray-500 mt-1">You can manage verified email addresses in your email settings.</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Bio</label>
+                  <label htmlFor="bio" className="block text-sm font-medium text-gray-700">Bio</label>
                   <Textarea 
+                    id="bio"
                     value={bio} 
                     onChange={(e) => setBio(e.target.value)} 
                     placeholder="I own a computer." 
@@ -72,21 +75,18 @@ const Settings = () => {
                   <p className="text-xs text-gray-500 mt-1">You can @mention other users and organizations to link to them.</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">URLs</label>
-                  {urls.map((url, index) => (
-                    <Input
-                      key={index}
-                      type="url"
-                      value={url}
-                      onChange={(e) => {
-                        const newUrls = [...urls];
-                        newUrls[index] = e.target.value;
-                        setUrls(newUrls);
-                      }}
-                      placeholder={`https://example${index === 0 ? '' : index}.com`}
-                      className="mb-2"
-                    />
-                  ))}
+                  <label htmlFor="url" className="block text-sm font-medium text-gray-700">URL</label>
+                  <Input
+                    id="url"
+                    type="url"
+                    value={urls[0]}
+                    onChange={(e) => {
+                      const newUrls = [e.target.value];
+                      setUrls(newUrls);
+                    }}
+                    placeholder="https://example.com"
+                    className="mb-2"
+                  />
                   <p className="text-xs text-gray-500 mt-1">Add links to your website, blog, or social media profiles.</p>
                 </div>
                 <Button onClick={handleSaveProfile} className="bg-[#111827] text-white">
@@ -133,7 +133,7 @@ const Settings = () => {
         <TabsContent value="integrations">
           <Card className="p-4">
             <CardHeader>
-              <CardTitle>Integrations</CardTitle>
+              <CardTitle>Integrations Settings</CardTitle>
             </CardHeader>
             <CardContent>
               <p>Integrations content goes here.</p>

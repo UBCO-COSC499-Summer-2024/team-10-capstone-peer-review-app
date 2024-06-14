@@ -16,18 +16,16 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
 
-  server:
+  server: 
     build:
       context: ./server
-      dockerfile: Dockerfile.local
+      dockerfile: Dockerfile.dev
       args:
       - BACKEND_PORT=${BACKEND_PORT} 
       - DB_NAME=${DB_NAME} 
       - DB_PORT=${DB_PORT} 
     env_file:
       - ./server/.env 
-    environment:
-      - DB_HOST=host.docker.internal
     ports:
       - "${BACKEND_PORT}:5001"
     volumes:

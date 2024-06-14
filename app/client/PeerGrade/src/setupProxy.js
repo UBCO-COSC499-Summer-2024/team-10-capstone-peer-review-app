@@ -8,7 +8,8 @@ const setupProxy = function (app) {
 	app.use(
 		"/api",
 		createProxyMiddleware({
-			target: `http://localhost:${process.env.BACKEND_PORT}`,
+			// HARD CODED USE ENV VARS TODO
+			target: `http://localhost:5001`,
 			changeOrigin: true
 		})
 	);

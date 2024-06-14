@@ -22,7 +22,11 @@ export default defineConfig({
 		host: "0.0.0.0",
 		port: 3000,
 		proxy: {
-			"/api": "http://localhost:5000"
+			// HARD-CODED USE ENV VARS TODO 
+			// Still not working?  
+			// For docker container, will have to figure out how to refence container
+			// by container_name? 
+			"/api": "http://localhost:5001"
 		}
 	}
 });

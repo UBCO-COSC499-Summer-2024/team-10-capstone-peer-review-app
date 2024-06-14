@@ -74,11 +74,11 @@ model Class {
   classId      String        @id @default(uuid())
   instructorId String        @unique
   classname    String
-  description  String?
+  description  String
   startDate    DateTime
   endDate      DateTime
-  term         String
-  classSize    Int
+  term         String?
+  classSize    Int?          @default(0)
   usersInClass UserInClass[]
   Assignments  Assignment[]
   instructor   User          @relation("InstructorClasses", fields: [instructorId], references: [userId]) // Only one instructor per class

@@ -1,5 +1,8 @@
 services:
-
+# TODO 
+# Refactor compose so that prisma commands work and sync together 
+# JOSH 
+# DO NOT USE FOR API QUERIES WILL NOT WORK YET
   db:
     image: postgres:latest
     env_file:
@@ -22,7 +25,9 @@ services:
       - DB_NAME=${DB_NAME} 
       - DB_PORT=${DB_PORT} 
     env_file:
-      - ./server/.env
+      - ./server/.env 
+    environment:
+      - DB_HOST=host.docker.internal
     ports:
       - "${BACKEND_PORT}:5001"
     volumes:

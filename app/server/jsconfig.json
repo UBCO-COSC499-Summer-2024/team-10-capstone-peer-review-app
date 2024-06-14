@@ -11,9 +11,9 @@ behavior of the JavaScript language service across different editors and IDEs, s
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"], 
-    }, 
+    // "paths": {
+    //   "@/*": ["src/*"], 
+    // }, 
     "target": "ESNext", 
     "module": "ESNext", 
   }, 

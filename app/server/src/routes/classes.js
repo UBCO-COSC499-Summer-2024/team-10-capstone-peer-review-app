@@ -7,12 +7,12 @@ const router = express.Router();
 //  bscypt hashing -> 
 //  and salting -> add salting numbers to .env
 
-router.post("/login", async (req, res) => {
+router.get("/classes", async (req, res) => {
     // TODO Handle Login
 }); 
 
-router.post("/register", async (req, res) => {
+router.get("/create-classes", async (req, res) => {
     // TODO Handle Register
 }); 
 
-export {router as authRouter};
+export {router as classRouter};

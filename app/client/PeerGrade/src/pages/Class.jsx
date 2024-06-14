@@ -73,7 +73,7 @@ const Class = () => {
   };
 
   return (
-    <div className="w-screen mx-5 p-6">
+    <div className="w-screen main-container mx-5 p-6">
       <div className="flex flex-col gap-4 bg-gray-200 p-4 mb-6 rounded-lg">
         <h1 className="text-3xl font-bold">{classItem.classname}: {user.find(instructor => instructor.user_id === classItem.instructor_id)?.firstname + ' ' + user.find(instructor => instructor.user_id === classItem.instructor_id)?.lastname}</h1>
         <div className="flex rounded-lg">

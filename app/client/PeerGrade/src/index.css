@@ -20,3 +20,16 @@
 svg {
     flex-shrink: 0;
 }
+
+.main-container {
+  max-width: 1350px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+@media (min-width: 1024px) {
+  .main-container {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}

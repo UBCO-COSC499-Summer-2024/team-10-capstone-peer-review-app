@@ -3,8 +3,6 @@ from datetime import datetime, timedelta
 from pytz import timezone
 import os
 import requests
-import matplotlib.pyplot as plt
-import pandas as pd
 
 # PAT for the automated-log-workflow
 g = Github(os.getenv('AUTOMATED_LOG_TOKEN'))

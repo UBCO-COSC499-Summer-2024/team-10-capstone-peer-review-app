@@ -102,16 +102,17 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Redux was implemented however, since the db linking has not been completed, I decided not to go extensive with more redux development
+* I was able to fix many of the major design bugs and implemented minor design upgrades throughout the entire UI
+* Prisma linking to the UI has been a nightmare. Josh and I spent the entire night up until class presentation time in order to get this running. Our login authentication worked but we still have a lot more linking logic to get the other services up and running. 
 
 ## Goals for next cycle
-* 
-* 
-* 
-  
-  
+* Finish linking the database to the UI
+* Create more redux slices/states for easier data retrieval (on the client side) 
+* Implement assignment creation, class creation, and peer-review features.
+* Catch up on documentation on all components and middleware implemented.
+* I will focus on code organization and design upgrades if I have more time than expected.
+
 
 # Mahir's Log for Cycle 3
 

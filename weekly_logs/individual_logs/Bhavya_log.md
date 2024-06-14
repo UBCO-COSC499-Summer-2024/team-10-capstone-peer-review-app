@@ -16,13 +16,6 @@
   
 
 ## Time entries from Clockify on this cycle:
-&nbsp; &nbsp; :watch: **Login Auth** *(Total duration: 6.2 hours)*  
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 13, 2024, 07:30 PM - Thursday, June 13, 2024, 10:41 PM *(3.2 hours)*  
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 13, 2024, 04:27 PM - Thursday, June 13, 2024, 04:43 PM *(0.3 hours)*  
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 12, 2024, 11:15 PM - Thursday, June 13, 2024, 02:03 AM *(2.8 hours)*  
   
 
 ## All Features worked on this cycle:
@@ -69,22 +62,14 @@
 
 ## Tasks worked on this cycle:
 &nbsp; &nbsp; :orange_circle: **Issue-[88](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/88)**: Integrate Enroll Request in Classes  
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
-  
-&nbsp; &nbsp; :orange_circle: **Issue-[87](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/87)**: Authentication using Passport.js and bcrypt.js  
-  
+
 &nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
   
 &nbsp; &nbsp; :orange_circle: **Issue-[84](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/84)**: Post MVP Milestone Database Refactor With TA or Prof  
   
 &nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
   
-&nbsp; &nbsp; :orange_circle: **Issue-[67](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/67)**: Prisma / Dotenv Setup, Prisma CRUD endpoints   
-  
 &nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature, type: refactor 
-  
-&nbsp; &nbsp; :orange_circle: **Issue-[48](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/48)**: Authorization Service: Login / Role based access api endpoints  
   
 &nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
   
@@ -95,9 +80,30 @@
 
 ## Time entries from Clockify on this cycle:
 
+&nbsp; &nbsp; :watch: **Login Auth** *(Total duration: 6.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 13, 2024, 07:30 PM - Thursday, June 13, 2024, 10:41 PM *(3.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 13, 2024, 04:27 PM - Thursday, June 13, 2024, 04:43 PM *(0.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 12, 2024, 11:15 PM - Thursday, June 13, 2024, 02:03 AM *(2.8 hours)*  
+
 ## Features worked on this cycle:
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[87](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/87)**: Authentication using Passport.js and bcrypt.js 
+
+&nbsp; &nbsp; :orange_circle: **Issue-[67](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/67)**: Prisma / Dotenv Setup, Prisma CRUD endpoints   
 
 ## Completed tasks:
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: feature 
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[87](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/87)**: Authentication using Passport.js and bcrypt.js 
+
+&nbsp; &nbsp; :orange_circle: **Issue-[67](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/67)**: Prisma / Dotenv Setup, Prisma CRUD endpoints  
+
+&nbsp; &nbsp; :orange_circle: **Issue-[48](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/48)**: Authorization Service: Login / Role based access api endpoints  
+
 &nbsp; &nbsp; :purple_circle: **Issue-[44](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/44)**: Design Video Requirement   
   
 

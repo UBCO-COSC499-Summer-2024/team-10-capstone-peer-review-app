@@ -1,6 +1,5 @@
 import { render } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { filesData } from '../../../../../../team-10-capstone-peer-review-app-70-instructor_assignment_creation_ui/app/client/PeerGrade/src/lib/data';
 import Files from '@/pages/classNav/Files';
 
 jest.mock('../lib/data', () => ({

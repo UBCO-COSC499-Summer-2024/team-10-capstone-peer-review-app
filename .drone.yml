@@ -6,7 +6,6 @@ trigger:
   branch:
     - master
     - dev
-    - 111/drone_ci_automate_tests
   event:
     - push
     - pull_request

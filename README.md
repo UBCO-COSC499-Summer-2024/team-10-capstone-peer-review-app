@@ -11,7 +11,7 @@
 
 ## Project Info
 
-Please use the provided folder structure for your docs (project plan, design documenation, communications log, weekly logs and final documentation), source code, tesing, etc.    You are free to organize any additional internal folder structure as required by the project.  The team **MUST** use a branching workflow and once an item is ready, do remember to issue a PR, review and merge in into the master brach.
+Please use the provided folder structure for your docs (project plan, design documenation, communications log, weekly logs and final documentation), source code, tesing, etc. You are free to organize any additional internal folder structure as required by the project.  The team **MUST** use a branching workflow and once an item is ready, do remember to issue a PR, review and merge in into the master branch. Do update your repo with the client/project information as well.
 ```
 .
 ├── docs                    # Documentation files (alternatively `doc`)
@@ -28,6 +28,3 @@ Please use the provided folder structure for your docs (project plan, design doc
 ├── LICENSE                 # The license for this project 
 └── README.md
 ```
-You can find additional information on folder structure convetions [here](https://github.com/kriasoft/Folder-Structure-Conventions). 
-
-Also, update your README.md file with the team and client/project information.

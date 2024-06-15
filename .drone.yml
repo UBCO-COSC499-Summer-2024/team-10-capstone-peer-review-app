@@ -1,0 +1,19 @@
+kind: pipeline
+type: docker
+name: Node.js Front-end CI
+
+trigger:
+  branch:
+    - master
+    - dev
+  event:
+    - push
+    - pull_request
+
+steps:
+  - name: Run unit tests
+    image: node:22-slim
+    commands:
+      - cd app/client/PeerGrade
+      - npm install
+      - npm test

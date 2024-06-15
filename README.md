@@ -1,6 +1,6 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=15119155&assignment_repo_type=AssignmentRepo)
 
-# Team 10's Peer Review App Project
+# Team 10's Peer Review App Project &nbsp;[![Build Status](https://droneci.ok.ubc.ca/api/badges/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/status.svg?ref=refs/heads/dev)](https://droneci.ok.ubc.ca/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app)
 
 ## Team Members
 

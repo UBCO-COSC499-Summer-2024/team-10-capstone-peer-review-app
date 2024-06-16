@@ -1,7 +1,13 @@
 import path from "path";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { watch } from "fs";
+import dotenv from "dotenv";
+
+// Set up environment variables
+dotenv.config();
+
+const BACKEND_PORT = process.env.BACKEND_PORT; 
+const BACKEND_HOST = process.env.BACKEND_HOST;
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -23,13 +29,16 @@ export default defineConfig({
 	server: {
 		watch: {	
 			// This enables hot module replacement for docker containers
+			// This is cpu intensive and should be disabled in production
+			// If this is causing issues for you in development, you can disable it but to see any changes you will
+			// Need to docker compose down and up again to see changes
 			usePolling: true,
 		},
 		host: "0.0.0.0", 
 		port: 3000,
 		proxy: {
 			"/api": { 
-				target: "http://peergrade_server:5001", 
+				target: `http://${BACKEND_HOST}:${BACKEND_PORT}`, 
 				changeOrigin: true,
 				rewrite: (path) => path.replace(/^\/api/, '')
 			}

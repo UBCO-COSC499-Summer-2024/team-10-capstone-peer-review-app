@@ -1,13 +1,8 @@
 services:
-# TODO 
-# Refactor compose so that prisma commands work and sync together 
-# JOSH 
-# DO NOT USE FOR API QUERIES WILL NOT WORK YET
+
   db:
-    container_name: peergrade_db
+    container_name: peergrade-db-dev
     image: postgres:latest
-    # env_file:
-    #   - ./server/.env
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -18,7 +13,7 @@ services:
       - db-data:/var/lib/postgresql/data
 
   server:
-    container_name: peergrade_server
+    container_name: peergrade-server-dev
     build:
       context: ./server
       dockerfile: Dockerfile.dev
@@ -29,7 +24,8 @@ services:
     env_file:
       - ./server/.env 
     ports:
-      - ${BACKEND_PORT}:5001
+      - ${BACKEND_PORT}:5001 
+      - 5555:5555
     volumes:
       - ./server:/usr/server
       - server_node_modules:/usr/server/node_modules
@@ -37,10 +33,10 @@ services:
       - db 
 
   client:
-    container_name: peergrade_client
+    container_name: peergrade-client-dev
     build:
       context: ./client/PeerGrade
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
       args:
         - FRONTEND_PORT=${FRONTEND_PORT}
     env_file:

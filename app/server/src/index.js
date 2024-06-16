@@ -58,8 +58,8 @@ app.listen(BACKEND_PORT, () => {
 
 app.get("/", (req, res) => {
 	console.log(req.session); 
-	console.log(req.session.id);
-	res.json({ message: "test from the server!" });
+	console.log("hello from session id!", req.session.id);
+	res.json({ message: "Test from the server!" });
 });
 
 export default app;

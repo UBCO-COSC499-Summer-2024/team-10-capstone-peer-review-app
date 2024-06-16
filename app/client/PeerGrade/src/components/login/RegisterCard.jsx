@@ -45,7 +45,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
     // TODO ADD ENV VARS
     const createUser = async (newUser) => {
       try {
-        const response = await fetch('http://peergrade_client:3000/api/auth/register', {
+        const response = await fetch('http://peergrade-client-dev:3000/api/auth/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

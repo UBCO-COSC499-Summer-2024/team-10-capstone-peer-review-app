@@ -12,7 +12,7 @@ WORKDIR /usr/client/
 
 # COPY . /usr/client/
 
-COPY package.json /usr/client//package.json
+COPY package.json /usr/client/package.json
 COPY package-lock.json /usr/client/package-lock.json
 
 RUN npm ci 

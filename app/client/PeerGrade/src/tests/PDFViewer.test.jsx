@@ -44,4 +44,6 @@ describe('PDFViewer', () => {
     fireEvent.click(getByText('Previous'));
     expect(getByDisplayValue('1')).toBeInTheDocument();
   });
+
+  // Add testing to check if page number text box doesn't accept invalid input (numbers higher than page count, negative numbers, etc.)
 });

@@ -43,8 +43,8 @@ const mockStore = configureMockStore();
 const store = mockStore({
   user: {
     currentUser: { user_id: 1, firstname: 'John', lastname: 'Doe' }, // Mocked user state
+    currentView: "home"
   },
-  // Add other keys as needed
 });
 
 
@@ -98,24 +98,26 @@ describe('Class component', () => {
     expect(screen.getByText('Assignment 2')).toBeInTheDocument();
   });
 
-//   test('switches view to "grades" when "GRADES" button is clicked', async () => {
-//     render(
-//       <Router>
-//         <Class />
-//       </Router>
-//     );
+  // test('switches view to "grades" when "GRADES" button is clicked', async () => {
+  //   render(
+  //     <Provider store={store}>
+  //         <Router>
+  //         <Class />
+  //       </Router>
+  //     </Provider>
+  //   );
 
-//     // Wait for the component to render with the initial view
-//     await screen.findByText('Class A: John Doe');
+  //   // Wait for the component to render with the initial view
+  //   await screen.findByText('Class A: John Doe');
 
-//     // Click on the "GRADES" button
-//     fireEvent.click(screen.getByText('GRADES'));
+  //   // Click on the "GRADES" button
+  //   fireEvent.click(screen.getByText('GRADES'));
 
-//     // Ensure that the "Grades" view is rendered
-//     await screen.findByText('Submission 1');
-//     expect(screen.getByText('Submission 1')).toBeInTheDocument();
-//     expect(screen.getByText('Submission 2')).toBeInTheDocument();
-//   });
+  //   // Ensure that the "Grades" view is rendered
+  //   await screen.findByText('Submission 1');
+  //   expect(screen.getByText('Submission 1')).toBeInTheDocument();
+  //   expect(screen.getByText('Submission 2')).toBeInTheDocument();
+  // });
 // TODO: DOES NOT WORK!!!!!!!!! i've spent way too much time on this
 });
 

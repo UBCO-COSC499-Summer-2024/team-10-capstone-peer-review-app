@@ -14,7 +14,6 @@ const LoginCard = ({ onSwitchToRegister }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState('');
 
-
     // // Password validation regex: 8 characters, 1 uppercase, 1 lowercase, 1 special character
     // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
@@ -23,11 +22,15 @@ const LoginCard = ({ onSwitchToRegister }) => {
     //   return;
     // }
 
+    // Adding Comment
+
     const handleSubmit = (e) => {
       e.preventDefault();
     
+      // TODO: Add a folder directory for API calls? then we can just importthe 
+      // ADD ENV VARS
       // Create a fetch request to the /login endpoint
-      fetch('http://localhost:3000/api/auth/login', {
+      fetch('http://peergrade_client:3000/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -39,9 +39,13 @@ const RegisterCard = ({ onSwitchToLogin }) => {
       setError('')
     }
 
+
+    // TODO: Add a folder directory for API calls? then we can just import the fetch calls  
+
+    // TODO ADD ENV VARS
     const createUser = async (newUser) => {
       try {
-        const response = await fetch('http://localhost:3000/api/auth/register', {
+        const response = await fetch('http://peergrade_client:3000/api/auth/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

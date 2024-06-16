@@ -17,6 +17,14 @@ const instructorsRouter = (prisma) => {
     //     res.json(user);
     // });
 
+    router.get("/profile", async (req, res) => { 
+        if (req.isAuthenticated()) { 
+            res.status(200).send(`Hello, ${req.user.firstname} ${req.user.lastname}! ID: ${req.user.userId}`)
+        } else {
+            res.status(401).json({ message: 'Not authenticated' })
+        }
+    });
+
     router.post("/create-class", async (req, res) => { 
         // Assumes when a user logs in, JWT will include 
         const instructorId = req.user.userId;

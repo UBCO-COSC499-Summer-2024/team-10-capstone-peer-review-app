@@ -11,6 +11,7 @@ import Settings from './pages/Settings';
 import AppNavbar from './components/global/Navbar';
 import ManageClass from './pages/ManageClass';
 import { Toaster } from "@/components/ui/toaster";
+// New comment 
 
 function App() {
 	const [message, setMessage] = useState("");

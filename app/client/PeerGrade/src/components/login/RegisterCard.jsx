@@ -222,7 +222,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
       </CardContent>
       <CardFooter className="text-center">
         <p className="text-sm text-gray-600">
-          Already have an account? <button onClick={onSwitchToLogin} className="text-green-600 hover:text-gray-900 hover:border-b-2">Log in</button>
+          Already have an account? <button onClick={onSwitchToLogin} className="text-green-600 hover:text-gray-900">Log in</button>
         </p>
       </CardFooter>
     </Card>

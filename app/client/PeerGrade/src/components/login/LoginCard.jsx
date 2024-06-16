@@ -6,7 +6,7 @@ import { user as users } from "@/lib/dbData"; // DB CALL: this is user data bein
 import { setCurrentUser } from '@/lib/redux/hooks/userSlice'; //REDUX slice
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 
-const LoginCard = ({ onSwitchToRegister }) => {
+const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
@@ -85,10 +85,13 @@ const LoginCard = ({ onSwitchToRegister }) => {
             </button>
           </div>
         </form>
+        <p className="text-sm text-gray-600">
+          <button onClick={onSwitchToForgotPassword} className="text-green-600 hover:text-green-500">Forgot your password?</button>
+        </p>
       </CardContent>
       <CardFooter className="text-center">
         <p className="text-sm text-gray-600">
-          Don't have an account? <button onClick={onSwitchToRegister} className="text-green-600 hover:text-green-500 hover:border-b-2">Sign up</button>
+          Don't have an account? <button onClick={onSwitchToRegister} className="text-green-600 hover:text-green-500">Sign up</button>
         </p>
       </CardFooter>
     </Card>

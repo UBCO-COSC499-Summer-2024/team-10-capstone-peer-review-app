@@ -5,8 +5,8 @@
   "main": "./src/index.js",
   "type": "module",
   "scripts": {
-    "dev:server": "nodemon --watch ./src/index.js --ext js --exec node ./src/index.js",
-    "dev:prisma": "nodemon --watch prisma --ext prisma --exec 'npx prisma db push && npx prisma studio'",
+    "dev:server": "nodemon -L ./src/index.js --ext js --exec node ./src/index.js",
+    "dev:prisma": "nodemon -L --watch prisma --ext prisma --exec 'npx prisma db push && npx prisma studio'",
     "dev": "concurrently npm:dev:*", 
     "start": "node ./src/index.js",
     "prisma": "npx prisma generate && npx prisma db push",

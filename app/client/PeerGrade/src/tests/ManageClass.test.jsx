@@ -1,54 +1,73 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
-import ManageClass from '@/pages/ManageClass';
 import configureStore from 'redux-mock-store';
+import ManageClass from '@/pages/ManageClass';
+import { iClass, assignment, PeerReview, submission } from '@/lib/dbData';
+
+// Mock the dbData module
+jest.mock('@/lib/dbData', () => {
+  return {
+    iClass: [],
+    assignment: [],
+    PeerReview: [],
+    submission: []
+  };
+});
 
 describe('ManageClass component', () => {
   const mockStore = configureStore([]);
-  
+  let store;
+  let userClasses;
 
-  test('should render ManageClass component for instructor', () => {
+  beforeEach(() => {
+    iClass.length = 0;
+    assignment.length = 0;
+    PeerReview.length = 0;
+    submission.length = 0;
+
     const initialState = {
       user: {
         currentUser: {
-          user_id: 1,
+          userId: 1,
           firstname: 'John',
           lastname: 'Doe',
-          type: 'instructor'
-        }
-      }
+          role: 'INSTRUCTOR',
+        },
+      },
     };
 
-    const store = mockStore(initialState);
+    store = mockStore(initialState);
 
-    const { getByText } = render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ManageClass />
-        </MemoryRouter>
-      </Provider>
-    );
+    userClasses = [
+      {
+        class_id: 1,
+        instructor_id: 1,
+        classname: 'ART 101',
+        description: 'Introduction to Art',
+        start: new Date(),
+        term: 'Winter',
+        end: new Date(),
+        size: 50,
+      },
+      {
+        class_id: 2,
+        instructor_id: 1,
+        classname: 'Mathematics',
+        description: 'Introduction to Mathematics',
+        start: new Date(),
+        term: 'Winter',
+        end: new Date(),
+        size: 25,
+      },
+    ];
 
-    expect(getByText('My Classrooms')).toBeInTheDocument();
+    iClass.push(...userClasses);
   });
 
-  test('should render ManageClass component for admin', () => {
-    const initialState = {
-      user: {
-        currentUser: {
-          user_id: 2,
-          firstname: 'Jane',
-          lastname: 'Smith',
-          type: 'admin'
-        }
-      }
-    };
-
-    const store = mockStore(initialState);
-
-    const { getByText } = render(
+  test('should render ManageClass component for instructor', () => {
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <ManageClass />
@@ -56,44 +75,27 @@ describe('ManageClass component', () => {
       </Provider>
     );
 
-    expect(getByText('My Classrooms')).toBeInTheDocument();
+    expect(screen.getByText('My Classrooms')).toBeInTheDocument();
   });
 
   test('should render permission error for non-instructor/admin', () => {
-    const initialState = {
-      user: {
-        currentUser: null
-      }
-    };
+    const nonInstructorStore = mockStore({
+      user: { currentUser: null },
+    });
 
-    const store = mockStore(initialState);
-
-    const { getByText } = render(
-      <Provider store={store}>
+    render(
+      <Provider store={nonInstructorStore}>
         <MemoryRouter>
           <ManageClass />
         </MemoryRouter>
       </Provider>
     );
 
-    expect(getByText('You do not have permission to view this page.')).toBeInTheDocument();
+    expect(screen.getByText('You do not have permission to view this page.')).toBeInTheDocument();
   });
 
   test('should add a new class', async () => {
-    const initialState = {
-      user: {
-        currentUser: {
-          user_id: 1,
-          firstname: 'John',
-          lastname: 'Doe',
-          type: 'instructor'
-        }
-      }
-    };
-
-    const store = mockStore(initialState);
-
-    const { getByText, getByLabelText, getByTestId } = render(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <ManageClass />
@@ -102,89 +104,44 @@ describe('ManageClass component', () => {
     );
 
     // Open modal
-    fireEvent.click(getByText('Add a class'));
+    fireEvent.click(screen.getByText('Add a class'));
 
     // Fill out form fields
-    fireEvent.change(getByLabelText('Class Name'), { target: { value: 'New Class' } });
-    fireEvent.change(getByLabelText('Description'), { target: { value: 'Class Description' } });
-    fireEvent.change(getByLabelText('Term'), { target: { value: 'Spring 2024' } });
-    fireEvent.change(getByLabelText('Size'), { target: { value: '30' } });
+    fireEvent.change(screen.getByLabelText('Class Name'), { target: { value: 'New Class' } });
+    fireEvent.change(screen.getByLabelText('Description'), { target: { value: 'Class Description' } });
+    fireEvent.change(screen.getByLabelText('Term'), { target: { value: 'Spring 2024' } });
+    fireEvent.change(screen.getByLabelText('Size'), { target: { value: '30' } });
 
     // Submit form
-    fireEvent.click(getByText('Add Class'));
+    fireEvent.click(screen.getByText('Add Class'));
 
-    // Wait for the class to appear in the list (assuming some delay or asynchronous update)
+    // Wait for the new class to appear in the list
     await waitFor(() => {
-      expect(getByText('New Class')).toBeInTheDocument();
-      expect(getByText('30 Students')).toBeInTheDocument();
+      expect(screen.getByText('New Class')).toBeInTheDocument();
+      expect(screen.getByText('30 Students')).toBeInTheDocument();
     });
   });
 
-  test('should display classes from mock data', () => {
-    const initialState = {
-        user: {
-          currentUser: {
-            user_id: 1,
-            username: "doo",
-            password: "doodoo",
-            firstname: "AAAAA",
-            lastname: "BBBBB",
-            email: "asmiaath@aa.com",
-            class_id: [1,2],
-            type: "instructor",
-          }
-        }
-    };
-  
-    const mockClasses = [
-        {
-            class_id: 1,
-            instructor_id: 1,
-            classname: "ART 101",
-            description: "Introduction to Art",
-            start: new Date(),
-            term: "Winter",
-            end: new Date(),
-            size: 50,
-          }
-    ];
-
-    const store = mockStore(initialState);
-
-    const { getByText } = render(
+  test('should display classes from mock data', async () => {
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <ManageClass />
         </MemoryRouter>
       </Provider>
     );
-    // Check if classes from mock data are rendered
-    expect(getByText('ART 101')).toBeInTheDocument();
-    expect(getByText('50 Students')).toBeInTheDocument();
 
+    // Wait for the component to render the classes
+    await waitFor(() => {
+      expect(screen.getByText('ART 101')).toBeInTheDocument();
+      expect(screen.getByText('50 Students')).toBeInTheDocument();
+      expect(screen.getByText('Mathematics')).toBeInTheDocument();
+      expect(screen.getByText('25 Students')).toBeInTheDocument();
+    });
   });
 
   test('should delete a class', async () => {
-    const initialState = {
-      user: {
-        currentUser: {
-          user_id: 1,
-          firstname: 'John',
-          lastname: 'Doe',
-          type: 'instructor'
-        }
-      }
-    };
-
-    const mockClasses = [
-      { class_id: 1, classname: 'Mathematics', size: 25 },
-      { class_id: 2, classname: 'Physics', size: 20 }
-      // Add more mock data as needed
-    ];
-
-    const store = mockStore(initialState);
-
-    const { getByTestId, queryByText } = render(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <ManageClass />
@@ -192,14 +149,18 @@ describe('ManageClass component', () => {
       </Provider>
     );
 
-    // Assuming there are classes already rendered, find and click delete button
-    const deleteButton = getByTestId(`delete-class-${mockClasses[0].class_id}`); // Adjust this based on your UI
+    // Wait for the component to render the classes
+    await waitFor(() => {
+      expect(screen.getByText('Mathematics')).toBeInTheDocument();
+    });
 
+    // Find and click delete button for the Mathematics class
+    const deleteButton = screen.getByTestId('delete-class-2');
     fireEvent.click(deleteButton);
 
     // Check if the deleted class is no longer in the DOM
     await waitFor(() => {
-      expect(queryByText(mockClasses[0].classname)).toBeNull();
+      expect(screen.queryByText('Mathematics')).toBeNull();
     });
   });
 });

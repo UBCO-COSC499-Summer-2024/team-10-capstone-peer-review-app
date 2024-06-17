@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import { setCurrentUser } from '@/lib/redux/hooks/userSlice';
-import LoginCard from '@/components/login/LoginCard';
+import ForgotPasswordCard from '@/components/login/ForgotPasswordCard';
 
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
@@ -28,7 +28,7 @@ jest.mock('@/lib/dbData', () => ({
   }));  
 
 
-describe('LoginCard', () => {
+describe('ForgotPasswordCard', () => {
   const mockStore = configureMockStore();
   let store;
   
@@ -44,59 +44,41 @@ describe('LoginCard', () => {
     const { getByText } = render(
       <Provider store={store}>
         <Router>
-          <LoginCard />
+          <ForgotPasswordCard />
         </Router>
       </Provider>
     );
-    expect(getByText('Login')).toBeInTheDocument();
+    expect(getByText('Reset Password')).toBeInTheDocument();
   });
 
   test('shows error message when invalid credentials are entered', () => {
     const { getByLabelText, getByText, getByRole } = render(
       <Provider store={store}>
         <Router>
-          <LoginCard />
+          <ForgotPasswordCard />
         </Router>
       </Provider>
     );
 
     fireEvent.change(getByLabelText('Email address'), { target: { value: 'wrong@example.com' } });
-    fireEvent.change(getByLabelText('Password'), { target: { value: 'wrongpasswordA@1' } });
-    fireEvent.click(getByRole('button', { name: 'Sign in' }));
+    fireEvent.click(getByRole('button', { name: 'Send Reset Email' }));
 
-    expect(getByText('Invalid email or password')).toBeInTheDocument();
+    expect(getByText('This e-mail does not belong to a registered user.')).toBeInTheDocument();
   });
 
-  test('navigates to dashboard and dispatches action when valid credentials are entered', async () => {
-    const { getByLabelText, getByRole } = render(
+  test('switches to verification code screen', async () => {
+    const { getByLabelText, getByRole, getByText } = render(
         <Provider store={store}>
         <Router>
-            <LoginCard />
+            <ForgotPasswordCard />
         </Router>
         </Provider>
     );
 
     fireEvent.change(getByLabelText('Email address'), { target: { value: 'valid@example.com' } });
-    fireEvent.change(getByLabelText('Password'), { target: { value: 'validpassword@A1' } });
-    fireEvent.click(getByRole('button', { name: 'Sign in' }));
+    fireEvent.click(getByRole('button', { name: 'Send Reset Email' }));
 
-    // Wait for any changes to the DOM that occur as a result of the form submission
-    await waitFor(() => {
-        // Check if the navigate function was called
-        expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
-
-        // Check if the setCurrentUser action was dispatched
-        const actions = store.getActions();
-        expect(actions[0]).toEqual(setCurrentUser({
-            class_id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            email: 'valid@example.com',
-            firstname: 'Test',
-            lastname: 'User',
-            password: 'validpassword@A1',
-            type: 'admin',
-            user_id: 1,
-            username: 'testUser',
-          }));          
-    });
+    expect(getByText('An email has been sent to your email address! Please check it for a verification code and enter it below.')).toBeInTheDocument();
+    expect(getByText('Submit')).toBeInTheDocument();
   });
 });

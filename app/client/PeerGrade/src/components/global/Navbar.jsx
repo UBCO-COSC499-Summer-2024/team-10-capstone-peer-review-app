@@ -36,10 +36,10 @@ export default function AppNavbar() {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <div className="w-full py-3 bg-white shadow-md">
+    <div className="w-full py-3 px-4 bg-white shadow-md">
       <NavigationMenu className="flex items-center justify-between w-full max-w-screen-xl mx-auto ">
         <NavigationMenuList className="flex space-x-4">
-          <NavigationMenuItem className='mr-4'>
+          <NavigationMenuItem>
             <Link to="/dashboard">
               <img src="logo.png" className="w-10 h-10"/>
             </Link>

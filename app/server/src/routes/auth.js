@@ -4,19 +4,23 @@ import passport from "passport";
 import LocalStrategy from "../middleware/passportStrategies/localStrategy.js";
 
 const authRouter = (prisma) => { 
-    const router = express.Router();
+  const router = express.Router();
 
-    LocalStrategy(passport, prisma);
+  // TODO move to .env
+  const SALT_ROUNDS = 10;
 
-    router.post('/register', async (req, res) => {
+  // Enable local Strat for Login 
+  LocalStrategy(passport, prisma);
+
+  // Register 
+  router.post('/register', async (req, res) => {
     // Check if user already exists with email
     const existingUser = await prisma.user.findUnique({ where: { email: req.body.email } }); 
     
     if (existingUser) {
         return res.status(400).json({ message: 'User with that email already exists' }); 
     }
-      // Hashing hardcoded salt to 10, TODO: move to .env
-      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+      const hashedPassword = await bcrypt.hash(req.body.password, SALT_ROUNDS);
       const user = {
           username: req.body.username,
           password: hashedPassword,
@@ -29,8 +33,9 @@ const authRouter = (prisma) => {
       const result = await prisma.user.create({ data: user });
 
       res.json(result);
-  });
+  }); 
 
+  // Login 
   router.post('/login', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
       if (err) {
@@ -43,14 +48,23 @@ const authRouter = (prisma) => {
         if (err) {
           return next(err);
         }
-        return res.json(user);
+        return res.status(200).json({ message: 'You have been logged in!' });
       });
     })(req, res, next);
   });
 
+  // Router logout 
   router.post('/logout', (req, res) => {
-    req.logout();
-    res.json({ message: 'You have been logged out' });
+    if (req.isAuthenticated()) { 
+      req.logout((err) => {  
+        if (err) { 
+          return res.status(400).json({ message: 'Logout Failed', error: err });
+        } 
+        return res.status(200).json({ message: 'You have been logged out' });
+      });
+    } else { 
+      return res.status(400).json({ message: 'You are not logged in' }); 
+    }
   });
 
 return router;

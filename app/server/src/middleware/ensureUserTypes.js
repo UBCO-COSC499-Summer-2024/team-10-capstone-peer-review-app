@@ -3,7 +3,7 @@ export function ensureUser(req, res, next) {
     if (req.isAuthenticated()) {
         next();
     } else {
-        res.status(403).json({ message: "User is not authenicated" });
+        res.status(401).json({ message: "User is not authenicated" });
     }
 }
 

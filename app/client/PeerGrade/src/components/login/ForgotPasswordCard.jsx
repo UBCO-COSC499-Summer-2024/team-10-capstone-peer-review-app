@@ -22,7 +22,7 @@ const ForgotPasswordCard = ({ onSwitchToLogin }) => {
       console.log(`User of type ${user.type} has been found.`);
       setError('');
     } else {
-      setError('This e-mail does not belong to any registered user.');
+      setError('This e-mail does not belong to a registered user.');
     }
   };
 

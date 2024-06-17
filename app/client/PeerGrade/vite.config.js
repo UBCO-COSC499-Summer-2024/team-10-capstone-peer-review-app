@@ -6,8 +6,8 @@ import dotenv from "dotenv";
 // Set up environment variables
 dotenv.config();
 
-const BACKEND_PORT = process.env.BACKEND_PORT; 
-const BACKEND_HOST = process.env.BACKEND_HOST;
+const FRONEND_PORT = process.env.BACKEND_PORT; 
+const FRONTEND_HOST = process.env.BACKEND_HOST;
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -38,7 +38,7 @@ export default defineConfig({
 		port: 3000,
 		proxy: {
 			"/api": { 
-				target: `http://${BACKEND_HOST}:${BACKEND_PORT}`, 
+				target: `https://${FRONTEND_HOST}:${FRONTEND_PORT}`, 
 				changeOrigin: true,
 				rewrite: (path) => path.replace(/^\/api/, '')
 			}

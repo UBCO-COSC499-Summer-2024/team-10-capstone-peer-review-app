@@ -33,9 +33,12 @@ const AddClassModal = ({ show, onClose, onAddClass }) => {
         <h2 className="text-xl font-bold mb-4">Add a New Class</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Class Name</label>
+            <label htmlFor="classname" className="block text-sm font-medium text-gray-700">
+              Class Name
+            </label>
             <input
               type="text"
+              id="classname"
               value={classname}
               onChange={(e) => setClassname(e.target.value)}
               required
@@ -43,9 +46,12 @@ const AddClassModal = ({ show, onClose, onAddClass }) => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Description</label>
+            <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+              Description
+            </label>
             <input
               type="text"
+              id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
@@ -53,9 +59,12 @@ const AddClassModal = ({ show, onClose, onAddClass }) => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Term</label>
+            <label htmlFor="term" className="block text-sm font-medium text-gray-700">
+              Term
+            </label>
             <input
               type="text"
+              id="term"
               value={term}
               onChange={(e) => setTerm(e.target.value)}
               required
@@ -63,9 +72,12 @@ const AddClassModal = ({ show, onClose, onAddClass }) => {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Size</label>
+            <label htmlFor="size" className="block text-sm font-medium text-gray-700">
+              Size
+            </label>
             <input
               type="number"
+              id="size"
               value={size}
               onChange={(e) => setSize(e.target.value)}
               required
@@ -143,6 +155,7 @@ const ManageClass = () => {
             <button
               onClick={() => handleDeleteClass(classItem.class_id)}
               className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+              data-testid={`delete-class-${classItem.class_id}`} // Add data-testid attribute
             >
               &times;
             </button>

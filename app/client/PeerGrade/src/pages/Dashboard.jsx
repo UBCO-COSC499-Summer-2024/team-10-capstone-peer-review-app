@@ -7,6 +7,8 @@ import { iClass as classesData, assignment as assignmentsData, user } from '@/li
 import { Button } from "@/components/ui/button";
 import { ArrowUp, ArrowDown } from 'lucide-react';
 
+// Need to import useSelector from react-redux? 
+
 function AssignmentTable({ title, forReview }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState("asc");
@@ -74,6 +76,20 @@ function AssignmentTable({ title, forReview }) {
 }
 
 function Dashboard() {
+  // Eslint is asking to use a namedSelector I.E. 
+  /* 
+  // selectors/user.js
+  export const selectCurrentUser = (state) => state.user.currentUser;
+
+  // Dashboard.jsx
+  import { selectCurrentUser } from 'selectors/user';
+
+  function Dashboard() {
+  const currentUser = useSelector(selectCurrentUser);
+
+  // ...
+  }
+  */ 
   const currentUser = useSelector((state) => state.user.currentUser);
 
   if (!currentUser) {

@@ -229,9 +229,10 @@ const AssignmentCreation = () => {
               )}
             />
             <FormItem>
-              <FormLabel>Upload File</FormLabel>
+              <FormLabel htmlFor="file-upload">Upload File</FormLabel>
               <input
                 type="file"
+                id="file-upload"
                 ref={fileInputRef}
                 accept=".pdf"
                 style={{ display: 'none' }}

@@ -163,7 +163,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
               required
               className={`block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-100 border ${error ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
             />
-            <div className="absolute inset-y-0 mt-5 right-0 pr-3 flex items-center">
+            <div className="absolute inset-y-0 mt-6 right-0 pr-3 flex items-center">
               <button type="button" onClick={() => setPasswordVisible(!passwordVisible)}>
                 {passwordVisible ? <EyeSlashIcon className="h-5 w-5 text-gray-500" /> : <EyeIcon className="h-5 w-5 text-gray-500" />}
               </button>
@@ -180,7 +180,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
               required
               className={`block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-100 border ${password !== confirmPassword ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
             />
-            <div className="absolute inset-y-0 mt-5 right-0 pr-3 flex items-center">
+            <div className="absolute inset-y-0 mt-6 right-0 pr-3 flex items-center">
               <button type="button" onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}>
                 {confirmPasswordVisible ? <EyeSlashIcon className="h-5 w-5 text-gray-500" /> : <EyeIcon className="h-5 w-5 text-gray-500" />}
               </button>

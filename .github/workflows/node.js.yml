@@ -8,7 +8,6 @@ on:
     branches: [ "master", "dev" ]
   pull_request:
     branches: [ "master", "dev" ]
-
 jobs:
   build:
 
@@ -16,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [22.0]
 
     steps:
     - uses: actions/checkout@v3
@@ -26,9 +25,11 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: 'app/package-lock.json'
-    - name: Navigate into app directory
-      run: cd app/
-    - run: npm ci
-      working-directory: app/
-    - run: npm test
-      working-directory: app/
+    - name: Install dependencies
+      run: npm ci
+      working-directory: app/client/PeerGrade
+    - name: Run tests
+      run: npm test
+      working-directory: app/client/PeerGrade
+
+      

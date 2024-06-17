@@ -6,8 +6,12 @@ import dotenv from "dotenv";
 // Set up environment variables
 dotenv.config();
 
-const FRONTEND_PORT = process.env.BACKEND_PORT; 
-const FRONTEND_HOST = process.env.BACKEND_HOST;
+const BACKEND_PORT = process.env.BACKEND_PORT; 
+const BACKEND_HOST = process.env.BACKEND_HOST;
+
+
+console.log(`backend port is ${BACKEND_PORT}`); 
+console.log(`frontend host is ${BACKEND_HOST}`);
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -38,7 +42,8 @@ export default defineConfig({
 		port: 3000,
 		proxy: {
 			"/api": { 
-				target: `https://${FRONTEND_HOST}:${FRONTEND_PORT}`, 
+				// TODO set up https with ssl 
+				target: "http://peergrade-server-dev:5001", 
 				changeOrigin: true,
 				rewrite: (path) => path.replace(/^\/api/, '')
 			}

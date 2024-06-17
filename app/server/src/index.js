@@ -1,16 +1,11 @@
 import express from "express";
 import session from "express-session"
-import cookieParser from "cookie-parser"
-import passport from "passport";
 import dotenv from "dotenv" 
+import passport from "passport";
 import { PrismaClient } from "@prisma/client"; 
 
 // Routes
-import studentsRouter from "./routes/students.js"; 
-import instructorsRouter from "./routes/instructors.js"
-// Change to stragies later
-import passportLocalValidation from "./middleware/passportLocalValidation.js";
-import authRouter from "./routes/auth.js";
+import setupRoutes from "./routes/index.js";
 
 // Once dotenv.config() is called, env vars are available in process.env to all files. 
 // No need to import dotenv in other files.
@@ -29,8 +24,9 @@ const prisma = new PrismaClient();
 // Initialing cookies to be used for session management
 // Add a secret key soon to cookie parser, this allows user to access cookie data from 
 // req.cookies
-app.use(cookieParser())
 // Populates the req.session object with the session data
+app.use(express.json()); // Parse JSON bodies with express middleware 
+
 app.use(session({
 	secret: "super secret", // Secret to sign the session ID cookie
 	resave: false, // Forces the session to be saved back to the session store, even if the session was never modified during the request
@@ -40,29 +36,23 @@ app.use(session({
 	}
   }));
 
-passportLocalValidation(passport, prisma);
-
 app.use(passport.initialize());
 app.use(passport.session());
-// Make sure to include any middleare before the routes if you want the middleware to apply to the routes
 
-// Middlewares
-app.use(express.json()); // Parse JSON bodies with express middleware
+app.use(setupRoutes(prisma))
 
+app.get("/", (req, res) => {
+	console.log(req.session); 
+	console.log(req.session.id);
+	console.log(req.user);
+	res.json({ message: "Hello from the server!" });
+});
 
-app.use("/students", passport.authenticate('local'), studentsRouter(prisma));
-app.use("/instructors", passport.authenticate('local'), instructorsRouter(prisma))
-app.use("/auth", authRouter(prisma));
 
 app.listen(BACKEND_PORT, () => {
 	console.log(`Server is running on port ${BACKEND_PORT}`);
 });
 
-app.get("/", (req, res) => {
-	console.log(req.session); 
-	console.log(req.session.id);
-	res.json({ message: "Hello from the server!" });
-});
 
 export default app;
 

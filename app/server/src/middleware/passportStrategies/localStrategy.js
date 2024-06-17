@@ -1,7 +1,7 @@
 import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcrypt";
 
-const passportLocalValidation = (passport, prisma) => {
+const localStrategy = (passport, prisma) => {
     passport.use(new LocalStrategy({
         usernameField: "email", 
         passwordField: "password" 
@@ -36,4 +36,4 @@ const passportLocalValidation = (passport, prisma) => {
     });
 };
 
-export default passportLocalValidation;
+export default localStrategy;

@@ -1,16 +1,17 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import passport from "passport";
-import passportLocalValidation from "../middleware/passportLocalValidation.js"
+import LocalStrategy from "../middleware/passportStrategies/localStrategy.js";
 
 const authRouter = (prisma) => { 
     const router = express.Router();
 
-    passportLocalValidation(passport, prisma);
+    LocalStrategy(passport, prisma);
 
     router.post('/register', async (req, res) => {
     // Check if user already exists with email
-    const existingUser = await prisma.user.findUnique({ where: { email: req.body.email } });
+    const existingUser = await prisma.user.findUnique({ where: { email: req.body.email } }); 
+    
     if (existingUser) {
         return res.status(400).json({ message: 'User with that email already exists' }); 
     }
@@ -26,7 +27,7 @@ const authRouter = (prisma) => {
       };
       // Save the user to the database using Prisma
       const result = await prisma.user.create({ data: user });
-      req.session.userId = result.userId; // Store user id in session
+
       res.json(result);
   });
 
@@ -47,8 +48,12 @@ const authRouter = (prisma) => {
     })(req, res, next);
   });
 
-return router;
+  router.post('/logout', (req, res) => {
+    req.logout();
+    res.json({ message: 'You have been logged out' });
+  });
 
+return router;
 }
 
 export default authRouter;

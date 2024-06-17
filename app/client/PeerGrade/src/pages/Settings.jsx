@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateUser } from '@/lib/redux/hooks/userSlice';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -7,20 +7,30 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Avatar } from '@/components/ui/avatar';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { useToast } from '@/components/ui/use-toast';
 
 const Settings = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user.currentUser);
+  const { toast } = useToast(); // Assuming useToast provides a toast function
 
   const [selectedTab, setSelectedTab] = useState('profile');
   const [username, setUsername] = useState(currentUser?.username || '');
   const [email, setEmail] = useState(currentUser?.email || '');
   const [bio, setBio] = useState(currentUser?.bio || '');
-  const [urls, setUrls] = useState(currentUser?.urls || ['', '']);
+  const [url, setUrl] = useState(currentUser?.url || '');
 
   const handleSaveProfile = () => {
-    dispatch(updateUser({ username, email, bio, urls }));
-    // Add any additional logic, like API calls, if needed
+    dispatch(updateUser({ username, email, bio, url }));
+    
+    toast({
+      title: "Profile Updated",
+      description: (
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+          <code className="text-white">{JSON.stringify({ username, email, bio, url }, null, 2)}</code>
+        </pre>
+      ),
+    });
   };
 
   return (
@@ -79,15 +89,12 @@ const Settings = () => {
                   <Input
                     id="url"
                     type="url"
-                    value={urls[0]}
-                    onChange={(e) => {
-                      const newUrls = [e.target.value];
-                      setUrls(newUrls);
-                    }}
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
                     placeholder="https://example.com"
                     className="mb-2"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Add links to your website, blog, or social media profiles.</p>
+                  <p className="text-xs text-gray-500 mt-1">Add link to your website, blog, or social media profile.</p>
                 </div>
                 <Button onClick={handleSaveProfile} className="bg-[#111827] text-white">
                   Save
@@ -97,38 +104,38 @@ const Settings = () => {
           </Card>
         </TabsContent>
 
-				<TabsContent value="account">
-					<Card className="p-4">
-						<CardHeader>
-							<CardTitle>Account Settings</CardTitle>
-						</CardHeader>
-						<CardContent>
-							<p>Account settings content goes here.</p>
-						</CardContent>
-					</Card>
-				</TabsContent>
+        <TabsContent value="account">
+          <Card className="p-4">
+            <CardHeader>
+              <CardTitle>Account Settings</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>Account settings content goes here.</p>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-				<TabsContent value="notifications">
-					<Card className="p-4">
-						<CardHeader>
-							<CardTitle>Notification Settings</CardTitle>
-						</CardHeader>
-						<CardContent>
-							<p>Notification settings content goes here.</p>
-						</CardContent>
-					</Card>
-				</TabsContent>
+        <TabsContent value="notifications">
+          <Card className="p-4">
+            <CardHeader>
+              <CardTitle>Notification Settings</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>Notification settings content goes here.</p>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-				<TabsContent value="privacy">
-					<Card className="p-4">
-						<CardHeader>
-							<CardTitle>Privacy Settings</CardTitle>
-						</CardHeader>
-						<CardContent>
-							<p>Privacy settings content goes here.</p>
-						</CardContent>
-					</Card>
-				</TabsContent>
+        <TabsContent value="privacy">
+          <Card className="p-4">
+            <CardHeader>
+              <CardTitle>Privacy Settings</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>Privacy settings content goes here.</p>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
         <TabsContent value="integrations">
           <Card className="p-4">

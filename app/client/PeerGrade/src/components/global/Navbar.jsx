@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import { useSelector } from 'react-redux';
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { Bell } from "lucide-react";
+import { Bell, SearchIcon } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -15,12 +15,16 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Avatar } from "@/components/ui/avatar";
 import { iClass as classesData, assignment as assignmentsData } from '@/lib/dbData'; //DB CALLS - ignore the iClass as classdata, ssignment as assigndata, this was just easier for me when i switched to redux (nothing to do with db)
 
 export default function AppNavbar() {
   const location = useLocation();
   const currentUser = useSelector((state) => state.user.currentUser); //REDUX: user state, after user state stored in login, it has that user logged info saved
+  const navigate = useNavigate(); // Initialize useNavigate hook
+
+  const [searchQuery, setSearchQuery] = React.useState(""); // State for search query
 
   // Filter classes based on user class_ids
   //DB PROCESS userClasses should be a list of classes that are related to the user, userid should be used to find the list of classes and stored in const userClasses. 
@@ -35,13 +39,22 @@ export default function AppNavbar() {
 
   const isActive = (path) => location.pathname === path;
 
+  const search = () => {
+    const trimmedQuery = searchQuery.trim();
+    if (trimmedQuery) {
+      navigate(`/search?query=${trimmedQuery}`);
+    } else {
+      navigate(`/search`);
+    }
+  };
+
   return (
-    <div className="w-full py-3 bg-white shadow-md">
-      <NavigationMenu className="flex items-center justify-between w-full max-w-screen-xl mx-auto ">
-        <NavigationMenuList className="flex space-x-4">
-          <NavigationMenuItem className='mr-4'>
+    <div className="w-full py-3 px-4 bg-white shadow-md">
+      <NavigationMenu className="flex items-center justify-between w-full max-w-screen-xl mx-auto">
+        <NavigationMenuList className="flex space-x-2 sm:space-x-1">
+          <NavigationMenuItem>
             <Link to="/dashboard">
-              <img src="logo.png" className="w-10 h-10"/>
+              <img src="logo.png" className="w-10 h-10 sm:hidden md:block"/>
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
@@ -50,13 +63,9 @@ export default function AppNavbar() {
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuTrigger className='group'>
-              <NavigationMenuItem>
-                  <Link to="/peer-review" className={cn(navigationMenuTriggerStyle(), isActive('/peer-review') && 'font-bold group')}>
+              <NavigationMenuTrigger onClick={() => navigate('/peer-review')} className={cn(navigationMenuTriggerStyle(), isActive('/peer-review') && 'font-bold')}>
                     Peer-Review
-                  </Link>
-              </NavigationMenuItem>
-            </NavigationMenuTrigger>
+              </NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="bg-white grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                 {userReviewAssignments.map((assignment) => (
@@ -103,6 +112,21 @@ export default function AppNavbar() {
               Settings
             </Link>
           </NavigationMenuItem>
+          {location.pathname !== '/search' && currentUser.type === 'admin' && (
+            <NavigationMenuItem>
+              <div className="flex w-full max-w-sm items-center space-x-2">
+                <Input 
+                  placeholder="Search classes" 
+                  value={searchQuery} 
+                  onChange={(e) => setSearchQuery(e.target.value)} // Update state on input change
+                  className="sm:hidden md:hidden lg:block"
+                />
+                <Button onClick={search} className='h-10 w-10'>
+                  <SearchIcon className="w-5 h-5 sm:p-0 sm:m-0" />
+                </Button>
+              </div>
+            </NavigationMenuItem>
+          )}
         </NavigationMenuList>
         <div className="flex items-center space-x-4">
           <Link to={"/"}>

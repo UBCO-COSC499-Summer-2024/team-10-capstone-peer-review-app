@@ -57,9 +57,9 @@ export const iClass = [
     instructor_id: 1,
     classname: "ART 101",
     description: "Introduction to Art.",
-    start: Date.now,
+    start: Date.now(),
     term: "Winter",
-    end: Date.now, 
+    end: Date.now(), 
     size: 50, 
 },
 {

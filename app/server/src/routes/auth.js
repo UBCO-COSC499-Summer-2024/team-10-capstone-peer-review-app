@@ -10,12 +10,18 @@ const authRouter = (prisma) => {
   const SALT_ROUNDS = 10;
 
   // Enable local Strat for Login 
-  LocalStrategy(passport, prisma);
+  LocalStrategy(passport, prisma); 
+
+  // Reused Prisma queries 
+  async function checkUserByEmail(email) {
+    return await prisma.user.findUnique({ where: { email } });
+  }
+
 
   // Register 
   router.post('/register', async (req, res) => {
     // Check if user already exists with email
-    const existingUser = await prisma.user.findUnique({ where: { email: req.body.email } }); 
+    const existingUser = checkUserByEmail(req.body.email);
     
     if (existingUser) {
         return res.status(400).json({ message: 'User with that email already exists' }); 
@@ -67,7 +73,51 @@ const authRouter = (prisma) => {
     }
   });
 
-return router;
+
+   // TODO Router forgot-password 
+  router.post("/forgot-password", async (req, res) => {
+    const { email } = req.body;
+    // const user = await checkUserByEmail(email);
+    if (!user) {
+      return res.status(404).json({ message: "No user with that email" });
+    }
+    // const token = generateToken(); // Implement this function
+    // Save the token in your database associated with the user
+    // Send an email to the user with the reset link that includes the token
+  });
+
+
+
+  router.post("/reset-password", async (req, res) => {
+    const { token, newPassword } = req.body;
+    // Verify the token and find the associated user
+    // Update the user's password
+  });
+
+
+
+  router.post("/verify-email", async (req, res) => {
+    const { email } = req.body;
+    const user = await checkUserByEmail(email);
+    if (!user) {
+      return res.status(404).json({ message: "No user with that email" });
+    }
+    const token = generateToken(); // Implement this function
+    // Save the token in your database associated with the user
+    // Send an email to the user with the verification link that includes the token
+  });
+
+
+
+  router.post("/confirm-email", async (req, res) => {
+    const { token } = req.body;
+    // Verify the token and find the associated user
+    // Update the user's email verification status
+  });
+
+
+
+  return router;
 }
 
 export default authRouter;

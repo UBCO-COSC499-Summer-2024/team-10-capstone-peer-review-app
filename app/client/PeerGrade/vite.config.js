@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 // Set up environment variables
 dotenv.config();
 
-const FRONEND_PORT = process.env.BACKEND_PORT; 
+const FRONTEND_PORT = process.env.BACKEND_PORT; 
 const FRONTEND_HOST = process.env.BACKEND_HOST;
 
 // https://vitejs.dev/config/

@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { user as users } from "@/lib/dbData"; // DB CALL: this is user data being pulled from the 'db'
-import { setCurrentUser } from '@/lib/redux/hooks/userSlice'; //REDUX slice
 
 const ForgotPasswordCard = ({ onSwitchToLogin }) => {
   const navigate = useNavigate();

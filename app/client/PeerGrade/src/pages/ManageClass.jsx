@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import ClassCard from '@/components/class/ClassCard';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
-import { iClass, assignment, PeerReview, submission } from '@/lib/dbData'; // Make sure to import these correctly
+import { iClass, assignment, PeerReview, submission } from '@/lib/dbData';
 
 const AddClassModal = ({ show, onClose, onAddClass }) => {
   const [classname, setClassname] = useState('');

@@ -53,7 +53,8 @@ const authRouter = (prisma) => {
       if (!user) {
         return res.status(400).json({ message: info.message });
       }
-      if (!user.emailVerified) { 
+      if (!user.isVerified) { 
+        console.log(user); 
         return res.status(400).json({ message: "Please verify your email before logging in" });
       }
       req.logIn(user, (err) => {
@@ -109,17 +110,19 @@ const authRouter = (prisma) => {
 
   router.post("/reset-password", async (req, res) => {
     const token = req.query.token; 
-    const { newPassword } = req.body;
+    const { password } = req.body;
+    console.log(token);
 
     try {
       const decoded = jwt.verify(token, JWT_SECRET);
+      console.log(decoded);
       const user = await checkUserByEmail(decoded.email);
   
       if (!user) {
         return res.status(404).json({ message: "No user with that email" });
       }
   
-      const hashedPassword = await bcrypt.hash(newPassword, SALT_ROUNDS);
+      const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
   
       await prisma.user.update({
         where: { email: decoded.email },

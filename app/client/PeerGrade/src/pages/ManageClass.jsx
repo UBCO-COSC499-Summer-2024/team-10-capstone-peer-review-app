@@ -128,14 +128,18 @@ const ManageClass = () => {
   const userClasses = iClass.filter((classItem) => classItem.instructor_id === currentUser.userId);
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">My Classrooms</h1>
-        <Button onClick={() => setModalOpen(true)} className="flex items-center">
-          <Plus className="mr-2" />
-          Add a class
-        </Button>
-      </div>
+    <div className="main-container bg-black p-6">
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h1 className="text-3xl font-bold">My Classrooms</h1>
+          </div>
+          <div>
+              <Button onClick={() => setModalOpen(true)} className="flex items-center">
+              <Plus className="mr-2" />
+              Add a class
+            </Button>
+          </div>
+        </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {userClasses.map((classItem) => (
           <div key={classItem.class_id} className="relative">

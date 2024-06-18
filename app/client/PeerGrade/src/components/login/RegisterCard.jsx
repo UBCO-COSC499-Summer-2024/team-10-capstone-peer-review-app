@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { user as users, addUser } from "@/lib/dbData"; //DB call user, IGNORE: addUser (mock data call)
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
 import { ChevronDown as ChevronDownIcon, ChevronUp as ChevronUpIcon, Check as CheckIcon } from "lucide-react";
+import { registerUser } from '@/api/register'; // Import the register function
 
 const RegisterCard = ({ onSwitchToLogin }) => {
   const [firstName, setFirstName] = useState('');
@@ -21,64 +21,31 @@ const RegisterCard = ({ onSwitchToLogin }) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Password validation regex: 8 characters, 1 uppercase, 1 lowercase, 1 special character
-    // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
-    // if (!passwordRegex.test(password)) {
-    //   setError('Password must be at least 8 characters long, with at least one uppercase letter, one lowercase letter, one number, and one special character.');
-    //   return;
-    // }
 
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     } else {
-      setError('')
+      setError('');
     }
 
-
-    // TODO: Add a folder directory for API calls? then we can just import the fetch calls  
-
-    // TODO ADD ENV VARS
-    const createUser = async (newUser) => {
-      try {
-        const response = await fetch('http://localhost:3000/api/auth/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(newUser),
-        });
-
-        console.log(JSON.stringify(newUser))
-    
-        if (!response.ok) {
-          console.error('HTTP error! status: ', response.status);
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-    
-        const data = await response.json();
-        return data;
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    };
-    
     const newUser = {
-      username: "testuser", 
-      password: password,
-      email: email,
+      username: "testuser",
+      password,
+      email,
       firstname: firstName,
       lastname: lastName,
-      role: value 
+      role: value,
     };
 
-  
-    createUser(newUser); //DB PROCESS: Add the user to the database here
-    onSwitchToLogin(); // Switch back to login after registration
+    try {
+      await registerUser(newUser); // Use the register function
+      onSwitchToLogin(); // Switch back to login after registration
+    } catch (error) {
+      setError('An error occurred while registering');
+    }
   };
 
   const dropdown_options = [
@@ -130,7 +97,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
               />
             </div>
           </div>
-          <div>
+          {/* <div>
             <label htmlFor="institutionName" className="block text-sm font-medium text-gray-700">Learning Institution Name:</label>
             <input
               id="institutionName"
@@ -141,7 +108,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
               required
               className="block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
-          </div>
+          </div> */}
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email Address:</label>
             <input
@@ -238,9 +205,9 @@ const RegisterCard = ({ onSwitchToLogin }) => {
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <div className='flex justify-center'>
             <Button
-              variant="success"
+              variant="outline"
               type="submit"
-              className="w-full"
+              className="w-full bg-green-200"
             >
               Sign up
             </Button>

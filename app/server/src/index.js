@@ -28,8 +28,9 @@ const prisma = new PrismaClient();
 
 // Initialing cookies to be used for session management
 // Add a secret key soon to cookie parser, this allows user to access cookie data from 
-// req.cookies
-app.use(cookieParser())
+// req.cookie
+
+app.use(express.json()); // Parse JSON bodies with express middleware
 // Populates the req.session object with the session data
 app.use(session({
 	secret: "super secret", // Secret to sign the session ID cookie
@@ -46,12 +47,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 // Make sure to include any middleare before the routes if you want the middleware to apply to the routes
 
-// Middlewares
-app.use(express.json()); // Parse JSON bodies with express middleware
-
-
+// Middleware
 app.use("/students", passport.authenticate('local'), studentsRouter(prisma));
-app.use("/instructors", passport.authenticate('local'), instructorsRouter(prisma))
+app.use("/instructors", instructorsRouter(prisma))
 app.use("/auth", authRouter(prisma));
 
 app.listen(BACKEND_PORT, () => {
@@ -60,7 +58,7 @@ app.listen(BACKEND_PORT, () => {
 
 app.get("/", (req, res) => {
 	console.log(req.session); 
-	console.log(req.session.id);
+	console.log("hello from session id!", req.session.id);
 	res.json({ message: "Hello from the server!" });
 });
 

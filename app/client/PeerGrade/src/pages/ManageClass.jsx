@@ -100,7 +100,7 @@ const ManageClass = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const currentUser = useSelector((state) => state.user.currentUser);
 
-  if (!currentUser || (currentUser.type !== 'instructor' && currentUser.type !== 'admin')) {
+  if (!currentUser || (currentUser.role !== 'INSTRUCTOR' && currentUser.role !== 'ADMIN')) {
     return <div>You do not have permission to view this page.</div>;
   }
 
@@ -108,7 +108,7 @@ const ManageClass = () => {
     const classData = {
       ...newClass,
       class_id: iClass.length + 1,
-      instructor_id: currentUser.user_id,
+      instructor_id: currentUser.userId,
       start: new Date(),
       end: new Date(),
     };
@@ -125,7 +125,7 @@ const ManageClass = () => {
     }
   };
 
-  const userClasses = iClass.filter((classItem) => classItem.instructor_id === currentUser.user_id);
+  const userClasses = iClass.filter((classItem) => classItem.instructor_id === currentUser.userId);
 
   return (
     <div className="max-w-7xl mx-auto p-6">

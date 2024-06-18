@@ -10,6 +10,7 @@ jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: () => mockNavigate,
 }));
+
 jest.mock('@/lib/dbData', () => ({
     user: [
       {
@@ -27,17 +28,41 @@ jest.mock('@/lib/dbData', () => ({
     iClass: [],
   }));  
 
+const mockStore = configureMockStore();
+let store;
+
+beforeEach(() => {
+  store = mockStore({
+    user: {
+      // initial state
+    }
+  });
+  jest.clearAllMocks();
+});
 
 describe('LoginCard', () => {
-  const mockStore = configureMockStore();
-  let store;
-  
   beforeEach(() => {
-    store = mockStore({
-        user: {
-          // initial state
-        }
-      });
+    global.fetch = jest.fn((url, options) => {
+      if (JSON.parse(options.body).email === 'valid@example.com' && JSON.parse(options.body).password === 'validpassword@A1') {
+        return Promise.resolve({
+          json: () => Promise.resolve({
+            class_id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            email: 'valid@example.com',
+            firstname: 'Test',
+            lastname: 'User',
+            type: 'admin',
+            user_id: 1,
+            username: 'testUser',
+          })
+        });
+      } else {
+        return Promise.resolve({
+          json: () => Promise.resolve({
+            message: 'Invalid credentials'
+          })
+        });
+      }
+    });
   });
 
   test('renders without crashing', () => {
@@ -51,7 +76,7 @@ describe('LoginCard', () => {
     expect(getByText('Login')).toBeInTheDocument();
   });
 
-  test('shows error message when invalid credentials are entered', () => {
+  test('shows error message when invalid credentials are entered', async () => {
     const { getByLabelText, getByText, getByRole } = render(
       <Provider store={store}>
         <Router>
@@ -64,16 +89,18 @@ describe('LoginCard', () => {
     fireEvent.change(getByLabelText('Password'), { target: { value: 'wrongpasswordA@1' } });
     fireEvent.click(getByRole('button', { name: 'Sign in' }));
 
-    expect(getByText('Invalid email or password')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(getByText('Invalid credentials')).toBeInTheDocument();
+    });
   });
 
   test('navigates to dashboard and dispatches action when valid credentials are entered', async () => {
     const { getByLabelText, getByRole } = render(
-        <Provider store={store}>
+      <Provider store={store}>
         <Router>
-            <LoginCard />
+          <LoginCard />
         </Router>
-        </Provider>
+      </Provider>
     );
 
     fireEvent.change(getByLabelText('Email address'), { target: { value: 'valid@example.com' } });
@@ -82,21 +109,20 @@ describe('LoginCard', () => {
 
     // Wait for any changes to the DOM that occur as a result of the form submission
     await waitFor(() => {
-        // Check if the navigate function was called
-        expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
+      // Check if the navigate function was called
+      expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
 
-        // Check if the setCurrentUser action was dispatched
-        const actions = store.getActions();
-        expect(actions[0]).toEqual(setCurrentUser({
-            class_id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            email: 'valid@example.com',
-            firstname: 'Test',
-            lastname: 'User',
-            password: 'validpassword@A1',
-            type: 'admin',
-            user_id: 1,
-            username: 'testUser',
-          }));          
+      // Check if the setCurrentUser action was dispatched
+      const actions = store.getActions();
+      expect(actions[0]).toEqual(setCurrentUser({
+        class_id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        email: 'valid@example.com',
+        firstname: 'Test',
+        lastname: 'User',
+        type: 'admin',
+        user_id: 1,
+        username: 'testUser',
+      }));
     });
   });
 });

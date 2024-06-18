@@ -16,20 +16,24 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
-import { iClass as classesData, assignment as assignmentsData } from '@/lib/dbData'; //DB CALLS - ignore the iClass as classdata, ssignment as assigndata, this was just easier for me when i switched to redux (nothing to do with db)
+import { iClass as classesData, assignment as assignmentsData } from '@/lib/dbData';
 
 export default function AppNavbar() {
   const location = useLocation();
-  const currentUser = useSelector((state) => state.user.currentUser); //REDUX: user state, after user state stored in login, it has that user logged info saved
+  const currentUser = useSelector((state) => state.user.currentUser);
 
-  // Filter classes based on user class_ids
-  //DB PROCESS userClasses should be a list of classes that are related to the user, userid should be used to find the list of classes and stored in const userClasses. 
-  const userClasses = classesData.filter(classItem => currentUser.class_id.includes(classItem.class_id));
+  if (!currentUser) {
+    return null;
+  }
 
-  // Filter assignments based on user class_ids and evaluation_type 'peer'
-  //DB PROCESS userReviewAssignments should be a list of reviews that are related to the user, user.reviews should be used to find the list of reviews and should be stored in userReviewAssignemnts. 
+  const userClasses = classesData.filter(classItem => {
+    return Array.isArray(currentUser.classes) && currentUser.classes.includes(classItem.class_id);
+  });
+
   const userReviewAssignments = assignmentsData
-    .filter(assignment => currentUser.class_id.includes(assignment.class_id) && assignment.evaluation_type === 'peer')
+    .filter(assignment => {
+      return Array.isArray(currentUser.classes) && currentUser.classes.includes(assignment.class_id) && assignment.evaluation_type === 'peer';
+    })
     .sort((a, b) => new Date(a.due_date) - new Date(b.due_date))
     .slice(0, 3);
 
@@ -86,7 +90,7 @@ export default function AppNavbar() {
                     {classItem.description}
                   </ListItem>
                 ))}
-                {(currentUser.type === 'instructor' || currentUser.type === 'admin') && (
+                {(currentUser.role === 'INSTRUCTOR' || currentUser.role === 'ADMIN') && (
                   <ListItem
                     title="Manage Classes"
                     href="/manageclass"

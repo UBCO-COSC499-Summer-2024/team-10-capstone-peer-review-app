@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 
-const sendEmail = async (to, subject, text) => {
+const sendEmail = async (to, subject, htmlContent) => {
   let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -13,7 +13,7 @@ const sendEmail = async (to, subject, text) => {
     from: "PeerGrade", 
     to: to, 
     subject: subject,  
-    text: text, 
+    html: htmlContent, 
   });
 
   console.log('Message sent: %s', info.messageId);

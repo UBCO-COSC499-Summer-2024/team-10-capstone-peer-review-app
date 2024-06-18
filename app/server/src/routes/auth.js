@@ -9,10 +9,8 @@ import sendEmail from "../helpers/mailer.js";
 const authRouter = (prisma) => { 
   const router = express.Router();
 
-  // TODO move to .env
-  const SALT_ROUNDS = 10;
-
-  const JWT_SECRET = "secret-key"
+  const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS, 10);
+  const JWT_SECRET = process.env.JWT_SECRET; 
 
   // Enable local Strat for Login 
   LocalStrategy(passport, prisma); 
@@ -26,7 +24,6 @@ const authRouter = (prisma) => {
   router.post('/register', async (req, res) => {
     // Check if user already exists with email
     const existingUser = await checkUserByEmail(req.body.email);
-    console.log(existingUser)
     if (existingUser) {
         return res.status(400).json({ message: 'User with that email already exists' }); 
     }
@@ -90,13 +87,15 @@ const authRouter = (prisma) => {
     if (!user) {
       return res.status(404).json({ message: "No user with that email" });
     }
-    const token = jwt.sign({ email }, JWT_SECRET, {expiresIn: "30m"});
+    const token = jwt.sign({ email }, JWT_SECRET, {expiresIn: "15m"});
 
+    // TODO change link to enter a new password page, have token in the query string, 
+    // Once user clicks submit on change password 
     const resetLink = `http://localhost:5001/auth/reset-password?token=${token}`;
 
     const htmlContent = 
     `<p>You requested a password reset</p>
-    <p>Click this link to reset your password. The link will expire in 30 minutes: 
+    <p>Click this link to reset your password. The link will expire in 15 minutes: 
     <a href="${resetLink}">Reset Password</a>
     </p>`;
 
@@ -109,7 +108,7 @@ const authRouter = (prisma) => {
   });
 
   router.post("/reset-password", async (req, res) => {
-    const { token } = req.query.token; 
+    const token = req.query.token; 
     const { newPassword } = req.body;
 
     try {
@@ -142,19 +141,22 @@ const authRouter = (prisma) => {
     if (!user) {
       return res.status(404).json({ message: "No user with that email" });
     }
-    // Could be a security concern since 
+    // Could be a security concern if we use JWTs for auth later on since 
     // tokens can be seen the browser history, could be leaked through REFER header
     // Set up HTTPS to prevent this?
-    const token = jwt.sign({ email }, JWT_SECRET, {expiresIn: "30m"});
+    const token = jwt.sign({ email }, JWT_SECRET, {expiresIn: "15m"});
 
     // Ask Kevin / Scott about this. is this a good approach? 
     // TODO change domain for prod? Ask scott about this 
-    const verificationLink = `http://localhost:3000/api/auth/confirm-email?token=${token}`; 
+
+    // TODO: Change to redirect to login page, have a api call to do the confirm-email route 
+    // Works for now with back-end
+    const verificationLink = `http://localhost:5001/auth/confirm-email?token=${token}`; 
 
     const htmlContent = 
     `<p>👋 Welcome to PeerGrade!</p>
     <p>Thanks for signing up. Please verify your email address to get started.</p>
-    <p>Click this link to verify your email. The link will expire in 30 minutes: 
+    <p>Click this link to verify your email. The link will expire in 15m minutes: 
     <a href="${verificationLink}">Verification Link</a>
     </p>`;
 
@@ -170,7 +172,7 @@ const authRouter = (prisma) => {
   // Confirm Email
   router.post("/confirm-email", async (req, res) => {
     // Just retrieve the token from the query string
-    const { token } = req.query.token; 
+    const token = req.query.token;
     try { 
       const decoded = jwt.verify(token, JWT_SECRET);  
       const user = await checkUserByEmail(decoded.email);
@@ -183,7 +185,7 @@ const authRouter = (prisma) => {
       });
         return res.status(200).json({ message: "Email verified successfully" });
     } catch (err) { 
-      return res.status(400).json({ message: "Invalid or expired token" });
+      return res.status(400).json({ message: "Invalid or expired token", error: err.toString() });
     }
   });
 

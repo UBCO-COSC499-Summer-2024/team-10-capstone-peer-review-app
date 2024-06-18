@@ -45,13 +45,15 @@ const RegisterCard = ({ onSwitchToLogin }) => {
     // TODO ADD ENV VARS
     const createUser = async (newUser) => {
       try {
-        const response = await fetch('http://peergrade-client-dev:3000/api/auth/register', {
+        const response = await fetch('http://localhost:3000/api/auth/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(newUser),
         });
+
+        console.log(JSON.stringify(newUser))
     
         if (!response.ok) {
           console.error('HTTP error! status: ', response.status);

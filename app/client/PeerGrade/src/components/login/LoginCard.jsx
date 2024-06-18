@@ -30,7 +30,7 @@ const LoginCard = ({ onSwitchToRegister }) => {
       // TODO: Add a folder directory for API calls? then we can just importthe 
       // ADD ENV VARS
       // Create a fetch request to the /login endpoint
-      fetch('http://peergade-client-dev:3000/api/auth/login', {
+      fetch('http://localhost:3000/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -50,17 +50,15 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Since the last cycle API endpoints have been developed thoroughly as well as well tested and documented
+* DB tests is still in progress and facing some integration issues with it
+* Login and auth has been done and tested
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Complete API endpoints for most of our operations, hopefully 
+* Run DB tests successfully 
+* Make API endpoints fool proof and secure
   
-  
-
 # Bhavya's Log for Cycle 3
 
 

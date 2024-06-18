@@ -17,7 +17,8 @@ const setupRoutes = (prisma) => {
 
     router.use('/auth', authRouter(prisma)); 
     router.use('/students', ensureUser, studentsRouter(prisma));
-    router.use('/instructors', ensureUser, ensureInstructor, instructorsRouter(prisma)); 
+    router.use('/instructors', ensureUser, ensureInstructor, instructorsRouter(prisma));
+    router.use('/admins', ensureUser, ensureAdmin, instructorsRouter(prisma));  
 
     return router;
 }

@@ -6,6 +6,7 @@ const instructorsRouter = (prisma) => {
     //working
     router.get("/", async (req, res) => {
         try {
+            console.log(req.user); // added for debugging purpose
             const users = await prisma.user.findMany({ where: { role: "INSTRUCTOR" }});
             res.status(200).json(users);
         } catch (error) {

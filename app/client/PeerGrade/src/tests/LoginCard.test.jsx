@@ -11,6 +11,23 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
 }));
 
+jest.mock('@/lib/dbData', () => ({
+    user: [
+      {
+        user_id: 1,
+        username: "testUser",
+        password: "validpassword@A1",
+        firstname: "Test",
+        lastname: "User",
+        email: "valid@example.com",
+        class_id: [1,2,3,4,5,6,7,8,9,10],
+        type: "admin"
+      },
+    ],
+    addUser: jest.fn(),
+    iClass: [],
+  }));  
+
 const mockStore = configureMockStore();
 let store;
 

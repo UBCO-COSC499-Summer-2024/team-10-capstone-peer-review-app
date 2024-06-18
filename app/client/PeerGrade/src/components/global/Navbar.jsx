@@ -40,17 +40,26 @@ export default function AppNavbar() {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <div className="w-full py-3 bg-white shadow-md">
+    <div className="w-full py-3 px-4 bg-white shadow-md">
       <NavigationMenu className="flex items-center justify-between w-full max-w-screen-xl mx-auto ">
         <NavigationMenuList className="flex space-x-4">
           <NavigationMenuItem>
-            <Link to="/dashboard" className={cn(navigationMenuTriggerStyle(), isActive('/dashboard') && 'font-bold border-b-4')}>
+            <Link to="/dashboard">
+              <img src="logo.png" className="w-10 h-10"/>
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <Link to="/dashboard" className={cn(navigationMenuTriggerStyle(), isActive('/dashboard') && 'font-bold')}>
               Dashboard
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuTrigger>
-              Peer-Review
+            <NavigationMenuTrigger className='group'>
+              <NavigationMenuItem>
+                  <Link to="/peer-review" className={cn(navigationMenuTriggerStyle(), isActive('/peer-review') && 'font-bold group')}>
+                    Peer-Review
+                  </Link>
+              </NavigationMenuItem>
             </NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="bg-white grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
@@ -67,7 +76,7 @@ export default function AppNavbar() {
             </NavigationMenuContent>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuTrigger className={cn(isActive('/classes') || isActive('/manageclasses') && 'font-bold border-b-4')}>
+            <NavigationMenuTrigger className={cn(navigationMenuTriggerStyle(), isActive('/classes') || isActive('/manageclasses') && 'font-bold')}>
               Classes
             </NavigationMenuTrigger>
             <NavigationMenuContent>
@@ -94,7 +103,7 @@ export default function AppNavbar() {
             </NavigationMenuContent>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <Link to="/settings" className={cn(navigationMenuTriggerStyle(), isActive('/settings') && 'font-bold border-b-4')}>
+            <Link to="/settings" className={cn(navigationMenuTriggerStyle(), isActive('/settings') && 'font-bold')}>
               Settings
             </Link>
           </NavigationMenuItem>

@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { setCurrentUser } from '@/lib/redux/hooks/userSlice'; //REDUX slice
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 
-const LoginCard = ({ onSwitchToRegister }) => {
+const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
@@ -88,7 +88,7 @@ const LoginCard = ({ onSwitchToRegister }) => {
               required
               className={`block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-100 border ${error ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
             />
-            <div className="absolute mt-5 inset-y-0 right-0 pr-3 flex items-center">
+            <div className="absolute mt-6 inset-y-0 right-0 pr-3 flex items-center">
               <button type="button" onClick={() => setPasswordVisible(!passwordVisible)}>
                 {passwordVisible ? <EyeSlashIcon className="h-5 w-5 text-gray-500" /> : <EyeIcon className="h-5 w-5 text-gray-500" />}
               </button>
@@ -104,10 +104,13 @@ const LoginCard = ({ onSwitchToRegister }) => {
             </button>
           </div>
         </form>
+        <p className="text-sm text-gray-600">
+          <button onClick={onSwitchToForgotPassword} className="text-green-600 hover:text-green-500">Forgot your password?</button>
+        </p>
       </CardContent>
       <CardFooter className="text-center">
         <p className="text-sm text-gray-600">
-          Don't have an account? <button onClick={onSwitchToRegister} className="text-green-600 hover:text-green-500 hover:border-b-2">Sign up</button>
+          Don't have an account? <button onClick={onSwitchToRegister} className="text-green-600 hover:text-green-500">Sign up</button>
         </p>
       </CardFooter>
     </Card>

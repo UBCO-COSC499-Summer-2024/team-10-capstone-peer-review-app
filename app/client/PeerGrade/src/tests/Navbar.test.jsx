@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import configureStore from 'redux-mock-store'; // You may need to install this package
+import configureStore from 'redux-mock-store';
 
 import AppNavbar from '@/components/global/Navbar';
 
@@ -49,5 +49,5 @@ describe('AppNavbar', () => {
     expect(settingsLink).toBeInTheDocument();
   });
 
-  // Add more specific tests as needed based on your application logic
+  // Needs more tests based on showing the Classes cards and the Peer Review cards
 });

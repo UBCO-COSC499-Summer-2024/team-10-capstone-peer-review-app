@@ -4,7 +4,7 @@ import passport from "passport";
 import jwt from "jsonwebtoken";
 
 import LocalStrategy from "../middleware/passportStrategies/localStrategy.js";
-import sendEmail from "src/helpers/mailer.js";
+import sendEmail from "../helpers/mailer.js";
 
 const authRouter = (prisma) => { 
   const router = express.Router();
@@ -25,8 +25,8 @@ const authRouter = (prisma) => {
   // Register 
   router.post('/register', async (req, res) => {
     // Check if user already exists with email
-    const existingUser = checkUserByEmail(req.body.email);
-    
+    const existingUser = await checkUserByEmail(req.body.email);
+    console.log(existingUser)
     if (existingUser) {
         return res.status(400).json({ message: 'User with that email already exists' }); 
     }
@@ -92,7 +92,7 @@ const authRouter = (prisma) => {
     }
     const token = jwt.sign({ email }, JWT_SECRET, {expiresIn: "30m"});
 
-    const resetLink = `http://localhost:3000/api/auth/reset-password?token=${token}`;
+    const resetLink = `http://localhost:5001/auth/reset-password?token=${token}`;
 
     const htmlContent = 
     `<p>You requested a password reset</p>
@@ -101,10 +101,10 @@ const authRouter = (prisma) => {
     </p>`;
 
     try { 
-      await sendEmail(email, 'Password Reset', htmlContent);
+      await sendEmail(email, "Password Reset", htmlContent);
       return res.status(200).json({ message: 'Password reset email sent' });
     } catch (error) { 
-      return res.status(500).json({ message: 'Failed to send password reset email' });
+      return res.status(500).json({ message: `Failed to send password reset email: ${error}` });
     }
   });
 
@@ -162,7 +162,7 @@ const authRouter = (prisma) => {
       await sendEmail(email, 'Email Verification', htmlContent);
       return res.status(200).json({ message: 'Verification email sent' });
     } catch (error) { 
-      return res.status(500).json({ message: 'Failed to send verification email' });
+      return res.status(500).json({ message: `Failed to send verification email: ${error}` });
     } 
   });
 
@@ -186,8 +186,6 @@ const authRouter = (prisma) => {
       return res.status(400).json({ message: "Invalid or expired token" });
     }
   });
-
-
 
   return router;
 }

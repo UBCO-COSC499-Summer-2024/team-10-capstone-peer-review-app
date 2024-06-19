@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import ClassCard from '@/components/class/ClassCard';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
-import { iClass, assignment, PeerReview, submission } from '@/lib/dbData';
+import { iClass, assignment, PeerReview, submission } from '@/lib/dbData'; // Adjust imports if needed
 
 const AddClassModal = ({ show, onClose, onAddClass }) => {
   const [classname, setClassname] = useState('');
@@ -98,6 +98,7 @@ const AddClassModal = ({ show, onClose, onAddClass }) => {
 
 const ManageClass = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [classes, setClasses] = useState(iClass);
   const currentUser = useSelector((state) => state.user.currentUser);
 
   if (!currentUser || (currentUser.role !== 'INSTRUCTOR' && currentUser.role !== 'ADMIN')) {
@@ -107,25 +108,23 @@ const ManageClass = () => {
   const handleAddClass = (newClass) => {
     const classData = {
       ...newClass,
-      class_id: iClass.length + 1,
+      class_id: classes.length + 1,
       instructor_id: currentUser.userId,
       start: new Date(),
       end: new Date(),
     };
     // Add the new class to the database here
-    iClass.push(classData);
+    setClasses([...classes, classData]);
     setModalOpen(false);
   };
 
   const handleDeleteClass = (classId) => {
-    const classIndex = iClass.findIndex((cls) => cls.class_id === classId);
-    if (classIndex > -1) {
-      // Remove the class from the database here
-      iClass.splice(classIndex, 1);
-    }
+    const updatedClasses = classes.filter((cls) => cls.class_id !== classId);
+    // Remove the class from the database here
+    setClasses(updatedClasses);
   };
 
-  const userClasses = iClass.filter((classItem) => classItem.instructor_id === currentUser.userId);
+  const userClasses = classes.filter((classItem) => classItem.instructor_id === currentUser.userId);
 
   return (
     <div className="max-w-7xl mx-auto p-6">
@@ -155,7 +154,7 @@ const ManageClass = () => {
             <button
               onClick={() => handleDeleteClass(classItem.class_id)}
               className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
-              data-testid={`delete-class-${classItem.class_id}`} // Add data-testid attribute
+              data-testid={`delete-class-${classItem.class_id}`} // Add data-testid attribute for testing purposes
             >
               &times;
             </button>

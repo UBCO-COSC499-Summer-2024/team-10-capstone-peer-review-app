@@ -1,45 +1,42 @@
 
-# Team 10's Team Dashboard for Cycle 4
+# Team 10's Team Dashboard for Cycle 5
 
 
 ## Sunday, June 16, 2024, 09:14 PM - Tuesday, June 18, 2024, 09:14 PM
 
 
-### Major features worked on in c-4
-*  
+### Major features worked on in c-5
+*  Major Use Cases 1, 2, 3: Login / Register / Auth / Verify Email / Forgot Password
   
-*  
+*  Major Use Cases 4, 14, 15, 17, 18: Class CRUD Api endpoints / UI
   
-*  
-  
-
-### Major features completed in c-4
-*  
-  
-*  
-  
-*  
+*  Major Use Case 10: Role Requests / Admin UI for accepting and denying role requests
   
 
-### Major features to work on for c-5
-*  
+### Major features completed in c-5
   
-*  
+*  None completely yet 
+
+### Major features to work on for c-6
+* Major Use Cases 1, 2, 3
   
-*  
+* Major Use Cases 4, 15, 15, 17, 18
+  
+* Major Use Case 10: Role Requests / Admin UI for accepting and denying role requests
   
 
 ### Team Issues and Hurdles for c-5
-*  
+*  Honestly largest issue you could say is that we are like 75% done on most of these major use cases,
+   we just neeed to integrate the backend and our UI together. I know mahir already started making an API calls
+   folder so we just need to set-up the calls in our front-end to make everything unified
   
-*  
-  
-*  
+* Also, we need to think about how to do dynamic page-redirects for auth related things, I believe we can do this redux
+  But we don't know yet if that would be a security concern moving forward. 
   
 
 ### Clockify Dashboard for this Week
 
-![Clockify Dashboard for c-4](./team_dashboard_images/clockify_dashboards/clockify_dashboard_c4.png)
+![Clockify Dashboard for c-5](./team_dashboard_images/clockify_dashboards/clockify_dashboard_c5.png)
   
   
 

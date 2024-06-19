@@ -15,7 +15,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
-import { Avatar } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { iClass as classesData, assignment as assignmentsData } from '@/lib/dbData';
 
 export default function AppNavbar() {
@@ -39,6 +39,13 @@ export default function AppNavbar() {
 
   const isActive = (path) => location.pathname === path;
 
+  const getInitials = (firstName, lastName) => {
+    const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : '';
+    const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : '';
+    return `${firstInitial}${lastInitial}`;
+  };
+
+  
   return (
     <div className="w-full py-3 px-4 bg-white shadow-md">
       <NavigationMenu className="flex items-center justify-between w-full max-w-screen-xl mx-auto ">
@@ -117,7 +124,13 @@ export default function AppNavbar() {
             </Button>
           </Link>
           <Button variant="outline" size="icon" className="bg-indigo-100"><Bell className="w-5 text-gray-700" /></Button>
-          <Link to={"/settings"}><Avatar className="w-9 h-9 bg-gray-200 rounded-full shadow-md" /></Link>
+          <Link to={"/settings"}>
+            <Avatar className="w-9 h-9 bg-gray-200 rounded-full shadow-md">
+              <AvatarFallback>
+                {getInitials(currentUser.firstname, currentUser.lastname)}
+              </AvatarFallback>
+            </Avatar>
+          </Link>
         </div>
       </NavigationMenu>
     </div>

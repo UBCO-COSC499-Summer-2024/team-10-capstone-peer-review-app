@@ -9,6 +9,13 @@ import { Command, CommandList, CommandGroup, CommandItem } from '@/components/ui
 import { Link, useLocation } from 'react-router-dom';
 import { Input } from "@/components/ui/input";
 import { cn } from '@/lib/utils';
+import {
+    Dialog,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -19,6 +26,8 @@ function ClassTable() {
     const [sortOrder, setSortOrder] = useState({ key: 'classname', order: 'asc' });
     const [filter, setFilter] = useState({ term: '', size: '', searchQuery: '', instructorQuery: '' });
     const [openTerm, setOpenTerm] = useState(false);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [selectedClass, setSelectedClass] = useState({class_id: 1,instructor_id: 1,classname: "ART 101",description: "Introduction to Art.",start: Date.now(),term: "Winter",end: Date.now(),size: 50});
     const itemsPerPage = 5;
     const query = useQuery();
     const queryClassname = query.get('query') || '';
@@ -43,6 +52,10 @@ function ClassTable() {
         });
     };
 
+    const handleTrashClick = (selected_class) => {
+        setSelectedClass(selected_class);
+        setDialogOpen(true);
+    };
     const filteredClasses = classesData
         .filter(classItem => 
             (filter.searchQuery ? classItem.classname.toLowerCase().includes(filter.searchQuery.toLowerCase()) : true) &&
@@ -157,7 +170,7 @@ function ClassTable() {
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="text-left cursor-pointer" onClick={() => handleSort('classname')}>
+                        <TableHead className="text-left cursor-pointer" onClick={() => handleSort('classname')} data-testid="class-name-header">
                             <div className="flex items-center">
                                 Class Name {sortOrder.key === 'classname' 
                                     ? (sortOrder.order === 'asc' 
@@ -210,10 +223,10 @@ function ClassTable() {
                             <TableCell className="p-2">{classItem.term}</TableCell>
                             <TableCell className="p-2">{classItem.size}</TableCell>
                             <TableCell className="p-2">
-                                <Button variant="ghost" size="icon" className="text-red-500 hover:bg-red-100">
+                                <Button variant="ghost" size="icon" className="text-red-500 hover:bg-red-100" onClick={() => handleTrashClick(classItem)} data-testid={`delete-button-${classItem.class_id}`}>
                                     <Trash2 className="h-5 w-5" />
                                 </Button>
-                                <Button variant="ghost" size="icon" className="text-blue-500 hover:bg-blue-100">
+                                <Button variant="ghost" size="icon" className="text-blue-500 hover:bg-blue-100" data-testid="edit-button">
                                     <Pencil className="h-5 w-5" />
                                 </Button>
                             </TableCell>
@@ -230,11 +243,23 @@ function ClassTable() {
                     Next
                 </Button>
             </div>
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Delete Class</DialogTitle>
+                    </DialogHeader>
+                    Are you sure you want to delete the class {selectedClass.classname}?
+                    <DialogFooter>
+                        <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+                        <Button variant="destructive">Delete</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }
 
-function Classes() {
+function Search() {
     return (
         <div className="w-full main-container py-6 space-y-6">
             <h1 className="text-2xl font-bold">All Classes</h1>
@@ -243,4 +268,4 @@ function Classes() {
     );
 }
 
-export default Classes;
+export default Search;

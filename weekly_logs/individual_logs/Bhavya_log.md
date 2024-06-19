@@ -1,4 +1,122 @@
 
+# Bhavya's Log for Cycle 5
+
+
+## Friday, June 14, 2024, 09:14 PM - Tuesday, June 18, 2024, 09:14 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[135](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/135)**: Major Use Case 19: Delete Classes  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[132](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/132)**: Major Use Case 17: View Class Dashboard  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[131](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/131)**: Major Use Case 16-1: Create/Manage Assignment  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[130](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/130)**: Major Use Case 15: Manage Class  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[129](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/129)**: Major Use Case 14: Create New Class  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[125](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/125)**: Major Use Case 10: Requests to Become Instructor / Admin  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[119](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/119)**: Major Use Case 4: View List of Classes  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[114](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/114)**: Instructor Api Endpoints  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[105](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/105)**: Create class api endpoint w/ associated tests   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[88](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/88)**: Integrate Enroll Request in Classes  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[87](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/87)**: local auth using Passport.js and bcrypt.js  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **instructor api endpoints** *(Total duration: 1.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 18, 2024, 08:01 PM - Ongoing *(Ongoing)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, June 17, 2024, 12:27 AM - Monday, June 17, 2024, 02:05 AM *(1.6 hours)*  
+  
+&nbsp; &nbsp; :watch: **Instructors api** *(Total duration: 5.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 16, 2024, 04:51 PM - Sunday, June 16, 2024, 08:33 PM *(3.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, June 15, 2024, 12:21 AM - Saturday, June 15, 2024, 01:44 AM *(1.4 hours)*  
+  
+
+## All Features worked on this cycle:
+
+## Features completed on this cycle:
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[105](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/105)**: Create class api endpoint w/ associated tests   
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[87](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/87)**: local auth using Passport.js and bcrypt.js  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[135](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/135)**: Major Use Case 19: Delete Classes  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[132](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/132)**: Major Use Case 17: View Class Dashboard  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[131](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/131)**: Major Use Case 16-1: Create/Manage Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[130](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/130)**: Major Use Case 15: Manage Class  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[129](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/129)**: Major Use Case 14: Create New Class  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[125](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/125)**: Major Use Case 10: Requests to Become Instructor / Admin  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[119](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/119)**: Major Use Case 4: View List of Classes  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[114](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/114)**: Instructor Api Endpoints  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[97](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/97)**: DB tables abstraction  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[88](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/88)**: Integrate Enroll Request in Classes  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[84](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/84)**: Post MVP Milestone Database Refactor With TA or Prof  
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Bhavya's Log for Cycle 4
 
 

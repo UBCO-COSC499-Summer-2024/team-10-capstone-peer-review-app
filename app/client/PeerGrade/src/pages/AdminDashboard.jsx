@@ -1,7 +1,7 @@
 // src/pages/AdminDashboard.jsx
 import React, { useState } from 'react';
 import { Menubar, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar';
-import Stats from '@/components/admin/Stats';
+import Overview from '@/components/admin/Overview';
 import Users from '@/components/admin/Users';
 import Classes from '@/components/admin/Classes';
 import Assignments from '@/components/admin/Assign';
@@ -13,8 +13,8 @@ const AdminDashboard = () => {
 
   const renderTabContent = () => {
     switch (selectedTab) {
-      case 'stats':
-        return <Stats />;
+      case 'overview':
+        return <Overview />;
       case 'users':
         return <Users />;
       case 'classes':
@@ -26,7 +26,7 @@ const AdminDashboard = () => {
       case 'interactions':
         return <Interactions />;
       default:
-        return <Stats />;
+        return <Overview />;
     }
   };
 
@@ -34,7 +34,7 @@ const AdminDashboard = () => {
     <div className="main-container mx-auto p-6">
       <Menubar>
         <MenubarMenu>
-        <MenubarTrigger onClick={() => setSelectedTab('stats')}>Stats</MenubarTrigger>
+        <MenubarTrigger onClick={() => setSelectedTab('overview')}>Overview</MenubarTrigger>
         </MenubarMenu>
         <MenubarMenu>
         <MenubarTrigger onClick={() => setSelectedTab('users')}>Users</MenubarTrigger>

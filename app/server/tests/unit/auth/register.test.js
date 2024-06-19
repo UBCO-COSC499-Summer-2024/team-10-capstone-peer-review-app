@@ -2,7 +2,7 @@ import request from 'supertest';
 import app from '../../../src/index.js'; 
 import bcrypt from 'bcrypt';
 
-import prisma from '../../../src/prisma.js';
+// need to import prisma client to access the database
 
 describe('Register route', () => {
     test('should respond with a 200 for valid registration', async () => {
@@ -36,21 +36,18 @@ describe('Register route', () => {
     });
   });
   
-  })
-
   test('should respond with a 400 for registration with existing email', async () => {
-    const response = await request(app)
-      .post('/auth/register')
-      .send({
-        username: 'testUser2',
-        password: 'testPassword2',
-        email: 'testEmail@example.com', // This email is already used in the previous test
-        firstname: 'Test2',
-        lastname: 'User2',
-        role: 'testRole2'
-      });
+  const response = await request(app)
+    .post('/auth/register')
+    .send({
+      password: 'testPassword2',
+      email: 'testEmail@example.com', // This email is already used in the previous test
+      firstname: 'Test2',
+      lastname: 'User2',
+      role: 'testRole2'
+    });
 
-    expect(response.statusCode).toBe(400);
-    expect(response.body).toHaveProperty('message', 'User with that email already exists');
+  expect(response.statusCode).toBe(400);
+  expect(response.body).toHaveProperty('message', 'User with that email already exists');
   });
 });

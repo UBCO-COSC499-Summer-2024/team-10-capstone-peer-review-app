@@ -3,6 +3,8 @@ import express from "express";
 const instructorsRouter = (prisma) => { 
     const router = express.Router();
 
+    // const instructorId = req.user.userId; // check for abstraction
+
     //working
     router.get("/", async (req, res) => {
         try {
@@ -17,7 +19,7 @@ const instructorsRouter = (prisma) => {
     //working
     router.get("/my-classes", async (req, res) => {
         // Get the user ID from the Passport user object
-        // const instructorId = req.user.userId;
+        // const instructorId = req.user.userId; //uncomment this for production
         const instructorId = "bd6e6f46-672a-4314-a4d9-8e673b2a4026"; // for Postman purposes only
 
         try {
@@ -34,22 +36,22 @@ const instructorsRouter = (prisma) => {
         }
     });
 
-    // working
-    router.delete("/delete-class/:className", async (req, res) => {
-        const { className } = req.params;
+    // working with ID
+    router.delete("/delete-class/:classID", async (req, res) => {
+        const { classID } = req.params;
         try {
-            const classToDelete = await prisma.class.findFirst({
+            const classToDelete = await prisma.class.findUnique({
                 where: {
-                  classname: className
+                  classId: classID
                 }
             });
               
             if (classToDelete) {
-            await prisma.class.delete({
-                where: {
-                classId: classToDelete.classId
-                }
-            });
+                await prisma.class.delete({
+                    where: {
+                    classId: classToDelete.classId
+                    }
+                });
             res.status(200).json({ message: 'Class deleted: ' + classToDelete.classname });
             } else {
             res.status(404).json({ message: 'Class not found' });
@@ -80,20 +82,14 @@ const instructorsRouter = (prisma) => {
     // });
 
 
-    // working
+    // working for creating multiple classes for the same instructor iff insructorId in Class table is NOT UNIQUE.
     router.post("/create-class", async (req, res) => { 
         // Assumes when a user logs in, JWT will include 
-        //const instructorId = req.user.userId;
-        //const { instructorId } = req.body; // for Postman purposes only
+        //const instructorId = req.user.userId; //uncomment this for production
 
         const { instructorId, classname, description, startDate, endDate, term, classSize }  = req.body;
 
-        // let sdObj = new Date(startDate.replace(/(\d+)(st|nd|rd|th)/, "$1"));
-        // let edObj = new Date(endDate.replace(/(\d+)(st|nd|rd|th)/, "$1"));
-
-        // // Format the Date object as a string in the SQL datetime format (YYYY-MM-DD HH:MM:SS)
-        // let sdSQL = sdObj.toISOString().slice(0, 19).replace('T', ' ');
-        // let edSQL = edObj.toISOString().slice(0, 19).replace('T', ' ');
+        // it will be assumed that the startDate and endDate is in the SQL date time format
 
         try {
 
@@ -119,7 +115,7 @@ const instructorsRouter = (prisma) => {
         }
     });
 
-    
+    //working
     router.put("/update-class/:classId", async (req, res) => {
 
         const { classId } = req.params;
@@ -147,40 +143,159 @@ const instructorsRouter = (prisma) => {
     });
 
 
+    //working for adding multiple students in multiple classes
+    // !! ADD MORE CHECKS AFTER DISCUSSION
     router.post("/add-student/:classId", async (req, res) => {
         const { classId } = req.params;
         const { studentId } = req.body;
-
+        
         try {
-            const classToUpdate = await prisma.class.findUnique({
+            // Check if the user is a student
+            const student = await prisma.user.findUnique({
+                where: {
+                    userId: studentId,
+                    role: "STUDENT"
+                }
+            });
+
+
+            const updatingClass = await prisma.class.findUnique({
                 where: {
                     classId: classId
                 }
             });
+            // Check if the student already exists in the class
+            const existingStudent = await prisma.class.findUnique({
+                where: {
+                    classId: classId
+                },
+                include: {
+                    usersInClass: {
+                        where: {
+                            userId: studentId
+                        }
+                    }
+                }
+            });
+            // console.log(existingStudent);
+            // console.log(updatingClass.classSize);
+            // console.log(updatingClass.usersInClass);
 
-            if (classToUpdate) {
+            let classSizeBool = true;
+            if (updatingClass.usersInClass) {
+                if (updatingClass.usersInClass.length < updatingClass.classSize) {
+                    classSizeBool = true;
+                } else {            
+                    classSizeBool = false;
+                }
+            } else {
+                classSizeBool = true;
+            }
+
+            if (student && classSizeBool) {
+                if (!existingStudent || (existingStudent && existingStudent.usersInClass.length === 0)) {
+                    const classToUpdate = await prisma.class.findUnique({
+                        where: {
+                            classId: classId
+                        }
+                    });
+
+                    if (classToUpdate) {
+                        const updatedClass = await prisma.class.update({
+                            where: {
+                                classId: classId
+                            },
+                            data: {
+                                usersInClass: {
+                                    create: {
+                                        userId: studentId
+                                    }
+                                }
+                            }
+                        });
+                        res.status(200).json(updatedClass);
+                    } else {
+                        res.status(404).json({ message: 'Class not found' });
+                    }
+                } else {
+                    res.status(400).json({ message: 'Student already exists in the class' });
+                }
+            } else {    
+                res.status(404).json({ message: 'Student not found' });
+            }
+          
+        } catch (error) {
+            res.status(500).json({ message: "Failed to add student to class: " + error });
+        }
+    });
+
+    //working
+    router.get("/students/:classId", async (req, res) => {
+        const { classId } = req.params;
+        try {
+            const classWithStudents = await prisma.class.findUnique({
+                where: {
+                    classId: classId
+                },
+                include: {
+                    usersInClass: {
+                        include: {
+                        utudent: true // TYPO ERROR IN THE SCHEMA
+                        }
+                    }
+                }
+            });
+            res.status(200).json(classWithStudents.usersInClass);
+        } catch (error) {
+            res.status(500).json({ message: "Failed to retrieve students in class: " + error });
+        }
+    });
+
+    //working
+    router.delete("/delete-student/:classId", async (req, res) => {
+        const { classId } = req.params;
+        const { studentId } = req.body;
+        try {
+            const classToUpdate = await prisma.class.findUnique({
+                where: {
+                    classId: classId
+                },
+                include: {
+                    usersInClass: {
+                        where: {
+                            userId: studentId
+                        }
+                    }
+                }
+            });
+
+            if (classToUpdate && classToUpdate.usersInClass.length > 0) {
                 const updatedClass = await prisma.class.update({
                     where: {
                         classId: classId
                     },
                     data: {
                         usersInClass: {
-                            create: {
-                                userId: studentId
-                            }
+                            delete: [{
+                                userId_classId: {
+                                    userId: studentId,
+                                    classId: classId
+                                }
+                            }]
                         }
                     }
                 });
-
                 res.status(200).json(updatedClass);
             } else {
-                res.status(404).json({ message: 'Class not found' });
+                res.status(404).json({ message: 'Class or student not found' });
             }
         } catch (error) {
-            res.status(500).json({ message: "Failed to add student to class: " + error });
+            res.status(500).json({ message: "Failed to delete student from class: " + error });
         }
     });
 
+
+    
 
     // router.post("/user-id", async (req, res) => {
     //     const { userId } = req.body;
@@ -204,6 +319,8 @@ const instructorsRouter = (prisma) => {
     //     });
     //     res.json(user);
     // });
+    //
+
 
     // working
     // keep this one at the very bottom

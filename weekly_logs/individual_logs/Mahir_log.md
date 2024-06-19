@@ -120,15 +120,23 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Redux implementation was planned out but not implemented
+* Josh and I were meant to finish the API links to UI however, the backend API calls were still in progress, therefore, we decided to wait for that to be done
+* Client-side API call structure was planned to change and implemented for login/register (for now)
+* Minor UI updates (Toaster msg, Avatars, Buttons) were handled to enhance UX
+* ShadCN has more capabilities to improve our app user experience and can bring more code organization, so I started working on each page to refactor to utilize components better.
+* Started to create the Admin Dashboard UI
+* Got a good start on documentation of all components created
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Finish documenting everything.
+* Finish the Admin Dashboard UI (with authenticated service) and Role approval system (Instructor approval).
+* Implement the shadCN changes.
+* Finish linking the backend API calls to the UI.
+* Build the habit of testing -> developing, rather than the other way.
   
+## Reflection
+* For this cycle, my personal focus was more towards planning and organizing the next few steps to take. Over the weekend, we had a few calls as a team and individually to discuss the overall structure of how we want the UI and the backend to communicate as well as talking through exactly what that may look like. I also took the time to plan out the Redux structure and decided what reducers to create to better facilitate our needs. On top of that, I spent time discussing all the features we want up and running for our next milestone and started rough drafts on any new UI structures. I didn't spend too much time coding this cycle because all my major tasks relied on the backend API calls working. At first, I attempted to do them myself but quickly realized Bhavya was in charge of that so I decided to wait for him to finish his changes rather than making another "mock" linking of the application processes. I think he finished last night and Josh and I discussed that we will be spending the day completing the API linking today/tonight.
   
 
 # Mahir's Log for Cycle 5

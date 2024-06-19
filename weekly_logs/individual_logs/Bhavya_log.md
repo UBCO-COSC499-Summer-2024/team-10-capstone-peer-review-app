@@ -106,14 +106,14 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Working on new CRUD points for instructors to add/update/delete students from class
+* Working on testing the queries
+* Testes DB with multiple data
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Tests for DB and express.js
+* More CRUD routes
+* More and more backend logic facilitation
   
   
 

@@ -33,7 +33,7 @@ For context, On Saturday we reorganized our issues management and milestone mana
   
 
 #### Back-end Testing for c-5
-![Burn-Up Chart for c-5](weekly_logs/team_log_images/back_end_tests/back_end_tests_c5.png)  
+![Back-end Tests for c-5](weekly_logs/team_log_images/back_end_tests/back_end_tests_c5.png)  
   
   
   

@@ -38,7 +38,7 @@
 
 ![Clockify Dashboard for c-5](./team_dashboard_images/clockify_dashboards/clockify_dashboard_c5.png)
   
-  
+
 
 # Team 10's Team Dashboard for Cycle 4
 

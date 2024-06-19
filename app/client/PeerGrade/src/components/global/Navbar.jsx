@@ -116,7 +116,7 @@ export default function AppNavbar() {
               Settings
             </Link>
           </NavigationMenuItem>
-          {location.pathname !== '/search' && currentUser.type === 'admin' && (
+          {location.pathname !== '/search' && currentUser.role === 'ADMIN' && (
             <NavigationMenuItem>
               <div className="flex w-full max-w-sm items-center space-x-2">
                 <Input 

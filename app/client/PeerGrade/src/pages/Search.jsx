@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { iClass as classesData, user } from '@/lib/dbData'; // DB CALL
 import { Button } from "@/components/ui/button";
-import { ArrowUp, ArrowDown, ChevronUpIcon, ChevronDownIcon, CheckIcon, Dot, SearchIcon } from 'lucide-react';
+import { ArrowUp, ArrowDown, ChevronUpIcon, ChevronDownIcon, CheckIcon, Dot, Trash2, Pencil } from 'lucide-react';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Command, CommandList, CommandGroup, CommandItem } from '@/components/ui/command';
 import { Link, useLocation } from 'react-router-dom';
@@ -77,7 +77,7 @@ function ClassTable() {
 
     const currentUser = useSelector((state) => state.user.currentUser);
 
-    if (!currentUser || (currentUser.type !== 'instructor' && currentUser.type !== 'admin')) {
+    if (!currentUser || currentUser.role !== 'ADMIN') {
       return <div>You do not have permission to view this page.</div>;
     }
 
@@ -195,6 +195,7 @@ function ClassTable() {
                                     : <Dot className="ml-1 h-5 w-5" />}
                             </div>
                         </TableHead>
+                        <TableHead className="text-left">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -208,6 +209,14 @@ function ClassTable() {
                             <TableCell className="p-2">{new Date(classItem.end).toLocaleDateString()}</TableCell>
                             <TableCell className="p-2">{classItem.term}</TableCell>
                             <TableCell className="p-2">{classItem.size}</TableCell>
+                            <TableCell className="p-2">
+                                <Button variant="ghost" size="icon" className="text-red-500 hover:bg-red-100">
+                                    <Trash2 className="h-5 w-5" />
+                                </Button>
+                                <Button variant="ghost" size="icon" className="text-blue-500 hover:bg-blue-100">
+                                    <Pencil className="h-5 w-5" />
+                                </Button>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
@@ -228,7 +237,7 @@ function ClassTable() {
 function Classes() {
     return (
         <div className="w-full main-container py-6 space-y-6">
-            <h1 className="text-2xl font-bold">Classes</h1>
+            <h1 className="text-2xl font-bold">All Classes</h1>
             <ClassTable />
         </div>
     );

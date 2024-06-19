@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { user as users, addUser } from "@/lib/dbData"; //DB call user, IGNORE: addUser (mock data call)
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
@@ -25,12 +24,12 @@ const RegisterCard = ({ onSwitchToLogin }) => {
     e.preventDefault();
 
     // Password validation regex: 8 characters, 1 uppercase, 1 lowercase, 1 special character
-    // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-    // if (!passwordRegex.test(password)) {
-    //   setError('Password must be at least 8 characters long, with at least one uppercase letter, one lowercase letter, one number, and one special character.');
-    //   return;
-    // }
+    if (!passwordRegex.test(password)) {
+      setError('Password must be at least 8 characters long, with at least one uppercase letter, one lowercase letter, one number, and one special character.');
+      return;
+    }
 
     if (password !== confirmPassword) {
       setError('Passwords do not match');

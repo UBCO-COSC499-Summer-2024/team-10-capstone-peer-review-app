@@ -35,6 +35,8 @@ describe('Register route', () => {
             role: newUser.role
     });
   });
+  
+  })
 
   test('should respond with a 400 for registration with existing email', async () => {
     const response = await request(app)

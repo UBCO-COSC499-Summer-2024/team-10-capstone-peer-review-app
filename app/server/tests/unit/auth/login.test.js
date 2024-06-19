@@ -6,7 +6,8 @@ describe('Auth routes', () => {
   test('should respond with a 200 for valid login', async () => {
     const response = await request(app)
       .post('/auth/login')
-      .send({ email: 'test', password: '' });
+      // todo ADD JOI to api routes to validate typing
+      .send({ email: 'test@gmail.com', password: 'test' });
 
     expect(response.statusCode).toBe(200);
   });

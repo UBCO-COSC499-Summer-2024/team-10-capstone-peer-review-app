@@ -94,6 +94,8 @@
 &nbsp; &nbsp; :purple_circle: **Issue-[111](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/111)**: Automate frontend tests via Drone CI/Github Actions  
   
 &nbsp; &nbsp; :purple_circle: **Issue-[96](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/96)**: Add tests to Pages  
+
+&nbsp; &nbsp; :purple_circle: **Issue-[94](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/94)**: Add tests to components (that are not shadcn UI elements!)
   
 
 ## In-progress tasks:

@@ -85,12 +85,13 @@ for name, user_info in users.items():
 
         for time_entry in time_entries:
             description = time_entry['description']
+            time_interval = time_entry['timeInterval']
             # Convert the start and end times to the UTM-7, make it timezone aware
-            start_time = datetime.strptime(time_entry['timeInterval']['start'], '%Y-%m-%dT%H:%M:%SZ')
+            start_time = datetime.fromisoformat(time_interval['start'].replace('Z', '+00:00'))
             start_time = start_time.replace(tzinfo=timezone('UTC')).astimezone(tz)
             # If the time entry is still ongoing, we consider its duration as 0 for the total duration calculation
             if time_entry['timeInterval']['end']:
-                end_time = datetime.strptime(time_entry['timeInterval']['end'], '%Y-%m-%dT%H:%M:%SZ')
+                end_time = datetime.fromisoformat(time_interval['end'].replace('Z', '+00:00'))
                 end_time = end_time.replace(tzinfo=timezone('UTC')).astimezone(tz)
                 duration = (end_time - start_time).total_seconds() / 3600  # Convert duration to hours
             else:
@@ -173,7 +174,7 @@ for name, user_info in users.items():
         f.write('* \n')
         f.write('* \n')
         f.write('  \n  \n')
-
+ 
         # Append the old content to the new content in order to new logs on top
         f.write(old_content)
 

@@ -2,6 +2,146 @@
 # Mahir's Log for Cycle 5
 
 
+## Friday, June 14, 2024, 09:14 PM - Tuesday, June 18, 2024, 09:14 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[150](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/150)**: Integrate Api calls with UI, Create Redux Slices for api calls (For this week: User Info, Class info, Assignment? Maybe)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[145](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/145)**: Toasts for msgs from api-endpoints  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[129](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/129)**: Major Use Case 14: Create New Class  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[128](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/128)**: Major Use Case 13: Join Group / Accept Invite  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[127](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/127)**: Major Use Case 12: Manage Group   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Create a Group for an Assignment  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[122](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/122)**: Major Use Case 7: View Submission Feedback (from instructor)   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[120](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/120)**: Major Use Case 5: Send Reports to Admin   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[110](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/110)**: Integrating Api endpoints with UI   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[108](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/108)**: Redux - More slices   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[16](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/16)**: Create Automated Weekly Log Workflow   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **145/Toast Messages** *(Total duration: 0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 18, 2024, 08:00 PM - Ongoing *(Ongoing)*  
+  
+&nbsp; &nbsp; :watch: **150/API Integrations** *(Total duration: 1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 18, 2024, 03:24 PM - Tuesday, June 18, 2024, 04:25 PM *(1.0 hours)*  
+  
+&nbsp; &nbsp; :watch: **Redux Recap Session** *(Total duration: 1.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 18, 2024, 09:51 AM - Tuesday, June 18, 2024, 11:18 AM *(1.4 hours)*  
+  
+&nbsp; &nbsp; :watch: **#108 Redux - More slices** *(Total duration: 0.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 18, 2024, 09:41 AM - Tuesday, June 18, 2024, 09:51 AM *(0.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 18, 2024, 08:32 AM - Tuesday, June 18, 2024, 09:15 AM *(0.7 hours)*  
+  
+&nbsp; &nbsp; :watch: **Frontend Organization** *(Total duration: 1.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 18, 2024, 08:15 AM - Tuesday, June 18, 2024, 08:27 AM *(0.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 18, 2024, 07:12 AM - Tuesday, June 18, 2024, 08:08 AM *(0.9 hours)*  
+  
+&nbsp; &nbsp; :watch: **Pull Req Reviews** *(Total duration: 0.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 18, 2024, 08:08 AM - Tuesday, June 18, 2024, 08:15 AM *(0.1 hours)*  
+  
+
+## All Features worked on this cycle:
+
+## Features completed on this cycle:
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[110](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/110)**: Integrating Api endpoints with UI   
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[16](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/16)**: Create Automated Weekly Log Workflow   
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[150](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/150)**: Integrate Api calls with UI, Create Redux Slices for api calls (For this week: User Info, Class info, Assignment? Maybe)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[145](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/145)**: Toasts for msgs from api-endpoints  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[129](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/129)**: Major Use Case 14: Create New Class  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[128](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/128)**: Major Use Case 13: Join Group / Accept Invite  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[127](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/127)**: Major Use Case 12: Manage Group   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Create a Group for an Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[122](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/122)**: Major Use Case 7: View Submission Feedback (from instructor)   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[120](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/120)**: Major Use Case 5: Send Reports to Admin   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[108](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/108)**: Redux - More slices   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[84](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/84)**: Post MVP Milestone Database Refactor With TA or Prof  
+  
+
+## Recap on goals from last cycle
+* Redux implementation was planned out but not implemented
+* Josh and I were meant to finish the API links to UI however, the backend API calls were still in progress, therefore, we decided to wait for that to be done
+* Client-side API call structure was planned to change and implemented for login/register (for now)
+* Minor UI updates (Toaster msg, Avatars, Buttons) were handled to enhance UX
+* ShadCN has more capabilities to improve our app user experience and can bring more code organization, so I started working on each page to refactor to utilize components better.
+* Started to create the Admin Dashboard UI
+* Got a good start on documentation of all components created
+
+## Goals for next cycle
+* Finish documenting everything.
+* Finish the Admin Dashboard UI (with authenticated service) and Role approval system (Instructor approval).
+* Implement the shadCN changes.
+* Finish linking the backend API calls to the UI.
+* Build the habit of testing -> developing, rather than the other way.
+  
+## Reflection
+* For this cycle, my personal focus was more towards planning and organizing the next few steps to take. Over the weekend, we had a few calls as a team and individually to discuss the overall structure of how we want the UI and the backend to communicate as well as talking through exactly what that may look like. I also took the time to plan out the Redux structure and decided what reducers to create to better facilitate our needs. On top of that, I spent time discussing all the features we want up and running for our next milestone and started rough drafts on any new UI structures. I didn't spend too much time coding this cycle because all my major tasks relied on the backend API calls working. At first, I attempted to do them myself but quickly realized Bhavya was in charge of that so I decided to wait for him to finish his changes rather than making another "mock" linking of the application processes. I think he finished last night and Josh and I discussed that we will be spending the day completing the API linking today/tonight.
+  
+
+# Mahir's Log for Cycle 5
+
+
 ## Wednesday, June 12, 2024, 01:07 AM - Friday, June 14, 2024, 01:07 AM
 
 

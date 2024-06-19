@@ -42,7 +42,7 @@ model User {
   password          String
   firstname         String
   lastname          String
-  isVerified        Boolean       @default(false)
+  isEmailVerified   Boolean       @default(false)
   role              UserRole      @default(STUDENT)
   classes           UserInClass[]
   submissions       Submission[]

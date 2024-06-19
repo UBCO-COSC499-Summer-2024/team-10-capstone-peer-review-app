@@ -16,38 +16,47 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
-import { iClass as classesData, assignment as assignmentsData } from '@/lib/dbData'; //DB CALLS - ignore the iClass as classdata, ssignment as assigndata, this was just easier for me when i switched to redux (nothing to do with db)
+import { iClass as classesData, assignment as assignmentsData } from '@/lib/dbData';
 
 export default function AppNavbar() {
   const location = useLocation();
-  const currentUser = useSelector((state) => state.user.currentUser); //REDUX: user state, after user state stored in login, it has that user logged info saved
+  const currentUser = useSelector((state) => state.user.currentUser);
 
-  // Filter classes based on user class_ids
-  //DB PROCESS userClasses should be a list of classes that are related to the user, userid should be used to find the list of classes and stored in const userClasses. 
-  const userClasses = classesData.filter(classItem => currentUser.class_id.includes(classItem.class_id));
+  if (!currentUser) {
+    return null;
+  }
 
-  // Filter assignments based on user class_ids and evaluation_type 'peer'
-  //DB PROCESS userReviewAssignments should be a list of reviews that are related to the user, user.reviews should be used to find the list of reviews and should be stored in userReviewAssignemnts. 
+  const userClasses = classesData.filter(classItem => {
+    return Array.isArray(currentUser.classes) && currentUser.classes.includes(classItem.class_id);
+  });
+
   const userReviewAssignments = assignmentsData
-    .filter(assignment => currentUser.class_id.includes(assignment.class_id) && assignment.evaluation_type === 'peer')
+    .filter(assignment => {
+      return Array.isArray(currentUser.classes) && currentUser.classes.includes(assignment.class_id) && assignment.evaluation_type === 'peer';
+    })
     .sort((a, b) => new Date(a.due_date) - new Date(b.due_date))
     .slice(0, 3);
 
   const isActive = (path) => location.pathname === path;
 
   return (
-    <div className="w-full py-3 bg-white shadow-md">
+    <div className="w-full py-3 px-4 bg-white shadow-md">
       <NavigationMenu className="flex items-center justify-between w-full max-w-screen-xl mx-auto ">
         <NavigationMenuList className="flex space-x-4">
           <NavigationMenuItem>
-            <Link to="/dashboard" className={cn(navigationMenuTriggerStyle(), isActive('/dashboard') && 'font-bold border-b-4')}>
+            <Link to="/dashboard">
+              <img src="logo.png" className="w-10 h-10"/>
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <Link to="/dashboard" className={cn(navigationMenuTriggerStyle(), isActive('/dashboard') && 'font-bold')}>
               Dashboard
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuTrigger>
+            <NavigationMenuTrigger className='group'>
               <NavigationMenuItem>
-                  <Link to="/peer-review" className={cn(navigationMenuTriggerStyle(), isActive('/peer-review') && 'font-bold border-b-4')}>
+                  <Link to="/peer-review" className={cn(navigationMenuTriggerStyle(), isActive('/peer-review') && 'font-bold group')}>
                     Peer-Review
                   </Link>
               </NavigationMenuItem>
@@ -67,7 +76,7 @@ export default function AppNavbar() {
             </NavigationMenuContent>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuTrigger className={cn(isActive('/classes') || isActive('/manageclasses') && 'font-bold border-b-4')}>
+            <NavigationMenuTrigger className={cn(navigationMenuTriggerStyle(), isActive('/classes') || isActive('/manageclasses') && 'font-bold')}>
               Classes
             </NavigationMenuTrigger>
             <NavigationMenuContent>
@@ -81,7 +90,7 @@ export default function AppNavbar() {
                     {classItem.description}
                   </ListItem>
                 ))}
-                {(currentUser.type === 'instructor' || currentUser.type === 'admin') && (
+                {(currentUser.role === 'INSTRUCTOR' || currentUser.role === 'ADMIN') && (
                   <ListItem
                     title="Manage Classes"
                     href="/manageclass"
@@ -94,7 +103,7 @@ export default function AppNavbar() {
             </NavigationMenuContent>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <Link to="/settings" className={cn(navigationMenuTriggerStyle(), isActive('/settings') && 'font-bold border-b-4')}>
+            <Link to="/settings" className={cn(navigationMenuTriggerStyle(), isActive('/settings') && 'font-bold')}>
               Settings
             </Link>
           </NavigationMenuItem>

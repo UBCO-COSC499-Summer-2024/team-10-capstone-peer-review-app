@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-// import { user as users } from "@/lib/dbData"; // DB CALL: this is user data being pulled from the 'db'
-import { setCurrentUser } from '@/lib/redux/hooks/userSlice'; //REDUX slice
+import { setCurrentUser } from '@/lib/redux/hooks/userSlice';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 
 const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
@@ -14,48 +13,39 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState('');
 
-    // // Password validation regex: 8 characters, 1 uppercase, 1 lowercase, 1 special character
-    // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-    // if (!passwordRegex.test(password)) {
-    //   setError('Password must be at least 8 characters long, with at least one uppercase letter, one lowercase letter, one number, and one special character.');
-    //   return;
-    // }
-
-    // Adding Comment
-
-    const handleSubmit = (e) => {
-      e.preventDefault();
-    
-      // TODO: Add a folder directory for API calls? then we can just importthe 
-      // ADD ENV VARS
-      // Create a fetch request to the /login endpoint
-      fetch('http://localhost:3000/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password
-        })
+    fetch('http://localhost:3000/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.message) {
-          setError(data.message);
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.message) {
+        setError(data.message);
+      } else {
+        console.log(`Logged in as: ${data.role}`);
+        setError('');
+        dispatch(setCurrentUser(data)); // REDUX: sets current user to state with redux dispatch call
+        if (data.role === 'ADMIN') {
+          navigate('/admin');
         } else {
-          console.log(`Logged in as: ${data.role}`);
-          setError('');
-          dispatch(setCurrentUser(data)); // REDUX: sets current user to state with redux dispatch call 
           navigate('/dashboard');
         }
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        setError('An error occurred while logging in');
-      });
-    };
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      setError('An error occurred while logging in');
+    });
+  };
 
   return (
     <Card className="w-full max-w-md p-8 space-y-8 bg-white shadow-md rounded-lg">

@@ -1,11 +1,11 @@
 // src/pages/AdminDashboard.jsx
 import React, { useState } from 'react';
-import { Menubar, MenubarList, MenubarTrigger, MenubarContent, MenubarItem } from '@/components/ui/menubar';
+import { Menubar, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar';
 import Stats from '@/components/admin/Stats';
 import Users from '@/components/admin/Users';
 import Classes from '@/components/admin/Classes';
-import Assignments from '@/components/admin/Assignments';
-import PeerReviews from '@/components/admin/PeerReviews';
+import Assignments from '@/components/admin/Assign';
+import PeerReviews from '@/components/admin/PRassign';
 import Interactions from '@/components/admin/Interactions';
 
 const AdminDashboard = () => {
@@ -31,28 +31,26 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className="main-container mx-auto p-6">
       <Menubar>
-        <MenubarList>
-          <MenubarItem>
-            <MenubarTrigger onClick={() => setSelectedTab('stats')}>Stats</MenubarTrigger>
-          </MenubarItem>
-          <MenubarItem>
-            <MenubarTrigger onClick={() => setSelectedTab('users')}>Users</MenubarTrigger>
-          </MenubarItem>
-          <MenubarItem>
-            <MenubarTrigger onClick={() => setSelectedTab('classes')}>Classes</MenubarTrigger>
-          </MenubarItem>
-          <MenubarItem>
-            <MenubarTrigger onClick={() => setSelectedTab('assignments')}>Assignments</MenubarTrigger>
-          </MenubarItem>
-          <MenubarItem>
-            <MenubarTrigger onClick={() => setSelectedTab('peer-reviews')}>Peer-reviews</MenubarTrigger>
-          </MenubarItem>
-          <MenubarItem>
-            <MenubarTrigger onClick={() => setSelectedTab('interactions')}>Interactions</MenubarTrigger>
-          </MenubarItem>
-        </MenubarList>
+        <MenubarMenu>
+        <MenubarTrigger onClick={() => setSelectedTab('stats')}>Stats</MenubarTrigger>
+        </MenubarMenu>
+        <MenubarMenu>
+        <MenubarTrigger onClick={() => setSelectedTab('users')}>Users</MenubarTrigger>
+        </MenubarMenu>
+        <MenubarMenu>
+        <MenubarTrigger onClick={() => setSelectedTab('classes')}>Classes</MenubarTrigger>
+        </MenubarMenu>
+        <MenubarMenu>
+        <MenubarTrigger onClick={() => setSelectedTab('assignments')}>Assignments</MenubarTrigger>
+        </MenubarMenu>
+        <MenubarMenu>
+        <MenubarTrigger onClick={() => setSelectedTab('peer-reviews')}>Peer-reviews</MenubarTrigger>
+        </MenubarMenu>
+        <MenubarMenu>
+        <MenubarTrigger onClick={() => setSelectedTab('interactions')}>Interactions</MenubarTrigger>
+        </MenubarMenu>
       </Menubar>
       <div className="mt-6">{renderTabContent()}</div>
     </div>

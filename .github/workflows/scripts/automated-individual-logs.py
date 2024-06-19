@@ -86,11 +86,11 @@ for name, user_info in users.items():
         for time_entry in time_entries:
             description = time_entry['description']
             # Convert the start and end times to the UTM-7, make it timezone aware
-            start_time = datetime.strptime(time_entry['timeInterval']['start'], '%Y-%m-%dT%H:%M:%S.%fZ')
+            start_time = datetime.strptime(time_entry['timeInterval']['start'], '%Y-%m-%dT%H:%M:%SZ')
             start_time = start_time.replace(tzinfo=timezone('UTC')).astimezone(tz)
             # If the time entry is still ongoing, we consider its duration as 0 for the total duration calculation
             if time_entry['timeInterval']['end']:
-                end_time = datetime.strptime(time_entry['timeInterval']['end'], '%Y-%m-%dT%H:%M:%S.%fZ')
+                end_time = datetime.strptime(time_entry['timeInterval']['end'], '%Y-%m-%dT%H:%M:%SZ')
                 end_time = end_time.replace(tzinfo=timezone('UTC')).astimezone(tz)
                 duration = (end_time - start_time).total_seconds() / 3600  # Convert duration to hours
             else:

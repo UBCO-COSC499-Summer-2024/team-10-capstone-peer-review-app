@@ -106,14 +106,14 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Working on DB and express CRUD points for adding/reading/deleting students from class
+* Tested DB with multiple mock data and overflow
+* Refactor DB with new functions
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Working on setting up CRUD points for more tables and student + admin
+* Work on testing the api routes
+* Work on DB testing
   
   
 

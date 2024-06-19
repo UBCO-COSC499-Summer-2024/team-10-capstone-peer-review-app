@@ -173,7 +173,6 @@ const authRouter = (prisma) => {
     } 
   });
 
-
   // Confirm Email
   router.post("/confirm-email", async (req, res) => {
     // Just retrieve the token from the query string

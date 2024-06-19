@@ -2,7 +2,7 @@
 # Abdul's Log for Cycle 5
 
 
-## Friday, June 14, 2024, 09:14 PM - Tuesday, June 18, 2024, 09:14 PM
+## Friday, June 14, 2024, 09:14 PM - Tuesday, June 19, 2024, 01:51 AM
 
 
 ## Tasks worked on this cycle:
@@ -58,8 +58,9 @@
   
 
 ## Time entries from Clockify on this cycle:
-&nbsp; &nbsp; :watch: **Working on List of Classes UI** *(Total duration: 4.4 hours)*  
+&nbsp; &nbsp; :watch: **Working on List of Classes UI** *(Total duration: 6.9 hours)*  
   
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, June 18, 2024, 11:18 PM - Tuesday, June 19, 2024, 01:51 AM *(2.5 hours)*  
 &nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, June 17, 2024, 11:08 PM - Tuesday, June 18, 2024, 03:31 AM *(4.4 hours)*  
   
 &nbsp; &nbsp; :watch: **Working on Tests for the Frontend** *(Total duration: 1.8 hours)*  
@@ -72,25 +73,32 @@
   
 
 ## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[156](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/156)**: Add List of Classes UI for admins only  
+
 &nbsp; &nbsp; :arrows_clockwise: **PR-[144](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/144)**: Add Forget Password UI  
   
 &nbsp; &nbsp; :arrows_clockwise: **PR-[141](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/141)**: Add Drone CI test automation to the master & dev branches  
   
 
 ## Features completed on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[156](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/156)**: Add List of Classes UI for admins only  
+
 &nbsp; &nbsp; :arrow_heading_up: **PR-[144](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/144)**: Add Forget Password UI  
   
 &nbsp; &nbsp; :arrow_heading_up: **PR-[141](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/141)**: Add Drone CI test automation to the master & dev branches  
   
 
 ## Completed tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[143](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/143)**: Add Forgot Password UI  
+
 &nbsp; &nbsp; :purple_circle: **Issue-[111](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/111)**: Automate frontend tests via Drone CI/Github Actions  
   
 &nbsp; &nbsp; :purple_circle: **Issue-[96](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/96)**: Add tests to Pages  
   
 
 ## In-progress tasks:
-&nbsp; &nbsp; :orange_circle: **Issue-[143](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/143)**: Add Forgot Password UI  
+
+&nbsp; &nbsp; :orange_circle: **Issue-[157](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/157)**: View List of Classes UI  
   
 &nbsp; &nbsp; :orange_circle: **Issue-[140](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/140)**: Major Use Case 24: View User Reports   
   
@@ -116,16 +124,14 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Got Drone CI & automated unit testing working!
+* Added UI for components such as Forgot Password, filtering & searching through a list of classes for the admin.
+* Didn't get into integrating more of the front-end with the back-end myself, but I did get to work on testing for the new classes a little and refactoring them.
 
 ## Goals for next cycle
-* 
-* 
-* 
-  
-  
+* Get the front-end components I worked on recently, at least, to work with the backend and not use the mock data at all.
+* Refactor tests as data starts getting processed differently due to shifting away from mock data.
+* Work on making website behaviour more consistent, for instance, the popup I used for the List of Classes page uses shadcn's dialog whereas other parts of the website use custom-made modals instead of a shadcn Dialog.
 
 # Abdul's Log for Cycle 4
 

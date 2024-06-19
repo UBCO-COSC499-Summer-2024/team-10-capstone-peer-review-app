@@ -27,7 +27,7 @@
       "import/no-unresolved": "off", // Doesn't recognize aliases, not sure how to fix this
       "import/no-commonjs":["warn"], // Warn on CommonJS `require` and `module.exports`, Should be using ES6 imports if can 
       "no-unused-vars": ["warn"], // warn unused variables,
-      "no-undef": ["warn"], // warn undef variables 
+      "no-undef": ["off"], // warn undef variables, turning off for jest
       "no-const-assign": ["error"], // disallow reassigning const variables
       "no-var": ["error"], // require let or const instead of var
       "eqeqeq": ["error"], // require the use of === and !==, 

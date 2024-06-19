@@ -29,17 +29,19 @@ const authRouter = (prisma) => {
     }
       const hashedPassword = await bcrypt.hash(req.body.password, SALT_ROUNDS);
       const user = {
-          username: req.body.username,
-          password: hashedPassword,
           email: req.body.email,  
+          password: hashedPassword,
           firstname: req.body.firstname, 
           lastname: req.body.lastname,
           role: req.body.role
       };
       // Save the user to the database using Prisma
-      const result = await prisma.user.create({ data: user });
-
-      res.json(result);
+      try { 
+        const result = await prisma.user.create({ data: user });
+        return res.status(200).json({ message: 'Account successfully created!' });
+      } catch (error) { 
+        return res.status(500).json({ message: `Failed to create user: ${error}` });
+      }
   }); 
 
   // Login 

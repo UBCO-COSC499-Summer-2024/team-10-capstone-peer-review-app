@@ -38,9 +38,8 @@ datasource db {
 
 model User {
   userId            String        @id @default(uuid())
-  username          String
-  password          String
   email             String        @unique
+  password          String
   firstname         String
   lastname          String
   isVerified        Boolean       @default(false)
@@ -82,7 +81,7 @@ model Class {
   classSize    Int?          @default(0)
   usersInClass UserInClass[]
   Assignments  Assignment[]
-  instructor   User          @relation("InstructorClasses", fields: [instructorId], references: [userId]) // Only one instructor per class
+  instructor   User          @relation("InstructorClasses", fields: [instructorId], references: [userId]) // Only one instructor per class 
 }
 
 model UserInClass {

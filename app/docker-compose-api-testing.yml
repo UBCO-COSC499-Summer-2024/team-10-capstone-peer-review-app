@@ -1,0 +1,22 @@
+version: '3'
+services:
+  peergrade-db-test:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.db.dev
+    # TODO change for enviroment variables
+    env_file:
+      - ./.env.server.test
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+  peergrade-server-test: 
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    # TODO change for enviroment variables
+    env_file:
+      - ./server/.env.server.test
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    depends_on:
+      - peergrade-db-test

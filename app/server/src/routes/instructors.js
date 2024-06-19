@@ -329,6 +329,7 @@ const instructorsRouter = (prisma) => {
         try {
             const user = await prisma.user.findUnique({
                 where: {
+                    // userId: id, instead or emailing. deleting username -- @JoshFarwig
                     username: un,
                     role: "INSTRUCTOR"
                 }

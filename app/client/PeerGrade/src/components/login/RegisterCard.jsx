@@ -130,7 +130,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
               />
             </div>
           </div>
-          <div>
+          {/* <div>
             <label htmlFor="institutionName" className="block text-sm font-medium text-gray-700">Learning Institution Name:</label>
             <input
               id="institutionName"
@@ -141,7 +141,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
               required
               className="block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
-          </div>
+          </div> */}
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email Address:</label>
             <input
@@ -238,9 +238,9 @@ const RegisterCard = ({ onSwitchToLogin }) => {
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <div className='flex justify-center'>
             <Button
-              variant="success"
+              variant="outline"
               type="submit"
-              className="w-full"
+              className="w-full bg-green-200"
             >
               Sign up
             </Button>

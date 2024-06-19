@@ -33,7 +33,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
       if (data.message) {
         toast({ title: "Error", description: data.message, variant: "destructive" });
       } else {
-        toast({ title: "Welcome", description: "You have successfully logged in!", variant: "default" });
+        toast({ title: "Welcome", description: "You have successfully logged in!", variant: "positive" });
         dispatch(setCurrentUser(data));
         navigate('/dashboard');
       }

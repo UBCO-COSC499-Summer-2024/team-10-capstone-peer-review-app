@@ -130,15 +130,20 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Finally got our docker development enviroment all setup! There was some issues with prisma before and also
+  all file-watching functionalities stopped working in our previous edition for the first mini presentation,
+  but is all handlded now. The frontend and backend has file watching now, including database resets when changes are seen
+  in the prisma.schema file 
+* For this cycle, Bhavya took on doing the instructor API endpoints so I shifted my focus to created verify email, confirm email, forgot password, and reset password routes.
+  They use JWT's so it took a little bit to learn how they work but so far its all up and running on the routes! Just need to integrate validation and testing into them now. 
+* I also created some basic role based access middleware so that certian users won't have the permission to access protected routes
 
 ## Goals for next cycle
-* 
-* 
-* 
-  
+* Create an ecompassing errorHandling middleware so error handing is unified and more organizied in routes
+* Add JOI validation to auth routes
+* Integrate UI with Verification / Login / Regsiter routes
+* Create a seperate dockerized isolated testing enviroment for the back-end and integrate into droneCI
+* Start working on how role-requests will look and be modeled
   
 
 # Josh's Log for Cycle 4

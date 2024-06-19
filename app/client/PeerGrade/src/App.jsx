@@ -12,6 +12,7 @@ import AppNavbar from './components/global/Navbar';
 import ManageClass from './pages/ManageClass';
 import Search from './pages/Search';
 import { Toaster } from "@/components/ui/toaster";
+// New comment 
 
 function App() {
 	const [message, setMessage] = useState("");

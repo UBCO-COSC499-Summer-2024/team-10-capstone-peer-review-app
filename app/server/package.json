@@ -5,8 +5,11 @@
   "main": "./src/index.js",
   "type": "module",
   "scripts": {
-    "dev": "node --watch ./src/index.js",
+    "dev:server": "nodemon -L ./src/index.js --ext js --exec node ./src/index.js",
+    "dev:prisma": "nodemon -L --watch prisma --ext prisma --exec 'npx prisma db push && npx prisma studio'",
+    "dev": "concurrently npm:dev:*", 
     "start": "node ./src/index.js",
+    "prisma": "npx prisma generate && npx prisma db push",
     "test": "jest",
     "lint": "eslint . --ext js --report-unused-disable-directives",
     "lint-fix": "eslint . --ext js --report-unused-disable-directives --fix",
@@ -33,6 +36,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.24.7",
     "babel-jest": "^29.7.0",
+    "concurrently": "^8.2.2",
     "eslint": "^8.0.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",

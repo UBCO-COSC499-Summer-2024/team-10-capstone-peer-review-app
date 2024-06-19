@@ -15,10 +15,13 @@ WORKDIR /usr/server/
 
 # Copy the application source code & other project files to the working directory
 # Note: This ignores the folders and files specified in the .dockerignore file.
-COPY . /usr/server/
 
-# Install app dependencies
-RUN npm install
+# COPY . /usr/server/
+
+COPY package.json /usr/server/package.json
+COPY package-lock.json /usr/server/package-lock.json
+
+RUN npm ci
 
 ## TODO prisma migrate deploy
 
@@ -31,4 +34,4 @@ EXPOSE ${BACKEND_PORT}
 
 # Nodemon also freaks out on prisma and gives lib issues during start if you run npm run dev not sure why
 
-CMD npx prisma generate && npx prisma db push && npm start
+CMD npm run prisma && npm run dev

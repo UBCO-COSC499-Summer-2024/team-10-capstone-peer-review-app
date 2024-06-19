@@ -252,7 +252,8 @@ const instructorsRouter = (prisma) => {
     });
 
     //working
-    router.delete("/delete-student/:classId", async (req, res) => {
+    router.delete("/delete-student/:classId/", async (req, res) => {
+        // Took into swapping params or not with UI 
         const { classId } = req.params;
         const { studentId } = req.body;
         try {

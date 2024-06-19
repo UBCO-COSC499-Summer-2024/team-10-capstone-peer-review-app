@@ -7,8 +7,6 @@ import { PrismaClient } from "@prisma/client";
 // Routes
 import setupRoutes from "./routes/index.js";
 
-
-function createApp() {
 	// Once dotenv.config() is called, env vars are available in process.env to all files. 
 	// No need to import dotenv in other files.
 	dotenv.config(); 
@@ -55,8 +53,7 @@ function createApp() {
 		console.log(`Server is running on port ${BACKEND_PORT}`);
 	});
 
-}
 
 
-export default createApp;
+export default app;
 

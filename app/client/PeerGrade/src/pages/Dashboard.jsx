@@ -1,21 +1,24 @@
 import { useSelector } from 'react-redux';
 import ClassCard from '@/components/class/ClassCard';
 import DataTable from '@/components/ui/data-table';
-import { iClass as classesData, assignment as assignmentsData, user } from '@/lib/dbData';
+import { iClass as classesData, assignment as assignmentsData, user, Group } from '@/lib/dbData'; //DB CALL
 import { ArrowUpDown } from "lucide-react";
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import GroupCard from '@/components/class/GroupCard';
+
 
 function Dashboard() {
   const currentUser = useSelector((state) => state.user.currentUser);
+  const classNames = classesData.map(cls => ({ class_id: cls.class_id, classname: cls.classname }));
 
   if (!currentUser) {
     return null;
   }
 
-  const userClasses = classesData.filter(classItem => Array.isArray(currentUser.classes) && currentUser.classes.includes(classItem.class_id));
+  const userClasses = classesData
 
   const assignmentColumns = [
     {
@@ -128,18 +131,30 @@ function Dashboard() {
           />
         ))}
       </div>
-      <Tabs defaultValue="assignments" className="w-1/2">
-        <TabsList className="grid w-1/2 grid-cols-2">
-          <TabsTrigger value="assignments">Assignments</TabsTrigger>
-          <TabsTrigger value="reviews">Reviews</TabsTrigger>
-        </TabsList>
-        <TabsContent value="assignments">
-          <DataTable title="Upcoming Assignments" data={assignmentData} columns={assignmentColumns} pageSize={5} />
-        </TabsContent>
-        <TabsContent value="reviews">
-          <DataTable title="Upcoming Reviews" data={reviewData} columns={reviewColumns} pageSize={5} />
-        </TabsContent>
-      </Tabs>
+      <div className="flex items-center gap-5">
+        <div className="flex w-3/4">
+          <Tabs defaultValue="assignments" className="flex-1">
+            <TabsList className="grid w-1/2 grid-cols-2">
+              <TabsTrigger value="assignments">Assignments</TabsTrigger>
+              <TabsTrigger value="reviews">Reviews</TabsTrigger>
+            </TabsList>
+            <TabsContent value="assignments">
+              <DataTable title="Upcoming Assignments" data={assignmentData} columns={assignmentColumns} pageSize={5} />
+            </TabsContent>
+            <TabsContent value="reviews">
+              <DataTable title="Upcoming Reviews" data={reviewData} columns={reviewColumns} pageSize={5} />
+            </TabsContent>
+          </Tabs>
+        </div>
+        <div className="flex w-1/2 ">
+          <GroupCard
+            classes={classesData}
+            groups={Group}
+            classNames={classNames}
+            users={user}
+          />
+        </div>
+      </div>
     </div>
   );
 }

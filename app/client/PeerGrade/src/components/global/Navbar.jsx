@@ -4,7 +4,7 @@ import * as React from "react";
 import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { Terminal } from "lucide-react";
+import NotifCard from "./NotifCard";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -17,11 +17,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/components/ui/alert"
 import { iClass as classesData, assignment as assignmentsData } from '@/lib/dbData';
 
 export default function AppNavbar() {
@@ -44,8 +39,9 @@ export default function AppNavbar() {
     .sort((a, b) => new Date(a.due_date) - new Date(b.due_date))
     .slice(0, 3);
 
-  const isActive = (path) => location.pathname === path;
-
+    const isActive = (path) => {
+      return location.pathname === path || (path === '/dashboard' && location.pathname === '/');
+    };
   const handleLogout = () => {
     // Perform logout actions, e.g., clearing session, etc.
     navigate('/');
@@ -128,20 +124,14 @@ export default function AppNavbar() {
                 <AvatarFallback>{currentUser.firstname[0]}{currentUser.lastname[0]}</AvatarFallback>
               </Avatar>
             </HoverCardTrigger>
-            <HoverCardContent className="w-full">
+            <HoverCardContent className="w-full transform -translate-x-1/3">
               <div className="space-y-4">
                 <div className="flex flex-col gap-1">
-                <Terminal className="h-4 w-4" />
-
-                  <Alert variant="info"></Alert>
-                  <Alert>
-                    <Terminal className="h-4 w-4" />
-                    <AlertTitle>Admin: Heads up!</AlertTitle>
-                    <AlertDescription>
-                      You have received a new message
-                    </AlertDescription>
-                  </Alert>
-                  
+                  <NotifCard title="Admin: Heads up!" description="You have received a new message" />
+                  <NotifCard title="Admin: Heads up!" description="You have received a new message" />
+                  <NotifCard title="Admin: Heads up!" description="You have received a new message" />
+                  <NotifCard title="Admin: Heads up!" description="You have received a new message" />                  
+                  <Button variant="outline">View All</Button>
                 </div>
                 <div className="flex justify-between">
                   <Button variant="outline" size="sm" onClick={handleLogout}>

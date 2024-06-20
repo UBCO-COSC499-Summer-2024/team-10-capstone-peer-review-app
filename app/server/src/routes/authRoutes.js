@@ -55,7 +55,7 @@ const authRouter = (prisma) => {
       if (!user) {
         return res.status(400).json({ message: info.message });
       }
-      if (!user.isVerified) { 
+      if (!user.isEmailVerified) { 
         console.log(user); 
         return res.status(400).json({ message: "Please verify your email before logging in" });
       }

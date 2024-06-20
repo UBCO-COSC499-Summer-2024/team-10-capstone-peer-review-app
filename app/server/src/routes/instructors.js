@@ -1,6 +1,7 @@
 import express from "express"; 
+import prisma from "../prisma/prismaClient.js";
 
-const instructorsRouter = (prisma) => { 
+const instructorsRouter = () => { 
     const router = express.Router();
 
     // const instructorId = req.user.userId; // check for abstraction

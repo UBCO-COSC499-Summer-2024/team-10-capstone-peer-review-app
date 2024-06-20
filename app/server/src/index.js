@@ -2,7 +2,6 @@ import express from "express";
 import session from "express-session"
 import dotenv from "dotenv" 
 import passport from "passport";
-import { PrismaClient } from "@prisma/client"; 
 
 // Routes
 import setupRoutes from "./routes/index.js";
@@ -16,7 +15,6 @@ import setupRoutes from "./routes/index.js";
 
 	// Create a new Prisma client instance, share across all files using it in order to 
 	// minimize the number of open connections to the database.
-	const prisma = new PrismaClient();
 
 	// SET UP CORS FOR DOCKER? 
 	// app.use(cors({ origin: 'http://localhost:3000' }));

@@ -43,7 +43,6 @@ export default function AppNavbar() {
       return location.pathname === path || (path === '/dashboard' && location.pathname === '/');
     };
   const handleLogout = () => {
-    // Perform logout actions, e.g., clearing session, etc.
     navigate('/');
   };
 

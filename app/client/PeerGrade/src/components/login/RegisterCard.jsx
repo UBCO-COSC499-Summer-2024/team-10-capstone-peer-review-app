@@ -10,7 +10,6 @@ import { ChevronDown as ChevronDownIcon, ChevronUp as ChevronUpIcon, Check as Ch
 const RegisterCard = ({ onSwitchToLogin }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [institutionName, setInstitutionName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -23,7 +22,6 @@ const RegisterCard = ({ onSwitchToLogin }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Password validation regex: 8 characters, 1 uppercase, 1 lowercase, 1 special character
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
     if (!passwordRegex.test(password)) {
@@ -38,10 +36,6 @@ const RegisterCard = ({ onSwitchToLogin }) => {
       setError('')
     }
 
-
-    // TODO: Add a folder directory for API calls? then we can just import the fetch calls  
-
-    // TODO ADD ENV VARS
     const createUser = async (newUser) => {
       try {
         const response = await fetch('http://localhost:3000/api/auth/register', {
@@ -52,20 +46,17 @@ const RegisterCard = ({ onSwitchToLogin }) => {
           body: JSON.stringify(newUser),
         });
 
-        console.log(JSON.stringify(newUser))
-    
         if (!response.ok) {
-          console.error('HTTP error! status: ', response.status);
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-    
+
         const data = await response.json();
         return data;
       } catch (error) {
         console.error('Error:', error);
       }
     };
-    
+
     const newUser = {
       username: "testuser", 
       password: password,
@@ -75,9 +66,8 @@ const RegisterCard = ({ onSwitchToLogin }) => {
       role: value 
     };
 
-  
-    createUser(newUser); //DB PROCESS: Add the user to the database here
-    onSwitchToLogin(); // Switch back to login after registration
+    createUser(newUser); 
+    onSwitchToLogin(); 
   };
 
   const dropdown_options = [
@@ -96,12 +86,12 @@ const RegisterCard = ({ onSwitchToLogin }) => {
   ];
 
   return (
-    <Card className="w-full max-w-md p-8 space-y-8 bg-white shadow-md rounded-lg">
+    <Card className="w-full max-w-lg h-[450px] flex flex-col">
       <CardHeader className="text-center">
         <CardTitle className="text-2xl font-bold">Register</CardTitle>
         <CardDescription className="text-gray-600">Please enter your details to create an account</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="flex-1 my-3 overflow-y-auto space-y-4">
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
@@ -128,18 +118,6 @@ const RegisterCard = ({ onSwitchToLogin }) => {
                 className="block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
-          </div>
-          <div>
-            <label htmlFor="institutionName" className="block text-sm font-medium text-gray-700">Learning Institution Name:</label>
-            <input
-              id="institutionName"
-              name="institutionName"
-              type="text"
-              value={institutionName}
-              onChange={(e) => setInstitutionName(e.target.value)}
-              required
-              className="block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
           </div>
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email Address:</label>
@@ -188,25 +166,25 @@ const RegisterCard = ({ onSwitchToLogin }) => {
             </div>
           </div>
           <div>
-          <label htmlFor="selectUserType" className="block text-sm font-medium text-gray-700">Select User Type (debug):</label>
+            <label htmlFor="selectUserType" className="block text-sm font-medium text-gray-700">Select User Type (debug):</label>
             <Popover open={open} onOpenChange={setOpen} id='selectUserType'>
               <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    role="combobox"
-                    aria-expanded={open}
-                    className="w-[200px] justify-between bg-white mt-1"
-                  >
-                    {value
-                      ? dropdown_options.find((option) => option.value === value)?.label
-                      : "Select option..."}
-                    {open
-                      ? <ChevronUpIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      : <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    }
-                  </Button>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={open}
+                  className="w-full justify-between bg-white mt-1"
+                >
+                  {value
+                    ? dropdown_options.find((option) => option.value === value)?.label
+                    : "Select option..."}
+                  {open
+                    ? <ChevronUpIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    : <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  }
+                </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-[200px] p-0 rounded-md">
+              <PopoverContent className="w-full p-0 rounded-md">
                 <Command>
                   <CommandList>
                     <CommandGroup>
@@ -237,17 +215,17 @@ const RegisterCard = ({ onSwitchToLogin }) => {
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <div className='flex justify-center'>
             <Button
-              variant="success"
+              variant="outline"
               type="submit"
-              className="w-full"
+              className="w-full bg-green-200"
             >
               Sign up
             </Button>
           </div>
         </form>
       </CardContent>
-      <CardFooter className="text-center">
-        <p className="text-sm text-gray-600">
+      <CardFooter className="flex justify- items-center text-center bg-indigo-100  ">
+        <p className="text-sm mt-5 text-gray-600">
           Already have an account? <button onClick={onSwitchToLogin} className="text-green-600 hover:text-gray-900">Log in</button>
         </p>
       </CardFooter>

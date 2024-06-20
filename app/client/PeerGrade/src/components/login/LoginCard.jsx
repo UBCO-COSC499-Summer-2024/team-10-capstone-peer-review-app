@@ -22,9 +22,6 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
     const handleSubmit = (e) => {
       e.preventDefault();
     
-      // TODO: Add a folder directory for API calls? then we can just importthe 
-      // ADD ENV VARS
-      // Create a fetch request to the /login endpoint
       fetch('http://localhost:3000/api/auth/login', {
         method: 'POST',
         headers: {
@@ -53,73 +50,74 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
     };
 
   return (
-    
-      <Card className="w-full max-w-md p-8 space-y-8 bg-white shadow-md rounded-lg">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">Login</CardTitle>
-          <CardDescription className="text-gray-600">Please enter your credentials to login</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email address</label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className={`block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-100 border ${error ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
-              />
-            </div>
-            <div className="relative">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-              <input
-                id="password"
-                name="password"
-                type={passwordVisible ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className={`block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-100 border ${error ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
-              />
-              <div className="absolute mt-6 inset-y-0 right-0 pr-3 flex items-center">
-                <button type="button" onClick={() => setPasswordVisible(!passwordVisible)}>
-                  {passwordVisible ? <EyeSlashIcon className="h-5 w-5 text-gray-500" /> : <EyeIcon className="h-5 w-5 text-gray-500" />}
-                </button>
-              </div>
-            </div>
-            {error && <p className="text-red-500 text-sm">{error}</p>}
-            <div>
-              <button
-                type="submit"
-                className="w-full px-4 py-2 text-sm font-medium text-white bg-[#111827] border border-transparent rounded-md shadow-sm hover:bg-[#374151] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Sign in
+    <Card className="w-full max-w-lg h-[450px] flex flex-col">
+      <CardHeader className="text-center">
+        <CardTitle className="text-2xl font-bold">Login</CardTitle>
+        <CardDescription className="text-gray-600">Please enter your credentials to login</CardDescription>
+      </CardHeader>
+      <CardContent className="flex-1 overflow-y-auto space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email address</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className={`block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-100 border ${error ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+            />
+          </div>
+          <div className="relative">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+            <input
+              id="password"
+              name="password"
+              type={passwordVisible ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className={`block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-100 border ${error ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+            />
+            <div className="absolute mt-6 inset-y-0 right-0 pr-3 flex items-center">
+              <button type="button" onClick={() => setPasswordVisible(!passwordVisible)}>
+                {passwordVisible ? <EyeSlashIcon className="h-5 w-5 text-gray-500" /> : <EyeIcon className="h-5 w-5 text-gray-500" />}
               </button>
             </div>
-          </form>
-          <p className="text-sm text-gray-600">
-            <button onClick={onSwitchToForgotPassword} className="text-green-600 hover:text-green-500">Forgot your password?</button>
-          </p>
-        </CardContent>
-        <CardFooter className="text-center flex flex-col gap-2 ">
-          <p className="text-sm text-gray-600">
-            Don't have an account? <button onClick={onSwitchToRegister} className="text-green-600 hover:text-green-500">Sign up</button>
-          </p>
-        </CardFooter>
-        <div className="flex justify-center">
-          <HoverCard>
-            <HoverCardTrigger>
-              <QuestionMarkCircleIcon className="w-6 h-6" />
-            </HoverCardTrigger>
-            <HoverCardContent className="text-center p-4">
-              Contact @parsa for inquiries
-            </HoverCardContent>
-          </HoverCard>
-        </div>
-      </Card>
+          </div>
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+          <div>
+            <button
+              type="submit"
+              className="w-full px-4 py-2 text-sm font-medium text-white bg-[#111827] border border-transparent rounded-md shadow-sm hover:bg-[#374151] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Sign in
+            </button>
+          </div>
+        </form>
+        <p className="text-sm text-gray-600">
+          <button onClick={onSwitchToForgotPassword} className="text-green-600 hover:text-green-500">Forgot your password?</button>
+        </p>
+      </CardContent>
+      <CardFooter className="text-center flex flex-col gap-2 bg-indigo-100 ">
+      <div className="flex w-full justify-between mt-6">
+
+        <p className="text-sm text-gray-600">
+          Don't have an account? <button onClick={onSwitchToRegister} className="text-green-600 hover:text-green-500">Sign up</button>
+        </p>
+        <HoverCard>
+          <HoverCardTrigger className="hover:bg-amber-100 rounded-full ease-in-out duration-500">
+            <QuestionMarkCircleIcon className="w-6 h-6" />
+          </HoverCardTrigger>
+          <HoverCardContent className="text-center p-4">
+            Contact @parsa for inquiries
+          </HoverCardContent>
+        </HoverCard>
+      </div>
+      </CardFooter>
+      
+    </Card>
   );
 };
 

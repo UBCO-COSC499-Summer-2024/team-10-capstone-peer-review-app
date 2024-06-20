@@ -8,16 +8,12 @@ import {
   CardContent
 } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Popover,
+  PopoverTrigger,
+  PopoverContent
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
 
 const GroupCard = ({ classes, groups, classNames, users }) => {
   const [selectedClass, setSelectedClass] = React.useState(classNames[0]);
@@ -37,23 +33,24 @@ const GroupCard = ({ classes, groups, classNames, users }) => {
         <CardDescription>Invite your group members to collaborate.</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="mb-4">
-          <Select onValueChange={(value) => setSelectedClass(classNames.find(classItem => classItem.class_id === Number(value)))}>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder={selectedClass.classname} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Classes</SelectLabel>
-                {classNames.map(classItem => (
-                  <SelectItem key={classItem.class_id} value={classItem.class_id.toString()}>
-                    {classItem.classname}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="outline" className="mb-4">
+              {selectedClass.classname}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            {classNames.map(classItem => (
+              <div
+                key={classItem.class_id}
+                className="cursor-pointer p-2 hover:bg-gray-100"
+                onClick={() => setSelectedClass(classItem)}
+              >
+                {classItem.classname}
+              </div>
+            ))}
+          </PopoverContent>
+        </Popover>
         {filteredGroups.map(group => (
           getGroupMembers(group.group_id).map(member => {
             const user = users.find(u => u.user_id === member.student_id);

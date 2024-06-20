@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
 import ClassCard from '@/components/class/ClassCard';
 import DataTable from '@/components/ui/data-table';
 import { iClass as classesData, assignment as assignmentsData, user, Group } from '@/lib/dbData'; //DB CALL
@@ -8,17 +9,29 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import GroupCard from '@/components/class/GroupCard';
-
+import { Skeleton } from "@/components/ui/skeleton";
 
 function Dashboard() {
   const currentUser = useSelector((state) => state.user.currentUser);
   const classNames = classesData.map(cls => ({ class_id: cls.class_id, classname: cls.classname }));
+  
+  // Loading state
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading time for now. Replace this with actual API call timing.
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   if (!currentUser) {
     return null;
   }
 
-  const userClasses = classesData
+  const userClasses = classesData;
 
   const assignmentColumns = [
     {
@@ -119,40 +132,65 @@ function Dashboard() {
   return (
     <div className="w-full main-container py-6 space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {userClasses.map((classItem) => (
-          <ClassCard
-            key={classItem.class_id}
-            classId={classItem.class_id}
-            className={classItem.classname}
-            instructor={user.find(instructor => instructor.user_id === classItem.instructor_id)?.firstname + ' ' + user.find(instructor => instructor.user_id === classItem.instructor_id)?.lastname}
-            numStudents={user.filter(student => Array.isArray(student.classes) && student.classes.includes(classItem.class_id)).length}
-            numAssignments={assignmentsData.filter(assignment => assignment.class_id === classItem.class_id).length}
-            numPeerReviews={assignmentsData.filter(assignment => assignment.class_id === classItem.class_id && assignment.evaluation_type === 'peer').length}
-          />
-        ))}
+        {loading ? (
+          // Skeleton for ClassCard
+          Array.from({ length: 3 }).map((_, index) => (
+            <Skeleton key={index} className="h-48 w-full rounded-lg" />
+          ))
+        ) : (
+          userClasses.map((classItem) => (
+            <ClassCard
+              key={classItem.class_id}
+              classId={classItem.class_id}
+              className={classItem.classname}
+              instructor={user.find(instructor => instructor.user_id === classItem.instructor_id)?.firstname + ' ' + user.find(instructor => instructor.user_id === classItem.instructor_id)?.lastname}
+              numStudents={user.filter(student => Array.isArray(student.classes) && student.classes.includes(classItem.class_id)).length}
+              numAssignments={assignmentsData.filter(assignment => assignment.class_id === classItem.class_id).length}
+              numPeerReviews={assignmentsData.filter(assignment => assignment.class_id === classItem.class_id && assignment.evaluation_type === 'peer').length}
+            />
+          ))
+        )}
       </div>
       <div className="flex items-center gap-5">
         <div className="flex w-3/4">
           <Tabs defaultValue="assignments" className="flex-1">
+          {loading ? (<Skeleton className="h-48 w-full rounded-lg" />
+          ):(
             <TabsList className="grid w-1/2 grid-cols-2">
               <TabsTrigger value="assignments">Assignments</TabsTrigger>
               <TabsTrigger value="reviews">Reviews</TabsTrigger>
             </TabsList>
+          )}
             <TabsContent value="assignments">
-              <DataTable title="Upcoming Assignments" data={assignmentData} columns={assignmentColumns} pageSize={5} />
+              {loading ? (
+                // Skeleton for DataTable
+                <Skeleton className="h-48 w-full rounded-lg" />
+              ) : (
+                <DataTable title="Upcoming Assignments" data={assignmentData} columns={assignmentColumns} pageSize={5} />
+              )}
             </TabsContent>
             <TabsContent value="reviews">
-              <DataTable title="Upcoming Reviews" data={reviewData} columns={reviewColumns} pageSize={5} />
+              {loading ? (
+                // Skeleton for DataTable
+                <Skeleton className="h-48 w-full rounded-lg" />
+              ) : (
+                <DataTable title="Upcoming Reviews" data={reviewData} columns={reviewColumns} pageSize={5} />
+              )}
             </TabsContent>
           </Tabs>
         </div>
-        <div className="flex w-1/2 ">
-          <GroupCard
-            classes={classesData}
-            groups={Group}
-            classNames={classNames}
-            users={user}
-          />
+        <div className="flex w-1/2">
+          {loading ? (
+            // Skeleton for GroupCard
+            <Skeleton className="h-96 w-full rounded-lg" />
+          ) : (
+            <GroupCard
+              classes={classesData}
+              groups={Group}
+              classNames={classNames}
+              users={user}
+            />
+          )}
         </div>
       </div>
     </div>

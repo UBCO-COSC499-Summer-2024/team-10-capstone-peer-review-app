@@ -8,29 +8,38 @@ import { Textarea } from '@/components/ui/textarea';
 import { Avatar } from '@/components/ui/avatar';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { useToast } from '@/components/ui/use-toast';
+import { Toaster } from '@/components/ui/toaster';
 
 const Settings = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user.currentUser);
-  const { toast } = useToast(); // Assuming useToast provides a toast function
+  const { toast } = useToast();
 
   const [selectedTab, setSelectedTab] = useState('profile');
   const [username, setUsername] = useState(currentUser?.username || '');
   const [email, setEmail] = useState(currentUser?.email || '');
   const [bio, setBio] = useState(currentUser?.bio || '');
   const [url, setUrl] = useState(currentUser?.url || '');
-
-  const handleSaveProfile = () => {
-    dispatch(updateUser({ username, email, bio, url }));
-    
-    toast({
-      title: "Profile Updated",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify({ username, email, bio, url }, null, 2)}</code>
-        </pre>
-      ),
-    });
+  const handleSaveProfile = async () => {
+    try {
+      // Assuming updateUser is an async action or you can replace it with your API call
+      await dispatch(updateUser({ username, email, bio, url }));
+      toast({
+        title: "Profile Updated",
+        description: (
+          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+            <code className="text-white">{JSON.stringify({ username, email, bio, url }, null, 2)}</code>
+          </pre>
+        ),
+        variant: "positive"
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "An error occurred while updating the profile.",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
@@ -148,6 +157,7 @@ const Settings = () => {
           </Card>
         </TabsContent>
       </Tabs>
+      <Toaster />
     </div>
   );
 };

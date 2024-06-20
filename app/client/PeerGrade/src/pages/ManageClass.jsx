@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import ClassCard from '@/components/class/ClassCard';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
+import { Toaster } from '@/components/ui/toaster';
+import { useToast } from '@/components/ui/use-toast';
 import { iClass, assignment, PeerReview, submission } from '@/lib/dbData';
 
 const AddClassModal = ({ show, onClose, onAddClass }) => {
@@ -99,22 +101,28 @@ const AddClassModal = ({ show, onClose, onAddClass }) => {
 const ManageClass = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const currentUser = useSelector((state) => state.user.currentUser);
+  const { toast } = useToast();
 
   if (!currentUser || (currentUser.role !== 'INSTRUCTOR' && currentUser.role !== 'ADMIN')) {
     return <div>You do not have permission to view this page.</div>;
   }
 
   const handleAddClass = (newClass) => {
-    const classData = {
-      ...newClass,
-      class_id: iClass.length + 1,
-      instructor_id: currentUser.userId,
-      start: new Date(),
-      end: new Date(),
-    };
-    // Add the new class to the database here
-    iClass.push(classData);
-    setModalOpen(false);
+    try {
+      const classData = {
+        ...newClass,
+        class_id: iClass.length + 1,
+        instructor_id: currentUser.userId,
+        start: new Date(),
+        end: new Date(),
+      };
+      // Add the new class to the database here
+      iClass.push(classData);
+      setModalOpen(false);
+      toast({ title: "Success", description: "Class added successfully!", variant: "positive" });
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to add class", variant: "destructive" });
+    }
   };
 
   const handleDeleteClass = (classId) => {
@@ -163,6 +171,7 @@ const ManageClass = () => {
         ))}
       </div>
       <AddClassModal show={modalOpen} onClose={() => setModalOpen(false)} onAddClass={handleAddClass} />
+      <Toaster />
     </div>
   );
 };

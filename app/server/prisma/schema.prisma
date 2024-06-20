@@ -87,7 +87,7 @@ model Class {
 model UserInClass {
   userId  String
   classId String
-  utudent User   @relation(fields: [userId], references: [userId])
+  student User   @relation(fields: [userId], references: [userId])
   class   Class  @relation(fields: [classId], references: [classId])
 
   @@id([userId, classId])

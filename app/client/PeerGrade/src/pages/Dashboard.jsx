@@ -1,11 +1,12 @@
 import { useSelector } from 'react-redux';
 import ClassCard from '@/components/class/ClassCard';
 import DataTable from '@/components/ui/data-table';
-import { iClass as classesData, assignment as assignmentsData, user } from '@/lib/dbData'; //DB CALL
+import { iClass as classesData, assignment as assignmentsData, user } from '@/lib/dbData';
 import { ArrowUpDown } from "lucide-react";
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 function Dashboard() {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -114,7 +115,6 @@ function Dashboard() {
 
   return (
     <div className="w-full main-container py-6 space-y-6">
-      <h1 className="text-2xl font-bold">Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {userClasses.map((classItem) => (
           <ClassCard
@@ -128,10 +128,18 @@ function Dashboard() {
           />
         ))}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <DataTable title="Upcoming Assignments" data={assignmentData} columns={assignmentColumns} pageSize={5} />
-        <DataTable title="Upcoming Reviews" data={reviewData} columns={reviewColumns} pageSize={5} />
-      </div>
+      <Tabs defaultValue="assignments" className="w-1/2">
+        <TabsList className="grid w-1/2 grid-cols-2">
+          <TabsTrigger value="assignments">Assignments</TabsTrigger>
+          <TabsTrigger value="reviews">Reviews</TabsTrigger>
+        </TabsList>
+        <TabsContent value="assignments">
+          <DataTable title="Upcoming Assignments" data={assignmentData} columns={assignmentColumns} pageSize={5} />
+        </TabsContent>
+        <TabsContent value="reviews">
+          <DataTable title="Upcoming Reviews" data={reviewData} columns={reviewColumns} pageSize={5} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

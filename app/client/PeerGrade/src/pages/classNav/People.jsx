@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { peopleData } from '../../lib/data';
+import { peopleData } from '../../utils/data';
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";

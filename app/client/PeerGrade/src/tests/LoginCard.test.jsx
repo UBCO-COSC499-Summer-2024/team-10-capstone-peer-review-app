@@ -2,7 +2,7 @@ import { render, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
-import { setCurrentUser } from '@/lib/redux/hooks/userSlice';
+import { setCurrentUser } from '@/utils/redux/hooks/userSlice';
 import LoginCard from '@/components/login/LoginCard';
 
 const mockNavigate = jest.fn();

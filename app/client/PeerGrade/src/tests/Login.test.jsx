@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent, within } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import store from '@/lib/redux/store';
+import store from '@/utils/redux/store';
 import Login from '@/pages/Login';
 
 describe('Login', () => {

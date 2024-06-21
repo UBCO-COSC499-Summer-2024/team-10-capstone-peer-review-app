@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { filesData } from '../../lib/data';
+import { filesData } from '../../utils/data';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import {
 	Table,

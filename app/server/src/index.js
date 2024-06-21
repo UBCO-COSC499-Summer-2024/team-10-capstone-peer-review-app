@@ -1,13 +1,13 @@
 import express from "express";
 import session from "express-session";
-import dotenv from "dotenv";
 import passport from "passport";
 
 import setupRoutes from "./routes/index.js";
 import apiError from "./utils/apiError.js";
 import globalErrorHandler from "./middleware/globalErrorHandler.js";
 
-dotenv.config();
+// Dynamically set up environment variables based on NODE_ENV
+import "../src/utils/envConfig.js";
 
 const app = express();
 const BACKEND_PORT = process.env.BACKEND_PORT;

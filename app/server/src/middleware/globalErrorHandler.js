@@ -24,14 +24,11 @@ const prodErrors = (res, error) => {
 const globalErrorHandler = (error, req, res, next) => {
 	error.statusCode = error.statusCode || 500;
 	error.status = error.status || "Error";
-	// For now, we don't have nodeENVs set up so just gonna return devErrors by default
-	if (process.env.NODE_ENV === "development") {
+	if (process.env.NODE_ENV === "dev" || process.env.NODE_ENV === "test") {
 		devErrors(res, error);
-	} else if (process.env.NODE_ENV === "production") {
+	} else if (process.env.NODE_ENV === "prod") {
 		prodErrors(res, error);
 	}
-
-	devErrors(res, error);
 };
 
 export default globalErrorHandler;

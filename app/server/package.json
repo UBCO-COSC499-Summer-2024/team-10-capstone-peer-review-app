@@ -6,8 +6,9 @@
   "type": "module",
   "scripts": {
     "dev:server": "nodemon -L ./src/index.js --ext js --exec node ./src/index.js",
-    "dev:prisma": "nodemon -L --watch prisma --ext prisma --exec 'npx prisma db push && npx prisma studio'",
-    "dev": "concurrently npm:dev:*", 
+    "dev:prisma": "nodemon -L --watch prisma --ext prisma --exec 'dotenv -e .env.dev -- npx prisma db push && npx prisma studio'",
+    "dev:watch": "concurrently \"npm:dev:server\" \"npm:dev:prisma\"", 
+    "dev": "NODE_ENV=dev npm run dev:watch", 
     "start": "node ./src/index.js",
     "prisma": "npx prisma generate && npx prisma db push",
     "test": "jest",

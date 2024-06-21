@@ -1,11 +1,12 @@
 import path from "path";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import dotenv from "dotenv";
 
-// Set up environment variables
-dotenv.config();
+// This dynamically sets the environment variables based on NODE_ENV
 
+import "./src/utils/envConfig.js"
+
+// Retrieve ENV vars from the .env file
 const BACKEND_PORT = process.env.BACKEND_PORT; 
 const BACKEND_HOST = process.env.BACKEND_HOST;
 

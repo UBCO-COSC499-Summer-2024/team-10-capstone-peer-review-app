@@ -1,4 +1,122 @@
 
+# Mahir's Log for Cycle 6
+
+
+## Tuesday, June 18, 2024, 05:21 PM - Thursday, June 20, 2024, 05:21 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[155](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/155)**: ShadCN Design Refactor  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[150](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/150)**: Integrate Api calls with UI, Create Redux Slices for api calls (For this week: User Info, Class info, Assignment? Maybe)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[127](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/127)**: Major Use Case 12: Manage Group   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Create a Group for an Assignment  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[110](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/110)**: Integrating Api endpoints with UI   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[84](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/84)**: Post MVP Milestone Database Refactor With TA or Prof  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **155/ ShadCN refactoring** *(Total duration: 5.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 19, 2024, 09:28 PM - Wednesday, June 19, 2024, 11:55 PM *(2.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 19, 2024, 09:39 AM - Wednesday, June 19, 2024, 11:17 AM *(1.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 19, 2024, 12:50 AM - Wednesday, June 19, 2024, 02:04 AM *(1.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **155/ repo setup bug fixes** *(Total duration: 0.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 19, 2024, 06:46 PM - Wednesday, June 19, 2024, 07:30 PM *(0.7 hours)*  
+  
+&nbsp; &nbsp; :watch: **151/Admin Dashboard UI** *(Total duration: 1.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 19, 2024, 12:40 AM - Wednesday, June 19, 2024, 12:48 AM *(0.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 18, 2024, 10:39 PM - Tuesday, June 18, 2024, 11:41 PM *(1.0 hours)*  
+  
+&nbsp; &nbsp; :watch: **145/Testing** *(Total duration: 0.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 18, 2024, 10:23 PM - Tuesday, June 18, 2024, 10:38 PM *(0.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 18, 2024, 09:40 PM - Tuesday, June 18, 2024, 10:00 PM *(0.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **145/Toast Messages** *(Total duration: 1.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 18, 2024, 08:00 PM - Tuesday, June 18, 2024, 09:21 PM *(1.4 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[153](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/153)**: Toast messages on success/errors   
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[153](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/153)**: Toast messages on success/errors   
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[110](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/110)**: Integrating Api endpoints with UI   
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[84](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/84)**: Post MVP Milestone Database Refactor With TA or Prof  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[155](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/155)**: ShadCN Design Refactor  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[150](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/150)**: Integrate Api calls with UI, Create Redux Slices for api calls (For this week: User Info, Class info, Assignment? Maybe)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[145](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/145)**: Toasts for msgs from api-endpoints  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[129](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/129)**: Major Use Case 14: Create New Class  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[128](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/128)**: Major Use Case 13: Join Group / Accept Invite  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[127](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/127)**: Major Use Case 12: Manage Group   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Create a Group for an Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[122](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/122)**: Major Use Case 7: View Submission Feedback (from instructor)   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[120](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/120)**: Major Use Case 5: Send Reports to Admin   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[108](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/108)**: Redux - More slices   
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Mahir's Log for Cycle 5
 
 

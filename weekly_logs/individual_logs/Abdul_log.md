@@ -1,4 +1,84 @@
 
+# Abdul's Log for Cycle 6
+
+
+## Tuesday, June 18, 2024, 05:21 PM - Thursday, June 20, 2024, 05:21 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[157](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/157)**: View List of Classes UI  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[143](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/143)**: Add Forgot Password UI  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[131](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/131)**: Major Use Case 16-1: Create/Manage Assignment  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[84](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/84)**: Post MVP Milestone Database Refactor With TA or Prof  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Working on List of Classes UI** *(Total duration: 2.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 18, 2024, 11:18 PM - Wednesday, June 19, 2024, 01:51 AM *(2.5 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[156](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/156)**: Add List of Classes UI for admins only  
+  
+
+## Features completed on this cycle:
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[143](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/143)**: Add Forgot Password UI  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[84](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/84)**: Post MVP Milestone Database Refactor With TA or Prof  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[157](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/157)**: View List of Classes UI  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[140](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/140)**: Major Use Case 24: View User Reports   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[135](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/135)**: Major Use Case 19: Delete Classes  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[132](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/132)**: Major Use Case 17: View Class Dashboard  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[131](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/131)**: Major Use Case 16-1: Create/Manage Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[130](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/130)**: Major Use Case 15: Manage Class  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[123](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/123)**: Major Use Case 8: View Assignments and their details   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[121](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/121)**: Major Use Case 6: Submit Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[119](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/119)**: Major Use Case 4: View List of Classes  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[118](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/118)**: Major Use Case 3: Forgot Password / Email validation   
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Abdul's Log for Cycle 5
 
 

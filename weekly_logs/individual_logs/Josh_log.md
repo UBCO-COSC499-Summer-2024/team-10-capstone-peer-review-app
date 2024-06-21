@@ -1,4 +1,136 @@
 
+# Josh's Log for Cycle 6
+
+
+## Tuesday, June 18, 2024, 05:21 PM - Thursday, June 20, 2024, 05:21 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[160](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/160)**: Reorganize route names and api-endpoints.   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[150](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/150)**: Integrate Api calls with UI, Create Redux Slices for api calls (For this week: User Info, Class info, Assignment? Maybe)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[149](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/149)**: implement JOI for api-data validation  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[142](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/142)**: Set up Dev Containers for unified development  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: docker 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[105](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/105)**: Create class api endpoint w/ associated tests   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[95](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/95)**: Add tests to the backend, integrate into drone  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: testing, type: api 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[84](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/84)**: Post MVP Milestone Database Refactor With TA or Prof  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Refactoring env vars / dynamic loading of env vars, working on prisma testing** *(Total duration: 1.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 20, 2024, 03:42 PM - Thursday, June 20, 2024, 03:49 PM *(0.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 20, 2024, 02:28 PM - Thursday, June 20, 2024, 03:41 PM *(1.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **Created a global ErrorHandling Middleware** *(Total duration: 4.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 20, 2024, 09:27 AM - Thursday, June 20, 2024, 01:19 PM *(3.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 19, 2024, 05:24 PM - Wednesday, June 19, 2024, 05:45 PM *(0.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **Looking into "Clean Architecture" to rename routes and decouple** *(Total duration: 1.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 19, 2024, 10:51 PM - Wednesday, June 19, 2024, 11:39 PM *(0.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 19, 2024, 05:46 PM - Wednesday, June 19, 2024, 06:10 PM *(0.4 hours)*  
+  
+&nbsp; &nbsp; :watch: **Reviewing PRS** *(Total duration: 0.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 19, 2024, 04:56 PM - Wednesday, June 19, 2024, 05:24 PM *(0.5 hours)*  
+  
+&nbsp; &nbsp; :watch: **Setting up testing enviroment on the backend** *(Total duration: 1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 19, 2024, 03:59 PM - Wednesday, June 19, 2024, 04:56 PM *(1.0 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[159](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/159)**: adding bhavya's changes   
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[158](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/158)**: Logs review  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[159](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/159)**: adding bhavya's changes   
+  
+&nbsp; &nbsp; :arrow_heading_up: **PR-[158](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/158)**: Logs review  
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[142](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/142)**: Set up Dev Containers for unified development  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[105](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/105)**: Create class api endpoint w/ associated tests   
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[84](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/84)**: Post MVP Milestone Database Refactor With TA or Prof  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[160](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/160)**: Reorganize route names and api-endpoints.   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[150](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/150)**: Integrate Api calls with UI, Create Redux Slices for api calls (For this week: User Info, Class info, Assignment? Maybe)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[149](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/149)**: implement JOI for api-data validation  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[130](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/130)**: Major Use Case 15: Manage Class  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[125](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/125)**: Major Use Case 10: Requests to Become Instructor / Admin  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[118](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/118)**: Major Use Case 3: Forgot Password / Email validation   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[117](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/117)**: Major Use Case 2: Login Account  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[116](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/116)**: Major Use Case 1: Register Account   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[113](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/113)**: Forgot Password / Email Verification  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[112](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/112)**: debug session management and cookie parsing when accessing instructors route  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[97](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/97)**: DB tables abstraction  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[95](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/95)**: Add tests to the backend, integrate into drone  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[85](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/85)**: Refactor Disc PR notifications to accommodate ready for review from draft PRs, not necessarily assigning   
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Josh's Log for Cycle 5
 
 

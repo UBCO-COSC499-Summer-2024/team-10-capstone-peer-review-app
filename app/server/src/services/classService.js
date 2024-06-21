@@ -411,6 +411,116 @@ const deleteRubricsForAssignment = async (rubricId) => {
 	}
 };
 
+const createCriterionForRubric = async (rubricId, criterionData) => {
+	try {
+		const rubric = await prisma.rubric.findUnique({
+			where: {
+				rubricId: rubricId
+			}
+		});
+
+		if (!rubric) {
+			throw new apiError("Rubric not found", 404);
+		}
+
+		const newCriterion = await prisma.criterion.create({
+			data: {
+				...criterionData,
+				rubricId: rubricId
+			}
+		});
+
+		return newCriterion;
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to create criterion for rubric", 500);
+		}
+	}
+};
+
+const getCriterionForRubric = async (rubricId) => {
+	try {
+		const rubric = await prisma.rubric.findUnique({
+			where: {
+				rubricId: rubricId
+			},
+			include: {
+				criteria: true
+			}
+		});
+
+		if (!rubric) {
+			throw new apiError("Rubric not found", 404);
+		}
+
+		return rubric.criteria;
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to get criteria for rubric", 500);
+		}
+	}
+};
+
+const updateCriterionForRubric = async (criterionId, updateData) => {
+	try {
+		const criterion = await prisma.criterion.findUnique({
+			where: {
+				criterionId: criterionId
+			}
+		});
+
+		if (!criterion) {
+			throw new apiError("Criterion not found", 404);
+		}
+
+		const updatedCriterion = await prisma.criterion.update({
+			where: {
+				criterionId: criterionId
+			},
+			data: updateData
+		});
+
+		return updatedCriterion;
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to update criterion for rubric", 500);
+		}
+	}
+};
+
+const deleteCriterionForRubric = async (criterionId) => {
+	try {
+		const criterion = await prisma.criterion.findUnique({
+			where: {
+				criterionId: criterionId
+			}
+		});
+
+		if (!criterion) {
+			throw new apiError("Criterion not found", 404);
+		}
+
+		await prisma.criterion.delete({
+			where: {
+				criterionId: criterionId
+			}
+		});
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to delete criterion for rubric", 500);
+		}
+	}
+};
+
+
 
 export {
 	getClassById,
@@ -426,5 +536,9 @@ export {
 	createRubricsForAssignment,
 	getRubricsForAssignment,
 	updateRubricsForAssignment,
-	deleteRubricsForAssignment
+	deleteRubricsForAssignment,
+	createCriterionForRubric,
+	getCriterionForRubric,
+	updateCriterionForRubric,
+	deleteCriterionForRubric
 };

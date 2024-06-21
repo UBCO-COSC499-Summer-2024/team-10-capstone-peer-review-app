@@ -2,7 +2,7 @@
 # Abdul's Log for Cycle 6
 
 
-## Tuesday, June 18, 2024, 05:21 PM - Thursday, June 20, 2024, 05:21 PM
+## Tuesday, June 18, 2024, 05:21 PM - Thursday, June 20, 2024, 09:01 PM
 
 
 ## Tasks worked on this cycle:
@@ -27,13 +27,21 @@
 &nbsp; &nbsp; :watch: **Working on List of Classes UI** *(Total duration: 2.5 hours)*  
   
 &nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 18, 2024, 11:18 PM - Wednesday, June 19, 2024, 01:51 AM *(2.5 hours)*  
+
+&nbsp; &nbsp; :watch: **Tweaked Verification Email UI & working on other's PR's** *(Total duration: 2.5 hours)*
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 20, 2024, 05:39 PM - Wednesday, June 20, 2024, 06:41 PM *(1 hour)*  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 20, 2024, 07:30 PM - Wednesday, June 20, 2024, 09:01 PM *(1.5 hours)*  
   
 
 ## All Features worked on this cycle:
 &nbsp; &nbsp; :arrows_clockwise: **PR-[156](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/156)**: Add List of Classes UI for admins only  
+
+&nbsp; &nbsp; :arrows_clockwise: **PR-[115](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/115)**: CRUD endpoints for instructors, Login / Register, Email Verif / Forgot Password (helped with it)
   
 
 ## Features completed on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[156](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/156)**: Add List of Classes UI for admins only (should be merged by June 21)
 
 ## Completed tasks:
 &nbsp; &nbsp; :purple_circle: **Issue-[143](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/143)**: Add Forgot Password UI  
@@ -68,15 +76,13 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* It's only been 2 days but I couldn't do *too* much as I'd been working on another course. I plan to make up for the missed hours (about 3 hours) this weekend and tomorrow.
+* Got list of classes almost done! I added the UI but much of its functionality is UI-based so there is not much to add to it save for an Edit Classes UI (Manage Classes).
 
 ## Goals for next cycle
-* 
-* 
-* 
-  
+* Need to work on linking more of the other components I worked on with the backend now that the backend is good to go for the most part with PR #115 (which should be merged tmrw).
+* Work on and add Edit Classes UI and other smaller components.
+* Make components match each other more as there has been a significant UI overhaul on the Dashboard, which now looks great but the other components still need to be touched up to match it.
   
 
 # Abdul's Log for Cycle 5

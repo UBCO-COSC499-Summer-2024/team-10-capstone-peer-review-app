@@ -59,11 +59,25 @@ export async function sendVerificationEmail(email) {
 	// TODO refactor resetLink for frontend deployment
 	const verificationLink = `http://localhost:5001/auth/confirm-email?token=${token}`;
 
-	const htmlContent = `<p>👋 Welcome to PeerGrade!</p>
-  <p>Thanks for signing up. Please verify your email address to get started.</p>
-  <p>Click this link to verify your email. The link will expire in 5 minutes:
-  <a href="${verificationLink}">Verification Link</a>
-  </p>`;
+	const htmlContent = `<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
+        <style>* {font-family: "Nunito Sans", sans-serif;}</style>
+    </head>
+    <body style="background-color: #F3F4F6;">
+        <div style="display: flex; justify-content: center; align-items: center; min-height: 100vh; max-width: 500px; margin: auto; padding: 20px;">
+            <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); width: 100%; padding: 24px; text-align: center;">
+                    <h3 style="font-size: 24px; font-weight: 600; color: #111827;">Welcome to PeerGrade! 👋</h3>
+                    <p style="font-size: 14px; color: #6B7280;">Thanks for signing up. Please verify your email address to get started.</p>
+                    <p style="font-size: 14px; color: #6B7280; margin-bottom: 16px;">Click the link below to verify your email. The link will expire in 5 minutes:</p>
+                    <a href="${verificationLink}" style="display: inline-block; background-color: #111827; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-size: 14px;">Verification Link</a>
+                <div style="text-align: center; padding-top: 1em;">
+                    <p style="font-size: 14px; color: #6B7280;">If you did not sign up for PeerGrade, please ignore this email.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>`;
 	try {
 		await sendEmail(email, "Email Verification", htmlContent);
 	} catch (error) {

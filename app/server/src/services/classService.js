@@ -163,11 +163,268 @@ const removeStudentFromClass = async (classId, studentId) => {
 	}
 };
 
+const addAssignmentToClass = async (classId, assignmentData) => {
+	try {
+		const classInfo = await prisma.class.findUnique({
+			where: {
+				classId: classId
+			},
+			include: {
+				Assignments: true
+			}
+		});
+
+		if (!classInfo) {
+			throw new apiError("Class not found", 404);
+		}
+
+		const newAssignment = await prisma.assignment.create({
+			data: {
+				...assignmentData,
+				classId: classId
+			}
+		});
+
+		return newAssignment;
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to add assignment to class", 500);
+		}
+	}
+};
+
+const removeAssignmentFromClass = async (classId, assignmentId) => {
+	try {
+		const assignment = await prisma.assignment.findUnique({
+			where: {
+				assignmentId: assignmentId
+			}
+		});
+
+		if (!assignment) {
+			throw new apiError("Assignment not found", 404);
+		}
+
+		await prisma.assignment.delete({
+			where: {
+				assignmentId: assignmentId
+			}
+		});
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to remove assignment from class", 500);
+		}
+	}
+};
+
+const updateAssignmentInClass = async (classId, assignmentId, updateData) => {
+	try {
+		const classInfo = await prisma.class.findUnique({
+			where: {
+				classId: classId
+			},
+			include: {
+				assignments: true
+			}
+		});
+
+		if (!classInfo) {
+			throw new apiError("Class not found", 404);
+		}
+
+		const assignment = await prisma.assignment.findUnique({
+			where: {
+				assignmentId: assignmentId
+			}
+		});
+
+		if (!assignment) {
+			throw new apiError("Assignment not found", 404);
+		}
+
+		const updatedAssignment = await prisma.assignment.update({
+			where: {
+				assignmentId: assignmentId
+			},
+			data: updateData
+		});
+
+		return updatedAssignment;
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to update assignment in class", 500);
+		}
+	}
+};
+
+const getAssignmentInClass = async (classId, assignmentId) => {
+	try {
+		const classInfo = await prisma.class.findUnique({
+			where: {
+				classId: classId
+			},
+			include: {
+				assignments: true
+			}
+		});
+
+		if (!classInfo) {
+			throw new apiError("Class not found", 404);
+		}
+
+		const assignment = await prisma.assignment.findUnique({
+			where: {
+				assignmentId: assignmentId
+			}
+		});
+
+		if (!assignment) {
+			throw new apiError("Assignment not found", 404);
+		}
+
+		return assignment;
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to get assignment in class", 500);
+		}
+	}
+};
+
+const createRubricsForAssignment = async (assignmentId, rubricData) => {
+	try {
+		const assignment = await prisma.assignment.findUnique({
+			where: {
+				assignmentId: assignmentId
+			}
+		});
+
+		if (!assignment) {
+			throw new apiError("Assignment not found", 404);
+		}
+
+		const newRubric = await prisma.rubric.create({
+			data: {
+				...rubricData,
+				assignments: {
+					create: {
+						assignmentId: assignmentId
+					}
+				}
+			}
+		});
+
+		return newRubric;
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to create rubrics for assignment", 500);
+		}
+	}
+};
+
+const getRubricsForAssignment = async (assignmentId) => {
+	try {
+		const assignment = await prisma.assignment.findUnique({
+			where: {
+				assignmentId: assignmentId
+			},
+			include: {
+				rubrics: true
+			}
+		});
+
+		if (!assignment) {
+			throw new apiError("Assignment not found", 404);
+		}
+
+		return assignment.rubrics;
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to get rubrics for assignment", 500);
+		}
+	}
+};
+
+const updateRubricsForAssignment = async (rubricId, updateData) => {
+	try {
+		const rubric = await prisma.rubric.findUnique({
+			where: {
+				rubricId: rubricId
+			}
+		});
+
+		if (!rubric) {
+			throw new apiError("Rubric not found", 404);
+		}
+
+		const updatedRubric = await prisma.rubric.update({
+			where: {
+				rubricId: rubricId
+			},
+			data: updateData
+		});
+
+		return updatedRubric;
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to update rubrics for assignment", 500);
+		}
+	}
+};
+
+const deleteRubricsForAssignment = async (rubricId) => {
+	try {
+		const rubric = await prisma.rubric.findUnique({
+			where: {
+				rubricId: rubricId
+			}
+		});
+
+		if (!rubric) {
+			throw new apiError("Rubric not found", 404);
+		}
+
+		await prisma.rubric.delete({
+			where: {
+				rubricId: rubricId
+			}
+		});
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to delete rubrics for assignment", 500);
+		}
+	}
+};
+
+
 export {
 	getClassById,
 	createClass,
 	updateClass,
 	deleteClass,
 	addStudentToClass,
-	removeStudentFromClass
+	removeStudentFromClass,
+	updateAssignmentInClass,
+	addAssignmentToClass,
+	removeAssignmentFromClass,
+	getAssignmentInClass,
+	createRubricsForAssignment,
+	getRubricsForAssignment,
+	updateRubricsForAssignment,
+	deleteRubricsForAssignment
 };

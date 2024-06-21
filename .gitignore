@@ -1,7 +1,4 @@
 node_modules/
 /app/database/
-*.env 
 *.DS_Store
 *.vite
-# React Component Preview
-previewConfig.json

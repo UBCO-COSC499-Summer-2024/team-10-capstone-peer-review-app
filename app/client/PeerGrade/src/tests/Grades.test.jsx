@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Grades from '@/pages/classNav/Grades';
-import { submission as submissionsData, user as usersData } from '@/lib/dbData';
+import { submission as submissionsData, user as usersData } from '@/utils/dbData';
 
 // Mock data
 const classAssignmentsMock = [

@@ -10,7 +10,7 @@ jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: () => mockNavigate,
 }));
-jest.mock('@/lib/dbData', () => ({
+jest.mock('@/utils/dbData', () => ({
     user: [
       {
         user_id: 1,

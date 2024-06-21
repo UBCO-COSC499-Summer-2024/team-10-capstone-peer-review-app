@@ -21,7 +21,7 @@ jest.mock('@/components/assign/PDFViewer', () => {
 });
 
 // Mock the data
-jest.mock('@/lib/dbData', () => ({
+jest.mock('@/utils/dbData', () => ({
     assignment: [
         { assignment_id: 1, class_id: 1, title: "Assignment Title", description: "Assignment Description", due_date: "2023-12-31", file_type: "pdf" }
     ],

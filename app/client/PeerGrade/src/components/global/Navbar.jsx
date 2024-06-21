@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from "react-router-dom";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 import { Bell } from "lucide-react";
 import {
   NavigationMenu,
@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { iClass as classesData, assignment as assignmentsData } from '@/lib/dbData';
+import { iClass as classesData, assignment as assignmentsData } from '@/utils/dbData';
 
 export default function AppNavbar() {
   const location = useLocation();

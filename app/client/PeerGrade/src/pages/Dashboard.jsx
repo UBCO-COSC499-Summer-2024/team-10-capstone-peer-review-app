@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ClassCard from '@/components/class/ClassCard';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { iClass as classesData, assignment as assignmentsData, user } from '@/lib/dbData'; //DB CALL
+import { iClass as classesData, assignment as assignmentsData, user } from '@/utils/dbData'; //DB CALL
 import { Button } from "@/components/ui/button";
 import { ArrowUp, ArrowDown } from 'lucide-react';
 

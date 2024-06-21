@@ -4,10 +4,10 @@ import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
 import ManageClass from '@/pages/ManageClass';
-import { iClass, assignment, PeerReview, submission } from '@/lib/dbData';
+import { iClass, assignment, PeerReview, submission } from '@/utils/dbData';
 
 // Mock the dbData module
-jest.mock('@/lib/dbData', () => {
+jest.mock('@/utils/dbData', () => {
   return {
     iClass: [],
     assignment: [],

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { assignment as assignmentsData, iClass as classesData, submission as submissionsData, user as usersData, PeerReview as peerReviewData } from '@/lib/dbData';
+import { assignment as assignmentsData, iClass as classesData, submission as submissionsData, user as usersData, PeerReview as peerReviewData } from '@/utils/dbData';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, ChevronLeft } from 'lucide-react';

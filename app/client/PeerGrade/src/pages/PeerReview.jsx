@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { assignment as assignmentsData, iClass as classesData } from '@/lib/dbData';
+import { assignment as assignmentsData, iClass as classesData } from '@/utils/dbData';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";

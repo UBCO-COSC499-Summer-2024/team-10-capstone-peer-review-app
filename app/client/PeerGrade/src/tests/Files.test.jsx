@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Files from '@/pages/classNav/Files';
 
-jest.mock('../lib/data', () => ({
+jest.mock('../utils/data', () => ({
   filesData: [
     { classId: '1', name: 'File1', type: 'pdf', uploadedDate: '2024-06-13' },
     { classId: '1', name: 'File2', type: 'doc', uploadedDate: '2024-06-14' },

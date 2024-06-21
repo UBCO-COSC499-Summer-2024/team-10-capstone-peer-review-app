@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-// import { user as users } from "@/lib/dbData"; // DB CALL: this is user data being pulled from the 'db'
+// import { user as users } from "@/utils/dbData"; // DB CALL: this is user data being pulled from the 'db'
 import { setCurrentUser } from '@/utils/redux/hooks/userSlice'; //REDUX slice
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { Toaster } from '@/components/ui/toaster';

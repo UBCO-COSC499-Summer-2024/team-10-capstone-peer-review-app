@@ -11,7 +11,7 @@ jest.mock('react-redux', () => ({
 }));
 
 // Mocking dbData
-jest.mock('@/lib/dbData', () => ({
+jest.mock('@/utils/dbData', () => ({
   iClass: [
     { class_id: '1', classname: 'Class 1', instructor_id: 'instructor1' },
     { class_id: '2', classname: 'Class 2', instructor_id: 'instructor2' },

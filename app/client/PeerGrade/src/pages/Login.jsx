@@ -20,6 +20,9 @@ const Login = () => {
         <TabsContent value="register">
           <RegisterCard onSwitchToLogin={() => setCurrentTab('login')} />
         </TabsContent>
+        <TabsContent value="forgotPassword">
+          <ForgotPasswordCard onSwitchToLogin={() => setCurrentTab('login')} />
+          </TabsContent>
       </Tabs>
     </main>
   );

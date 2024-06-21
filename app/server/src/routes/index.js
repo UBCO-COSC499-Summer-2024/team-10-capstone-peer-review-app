@@ -1,7 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 // Routers
-import authRouter from "./authRoutes.js";
+import authRouter from "./auth.js";
 import instructorsRouter from "./instructors.js";
 import studentsRouter from "./students.js";
 // Middlewares

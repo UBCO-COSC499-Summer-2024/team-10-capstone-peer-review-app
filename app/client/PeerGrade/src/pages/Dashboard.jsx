@@ -130,8 +130,28 @@ function Dashboard() {
     }));
 
   return (
-    <div className="w-full main-container space-y-6">
-      <div className="flex justify-between items-start gap-5">
+    <div className="w-full main-container space-y-6 ">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-5">
+        {loading ? (
+          // Skeleton for ClassCard
+          Array.from({ length: 3 }).map((_, index) => (
+            <Skeleton key={index} className="h-48 w-full rounded-lg" />
+          ))
+        ) : (
+          userClasses.map((classItem) => (
+            <ClassCard
+              key={classItem.class_id}
+              classId={classItem.class_id}
+              className={classItem.classname}
+              instructor={user.find(instructor => instructor.user_id === classItem.instructor_id)?.firstname + ' ' + user.find(instructor => instructor.user_id === classItem.instructor_id)?.lastname}
+              numStudents={user.filter(student => Array.isArray(student.classes) && student.classes.includes(classItem.class_id)).length}
+              numAssignments={assignmentsData.filter(assignment => assignment.class_id === classItem.class_id).length}
+              numPeerReviews={assignmentsData.filter(assignment => assignment.class_id === classItem.class_id && assignment.evaluation_type === 'peer').length}
+            />
+          ))
+        )}
+      </div>
+      <div className="flex justify-between items-start gap-5 pt-5">
         <div className="flex w-1/2">
           {loading ? (
             // Skeleton for GroupCard
@@ -173,26 +193,7 @@ function Dashboard() {
           </Tabs>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {loading ? (
-          // Skeleton for ClassCard
-          Array.from({ length: 3 }).map((_, index) => (
-            <Skeleton key={index} className="h-48 w-full rounded-lg" />
-          ))
-        ) : (
-          userClasses.map((classItem) => (
-            <ClassCard
-              key={classItem.class_id}
-              classId={classItem.class_id}
-              className={classItem.classname}
-              instructor={user.find(instructor => instructor.user_id === classItem.instructor_id)?.firstname + ' ' + user.find(instructor => instructor.user_id === classItem.instructor_id)?.lastname}
-              numStudents={user.filter(student => Array.isArray(student.classes) && student.classes.includes(classItem.class_id)).length}
-              numAssignments={assignmentsData.filter(assignment => assignment.class_id === classItem.class_id).length}
-              numPeerReviews={assignmentsData.filter(assignment => assignment.class_id === classItem.class_id && assignment.evaluation_type === 'peer').length}
-            />
-          ))
-        )}
-      </div>
+      
     </div>
   );
 }

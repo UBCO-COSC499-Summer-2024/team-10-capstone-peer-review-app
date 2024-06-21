@@ -64,7 +64,7 @@ const DataTable = ({ title, data, columns, pageSize }) => {
   })
 
   return (
-    <div className="w-full ">
+    <div className="w-full bg-white px-5 rounded-lg">
       <div className="flex items-center py-4">
         <Input
           placeholder={`Filter ${title.toLowerCase()}...`}

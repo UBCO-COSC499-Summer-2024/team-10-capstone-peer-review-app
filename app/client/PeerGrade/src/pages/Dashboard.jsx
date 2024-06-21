@@ -130,7 +130,49 @@ function Dashboard() {
     }));
 
   return (
-    <div className="w-full main-container py-6 space-y-6">
+    <div className="w-full main-container space-y-6">
+      <div className="flex justify-between items-start gap-5">
+        <div className="flex w-1/2">
+          {loading ? (
+            // Skeleton for GroupCard
+            <Skeleton className="h-100 w-full rounded-lg" />
+          ) : (
+            <GroupCard
+              classes={classesData}
+              groups={Group}
+              classNames={classNames}
+              users={user}
+            />
+          )}
+        </div>
+        <div className="flex w-3/4">
+          <Tabs defaultValue="assignments" className="flex-1">
+          {loading ? (<Skeleton className="h-48 w-full rounded-lg" />
+          ):(
+            <TabsList className="grid w-1/3 grid-cols-2">
+              <TabsTrigger value="assignments">Assignments</TabsTrigger>
+              <TabsTrigger value="reviews">Reviews</TabsTrigger>
+            </TabsList>
+          )}
+            <TabsContent value="assignments">
+              {loading ? (
+                // Skeleton for DataTable
+                <Skeleton className="h-48 w-full rounded-lg" />
+              ) : (
+                <DataTable title="Upcoming Assignments" data={assignmentData} columns={assignmentColumns} pageSize={4} />
+              )}
+            </TabsContent>
+            <TabsContent value="reviews">
+              {loading ? (
+                // Skeleton for DataTable
+                <Skeleton className="h-48 w-full rounded-lg" />
+              ) : (
+                <DataTable title="Upcoming Reviews" data={reviewData} columns={reviewColumns} pageSize={4} />
+              )}
+            </TabsContent>
+          </Tabs>
+        </div>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {loading ? (
           // Skeleton for ClassCard
@@ -150,48 +192,6 @@ function Dashboard() {
             />
           ))
         )}
-      </div>
-      <div className="flex items-center gap-5">
-        <div className="flex w-3/4">
-          <Tabs defaultValue="assignments" className="flex-1">
-          {loading ? (<Skeleton className="h-48 w-full rounded-lg" />
-          ):(
-            <TabsList className="grid w-1/2 grid-cols-2">
-              <TabsTrigger value="assignments">Assignments</TabsTrigger>
-              <TabsTrigger value="reviews">Reviews</TabsTrigger>
-            </TabsList>
-          )}
-            <TabsContent value="assignments">
-              {loading ? (
-                // Skeleton for DataTable
-                <Skeleton className="h-48 w-full rounded-lg" />
-              ) : (
-                <DataTable title="Upcoming Assignments" data={assignmentData} columns={assignmentColumns} pageSize={5} />
-              )}
-            </TabsContent>
-            <TabsContent value="reviews">
-              {loading ? (
-                // Skeleton for DataTable
-                <Skeleton className="h-48 w-full rounded-lg" />
-              ) : (
-                <DataTable title="Upcoming Reviews" data={reviewData} columns={reviewColumns} pageSize={5} />
-              )}
-            </TabsContent>
-          </Tabs>
-        </div>
-        <div className="flex w-1/2">
-          {loading ? (
-            // Skeleton for GroupCard
-            <Skeleton className="h-96 w-full rounded-lg" />
-          ) : (
-            <GroupCard
-              classes={classesData}
-              groups={Group}
-              classNames={classNames}
-              users={user}
-            />
-          )}
-        </div>
       </div>
     </div>
   );

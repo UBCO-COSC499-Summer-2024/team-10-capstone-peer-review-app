@@ -72,14 +72,13 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Worked on creating the DB CRUD api points for creating the assignments
+* Tested DB manually with mock data
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Create more CRUD points for instructors and then students
+* Test DB with new format
+* Test api with jest fully
   
   
 

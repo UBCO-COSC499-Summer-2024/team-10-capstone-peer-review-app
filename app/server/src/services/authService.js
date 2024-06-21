@@ -64,8 +64,8 @@ export async function sendVerificationEmail(email) {
         <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
         <style>* {font-family: "Nunito Sans", sans-serif;}</style>
     </head>
-    <body style="background-color: #F3F4F6;">
-        <div style="display: flex; justify-content: center; align-items: center; min-height: 100vh; max-width: 500px; margin: auto; padding: 20px;">
+    <body style="background-color: #F3F4F6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;">
+        <div style="display: flex; justify-content: center; align-items: center; max-width: 500px; margin: auto; padding: 20px;">
             <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); width: 100%; padding: 24px; text-align: center;">
                     <h3 style="font-size: 24px; font-weight: 600; color: #111827;">Welcome to PeerGrade! 👋</h3>
                     <p style="font-size: 14px; color: #6B7280;">Thanks for signing up. Please verify your email address to get started.</p>

@@ -86,7 +86,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
   ];
 
   return (
-    <Card className="w-full max-w-lg h-[450px] flex flex-col">
+    <Card className="w-full max-w-lg h-[550px] flex flex-col">
       <CardHeader className="text-center">
         <CardTitle className="text-2xl font-bold">Register</CardTitle>
         <CardDescription className="text-gray-600">Please enter your details to create an account</CardDescription>

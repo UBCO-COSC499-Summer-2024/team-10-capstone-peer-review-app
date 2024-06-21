@@ -129,9 +129,14 @@ const DataTable = ({ title, data, columns, pageSize }) => {
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      className={cell.column.id === 'dueDate' ? 'flex justify-center items-center' : ''}
+                    >
                       {cell.column.id === 'dueDate' ? (
-                        <Badge variant="destructive">{flexRender(cell.column.columnDef.cell, cell.getContext())}</Badge>
+                        <Badge variant="destructive">
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </Badge>
                       ) : (
                         flexRender(cell.column.columnDef.cell, cell.getContext())
                       )}

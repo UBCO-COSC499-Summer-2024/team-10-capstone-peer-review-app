@@ -31,7 +31,7 @@ function Dashboard() {
     return null;
   }
 
-  const userClasses = classesData;
+  const userClasses = [classesData[0], classesData[1], classesData[2]];
 
   const assignmentColumns = [
     {

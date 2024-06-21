@@ -34,7 +34,7 @@ const GroupCard = ({ classes, groups, classNames, users }) => {
       </CardHeader>
       <CardContent>
         <Popover>
-          <PopoverTrigger asChild>
+          <PopoverTrigger asChild className="w-full">
             <Button variant="outline" className="mb-4">
               {selectedClass.classname}
             </Button>

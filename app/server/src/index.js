@@ -5,6 +5,7 @@ import passport from "passport";
 import setupRoutes from "./routes/index.js";
 import apiError from "./utils/apiError.js";
 import globalErrorHandler from "./middleware/globalErrorHandler.js";
+import shutdown from "./utils/shutdown.js";
 
 // Dynamically set up environment variables based on NODE_ENV
 import "../src/utils/envConfig.js";
@@ -49,8 +50,13 @@ app.all("*", (req, res, next) => {
 // Global error handler middleware
 app.use(globalErrorHandler);
 
-app.listen(BACKEND_PORT, () => {
+const server = app.listen(BACKEND_PORT, () => {
 	console.log(`Server is running on port ${BACKEND_PORT}`);
 });
 
-export default app;
+// Handle shutdown (more geared towards prisma) gracefully
+// Listening for UNIX system calls to close the server and prisma connection
+process.on('SIGTERM', () => shutdown('SIGTERM', server));
+process.on('SIGINT', () => shutdown('SIGINT', server));
+
+export default server;

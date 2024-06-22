@@ -7,6 +7,7 @@ import instructorsRouter from "./instructors.js";
 import studentsRouter from "./students.js";
 // Middlewares
 import localStrategy from "../middleware/passportStrategies/localStrategy.js";
+import { ensureUser, ensureInstructor, ensureAdmin } from "../middleware/ensureUserTypes.js";
 
 
 const router = Router();

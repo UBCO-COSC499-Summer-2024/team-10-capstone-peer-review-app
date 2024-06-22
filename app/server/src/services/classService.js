@@ -100,21 +100,21 @@ const addStudentToClass = async (classId, studentId) => {
 
 		// Check if adding a new student exceeds the class size
 		if (
-			classInfo.students &&
-			classInfo.students.length >= classInfo.classSize
+			classInfo.usersInClass &&
+			classInfo.usersInClass.length >= classInfo.classSize
 		) {
 			throw new apiError("Adding student exceeds class size", 400);
 		}
 
 		// Proceed to add the student if class size is not exceeded
-		await prisma.userInClass.create({
+		await prisma.UserInClass.create({
 			data: {
-				userId: userId,
+				userId: studentId,
 				classId: classId
 			}
 		});
 
-		return updatedClass;
+		//return updatedClass;
 	} catch (error) {
 		// Rethrow the error if it's an instance of apiError, else throw general apiError
 		if (error instanceof apiError) {
@@ -172,6 +172,14 @@ const addAssignmentToClass = async (classId, assignmentData) => {
 				Assignments: true
 			}
 		});
+
+		if (
+			assignmentData.dueDate < classInfo.startDate ||
+			assignmentData.dueDate > classInfo.endDate
+		) {
+			throw new apiError("Assignment due date is outside the class duration", 400);
+		}
+
 
 		if (!classInfo) {
 			throw new apiError("Class not found", 404);
@@ -269,7 +277,7 @@ const getAssignmentInClass = async (classId, assignmentId) => {
 				classId: classId
 			},
 			include: {
-				assignments: true
+				Assignments: true
 			}
 		});
 
@@ -526,16 +534,20 @@ export default {
 	createClass,
 	updateClass,
 	deleteClass,
+
 	addStudentToClass,
 	removeStudentFromClass,
+
 	updateAssignmentInClass,
 	addAssignmentToClass,
 	removeAssignmentFromClass,
 	getAssignmentInClass,
+
 	createRubricsForAssignment,
 	getRubricsForAssignment,
 	updateRubricsForAssignment,
 	deleteRubricsForAssignment,
+
 	createCriterionForRubric,
 	getCriterionForRubric,
 	updateCriterionForRubric,

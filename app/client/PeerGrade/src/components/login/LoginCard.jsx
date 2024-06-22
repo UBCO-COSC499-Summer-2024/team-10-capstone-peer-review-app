@@ -82,7 +82,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
     .then(response => response.json())
     .then(data => {
       console.log(data);
-      if (data.error && data.error.status === "fail") {
+      if (data.error && data.error.status === "Error") {
         setError(data.message);
       } else {
         console.log(`Logged in as: ${data.user.role}`);

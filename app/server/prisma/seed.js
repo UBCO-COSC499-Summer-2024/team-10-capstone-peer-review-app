@@ -1,128 +1,142 @@
-// prisma/seed.js
-import { PrismaClient } from '@prisma/client';
-import { faker } from '@faker-js/faker';
-
+import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient();
+import { faker } from '@faker-js/faker'
+
 
 async function main() {
-  // Create specific users
-  const users = [
-    {
+  // Clean up existing data
+  await prisma.review.deleteMany();
+  await prisma.submission.deleteMany();
+  await prisma.userInClass.deleteMany();
+  await prisma.assignment.deleteMany();
+  await prisma.class.deleteMany();
+  await prisma.user.deleteMany();
+
+  // Create users
+  const student = await prisma.user.create({
+    data: {
       email: 'student@gmail.com',
       password: 'Student@123',
-      firstname: faker.name.firstName(),
-      lastname: faker.name.lastName(),
+      firstname: faker.person.firstName(),
+      lastname: faker.person.lastName(),
       role: 'STUDENT',
     },
-    {
+  });
+
+  const instructor = await prisma.user.create({
+    data: {
       email: 'instructor@gmail.com',
       password: 'Instructor@123',
-      firstname: faker.name.firstName(),
-      lastname: faker.name.lastName(),
+      firstname: faker.person.firstName(),
+      lastname: faker.person.lastName(),
       role: 'INSTRUCTOR',
     },
-    {
+  });
+
+  const admin = await prisma.user.create({
+    data: {
       email: 'admin@gmail.com',
       password: 'Admin@123',
-      firstname: faker.name.firstName(),
-      lastname: faker.name.lastName(),
+      firstname: faker.person.firstName(),
+      lastname: faker.person.lastName(),
       role: 'ADMIN',
     },
-  ];
+  });
 
-  const createdUsers = await Promise.all(
-    users.map(user => prisma.user.create({ data: user }))
-  );
+  // Create classes and link them to users
+  const class1 = await prisma.class.create({
+    data: {
+      classname: faker.person.firstName() + ' Class',
+      description: 'This is a test class',
+      startDate: new Date(),
+      endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
+      instructorId: instructor.userId,
+    },
+  });
 
-  // Create additional users
-  const additionalUsers = await Promise.all(
-    Array.from({ length: 10 }).map(() =>
-      prisma.user.create({
-        data: {
-          email: faker.internet.email(),
-          password: faker.internet.password(),
-          firstname: faker.name.firstName(),
-          lastname: faker.name.lastName(),
-          role: 'STUDENT',
-        },
-      })
-    )
-  );
+  const class2 = await prisma.class.create({
+    data: {
+      classname: faker.person.firstName() + ' Class',
+      description: 'This is another test class',
+      startDate: new Date(),
+      endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
+      instructorId: admin.userId,
+    },
+  });
 
-  const allUsers = [...createdUsers, ...additionalUsers];
+  // Enroll the student in both classes
+  await prisma.userInClass.create({
+    data: {
+      userId: student.userId,
+      classId: class1.classId,
+    },
+  });
 
-  // Create classes
-  const classes = await Promise.all(
-    Array.from({ length: 5 }).map((_, index) =>
-      prisma.class.create({
-        data: {
-          classname: faker.lorem.words(3),
-          description: faker.lorem.sentence(),
-          startDate: faker.date.past(),
-          endDate: faker.date.future(),
-          instructor: {
-            connect: {
-              userId: allUsers[index % 3 === 0 ? 1 : 2].userId, // Assign to instructor or admin
-            },
-          },
-        },
-      })
-    )
-  );
-
-  // Enroll students in classes
-  await Promise.all(
-    allUsers.filter(user => user.role === 'STUDENT').map(student =>
-      prisma.userInClass.create({
-        data: {
-          userId: student.userId,
-          classId: classes[faker.datatype.number({ min: 0, max: 4 })].classId,
-        },
-      })
-    )
-  );
+  await prisma.userInClass.create({
+    data: {
+      userId: student.userId,
+      classId: class2.classId,
+    },
+  });
 
   // Create assignments
-  const assignments = await Promise.all(
-    classes.map(classItem =>
-      prisma.assignment.create({
-        data: {
-          title: faker.lorem.sentence(),
-          description: faker.lorem.paragraph(),
-          dueDate: faker.date.future(),
-          classId: classItem.classId,
-        },
-      })
-    )
-  );
+  const assignment1 = await prisma.assignment.create({
+    data: {
+      title: faker.person.firstName() + ' Assignment',
+      description: 'This is a test assignment',
+      dueDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
+      classId: class1.classId,
+    },
+  });
+
+  const assignment2 = await prisma.assignment.create({
+    data: {
+      title: faker.person.firstName() + ' Assignment',
+      description: 'This is another test assignment',
+      dueDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
+      classId: class2.classId,
+    },
+  });
 
   // Create submissions
-  await Promise.all(
-    allUsers.filter(user => user.role === 'STUDENT').map(student =>
-      prisma.submission.create({
-        data: {
-          assignmentId: assignments[faker.datatype.number({ min: 0, max: 4 })].assignmentId,
-          submitterId: student.userId,
-          sumbissionFilePath: faker.system.filePath(),
-          finalGrade: faker.datatype.number({ min: 50, max: 100 }),
-        },
-      })
-    )
-  );
+  const submission1 = await prisma.submission.create({
+    data: {
+      assignmentId: assignment1.assignmentId,
+      submitterId: student.userId,
+      sumbissionFilePath: faker.internet.url(),
+      finalGrade: null,
+    },
+  });
+
+  const submission2 = await prisma.submission.create({
+    data: {
+      assignmentId: assignment2.assignmentId,
+      submitterId: student.userId,
+      sumbissionFilePath: faker.internet.url(),
+      finalGrade: null,
+    },
+  });
 
   // Create reviews
-  await Promise.all(
-    allUsers.filter(user => user.role === 'STUDENT').map(student =>
-      prisma.review.create({
-        data: {
-          submissionId: assignments[faker.datatype.number({ min: 0, max: 4 })].assignmentId,
-          reviewerId: student.userId,
-          revieweeId: allUsers[faker.datatype.number({ min: 0, max: 2 })].userId, // Review another user
-          reviewGrade: faker.datatype.number({ min: 1, max: 10 }),
-        },
-      })
-    )
-  );
+  await prisma.review.create({
+    data: {
+      submissionId: submission1.submissionId,
+      reviewerId: instructor.userId,
+      revieweeId: student.userId,
+      reviewGrade: 90,
+    },
+  });
+
+  await prisma.review.create({
+    data: {
+      submissionId: submission2.submissionId,
+      reviewerId: admin.userId,
+      revieweeId: student.userId,
+      reviewGrade: 95,
+    },
+  });
+
+  console.log('Database has been seeded. 🌱');
 }
 
 main()

@@ -22,24 +22,23 @@ const getClassById = async (classId) => {
 };
 
 const createClass = async ({
-	instructorId,
 	classname,
 	description,
 	startDate,
 	endDate,
 	term,
 	classSize
-}) => {
+}, instructorId) => {
 	try {
 		const newClass = await prisma.class.create({
 			data: {
+				instructorId,
 				classname,
 				description,
 				startDate,
 				endDate,
 				term,
 				classSize,
-				instructorId
 			}
 		});
 		return newClass;
@@ -522,7 +521,7 @@ const deleteCriterionForRubric = async (criterionId) => {
 
 
 
-export {
+export default {
 	getClassById,
 	createClass,
 	updateClass,

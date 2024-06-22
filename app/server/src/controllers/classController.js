@@ -1,5 +1,5 @@
 // Import necessary modules and services
-import * as classService from "../services/classService.js";
+import classService from "../services/classService.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 
 // Controller methods for class operations
@@ -13,9 +13,11 @@ export const getClassById = asyncErrorHandler(async (req, res) => {
 	});
 });
 
-export const createClass = asyncErrorHandler(async (req, res) => {
+export const createClass = asyncErrorHandler(async (req, res) => { 
+    const instructorId = req.user.userId
+    console.log(instructorId);
 	const classInfo = req.body;
-	const newClass = await classService.createClass(classInfo);
+	const newClass = await classService.createClass(classInfo, instructorId);
 	return res.status(201).json({
 		status: "Success",
 		message: "Class successfully created",

@@ -1,4 +1,36 @@
 
+# Team 10's Team Dashboard for Cycle 6
+
+
+## Tuesday, June 18, 2024, 05:21 PM - Thursday, June 20, 2024, 05:21 PM
+
+
+### Major features worked on in c-6
+*  Major Use Cases 1, 2, 3: Login / Register / Auth / Verify Email / Forgot Password
+  
+*  Major Use Cases 4, 14, 15, 17, 18: Class CRUD Api endpoints / UI
+  
+
+### Major features completed in c-6
+  
+*  Major Use Cases 1, 2, 3: Login / Register / Auth / Verify Email / Forgot Password
+  
+
+### Major features to work on for c-7
+*  Major Use Cases 4, 14, 15, 17, 18: Class CRUD Api endpoints / UI
+  
+*  Major Use Case 10: Role Requests / Admin UI for accepting and denying role requests
+
+
+### Team Issues and Hurdles for c-6
+*  Integrations with UI and backend, testing enviroment approaches (Mock vs test database env), refactoring api structure 
+  
+### Clockify Dashboard for this Week
+
+![Clockify Dashboard for c-5](./team_dashboard_images/clockify_dashboards/clockify_dashboard_c6.png)
+  
+  
+
 # Team 10's Team Dashboard for Cycle 5
 
 

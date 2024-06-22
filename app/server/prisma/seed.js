@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient();
 import { faker } from '@faker-js/faker'
 
-
 async function main() {
   // Clean up existing data
   await prisma.review.deleteMany();

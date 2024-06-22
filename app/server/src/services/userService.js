@@ -1,73 +1,52 @@
-import prisma from '../prisma/client.js';
-import ApiError from '../utils/apiError.js';
+import prisma from "../prisma/client.js";
+import ApiError from "../utils/apiError.js";
 
-// Get user classes based on role
-export const getUserClasses = async (userId, role) => {
-  if (role === 'STUDENT') {
-    const userClasses = await prisma.userInClass.findMany({
-      where: { userId },
-      include: {
-        class: true,
-      },
-    });
-    return userClasses.map(userClass => userClass.class);
-  } else if (role === 'INSTRUCTOR') {
-    const instructorClasses = await prisma.class.findMany({
-      where: { instructorId: userId },
-    });
-    return instructorClasses;
-  } else {
-    throw new ApiError(403, 'Invalid role');
-  }
-};
-
-// Get user assignments based on role
-export const getUserAssignments = async (userId, role) => {
-  if (role === 'STUDENT') {
-    const userAssignments = await prisma.assignment.findMany({
-      where: {
-        class: {
-          usersInClass: {
-            some: {
-              userId,
-            },
-          },
-        },
-      },
-    });
-    return userAssignments;
-  } else if (role === 'INSTRUCTOR') {
-    const instructorAssignments = await prisma.assignment.findMany({
-      where: {
-        class: {
-          instructorId: userId,
-        },
-      },
-    });
-    return instructorAssignments;
-  } else {
-    throw new ApiError(403, 'Invalid role');
-  }
-};
-
-// Get user peer reviews
-export const getUserPeerReviews = async (userId) => {
-  const userPeerReviews = await prisma.review.findMany({
-    where: {
-      OR: [
-        { reviewerId: userId },
-        { revieweeId: userId },
-      ],
-    },
+// Get user classes
+export const getUserClasses = async (userId) => {
+  const user = await prisma.user.findUnique({
+    where: { userId: userId },
+    include: { classes: true }
   });
 
-  return userPeerReviews;
+  if (!user) {
+    throw new ApiError(404, 'User not found');
+  }
+
+  return user.classes;
+};
+
+// Get user assignments
+export const getUserAssignments = async (userId) => {
+  const user = await prisma.user.findUnique({
+    where: { userId: userId },
+    include: { submissions: { include: { assignment: true } } }
+  });
+
+  if (!user) {
+    throw new ApiError(404, 'User not found');
+  }
+
+  return user.submissions.map(submission => submission.assignment);
+};
+
+// Get user reviews
+export const getUserReviews = async (userId) => {
+  const user = await prisma.user.findUnique({
+    where: { userId: userId },
+    include: { reviewsDone: { include: { submission: true } } }
+  });
+
+  if (!user) {
+    throw new ApiError(404, 'User not found');
+  }
+
+  return user.reviewsDone.map(review => review.submission.assignment);
 };
 
 // Get user info
 export const getUserInfo = async (userId) => {
   const user = await prisma.user.findUnique({
-    where: { userId },
+    where: { userId: userId }
   });
 
   if (!user) {
@@ -75,11 +54,4 @@ export const getUserInfo = async (userId) => {
   }
 
   return user;
-};
-
-export default {
-  getUserClasses,
-  getUserAssignments,
-  getUserPeerReviews,
-  getUserInfo,
 };

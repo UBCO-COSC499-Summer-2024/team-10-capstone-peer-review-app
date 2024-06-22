@@ -43,9 +43,9 @@ export async function loginUser(email, password) {
 	if (!passwordMatch) {
 		throw new apiError("Invalid password", 400);
 	}
-	if (!user.isEmailVerified) {
-		throw new apiError("Please verify your email before logging in", 400);
-	}
+	// if (!user.isEmailVerified) {
+	// 	throw new apiError("Please verify your email before logging in", 400);
+	// }
 	return user;
 }
 

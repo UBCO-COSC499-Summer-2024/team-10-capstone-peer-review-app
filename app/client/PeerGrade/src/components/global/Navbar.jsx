@@ -34,7 +34,6 @@ export default function AppNavbar() {
     return Array.isArray(currentUser.classes) && currentUser.classes.includes(classItem.class_id);
   });
 
-  const navigate = useNavigate(); // Initialize useNavigate hook
   const [searchQuery, setSearchQuery] = React.useState(""); // State for search query
 
   const userReviewAssignments = assignmentsData

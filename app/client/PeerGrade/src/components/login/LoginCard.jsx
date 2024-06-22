@@ -9,7 +9,6 @@ import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import {
   Alert,
   AlertDescription,
-  AlertTitle,
 } from "@/components/ui/alert"
 
 function useQuery() {

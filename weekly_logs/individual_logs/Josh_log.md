@@ -120,14 +120,12 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Last cycle I mainly wanted to get a testing enviroment setup as well as begin to incorperate UI and backend functionalities so we could mark off our major use case milestones. I ended up mainly refactoring how we structured our API so that it followed more of a Clean Architecture approach. I added a readME in the src folder of server explaining what the differenations are. 
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Complete UI integrations with backend
+* Set up Groups in the database as well as a Request model for role requests
+* Create more routes for based on model types. 
   
   
 

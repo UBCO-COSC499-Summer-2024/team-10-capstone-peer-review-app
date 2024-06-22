@@ -32,7 +32,10 @@
   
 &nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 20, 2024, 05:39 PM - Wednesday, June 20, 2024, 06:41 PM *(1 hour)*  
 &nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 20, 2024, 07:30 PM - Wednesday, June 20, 2024, 09:01 PM *(1.5 hours)*  
+
+&nbsp; &nbsp; :watch: **Working on Fixing User Registration Verification** *(Total duration: 1.5 hours)*  
   
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 21, 2024, 04:27 PM - Wednesday, June 21, 2024, 05:58 PM *(1.5 hours)*  
 
 ## All Features worked on this cycle:
 &nbsp; &nbsp; :arrows_clockwise: **PR-[156](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/156)**: Add List of Classes UI for admins only  
@@ -44,6 +47,9 @@
 &nbsp; &nbsp; :arrows_clockwise: **PR-[156](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/156)**: Add List of Classes UI for admins only (should be merged by June 21)
 
 ## Completed tasks:
+
+&nbsp; &nbsp; :purple_circle: **Issue-[162](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/162)**: Make New Account registration work with Verification e-mail
+
 &nbsp; &nbsp; :purple_circle: **Issue-[143](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/143)**: Add Forgot Password UI  
   
 &nbsp; &nbsp; :purple_circle: **Issue-[84](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/84)**: Post MVP Milestone Database Refactor With TA or Prof  

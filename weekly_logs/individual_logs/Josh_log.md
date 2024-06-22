@@ -120,6 +120,7 @@
   
 
 ## Recap on goals from last cycle
+* This cycle I really wasn't able to get as much done as I wanted as I was packing for leaving to vancouver island on thursday and left today on Friday, so I was really only able to get some work done after class on wednesday and a little bit yesterday and today. 
 * Last cycle I mainly wanted to get a testing enviroment setup as well as begin to incorperate UI and backend functionalities so we could mark off our major use case milestones. I ended up mainly refactoring how we structured our API so that it followed more of a Clean Architecture approach. I added a readME in the src folder of server explaining what the differenations are. 
 
 ## Goals for next cycle

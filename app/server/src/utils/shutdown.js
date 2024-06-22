@@ -1,4 +1,4 @@
-import prisma from "prisma/prismaClient";
+import prisma from "../../prisma/prismaClient.js";
 
 const shutdown = async (signal, server) => { 
     console.log(`Received ${signal}. Shutting down server...`);

@@ -106,14 +106,16 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* I finished the design updates which was a good upgrade in terms of visual organisation and utilization of shadCN components
+* API calls were restructured due to a conversation josh and I had of how we were handling our arhchitecture. Upon further suggestinos and research over meetings, josh set up the new framework of our server architecture
+* After getting clear on what the architecture will be, i joined in on coding the api calls in the new structure and started the implementation process of userControllers and Services
+* I added a seeding process to create mock data in our prismaDB so that we can test to see if our app is pulling data correctly on various pages. Currently, data seeding is working and runs with docker however the API fetch calls are being annoying.
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Finish user controller/user service to host all necessary user-related actions within the system
+* Finalize a good seed file so that it works well to view data properly
+* Create the adminController
+* finish the Admin Dashboard UI
   
   
 

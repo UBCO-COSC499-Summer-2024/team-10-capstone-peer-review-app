@@ -57,7 +57,7 @@ export async function sendVerificationEmail(email) {
 
 	const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: "5m" });
 	// TODO refactor resetLink for frontend deployment
-	const verificationLink = `http://localhost:5001/auth/confirm-email?token=${token}`;
+	const verificationLink = `http://localhost:3000?token=${token}`;
 
 	const htmlContent = `<html>
     <head>

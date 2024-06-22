@@ -55,3 +55,6 @@ export const getUserInfo = async (userId) => {
 
   return user;
 };
+
+
+export default { getUserClasses, getUserAssignments, getUserReviews, getUserInfo}

@@ -72,7 +72,7 @@
   
 
 ## Recap on goals from last cycle
-* Worked on creating the DB CRUD api points for creating the assignments
+* Worked on creating the DB CRUD api points for creating the assignments, rubrics and criterion using the new architecture
 * Tested DB manually with mock data
 
 ## Goals for next cycle

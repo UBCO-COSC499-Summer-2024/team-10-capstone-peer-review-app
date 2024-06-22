@@ -1,31 +1,27 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 import ClassCard from '@/components/class/ClassCard';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { iClass as classesData, assignment as assignmentsData, user } from '@/utils/dbData'; //DB CALL
 import { Button } from "@/components/ui/button";
 import { ArrowUp, ArrowDown } from 'lucide-react';
+import { Toaster } from '@/components/ui/toaster';
+import { useToast } from '@/components/ui/use-toast';
 
-// Need to import useSelector from react-redux? 
-
-function AssignmentTable({ title, forReview }) {
+function AssignmentTable({ title, assignments, forReview }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState("asc");
   const itemsPerPage = 5;
 
-  // Filter and sort assignments based on review status
-  const filteredAssignments = assignmentsData
-    .filter(assignment => (forReview ? assignment.evaluation_type === 'peer' : true))
-    .sort((a, b) => {
-      const dateA = new Date(a.due_date);
-      const dateB = new Date(b.due_date);
-      return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
-    });
+  const sortedAssignments = assignments.sort((a, b) => {
+    const dateA = new Date(a.dueDate);
+    const dateB = new Date(b.dueDate);
+    return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+  });
 
-  const totalPages = Math.ceil(filteredAssignments.length / itemsPerPage);
-
-  const currentAssignments = filteredAssignments.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const totalPages = Math.ceil(sortedAssignments.length / itemsPerPage);
+  const currentAssignments = sortedAssignments.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const handleSort = () => {
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
@@ -51,10 +47,10 @@ function AssignmentTable({ title, forReview }) {
           {currentAssignments.map((assignment, index) => (
             <TableRow key={index}>
               <TableCell className="p-2">{assignment.title}</TableCell>
-              <TableCell className="p-2">{classesData.find(classItem => classItem.class_id === assignment.class_id)?.classname}</TableCell>
-              <TableCell className="p-2">{new Date(assignment.due_date).toLocaleDateString()}</TableCell>
+              <TableCell className="p-2">{assignment.className}</TableCell>
+              <TableCell className="p-2">{new Date(assignment.dueDate).toLocaleDateString()}</TableCell>
               <TableCell className="p-2">
-                <Link to={forReview ? `/assignedPR/${assignment.assignment_id}` : `/assignment/${assignment.assignment_id}`} className="bg-green-100 text-blue-500 px-2 py-1 rounded-md">
+                <Link to={forReview ? `/assignedPR/${assignment.id}` : `/assignment/${assignment.id}`} className="bg-green-100 text-blue-500 px-2 py-1 rounded-md">
                   {forReview ? 'Review' : 'Open'}
                 </Link>
               </TableCell>
@@ -76,49 +72,75 @@ function AssignmentTable({ title, forReview }) {
 }
 
 function Dashboard() {
-  // Eslint is asking to use a namedSelector I.E. 
-  /* 
-  // selectors/user.js
-  export const selectCurrentUser = (state) => state.user.currentUser;
-
-  // Dashboard.jsx
-  import { selectCurrentUser } from 'selectors/user';
-
-  function Dashboard() {
-  const currentUser = useSelector(selectCurrentUser);
-
-  // ...
-  }
-  */ 
   const currentUser = useSelector((state) => state.user.currentUser);
+  const [classes, setClasses] = useState([]);
+  const [assignments, setAssignments] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (currentUser) {
+      const fetchClasses = async () => {
+        try {
+          const response = await axios.get('/api/user/classes');
+          setClasses(response.data.data);
+        } catch (error) {
+          toast({ title: "Error", description: "Failed to fetch classes", variant: "destructive" });
+        }
+      };
+
+      const fetchAssignments = async () => {
+        try {
+          const response = await axios.get('/api/user/assignments');
+          setAssignments(response.data.data);
+        } catch (error) {
+          toast({ title: "Error", description: "Failed to fetch assignments", variant: "destructive" });
+        }
+      };
+
+      const fetchReviews = async () => {
+        try {
+          const response = await axios.get('/api/user/reviews');
+          setReviews(response.data.data);
+        } catch (error) {
+          toast({ title: "Error", description: "Failed to fetch reviews", variant: "destructive" });
+        }
+      };
+
+      fetchClasses();
+      fetchAssignments();
+      fetchReviews();
+    }
+  }, [currentUser, toast]);
 
   if (!currentUser) {
     return null;
   }
 
-  // Ensure currentUser.class_id is an array
-  const userClasses = classesData.filter(classItem => Array.isArray(currentUser.classes) && currentUser.classes.includes(classItem.class_id));
+  const assignmentData = assignments.filter(assignment => assignment.evaluation_type !== 'peer');
+  const reviewData = assignments.filter(assignment => assignment.evaluation_type === 'peer');
 
   return (
     <div className="w-full main-container py-6 space-y-6">
       <h1 className="text-2xl font-bold">Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {userClasses.map((classItem) => (
+        {classes.map((classItem) => (
           <ClassCard
-            key={classItem.class_id}
-            classId={classItem.class_id}
+            key={classItem.classId}
+            classId={classItem.classId}
             className={classItem.classname}
-            instructor={user.find(instructor => instructor.user_id === classItem.instructor_id)?.firstname + ' ' + user.find(instructor => instructor.user_id === classItem.instructor_id)?.lastname}
-            numStudents={user.filter(student => Array.isArray(student.classes) && student.classes.includes(classItem.class_id)).length}
-            numAssignments={assignmentsData.filter(assignment => assignment.class_id === classItem.class_id).length}
-            numPeerReviews={assignmentsData.filter(assignment => assignment.class_id === classItem.class_id && assignment.evaluation_type === 'peer').length}
+            instructor={`${classItem.instructor.firstname} ${classItem.instructor.lastname}`}
+            numStudents={classItem.classSize}
+            numAssignments={assignments.filter(assignment => assignment.classId === classItem.classId).length}
+            numPeerReviews={reviews.filter(review => review.classId === classItem.classId).length}
           />
         ))}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <AssignmentTable title="Upcoming Assignments" forReview={false} />
-        <AssignmentTable title="Upcoming Reviews" forReview={true} />
+        <AssignmentTable title="Upcoming Assignments" assignments={assignmentData} forReview={false} />
+        <AssignmentTable title="Upcoming Reviews" assignments={reviewData} forReview={true} />
       </div>
+      <Toaster />
     </div>
   );
 }

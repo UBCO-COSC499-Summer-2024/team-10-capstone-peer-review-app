@@ -7,10 +7,11 @@
   "scripts": {
     "dev:server": "nodemon -L ./src/index.js --ext js --exec node ./src/index.js",
     "dev:prisma": "nodemon -L --watch prisma --ext prisma --exec 'dotenv -e .env.dev -- npx prisma db push && npx prisma studio'",
-    "dev:watch": "concurrently \"npm:dev:server\" \"npm:dev:prisma\"", 
-    "dev": "NODE_ENV=dev npm run dev:watch", 
+    "dev:watch": "concurrently \"npm:dev:server\" \"npm:dev:prisma\"",
+    "dev": "NODE_ENV=dev npm run dev:watch",
     "start": "node ./src/index.js",
     "prisma": "npx prisma generate && npx prisma db push",
+    "seed": "node prisma/seed.js",
     "test": "jest",
     "lint": "eslint . --ext js --report-unused-disable-directives",
     "lint-fix": "eslint . --ext js --report-unused-disable-directives --fix",
@@ -24,6 +25,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@prisma/client": "^5.15.0",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",

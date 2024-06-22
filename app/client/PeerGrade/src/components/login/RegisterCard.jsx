@@ -25,6 +25,13 @@ const RegisterCard = ({ onSwitchToLogin }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+      setError('Password must be at least 8 characters long, with at least one uppercase letter, one lowercase letter, one number, and one special character.');
+      return;
+    }
+
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
@@ -42,13 +49,10 @@ const RegisterCard = ({ onSwitchToLogin }) => {
           body: JSON.stringify(newUser),
         });
 
-        console.log(JSON.stringify(newUser))
-    
         if (!response.ok) {
-          console.error('HTTP error! status: ', response.status);
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-    
+
         const data = await response.json();
         return data;
       } catch (error) {
@@ -56,7 +60,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
         throw error;
       }
     };
-    
+
     const newUser = {
       username: "testuser", 
       password: password,
@@ -93,12 +97,12 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 
   return (
     <>
-      <Card className="w-full max-w-md p-8 space-y-8 bg-white shadow-md rounded-lg">
+      <Card className="w-full max-w-lg h-[550px] flex flex-col">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Register</CardTitle>
           <CardDescription className="text-gray-600">Please enter your details to create an account</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="flex-1 my-3 overflow-y-auto space-y-4">
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
@@ -173,25 +177,25 @@ const RegisterCard = ({ onSwitchToLogin }) => {
               </div>
             </div>
             <div>
-            <label htmlFor="selectUserType" className="block text-sm font-medium text-gray-700">Select User Type (debug):</label>
+              <label htmlFor="selectUserType" className="block text-sm font-medium text-gray-700">Select User Type (debug):</label>
               <Popover open={open} onOpenChange={setOpen} id='selectUserType'>
                 <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      aria-expanded={open}
-                      className="w-[200px] justify-between bg-white mt-1"
-                    >
-                      {value
-                        ? dropdown_options.find((option) => option.value === value)?.label
-                        : "Select option..."}
-                      {open
-                        ? <ChevronUpIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        : <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      }
-                    </Button>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={open}
+                    className="w-full justify-between bg-white mt-1"
+                  >
+                    {value
+                      ? dropdown_options.find((option) => option.value === value)?.label
+                      : "Select option..."}
+                    {open
+                      ? <ChevronUpIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      : <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    }
+                  </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0 rounded-md">
+                <PopoverContent className="w-full p-0 rounded-md">
                   <Command>
                     <CommandList>
                       <CommandGroup>
@@ -231,8 +235,8 @@ const RegisterCard = ({ onSwitchToLogin }) => {
             </div>
           </form>
         </CardContent>
-        <CardFooter className="text-center">
-          <p className="text-sm text-gray-600">
+        <CardFooter className="flex justify-center items-center text-center bg-indigo-100">
+          <p className="text-sm mt-5 text-gray-600">
             Already have an account? <button onClick={onSwitchToLogin} className="text-green-600 hover:text-gray-900">Log in</button>
           </p>
         </CardFooter>

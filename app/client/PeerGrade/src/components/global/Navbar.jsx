@@ -4,7 +4,8 @@ import * as React from "react";
 import { useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { Bell, SearchIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react";
+import NotifCard from "./NotifCard";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -16,11 +17,13 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { iClass as classesData, assignment as assignmentsData } from '@/lib/dbData';
 
 export default function AppNavbar() {
   const location = useLocation();
+  const navigate = useNavigate();
   const currentUser = useSelector((state) => state.user.currentUser);
 
   if (!currentUser) {
@@ -41,7 +44,12 @@ export default function AppNavbar() {
     .sort((a, b) => new Date(a.due_date) - new Date(b.due_date))
     .slice(0, 3);
 
-  const isActive = (path) => location.pathname === path;
+    const isActive = (path) => {
+      return location.pathname === path || (path === '/dashboard' && location.pathname === '/');
+    };
+  const handleLogout = () => {
+    navigate('/');
+  };
 
   const search = () => {
     const trimmedQuery = searchQuery.trim();
@@ -62,7 +70,7 @@ export default function AppNavbar() {
         <NavigationMenuList className="flex space-x-2 sm:space-x-1">
           <NavigationMenuItem>
             <Link to="/dashboard">
-              <img src="logo.png" className="w-10 h-10 sm:hidden md:block"/>
+              <img src="logo.png" className="w-10 h-10 sm:hidden md:block" alt="Logo"/>
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
@@ -137,21 +145,36 @@ export default function AppNavbar() {
           )}
         </NavigationMenuList>
         <div className="flex items-center space-x-4">
-          <Link to={"/"}>
-            <Button variant="outline" className="bg-red-100" size="icon">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
-              </svg>
-            </Button>
-          </Link>
-          <Button variant="outline" size="icon" className="bg-indigo-100"><Bell className="w-5 text-gray-700" /></Button>
-          <Link to={"/settings"}>
-            <Avatar className="w-9 h-9 bg-gray-200 rounded-full shadow-md">
-              <AvatarFallback>
-                {getInitials(currentUser.firstname, currentUser.lastname)}
-              </AvatarFallback>
-            </Avatar>
-          </Link>
+          <HoverCard>
+            <HoverCardTrigger>
+              <Avatar className="w-9 h-9 bg-gray-200 rounded-full shadow-md">
+                <AvatarImage src={currentUser.avatarUrl} alt={`${currentUser.firstname} ${currentUser.lastname}`} />
+                <AvatarFallback>{currentUser.firstname[0]}{currentUser.lastname[0]}</AvatarFallback>
+              </Avatar>
+            </HoverCardTrigger>
+            <HoverCardContent className="w-full transform -translate-x-1/3">
+              <div className="space-y-4">
+                <div className="flex flex-col gap-1">
+                  <NotifCard title="Admin: Heads up!" description="You have received a new message" />
+                  <NotifCard title="Admin: Heads up!" description="You have received a new message" />
+                  <NotifCard title="Admin: Heads up!" description="You have received a new message" />
+                  <NotifCard title="Admin: Heads up!" description="You have received a new message" />                  
+                  <Button variant="outline">View All</Button>
+                </div>
+                <div className="flex justify-between">
+                  <Button variant="outline" size="sm" onClick={handleLogout}>
+                    Logout
+                  </Button>
+                  <Link to="/settings">
+                    <Button variant="outline" size="sm">
+                      Visit Profile
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </HoverCardContent>
+          </HoverCard>
+
         </div>
       </NavigationMenu>
     </div>

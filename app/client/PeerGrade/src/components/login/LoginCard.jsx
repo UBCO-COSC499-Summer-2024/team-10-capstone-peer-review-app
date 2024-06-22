@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { setCurrentUser } from '@/lib/redux/hooks/userSlice';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { Toaster } from '@/components/ui/toaster';
@@ -46,12 +48,12 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 
   return (
     <>
-      <Card className="w-full max-w-md p-8 space-y-8 bg-white shadow-md rounded-lg">
+      <Card className="w-full max-w-lg h-[550px] flex flex-col">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Login</CardTitle>
           <CardDescription className="text-gray-600">Please enter your credentials to login</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="flex-1 overflow-y-auto space-y-4">
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email address</label>
@@ -62,7 +64,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-100 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
             <div className="relative">
@@ -74,7 +76,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-100 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
               <div className="absolute mt-6 inset-y-0 right-0 pr-3 flex items-center">
                 <button type="button" onClick={() => setPasswordVisible(!passwordVisible)}>
@@ -95,10 +97,20 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
             <button onClick={onSwitchToForgotPassword} className="text-green-600 hover:text-green-500">Forgot your password?</button>
           </p>
         </CardContent>
-        <CardFooter className="text-center">
-          <p className="text-sm text-gray-600">
-            Don't have an account? <button onClick={onSwitchToRegister} className="text-green-600 hover:text-green-500">Sign up</button>
-          </p>
+        <CardFooter className="text-center flex flex-col gap-2 bg-indigo-100">
+          <div className="flex w-full justify-between mt-6">
+            <p className="text-sm text-gray-600">
+              Don't have an account? <button onClick={onSwitchToRegister} className="text-green-600 hover:text-green-500">Sign up</button>
+            </p>
+            <HoverCard>
+              <HoverCardTrigger className="hover:bg-amber-100 rounded-full ease-in-out duration-500">
+                <QuestionMarkCircleIcon className="w-6 h-6" />
+              </HoverCardTrigger>
+              <HoverCardContent className="text-center p-4">
+                Contact @parsa for inquiries
+              </HoverCardContent>
+            </HoverCard>
+          </div>
         </CardFooter>
       </Card>
       <Toaster />

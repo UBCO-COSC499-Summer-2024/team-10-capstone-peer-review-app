@@ -4,6 +4,7 @@ import passport from "passport";
 import authRouter from "./authRoutes.js";
 import instructorsRouter from "./instructors.js";
 import studentsRouter from "./students.js";
+import usersRoutes from "./usersRoutes.js";
 // Middlewares
 import localStrategy from "../middleware/passportStrategies/localStrategy.js";
 import {
@@ -21,5 +22,9 @@ router.use("/auth", authRouter);
 router.use("/students", ensureUser, studentsRouter);
 router.use("/instructors", ensureUser, ensureInstructor, instructorsRouter);
 router.use("/admins", ensureUser, ensureAdmin, instructorsRouter);
+router.use('/users', usersRoutes);
 
 export default router;
+
+
+

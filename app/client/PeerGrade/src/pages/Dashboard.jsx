@@ -82,8 +82,8 @@ function Dashboard() {
     if (currentUser) {
       const fetchClasses = async () => {
         try {
-          const response = await axios.get('/api/user/classes');
-          setClasses(response.data.data);
+          const response = await axios.post('/api/users/get-classes', { userId: currentUser.userId });
+          setClasses(response.data);
         } catch (error) {
           toast({ title: "Error", description: "Failed to fetch classes", variant: "destructive" });
         }
@@ -91,8 +91,8 @@ function Dashboard() {
 
       const fetchAssignments = async () => {
         try {
-          const response = await axios.get('/api/user/assignments');
-          setAssignments(response.data.data);
+          const response = await axios.get('/api/users/assignments');
+          setAssignments(response.data);
         } catch (error) {
           toast({ title: "Error", description: "Failed to fetch assignments", variant: "destructive" });
         }
@@ -100,8 +100,8 @@ function Dashboard() {
 
       const fetchReviews = async () => {
         try {
-          const response = await axios.get('/api/user/reviews');
-          setReviews(response.data.data);
+          const response = await axios.get('/api/users/reviews');
+          setReviews(response.data);
         } catch (error) {
           toast({ title: "Error", description: "Failed to fetch reviews", variant: "destructive" });
         }
@@ -112,6 +112,8 @@ function Dashboard() {
       fetchReviews();
     }
   }, [currentUser, toast]);
+
+  console.log(classes);
 
   if (!currentUser) {
     return null;
@@ -131,8 +133,7 @@ function Dashboard() {
             className={classItem.classname}
             instructor={`${classItem.instructor.firstname} ${classItem.instructor.lastname}`}
             numStudents={classItem.classSize}
-            numAssignments={assignments.filter(assignment => assignment.classId === classItem.classId).length}
-            numPeerReviews={reviews.filter(review => review.classId === classItem.classId).length}
+            term={classItem.term}
           />
         ))}
       </div>

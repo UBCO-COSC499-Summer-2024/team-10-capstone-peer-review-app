@@ -42,3 +42,6 @@ export async function getUserClasses(userId) {
 export default {
   getUserClasses,
 };
+
+
+export default { getUserClasses, getUserAssignments, getUserReviews, getUserInfo}

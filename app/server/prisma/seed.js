@@ -1,6 +1,9 @@
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient();
-import { faker } from '@faker-js/faker'
+import prisma from './prismaClient';
+import bcrypt from 'bcrypt'; 
+import { faker } from '@faker-js/faker' 
+
+// Dynamically set up environment variables based on NODE_ENV
+import "../src/utils/envConfig.js";
 
 async function main() {
   // Clean up existing data
@@ -11,11 +14,18 @@ async function main() {
   await prisma.class.deleteMany();
   await prisma.user.deleteMany();
 
+  const SALT_ROUNDS = process.env.SALT_ROUNDS;
+
+  // Adding resuable functions  
+  async function hashedPassword(password) { 
+    return await bcrypt.hash(password, SALT_ROUNDS);
+  }
+
   // Create users
   const student = await prisma.user.create({
     data: {
       email: 'student@gmail.com',
-      password: 'Student@123',
+      password: hashedPassword('Student@123'),
       firstname: faker.person.firstName(),
       lastname: faker.person.lastName(),
       role: 'STUDENT',
@@ -25,7 +35,7 @@ async function main() {
   const instructor = await prisma.user.create({
     data: {
       email: 'instructor@gmail.com',
-      password: 'Instructor@123',
+      password: hashedPassword('Instructor@123'),
       firstname: faker.person.firstName(),
       lastname: faker.person.lastName(),
       role: 'INSTRUCTOR',
@@ -35,7 +45,7 @@ async function main() {
   const admin = await prisma.user.create({
     data: {
       email: 'admin@gmail.com',
-      password: 'Admin@123',
+      password: hashedPassword('Admin@123'),
       firstname: faker.person.firstName(),
       lastname: faker.person.lastName(),
       role: 'ADMIN',

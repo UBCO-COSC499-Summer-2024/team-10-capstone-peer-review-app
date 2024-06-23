@@ -1,4 +1,4 @@
-import prisma from "../../prisma/prismaClient.js";
+import prisma from "../../prisma/prismaClient";
 import ApiError from "../utils/apiError.js";
 
 export async function getUserClasses(userId) {
@@ -38,7 +38,43 @@ export async function getUserClasses(userId) {
     }
   }
 }
+export async function getUserAssignments(userId) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { userId: userId },
+      include: {
+        classes: true,
+        classesInstructed: true
+      }
+    });
+
+    if (!user) {
+      throw new ApiError(404, 'User not found');
+    }
+
+    let classIds;
+    if (user.role === 'STUDENT') {
+      classIds = user.classes.map(userClass => userClass.classId);
+    } else {
+      classIds = user.classesInstructed.map(classInstructed => classInstructed.classId);
+    }
+
+    const assignments = await prisma.assignment.findMany({
+      where: { classId: { in: classIds } },
+      include: { class: true }
+    });
+
+    return assignments;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    } else {
+      throw new ApiError("Failed to retrieve user's assignments", 500);
+    }
+  }
+}
 
 export default {
   getUserClasses,
+  getUserAssignments,
 };

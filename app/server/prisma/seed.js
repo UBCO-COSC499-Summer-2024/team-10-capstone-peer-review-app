@@ -1,4 +1,4 @@
-import prisma from './prismaClient';
+import prisma from './prismaClient.js';
 import bcrypt from 'bcrypt'; 
 import { faker } from '@faker-js/faker' 
 
@@ -14,7 +14,7 @@ async function main() {
   await prisma.class.deleteMany();
   await prisma.user.deleteMany();
 
-  const SALT_ROUNDS = process.env.SALT_ROUNDS;
+  const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS,10);
 
   // Adding resuable functions  
   async function hashedPassword(password) { 

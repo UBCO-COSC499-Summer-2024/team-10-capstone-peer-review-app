@@ -1,4 +1,4 @@
-import { getUserClasses as getUserClassesService } from "../services/userService.js";
+import { getUserClasses as getUserClassesService, getUserAssignments as getUserAssignmentsService } from "../services/userService.js";
 
 export async function getUserClasses(req, res, next) {
   try {
@@ -11,6 +11,18 @@ export async function getUserClasses(req, res, next) {
   }
 }
 
+export async function getUserAssignments(req, res, next) {
+  try {
+    console.log("getUserAssignments endpoint hit");
+    const userId = req.body.userId;
+    const assignments = await getUserAssignmentsService(userId);
+    res.status(200).json(assignments);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export default {
   getUserClasses,
+  getUserAssignments,
 };

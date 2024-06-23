@@ -4,9 +4,9 @@ import Overview from '@/components/admin/Overview';
 import Users from '@/components/admin/Users';
 import Search from './Search';
 import Assignments from '@/components/admin/Assign';
-import PeerReviews from '@/components/admin/PRassign';
 import Interactions from '@/components/admin/Interactions';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import PRassign from '@/components/admin/PRassign';
 
 const AdminDashboard = () => {
   return (
@@ -33,7 +33,7 @@ const AdminDashboard = () => {
           <Assignments />
         </TabsContent>
         <TabsContent value="peer-reviews">
-          <PeerReviews />
+          <PRassign />
         </TabsContent>
         <TabsContent value="interactions">
           <Interactions />

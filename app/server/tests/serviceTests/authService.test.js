@@ -8,6 +8,8 @@ import apiError from '../../src/utils/apiError.js';
 import sendEmail from '../../src/utils/mailer.js';
 import authService from '../../src/services/authService.js';
 
+// TODO convert to singleton file for reusablility 
+
 // Mock prisma
 jest.mock('../../prisma/prismaClient.js', () => ({
   user: mockDeep()

@@ -50,7 +50,7 @@ function AssignmentTable({ title, assignments, forReview }) {
               <TableCell className="p-2">{assignment.className}</TableCell>
               <TableCell className="p-2">{new Date(assignment.dueDate).toLocaleDateString()}</TableCell>
               <TableCell className="p-2">
-                <Link to={forReview ? `/assignedPR/${assignment.id}` : `/assignment/${assignment.id}`} className="bg-green-100 text-blue-500 px-2 py-1 rounded-md">
+                <Link to={forReview ? `/assignedPR/${assignment.assignmentId}` : `/assignment/${assignment.assignmentId}`} className="bg-green-100 text-blue-500 px-2 py-1 rounded-md">
                   {forReview ? 'Review' : 'Open'}
                 </Link>
               </TableCell>
@@ -91,7 +91,7 @@ function Dashboard() {
 
       const fetchAssignments = async () => {
         try {
-          const response = await axios.get('/api/users/assignments');
+          const response = await axios.post('/api/users/get-assignments', { userId: currentUser.userId });
           setAssignments(response.data);
         } catch (error) {
           toast({ title: "Error", description: "Failed to fetch assignments", variant: "destructive" });

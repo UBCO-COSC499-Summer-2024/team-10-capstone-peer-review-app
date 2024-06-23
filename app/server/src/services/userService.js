@@ -38,8 +38,13 @@ export async function getUserClasses(userId) {
     }
   }
 }
+
+
 export async function getUserAssignments(userId) {
   try {
+    console.log(`Fetching assignments for user with ID: ${userId}`);
+
+    // Find the user
     const user = await prisma.user.findUnique({
       where: { userId: userId },
       include: {
@@ -59,13 +64,19 @@ export async function getUserAssignments(userId) {
       classIds = user.classesInstructed.map(classInstructed => classInstructed.classId);
     }
 
+    console.log(`Class IDs: ${classIds}`);
+
+    // Retrieve assignments based on class IDs
     const assignments = await prisma.assignment.findMany({
       where: { classId: { in: classIds } },
-      include: { class: true }
+      include: { classes: true } // Correctly include the related `classes` field
     });
+
+    console.log(`Assignments: ${JSON.stringify(assignments)}`);
 
     return assignments;
   } catch (error) {
+    console.error("Error in getUserAssignments:", error);
     if (error instanceof ApiError) {
       throw error;
     } else {

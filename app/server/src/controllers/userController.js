@@ -15,6 +15,7 @@ export async function getUserAssignments(req, res, next) {
   try {
     console.log("getUserAssignments endpoint hit");
     const userId = req.body.userId;
+    console.log(userId);
     const assignments = await getUserAssignmentsService(userId);
     res.status(200).json(assignments);
   } catch (error) {

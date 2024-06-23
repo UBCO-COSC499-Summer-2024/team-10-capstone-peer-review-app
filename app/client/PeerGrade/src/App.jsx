@@ -10,6 +10,7 @@ import PeerReview from './pages/PeerReview';
 import Settings from './pages/Settings';
 import AppNavbar from './components/global/Navbar';
 import ManageClass from './pages/ManageClass';
+import Search from './pages/Search';
 import { Toaster } from "@/components/ui/toaster";
 import AdminDashboard from './pages/AdminDashboard';
 // New comment 
@@ -53,6 +54,7 @@ function App() {
           <Route path="/class/:classId" element={<Class />} />
           <Route path="/class/createAssignment" element={<AssignmentCreation />} />
           <Route path="/manageClass" element={<ManageClass />} />
+          <Route path="/search" element={<Search />} />
           <Route path="/assignment/:assignmentId" element={<Assignment />} />
           <Route path="/assignedPR/:assignmentId" element={<AssignedPR />} />
           <Route path="/peer-review" element={<PeerReview />} />

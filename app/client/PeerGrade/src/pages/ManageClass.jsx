@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ClassCard from '@/components/class/ClassCard';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
+import { Toaster } from '@/components/ui/toaster';
+import { useToast } from '@/components/ui/use-toast';
 import { iClass, assignment, PeerReview, submission } from '@/lib/dbData';
 
 const AddClassModal = ({ show, onClose, onAddClass }) => {
@@ -98,34 +100,49 @@ const AddClassModal = ({ show, onClose, onAddClass }) => {
 
 const ManageClass = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [userClasses, setUserClasses] = useState([]);
   const currentUser = useSelector((state) => state.user.currentUser);
+  const { toast } = useToast();
 
-  if (!currentUser || (currentUser.role !== 'INSTRUCTOR' && currentUser.role !== 'ADMIN')) {
-    return <div>You do not have permission to view this page.</div>;
-  }
-
+  useEffect(() => {
+    if (currentUser && (currentUser.role === 'INSTRUCTOR' || currentUser.role === 'ADMIN')) {
+      const classes = iClass.filter((classItem) => classItem.instructor_id === currentUser.userId);
+      setUserClasses(classes);
+    }
+  }, [currentUser]);
+console.log(currentUser);
   const handleAddClass = (newClass) => {
-    const classData = {
-      ...newClass,
-      class_id: iClass.length + 1,
-      instructor_id: currentUser.userId,
-      start: new Date(),
-      end: new Date(),
-    };
-    // Add the new class to the database here
-    iClass.push(classData);
-    setModalOpen(false);
+    try {
+      const classData = {
+        ...newClass,
+        class_id: iClass.length + 1,
+        instructor_id: currentUser.userId,
+        start: new Date(),
+        end: new Date(),
+      };
+      // Add the new class to the database here
+      iClass.push(classData);
+      setModalOpen(false);
+      setUserClasses([...userClasses, classData]); // Update local state with new class
+      toast({ title: "Success", description: "Class added successfully!", variant: "positive" });
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to add class", variant: "destructive" });
+    }
   };
 
   const handleDeleteClass = (classId) => {
+    const updatedClasses = userClasses.filter((classItem) => classItem.class_id !== classId);
+    setUserClasses(updatedClasses); // Update local state with filtered classes
+
     const classIndex = iClass.findIndex((cls) => cls.class_id === classId);
     if (classIndex > -1) {
-      // Remove the class from the database here
       iClass.splice(classIndex, 1);
     }
   };
 
-  const userClasses = iClass.filter((classItem) => classItem.instructor_id === currentUser.userId);
+  if (!currentUser || (currentUser.role !== 'INSTRUCTOR' && currentUser.role !== 'ADMIN')) {
+    return <div>You do not have permission to view this page.</div>;
+  }
 
   return (
     <div className="max-w-7xl mx-auto p-6">
@@ -155,7 +172,7 @@ const ManageClass = () => {
             <button
               onClick={() => handleDeleteClass(classItem.class_id)}
               className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
-              data-testid={`delete-class-${classItem.class_id}`} // Add data-testid attribute
+              data-testid={`delete-class-${classItem.class_id}`}
             >
               &times;
             </button>
@@ -163,6 +180,7 @@ const ManageClass = () => {
         ))}
       </div>
       <AddClassModal show={modalOpen} onClose={() => setModalOpen(false)} onAddClass={handleAddClass} />
+      <Toaster />
     </div>
   );
 };

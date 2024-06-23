@@ -29,7 +29,7 @@ const ForgotPasswordCard = ({ onSwitchToLogin }) => {
 
 
   return (
-    <Card className="w-full max-w-md p-8 space-y-8 bg-white shadow-md rounded-lg">
+    <Card className="w-full max-w-lg p-8 space-y-8 bg-white shadow-md rounded-lg">
       <CardHeader className="text-center">
         <CardTitle className="text-2xl font-bold">Reset Password</CardTitle>
         <CardDescription className="text-gray-600">Please enter your e-mail to reset your password</CardDescription>

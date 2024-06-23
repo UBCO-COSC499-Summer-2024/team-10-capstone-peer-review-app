@@ -1,40 +1,29 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import LoginCard from '@/components/login/LoginCard';
 import ForgotPasswordCard from '@/components/login/ForgotPasswordCard';
 import RegisterCard from '@/components/login/RegisterCard';
 
 const Login = () => {
-  const [showLogin, setShowLogin] = useState(true);
-  const [showResetPassword, setShowResetPassword] = useState(false);
-  const navigate = useNavigate(); // Initialize useNavigate hook
-
-  const handleSwitchToRegister = () => {
-    setShowLogin(false);
-    setShowResetPassword(false);
-  };
-
-  const handleSwitchToLogin = () => {
-    setShowLogin(true);
-    setShowResetPassword(false);
-  };
-  
-  const handleSwitchToForgotPassword = () => {
-    setShowLogin(false);
-    setShowResetPassword(true);
-  };
+  const [currentTab, setCurrentTab] = useState('login');
 
   return (
-    <main className="flex items-center justify-center min-h-screen">
-      <div className={`transition-opacity duration-500 ${showLogin ? 'opacity-100' : 'opacity-0 w-0 h-0'}`}>
-        {showLogin ? <LoginCard onSwitchToRegister={handleSwitchToRegister} onSwitchToForgotPassword={handleSwitchToForgotPassword}/> : null}
-      </div>
-      <div className={`transition-opacity duration-500 ${(!showLogin && !showResetPassword) ? 'opacity-100' : 'opacity-0 w-0 h-0'}`}>
-        {!showLogin ? <RegisterCard onSwitchToLogin={handleSwitchToLogin} /> : null}
-      </div>
-      <div className={`transition-opacity duration-500 ${(!showLogin && showResetPassword) ? 'opacity-100' : 'opacity-0 w-0 h-0'}`}>
-        {!showLogin ? <ForgotPasswordCard onSwitchToLogin={handleSwitchToLogin} /> : null}
-      </div>
+    <main className="flex items-center justify-center min-h-screen ">
+      <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-[500px]">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="login">Login</TabsTrigger>
+          <TabsTrigger value="register">Register</TabsTrigger>
+        </TabsList>
+        <TabsContent value="login">
+          <LoginCard onSwitchToRegister={() => setCurrentTab('register')} onSwitchToForgotPassword={() => setCurrentTab('forgotPassword')} />
+        </TabsContent>
+        <TabsContent value="register">
+          <RegisterCard onSwitchToLogin={() => setCurrentTab('login')} />
+        </TabsContent>
+        <TabsContent value="forgotPassword">
+          <ForgotPasswordCard onSwitchToLogin={() => setCurrentTab('login')} />
+          </TabsContent>
+      </Tabs>
     </main>
   );
 };

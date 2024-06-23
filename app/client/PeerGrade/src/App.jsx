@@ -12,6 +12,7 @@ import AppNavbar from './components/global/Navbar';
 import ManageClass from './pages/ManageClass';
 import Search from './pages/Search';
 import { Toaster } from "@/components/ui/toaster";
+import AdminDashboard from './pages/AdminDashboard';
 // New comment 
 
 function App() {
@@ -58,6 +59,7 @@ function App() {
           <Route path="/assignedPR/:assignmentId" element={<AssignedPR />} />
           <Route path="/peer-review" element={<PeerReview />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </MainLayout>
     </Router>

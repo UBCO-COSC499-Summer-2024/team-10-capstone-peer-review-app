@@ -1,20 +1,27 @@
-import React from 'react';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 
-const StatCard = ({ title, value, subtitle, icon: Icon }) => {
-  return (
-    <Card className="w-full p-4 bg-white shadow-md rounded-lg">
-      <CardHeader className="flex justify-between items-center">
-        <CardTitle className="text-gray-600">{title}</CardTitle>
-        {Icon && <Icon className="w-6 h-6 text-gray-400" />}
-      </CardHeader>
-      <CardContent className="flex flex-col items-start">
-        <div className="text-3xl font-bold text-black">{value}</div>
-        <div className="text-sm text-gray-500 mt-1 whitespace-pre-line">{subtitle}</div>
-      </CardContent>
-    </Card>
-  );
+const StatCard = ({
+	title,
+	number,
+	icon,
+	description,
+}) => {
+	return (
+			<Card className="w-full flex items-center justify-between bg-white shadow-md rounded-lg ">
+				<CardHeader className=" border-r-3">
+					<CardTitle className="text-xl font-bold">{title}</CardTitle>
+					<CardDescription className="text-gray-500">
+						{description}
+					</CardDescription>
+				</CardHeader>
+				<CardContent className="flex flex-col space-y-2">
+        <div>{icon}</div> 
+					<div className="flex items-center space-x-2">
+						<span className="text-gray-700 text-lg">{number}</span>
+					</div>
+				</CardContent>
+			</Card>
+	);
 };
 
 export default StatCard;

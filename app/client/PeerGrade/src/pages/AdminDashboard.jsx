@@ -1,58 +1,44 @@
 // src/pages/AdminDashboard.jsx
-import React, { useState } from 'react';
-import { Menubar, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar';
+import React from 'react';
 import Overview from '@/components/admin/Overview';
 import Users from '@/components/admin/Users';
-import Classes from '@/components/admin/Classes';
+import Search from './Search';
 import Assignments from '@/components/admin/Assign';
 import PeerReviews from '@/components/admin/PRassign';
 import Interactions from '@/components/admin/Interactions';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
 const AdminDashboard = () => {
-  const [selectedTab, setSelectedTab] = useState('stats');
-
-  const renderTabContent = () => {
-    switch (selectedTab) {
-      case 'overview':
-        return <Overview />;
-      case 'users':
-        return <Users />;
-      case 'classes':
-        return <Classes />;
-      case 'assignments':
-        return <Assignments />;
-      case 'peer-reviews':
-        return <PeerReviews />;
-      case 'interactions':
-        return <Interactions />;
-      default:
-        return <Overview />;
-    }
-  };
-
   return (
-    <div className="main-container mx-auto p-6">
-      <Menubar>
-        <MenubarMenu>
-        <MenubarTrigger onClick={() => setSelectedTab('overview')}>Overview</MenubarTrigger>
-        </MenubarMenu>
-        <MenubarMenu>
-        <MenubarTrigger onClick={() => setSelectedTab('users')}>Users</MenubarTrigger>
-        </MenubarMenu>
-        <MenubarMenu>
-        <MenubarTrigger onClick={() => setSelectedTab('classes')}>Classes</MenubarTrigger>
-        </MenubarMenu>
-        <MenubarMenu>
-        <MenubarTrigger onClick={() => setSelectedTab('assignments')}>Assignments</MenubarTrigger>
-        </MenubarMenu>
-        <MenubarMenu>
-        <MenubarTrigger onClick={() => setSelectedTab('peer-reviews')}>Peer-reviews</MenubarTrigger>
-        </MenubarMenu>
-        <MenubarMenu>
-        <MenubarTrigger onClick={() => setSelectedTab('interactions')}>Interactions</MenubarTrigger>
-        </MenubarMenu>
-      </Menubar>
-      <div className="mt-6">{renderTabContent()}</div>
+    <div className="">
+      <Tabs defaultValue="overview ">
+        <TabsList className="w-auto flex mb-5 ">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="users">Users</TabsTrigger>
+          <TabsTrigger value="classes">Classes</TabsTrigger>
+          <TabsTrigger value="assignments">Assignments</TabsTrigger>
+          <TabsTrigger value="peer-reviews">Peer-reviews</TabsTrigger>
+          <TabsTrigger value="interactions">Interactions</TabsTrigger>
+        </TabsList>
+        <TabsContent value="overview">
+          <Overview />
+        </TabsContent>
+        <TabsContent value="users">
+          <Users />
+        </TabsContent>
+        <TabsContent value="classes">
+          <Search />
+        </TabsContent>
+        <TabsContent value="assignments">
+          <Assignments />
+        </TabsContent>
+        <TabsContent value="peer-reviews">
+          <PeerReviews />
+        </TabsContent>
+        <TabsContent value="interactions">
+          <Interactions />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

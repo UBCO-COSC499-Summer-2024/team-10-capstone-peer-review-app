@@ -37,7 +37,10 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
       } else {
         toast({ title: "Welcome", description: "You have successfully logged in!", variant: "positive" });
         dispatch(setCurrentUser(data));
-        navigate('/dashboard');
+        if(data.role=="ADMIN") {
+        navigate('/admin');
+        } else navigate('/dashboard');
+
       }
     })
     .catch((error) => {

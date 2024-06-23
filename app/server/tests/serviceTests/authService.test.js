@@ -1,9 +1,11 @@
 // authService.test.js
 import { mockDeep, mockReset } from 'jest-mock-extended';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken'; 
 
 import prisma from '../../prisma/prismaClient.js';
 import apiError from '../../src/utils/apiError.js';
+import sendEmail from '../../src/utils/mailer.js';
 import authService from '../../src/services/authService.js';
 
 // Mock prisma
@@ -144,6 +146,146 @@ describe('authService', () => {
       await expect(authService.loginUser(email, password)).rejects.toThrow(apiError);
       expect(prisma.user.findUnique).toHaveBeenCalledWith({ where: { email } });
       expect(bcrypt.compare).toHaveBeenCalledWith(password, 'hashedpassword');
+    });
+  });
+
+  describe('sendVerificationEmail', () => {
+    it('should send a verification email', async () => {
+      prisma.user.findUnique.mockResolvedValue({ email: 'test@example.com' });
+      jwt.sign.mockReturnValue('mockedtoken');
+      sendEmail.mockResolvedValue();
+
+      const email = 'test@example.com';
+
+      await authService.sendVerificationEmail(email);
+
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({ where: { email } });
+      expect(jwt.sign).toHaveBeenCalledWith({ email }, process.env.JWT_SECRET, { expiresIn: '5m' });
+      expect(sendEmail).toHaveBeenCalledWith(
+        'test@example.com',
+        'Email Verification',
+        expect.any(String)  // Match the email content
+      );
+    });
+
+    it('should throw an error if user is not found', async () => {
+      prisma.user.findUnique.mockResolvedValue(null);
+
+      const email = 'test@example.com';
+
+      await expect(authService.sendVerificationEmail(email)).rejects.toThrow(apiError);
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({ where: { email } });
+      expect(jwt.sign).not.toHaveBeenCalled();
+      expect(sendEmail).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('resetPassword', () => {
+    it('should reset the password', async () => {
+      jwt.verify.mockReturnValue({ email: 'test@example.com' });
+      prisma.user.findUnique.mockResolvedValue({
+        email: 'test@example.com',
+        password: 'oldhashedpassword'
+      });
+      bcrypt.hash.mockResolvedValue('newhashedpassword');
+      bcrypt.compare.mockResolvedValue(false);
+      prisma.user.update.mockResolvedValue();
+
+      const token = 'validtoken';
+      const newPassword = 'newpassword';
+
+      await authService.resetPassword(token, newPassword);
+
+      expect(jwt.verify).toHaveBeenCalledWith(token, process.env.JWT_SECRET);
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({ where: { email: 'test@example.com' } });
+      expect(bcrypt.hash).toHaveBeenCalledWith(newPassword, parseInt(process.env.SALT_ROUNDS, 10));
+      expect(bcrypt.compare).toHaveBeenCalledWith(newPassword, 'oldhashedpassword');
+      expect(prisma.user.update).toHaveBeenCalledWith({
+        where: { email: 'test@example.com' },
+        data: { password: 'newhashedpassword' }
+      });
+    });
+
+    it('should throw an error if the new password is the same as the old password', async () => {
+      jwt.verify.mockReturnValue({ email: 'test@example.com' });
+      prisma.user.findUnique.mockResolvedValue({
+        email: 'test@example.com',
+        password: 'oldhashedpassword'
+      });
+      bcrypt.hash.mockResolvedValue('newhashedpassword');
+      bcrypt.compare.mockResolvedValue(true);
+
+      const token = 'validtoken';
+      const newPassword = 'oldpassword';
+
+      await expect(authService.resetPassword(token, newPassword)).rejects.toThrow(apiError);
+      expect(jwt.verify).toHaveBeenCalledWith(token, process.env.JWT_SECRET);
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({ where: { email: 'test@example.com' } });
+      expect(bcrypt.hash).toHaveBeenCalledWith(newPassword, parseInt(process.env.SALT_ROUNDS, 10));
+      expect(bcrypt.compare).toHaveBeenCalledWith(newPassword, 'oldhashedpassword');
+      expect(prisma.user.update).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('sendForgotPasswordEmail', () => {
+    it('should send a forgot password email', async () => {
+      prisma.user.findUnique.mockResolvedValue({ email: 'test@example.com' });
+      jwt.sign.mockReturnValue('mockedtoken');
+      sendEmail.mockResolvedValue();
+
+      const email = 'test@example.com';
+
+      await authService.sendForgotPasswordEmail(email);
+
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({ where: { email: 'test@example.com' } });
+      expect(jwt.sign).toHaveBeenCalledWith({ email }, process.env.JWT_SECRET, { expiresIn: '5m' });
+      expect(sendEmail).toHaveBeenCalledWith(
+        'test@example.com',
+        'Password Reset',
+        expect.any(String)  // Match the email content
+      );
+    });
+
+    it('should throw an error if user is not found', async () => {
+      prisma.user.findUnique.mockResolvedValue(null);
+
+      const email = 'test@example.com';
+
+      await expect(authService.sendForgotPasswordEmail(email)).rejects.toThrow(apiError);
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({ where: { email: 'test@example.com' } });
+      expect(jwt.sign).not.toHaveBeenCalled();
+      expect(sendEmail).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('confirmEmail', () => {
+    it('should confirm the email', async () => {
+      jwt.verify.mockReturnValue({ email: 'test@example.com' });
+      prisma.user.findUnique.mockResolvedValue({ email: 'test@example.com' });
+      prisma.user.update.mockResolvedValue();
+
+      const token = 'validtoken';
+
+      await authService.confirmEmail(token);
+
+      expect(jwt.verify).toHaveBeenCalledWith(token, process.env.JWT_SECRET);
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({ where: { email: 'test@example.com' } });
+      expect(prisma.user.update).toHaveBeenCalledWith({
+        where: { email: 'test@example.com' },
+        data: { isEmailVerified: true }
+      });
+    });
+
+    it('should throw an error if user is not found', async () => {
+      jwt.verify.mockReturnValue({ email: 'test@example.com' });
+      prisma.user.findUnique.mockResolvedValue(null);
+
+      const token = 'validtoken';
+
+      await expect(authService.confirmEmail(token)).rejects.toThrow(apiError);
+      expect(jwt.verify).toHaveBeenCalledWith(token, process.env.JWT_SECRET);
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({ where: { email: 'test@example.com' } });
+      expect(prisma.user.update).not.toHaveBeenCalled();
     });
   });
 });

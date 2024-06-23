@@ -1,10 +1,13 @@
 "use client";
 
 import * as React from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from "react-router-dom";
+import axios from 'axios';
 import { cn } from "@/utils/utils";
 import { Bell } from "lucide-react";
+import { useToast } from '@/components/ui/use-toast';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -16,25 +19,51 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { iClass as classesData, assignment as assignmentsData } from '@/utils/dbData';
 
 export default function AppNavbar() {
   const location = useLocation();
   const currentUser = useSelector((state) => state.user.currentUser);
+  const [classesData, setClassesData] = useState([]);
+  const [assignmentsData, setAssignmentsData] = useState([]);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (currentUser) {
+      const fetchClasses = async () => {
+        try {
+          const response = await axios.post('/api/users/get-classes', { userId: currentUser.userId });
+          setClassesData(response.data);
+          toast(classesData);
+        } catch (error) {
+          toast({ title: "Error", description: "Failed to fetch classes", variant: "destructive" });
+        }
+      };
+
+      const fetchAssignments = async () => {
+        try {
+          const response = await axios.post('/api/users/get-assignments', { userId: currentUser.userId });
+          setAssignmentsData(response.data);
+          toast(assignmentsData)
+        } catch (error) {
+          toast({ title: "Error", description: "Failed to fetch assignments", variant: "destructive" });
+        }
+      };
+
+      fetchClasses();
+      fetchAssignments();
+    }
+  }, [currentUser, toast]);
 
   if (!currentUser) {
     return null;
   }
 
-  const userClasses = classesData.filter(classItem => {
-    return Array.isArray(currentUser.classes) && currentUser.classes.includes(classItem.class_id);
-  });
 
   const userReviewAssignments = assignmentsData
     .filter(assignment => {
-      return Array.isArray(currentUser.classes) && currentUser.classes.includes(assignment.class_id) && assignment.evaluation_type === 'peer';
+      return Array.isArray(currentUser.classes) && currentUser.classes.includes(assignment.classId) && assignment.evaluation_type === 'peer';
     })
-    .sort((a, b) => new Date(a.due_date) - new Date(b.due_date))
+    .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
     .slice(0, 3);
 
   const isActive = (path) => location.pathname === path;
@@ -45,14 +74,13 @@ export default function AppNavbar() {
     return `${firstInitial}${lastInitial}`;
   };
 
-  
   return (
     <div className="w-full py-3 px-4 bg-white shadow-md">
       <NavigationMenu className="flex items-center justify-between w-full max-w-screen-xl mx-auto ">
         <NavigationMenuList className="flex space-x-4">
           <NavigationMenuItem>
             <Link to="/dashboard">
-              <img src="logo.png" className="w-10 h-10"/>
+              <img src="logo.png" className="w-10 h-10" />
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
@@ -63,18 +91,18 @@ export default function AppNavbar() {
           <NavigationMenuItem>
             <NavigationMenuTrigger className='group'>
               <NavigationMenuItem>
-                  <Link to="/peer-review" className={cn(navigationMenuTriggerStyle(), isActive('/peer-review') && 'font-bold group')}>
-                    Peer-Review
-                  </Link>
+                <Link to="/peer-review" className={cn(navigationMenuTriggerStyle(), isActive('/peer-review') && 'font-bold group')}>
+                  Peer-Review
+                </Link>
               </NavigationMenuItem>
             </NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="bg-white grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                 {userReviewAssignments.map((assignment) => (
                   <ListItem
-                    key={assignment.assignment_id}
+                    key={assignment.assignmentId}
                     title={assignment.title}
-                    href={`/assignedPR/${assignment.assignment_id}`}
+                    href={`/assignedPR/${assignment.assignmentId}`}
                   >
                     {assignment.description}
                   </ListItem>
@@ -88,11 +116,11 @@ export default function AppNavbar() {
             </NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="bg-white grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                {userClasses.map((classItem) => (
+                {classesData.map((classItem) => (
                   <ListItem
-                    key={classItem.class_id}
+                    key={classItem.classId}
                     title={classItem.classname}
-                    href={`/class/${classItem.class_id}`}
+                    href={`/class/${classItem.classId}`}
                   >
                     {classItem.description}
                   </ListItem>

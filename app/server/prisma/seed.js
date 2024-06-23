@@ -18,15 +18,14 @@ async function main() {
 
   // Adding resuable functions  
   async function hashedPassword(password) { 
-    const newPassword = await bcrypt.hash(password, SALT_ROUNDS);
-    return newPassword;
+    return await bcrypt.hash(password, SALT_ROUNDS);
   }
 
   // Create users
   const student = await prisma.user.create({
     data: {
       email: 'student@gmail.com',
-      password: hashedPassword('Student@123'),
+      password: await hashedPassword('Student@123'),
       firstname: faker.person.firstName(),
       lastname: faker.person.lastName(),
       role: 'STUDENT',
@@ -36,7 +35,7 @@ async function main() {
   const instructor = await prisma.user.create({
     data: {
       email: 'instructor@gmail.com',
-      password: hashedPassword('Instructor@123'),
+      password: await hashedPassword('Instructor@123'),
       firstname: faker.person.firstName(),
       lastname: faker.person.lastName(),
       role: 'INSTRUCTOR',
@@ -46,7 +45,7 @@ async function main() {
   const admin = await prisma.user.create({
     data: {
       email: 'admin@gmail.com',
-      password: hashedPassword('Admin@123'),
+      password: await hashedPassword('Admin@123'),
       firstname: faker.person.firstName(),
       lastname: faker.person.lastName(),
       role: 'ADMIN',

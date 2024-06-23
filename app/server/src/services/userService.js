@@ -1,4 +1,4 @@
-import prisma from "../../prisma/prismaClient";
+import prisma from "../../prisma/prismaClient.js";
 import ApiError from "../utils/apiError.js";
 
 export async function getUserClasses(userId) {

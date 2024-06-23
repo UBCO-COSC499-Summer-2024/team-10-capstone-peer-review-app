@@ -56,6 +56,26 @@ function ClassTable() {
         setSelectedClass(selected_class);
         setDialogOpen(true);
     };
+
+    const handleDeleteClass = async () => {
+        // try {
+        //     const response = await fetch(`/api/delete/class/${selectedClass.class_id}`, {
+        //         method: 'DELETE',
+        //     });
+        //     if (response.ok) {
+        //         setDialogOpen(false);
+        //         // Remove the deleted class from the classesData array
+        //         const updatedClasses = classesData.filter(classItem => classItem.class_id !== selectedClass.class_id);
+        //         // Update the local state (Assuming classesData is in state)
+        //         setClassesData(updatedClasses);
+        //     } else {
+        //         console.error("Failed to delete the class.");
+        //     }
+        // } catch (error) {
+        //     console.error("Error deleting the class:", error);
+        // }
+    };
+
     const filteredClasses = classesData
         .filter(classItem => 
             (filter.searchQuery ? classItem.classname.toLowerCase().includes(filter.searchQuery.toLowerCase()) : true) &&
@@ -251,7 +271,7 @@ function ClassTable() {
                     Are you sure you want to delete the class {selectedClass.classname}?
                     <DialogFooter>
                         <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
-                        <Button variant="destructive">Delete</Button>
+                        <Button variant="destructive" onClick={handleDeleteClass}>Delete</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>

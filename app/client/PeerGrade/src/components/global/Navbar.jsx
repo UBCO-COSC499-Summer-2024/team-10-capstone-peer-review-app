@@ -34,7 +34,8 @@ export default function AppNavbar() {
       const fetchClasses = async () => {
         try {
           const response = await axios.post('/api/users/get-classes', { userId: currentUser.userId });
-          setClassesData(response.data);
+          console.log(response.data);
+          setClassesData(Array.isArray(response.data) ? response.data : []);
           toast(classesData);
         } catch (error) {
           toast({ title: "Error", description: "Failed to fetch classes", variant: "destructive" });
@@ -44,7 +45,7 @@ export default function AppNavbar() {
       const fetchAssignments = async () => {
         try {
           const response = await axios.post('/api/users/get-assignments', { userId: currentUser.userId });
-          setAssignmentsData(response.data);
+          setAssignmentsData(Array.isArray(response.data) ? response.data : []);
           toast(assignmentsData)
         } catch (error) {
           toast({ title: "Error", description: "Failed to fetch assignments", variant: "destructive" });

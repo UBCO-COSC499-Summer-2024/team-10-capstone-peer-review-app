@@ -100,7 +100,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
   };
 
   return (
-    <div className='relative space-y-5 max-w-md'>
+    <div className='relative space-y-5 w-full'>
       {tokenReceived && 
         <Alert className='absolute top-0 left-0 w-full flex justify-center items-center space-x-2' variant={verificationSuccessful ? 'success' : 'destructive'}>
           <div>

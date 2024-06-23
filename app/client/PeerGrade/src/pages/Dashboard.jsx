@@ -8,11 +8,9 @@ import { useToast } from '@/components/ui/use-toast';
 
 import DataTable from '@/components/ui/data-table';
 import { ArrowUpDown } from "lucide-react";
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { user, Group } from '@/utils/dbData';
+import { iClass, assignment, user, Group } from '@/utils/dbData'; // Replace this with actual data, only for GroupCard
 import GroupCard from '@/components/class/GroupCard';
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -22,13 +20,15 @@ function Dashboard() {
   const [assignments, setAssignments] = useState([]);
   const [reviews, setReviews] = useState([]);
   const { toast } = useToast();
-  const classNames = classes.map(cls => ({ class_id: cls.class_id, classname: cls.classname }));
+
+  const iClassNames = iClass.map(cls => ({ class_id: cls.class_id, classname: cls.classname })); // only for GroupCard
+
   useEffect(() => {
     if (currentUser) {
       const fetchClasses = async () => {
         try {
           const response = await axios.post('/api/users/get-classes', { userId: currentUser.userId });
-          setClasses(response.data);
+          setClasses(Array.isArray(response.data) ? response.data : []);
         } catch (error) {
           toast({ title: "Error", description: "Failed to fetch classes", variant: "destructive" });
         }
@@ -37,7 +37,7 @@ function Dashboard() {
       const fetchAssignments = async () => {
         try {
           const response = await axios.post('/api/users/get-assignments', { userId: currentUser.userId });
-          setAssignments(response.data);
+          setAssignments(Array.isArray(response.data) ? response.data : []);
         } catch (error) {
           toast({ title: "Error", description: "Failed to fetch assignments", variant: "destructive" });
         }
@@ -46,7 +46,7 @@ function Dashboard() {
       const fetchReviews = async () => {
         try {
           const response = await axios.get('/api/users/reviews');
-          setReviews(response.data);
+          setReviews(Array.isArray(response.data) ? response.data : []);
         } catch (error) {
           toast({ title: "Error", description: "Failed to fetch reviews", variant: "destructive" });
         }
@@ -165,13 +165,12 @@ function Dashboard() {
         ) : (
           classes.map((classItem) => (
             <ClassCard
-              key={classItem.class_id}
-              classId={classItem.class_id}
+              key={classItem.classId}
+              classId={classItem.classId}
               className={classItem.classname}
-              instructor={user.find(instructor => instructor.user_id === classItem.instructor_id)?.firstname + ' ' + user.find(instructor => instructor.user_id === classItem.instructor_id)?.lastname}
-              numStudents={user.filter(student => Array.isArray(student.classes) && student.classes.includes(classItem.class_id)).length}
-              numAssignments={assignmentsData.filter(assignment => assignment.class_id === classItem.class_id).length}
-              numPeerReviews={assignmentsData.filter(assignment => assignment.class_id === classItem.class_id && assignment.evaluation_type === 'peer').length}
+              instructor={`${classItem.instructor.firstname} ${classItem.instructor.lastname}`}
+              numStudents={classItem.classSize}
+              term={classItem.term}
             />
           ))
         )}
@@ -182,12 +181,18 @@ function Dashboard() {
             // Skeleton for GroupCard
             <Skeleton className="h-100 w-full rounded-lg" />
           ) : (
-            <GroupCard
-              classes={classes}
-              groups={Group}
-              classNames={classNames}
-              users={user}
-            />
+              // <GroupCard
+              //   classes={classes}
+              //   groups={Group}
+              //   classNames={classNames}
+              //   users={user}
+              // />
+              <GroupCard
+                classes={[iClass[0], iClass[1], iClass[2]]}
+                groups={Group}
+                classNames={iClassNames}
+                users={user}
+              />
           )}
         </div>
         <div className="flex w-3/4">

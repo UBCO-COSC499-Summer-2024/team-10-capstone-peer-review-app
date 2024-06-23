@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 // import { user as users } from "@/lib/dbData"; // DB CALL: this is user data being pulled from the 'db'
 import { setCurrentUser } from '@/utils/redux/hooks/userSlice'; //REDUX slice
+import { QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import {
@@ -115,12 +117,12 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
           </div>
         </Alert>
       }
-      <Card className="w-full p-8 space-y-8 bg-white shadow-md rounded-lg">
+      <Card className="w-full max-w-lg h-[550px] flex flex-col">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Login</CardTitle>
           <CardDescription className="text-gray-600">Please enter your credentials to login</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="flex-1 overflow-y-auto space-y-4">
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email address</label>
@@ -165,10 +167,20 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
             <button onClick={onSwitchToForgotPassword} className="text-green-600 hover:text-green-500">Forgot your password?</button>
           </p>
         </CardContent>
-        <CardFooter className="text-center">
-          <p className="text-sm text-gray-600">
-            Don't have an account? <button onClick={onSwitchToRegister} className="text-green-600 hover:text-green-500">Sign up</button>
-          </p>
+        <CardFooter className="text-center flex flex-col gap-2 bg-indigo-100">
+          <div className="flex w-full justify-between mt-6">
+            <p className="text-sm text-gray-600">
+              Don't have an account? <button onClick={onSwitchToRegister} className="text-green-600 hover:text-green-500">Sign up</button>
+            </p>
+            <HoverCard>
+              <HoverCardTrigger className="hover:bg-amber-100 rounded-full ease-in-out duration-500">
+                <QuestionMarkCircleIcon className="w-6 h-6" />
+              </HoverCardTrigger>
+              <HoverCardContent className="text-center p-4">
+                Contact @parsa for inquiries
+              </HoverCardContent>
+            </HoverCard>
+          </div>
         </CardFooter>
       </Card>
     </div>

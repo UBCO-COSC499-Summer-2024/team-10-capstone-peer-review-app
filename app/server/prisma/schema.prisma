@@ -72,7 +72,7 @@ model User {
 
 model Class {
   classId      String        @id @default(uuid())
-  instructorId String        @unique
+  instructorId String
   classname    String
   description  String
   startDate    DateTime
@@ -90,7 +90,7 @@ model UserInClass {
   student User   @relation(fields: [userId], references: [userId])
   class   Class  @relation(fields: [classId], references: [classId])
 
-  @@id([userId, classId])
+  @@id([userId, classId], name: "UserInClassId")
 }
 
 // Removing, Single instructor for a class, Admin can which instructors are associated with a class
@@ -106,15 +106,15 @@ model UserInClass {
 
 // Make a many to many relationship with rubric 
 model Assignment {
-  assignmentId  String             @id @default(uuid())
+  assignmentId  String                @id @default(uuid())
   classId       String
   title         String
   description   String?
   dueDate       DateTime
-  maxSumissions Int                @default(1)
+  maxSumissions Int                   @default(1)
   // fileType      SubmissionType
-  classes       Class              @relation(fields: [classId], references: [classId])
-  rubric        AssignmentRubric[] // An assignment can have multiple rubrics, I.E a group review rubric vs an assignment rubric   
+  classes       Class                 @relation(fields: [classId], references: [classId])
+  rubric        RubricForAssignment[] // An assignment can have multiple rubrics, I.E a group review rubric vs an assignment rubric   
   submissions   Submission[]
 }
 
@@ -246,24 +246,24 @@ model Review {
 
 // Make a many to many relationship with assignment
 model Rubric {
-  rubricId    String             @id @default(uuid())
+  rubricId    String                @id @default(uuid())
   creatorId   String
   title       String
   description String?
   totalMarks  Int // Total marks of the rubric? Not sure if this is needed or not 
-  createdBy   User               @relation(fields: [creatorId], references: [userId])
+  createdBy   User                  @relation(fields: [creatorId], references: [userId])
   criteria    Criterion[]
-  assignments AssignmentRubric[]
+  assignments RubricForAssignment[]
   // GroupSubmission     GroupSubmission[]
 }
 
-model AssignmentRubric {
+model RubricForAssignment {
   assignmentId String
   rubricId     String
   assignment   Assignment @relation(fields: [assignmentId], references: [assignmentId])
   rubric       Rubric     @relation(fields: [rubricId], references: [rubricId])
 
-  @@id([assignmentId, rubricId])
+  @@id([assignmentId, rubricId], name: "RubricForAssignmentId")
 }
 
 model Criterion {

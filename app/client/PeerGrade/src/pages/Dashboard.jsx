@@ -1,19 +1,64 @@
-import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
-import ClassCard from '@/components/class/ClassCard';
-import DataTable from '@/components/ui/data-table';
-import { iClass as classesData, assignment as assignmentsData, user, Group } from '@/lib/dbData'; //DB CALL
-import { ArrowUpDown } from "lucide-react";
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
+import axios from 'axios';
+import ClassCard from '@/components/class/ClassCard';
+import { Button } from "@/components/ui/button";
+import { useToast } from '@/components/ui/use-toast';
+
+import DataTable from '@/components/ui/data-table';
+import { ArrowUpDown } from "lucide-react";
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { iClass, assignment, user, Group } from '@/utils/dbData'; // Replace this with actual data, only for GroupCard
 import GroupCard from '@/components/class/GroupCard';
 import { Skeleton } from "@/components/ui/skeleton";
 
 function Dashboard() {
   const currentUser = useSelector((state) => state.user.currentUser);
-  const classNames = classesData.map(cls => ({ class_id: cls.class_id, classname: cls.classname }));
+  const [classes, setClasses] = useState([]);
+  const [assignments, setAssignments] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const { toast } = useToast();
+
+  const iClassNames = iClass.map(cls => ({ class_id: cls.class_id, classname: cls.classname })); // only for GroupCard
+
+  useEffect(() => {
+    if (currentUser) {
+      const fetchClasses = async () => {
+        try {
+          const response = await axios.post('/api/users/get-classes', { userId: currentUser.userId });
+          setClasses(Array.isArray(response.data) ? response.data : []);
+        } catch (error) {
+          toast({ title: "Error", description: "Failed to fetch classes", variant: "destructive" });
+        }
+      };
+
+      const fetchAssignments = async () => {
+        try {
+          const response = await axios.post('/api/users/get-assignments', { userId: currentUser.userId });
+          setAssignments(Array.isArray(response.data) ? response.data : []);
+        } catch (error) {
+          toast({ title: "Error", description: "Failed to fetch assignments", variant: "destructive" });
+        }
+      };
+
+      const fetchReviews = async () => {
+        try {
+          const response = await axios.get('/api/users/reviews');
+          setReviews(Array.isArray(response.data) ? response.data : []);
+        } catch (error) {
+          toast({ title: "Error", description: "Failed to fetch reviews", variant: "destructive" });
+        }
+      };
+
+      fetchClasses();
+      fetchAssignments();
+      fetchReviews();
+    }
+  }, [currentUser, toast]);
+
+  console.log(classes);
   
   // Loading state
   const [loading, setLoading] = useState(true);
@@ -26,12 +71,13 @@ function Dashboard() {
 
     return () => clearTimeout(timer);
   }, []);
-
+  
   if (!currentUser) {
     return null;
   }
 
-  const userClasses = [classesData[0], classesData[1], classesData[2]];
+  const assignmentData = assignments.filter(assignment => assignment.evaluation_type !== 'peer');
+  const reviewData = assignments.filter(assignment => assignment.evaluation_type === 'peer');
 
   const assignmentColumns = [
     {
@@ -107,27 +153,6 @@ function Dashboard() {
     },
   ];
 
-  const assignmentData = assignmentsData
-    .filter(assignment => assignment.evaluation_type !== 'peer')
-    .map(assignment => ({
-      id: assignment.assignment_id,
-      title: assignment.title,
-      className: classesData.find(classItem => classItem.class_id === assignment.class_id)?.classname,
-      dueDate: new Date(assignment.due_date).toLocaleDateString(),
-      action: 'Open',
-      link: `/assignment/${assignment.assignment_id}`
-    }));
-
-  const reviewData = assignmentsData
-    .filter(assignment => assignment.evaluation_type === 'peer')
-    .map(assignment => ({
-      id: assignment.assignment_id,
-      title: assignment.title,
-      className: classesData.find(classItem => classItem.class_id === assignment.class_id)?.classname,
-      dueDate: new Date(assignment.due_date).toLocaleDateString(),
-      action: 'Review',
-      link: `/assignedPR/${assignment.assignment_id}`
-    }));
 
   return (
     <div className="w-full main-container space-y-6 ">
@@ -138,15 +163,14 @@ function Dashboard() {
             <Skeleton key={index} className="h-48 w-full rounded-lg" />
           ))
         ) : (
-          userClasses.map((classItem) => (
+          classes.map((classItem) => (
             <ClassCard
-              key={classItem.class_id}
-              classId={classItem.class_id}
+              key={classItem.classId}
+              classId={classItem.classId}
               className={classItem.classname}
-              instructor={user.find(instructor => instructor.user_id === classItem.instructor_id)?.firstname + ' ' + user.find(instructor => instructor.user_id === classItem.instructor_id)?.lastname}
-              numStudents={user.filter(student => Array.isArray(student.classes) && student.classes.includes(classItem.class_id)).length}
-              numAssignments={assignmentsData.filter(assignment => assignment.class_id === classItem.class_id).length}
-              numPeerReviews={assignmentsData.filter(assignment => assignment.class_id === classItem.class_id && assignment.evaluation_type === 'peer').length}
+              instructor={`${classItem.instructor.firstname} ${classItem.instructor.lastname}`}
+              numStudents={classItem.classSize}
+              term={classItem.term}
             />
           ))
         )}
@@ -155,14 +179,20 @@ function Dashboard() {
         <div className="flex w-1/2">
           {loading ? (
             // Skeleton for GroupCard
-            <Skeleton className="h-100 w-full rounded-lg" />
+            <Skeleton className="h-96 w-full rounded-lg" />
           ) : (
-            <GroupCard
-              classes={classesData}
-              groups={Group}
-              classNames={classNames}
-              users={user}
-            />
+              // <GroupCard
+              //   classes={classes}
+              //   groups={Group}
+              //   classNames={classNames}
+              //   users={user}
+              // />
+              <GroupCard
+                classes={[iClass[0], iClass[1], iClass[2]]}
+                groups={Group}
+                classNames={iClassNames}
+                users={user}
+              />
           )}
         </div>
         <div className="flex w-3/4">
@@ -193,7 +223,6 @@ function Dashboard() {
           </Tabs>
         </div>
       </div>
-      
     </div>
   );
 }

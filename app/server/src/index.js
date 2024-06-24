@@ -1,66 +1,58 @@
 import express from "express";
-import session from "express-session"
-import cookieParser from "cookie-parser"
+import session from "express-session";
 import passport from "passport";
-import dotenv from "dotenv" 
-import { PrismaClient } from "@prisma/client"; 
-
-// Routes
-import studentsRouter from "./routes/students.js"; 
-import instructorsRouter from "./routes/instructors.js"
-// Change to stragies later
-import passportLocalValidation from "./middleware/passportLocalValidation.js";
-import authRouter from "./routes/auth.js";
-
-// Once dotenv.config() is called, env vars are available in process.env to all files. 
-// No need to import dotenv in other files.
-dotenv.config(); 
+import setupRoutes from "./routes/index.js";
+import apiError from "./utils/apiError.js";
+import globalErrorHandler from "./middleware/globalErrorHandler.js";
+import shutdown from "./utils/shutdown.js";
+// Dynamically set up environment variables based on NODE_ENV
+import "./utils/envConfig.js";
 
 const app = express();
 const BACKEND_PORT = process.env.BACKEND_PORT;
 
-// Create a new Prisma client instance, share across all files using it in order to 
-// minimize the number of open connections to the database.
-const prisma = new PrismaClient();
+app.use(express.json());
 
-// SET UP CORS FOR DOCKER? 
-// app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(
+  session({
+    secret: process.env.COOKIE_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000
+    }
+  })
+);
 
-// Initialing cookies to be used for session management
-// Add a secret key soon to cookie parser, this allows user to access cookie data from 
-// req.cookie
-
-app.use(express.json()); // Parse JSON bodies with express middleware
-// Populates the req.session object with the session data
-app.use(session({
-	secret: "super secret", // Secret to sign the session ID cookie
-	resave: false, // Forces the session to be saved back to the session store, even if the session was never modified during the request
-	saveUninitialized: false, // Forces a session that is "uninitialized" to be saved to the store. A session is uninitialized when it is new but not modified.
-	cookie: { 
-	  maxAge: 24 * 60 * 60 * 1000, // Cookie expires after 1 day
-	}
-  }));
-
-passportLocalValidation(passport, prisma);
 
 app.use(passport.initialize());
 app.use(passport.session());
-// Make sure to include any middleare before the routes if you want the middleware to apply to the routes
 
-// Middleware
-app.use("/students", passport.authenticate('local'), studentsRouter(prisma));
-app.use("/instructors", instructorsRouter(prisma))
-app.use("/auth", authRouter(prisma));
+// Set up routes
+app.use(setupRoutes);
 
-app.listen(BACKEND_PORT, () => {
+app.get("/", (req, res) => {
+  console.log(req.session);
+  console.log(req.session.id);
+  console.log(req.user);
+  res.json({ message: "Hello from the server!" });
+});
+
+// Catch all route for any other requests that don't match any existing routes
+app.all("*", (req, res, next) => {
+  next(new apiError(`Route ${req.originalUrl} does not exist`, 404));
+});
+
+// Global error handler middleware
+app.use(globalErrorHandler);
+
+const server = app.listen(BACKEND_PORT, () => {
 	console.log(`Server is running on port ${BACKEND_PORT}`);
 });
 
-app.get("/", (req, res) => {
-	console.log(req.session); 
-	console.log("hello from session id!", req.session.id);
-	res.json({ message: "Hello from the server!" });
-});
+// Handle shutdown (more geared towards prisma) gracefully
+// Listening for UNIX system calls to close the server and prisma connection
+process.on('SIGTERM', () => shutdown('SIGTERM', server));
+process.on('SIGINT', () => shutdown('SIGINT', server));
 
-export default app;
-
+export default server;

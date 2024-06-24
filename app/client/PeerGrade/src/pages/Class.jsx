@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import {useSelector} from 'react-redux'
 import { useParams, Link } from 'react-router-dom';
-import { iClass as classesData, assignment as assignmentsData, Categories as categoriesData, user } from '@/lib/dbData';
+import { iClass as classesData, assignment as assignmentsData, Categories as categoriesData, user } from '@/utils/dbData';
 import {
   Menubar,
   MenubarMenu,

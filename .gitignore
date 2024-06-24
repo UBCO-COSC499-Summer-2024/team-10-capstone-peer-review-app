@@ -2,3 +2,4 @@ node_modules/
 /app/database/
 *.DS_Store
 *.vite
+*.vscode

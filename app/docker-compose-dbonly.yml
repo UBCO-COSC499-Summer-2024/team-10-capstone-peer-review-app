@@ -1,10 +1,10 @@
 services:
 
-  db_only:
+  db-only:
     image: postgres:latest
-    container_name: db_only
+    container_name: db-only
     env_file:
-      - ./server/.env
+      - ./server/.env.dev
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -12,7 +12,7 @@ services:
     ports:
       - "${DB_PORT}:5432"
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - db-only-data:/var/lib/postgresql/data
 
 volumes:
-  db-data:
+  db-only-data:

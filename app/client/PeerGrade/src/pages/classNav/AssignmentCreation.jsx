@@ -6,7 +6,7 @@ import { z } from "zod";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon, ChevronDown as ChevronDownIcon, ChevronUp as ChevronUpIcon, Check as CheckIcon, Upload } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';

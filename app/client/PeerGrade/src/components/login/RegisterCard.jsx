@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';

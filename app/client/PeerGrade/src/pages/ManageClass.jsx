@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { Toaster } from '@/components/ui/toaster';
 import { useToast } from '@/components/ui/use-toast';
-import { iClass, assignment, PeerReview, submission } from '@/lib/dbData';
+import { iClass, assignment, PeerReview, submission } from '@/utils/dbData';
 
 const AddClassModal = ({ show, onClose, onAddClass }) => {
   const [classname, setClassname] = useState('');

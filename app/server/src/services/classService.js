@@ -1,6 +1,7 @@
 import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
 
+// class operations
 const getClassById = async (classId) => {
 	try {
 		const classData = await prisma.class.findUnique({
@@ -72,6 +73,8 @@ const deleteClass = async (classId) => {
 		throw new apiError("Failed to delete class", 500);
 	}
 };
+
+// student operations
 // Refactoring to use student email instead.
 const addStudentToClass = async (classId, studentId) => {
 	try {
@@ -162,6 +165,7 @@ const removeStudentFromClass = async (classId, studentId) => {
 	}
 };
 
+// assignment operations
 const addAssignmentToClass = async (classId, assignmentData) => {
 	try {
 		const classInfo = await prisma.class.findUnique({
@@ -173,10 +177,12 @@ const addAssignmentToClass = async (classId, assignmentData) => {
 			}
 		});
 
-		if (
-			assignmentData.dueDate < classInfo.startDate ||
-			assignmentData.dueDate > classInfo.endDate
-		) {
+		// Check if the assignment due date is within the class duration
+		let dueDate = new Date(assignmentData.dueDate);
+    	let startDate = new Date(classInfo.startDate);
+    	let endDate = new Date(classInfo.endDate);
+
+		if ( dueDate < startDate || dueDate > endDate) {
 			throw new apiError("Assignment due date is outside the class duration", 400);
 		}
 
@@ -202,7 +208,7 @@ const addAssignmentToClass = async (classId, assignmentData) => {
 	}
 };
 
-const removeAssignmentFromClass = async (classId, assignmentId) => {
+const removeAssignmentFromClass = async (assignmentId) => {
 	try {
 		const assignment = await prisma.assignment.findUnique({
 			where: {
@@ -235,7 +241,7 @@ const updateAssignmentInClass = async (classId, assignmentId, updateData) => {
 				classId: classId
 			},
 			include: {
-				assignments: true
+				Assignments: true
 			}
 		});
 
@@ -305,7 +311,8 @@ const getAssignmentInClass = async (classId, assignmentId) => {
 	}
 };
 
-const createRubricsForAssignment = async (assignmentId, rubricData) => {
+// rubric operations
+const createRubricsForAssignment = async (creatorId, assignmentId, rubricData) => {
 	try {
 		const assignment = await prisma.assignment.findUnique({
 			where: {
@@ -320,6 +327,7 @@ const createRubricsForAssignment = async (assignmentId, rubricData) => {
 		const newRubric = await prisma.rubric.create({
 			data: {
 				...rubricData,
+				creatorId: creatorId,
 				assignments: {
 					create: {
 						assignmentId: assignmentId
@@ -345,7 +353,7 @@ const getRubricsForAssignment = async (assignmentId) => {
 				assignmentId: assignmentId
 			},
 			include: {
-				rubrics: true
+				rubric: true
 			}
 		});
 
@@ -353,7 +361,27 @@ const getRubricsForAssignment = async (assignmentId) => {
 			throw new apiError("Assignment not found", 404);
 		}
 
-		return assignment.rubrics;
+		if (!assignment.rubric) {
+			throw new apiError("Rubrics not found", 404);
+		}
+
+		const rubricAssignments = await prisma.rubricForAssignment.findMany({
+            where: {
+                assignmentId: assignmentId,
+            },
+            include: {
+                rubric: true, // Include the related rubric details
+            },
+        });
+
+        if (!rubricAssignments.length) {
+            throw new apiError("Rubrics not found for the assignment", 404);
+        }
+
+        // Map the result to only include rubric details
+        const rubrics = rubricAssignments.map(ra => ra.rubric);
+
+        return rubrics;
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
@@ -404,6 +432,12 @@ const deleteRubricsForAssignment = async (rubricId) => {
 			throw new apiError("Rubric not found", 404);
 		}
 
+		await prisma.rubricForAssignment.deleteMany({
+			where: {
+			  rubricId: rubricId,
+			},
+		  });
+
 		await prisma.rubric.delete({
 			where: {
 				rubricId: rubricId
@@ -418,6 +452,7 @@ const deleteRubricsForAssignment = async (rubricId) => {
 	}
 };
 
+// criterion operations
 const createCriterionForRubric = async (rubricId, criterionData) => {
 	try {
 		const rubric = await prisma.rubric.findUnique({
@@ -428,6 +463,23 @@ const createCriterionForRubric = async (rubricId, criterionData) => {
 
 		if (!rubric) {
 			throw new apiError("Rubric not found", 404);
+		}
+
+		// Check if maxMark and minMark are positive
+		if (criterionData.maxMark <= 0 || criterionData.minMark <= 0 || criterionData.maxMark < criterionData.minMark || criterionData.maxMark > rubric.totalMarks) {
+			throw new apiError("Criterion maxMark and minMark are not set properly", 400);
+		}
+
+		let existingMaxMarksSum = 0;
+		if (rubric.criteria || rubric.criteria.length > 0) {
+			existingMaxMarksSum = rubric.criteria.reduce((sum, criterion) => sum + criterion.maxMark, 0);
+			console.log(existingMaxMarksSum);
+		}
+
+		console.log(`Existing Max Marks Sum: ${existingMaxMarksSum}, New Criterion Max Mark: ${criterionData.maxMark}, Rubric Total Marks: ${rubric.totalMarks}`);
+		// Check if the sum of maxMarks including the new criterion exceeds totalMarks
+		if (existingMaxMarksSum + criterionData.maxMark > rubric.totalMarks) {
+			throw new apiError("maxMarks of criteria exceed the rubric's totalMarks", 400);
 		}
 
 		const newCriterion = await prisma.criterion.create({
@@ -480,8 +532,29 @@ const updateCriterionForRubric = async (criterionId, updateData) => {
 			}
 		});
 
+		const rubric = await prisma.rubric.findUnique({
+			where: {
+				rubricId: criterion.rubricId
+			}
+		});
+
 		if (!criterion) {
 			throw new apiError("Criterion not found", 404);
+		}
+
+		// Check if maxMark and minMark are positive
+		if (updateData.maxMark <= 0 || updateData.minMark <= 0 || updateData.maxMark < updateData.minMark || updateData.maxMark > rubric.totalMarks) {
+			throw new apiError("Criterion maxMark and minMark are not set properly", 400);
+		}
+
+		let existingMaxMarksSum = 0;
+		if (rubric.criteria) {
+			// Calculate the sum of maxMarks of all existing criteria
+			existingMaxMarksSum = rubric.criteria.reduce((sum, criterion) => sum + criterion.maxMark, 0);
+			console.log(existingMaxMarksSum, updateData.maxMark, rubric.totalMarks);
+		}
+		if (existingMaxMarksSum + updateData.maxMark > rubric.totalMarks) {
+			throw new apiError("maxMarks of criteria exceed the rubric's totalMarks", 400);
 		}
 
 		const updatedCriterion = await prisma.criterion.update({

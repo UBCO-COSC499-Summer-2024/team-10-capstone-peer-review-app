@@ -59,5 +59,31 @@ router.route("/update-assignment")
 router.route("/get-assignment")
   .post(ensureUser, ensureInstructor, getAssignmentInClass);
 
+// Rubric Routes
+
+router.route("/add-rubrics")
+  .post(ensureUser, ensureInstructor, addRubricsToAssignment);
+
+router.route("/remove-rubrics")
+  .post(ensureUser, ensureInstructor, removeRubricsFromAssignment);
+
+router.route("/update-rubrics")
+  .post(ensureUser, ensureInstructor, updateRubricsInAssignment);
+
+router.route("/get-rubrics")
+  .post(ensureUser, ensureInstructor, getRubricsInAssignment);
+
+// Criterion Routes
+router.route("/add-criterion")
+  .post(ensureUser, ensureInstructor, addCriterionToRubric);
+
+router.route("/remove-criterion")
+  .post(ensureUser, ensureInstructor, removeCriterionFromRubric);
+
+router.route("/update-criterion")
+  .post(ensureUser, ensureInstructor, updateCriterionInRubric);
+
+router.route("/get-criterion")
+  .post(ensureUser, ensureInstructor, getCriterionInRubric);
 
 export default router;

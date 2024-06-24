@@ -179,7 +179,7 @@ function Dashboard() {
         <div className="flex w-1/2">
           {loading ? (
             // Skeleton for GroupCard
-            <Skeleton className="h-100 w-full rounded-lg" />
+            <Skeleton className="h-96 w-full rounded-lg" />
           ) : (
               // <GroupCard
               //   classes={classes}

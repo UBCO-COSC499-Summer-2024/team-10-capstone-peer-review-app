@@ -15,7 +15,7 @@ const store = mockStore({
       username: 'testuser',
       email: 'testuser@example.com',
       bio: 'This is a bio',
-      urls: ['https://example.com', 'https://example2.com'],
+      url: 'https://example.com',
       firstname: 'Test',
       lastname: 'User',
       description: 'This is a test user'
@@ -77,7 +77,7 @@ describe('Settings Component', () => {
       username: 'newusername',
       email: 'newemail@example.com',
       bio: 'New bio',
-      urls: ['https://newurl.com']
+      url: 'https://newurl.com'
     }));
   });
 

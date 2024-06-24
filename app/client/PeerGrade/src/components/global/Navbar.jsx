@@ -7,6 +7,8 @@ import axios from 'axios';
 import { cn } from "@/utils/utils";
 import { useToast } from '@/components/ui/use-toast';
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { cn } from "@/lib/utils";
+import { SearchIcon } from "lucide-react";
 import NotifCard from "./NotifCard";
 import {
   NavigationMenu,
@@ -18,6 +20,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 
@@ -62,6 +65,8 @@ export default function AppNavbar() {
   }
 
 
+  const [searchQuery, setSearchQuery] = React.useState(""); // State for search query
+
   const userReviewAssignments = assignmentsData
     .filter(assignment => {
       return Array.isArray(currentUser.classes) && currentUser.classes.includes(assignment.classId) && assignment.evaluation_type === 'peer';
@@ -76,19 +81,26 @@ export default function AppNavbar() {
     navigate('/');
   };
 
+  const search = () => {
+    const trimmedQuery = searchQuery.trim();
+    if (trimmedQuery) {
+      navigate(`/search?query=${trimmedQuery}`);
+    } else {
+      navigate(`/search`);
+    }
+  };
   const getInitials = (firstName, lastName) => {
     const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : '';
     const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : '';
     return `${firstInitial}${lastInitial}`;
   };
-
   return (
     <div className="w-full py-3 px-4 bg-white shadow-md">
-      <NavigationMenu className="flex items-center justify-between w-full max-w-screen-xl mx-auto ">
-        <NavigationMenuList className="flex space-x-4">
+      <NavigationMenu className="flex items-center justify-between w-full max-w-screen-xl mx-auto">
+        <NavigationMenuList className="flex space-x-2 sm:space-x-1">
           <NavigationMenuItem>
             <Link to="/dashboard">
-              <img src="logo.png" className="w-10 h-10" alt="Logo"/>
+              <img src="logo.png" className="w-10 h-10 sm:hidden md:block" alt="Logo"/>
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
@@ -97,13 +109,9 @@ export default function AppNavbar() {
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuTrigger className='group'>
-              <NavigationMenuItem>
-                <Link to="/peer-review" className={cn(navigationMenuTriggerStyle(), isActive('/peer-review') && 'font-bold group')}>
-                  Peer-Review
-                </Link>
-              </NavigationMenuItem>
-            </NavigationMenuTrigger>
+              <NavigationMenuTrigger onClick={() => navigate('/peer-review')} className={cn(navigationMenuTriggerStyle(), isActive('/peer-review') && 'font-bold')}>
+                    Peer-Review
+              </NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="bg-white grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                 {userReviewAssignments.map((assignment) => (
@@ -150,6 +158,21 @@ export default function AppNavbar() {
               Settings
             </Link>
           </NavigationMenuItem>
+          {location.pathname !== '/search' && currentUser.role === 'ADMIN' && (
+            <NavigationMenuItem>
+              <div className="flex w-full max-w-sm items-center space-x-2">
+                <Input 
+                  placeholder="Search classes" 
+                  value={searchQuery} 
+                  onChange={(e) => setSearchQuery(e.target.value)} // Update state on input change
+                  className="sm:hidden md:hidden lg:block"
+                />
+                <Button onClick={search} className='h-10 w-10'>
+                  <SearchIcon className="w-5 h-5 sm:p-0 sm:m-0" />
+                </Button>
+              </div>
+            </NavigationMenuItem>
+          )}
         </NavigationMenuList>
         <div className="flex items-center space-x-4">
           <HoverCard>

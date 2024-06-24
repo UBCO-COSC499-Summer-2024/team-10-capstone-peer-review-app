@@ -19,15 +19,18 @@ const Settings = () => {
   const [username, setUsername] = useState(currentUser?.username || '');
   const [email, setEmail] = useState(currentUser?.email || '');
   const [bio, setBio] = useState(currentUser?.bio || '');
-  const [urls, setUrls] = useState(currentUser?.urls || ['', '']);
-
+  const [url, setUrl] = useState(currentUser?.url || '');
   const handleSaveProfile = async () => {
     try {
       // Assuming updateUser is an async action or you can replace it with your API call
-      await dispatch(updateUser({ username, email, bio, urls }));
+      await dispatch(updateUser({ username, email, bio, url }));
       toast({
-        title: "Success",
-        description: "Profile updated successfully.",
+        title: "Profile Updated",
+        description: (
+          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+            <code className="text-white">{JSON.stringify({ username, email, bio, url }, null, 2)}</code>
+          </pre>
+        ),
         variant: "positive"
       });
     } catch (error) {
@@ -95,15 +98,12 @@ const Settings = () => {
                   <Input
                     id="url"
                     type="url"
-                    value={urls[0]}
-                    onChange={(e) => {
-                      const newUrls = [e.target.value];
-                      setUrls(newUrls);
-                    }}
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
                     placeholder="https://example.com"
                     className="mb-2"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Add links to your website, blog, or social media profiles.</p>
+                  <p className="text-xs text-gray-500 mt-1">Add link to your website, blog, or social media profile.</p>
                 </div>
                 <Button onClick={handleSaveProfile} className="bg-[#111827] text-white">
                   Save

@@ -86,7 +86,7 @@ const Overview = () => {
   };
 
   return (
-    <div className="">
+    <div className="max-w-screen">
       <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
       <div className="flex flex-col gap-6">
         

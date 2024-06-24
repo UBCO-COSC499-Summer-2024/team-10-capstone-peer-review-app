@@ -10,7 +10,7 @@ import PRassign from '@/components/admin/PRassign';
 
 const AdminDashboard = () => {
   return (
-    <div className="">
+    <div className="main-container">
       <Tabs defaultValue="overview ">
         <TabsList className="w-auto flex mb-5 ">
           <TabsTrigger value="overview">Overview</TabsTrigger>

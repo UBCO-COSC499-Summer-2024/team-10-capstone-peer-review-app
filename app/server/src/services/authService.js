@@ -62,6 +62,7 @@ export async function loginUser(email, password) {
 			throw new apiError("Error logging in user", 500);
 		}
 	}
+	return user;
 }
 
 export async function sendVerificationEmail(email) {

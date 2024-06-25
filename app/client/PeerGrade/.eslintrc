@@ -46,7 +46,7 @@
       "react/jsx-uses-react": "off", // disables the rule that checks whether 'React' is in scope when using JSX
       "react/react-in-jsx-scope": "off", // ditto, dont need to manually import React in every component file 
       "import/no-unresolved": "off", // Doesn't recognize aliases, not sure how to fix this
-      "import/no-commonjs":["warn"], // disallow CommonJS `require` and `module.exports`
+      "import/no-commonjs":["warn"], // disallow CommonJS `require` and `module.exports` Should be using ES6 imports if can 
       "no-unused-vars": ["warn"], // warn unused variables,
       "no-undef": ["warn"], // warn undef variables 
       "no-const-assign": ["error"], // disallow reassigning const variables

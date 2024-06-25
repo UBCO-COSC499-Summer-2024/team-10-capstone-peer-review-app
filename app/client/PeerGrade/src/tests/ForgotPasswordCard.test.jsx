@@ -2,7 +2,7 @@ import { render, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
-import { setCurrentUser } from '@/lib/redux/hooks/userSlice';
+import { setCurrentUser } from '@/utils/redux/hooks/userSlice';
 import ForgotPasswordCard from '@/components/login/ForgotPasswordCard';
 
 const mockNavigate = jest.fn();
@@ -10,7 +10,7 @@ jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: () => mockNavigate,
 }));
-jest.mock('@/lib/dbData', () => ({
+jest.mock('@/utils/dbData', () => ({
     user: [
       {
         user_id: 1,

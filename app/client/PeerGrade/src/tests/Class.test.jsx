@@ -14,7 +14,7 @@ jest.mock('react-router-dom', () => ({
   Link: ({ to, children }) => <a href={to}>{children}</a>, // Mocking Link component
 }));
 
-jest.mock('@/lib/dbData', () => ({
+jest.mock('@/utils/dbData', () => ({
   submissionsData: [
     { submission_id: 1, student_id: 1, assignment_id: 1 },
     { submission_id: 2, student_id: 2, assignment_id: 1 },

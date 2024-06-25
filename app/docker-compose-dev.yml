@@ -3,6 +3,8 @@ services:
   db:
     container_name: peergrade-db-dev
     image: postgres:latest
+    env_file:
+      - ./server/envs/.env.dev
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -14,6 +16,8 @@ services:
 
   server:
     container_name: peergrade-server-dev
+    env_file:
+      - ./server/envs/.env.dev
     build:
       context: ./server
       dockerfile: Dockerfile.dev
@@ -21,8 +25,6 @@ services:
       - BACKEND_PORT=${BACKEND_PORT} 
       - DB_NAME=${DB_NAME} 
       - DB_PORT=${DB_PORT} 
-    env_file:
-      - ./server/.env 
     ports:
       - ${BACKEND_PORT}:5001 
       - 5555:5555
@@ -34,13 +36,13 @@ services:
 
   client:
     container_name: peergrade-client-dev
+    env_file:
+      - ./client/PeerGrade/envs/.env.dev
     build:
       context: ./client/PeerGrade
       dockerfile: Dockerfile.dev
       args:
         - FRONTEND_PORT=${FRONTEND_PORT}
-    env_file:
-      - ./client/PeerGrade/.env
     ports:
       - ${FRONTEND_PORT}:3000
     volumes:

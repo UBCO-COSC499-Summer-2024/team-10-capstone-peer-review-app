@@ -2,7 +2,7 @@ import { render, fireEvent } from '@testing-library/react';
 import People from '@/pages/classNav/People';
 
 // Mock the peopleData
-jest.mock('../lib/data', () => ({
+jest.mock('../utils/data', () => ({
   peopleData: {
     instructors: [
       { id: '1', name: 'Instructor 1' },

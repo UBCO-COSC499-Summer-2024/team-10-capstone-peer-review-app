@@ -1,37 +1,32 @@
-
-# IDK why but node-18 does not create the openssl issue
+# Use the official Node.js image from Docker Hub
 FROM node:22-slim 
+
+# Arguments for database and backend configurations
 ARG DB_PORT 
 ARG DB_NAME
 ARG BACKEND_PORT
 
-# Need these for Prisma to work on container 
-# Make sure to test these around later on. 
-RUN apt-get update -y
-RUN apt-get install -y openssl
+# Install dependencies for Prisma
+RUN apt-get update -y && apt-get install -y openssl
 
 # Set the working directory
 WORKDIR /usr/server/ 
 
-# Copy the application source code & other project files to the working directory
-# Note: This ignores the folders and files specified in the .dockerignore file.
-
-# COPY . /usr/server/
-
+# Copy the package.json and package-lock.json files
 COPY package.json /usr/server/package.json
 COPY package-lock.json /usr/server/package-lock.json
 
+# Install the dependencies
 RUN npm ci
 
-## TODO prisma migrate deploy
+# Copy the rest of the application source code to the working directory
+COPY . /usr/server/
 
-EXPOSE ${BACKEND_PORT} 
+# Expose the backend port
+EXPOSE ${BACKEND_PORT}
 
-# Npx prisma generate, NPX prisma db push, and NPX prisma migrate deploy MUST be executed during runtime 
-# Since these commands require the database to be fully up and running 
-# even with the depend ons: in the docker-compose, this build file doesn't wait for 
-# the databse to be fully up and running, it just waits for the container to start
-
-# Nodemon also freaks out on prisma and gives lib issues during start if you run npm run dev not sure why
-
-CMD npm run prisma && npm run dev
+# Run the commands needed to generate Prisma client, push the database schema, run migrations, and seed the database
+CMD npx prisma generate && \
+    npx prisma db push && \
+    npm run seed && \
+    npm run dev

@@ -2,7 +2,7 @@ import { render, fireEvent } from '@testing-library/react';
 import Groups from '@/pages/classNav/Groups';
 
 // Mock the groupsData
-jest.mock('../lib/data', () => ({
+jest.mock('../utils/data', () => ({
   groupsData: [
     {
       id: '1',

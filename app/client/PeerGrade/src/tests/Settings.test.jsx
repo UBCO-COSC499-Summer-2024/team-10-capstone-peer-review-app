@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import Settings from '@/pages/Settings';
-import { updateUser } from '@/lib/redux/hooks/userSlice';
+import { updateUser } from '@/utils/redux/hooks/userSlice';
 import userEvent from '@testing-library/user-event';
 import { waitFor } from '@testing-library/react';
 

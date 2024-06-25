@@ -4,7 +4,7 @@ import PeerReview from '@/pages/PeerReview';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 // Mock assignmentsData and classesData for testing
-jest.mock('@/lib/dbData', () => ({
+jest.mock('@/utils/dbData', () => ({
     assignment: [
       {
         assignment_id: 1,

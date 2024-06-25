@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from '@/components/ui/button';
 import { FileText, ChevronDown, ChevronUp } from 'lucide-react';
-import { submission as submissionsData, user as usersData } from '@/lib/dbData';
+import { submission as submissionsData, user as usersData } from '@/utils/dbData';
 
 const Grades = ({ classAssignments }) => {
   const [expanded, setExpanded] = useState(null);

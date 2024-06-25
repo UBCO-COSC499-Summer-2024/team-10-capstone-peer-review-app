@@ -7,7 +7,6 @@ import axios from 'axios';
 import { cn } from "@/utils/utils";
 import { useToast } from '@/components/ui/use-toast';
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { cn } from "@/lib/utils";
 import { SearchIcon } from "lucide-react";
 import NotifCard from "./NotifCard";
 import {
@@ -94,6 +93,7 @@ export default function AppNavbar() {
     const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : '';
     return `${firstInitial}${lastInitial}`;
   };
+
   return (
     <div className="w-full py-3 px-4 bg-white shadow-md">
       <NavigationMenu className="flex items-center justify-between w-full max-w-screen-xl mx-auto">
@@ -104,7 +104,7 @@ export default function AppNavbar() {
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <Link to="/dashboard" className={cn(navigationMenuTriggerStyle(), isActive('/dashboard') && 'font-bold')}>
+            <Link to={currentUser.role === 'ADMIN' ? '/admin' : '/dashboard'} className={cn(navigationMenuTriggerStyle(), isActive(currentUser.role === 'ADMIN' ? '/admin' : '/dashboard') && 'font-bold')}>
               Dashboard
             </Link>
           </NavigationMenuItem>

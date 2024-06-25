@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { iClass as classesData, user } from '@/lib/dbData'; // DB CALL
+import { iClass as classesData, user } from '@/utils/dbData'; // DB CALL
 import { Button } from "@/components/ui/button";
 import { ArrowUp, ArrowDown, ChevronUpIcon, ChevronDownIcon, CheckIcon, Dot, Trash2, Pencil } from 'lucide-react';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Command, CommandList, CommandGroup, CommandItem } from '@/components/ui/command';
 import { Link, useLocation } from 'react-router-dom';
 import { Input } from "@/components/ui/input";
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/utils';
 import {
     Dialog,
     DialogContent,

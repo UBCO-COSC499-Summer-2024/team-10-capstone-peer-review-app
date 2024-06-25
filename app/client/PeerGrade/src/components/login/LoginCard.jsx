@@ -11,7 +11,9 @@ import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import {
   Alert,
   AlertDescription,
-} from "@/components/ui/alert"
+} from "@/components/ui/alert";
+import { useToast } from '@/components/ui/use-toast';
+import { Toaster } from '@/components/ui/toaster';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -28,6 +30,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
   const [error, setError] = useState('');
   const query = useQuery();
   const token = query.get('token') || '';
+  const { toast } = useToast();
 
   useEffect(() => {
     if (token) {
@@ -85,8 +88,8 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
         setError(data.message);
       } else {
         toast({ title: "Welcome", description: "You have successfully logged in!", variant: "positive" });
-        dispatch(setCurrentUser(data));
-        if(data.role=="ADMIN") {
+        dispatch(setCurrentUser(data.user));
+        if(data.user.role=="ADMIN") {
         navigate('/admin');
         } else navigate('/dashboard');
       }
@@ -181,6 +184,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
           </div>
         </CardFooter>
       </Card>
+      <Toaster />
     </div>
   );
 };

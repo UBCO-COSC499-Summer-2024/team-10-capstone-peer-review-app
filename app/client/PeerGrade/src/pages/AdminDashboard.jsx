@@ -9,9 +9,11 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import PRassign from '@/components/admin/PRassign';
 
 const AdminDashboard = () => {
+  // const [selectedTab, setSelectedTab] = useState('overview');
+
   return (
-    <div className="main-container">
-      <Tabs defaultValue="overview ">
+    <div className="main-container w-full">
+      <Tabs defaultValue="overview">
         <TabsList className="w-auto flex mb-5 ">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="users">Users</TabsTrigger>

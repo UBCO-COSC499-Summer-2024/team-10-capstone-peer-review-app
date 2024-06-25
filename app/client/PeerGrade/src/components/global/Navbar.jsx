@@ -93,6 +93,7 @@ export default function AppNavbar() {
     const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : '';
     return `${firstInitial}${lastInitial}`;
   };
+
   return (
     <div className="w-full py-3 px-4 bg-white shadow-md">
       <NavigationMenu className="flex items-center justify-between w-full max-w-screen-xl mx-auto">
@@ -103,7 +104,7 @@ export default function AppNavbar() {
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <Link to="/dashboard" className={cn(navigationMenuTriggerStyle(), isActive('/dashboard') && 'font-bold')}>
+            <Link to={currentUser.role === 'ADMIN' ? '/admin' : '/dashboard'} className={cn(navigationMenuTriggerStyle(), isActive(currentUser.role === 'ADMIN' ? '/admin' : '/dashboard') && 'font-bold')}>
               Dashboard
             </Link>
           </NavigationMenuItem>

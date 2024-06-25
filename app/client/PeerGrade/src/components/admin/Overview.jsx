@@ -89,7 +89,7 @@ const Overview = () => {
     <div className="max-w-screen">
       <div className="flex flex-col gap-6">
         
-        <div className="flex  w-full  max-h-40  gap-2">
+        <div className="flex w-full max-h-40 gap-2">
           <StatCard 
             title="Users" 
             number={users} 
@@ -115,7 +115,7 @@ const Overview = () => {
             icon={<ChatBubbleLeftRightIcon className="w-6 h-6" />} 
           />
         </div>
-        <div className="flex flex-col w-full ">
+        <div className="flex flex-col w-full">
           <Tabs defaultValue="students">
             <TabsList>
               <TabsTrigger value="students">Students</TabsTrigger>
@@ -134,7 +134,7 @@ const Overview = () => {
             </TabsContent>
             <TabsContent value="approvals">
               <div className="mb-6 pt-3 bg-white">
-                <DataTable title="Instructor Approvals" data={instructorApprovalsData} columns={approvalColumns} pageSize={5} enableActions={true} />
+                <DataTable title="Instructor Approvals" data={instructorApprovalsData} columns={approvalColumns} pageSize={5}/>
               </div>
             </TabsContent>
           </Tabs>

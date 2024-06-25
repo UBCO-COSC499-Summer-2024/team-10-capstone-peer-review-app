@@ -1,5 +1,6 @@
 // src/pages/AdminDashboard.jsx
 import React from 'react';
+import { useSelector } from 'react-redux';
 import Overview from '@/components/admin/Overview';
 import Users from '@/components/admin/Users';
 import Search from './Search';
@@ -9,12 +10,15 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import PRassign from '@/components/admin/PRassign';
 
 const AdminDashboard = () => {
-  // const [selectedTab, setSelectedTab] = useState('overview');
+  const currentUser = useSelector((state) => state.user.currentUser);
+  if (!currentUser || currentUser.role !== 'ADMIN') {
+    return <div>You do not have permission to view this page.</div>;
+  }
 
   return (
     <div className="main-container w-full">
       <Tabs defaultValue="overview">
-        <TabsList className="w-auto flex mb-5 ">
+        <TabsList className="w-auto flex mb-5">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="users">Users</TabsTrigger>
           <TabsTrigger value="classes">Classes</TabsTrigger>

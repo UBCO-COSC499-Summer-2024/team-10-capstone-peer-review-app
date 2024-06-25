@@ -35,7 +35,7 @@ function App() {
     const isLoginPage = location.pathname === "/";
   
     return (
-      <main className=" bg-gray-100 mx-auto">
+      <main className="bg-gray-100 mx-auto">
         {!isLoginPage && <AppNavbar/>}
         <div className="main-container flex justify-center flex-1">
           {children}

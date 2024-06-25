@@ -86,7 +86,7 @@ const Users = () => {
         <p className='text-xl ml-5'>Current Users</p>
         <DataTable title="Students" data={usersData} columns={userColumns} pageSize={5} enableStatus={true} />
       </div>
-      <div className="flex gap-5 pt-3  max-h-96">
+      <div className="flex gap-5 pt-3 max-h-taller-than-98">
         <DataChart
           data={chartData}
           title="User Registration Trends"
@@ -94,17 +94,19 @@ const Users = () => {
           yAxisLabel="Number of Users"
           filterTypes={['All', 'Student', 'Instructor']}
         />
-        <div className="flex flex-col md:w-1/3 overflow-y-auto ">
-          <p className='text-xl ml-5'>Instructor Approvals</p>
-          {instructorApprovals.map((approval) => (
-            <NotifCard 
-              key={approval.id} 
-              title={approval.title} 
-              description={approval.description} 
-              showDrawer={true} 
-              showAlertDialog={true} 
-            />
-          ))}
+        <div className="flex flex-col md:w-1/3 overflow-y-auto rounded-md">
+          <p className='text-xl ml-5 mb-4'>Instructor Approvals</p>
+          <div className='space-y-1'>
+            {instructorApprovals.map((approval) => (
+              <NotifCard 
+                key={approval.id} 
+                title={approval.title} 
+                description={approval.description} 
+                showDrawer={true} 
+                showAlertDialog={true} 
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>

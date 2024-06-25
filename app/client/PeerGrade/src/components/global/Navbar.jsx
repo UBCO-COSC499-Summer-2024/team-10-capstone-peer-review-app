@@ -7,7 +7,6 @@ import axios from 'axios';
 import { cn } from "@/utils/utils";
 import { useToast } from '@/components/ui/use-toast';
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { cn } from "@/lib/utils";
 import { SearchIcon } from "lucide-react";
 import NotifCard from "./NotifCard";
 import {

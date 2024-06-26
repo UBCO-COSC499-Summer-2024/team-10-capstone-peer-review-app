@@ -11,12 +11,12 @@ tz = timezone('America/Vancouver')
 
 # Get the current date and time
 now = datetime.now(tz)
-# if now.weekday() == 1:  # If today is Tuesday
-#     start_date = now - timedelta(days=4)  # Last Thursday
-#     end_date = now
-# elif now.weekday() == 3:  # If today is Thursday 
-start_date = now - timedelta(days=2)  # Last Tuesday
-end_date = now 
+if now.weekday() == 1:  # If today is Tuesday
+    start_date = now - timedelta(days=5)  # Last Thursday
+    end_date = now
+elif now.weekday() == 3:  # If today is Thursday 
+    start_date = now - timedelta(days=2)  # Last Tuesday
+    end_date = now 
 # else: # throw error if today is not Tuesday or Thursday  
 #     raise ValueError('This script should only be run on Tuesdays or Thursdays') 
 
@@ -50,7 +50,7 @@ with open(team_log, 'w') as f:
 
     f.write(f'\n## Tasks currently in Progress for c-{count}:\n')
 
-    f.write(f'![Tasks in progress for c-{count}](./team_log_images/in_progress_issue/in_progress_issues_c{count}.png)  \n  \n') 
+    f.write(f'![Tasks in progress for c-{count}](./team_log_images/in_progress_issues/in_progress_issues_c{count}.png)  \n  \n') 
 
 
     f.write(f'\n## Tasks currently in Review for c-{count}:\n')

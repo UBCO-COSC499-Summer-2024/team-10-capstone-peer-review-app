@@ -2,7 +2,7 @@
 # Team 10's Team Dashboard for Cycle 7
 
 
-## Sunday, June 23, 2024, 05:21 PM - Tuesday, June 25, 2024, 05:21 PM
+## Thursday, June 20, 2024, 05:21 PM - Tuesday, June 25, 2024, 05:21 PM
 
 
 ### Major features worked on in c-7

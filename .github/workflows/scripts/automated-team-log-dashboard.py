@@ -38,47 +38,45 @@ with open(team_log, 'r') as f:
 with open(team_dashboard, 'r') as f:
     previous_team_dashboard_entry = f.read()
 
-teamCount = count + 1; 
-
 # Write the log templates to top of the file
 with open(team_log, 'w') as f:
-    f.write(f'\n# Team 10\'s Team Log for Cycle {teamCount}\n\n')
+    f.write(f'\n# Team 10\'s Team Log for Cycle {count}\n\n')
     f.write(f'\n## {start_date.strftime("%A, %B %d, %Y, %I:%M %p")} - {end_date.strftime("%A, %B %d, %Y, %I:%M %p")}\n\n')
     
-    f.write(f'\n## Tasks currently in the Backlog for c-{teamCount}:\n')
+    f.write(f'\n## Tasks currently in the Backlog for c-{count}:\n')
 
-    f.write(f'![Tasks in Backlog for c-{teamCount}](./team_log_images/backlog_issues/backlog_issues_c{teamCount}.png)  \n  \n') 
-
-
-    f.write(f'\n## Tasks currently in Progress for c-{teamCount}:\n')
-
-    f.write(f'![Tasks in progress for c-{teamCount}](./team_log_images/in_progress_issue/in_progress_issues_c{teamCount}.png)  \n  \n') 
+    f.write(f'![Tasks in Backlog for c-{count}](./team_log_images/backlog_issues/backlog_issues_c{count}.png)  \n  \n') 
 
 
-    f.write(f'\n## Tasks currently in Review for c-{teamCount}:\n')
+    f.write(f'\n## Tasks currently in Progress for c-{count}:\n')
 
-    f.write(f'![Tasks in review for c-{teamCount}](./team_log_images/in_review_issues/in_review_issues_c{teamCount}.png)  \n  \n') 
+    f.write(f'![Tasks in progress for c-{count}](./team_log_images/in_progress_issue/in_progress_issues_c{count}.png)  \n  \n') 
 
 
-    f.write(f'\n## Tasks Done for c-{teamCount}:\n')
+    f.write(f'\n## Tasks currently in Review for c-{count}:\n')
 
-    f.write(f'![Tasks done for c-{teamCount}](./team_log_images/done_issues/done_issues_c{teamCount}.png)  \n  \n') 
+    f.write(f'![Tasks in review for c-{count}](./team_log_images/in_review_issues/in_review_issues_c{count}.png)  \n  \n') 
+
+
+    f.write(f'\n## Tasks Done for c-{count}:\n')
+
+    f.write(f'![Tasks done for c-{count}](./team_log_images/done_issues/done_issues_c{count}.png)  \n  \n') 
 
 
     f.write('\n## Overall Burn-up Chart of Tasks\n') 
 
-    f.write(f'![Burn-Up Chart for c-{teamCount}](./team_log_images/burnup_charts/burnup_chart_c{teamCount}.png)  \n  \n') 
+    f.write(f'![Burn-Up Chart for c-{count}](./team_log_images/burnup_charts/burnup_chart_c{count}.png)  \n  \n') 
 
 
-    f.write(f'\n## Test Reports for c-{teamCount}\n')  
+    f.write(f'\n## Test Reports for c-{count}\n')  
 
-    f.write(f'\n#### Front-end Testing for c-{teamCount}\n')
+    f.write(f'\n#### Front-end Testing for c-{count}\n')
 
-    f.write(f'![Front-end Tests for c-{teamCount}](./team_log_images/front_end_tests/front_end_tests_c{teamCount}.png)  \n  \n')
+    f.write(f'![Front-end Tests for c-{count}](./team_log_images/front_end_tests/front_end_tests_c{count}.png)  \n  \n')
 
-    f.write(f'\n#### Back-end Testing for c-{teamCount}\n')
+    f.write(f'\n#### Back-end Testing for c-{count}\n')
 
-    f.write(f'![Burn-Up Chart for c-{teamCount}](./team_log_images/back_end_tests/back_end_tests_c{teamCount}.png)  \n  \n')
+    f.write(f'![Burn-Up Chart for c-{count}](./team_log_images/back_end_tests/back_end_tests_c{count}.png)  \n  \n')
 
     
     f.write('  \n  \n') 
@@ -87,32 +85,32 @@ with open(team_log, 'w') as f:
 
 with open(team_dashboard, 'w') as f:
       # Write the log template to top of the file
-    f.write(f'\n# Team 10\'s Team Dashboard for Cycle {teamCount}\n\n')
+    f.write(f'\n# Team 10\'s Team Dashboard for Cycle {count}\n\n')
     f.write(f'\n## {start_date.strftime("%A, %B %d, %Y, %I:%M %p")} - {end_date.strftime("%A, %B %d, %Y, %I:%M %p")}\n\n')
     
     # Write all issues worked on
-    f.write(f'\n### Major features worked on in c-{teamCount}\n')
+    f.write(f'\n### Major features worked on in c-{count}\n')
     f.write('*  \n  \n')
     f.write('*  \n  \n')
     f.write('*  \n  \n')
 
-    f.write(f'\n### Major features completed in c-{teamCount}\n')
+    f.write(f'\n### Major features completed in c-{count}\n')
     f.write('*  \n  \n')
     f.write('*  \n  \n')
     f.write('*  \n  \n')
 
-    f.write(f'\n### Major features to work on for c-{teamCount+1}\n')
+    f.write(f'\n### Major features to work on for c-{count+1}\n')
     f.write('*  \n  \n')
     f.write('*  \n  \n')
     f.write('*  \n  \n')
 
-    f.write(f'\n### Team Issues and Hurdles for c-{teamCount+1}\n')
+    f.write(f'\n### Team Issues and Hurdles for c-{count+1}\n')
     f.write('*  \n  \n')
     f.write('*  \n  \n')
     f.write('*  \n  \n')
 
     f.write('\n### Clockify Dashboard for this Week\n')
-    f.write(f'\n![Clockify Dashboard for c-{teamCount}](./team_dashboard_images/clockify_dashboards/clockify_dashboard_c{teamCount}.png)\n')
+    f.write(f'\n![Clockify Dashboard for c-{count}](./team_dashboard_images/clockify_dashboards/clockify_dashboard_c{count}.png)\n')
 
     f.write('  \n  \n')
 

@@ -1,38 +1,38 @@
 
-# Team 10's Team Log for Cycle 6
+# Team 10's Team Log for Cycle 7
 
 
 ## Sunday, June 23, 2024, 05:21 PM - Tuesday, June 25, 2024, 05:21 PM
 
 
-## Tasks currently in the Backlog for c-6:
-![Tasks in Backlog for c-6](./team_log_images/backlog_issues/backlog_issues_c6.png)  
+## Tasks currently in the Backlog for c-7:
+![Tasks in Backlog for c-7](./team_log_images/backlog_issues/backlog_issues_c7.png)  
   
 
-## Tasks currently in Progress for c-6:
-![Tasks in progress for c-6](./team_log_images/in_progress_issue/in_progress_issues_c6.png)  
+## Tasks currently in Progress for c-7:
+![Tasks in progress for c-7](./team_log_images/in_progress_issue/in_progress_issues_c7.png)  
   
 
-## Tasks currently in Review for c-6:
-![Tasks in review for c-6](./team_log_images/in_review_issues/in_review_issues_c6.png)  
+## Tasks currently in Review for c-7:
+![Tasks in review for c-7](./team_log_images/in_review_issues/in_review_issues_c7.png)  
   
 
-## Tasks Done for c-6:
-![Tasks done for c-6](./team_log_images/done_issues/done_issues_c6.png)  
+## Tasks Done for c-7:
+![Tasks done for c-7](./team_log_images/done_issues/done_issues_c7.png)  
   
 
 ## Overall Burn-up Chart of Tasks
-![Burn-Up Chart for c-6](./team_log_images/burnup_charts/burnup_chart_c6.png)  
+![Burn-Up Chart for c-7](./team_log_images/burnup_charts/burnup_chart_c7.png)  
   
 
-## Test Reports for c-6
+## Test Reports for c-7
 
-#### Front-end Testing for c-6
-![Front-end Tests for c-6](weekly_logs/team_log_images/front_end_tests/front_end_tests_c6.png)  
+#### Front-end Testing for c-7
+![Front-end Tests for c-7](./team_log_images/front_end_tests/front_end_tests_c7.png)  
   
 
-#### Back-end Testing for c-6
-![Burn-Up Chart for c-6](weekly_logs/team_log_images/back_end_tests/back_end_tests_c6.png)  
+#### Back-end Testing for c-7
+![Burn-Up Chart for c-7](./team_log_images/back_end_tests/back_end_tests_c7.png)  
   
   
   

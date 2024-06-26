@@ -60,8 +60,10 @@
   
 
 ## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[115](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/115)**: CRUD endpoints for instructors, Login / Register, Email Verif / Forgot Password  
 
 ## Features completed on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[115](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/115)**: CRUD endpoints for instructors, Login / Register, Email Verif / Forgot Password  
 
 ## Completed tasks:
 &nbsp; &nbsp; :purple_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  

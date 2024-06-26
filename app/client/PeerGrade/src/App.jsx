@@ -13,6 +13,7 @@ import ManageClass from './pages/ManageClass';
 import Search from './pages/Search';
 import { Toaster } from "@/components/ui/toaster";
 import AdminDashboard from './pages/AdminDashboard';
+import NotFound from './pages/NotFound';
 // New comment 
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
           <Route path="/peer-review" element={<PeerReview />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </MainLayout>
     </Router>

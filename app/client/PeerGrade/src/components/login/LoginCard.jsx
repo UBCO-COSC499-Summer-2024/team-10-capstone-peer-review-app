@@ -7,7 +7,8 @@ import { setCurrentUser } from '@/utils/redux/hooks/userSlice'; //REDUX slice
 import { QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
-import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline'
+
 import {
   Alert,
   AlertDescription,

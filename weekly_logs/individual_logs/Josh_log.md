@@ -102,17 +102,22 @@
   
 &nbsp; &nbsp; :orange_circle: **Issue-[85](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/85)**: Refactor Disc PR notifications to accommodate ready for review from draft PRs, not necessarily assigning   
   
+# SIDENOTE: 
+#### All times from Thursday 5PM to Friday 5PM were not shown on the clockify entry for this cycle due to a bug, just hotfixed it but depending on the person, there may of been alot of work completed in these hours
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Last cycle I was hoping to start working with the groups model as well as some of the ui integrations,
+  Since I was on vacation on the island for the weekend and didnt't get back till late last night I wasn't able to complete much this cycle.
+* My main focus was figuring out how to do some of the testing for the backend, and I looked into prisma's documentation on how they identify doing
+  Unit testing, they ended up using jest mocking so I spent a fair amount of time looking into that for testing. So far I have our authService tested with mocks
+  but I am looking into how to do integration testing for our controllers and routers.
+* I also spent some time doing some small things like .env changes
 
 ## Goals for next cycle
-* 
-* 
-* 
-  
+* Integrate session management into Redux authSlices, add redux-persist to persist userSlices
+* Organize Front-end api calls / redux calls 
+* Start working on a requests model and api endpoints for role requests, refactor register to create a request
+  if the role type is instructor or admin.
   
 
 # Josh's Log for Cycle 6

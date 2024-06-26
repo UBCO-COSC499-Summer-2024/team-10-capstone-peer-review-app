@@ -86,15 +86,16 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Worked on creating the CRUD and error testing most of my API endpoints. I didn't want them to just do basic operations but they should also be attentive to the other fields we have set
+* Error management and constantly running them to check for mistakes
+* Created more connectivity for rubrics and criterion and also added a new Groups table while updating schema
 
 ## Goals for next cycle
-* 
-* 
-* 
-  
+* I am planning to do little things this next cycle as i have a final exam on Friday, which is why i am planning to finish setting up basic CRUD ops for groups
+* If time left, I'll start to do more advanced API endpoints such as get grades for students and get grades for class 
+
+![image](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/81191818/6cdd655a-8448-4053-a08f-fe9fbe493efb)
+
   
 
 # Bhavya's Log for Cycle 6

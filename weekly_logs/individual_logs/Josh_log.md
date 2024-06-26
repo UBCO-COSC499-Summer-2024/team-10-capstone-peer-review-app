@@ -1,4 +1,120 @@
 
+# Josh's Log for Cycle 7
+
+
+## Friday, June 21, 2024, 05:21 PM - Tuesday, June 25, 2024, 05:21 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[169](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/169)**: Refactor envConfig to accomodate commonJS   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[168](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/168)**: Requests Model / Api Endpoints for Signups, Backend Tests, and some front-end integrations  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: testing, type: database, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Create a Group for an Assignment  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[125](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/125)**: Major Use Case 10: Requests to Become Instructor / Admin  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[118](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/118)**: Major Use Case 3: Forgot Password / Email validation   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[117](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/117)**: Major Use Case 2: Login Account  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[116](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/116)**: Major Use Case 1: Register Account   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Looking into Redux, How to sync with session management** *(Total duration: 0.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 25, 2024, 05:20 PM - Ongoing *(Ongoing)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 25, 2024, 05:20 PM - Tuesday, June 25, 2024, 05:20 PM *(0.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 25, 2024, 04:29 PM - Tuesday, June 25, 2024, 05:20 PM *(0.8 hours)*  
+  
+&nbsp; &nbsp; :watch: **Testing and reviewing PR (Admin)** *(Total duration: 1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 25, 2024, 12:01 PM - Tuesday, June 25, 2024, 12:59 PM *(1.0 hours)*  
+  
+&nbsp; &nbsp; :watch: **Looking into prisma testing, developing mockUps for authService** *(Total duration: 3.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, June 22, 2024, 08:47 PM - Saturday, June 22, 2024, 11:04 PM *(2.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, June 22, 2024, 05:22 PM - Saturday, June 22, 2024, 06:36 PM *(1.2 hours)*  
+  
+
+## All Features worked on this cycle:
+
+## Features completed on this cycle:
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[118](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/118)**: Major Use Case 3: Forgot Password / Email validation   
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[117](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/117)**: Major Use Case 2: Login Account  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[116](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/116)**: Major Use Case 1: Register Account   
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[169](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/169)**: Refactor envConfig to accomodate commonJS   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[168](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/168)**: Requests Model / Api Endpoints for Signups, Backend Tests, and some front-end integrations  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[160](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/160)**: Reorganize route names and api-endpoints.   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[150](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/150)**: Integrate Api calls with UI, Create Redux Slices for api calls (For this week: User Info, Class info, Assignment? Maybe)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[149](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/149)**: implement JOI for api-data validation  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[130](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/130)**: Major Use Case 15: Manage Class  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Create a Group for an Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[125](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/125)**: Major Use Case 10: Requests to Become Instructor / Admin  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[113](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/113)**: Forgot Password / Email Verification  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[112](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/112)**: debug session management and cookie parsing when accessing instructors route  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[97](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/97)**: DB tables abstraction  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[95](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/95)**: Add tests to the backend, integrate into drone  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[85](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/85)**: Refactor Disc PR notifications to accommodate ready for review from draft PRs, not necessarily assigning   
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Josh's Log for Cycle 6
 
 

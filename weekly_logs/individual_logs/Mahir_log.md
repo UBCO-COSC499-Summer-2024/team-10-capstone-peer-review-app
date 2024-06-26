@@ -1,4 +1,136 @@
 
+# Mahir's Log for Cycle 7
+
+
+## Friday, June 21, 2024, 05:21 PM - Tuesday, June 25, 2024, 05:21 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[167](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/167)**: Notification UI  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[139](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/139)**: Major Use Case 23: Role Requests Page for Admins  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[129](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/129)**: Major Use Case 14: Create New Class  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[127](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/127)**: Major Use Case 12: Manage Group   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Create a Group for an Assignment  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[114](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/114)**: Instructor Api Endpoints  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **114/Api Structuring Work** *(Total duration: 5.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, June 24, 2024, 03:07 PM - Monday, June 24, 2024, 03:17 PM *(0.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, June 24, 2024, 01:48 AM - Monday, June 24, 2024, 02:09 AM *(0.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, June 24, 2024, 01:06 AM - Monday, June 24, 2024, 01:17 AM *(0.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, June 22, 2024, 07:17 PM - Saturday, June 22, 2024, 08:24 PM *(1.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, June 22, 2024, 04:23 PM - Saturday, June 22, 2024, 05:23 PM *(1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, June 21, 2024, 07:51 PM - Friday, June 21, 2024, 10:08 PM *(2.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **151/Admin Dashboard UI** *(Total duration: 3.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 23, 2024, 11:18 PM - Monday, June 24, 2024, 01:03 AM *(1.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 23, 2024, 03:40 PM - Sunday, June 23, 2024, 04:38 PM *(1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 23, 2024, 02:57 PM - Sunday, June 23, 2024, 03:36 PM *(0.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 23, 2024, 03:56 AM - Sunday, June 23, 2024, 04:30 AM *(0.6 hours)*  
+  
+&nbsp; &nbsp; :watch: **114.2/ Linking Api to UI** *(Total duration: 2.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 23, 2024, 01:32 AM - Sunday, June 23, 2024, 02:35 AM *(1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, June 22, 2024, 11:30 PM - Sunday, June 23, 2024, 12:38 AM *(1.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, June 22, 2024, 10:08 PM - Saturday, June 22, 2024, 10:11 PM *(0.1 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[166](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/166)**: 151/new admin UI dashboard  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[165](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/165)**: 151/admin dashboard UI  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[164](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/164)**: 114.2/ UserRoutes/UserController/UserService and Seed Gen   
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[163](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/163)**: Logs review!  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[166](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/166)**: 151/new admin UI dashboard  
+  
+&nbsp; &nbsp; :arrow_heading_up: **PR-[165](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/165)**: 151/admin dashboard UI  
+  
+&nbsp; &nbsp; :arrow_heading_up: **PR-[164](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/164)**: 114.2/ UserRoutes/UserController/UserService and Seed Gen   
+  
+&nbsp; &nbsp; :arrow_heading_up: **PR-[163](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/163)**: Logs review!  
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[167](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/167)**: Notification UI  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[129](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/129)**: Major Use Case 14: Create New Class  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[114](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/114)**: Instructor Api Endpoints  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[150](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/150)**: Integrate Api calls with UI, Create Redux Slices for api calls (For this week: User Info, Class info, Assignment? Maybe)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[139](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/139)**: Major Use Case 23: Role Requests Page for Admins  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[128](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/128)**: Major Use Case 13: Join Group / Accept Invite  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[127](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/127)**: Major Use Case 12: Manage Group   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Create a Group for an Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[122](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/122)**: Major Use Case 7: View Submission Feedback (from instructor)   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[120](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/120)**: Major Use Case 5: Send Reports to Admin   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[108](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/108)**: Redux - More slices   
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Mahir's Log for Cycle 6
 
 

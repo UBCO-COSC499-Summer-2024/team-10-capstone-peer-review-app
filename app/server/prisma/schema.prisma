@@ -50,6 +50,7 @@ model User {
   reviewsRecieved   Review[]      @relation("Reviewee")
   classesInstructed Class[]       @relation("InstructorClasses")
   Rubric            Rubric[]
+  groups            Group[]
 }
 
 // // Need to refactor last references to others tables, depending on what we want instructors to be able to pull up
@@ -79,6 +80,7 @@ model Class {
   endDate      DateTime
   term         String?
   classSize    Int?          @default(0)
+  groups       Group[]
   usersInClass UserInClass[]
   Assignments  Assignment[]
   instructor   User          @relation("InstructorClasses", fields: [instructorId], references: [userId]) // Only one instructor per class 
@@ -113,6 +115,7 @@ model Assignment {
   dueDate       DateTime
   maxSumissions Int                   @default(1)
   // fileType      SubmissionType
+  group         Group[]             // Group assignment or not
   classes       Class                 @relation(fields: [classId], references: [classId])
   rubric        RubricForAssignment[] // An assignment can have multiple rubrics, I.E a group review rubric vs an assignment rubric   
   submissions   Submission[]
@@ -120,16 +123,18 @@ model Assignment {
 
 // Group Models
 
-// model Group {
-//   groupId   String            @id @default(uuid())
-//   assignmentId     String
-//   classId          String
-//   groupName        String
-//   assignment       Assignment        @relation(fields: [assignmentId], references: [assignmentId])
-//   class            Class             @relation(fields: [classId], references: [classId])
-//   studentInGroup    StudentInGroup[] // Students in the group
-//   GroupSubmissions GroupSubmission[] // Submissions from the group
-// }
+model Group {
+  groupId          String            @id @default(uuid())
+  assignmentId     String
+  classId          String
+  groupName        String
+  groupDescription String?
+  groupSize        Int               @default(0)
+  assignment       Assignment        @relation(fields: [assignmentId], references: [assignmentId])
+  class            Class             @relation(fields: [classId], references: [classId])
+  students         User[] // Students in the group
+  //GroupSubmissions Submission[] // Submissions from the group
+}
 
 // model StudentInGroup {
 //   studentId      String

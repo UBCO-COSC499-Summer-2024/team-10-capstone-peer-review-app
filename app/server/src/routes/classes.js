@@ -21,9 +21,14 @@ import {
   addRubricsToAssignment,
   removeRubricsFromAssignment,
   updateRubricsInAssignment,
-  getRubricsInAssignment
+  getRubricsInAssignment,
 
-} from "../controllers/classController.js"; 
+  addCriterionGrade,
+  removeCriterionGrade,
+  updateCriterionGrade,
+  getCriterionGrade
+
+} from "../controllers/classController.js";
 
 import { ensureUser, ensureInstructor, ensureAdmin } from "../middleware/ensureUserTypes.js";
 
@@ -85,5 +90,18 @@ router.route("/update-criterion")
 
 router.route("/get-criterion")
   .post(ensureUser, ensureInstructor, getCriterionInRubric);
+
+// Criterion Grade Routes
+router.route("/give-criterion-grade")
+  .post(ensureUser, ensureInstructor, addCriterionGrade);
+
+router.route("/remove-criterion-grade")
+  .post(ensureUser, ensureInstructor, removeCriterionGrade);
+
+router.route("/update-criterion-grade")
+  .post(ensureUser, ensureInstructor, updateCriterionGrade);
+
+router.route("/get-criterion-grade")
+  .post(ensureUser, ensureInstructor, getCriterionGrade);
 
 export default router;

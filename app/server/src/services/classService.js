@@ -458,12 +458,16 @@ const createCriterionForRubric = async (rubricId, criterionData) => {
 		const rubric = await prisma.rubric.findUnique({
 			where: {
 				rubricId: rubricId
+			},
+			include: {
+			  criteria: true
 			}
 		});
 
 		if (!rubric) {
 			throw new apiError("Rubric not found", 404);
 		}
+		//console.log(rubric.criteria.reduce((sum, criterion) => sum + criterion.maxMark, 0));
 
 		// Check if maxMark and minMark are positive
 		if (criterionData.maxMark <= 0 || criterionData.minMark <= 0 || criterionData.maxMark < criterionData.minMark || criterionData.maxMark > rubric.totalMarks) {
@@ -473,10 +477,10 @@ const createCriterionForRubric = async (rubricId, criterionData) => {
 		let existingMaxMarksSum = 0;
 		if (rubric.criteria || rubric.criteria.length > 0) {
 			existingMaxMarksSum = rubric.criteria.reduce((sum, criterion) => sum + criterion.maxMark, 0);
-			console.log(existingMaxMarksSum);
+			//console.log(existingMaxMarksSum);
 		}
 
-		console.log(`Existing Max Marks Sum: ${existingMaxMarksSum}, New Criterion Max Mark: ${criterionData.maxMark}, Rubric Total Marks: ${rubric.totalMarks}`);
+		//console.log(`Existing Max Marks Sum: ${existingMaxMarksSum}, New Criterion Max Mark: ${criterionData.maxMark}, Rubric Total Marks: ${rubric.totalMarks}`);
 		// Check if the sum of maxMarks including the new criterion exceeds totalMarks
 		if (existingMaxMarksSum + criterionData.maxMark > rubric.totalMarks) {
 			throw new apiError("maxMarks of criteria exceed the rubric's totalMarks", 400);
@@ -488,7 +492,6 @@ const createCriterionForRubric = async (rubricId, criterionData) => {
 				rubricId: rubricId
 			}
 		});
-
 		return newCriterion;
 	} catch (error) {
 		if (error instanceof apiError) {
@@ -535,6 +538,8 @@ const updateCriterionForRubric = async (criterionId, updateData) => {
 		const rubric = await prisma.rubric.findUnique({
 			where: {
 				rubricId: criterion.rubricId
+			}, include: {
+				criteria: true
 			}
 		});
 
@@ -548,10 +553,10 @@ const updateCriterionForRubric = async (criterionId, updateData) => {
 		}
 
 		let existingMaxMarksSum = 0;
-		if (rubric.criteria) {
-			// Calculate the sum of maxMarks of all existing criteria
-			existingMaxMarksSum = rubric.criteria.reduce((sum, criterion) => sum + criterion.maxMark, 0);
-			console.log(existingMaxMarksSum, updateData.maxMark, rubric.totalMarks);
+		if (rubric.criteria || rubric.criteria.length > 0) {
+			const otherCriteria = rubric.criteria.filter(criterion => criterion.criterionId !== criterionId);
+			existingMaxMarksSum = otherCriteria.reduce((sum, criterion) => sum + criterion.maxMark, 0);
+			// console.log(existingMaxMarksSum, updateData.maxMark, rubric.totalMarks);
 		}
 		if (existingMaxMarksSum + updateData.maxMark > rubric.totalMarks) {
 			throw new apiError("maxMarks of criteria exceed the rubric's totalMarks", 400);

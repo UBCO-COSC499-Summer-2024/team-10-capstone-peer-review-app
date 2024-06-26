@@ -57,9 +57,10 @@
 
 ## All Features worked on this cycle:
 
-## Features completed on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[166](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/166)**: [NOT MY PR, just helped with it!] 151/new admin UI dashboard
 
 ## Completed tasks:
+
 &nbsp; &nbsp; :purple_circle: **Issue-[162](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/162)**: Make New Account registration work with Verification e-mail  
   
 &nbsp; &nbsp; :purple_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
@@ -90,14 +91,14 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* I helped with quite a bit of the PRs that were pushed this cycle, fixing issues, debugging, making sure they work and merging them.
+* I didn't do as much this cycle as I wanted to focus on finishing the one other course I was working on this term (and I just did!)
 
 ## Goals for next cycle
-* 
-* 
-* 
+* I should be able to focus entirely on this project now so I should be able to make up for the time I lost earlier.
+* I didn't do Edit Classes UI this cycle but I plan to do it in the next! Shouldn't be too much to do.
+* I plan to make more documentation from now on, I already add details and images to my PRs but the code itself needs some documentation too.
+* Rewrite tests to accommodate the new UI and the now much-more-clearer objectives on what the code should be doing, making tests more realistic and easier to come up with.
   
   
 

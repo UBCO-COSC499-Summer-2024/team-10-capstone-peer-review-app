@@ -10,11 +10,11 @@
   
 
 ## Tasks currently in Progress for c-7:
-![Tasks in progress for c-7](./team_log_images/in_progress_issue/in_progress_issues_c7.png)  
+![Tasks in progress for c-7](./team_log_images/in_progress_issues/in_progress_issues_c7.png)  
   
 
 ## Tasks currently in Review for c-7:
-![Tasks in review for c-7](./team_log_images/in_review_issues/in_review_issues_c7.png)  
+No tasks current in Review 
   
 
 ## Tasks Done for c-7:
@@ -28,15 +28,17 @@
 ## Test Reports for c-7
 
 #### Front-end Testing for c-7
+Most front end tests are passing, the ones that are failing are due to changes to login/register and other 
+componenets / dashboard, these tests need to be revised to accomodate for the changes in the components. 
+Also the location of our mockData has changed and there was some errs from those as well. 
 ![Front-end Tests for c-7](./team_log_images/front_end_tests/front_end_tests_c7.png)  
   
 
 #### Back-end Testing for c-7
-![Burn-Up Chart for c-7](./team_log_images/back_end_tests/back_end_tests_c7.png)  
+First mock test was created for the authService with prisma mocking, have to debug envConfig to make more tests for our controllers and routes. 
+![Back-end tests for c-7](./team_log_images/back_end_tests/back_end_tests_c7.png)  
   
   
-  
-
 # Team 10's Team Log for Cycle 6
 
 

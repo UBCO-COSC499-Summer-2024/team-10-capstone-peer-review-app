@@ -1,4 +1,41 @@
 
+# Team 10's Team Dashboard for Cycle 7
+
+
+## Sunday, June 23, 2024, 05:21 PM - Tuesday, June 25, 2024, 05:21 PM
+
+
+### Major features worked on in c-7
+*  Major Use Cases 4, 14, 15, 17, 18: Class CRUD Api endpoints / UI
+  
+*  Major Use Case 10: Role Requests / Admin UI for accepting and denying role requests
+  
+
+### Major features completed in c-7
+*  None
+  
+
+### Major features to work on for c-8
+*  Major Use Cases 4, 14, 15, 17, 18: Class CRUD Api endpoints / UI 
+    * UI and Api endpoints have been created, we now need to finish other front-end api calls and refactor our organization to decouple api logic from components. Also, need to integrate redux persistence. 
+  
+*  Major Use Case 10: Role Requests / Admin UI for accepting and denying role requests
+  
+
+### Team Issues and Hurdles for c-7
+*  Josh was traveling between Nanaimao to see friends from June 21st to June 24 so we were down a member for a bit
+
+* Other members also had Finals or were finishing up other classes so attention to the project was slighly deferred 
+  
+*  There are still some existing UI integrations that need to be done, also we realized there is no session management in the front-end so when the page is manually refreshed no components render, so we need to tweak this as well. 
+  
+
+### Clockify Dashboard for this Week
+
+![Clockify Dashboard for c-7](./team_dashboard_images/clockify_dashboards/clockify_dashboard_c7.png)
+  
+  
+
 # Team 10's Team Dashboard for Cycle 6
 
 

@@ -1,4 +1,141 @@
 
+# Mahir's Log for Cycle 7
+
+
+## Friday, June 21, 2024, 05:21 PM - Tuesday, June 25, 2024, 05:21 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[167](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/167)**: Notification UI  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[139](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/139)**: Major Use Case 23: Role Requests Page for Admins  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[129](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/129)**: Major Use Case 14: Create New Class  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[127](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/127)**: Major Use Case 12: Manage Group   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Create a Group for an Assignment  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[114](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/114)**: Instructor Api Endpoints  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **114/Api Structuring Work** *(Total duration: 5.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, June 24, 2024, 03:07 PM - Monday, June 24, 2024, 03:17 PM *(0.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, June 24, 2024, 01:48 AM - Monday, June 24, 2024, 02:09 AM *(0.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, June 24, 2024, 01:06 AM - Monday, June 24, 2024, 01:17 AM *(0.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, June 22, 2024, 07:17 PM - Saturday, June 22, 2024, 08:24 PM *(1.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, June 22, 2024, 04:23 PM - Saturday, June 22, 2024, 05:23 PM *(1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, June 21, 2024, 07:51 PM - Friday, June 21, 2024, 10:08 PM *(2.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **151/Admin Dashboard UI** *(Total duration: 3.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 23, 2024, 11:18 PM - Monday, June 24, 2024, 01:03 AM *(1.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 23, 2024, 03:40 PM - Sunday, June 23, 2024, 04:38 PM *(1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 23, 2024, 02:57 PM - Sunday, June 23, 2024, 03:36 PM *(0.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 23, 2024, 03:56 AM - Sunday, June 23, 2024, 04:30 AM *(0.6 hours)*  
+  
+&nbsp; &nbsp; :watch: **114.2/ Linking Api to UI** *(Total duration: 2.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 23, 2024, 01:32 AM - Sunday, June 23, 2024, 02:35 AM *(1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, June 22, 2024, 11:30 PM - Sunday, June 23, 2024, 12:38 AM *(1.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, June 22, 2024, 10:08 PM - Saturday, June 22, 2024, 10:11 PM *(0.1 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[166](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/166)**: 151/new admin UI dashboard  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[165](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/165)**: 151/admin dashboard UI  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[164](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/164)**: 114.2/ UserRoutes/UserController/UserService and Seed Gen   
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[163](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/163)**: Logs review!  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[166](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/166)**: 151/new admin UI dashboard  
+  
+&nbsp; &nbsp; :arrow_heading_up: **PR-[165](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/165)**: 151/admin dashboard UI  
+  
+&nbsp; &nbsp; :arrow_heading_up: **PR-[164](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/164)**: 114.2/ UserRoutes/UserController/UserService and Seed Gen   
+  
+&nbsp; &nbsp; :arrow_heading_up: **PR-[163](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/163)**: Logs review!  
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[167](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/167)**: Notification UI  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[129](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/129)**: Major Use Case 14: Create New Class  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[114](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/114)**: Instructor Api Endpoints  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[150](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/150)**: Integrate Api calls with UI, Create Redux Slices for api calls (For this week: User Info, Class info, Assignment? Maybe)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[139](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/139)**: Major Use Case 23: Role Requests Page for Admins  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[128](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/128)**: Major Use Case 13: Join Group / Accept Invite  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[127](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/127)**: Major Use Case 12: Manage Group   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Create a Group for an Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[122](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/122)**: Major Use Case 7: View Submission Feedback (from instructor)   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[120](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/120)**: Major Use Case 5: Send Reports to Admin   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[108](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/108)**: Redux - More slices   
+  
+
+*** Important note: Clockify cycles were a bit miscalculated, I had a bunch of hours throughout Thursday night/Friday morning but that wasn't captured through the automated logs. Attaching a photo to add to that: 
+![clockify Thursday missed hours](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/assets/67985978/eb4b8e94-f32b-4d61-9857-aabf3b4ed0a2)
+
+## Recap on goals from last cycle
+* I finished the seeding logic and our db now seeds mock data on generation. Prisma allows a simple seed file to be created that runs mock data generation calls and I also used a package called faker to quickly create mock data for our needs. 
+* I finished the UserController setup: This took me a good while, I spent a day and a bit figuring out everything structure-wise on the back end after Josh and I had planned out a new architecture. He set it up quite perfectly and once I got the idea behind his setup, the controllers/services/routes didn't take much longer to set up and get going. I was also introduced to using the Thundercat extension on vsCode, which made me happy because testing the database calls before the implementation was a sweet tip to ensure compatibility.
+* After implementing the backend API calls, I was successful in pairing it up with our initial files on the client side. Specifically, I linked the dashboard and navbar to now be associated with the db-generated seed data. I set up a student, instructor, and admin account to test all roles whenever needed.
+* I focused on the Admin Dashboard UI and finished it as a functional rough draft. Whenever the adminController is made, it is now ready to be linked as soon as the API calls are generated. 
+* I created the notifications UI (how notifications look/are dealt with) within our avatar (navbar -> avatar (on hover:) and the notifications pop up on hover along with the logout button as well. 
+
+## Goals for next cycle
+* My next task is to link Bhavya's instructor/class API calls he made to our main Class UI and the sub-pages hosted within the class UI as well. 
+* After getting all the UI linked to their respective API calls, I can finally work on organizing the redux structure. I could work on it now however, our MVP deadline is coming up and I want to focus on major tasks to achieve before handling structural benefits. 
+* If I have time, I will continue to work on design updates similar to my previous shadCN design update branch (155) I implemented last week. I thoroughly enjoy this part of programming but I know it's not a priority so it holds the least amount of priority at the moment.
+  
+  
+
 # Mahir's Log for Cycle 6
 
 

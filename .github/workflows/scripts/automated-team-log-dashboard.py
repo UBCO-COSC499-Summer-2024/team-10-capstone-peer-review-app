@@ -72,11 +72,11 @@ with open(team_log, 'w') as f:
 
     f.write(f'\n#### Front-end Testing for c-{count}\n')
 
-    f.write(f'![Front-end Tests for c-{count}](weekly_logs/team_log_images/front_end_tests/front_end_tests_c{count}.png)  \n  \n')
+    f.write(f'![Front-end Tests for c-{count}](./team_log_images/front_end_tests/front_end_tests_c{count}.png)  \n  \n')
 
     f.write(f'\n#### Back-end Testing for c-{count}\n')
 
-    f.write(f'![Burn-Up Chart for c-{count}](weekly_logs/team_log_images/back_end_tests/back_end_tests_c{count}.png)  \n  \n')
+    f.write(f'![Burn-Up Chart for c-{count}](./team_log_images/back_end_tests/back_end_tests_c{count}.png)  \n  \n')
 
     
     f.write('  \n  \n') 

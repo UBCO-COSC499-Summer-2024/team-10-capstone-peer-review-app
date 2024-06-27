@@ -1,4 +1,5 @@
 // Import necessary modules and services
+import e from "express";
 import classService from "../services/classService.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 
@@ -275,6 +276,85 @@ export const getCriterionGrade = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+export const addGroupToClass = asyncErrorHandler(async (req, res) => {
+	const { classId, groupData } = req.body;
+	const updatedClass = await classService.addGroupToClass(classId, groupData);
+	return res.status(200).json({
+		status: "Success",
+		message: "Group successfully added to class",
+		data: updatedClass
+	});
+});
+
+export const removeGroupFromClass = asyncErrorHandler(async (req, res) => {
+	const { groupId } = req.body;
+	const updatedClass = await classService.removeGroupFromClass(groupId);
+	return res.status(200).json({
+		status: "Success",
+		message: "Group successfully removed from class",
+		data: updatedClass
+	});
+});
+
+export const updateGroupInClass = asyncErrorHandler(async (req, res) => {
+	const { groupId, updateData } = req.body;
+	const updatedClass = await classService.updateGroupInClass(groupId, updateData);
+	return res.status(200).json({
+		status: "Success",
+		message: "Group successfully updated in class",
+		data: updatedClass
+	});
+});
+
+export const getGroupInClass = asyncErrorHandler(async (req, res) => {
+	const { classId, groupId } = req.body;
+	const groupData = await classService.getGroupInClass(classId, groupId);
+	return res.status(200).json({
+		status: "Success",
+		data: groupData
+	});
+});
+
+export const getGroupsInClass = asyncErrorHandler(async (req, res) => {
+	const { classId } = req.body;
+	const groupData = await classService.getGroupsInClass(classId);
+	return res.status(200).json({
+		status: "Success",
+		data: groupData
+	});
+});
+
+export const getGroupMembers = asyncErrorHandler(async (req, res) => {
+	const { groupId } = req.body;
+	const groupMembers = await classService.getGroupMembers(groupId);
+	return res.status(200).json({
+		status: "Success",
+		data: groupMembers
+	});
+});
+
+export const addGroupMember = asyncErrorHandler(async (req, res) => {
+	const { groupId, userId } = req.body;
+	const updatedGroup = await classService.addGroupMember(groupId, userId);
+	return res.status(200).json({
+		status: "Success",
+		message: "Member successfully added to group",
+		data: updatedGroup
+	});
+});
+
+export const removeGroupMember = asyncErrorHandler(async (req, res) => {
+	const { groupId, userId } = req.body;
+	const updatedGroup = await classService.removeGroupMember(groupId, userId);
+	return res.status(200).json({
+		status: "Success",
+		message: "Member successfully removed from group",
+		data: updatedGroup
+	});
+});
+
+
+
 // Export all controller methods
 export default {
 	getClassesByInstructor,
@@ -304,5 +384,14 @@ export default {
 	addCriterionGrade,
 	removeCriterionGrade,
 	updateCriterionGrade,
-	getCriterionGrade
+	getCriterionGrade,
+
+	addGroupToClass,
+	removeGroupFromClass,
+	updateGroupInClass,
+	getGroupInClass,
+	getGroupsInClass,
+	getGroupMembers,
+	addGroupMember,
+	removeGroupMember
 };

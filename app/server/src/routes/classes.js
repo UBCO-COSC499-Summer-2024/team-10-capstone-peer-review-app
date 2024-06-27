@@ -29,7 +29,16 @@ import {
   addCriterionGrade,
   removeCriterionGrade,
   updateCriterionGrade,
-  getCriterionGrade
+  getCriterionGrade,
+
+  addGroupToClass,
+  removeGroupFromClass, 
+  updateGroupInClass, 
+  getGroupInClass,
+  getGroupsInClass,
+  getGroupMembers,
+  addGroupMember,
+  removeGroupMember
 
 } from "../controllers/classController.js";
 
@@ -110,5 +119,31 @@ router.route("/update-criterion-grade")
 
 router.route("/get-criterion-grade")
   .post(ensureUser, ensureInstructor, getCriterionGrade);
+
+// Group Routes
+router.route("/add-group")
+  .post(ensureUser, ensureInstructor, addGroupToClass);
+
+router.route("/remove-group")
+  .post(ensureUser, ensureInstructor, removeGroupFromClass);
+
+router.route("/update-group")
+  .post(ensureUser, ensureInstructor, updateGroupInClass);
+
+router.route("/get-group")
+  .post(ensureUser, ensureInstructor, getGroupInClass);
+
+router.route("/get-groups")
+  .post(ensureUser, ensureInstructor, getGroupsInClass);
+
+router.route("/get-group-members")
+  .post(ensureUser, ensureInstructor, getGroupMembers);
+
+router.route("/add-group-member")
+  .post(ensureUser, ensureInstructor, addGroupMember);
+
+router.route("/remove-group-member")
+  .post(ensureUser, ensureInstructor, removeGroupMember);
+
 
 export default router;

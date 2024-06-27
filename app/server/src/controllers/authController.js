@@ -137,10 +137,10 @@ export default {
 	resetPassword,
 	resendVerificationEmail,
 	confirmEmail,
-	getRoleRequests,
+	getAllRoleRequests,
 	deleteRoleRequest,
 	approveRoleRequest,
 	denyRoleRequest,
-	updateRoleRequest,
+	updateRoleRequestStatus,
 	applyForNewRoleRequest
 };

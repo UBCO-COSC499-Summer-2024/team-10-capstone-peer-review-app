@@ -75,6 +75,60 @@ export const confirmEmail = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+export const getAllRoleRequests = asyncErrorHandler(async (req, res) => {
+	const requests = await authService.getAllRoleRequests();
+	return res.status(200).json({
+		status: "Success",
+		data: requests
+	});
+});
+
+export const deleteRoleRequest = asyncErrorHandler(async (req, res) => {
+	const requestId = req.params.requestId;
+	await authService.deleteRoleRequest(requestId);
+	return res.status(200).json({
+		status: "Success",
+		message: "Role request deleted"
+	});
+});
+
+export const approveRoleRequest = asyncErrorHandler(async (req, res) => {
+	const requestId = req.params.requestId;
+	await authService.approveRoleRequest(requestId);
+	return res.status(200).json({
+		status: "Success",
+		message: "Role request approved"
+	});
+});
+
+export const denyRoleRequest = asyncErrorHandler(async (req, res) => {
+	const requestId = req.params.requestId;
+	await authService.denyRoleRequest(requestId);
+	return res.status(200).json({
+		status: "Success",
+		message: "Role request denied"
+	});
+});
+
+export const updateRoleRequestStatus = asyncErrorHandler(async (req, res) => {
+	const requestId = req.params.requestId;
+	const { status } = req.body;
+	await authService.updateRoleRequestStatus(requestId, status);
+	return res.status(200).json({
+		status: "Success",
+		message: "Role request updated"
+	});
+});
+
+export const applyForNewRoleRequest = asyncErrorHandler(async (req, res) => {
+	const { email, role } = req.body;
+	await authService.applyForNewRoleRequest(email, role);
+	return res.status(200).json({
+		status: "Success",
+		message: "Role request sent"
+	});
+});
+
 export default {
 	register,
 	login,
@@ -82,5 +136,11 @@ export default {
 	forgotPassword,
 	resetPassword,
 	resendVerificationEmail,
-	confirmEmail
+	confirmEmail,
+	getRoleRequests,
+	deleteRoleRequest,
+	approveRoleRequest,
+	denyRoleRequest,
+	updateRoleRequest,
+	applyForNewRoleRequest
 };

@@ -212,7 +212,16 @@ async function createRoleRequest(userId, role) {
 	}
 }
 
-async function deleteRoleRequest(requestId) {
+export async function getAllRoleRequests() {
+	try {
+		const requests = await prisma.roleRequest.findMany();
+		return requests;
+	} catch (error) {
+		throw new apiError("Error fetching role requests", 500);
+	}
+}
+
+export async function deleteRoleRequest(requestId) {
 	try {
 		await prisma.roleRequest.delete({
 			where: {
@@ -224,7 +233,7 @@ async function deleteRoleRequest(requestId) {
 	}
 }
 
-async function updateRoleRequestStatus(requestId, status) {
+export async function updateRoleRequestStatus(requestId, status) {
 	try {
 		await prisma.roleRequest.update({
 			where: { id: requestId },
@@ -235,13 +244,11 @@ async function updateRoleRequestStatus(requestId, status) {
 	}
 }
 
-async function applyForNewRoleRequest(email, role) {
-	// Check if there is an existing request for the user
+export async function applyForNewRoleRequest(email, role) {
 	const existingRequest = await checkRequestByEmail(email);
 	if (existingRequest) {
 		throw new apiError("Your previous role request is still pending...", 400);
 	}
-
 	try {
 		await prisma.roleRequest.create({
 			data: {
@@ -255,14 +262,12 @@ async function applyForNewRoleRequest(email, role) {
 	}
 }
 
-async function approveRoleRequest(requestId) {
+export async function approveRoleRequest(requestId) {
 	try {
-		// First approve the request
 		const request = await prisma.roleRequest.update({
 			where: { requestId: requestId },
 			data: { status: "APPROVED" }
 		});
-		// Then update the role verification status to true
 		const user = await prisma.user.update({
 			where: { userId: request.userId },
 			data: { isRoleVerified: true }
@@ -281,7 +286,7 @@ async function approveRoleRequest(requestId) {
 	}
 }
 
-async function denyRoleRequest(requestId) {
+export async function denyRoleRequest(requestId) {
 	try {
 		const request = await prisma.roleRequest.update({
 			where: { requestId: requestId },
@@ -312,8 +317,10 @@ export default {
 	confirmEmail,
 	sendForgotPasswordEmail,
 	resetPassword,
+	getAllRoleRequests,
+	deleteRoleRequest,
 	approveRoleRequest,
 	denyRoleRequest,
-	createRoleRequest,
-	deleteRoleRequest
+	updateRoleRequestStatus,
+	applyForNewRoleRequest
 };

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation  } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Class from './pages/Class';
@@ -13,40 +14,48 @@ import ManageClass from './pages/ManageClass';
 import Search from './pages/Search';
 import { Toaster } from "@/components/ui/toaster";
 import AdminDashboard from './pages/AdminDashboard';
-// New comment 
 
 function App() {
-	const [message, setMessage] = useState("");
-
-	useEffect(() => {
-		fetch("/api")
-			.then((response) => {
-				if (!response.ok) {
-					throw new Error("Network response was not ok");
-				}
-				return response.json();
-			})
-			.then((data) => setMessage(data.message))
-			.catch((error) => console.error("Fetch error:", error));
-	}, []);
-
-  function MainLayout({ children }) {
-    const location = useLocation();
-    const isLoginPage = location.pathname === "/";
-  
-    return (
-      <main className="bg-gray-100 mx-auto">
-        {!isLoginPage && <AppNavbar />}
-        <div className="main-container flex justify-center flex-1">
-          {children}
-        </div>
-        <Toaster />
-      </main>
-    );
-  }
   return (
     <Router>
-      <MainLayout>
+      <MainLayout />
+    </Router>
+  );
+}
+
+function MainLayout() {
+  const [currentUser, setCurrentUser] = useState(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await axios.get('/api/auth/current-user', { withCredentials: true });
+        setCurrentUser(response.data.user);
+        if (location.pathname === '/') {
+          if (response.data.user.role === 'ADMIN') {
+            navigate('/admin');
+          } else {
+            navigate('/dashboard');
+          }
+        }
+      } catch (error) {
+        if (location.pathname !== '/') {
+          navigate('/');
+        }
+      }
+    };
+
+    fetchCurrentUser();
+  }, [location, navigate]);
+
+  const isLoginPage = location.pathname === "/";
+
+  return (
+    <main className="bg-gray-100 mx-auto">
+      {!isLoginPage && <AppNavbar currentUser={currentUser} />}
+      <div className="main-container flex justify-center flex-1">
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -60,8 +69,9 @@ function App() {
           <Route path="/settings" element={<Settings />} />
           <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
-      </MainLayout>
-    </Router>
+      </div>
+      <Toaster />
+    </main>
   );
 }
 

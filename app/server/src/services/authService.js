@@ -182,12 +182,28 @@ export async function confirmEmail(token) {
 		}
 	}
 }
-
-export default {
+export async function getCurrentUser(email) {
+	try {
+	  const user = await checkUserByEmail(email);
+	  if (!user) {
+		throw new apiError("No user with that email", 404);
+	  }
+	  return user;
+	} catch (error) {
+	  if (error instanceof apiError) {
+		throw error;
+	  } else {
+		throw new apiError("Error fetching current user", 500);
+	  }
+	}
+  }
+  
+  export default {
 	registerUser,
 	loginUser,
 	sendVerificationEmail,
 	confirmEmail,
 	sendForgotPasswordEmail,
-	resetPassword
-};
+	resetPassword,
+	getCurrentUser // Export the new service method
+  };

@@ -75,12 +75,22 @@ export const confirmEmail = asyncErrorHandler(async (req, res) => {
 	});
 });
 
-export default {
+export const currentUser = asyncErrorHandler(async (req, res) => {
+	const user = await authService.getCurrentUser(req.user.email);
+	return res.status(200).json({
+	  user: user,
+	  status: "Success",
+	  message: "Current user fetched successfully!"
+	});
+  });
+  
+  export default {
 	register,
 	login,
 	logout,
 	forgotPassword,
 	resetPassword,
 	resendVerificationEmail,
-	confirmEmail
-};
+	confirmEmail,
+	currentUser // Export the new controller method
+  };

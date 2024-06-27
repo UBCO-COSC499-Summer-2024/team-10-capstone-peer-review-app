@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { cn } from "@/utils/utils";
 import { useToast } from '@/components/ui/use-toast';
@@ -26,19 +25,31 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/h
 export default function AppNavbar() {
   const location = useLocation();
   const navigate = useNavigate();
-  const currentUser = useSelector((state) => state.user.currentUser);
+  const [currentUser, setCurrentUser] = useState(null);
   const [classesData, setClassesData] = useState([]);
   const [assignmentsData, setAssignmentsData] = useState([]);
   const { toast } = useToast();
+  const [searchQuery, setSearchQuery] = useState(""); // State for search query
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await axios.get('/api/auth/current-user', { withCredentials: true });
+        setCurrentUser(response.data.user);
+      } catch (error) {
+        toast({ title: "Error", description: "Failed to fetch current user", variant: "destructive" });
+      }
+    };
+
+    fetchCurrentUser();
+  }, [toast]);
 
   useEffect(() => {
     if (currentUser) {
       const fetchClasses = async () => {
         try {
           const response = await axios.post('/api/users/get-classes', { userId: currentUser.userId });
-          console.log(response.data);
           setClassesData(Array.isArray(response.data) ? response.data : []);
-          toast(classesData);
         } catch (error) {
           toast({ title: "Error", description: "Failed to fetch classes", variant: "destructive" });
         }
@@ -48,7 +59,6 @@ export default function AppNavbar() {
         try {
           const response = await axios.post('/api/users/get-assignments', { userId: currentUser.userId });
           setAssignmentsData(Array.isArray(response.data) ? response.data : []);
-          toast(assignmentsData)
         } catch (error) {
           toast({ title: "Error", description: "Failed to fetch assignments", variant: "destructive" });
         }
@@ -59,13 +69,6 @@ export default function AppNavbar() {
     }
   }, [currentUser, toast]);
 
-  if (!currentUser) {
-    return null;
-  }
-
-
-  const [searchQuery, setSearchQuery] = React.useState(""); // State for search query
-
   const userReviewAssignments = assignmentsData
     .filter(assignment => {
       return Array.isArray(currentUser.classes) && currentUser.classes.includes(assignment.classId) && assignment.evaluation_type === 'peer';
@@ -73,11 +76,18 @@ export default function AppNavbar() {
     .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
     .slice(0, 3);
 
-    const isActive = (path) => {
-      return location.pathname === path || (path === '/dashboard' && location.pathname === '/');
-    };
-  const handleLogout = () => {
-    navigate('/');
+  const isActive = (path) => {
+    return location.pathname === path || (path === '/dashboard' && location.pathname === '/');
+  };
+
+  const handleLogout = async () => {
+    try {
+      await axios.post('/api/auth/logout', {}, { withCredentials: true });
+      setCurrentUser(null);
+      navigate('/');
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to logout", variant: "destructive" });
+    }
   };
 
   const search = () => {
@@ -88,11 +98,16 @@ export default function AppNavbar() {
       navigate(`/search`);
     }
   };
+
   const getInitials = (firstName, lastName) => {
     const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : '';
     const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : '';
     return `${firstInitial}${lastInitial}`;
   };
+
+  if (!currentUser) {
+    return null;
+  }
 
   return (
     <div className="w-full py-3 px-4 bg-white shadow-md">
@@ -127,7 +142,7 @@ export default function AppNavbar() {
             </NavigationMenuContent>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuTrigger className={cn(navigationMenuTriggerStyle(), isActive('/classes') || isActive('/manageclasses') && 'font-bold')}>
+            <NavigationMenuTrigger className={cn(navigationMenuTriggerStyle(), (isActive('/classes') || isActive('/manageclass')) && 'font-bold')}>
               Classes
             </NavigationMenuTrigger>
             <NavigationMenuContent>
@@ -179,7 +194,7 @@ export default function AppNavbar() {
             <HoverCardTrigger>
               <Avatar className="w-9 h-9 bg-gray-200 rounded-full shadow-md">
                 <AvatarImage src={currentUser.avatarUrl} alt={`${currentUser.firstname} ${currentUser.lastname}`} />
-                <AvatarFallback>{currentUser.firstname[0]}{currentUser.lastname[0]}</AvatarFallback>
+                <AvatarFallback>{getInitials(currentUser.firstname, currentUser.lastname)}</AvatarFallback>
               </Avatar>
             </HoverCardTrigger>
             <HoverCardContent className="w-full transform -translate-x-1/3">
@@ -204,7 +219,6 @@ export default function AppNavbar() {
               </div>
             </HoverCardContent>
           </HoverCard>
-
         </div>
       </NavigationMenu>
     </div>

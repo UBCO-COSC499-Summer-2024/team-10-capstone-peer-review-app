@@ -36,7 +36,7 @@ function App() {
   
     return (
       <main className="bg-gray-100 mx-auto">
-        {!isLoginPage && <AppNavbar/>}
+        {!isLoginPage && <AppNavbar />}
         <div className="main-container flex justify-center flex-1">
           {children}
         </div>
@@ -44,7 +44,6 @@ function App() {
       </main>
     );
   }
-
   return (
     <Router>
       <MainLayout>

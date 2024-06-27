@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import ClassCard from '@/components/class/ClassCard';
@@ -15,13 +14,26 @@ import GroupCard from '@/components/class/GroupCard';
 import { Skeleton } from "@/components/ui/skeleton";
 
 function Dashboard() {
-  const currentUser = useSelector((state) => state.user.currentUser);
+  const [currentUser, setCurrentUser] = useState(null);
   const [classes, setClasses] = useState([]);
   const [assignments, setAssignments] = useState([]);
   const [reviews, setReviews] = useState([]);
   const { toast } = useToast();
 
   const iClassNames = iClass.map(cls => ({ class_id: cls.class_id, classname: cls.classname })); // only for GroupCard
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await axios.get('/api/auth/current-user', { withCredentials: true });
+        setCurrentUser(response.data.user);
+      } catch (error) {
+        toast({ title: "Error", description: "Failed to fetch current user", variant: "destructive" });
+      }
+    };
+
+    fetchCurrentUser();
+  }, [toast]);
 
   useEffect(() => {
     if (currentUser) {
@@ -181,12 +193,6 @@ function Dashboard() {
             // Skeleton for GroupCard
             <Skeleton className="h-96 w-full rounded-lg" />
           ) : (
-              // <GroupCard
-              //   classes={classes}
-              //   groups={Group}
-              //   classNames={classNames}
-              //   users={user}
-              // />
               <GroupCard
                 classes={[iClass[0], iClass[1], iClass[2]]}
                 groups={Group}

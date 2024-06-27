@@ -1,3 +1,4 @@
+import apiError from "../utils/apiError.js";
 import authService from "../services/authService.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 
@@ -15,6 +16,9 @@ export const register = asyncErrorHandler(async (req, res) => {
 });
 
 export const login = asyncErrorHandler(async (req, res, next) => {
+	if (req.user) {
+		return next(new apiError("You are already logged in", 400));
+	}
 	const { email, password } = req.body;
 	const user = await authService.loginUser(email, password);
 	req.logIn(user, (err) => {
@@ -29,7 +33,10 @@ export const login = asyncErrorHandler(async (req, res, next) => {
 	});
 });
 
-export const logout = asyncErrorHandler(async (req, res) => {
+export const logout = asyncErrorHandler(async (req, res, next) => {
+	if (!req.user) {
+		return next(new apiError("You are not logged in", 400));
+	}
 	req.logout(() => {
 		return res.status(200).json({
 			status: "Success",

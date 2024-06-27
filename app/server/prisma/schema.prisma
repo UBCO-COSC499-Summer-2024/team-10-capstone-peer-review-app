@@ -43,6 +43,7 @@ model User {
   firstname         String
   lastname          String
   isEmailVerified   Boolean       @default(false)
+  isRoleActivated   Boolean       @default(false)
   role              UserRole      @default(STUDENT)
   classes           UserInClass[]
   submissions       Submission[]
@@ -50,6 +51,7 @@ model User {
   reviewsRecieved   Review[]      @relation("Reviewee")
   classesInstructed Class[]       @relation("InstructorClasses")
   Rubric            Rubric[]
+  RoleRequest       RoleRequest[]
 }
 
 // // Need to refactor last references to others tables, depending on what we want instructors to be able to pull up
@@ -325,12 +327,29 @@ model CriterionGrade {
 
 // TODO
 // Request / Status Models 
-// I.e. Enrollment, Group Invites, Intructor to Admin Requests 
+// I.e. Enrollment, Group Invites, Intructor to Admin Requests  
+model RoleRequest {
+  requestId     String        @id @default(uuid())
+  userId        String
+  roleRequested UserRole
+  status        RequestStatus @default(PENDING)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  user          User          @relation(fields: [userId], references: [userId])
+
+  @@unique([userId], name: "UniqueRoleRequestPerUser")
+}
 
 enum UserRole {
-  STUDENT
   INSTRUCTOR
   ADMIN
+  STUDENT
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  DENIED
 }
 
 enum SubmissionType {

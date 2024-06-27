@@ -13,6 +13,10 @@ async function checkUserByEmail(email) {
 	return await prisma.user.findUnique({ where: { email } });
 }
 
+async function checkRequestByEmail(email) {
+	return await prisma.roleRequest.findUnique({ where: { email: email } });
+}
+
 // AUTHENTICATION RELATED DATABASE SERVICES
 // Used to decouple the authentication logic from the routes
 
@@ -23,15 +27,24 @@ export async function registerUser(userDetails) {
 		if (existingUser) {
 			throw new apiError("User with that email already exists", 400);
 		}
+		const isRoleActivated = role === "STUDENT" ? true : false;
 		const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-		const user = {
+		const user = await prisma.user.create({
 			email,
 			password: hashedPassword,
 			firstname,
 			lastname,
-			role
-		};
-		return await prisma.user.create({ data: user });
+			role,
+			isRoleActivated
+		});
+
+		if (role !== "STUDENT") {
+			try {
+				await createRoleRequest(user.userId, role);
+			} catch (error) {
+				throw new apiError("Error creating role request", 500);
+			}
+		}
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
@@ -54,6 +67,9 @@ export async function loginUser(email, password) {
 		if (!user.isEmailVerified) {
 			throw new apiError("Please verify your email before logging in", 400);
 		}
+		if (!user.isRoleActivated) {
+			throw new apiError("Please wait for your role to be approve...", 400);
+		}
 		return user;
 	} catch (error) {
 		if (error instanceof apiError) {
@@ -62,7 +78,6 @@ export async function loginUser(email, password) {
 			throw new apiError("Error logging in user", 500);
 		}
 	}
-	return user;
 }
 
 export async function sendVerificationEmail(email) {
@@ -183,11 +198,122 @@ export async function confirmEmail(token) {
 	}
 }
 
+async function createRoleRequest(userId, role) {
+	try {
+		await prisma.roleRequest.create({
+			data: {
+				userId: userId,
+				requestedRole: role,
+				status: "PENDING"
+			}
+		});
+	} catch (error) {
+		throw new apiError("Error creating role request", 500);
+	}
+}
+
+async function deleteRoleRequest(requestId) {
+	try {
+		await prisma.roleRequest.delete({
+			where: {
+				requestId: requestId
+			}
+		});
+	} catch (error) {
+		throw new apiError("Error deleting role request", 500);
+	}
+}
+
+async function updateRoleRequestStatus(requestId, status) {
+	try {
+		await prisma.roleRequest.update({
+			where: { id: requestId },
+			data: { status: status }
+		});
+	} catch (error) {
+		throw new apiError("Error updating role request status", 500);
+	}
+}
+
+async function applyForNewRoleRequest(email, role) {
+	// Check if there is an existing request for the user
+	const existingRequest = await checkRequestByEmail(email);
+	if (existingRequest) {
+		throw new apiError("Your previous role request is still pending...", 400);
+	}
+
+	try {
+		await prisma.roleRequest.create({
+			data: {
+				userId: userId,
+				requestedRole: role,
+				status: "PENDING"
+			}
+		});
+	} catch (error) {
+		throw new apiError("Error applying for new role request", 500);
+	}
+}
+
+async function approveRoleRequest(requestId) {
+	try {
+		// First approve the request
+		const request = await prisma.roleRequest.update({
+			where: { requestId: requestId },
+			data: { status: "APPROVED" }
+		});
+		// Then update the role verification status to true
+		const user = await prisma.user.update({
+			where: { userId: request.userId },
+			data: { isRoleVerified: true }
+		});
+		await sendEmail(
+			user.email,
+			"Role Verification",
+			"Your role has been verified."
+		);
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Error approving role request", 500);
+		}
+	}
+}
+
+async function denyRoleRequest(requestId) {
+	try {
+		const request = await prisma.roleRequest.update({
+			where: { requestId: requestId },
+			data: { status: "DENIED" }
+		});
+		const user = await prisma.user.update({
+			where: { userId: request.userId },
+			data: { isRoleVerified: false }
+		});
+		await sendEmail(
+			user.email,
+			"Role Verification",
+			"Your role verification has been denied."
+		);
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Error denying role request", 500);
+		}
+	}
+}
+
 export default {
 	registerUser,
 	loginUser,
 	sendVerificationEmail,
 	confirmEmail,
 	sendForgotPasswordEmail,
-	resetPassword
+	resetPassword,
+	approveRoleRequest,
+	denyRoleRequest,
+	createRoleRequest,
+	deleteRoleRequest
 };

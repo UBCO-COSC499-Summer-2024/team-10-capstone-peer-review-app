@@ -30,12 +30,14 @@ export async function registerUser(userDetails) {
 		const isRoleActivated = role === "STUDENT" ? true : false;
 		const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 		const user = await prisma.user.create({
-			email,
-			password: hashedPassword,
-			firstname,
-			lastname,
-			role,
-			isRoleActivated
+			data: {
+				email,
+				password: hashedPassword,
+				firstname,
+				lastname,
+				role,
+				isRoleActivated
+			}
 		});
 
 		if (role !== "STUDENT") {
@@ -203,7 +205,7 @@ async function createRoleRequest(userId, role) {
 		await prisma.roleRequest.create({
 			data: {
 				userId: userId,
-				requestedRole: role,
+				roleRequested: role,
 				status: "PENDING"
 			}
 		});

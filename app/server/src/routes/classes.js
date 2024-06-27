@@ -15,6 +15,7 @@ import {
   removeAssignmentFromClass,
   updateAssignmentInClass,
   getAssignmentInClass,
+  getAllAssignments,
 
   addCriterionToRubric,
   removeCriterionFromRubric,
@@ -40,7 +41,7 @@ const router = express.Router();
 // Class Routes
 
 router.route("/my-classes")
-  .get(ensureUser, ensureInstructor, getClassesByInstructor);
+  .post(ensureUser, ensureInstructor, getClassesByInstructor);
 
 router.route("/create")
   .post(ensureUser, ensureInstructor, createClass);
@@ -70,6 +71,9 @@ router.route("/update-assignment")
 
 router.route("/get-assignment")
   .post(ensureUser, ensureInstructor, getAssignmentInClass);
+
+router.route("/get-all-assignments")
+  .post(ensureUser, getAllAssignments);
 
 // Rubric Routes
 

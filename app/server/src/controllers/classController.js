@@ -5,7 +5,8 @@ import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 // Controller methods for class operations
 
 export const getClassesByInstructor = asyncErrorHandler(async (req, res) => {
-	const instructorId = req.user.userId;
+	const instructorId = req.user.userId; // use for production
+	// const instructorId = "id here"; // for testing purposes
 	const classes = await classService.getClassesByInstructor(instructorId);
 	return res.status(200).json({
 		status: "Success",
@@ -24,7 +25,6 @@ export const getClassById = asyncErrorHandler(async (req, res) => {
 
 export const createClass = asyncErrorHandler(async (req, res) => { 
     const instructorId = req.user.userId
-    console.log(instructorId);
 	const classInfo = req.body;
 	const newClass = await classService.createClass(classInfo, instructorId);
 	return res.status(201).json({
@@ -123,6 +123,15 @@ export const getAssignmentInClass = asyncErrorHandler(async (req, res) => {
 	return res.status(200).json({
 		status: "Success",
 		data: assignmentData
+	});
+});
+
+export const getAllAssignments = asyncErrorHandler(async (req, res) => {
+	const { classId } = req.body;
+	const assignments = await classService.getAllAssignments(classId);
+	return res.status(200).json({
+		status: "Success",
+		data: assignments
 	});
 });
 

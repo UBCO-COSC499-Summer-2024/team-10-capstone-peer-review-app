@@ -36,16 +36,10 @@ const getClassById = async (classId) => {
 	}
 };
 
-const createClass = async ({
-	classname,
-	description,
-	startDate,
-	endDate,
-	term,
-	classSize
-}, instructorId) => {
+const createClass = async (newClass, instructorId) => {
 	try {
-		const newClass = await prisma.class.create({
+		const { classname, description, startDate, endDate, term, classSize } = newClass;
+		const createdClass = await prisma.class.create({
 			data: {
 				instructorId,
 				classname,
@@ -56,7 +50,7 @@ const createClass = async ({
 				classSize,
 			}
 		});
-		return newClass;
+		return createdClass;
 	} catch (error) {
 		throw new apiError("Failed to create class", 500);
 	}
@@ -297,7 +291,7 @@ const getAssignmentInClass = async (classId, assignmentId) => {
 				classId: classId
 			},
 			include: {
-				Assignments: true
+				assignments: true
 			}
 		});
 
@@ -324,6 +318,32 @@ const getAssignmentInClass = async (classId, assignmentId) => {
 		}
 	}
 };
+
+const getAllAssignments = async (classId) => {
+	try {
+	  const classInfo = await prisma.class.findUnique({
+		where: {
+		  classId: classId
+		},
+		include: {
+		  assignments: true
+		}
+	  });
+  
+	  if (!classInfo) {
+		throw new apiError("Class not found", 404);
+	  }
+  
+	  return classInfo.assignments;
+	} catch (error) {
+	  if (error instanceof apiError) {
+		throw error;
+	  } else {
+		throw new apiError("Failed to get all the assignments for the specific class", 500);
+	  }
+	}
+  };
+  
 
 // rubric operations
 const createRubricsForAssignment = async (creatorId, assignmentId, rubricData) => {
@@ -635,6 +655,7 @@ export default {
 	addAssignmentToClass,
 	removeAssignmentFromClass,
 	getAssignmentInClass,
+	getAllAssignments,
 
 	createRubricsForAssignment,
 	getRubricsForAssignment,

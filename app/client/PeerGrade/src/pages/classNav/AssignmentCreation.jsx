@@ -85,6 +85,33 @@ const AssignmentCreation = () => {
         </pre>
       ),
     });
+
+    // fetch('http://localhost:3000/api/auth/login', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify({
+    //     email: email,
+    //     password: password
+    //   })
+    // })
+    // .then(response => response.json())
+    // .then(data => {
+    //   console.log(data);
+    //   if (data.error && data.error.status === "Error") {
+    //     setError(data.message);
+    //   } else {
+    //     toast({ title: "Welcome", description: "You have successfully logged in!", variant: "positive" });
+    //     if(data.user.role=="ADMIN") {
+    //     navigate('/admin');
+    //     } else navigate('/dashboard');
+    //   }
+    // })
+    // .catch((error) => {
+    //   console.error('Error:', error);
+    //   setError('An error occurred while logging in');
+    // });
   };
 
   return (

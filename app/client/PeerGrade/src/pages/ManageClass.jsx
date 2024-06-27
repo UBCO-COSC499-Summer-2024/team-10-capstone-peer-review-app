@@ -6,7 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { Toaster } from '@/components/ui/toaster';
 import { useToast } from '@/components/ui/use-toast';
-import { iClass, assignment, PeerReview, submission } from '@/utils/dbData';
+import { toast } from "@/components/ui/use-toast";
+import axios from 'axios';
+import { iClass as mockClasses, PeerReview, submission } from '@/utils/dbData';
 
 const AddClassModal = ({ show, onClose, onAddClass }) => {
   const [classname, setClassname] = useState('');
@@ -16,12 +18,35 @@ const AddClassModal = ({ show, onClose, onAddClass }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAddClass({
+    const newClass = {
       classname,
       description,
+      startDate: new Date(),                                                    // Hardcoded start date for now
+      endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),  // Hardcoded end date for now
       term,
-      size: parseInt(size, 10),
-    });
+      classSize: parseInt(size, 10)
+    };
+
+    fetch('http://localhost:3000/api/classes/create', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newClass)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "Server Fail") {
+          throw new Error(data.message);
+        } else {
+            toast({ title: data.status, description: data.message, variant: "positive" });
+            onAddClass(data.data);
+        }
+    })
+    .catch((error) => {
+        console.error('An error occurred while creating the class:', error);
+    });  
+
     onClose();
   };
 
@@ -101,48 +126,71 @@ const AddClassModal = ({ show, onClose, onAddClass }) => {
 const ManageClass = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [userClasses, setUserClasses] = useState([]);
+  const [classAssignments, setClassAssignments] = useState({});
   const currentUser = useSelector((state) => state.user.currentUser);
   const { toast } = useToast();
 
   useEffect(() => {
     if (currentUser && (currentUser.role === 'INSTRUCTOR' || currentUser.role === 'ADMIN')) {
-      const classes = iClass.filter((classItem) => classItem.instructor_id === currentUser.userId);
-      setUserClasses(classes);
-    }
-  }, [currentUser]);
-console.log(currentUser);
-  const handleAddClass = (newClass) => {
-    try {
-      const classData = {
-        ...newClass,
-        class_id: iClass.length + 1,
-        instructor_id: currentUser.userId,
-        start: new Date(),
-        end: new Date(),
+      const fetchClasses = async () => {
+        try {
+          const response = await axios.post('/api/users/get-classes', { userId: currentUser.userId });
+          setUserClasses(Array.isArray(response.data) ? response.data : []);
+        } catch (error) {
+          toast({ title: "Error", description: "Failed to fetch classes", variant: "destructive" });
+        }
       };
-      // Add the new class to the database here
-      iClass.push(classData);
-      setModalOpen(false);
-      setUserClasses([...userClasses, classData]); // Update local state with new class
-      toast({ title: "Success", description: "Class added successfully!", variant: "positive" });
-    } catch (error) {
-      toast({ title: "Error", description: "Failed to add class", variant: "destructive" });
+
+      const fetchAssignments = async (classId) => {
+        try {
+          const response = await axios.post('/api/classes/get-all-assignments', { classId });
+          return response.data.data;
+        } catch (error) {
+          console.error('An error occurred while retrieving assignments for the class:', error);
+          return [];
+        }
+      };
+
+      const fetchAllAssignments = async () => {
+        const assignments = {};
+        for (const classItem of userClasses) {
+          assignments[classItem.classId] = await fetchAssignments(classItem.classId);
+        }
+        setClassAssignments(assignments);
+      };
+
+      fetchClasses().then(fetchAllAssignments);
     }
-  };
+  }, [currentUser, toast]);
 
   const handleDeleteClass = (classId) => {
-    const updatedClasses = userClasses.filter((classItem) => classItem.class_id !== classId);
-    setUserClasses(updatedClasses); // Update local state with filtered classes
-
-    const classIndex = iClass.findIndex((cls) => cls.class_id === classId);
-    if (classIndex > -1) {
-      iClass.splice(classIndex, 1);
-    }
+    fetch(`http://localhost:3000/api/classes/${classId}`, {
+      method: 'DELETE',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "Server Fail") {
+          throw new Error(data.message);
+        } else {
+            toast({ title: data.status, description: data.message, variant: "positive" });
+            setUserClasses(prevClasses => prevClasses.filter(classItem => classItem.classId !== classId));
+        }
+    })
+    .catch((error) => {
+        console.error('An error occurred while deleting the class: ', error);
+    });  
   };
 
   if (!currentUser || (currentUser.role !== 'INSTRUCTOR' && currentUser.role !== 'ADMIN')) {
     return <div>You do not have permission to view this page.</div>;
   }
+
+  const handleAddClass = (newClass) => {
+    setUserClasses(prevClasses => [...prevClasses, newClass]);
+  };
 
   return (
     <div className="max-w-7xl mx-auto p-6">
@@ -155,27 +203,40 @@ console.log(currentUser);
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {userClasses.map((classItem) => (
+          <div key={classItem.classId} className="relative">
+            <Link to={`/class/${classItem.classId}`}>
+              <ClassCard
+                classId={classItem.classId}
+                className={classItem.classname}
+                instructor={`${currentUser.firstname} ${currentUser.lastname}`}
+                numStudents={classItem.classSize}
+                numAssignments={classAssignments[classItem.classId]?.length || 0}
+                numPeerReviews={PeerReview.filter((review) => {
+                  const sub = submission.find((sub) => sub.submission_id === review.submission_id);
+                  return sub && sub.assignment_id === classItem.classId;
+                }).length}
+              />
+            </Link>
+            <button
+              onClick={() => handleDeleteClass(classItem.classId)}
+              className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+              data-testid={`delete-class-${classItem.classId}`}
+            >
+              &times;
+            </button>
+          </div>
+        ))}
+      </div>
+      <h2 className='my-4'>Mocked Classes (debug only)</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {mockClasses.map((classItem) => (
           <div key={classItem.class_id} className="relative">
             <Link to={`/class/${classItem.class_id}`}>
               <ClassCard
                 classId={classItem.class_id}
                 className={classItem.classname}
-                instructor={`${currentUser.firstname} ${currentUser.lastname}`}
-                numStudents={classItem.size}
-                numAssignments={assignment.filter((assign) => assign.class_id === classItem.class_id).length}
-                numPeerReviews={PeerReview.filter((review) => {
-                  const sub = submission.find((sub) => sub.submission_id === review.submission_id);
-                  return sub && sub.assignment_id === classItem.class_id;
-                }).length}
               />
             </Link>
-            <button
-              onClick={() => handleDeleteClass(classItem.class_id)}
-              className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
-              data-testid={`delete-class-${classItem.class_id}`}
-            >
-              &times;
-            </button>
           </div>
         ))}
       </div>

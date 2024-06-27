@@ -23,7 +23,7 @@ const instructorsRouter = () => {
 	router.get("/my-classes", async (req, res) => {
 		// Get the user ID from the Passport user object
 		// const instructorId = req.user.userId; //uncomment this for production
-		const instructorId = req.user.userId; // for Postman purposes only
+		const instructorId = "c1c04e72-dd6d-4ef6-a9d3-a0b1c6789574"; // for Postman purposes only
 
 		try {
 			// Retrieve all classes for the instructor

@@ -106,6 +106,7 @@ const AddClassModal = ({ show, onClose, onAddClass }) => {
               type="number"
               id="size"
               value={size}
+              min="1"
               onChange={(e) => setSize(e.target.value)}
               required
               className="w-full px-3 py-2 border rounded-md"

@@ -1,20 +1,16 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux'
 import { useParams, useNavigate } from 'react-router-dom';
 import { assignment as assignmentsData, submission as submissionsData } from '@/utils/dbData';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Pencil } from 'lucide-react';
 import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 import { Textarea } from "@/components/ui/textarea";
-import PDFViewer from '@/components/assign/PDFViewer';
 
-const Assignment = () => {
+const EditAssignment = () => {
   const { assignmentId } = useParams();
   const assignment = assignmentsData.find((item) => item.assignment_id === parseInt(assignmentId));
   const navigate = useNavigate();
-  const currentUser = useSelector((state) => state.user.currentUser);
 
 	const [isSubmitCardVisible, setSubmitCardVisible] = useState(false);
 
@@ -23,7 +19,7 @@ const Assignment = () => {
 	}
 
 	const handleBackClick = () => {
-		navigate(`/class/${assignment.class_id}`); // This will navigate the user to the previous page
+		navigate(`/assignment/${assignment.assignment_id}`);
 	};
 
   // Filter submissions for the current assignment
@@ -60,14 +56,7 @@ const Assignment = () => {
         <div className="lg:col-span-3 bg-gray-100 p-4 rounded">
           <Card className="mb-8">
             <CardHeader>
-              <div className='flex w-full items-center'>
-                <CardTitle className="text-lg font-bold w-full">{assignment.title}</CardTitle>
-                {(currentUser.role === 'INSTRUCTOR' || currentUser.role === 'ADMIN') && 
-                  <Button variant="ghost" size="icon" className="text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-none" onClick={() => navigate(`/assignment/${assignmentId}/edit`)} data-testid="edit-button">
-                    <Pencil className="h-5 w-5" />
-                  </Button>
-                }
-              </div>
+              <CardTitle className="text-lg font-bold">Editing {assignment.title}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex justify-between mb-4">
@@ -81,9 +70,6 @@ const Assignment = () => {
               <p className="mb-2">{assignment.description}</p>
             </CardContent>
           </Card>
-          <div className='white rounded-md flex justify-center items-center'>
-            <PDFViewer url="https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK" scale="1"/>
-          </div>
         </div>
         <div className="space-y-6">
           <Card className="bg-white p-4 shadow-md">
@@ -122,4 +108,4 @@ const Assignment = () => {
   );
 };
 
-export default Assignment;
+export default EditAssignment;

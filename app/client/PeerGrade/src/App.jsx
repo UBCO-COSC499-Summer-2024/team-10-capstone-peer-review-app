@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard';
 import Class from './pages/Class';
 import AssignmentCreation from './pages/classNav/AssignmentCreation';
 import Assignment from './pages/Assignment';
+import EditAssignment from './pages/EditAssignment';
 import AssignedPR from './pages/AssignedPR';
 import PeerReview from './pages/PeerReview';
 import Settings from './pages/Settings';
@@ -56,6 +57,7 @@ function App() {
           <Route path="/manageClass" element={<ManageClass />} />
           <Route path="/search" element={<Search />} />
           <Route path="/assignment/:assignmentId" element={<Assignment />} />
+          <Route path="/assignment/:assignmentId/edit" element={<EditAssignment />} />
           <Route path="/assignedPR/:assignmentId" element={<AssignedPR />} />
           <Route path="/peer-review" element={<PeerReview />} />
           <Route path="/settings" element={<Settings />} />

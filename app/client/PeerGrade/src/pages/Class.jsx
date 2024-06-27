@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import {useSelector} from 'react-redux'
-import { useParams, Link } from 'react-router-dom';
+import { useSelector } from 'react-redux'
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { iClass as classesData, assignment as assignmentsData, Categories as categoriesData, user } from '@/utils/dbData';
 import {
   Menubar,
   MenubarMenu,
   MenubarTrigger,
 } from "@/components/ui/menubar";
+import { Pencil } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Grades from './classNav/Grades';
 import Groups from './classNav/Groups';
@@ -17,6 +18,7 @@ import { Button } from '@/components/ui/button';
 
 const Class = () => {
   const { classId } = useParams();
+  const navigate = useNavigate();
   const classItem = classesData.find((item) => item.class_id === parseInt(classId));
   const [currentView, setCurrentView] = useState('home');
   const currentUser = useSelector((state) => state.user.currentUser); //REDUX: user state, after user state stored in login, it has that user logged info saved
@@ -58,13 +60,20 @@ const Class = () => {
                   {classAssignments
                     .filter(assignment => assignment.assignment_id === category.rubric_id)
                     .map((assignment) => (
-                      <Link
-                        key={assignment.assignment_id}
-                        to={`/assignment/${assignment.assignment_id}`}
-                        className="flex items-center space-x-2 bg-gray-100 p-2 rounded hover:bg-gray-200 transition-colors"
-                      >
-                        <span>{assignment.title}</span>
-                      </Link>
+                      <div className='flex w-full'>
+                        <Link
+                          key={assignment.assignment_id}
+                          to={`/assignment/${assignment.assignment_id}`}
+                          className="flex items-center space-x-2 bg-gray-100 p-2 rounded hover:bg-gray-200 transition-colors w-full"
+                        >
+                          <span>{assignment.title}</span>
+                        </Link>
+                        {(currentUser.role === 'INSTRUCTOR' || currentUser.role === 'ADMIN') && 
+                          <Button variant="ghost" size="icon" className="text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-none" onClick={() => navigate(`/assignment/${assignment.assignment_id}/edit`)} data-testid="edit-button">
+                            <Pencil className="h-5 w-5" />
+                          </Button>
+                        }
+                      </div>
                     ))}
                 </CardContent>
               </Card>

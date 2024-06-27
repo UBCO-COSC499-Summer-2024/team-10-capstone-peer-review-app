@@ -1,5 +1,8 @@
 import express from "express";
 import {
+
+  getClassesByInstructor,
+
   getClassById,
   createClass,
   updateClass,
@@ -35,6 +38,10 @@ import { ensureUser, ensureInstructor, ensureAdmin } from "../middleware/ensureU
 const router = express.Router();
 
 // Class Routes
+
+router.route("/my-classes")
+  .get(ensureUser, ensureInstructor, getClassesByInstructor);
+
 router.route("/create")
   .post(ensureUser, ensureInstructor, createClass);
 

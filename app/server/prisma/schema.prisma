@@ -82,7 +82,7 @@ model Class {
   classSize    Int?          @default(0)
   groups       Group[]
   usersInClass UserInClass[]
-  Assignments  Assignment[]
+  assignments  Assignment[]
   instructor   User          @relation("InstructorClasses", fields: [instructorId], references: [userId]) // Only one instructor per class 
 }
 
@@ -115,7 +115,7 @@ model Assignment {
   dueDate       DateTime
   maxSumissions Int                   @default(1)
   // fileType      SubmissionType
-  group         Group[]             // Group assignment or not
+  isGroup       Boolean             @default(false)// Group assignment or not
   classes       Class                 @relation(fields: [classId], references: [classId])
   rubric        RubricForAssignment[] // An assignment can have multiple rubrics, I.E a group review rubric vs an assignment rubric   
   submissions   Submission[]
@@ -125,15 +125,15 @@ model Assignment {
 
 model Group {
   groupId          String            @id @default(uuid())
-  assignmentId     String
+  //assignmentId     String
   classId          String
   groupName        String
   groupDescription String?
   groupSize        Int               @default(0)
-  assignment       Assignment        @relation(fields: [assignmentId], references: [assignmentId])
+  //assignment       Assignment        @relation(fields: [assignmentId], references: [assignmentId])
   class            Class             @relation(fields: [classId], references: [classId])
-  students         User[] // Students in the group
-  //GroupSubmissions Submission[] // Submissions from the group
+  students         User[]          // Students in the group
+  submissions      Submission[] // Submissions from the group
 }
 
 // model StudentInGroup {
@@ -154,14 +154,16 @@ model Group {
 model Submission {
   submissionId       String     @id @default(uuid())
   assignmentId       String
-  submitterId        String
+  submitterId        String?
+  submitterGroupId   String?
   createdAt          DateTime   @default(now())
   updatedAt          DateTime   @updatedAt
   sumbissionFilePath String
   // sumbissionType     SubmissionType // Either a File or a URL, we need to discuss file storage options
   finalGrade         Int? // Final grade of the Submission, default to the instructor grade?
   assignment         Assignment @relation(fields: [assignmentId], references: [assignmentId])
-  submitter          User       @relation(fields: [submitterId], references: [userId])
+  submitter          User?       @relation(fields: [submitterId], references: [userId])
+  submitterGroup     Group?      @relation(fields: [submitterGroupId], references: [groupId])
   reviews            Review[]
 }
 
@@ -206,9 +208,11 @@ model Review {
   revieweeId      String
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
+  isGroup         Boolean          @default(false)
+  isPeerReview    Boolean          @default(false)
   reviewGrade     Int // Total grade of the review = sum of reviewerCriteronGrades
   submission      Submission       @relation(fields: [submissionId], references: [submissionId])
-  reviewer        User             @relation("Reviewer", fields: [reviewerId], references: [userId])
+  reviewer        User?             @relation("Reviewer", fields: [reviewerId], references: [userId])
   reviewee        User             @relation("Reviewee", fields: [revieweeId], references: [userId])
   criterionGrades CriterionGrade[]
 }

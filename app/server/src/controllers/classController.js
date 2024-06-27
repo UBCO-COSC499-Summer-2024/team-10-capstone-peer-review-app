@@ -4,6 +4,15 @@ import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 
 // Controller methods for class operations
 
+export const getClassesByInstructor = asyncErrorHandler(async (req, res) => {
+	const instructorId = req.user.userId;
+	const classes = await classService.getClassesByInstructor(instructorId);
+	return res.status(200).json({
+		status: "Success",
+		data: classes
+	});
+});
+
 export const getClassById = asyncErrorHandler(async (req, res) => {
 	const classId = req.params.classId;
 	const classData = await classService.getClassById(classId);
@@ -268,6 +277,7 @@ export const getCriterionGrade = asyncErrorHandler(async (req, res) => {
 
 // Export all controller methods
 export default {
+	getClassesByInstructor,
 	getClassById,
 	createClass,
 	updateClass,

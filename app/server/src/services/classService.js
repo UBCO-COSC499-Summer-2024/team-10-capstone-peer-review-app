@@ -2,6 +2,20 @@ import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
 
 // class operations
+
+const getClassesByInstructor = async (instructorId) => {
+	try {
+		const classes = await prisma.class.findMany({
+			where: {
+				instructorId: instructorId
+			}
+		});
+		return classes;
+	} catch (error) {
+		throw new apiError("Failed to retrieve classes", 500);
+	}
+};
+
 const getClassById = async (classId) => {
 	try {
 		const classData = await prisma.class.findUnique({
@@ -608,6 +622,7 @@ const deleteCriterionForRubric = async (criterionId) => {
 
 
 export default {
+	getClassesByInstructor,
 	getClassById,
 	createClass,
 	updateClass,

@@ -70,7 +70,10 @@ export async function loginUser(email, password) {
 			throw new apiError("Please verify your email before logging in", 400);
 		}
 		if (!user.isRoleActivated) {
-			throw new apiError("Please wait for your role to be approve...", 400);
+			throw new apiError(
+				"Your role needs to be approved before logging in.",
+				400
+			);
 		}
 		return user;
 	} catch (error) {

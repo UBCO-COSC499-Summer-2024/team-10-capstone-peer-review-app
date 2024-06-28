@@ -42,7 +42,7 @@ const FormSchema = z.object({
   rubric: z.array(z.object({
     criteria: z.string().min(1, "Criteria is required"),
     ratings: z.string().min(1, "Ratings is required"),
-    points: z.string().min(1, "Points is required"),
+    points: z.string().min(1, "Points is required").regex(/^\d+$/, "Points must be a numeric value"),
   })).min(1, "At least one rubric row is required."),
   file: z.any().optional(),
 });
@@ -278,7 +278,7 @@ const AssignmentCreation = () => {
                     <TableHead>Criteria</TableHead>
                     <TableHead>Ratings</TableHead>
                     <TableHead>Points</TableHead>
-                    <TableHead>Action</TableHead>
+                    <TableHead></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -312,23 +312,27 @@ const AssignmentCreation = () => {
                           name={`rubric.${index}.points`}
                           render={({ field }) => (
                             <FormControl>
-                              <Input {...field} placeholder="Points" />
+                              <Input {...field} placeholder="Points" type="number" className="hide-arrows"/>
                             </FormControl>
                           )}
                         />
                       </TableCell>
-                      <TableCell>
-                        <Button type="button" variant="outline" onClick={() => removeRow(index)}>
-                          <MinusCircle className="mr-2 h-4 w-4" /> Remove
-                        </Button>
+                      <TableCell className='flex flex-row space-x-2'>
+                        {fields.length > 1 && (
+                          <Button type="button" variant="outline" onClick={() => removeRow(index)}>
+                            <MinusCircle className="h-4 w-4" />
+                          </Button>
+                        )}
+                        {index === fields.length - 1 && (
+                          <Button type="button" variant="outline" onClick={addRow}>
+                            <Plus className="h-4 w-4" />
+                          </Button>
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
-              <Button type="button" variant="outline" onClick={addRow} className="mt-4">
-                <Plus className="mr-2 h-4 w-4" /> Add Row
-              </Button>
             </div>
             <FormItem>
               <FormLabel htmlFor="file-upload">Upload File</FormLabel>

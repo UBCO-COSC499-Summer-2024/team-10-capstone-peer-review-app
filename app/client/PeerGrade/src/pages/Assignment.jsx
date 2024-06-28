@@ -44,6 +44,11 @@ const Assignment = () => {
               <Card className="mb-8">
                 <CardHeader>
                   <div className='flex w-full items-center'>
+                    <div className="flex rounded-lg mr-2">
+                      <Button onClick={handleBackClick} variant='ghost' className='h-8 w-8'>
+                        <ArrowLeft className="h-5 w-5" />
+                      </Button>
+                    </div>
                     <CardTitle className="text-lg font-bold w-full">{assignment.title}</CardTitle>
                   </div>
                 </CardHeader>

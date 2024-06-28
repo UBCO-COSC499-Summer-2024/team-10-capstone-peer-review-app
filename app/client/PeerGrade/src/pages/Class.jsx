@@ -7,7 +7,6 @@ import {
   MenubarMenu,
   MenubarTrigger,
 } from "@/components/ui/menubar";
-import { Pencil } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Grades from './classNav/Grades';
 import Groups from './classNav/Groups';
@@ -68,11 +67,6 @@ const Class = () => {
                         >
                           <span>{assignment.title}</span>
                         </Link>
-                        {(currentUser.role === 'INSTRUCTOR' || currentUser.role === 'ADMIN') && 
-                          <Button variant="ghost" size="icon" className="text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-none" onClick={() => navigate(`/assignment/${assignment.assignment_id}/edit`)} data-testid="edit-button">
-                            <Pencil className="h-5 w-5" />
-                          </Button>
-                        }
                       </div>
                     ))}
                 </CardContent>

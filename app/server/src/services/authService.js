@@ -273,7 +273,7 @@ export async function updateRoleRequestStatus(roleRequestId, status) {
 				});
 				await prisma.user.update({
 					where: { userId: roleRequest.userId },
-					data: { isRoleVerified: false }
+					data: { isRoleActivated: false }
 				});
 				break;
 			}
@@ -305,22 +305,21 @@ export async function applyForNewRoleRequest(email, role) {
 		if (error instanceof apiError) {
 			throw error;
 		} else {
-			throw new apiError("Error applying for new role request", 500);
+			throw error;
 		}
 	}
 }
 
 export async function approveRoleRequest(roleRequestId) {
-	try {
-		const roleRequest = await prisma.roleRequest.update({
-			where: { roleRequestId: roleRequestId },
-			data: { status: "APPROVED" }
-		});
-		const user = await prisma.user.update({
-			where: { userId: roleRequest.userId },
-			data: { isRoleVerified: true }
-		});
-		const htmlContent = `
+	const roleRequest = await prisma.roleRequest.update({
+		where: { roleRequestId: roleRequestId },
+		data: { status: "APPROVED" }
+	});
+	const user = await prisma.user.update({
+		where: { userId: roleRequest.userId },
+		data: { isRoleActivated: true }
+	});
+	const htmlContent = `
         <html>
                 <head>
                         <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
@@ -337,20 +336,12 @@ export async function approveRoleRequest(roleRequestId) {
                         </div>
                 </body>
         </html>`;
-		await sendEmail(
-			user.email,
-			`Role Request Approval for ${user.firstname} ${user.lastname}`,
-			htmlContent
-		);
-
-		// TODO: Add logic to remove previous role requests after its been approved?
-	} catch (error) {
-		if (error instanceof apiError) {
-			throw error;
-		} else {
-			throw new apiError("Error approving role request", 500);
-		}
-	}
+	await sendEmail(
+		user.email,
+		`Role Request Approval for ${user.firstname} ${user.lastname}`,
+		htmlContent
+	);
+	// TODO: Add logic to remove previous role requests after its been approved?
 }
 
 export async function denyRoleRequest(requestId) {
@@ -361,7 +352,7 @@ export async function denyRoleRequest(requestId) {
 		});
 		const user = await prisma.user.update({
 			where: { userId: roleRequest.userId },
-			data: { isRoleVerified: false }
+			data: { isRoleActivated: false }
 		});
 		const htmlContent = `
         <html>
@@ -392,7 +383,7 @@ export async function denyRoleRequest(requestId) {
 		if (error instanceof apiError) {
 			throw error;
 		} else {
-			throw new apiError("Error denying role request", 500);
+			throw error;
 		}
 	}
 }

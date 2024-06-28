@@ -6,35 +6,37 @@
 
 
 ### Major features worked on in c-8
-*  
   
-*  
-  
-*  
+*  Major Use Case 10: Role Requests / Admin UI for accepting and denying role requests
+
+*  Major Use Case 16-1: Create/Manage Assignment
+
+*  Major Use Case 23: Role Requests Page for Admins
+
+*  Replacing Redux with a React Context based system for the session to persist even after refreshing
   
 
 ### Major features completed in c-8
-*  
-  
-*  
-  
-*  
+
+*  None
   
 
 ### Major features to work on for c-9
-*  
+
+*  Major Use Case 23: Role Requests Page for Admins
+
+*  Major Use Case 16-1: Create/Manage Assignment - linking the UI to the backend
   
-*  
-  
-*  
+*  Major Use Case 10: Role Requests / Admin UI for accepting and denying role requests
   
 
 ### Team Issues and Hurdles for c-8
-*  
+
+* 
+
+* 
   
-*  
-  
-*  
+* 
   
 
 ### Clockify Dashboard for this Week

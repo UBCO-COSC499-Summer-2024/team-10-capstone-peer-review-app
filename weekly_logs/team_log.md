@@ -32,7 +32,7 @@
   
 
 #### Back-end Testing for c-8
-![Burn-Up Chart for c-8](./team_log_images/back_end_tests/back_end_tests_c8.png)  
+![Burn-Up Chart for c-8](./team_log_images/back_end_tests/back_end_test_c8.png)  
   
   
   

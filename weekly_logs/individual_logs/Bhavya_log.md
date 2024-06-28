@@ -1,4 +1,90 @@
 
+# Bhavya's Log for Cycle 9
+
+
+## Tuesday, June 25, 2024, 05:21 PM - Thursday, June 27, 2024, 05:21 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[131](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/131)**: Major Use Case 16-1: Create/Manage Assignment  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Create a Group for an Assignment  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[125](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/125)**: Major Use Case 10: Requests to Become Instructor / Admin  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[114](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/114)**: Instructor Api Endpoints  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[97](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/97)**: DB tables abstraction  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: database 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[88](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/88)**: Integrate Enroll Request in Classes  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Instructors Rubrics/Criterion API endpoints** *(Total duration: 2.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 26, 2024, 10:08 PM - Wednesday, June 26, 2024, 11:29 PM *(1.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, June 25, 2024, 11:05 PM - Wednesday, June 26, 2024, 12:33 AM *(1.5 hours)*  
+  
+
+## All Features worked on this cycle:
+
+## Features completed on this cycle:
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[114](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/114)**: Instructor Api Endpoints  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[97](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/97)**: DB tables abstraction  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[149](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/149)**: implement JOI for api-data validation  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[132](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/132)**: Major Use Case 17: View Class Dashboard  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[131](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/131)**: Major Use Case 16-1: Create/Manage Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[130](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/130)**: Major Use Case 15: Manage Class  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Create a Group for an Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[125](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/125)**: Major Use Case 10: Requests to Become Instructor / Admin  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[88](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/88)**: Integrate Enroll Request in Classes  
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Bhavya's Log for Cycle 7
 
 

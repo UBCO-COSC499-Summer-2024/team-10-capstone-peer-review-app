@@ -1,4 +1,162 @@
 
+# Josh's Log for Cycle 9
+
+
+## Tuesday, June 25, 2024, 05:21 PM - Thursday, June 27, 2024, 05:21 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[176](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/176)**: Refactor forgot password to work with UI  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[169](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/169)**: Refactor envConfig to accomodate commonJS   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[168](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/168)**: Requests Model / Api Endpoints for Signups, Backend Tests, and some front-end integrations  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: testing, type: database, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[150](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/150)**: Integrate Api calls with UI, Create Redux Slices for api calls (For this week: User Info, Auth, Class info, Assignment? Maybe)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Create a Group for an Assignment  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[125](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/125)**: Major Use Case 10: Requests to Become Instructor / Admin  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[113](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/113)**: Forgot Password / Email Verification  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[112](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/112)**: debug session management and cookie parsing when accessing instructors route  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug, type: api 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[97](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/97)**: DB tables abstraction  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: database 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[88](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/88)**: Integrate Enroll Request in Classes  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[85](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/85)**: Refactor Disc PR notifications to accommodate ready for review from draft PRs, not necessarily assigning   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Manually testing role requests, adding emails to approve / deny role requests** *(Total duration: 0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 27, 2024, 05:13 PM - Ongoing *(Ongoing)*  
+  
+&nbsp; &nbsp; :watch: **Manually testing role requests, adding emails responses to approve / deny role requests** *(Total duration: 0.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 27, 2024, 04:22 PM - Thursday, June 27, 2024, 05:12 PM *(0.8 hours)*  
+  
+&nbsp; &nbsp; :watch: **Reviewing Prs, Looking into solutions for global state** *(Total duration: 0.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 27, 2024, 04:20 PM - Thursday, June 27, 2024, 04:21 PM *(0.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 27, 2024, 03:33 PM - Thursday, June 27, 2024, 04:19 PM *(0.8 hours)*  
+  
+&nbsp; &nbsp; :watch: **Debugging login / register** *(Total duration: 0.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 27, 2024, 12:53 PM - Thursday, June 27, 2024, 01:30 PM *(0.6 hours)*  
+  
+&nbsp; &nbsp; :watch: **testing model for role requests** *(Total duration: 1.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 27, 2024, 11:38 AM - Thursday, June 27, 2024, 12:53 PM *(1.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **Drafting model for role / enroll requests** *(Total duration: 1.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 26, 2024, 05:41 PM - Wednesday, June 26, 2024, 06:50 PM *(1.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **Doing redux tutorial** *(Total duration: 0.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 26, 2024, 12:22 PM - Wednesday, June 26, 2024, 12:52 PM *(0.5 hours)*  
+  
+&nbsp; &nbsp; :watch: **Redux Persist for persisting userData on the session storage** *(Total duration: 0.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 26, 2024, 12:05 PM - Wednesday, June 26, 2024, 12:21 PM *(0.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **Teamlogs / dashboard** *(Total duration: 0.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 26, 2024, 08:50 AM - Wednesday, June 26, 2024, 09:35 AM *(0.7 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[173](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/173)**: Role Requests Model / Api endpoints, EnvConfig fixes, and More tests  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[171](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/171)**: Logs review   
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[170](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/170)**: Role Requests, envConfig Fixes, and Session Management / Persistence w/ Redux  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[171](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/171)**: Logs review   
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[150](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/150)**: Integrate Api calls with UI, Create Redux Slices for api calls (For this week: User Info, Auth, Class info, Assignment? Maybe)  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[113](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/113)**: Forgot Password / Email Verification  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[112](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/112)**: debug session management and cookie parsing when accessing instructors route  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[97](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/97)**: DB tables abstraction  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[85](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/85)**: Refactor Disc PR notifications to accommodate ready for review from draft PRs, not necessarily assigning   
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[176](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/176)**: Refactor forgot password to work with UI  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[169](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/169)**: Refactor envConfig to accomodate commonJS   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[168](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/168)**: Requests Model / Api Endpoints for Signups, Backend Tests, and some front-end integrations  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[160](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/160)**: Reorganize route names and api-endpoints.   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[149](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/149)**: implement JOI for api-data validation  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[130](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/130)**: Major Use Case 15: Manage Class  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Create a Group for an Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[125](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/125)**: Major Use Case 10: Requests to Become Instructor / Admin  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[95](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/95)**: Add tests to the backend, integrate into drone  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[88](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/88)**: Integrate Enroll Request in Classes  
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Josh's Log for Cycle 7
 
 

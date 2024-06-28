@@ -30,6 +30,13 @@
   
 
 ## Time entries from Clockify on this cycle:
+
+&nbsp; &nbsp; :watch: **Working on Edit Assignment UI** *(Total duration: 5.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 27, 2024, 08:43 PM - Wednesday, June 27, 2024, 09:55 PM *(1.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 27, 2024, 04:34 PM - Thursday, June 27, 2024, 08:25 PM *(3.8 hours)*  
+
 &nbsp; &nbsp; :watch: **Linking Manage Class w/ Backend** *(Total duration: 6.8 hours)*  
   
 &nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 26, 2024, 10:45 PM - Thursday, June 27, 2024, 02:34 AM *(3.8 hours)*  
@@ -39,7 +46,7 @@
 
 ## All Features worked on this cycle:
 
-## Features completed on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[178](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/178)**: Add base Edit Assignment UI
 
 ## Completed tasks:
 &nbsp; &nbsp; :purple_circle: **Issue-[162](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/162)**: Make New Account registration work with Verification e-mail  
@@ -68,16 +75,17 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Slowly catching up, although not at the pace I wanted to. Running into some holdups with testing elements actually communicating with the backend.
+* Starting to link elements to the backend! Linked ManageClass to the backend during this cycle.
+* Edit Classes UI was taken up by Mahir so I'm working on other parts (that were assigned to me).
+* This cycle was only two days but work should be getting much faster.
 
 ## Goals for next cycle
-* 
-* 
-* 
-  
-  
+* Get unit testing finally up and running for the components that are now linked to the backend.
+* Develop more UI (at a much faster pace) this week-long cycle. We plan to get the MVP done by this cycle (I believe I can push to get my parts done, especially with me having just this to focus on (for the most part)).
+* Get (most) of the tests up and running. I'm expecting to not have a 100% of the testing done, but most of it.
+
+
 
 # Abdul's Log for Cycle 7
 

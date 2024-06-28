@@ -14,7 +14,7 @@ async function checkUserByEmail(email) {
 }
 
 async function checkRequestByEmail(email) {
-	return await prisma.roleRequest.findUnique({ where: { email: email } });
+	return await prisma.roleRequest.findUnique({ where: { email } });
 }
 
 // AUTHENTICATION RELATED DATABASE SERVICES
@@ -270,6 +270,10 @@ export async function updateRoleRequestStatus(roleRequestId, status) {
 }
 
 export async function applyForNewRoleRequest(email, role) {
+	const user = await checkUserByEmail(email);
+	if (!user) {
+		throw new apiError("User not found", 404);
+	}
 	const existingRequest = await checkRequestByEmail(email);
 	if (existingRequest) {
 		throw new apiError(
@@ -280,7 +284,7 @@ export async function applyForNewRoleRequest(email, role) {
 	try {
 		await prisma.roleRequest.create({
 			data: {
-				userId: userId,
+				userId: user.userId,
 				requestedRole: role,
 				status: "PENDING"
 			}
@@ -328,10 +332,10 @@ export async function approveRoleRequest(roleRequestId) {
 	// TODO: Add logic to remove previous role requests after its been approved?
 }
 
-export async function denyRoleRequest(requestId) {
+export async function denyRoleRequest(roleRequestId) {
 	try {
 		const roleRequest = await prisma.roleRequest.update({
-			where: { requestId: requestId },
+			where: { roleRequestId: roleRequestId },
 			data: { status: "DENIED" }
 		});
 		const user = await prisma.user.update({

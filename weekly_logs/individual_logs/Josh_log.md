@@ -1,5 +1,5 @@
 
-# Josh's Log for Cycle 9
+# Josh's Log for Cycle 8
 
 
 ## Tuesday, June 25, 2024, 05:21 PM - Thursday, June 27, 2024, 05:21 PM
@@ -146,17 +146,20 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* In terms of goals from last cycle, I was able to complete the roleRequest model with prisma services, api controllers, and api routes. I also added some extra
+  mock tests in the authService tests to test the database operations and errors. 
+* Mahir and I were discussing the use-cases of redux and its complexities and learning curve since none of us have really used it extensively, so Mahir decided it was
+  probably a better idea to ditch it. This set back a bit in work since I was drafting ideas to deal with session storage / userId global state storage. React has a hook for this
+  kind of global state so I am going to work in this today (Friday June 28th) and hopefully have it all set-up and working.
+* I haven't started reorganizing the api calls on the front-end so I would like to get to that either later today or tomorrow depending on how long setting up session storage / user Context takes
+* I am honestly a little concerned on our progress in the last week, I know its been harder to get some things done due to Finals occuring for our team-mates so I hope we get around 45% of our features in
+  by Wednesday. 
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Set up user context / session management on the front-end
+* Re-organize / refactor api calls on the front-end. 
+* Complete other ui / api integrations, Ideally link up the role-requests to work as well with admins.
   
-  
-
 # Josh's Log for Cycle 7
 
 

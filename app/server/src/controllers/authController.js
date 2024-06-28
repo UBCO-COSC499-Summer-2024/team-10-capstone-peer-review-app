@@ -39,12 +39,13 @@ export const logout = asyncErrorHandler(async (req, res, next) => {
 		return next(new apiError("You are not logged in!", 400));
 	}
 	req.logout(() => {
+		// Destroy session after logging out
 		req.session.destroy((err) => {
 			if (err) {
 				return next(err);
 			}
-			// Clear the cookie on the client side by setting the expiration date to the past
-			// res.clearCookie("connect.sid", { path: "/" }); // Adjust the cookie name if different
+			// Clear the cookie on the client side browser
+			res.clearCookie("connect.sid");
 			res.status(200).json({
 				status: "Success",
 				message: "You have been logged out!"

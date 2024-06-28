@@ -14,11 +14,7 @@ async function checkUserByEmail(email) {
 }
 
 async function checkRequestByEmail(email) {
-	try {
-		return await prisma.roleRequest.findUnique({ where: { email: email } });
-	} catch (error) {
-		return new apiError(`No role request found for: ${email}`, 404);
-	}
+	return await prisma.roleRequest.findUnique({ where: { email: email } });
 }
 
 // AUTHENTICATION RELATED DATABASE SERVICES
@@ -55,7 +51,7 @@ export async function registerUser(userDetails) {
 		if (error instanceof apiError) {
 			throw error;
 		} else {
-			throw new apiError("Error registering user", 500);
+			throw error;
 		}
 	}
 }
@@ -84,7 +80,7 @@ export async function loginUser(email, password) {
 		if (error instanceof apiError) {
 			throw error;
 		} else {
-			throw new apiError("Error logging in user", 500);
+			throw error;
 		}
 	}
 }
@@ -130,7 +126,7 @@ export async function sendVerificationEmail(email) {
 		if (error instanceof apiError) {
 			throw error;
 		} else {
-			throw new apiError("Error sending verification email", 500);
+			throw error;
 		}
 	}
 }
@@ -155,7 +151,7 @@ export async function resetPassword(token, newPassword) {
 		if (error instanceof apiError) {
 			throw error;
 		} else {
-			throw new apiError("Error resetting password", 500);
+			throw error;
 		}
 	}
 }
@@ -197,7 +193,7 @@ export async function sendForgotPasswordEmail(email) {
 		if (error instanceof apiError) {
 			throw error;
 		} else {
-			throw new apiError("Error sending forgot password email", 500);
+			throw error;
 		}
 	}
 }
@@ -217,32 +213,24 @@ export async function confirmEmail(token) {
 		if (error instanceof apiError) {
 			throw error;
 		} else {
-			throw new apiError("Error confirming email", 500);
+			throw error;
 		}
 	}
 }
 
 async function createRoleRequest(userId, role) {
-	try {
-		await prisma.roleRequest.create({
-			data: {
-				userId: userId,
-				roleRequested: role,
-				status: "PENDING"
-			}
-		});
-	} catch (error) {
-		throw new apiError("Error creating role request", 500);
-	}
+	await prisma.roleRequest.create({
+		data: {
+			userId: userId,
+			roleRequested: role,
+			status: "PENDING"
+		}
+	});
 }
 
 export async function getAllRoleRequests() {
-	try {
-		const requests = await prisma.roleRequest.findMany();
-		return requests;
-	} catch (error) {
-		throw new apiError("Error fetching role requests", 500);
-	}
+	const requests = await prisma.roleRequest.findMany();
+	return requests;
 }
 
 export async function deleteRoleRequest(roleRequestId) {
@@ -258,30 +246,26 @@ export async function deleteRoleRequest(roleRequestId) {
 }
 
 export async function updateRoleRequestStatus(roleRequestId, status) {
-	try {
-		switch (status) {
-			case "APPROVED":
-				await approveRoleRequest(roleRequestId);
-				break;
-			case "DENIED":
-				await denyRoleRequest(roleRequestId);
-				break;
-			case "PENDING": {
-				const roleRequest = await prisma.roleRequest.update({
-					where: { roleRequestId: roleRequestId },
-					data: { status: status }
-				});
-				await prisma.user.update({
-					where: { userId: roleRequest.userId },
-					data: { isRoleActivated: false }
-				});
-				break;
-			}
-			default:
-				break;
+	switch (status) {
+		case "APPROVED":
+			await approveRoleRequest(roleRequestId);
+			break;
+		case "DENIED":
+			await denyRoleRequest(roleRequestId);
+			break;
+		case "PENDING": {
+			const roleRequest = await prisma.roleRequest.update({
+				where: { roleRequestId: roleRequestId },
+				data: { status: status }
+			});
+			await prisma.user.update({
+				where: { userId: roleRequest.userId },
+				data: { isRoleActivated: false }
+			});
+			break;
 		}
-	} catch (error) {
-		throw new apiError("Error updating role request status", 500);
+		default:
+			break;
 	}
 }
 

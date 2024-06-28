@@ -2,7 +2,7 @@
 # Abdul's Log for Cycle 9
 
 
-## Tuesday, June 25, 2024, 05:21 PM - Thursday, June 27, 2024, 05:21 PM
+## Tuesday, June 25, 2024, 05:21 PM - Friday, June 28, 2024, 02:57 PM
 
 
 ## Tasks worked on this cycle:
@@ -31,11 +31,13 @@
 
 ## Time entries from Clockify on this cycle:
 
-&nbsp; &nbsp; :watch: **Working on Edit Assignment UI** *(Total duration: 5.0 hours)*  
+&nbsp; &nbsp; :watch: **Working on Edit Assignment UI** *(Total duration: 7.75 hours)*  
   
-&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 27, 2024, 08:43 PM - Wednesday, June 27, 2024, 09:55 PM *(1.2 hours)*  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, June 28, 2024, 12:13 AM - Friday, June 28, 2024, 02:57 AM *(2.75 hours)*  
+
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 27, 2024, 08:43 PM - Thursday, June 27, 2024, 09:55 PM *(1.2 hours)*  
   
-&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 27, 2024, 04:34 PM - Thursday, June 27, 2024, 08:25 PM *(3.8 hours)*  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 27, 2024, 04:34 PM - Thursday, June 27, 2024, 08:25 PM *(3.8 hours)*  
 
 &nbsp; &nbsp; :watch: **Linking Manage Class w/ Backend** *(Total duration: 6.8 hours)*  
   

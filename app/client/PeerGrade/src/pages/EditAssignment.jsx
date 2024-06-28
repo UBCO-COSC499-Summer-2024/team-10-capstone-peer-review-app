@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { format } from "date-fns";
-import { Calendar as CalendarIcon, ChevronDown as ChevronDownIcon, ChevronUp as ChevronUpIcon, Check as CheckIcon, Upload } from "lucide-react";
+import { Calendar as CalendarIcon, ChevronDown as ChevronDownIcon, ChevronUp as ChevronUpIcon, Check as CheckIcon, Upload, Plus, MinusCircle } from "lucide-react";
 
 import { cn } from "@/utils/utils";
 import { Input } from '@/components/ui/input';
@@ -22,6 +22,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 import { toast } from "@/components/ui/use-toast";
 import { assignment as assignmentsData } from '@/utils/dbData';
 
@@ -32,11 +40,15 @@ const FormSchema = z.object({
   dueDate: z.date({
     required_error: "Due date is required",
   }),
-  rubric: z.string().optional(),
+  rubric: z.array(z.object({
+    criteria: z.string().min(1, "Criteria is required"),
+    ratings: z.string().min(1, "Ratings is required"),
+    points: z.string().min(1, "Points is required"),
+  })).min(1, "At least one rubric row is required."),
   file: z.any().optional(),
 });
 
-const AssignmentEdit = () => {
+const EditAssignment = () => {
   const { assignmentId } = useParams();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
@@ -50,9 +62,14 @@ const AssignmentEdit = () => {
       description: "",
       reviewOption: "",
       dueDate: null,
-      rubric: "",
+      rubric: [{"criteria": "", "ratings": "", "points": ""}],
       file: null,
     }
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "rubric"
   });
 
   const dropdown_options = [
@@ -67,19 +84,6 @@ const AssignmentEdit = () => {
   ];
 
   useEffect(() => {
-    // Fetch the current assignment details from the backend and populate the form
-    // fetch(`http://localhost:3000/api/assignments/${assignmentId}`)
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     form.setValue("title", data.title);
-    //     form.setValue("description", data.description);
-    //     form.setValue("reviewOption", data.reviewOption);
-    //     form.setValue("dueDate", new Date(data.dueDate));
-    //     form.setValue("rubric", data.rubric);
-    //     setSelectedFileName(data.file);
-    //   })
-    //   .catch(error => console.error('Error fetching assignment:', error));
-
     // Fetch the current assignment details using the assignmentId and populate the form
     const assignmentData = assignmentsData.find(a => a.assignment_id === parseInt(assignmentId));
     if (assignmentData) {
@@ -87,7 +91,7 @@ const AssignmentEdit = () => {
       form.setValue("description", assignmentData.description);
       form.setValue("reviewOption", assignmentData.evaluation_type);
       form.setValue("dueDate", new Date(assignmentData.due_date));
-      form.setValue("rubric", assignmentData.instructions);
+      form.setValue("rubric", assignmentData.instructions || [{ criteria: "", ratings: "", points: "" }]);
       setSelectedFileName(`Assignment.${assignmentData.file_type}`);
     }
   }, [assignmentId, form]);
@@ -114,9 +118,16 @@ const AssignmentEdit = () => {
     });
 
     // Update the assignment with the new data
-    // This is where you would send a request to your backend to update the assignment
     console.log('Updated assignment data:', simplifiedData);
   };
+
+  const addRow = useCallback(() => {
+    append({ criteria: "", ratings: "", points: "" });
+  }, [append]);
+
+  const removeRow = useCallback((index) => {
+    remove(index);
+  }, [remove]);
 
   return (
     <div className='flex justify-left flex-row p-4'>
@@ -240,46 +251,84 @@ const AssignmentEdit = () => {
                       />
                     </PopoverContent>
                   </Popover>
-                  <FormDescription>The assignment will be due at 11:59 PM on the selected date. The assignment will then be open for peer review right after the due date.</FormDescription>
+                  <FormDescription>The assignment will be due at 11:59 PM on the selected date.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="rubric"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Rubric Details</FormLabel>
-                  <FormControl>
-                    <Textarea {...field} />
-                  </FormControl>
-                  <FormDescription>This is the text that will contain the assignment's rubric details.</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormItem>
-              <FormLabel htmlFor="file-upload">Upload File</FormLabel>
+            <div>
+              <FormLabel>Rubric</FormLabel>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Criteria</TableHead>
+                    <TableHead>Ratings</TableHead>
+                    <TableHead>Points</TableHead>
+                    <TableHead>Action</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {fields.map((item, index) => (
+                    <TableRow key={item.id}>
+                      <TableCell>
+                        <FormField
+                          control={form.control}
+                          name={`rubric.${index}.criteria`}
+                          render={({ field }) => (
+                            <FormControl>
+                              <Input {...field} placeholder="Criteria" />
+                            </FormControl>
+                          )}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <FormField
+                          control={form.control}
+                          name={`rubric.${index}.ratings`}
+                          render={({ field }) => (
+                            <FormControl>
+                              <Input {...field} placeholder="Ratings" />
+                            </FormControl>
+                          )}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <FormField
+                          control={form.control}
+                          name={`rubric.${index}.points`}
+                          render={({ field }) => (
+                            <FormControl>
+                              <Input {...field} placeholder="Points" />
+                            </FormControl>
+                          )}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Button type="button" variant="outline" onClick={() => removeRow(index)}>
+                          <MinusCircle className="mr-2 h-4 w-4" /> Remove
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <Button type="button" variant="outline" onClick={addRow} className="mt-4">
+                <Plus className="mr-2 h-4 w-4" /> Add Row
+              </Button>
+            </div>
+            <div>
+              <FormLabel>Upload File</FormLabel>
               <input
                 type="file"
-                id="file-upload"
                 ref={fileInputRef}
-                accept=".pdf"
-                style={{ display: 'none' }}
                 onChange={handleFileChange}
+                className="hidden"
               />
-              <div className="flex items-center">
-                <Button type="button" className='bg-white mr-2' variant='outline' onClick={() => fileInputRef.current.click()}>
-                  <Upload className='mr-2 h-4 w-4 shrink-0 opacity-50'/>
-                  Upload File
-                </Button>
-                {selectedFileName && <span>{selectedFileName}</span>}
-              </div>
-              <FormDescription>Attach any PDF files related to the assignment.</FormDescription>
-              <FormMessage />
-            </FormItem>
-            <Button type="submit" className='bg-primary text-white'>Submit</Button>
+              <Button type="button" variant="outline" onClick={() => fileInputRef.current.click()}>
+                <Upload className="mr-2 h-4 w-4" /> {selectedFileName && <span>{selectedFileName}</span>}
+              </Button>
+            </div>
+            <Button type="submit">Submit</Button>
           </form>
         </Form>
       </div>
@@ -287,4 +336,4 @@ const AssignmentEdit = () => {
   );
 };
 
-export default AssignmentEdit;
+export default EditAssignment;

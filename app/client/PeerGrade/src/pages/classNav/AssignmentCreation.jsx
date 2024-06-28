@@ -1,10 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { format } from "date-fns";
-import { Calendar as CalendarIcon, ChevronDown as ChevronDownIcon, ChevronUp as ChevronUpIcon, Check as CheckIcon, Upload } from "lucide-react";
+import { Calendar as CalendarIcon, ChevronDown as ChevronDownIcon, ChevronUp as ChevronUpIcon, Check as CheckIcon, Upload, Plus, MinusCircle } from "lucide-react";
 
 import { cn } from "@/utils/utils";
 import { Input } from '@/components/ui/input';
@@ -22,6 +22,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 import { toast } from "@/components/ui/use-toast";
 
 const FormSchema = z.object({
@@ -31,7 +39,11 @@ const FormSchema = z.object({
   dueDate: z.date({
     required_error: "Due date is required",
   }),
-  rubric: z.string().optional(),
+  rubric: z.array(z.object({
+    criteria: z.string().min(1, "Criteria is required"),
+    ratings: z.string().min(1, "Ratings is required"),
+    points: z.string().min(1, "Points is required"),
+  })).min(1, "At least one rubric row is required."),
   file: z.any().optional(),
 });
 
@@ -49,9 +61,14 @@ const AssignmentCreation = () => {
       description: "",
       reviewOption: "",
       dueDate: null,
-      rubric: "",
+      rubric: [{ criteria: "", ratings: "", points: "" }],
       file: null,
     }
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "rubric"
   });
 
   const dropdown_options = [
@@ -103,6 +120,7 @@ const AssignmentCreation = () => {
     //     setError(data.message);
     //   } else {
     //     toast({ title: "Welcome", description: "You have successfully logged in!", variant: "positive" });
+    //     dispatch(setCurrentUser(data.user));
     //     if(data.user.role=="ADMIN") {
     //     navigate('/admin');
     //     } else navigate('/dashboard');
@@ -112,11 +130,22 @@ const AssignmentCreation = () => {
     //   console.error('Error:', error);
     //   setError('An error occurred while logging in');
     // });
+
+    // Update the assignment with the new data
+    console.log('Updated assignment data:', simplifiedData);
   };
+
+  const addRow = useCallback(() => {
+    append({ criteria: "", ratings: "", points: "" });
+  }, [append]);
+
+  const removeRow = useCallback((index) => {
+    remove(index);
+  }, [remove]);
 
   return (
     <div className='flex justify-left flex-row p-4'>
-      <div className="lg:w-2/3">
+      <div>
         <h2 className="text-xl font-semibold mb-4">Add a New Assignment</h2>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -241,20 +270,66 @@ const AssignmentCreation = () => {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="rubric"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Rubric Details</FormLabel>
-                  <FormControl>
-                    <Textarea {...field} />
-                  </FormControl>
-                  <FormDescription>This is the text that will contain the assignment's rubric details.</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div>
+              <FormLabel>Rubric</FormLabel>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Criteria</TableHead>
+                    <TableHead>Ratings</TableHead>
+                    <TableHead>Points</TableHead>
+                    <TableHead>Action</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {fields.map((item, index) => (
+                    <TableRow key={item.id}>
+                      <TableCell>
+                        <FormField
+                          control={form.control}
+                          name={`rubric.${index}.criteria`}
+                          render={({ field }) => (
+                            <FormControl>
+                              <Input {...field} placeholder="Criteria" />
+                            </FormControl>
+                          )}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <FormField
+                          control={form.control}
+                          name={`rubric.${index}.ratings`}
+                          render={({ field }) => (
+                            <FormControl>
+                              <Input {...field} placeholder="Ratings" />
+                            </FormControl>
+                          )}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <FormField
+                          control={form.control}
+                          name={`rubric.${index}.points`}
+                          render={({ field }) => (
+                            <FormControl>
+                              <Input {...field} placeholder="Points" />
+                            </FormControl>
+                          )}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Button type="button" variant="outline" onClick={() => removeRow(index)}>
+                          <MinusCircle className="mr-2 h-4 w-4" /> Remove
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <Button type="button" variant="outline" onClick={addRow} className="mt-4">
+                <Plus className="mr-2 h-4 w-4" /> Add Row
+              </Button>
+            </div>
             <FormItem>
               <FormLabel htmlFor="file-upload">Upload File</FormLabel>
               <input

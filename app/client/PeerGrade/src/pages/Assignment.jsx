@@ -23,7 +23,7 @@ const Assignment = () => {
   }
 
   const handleBackClick = () => {
-    navigate(`/class/${assignment.class_id}`); // This will navigate the user to the previous page
+    navigate(`/class/${assignment.class_id}`);
   };
 
   // Filter submissions for the current assignment

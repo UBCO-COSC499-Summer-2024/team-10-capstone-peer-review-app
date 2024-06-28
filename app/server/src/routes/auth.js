@@ -41,16 +41,16 @@ router
 	.get(ensureUser, ensureAdmin, getAllRoleRequests);
 
 router
-	.route("/role-request/:requestId")
+	.route("/role-request/:roleRequestId")
 	.delete(ensureUser, ensureAdmin, deleteRoleRequest)
 	.put(ensureUser, ensureAdmin, updateRoleRequestStatus); // May switch to patch?
 
 router
-	.route("/role-request/approve/:requestId")
+	.route("/role-request/approve/:roleRequestId")
 	.post(ensureUser, ensureAdmin, approveRoleRequest);
 
 router
-	.route("/role-request/deny/:requestId")
+	.route("/role-request/deny/:roleRequestId")
 	.post(ensureUser, ensureAdmin, denyRoleRequest);
 
 export default router;

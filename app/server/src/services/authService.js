@@ -14,7 +14,11 @@ async function checkUserByEmail(email) {
 }
 
 async function checkRequestByEmail(email) {
-	return await prisma.roleRequest.findUnique({ where: { email: email } });
+	try {
+		return await prisma.roleRequest.findUnique({ where: { email: email } });
+	} catch (error) {
+		return new apiError(`No role request found for: ${email}`, 404);
+	}
 }
 
 // AUTHENTICATION RELATED DATABASE SERVICES
@@ -165,10 +169,25 @@ export async function sendForgotPasswordEmail(email) {
 		const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: "5m" });
 		// TODO refactor resetLink for frontend deployment
 		const resetLink = `http://localhost:5001/auth/reset-password?token=${token}`;
-		const htmlContent = `<p>You requested a password reset</p>
-		<p>Click this link to reset your password. The link will expire in 5 minutes: 
-		<a href="${resetLink}">Reset Password</a>
-		</p>`;
+		const htmlContent = `
+        <html>
+                <head>
+                        <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
+                        <style>* {font-family: "Nunito Sans", sans-serif;}</style>
+                </head>
+                <body style="background-color: #F3F4F6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;">
+                        <div style="display: flex; justify-content: center; align-items: center; max-width: 500px; margin: auto; padding: 20px;">
+                                <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); width: 100%; padding: 24px; text-align: center;">
+                                                <h3 style="font-size: 24px; font-weight: 600; color: #111827;">Password Reset Request</h3>
+                                                <p style="font-size: 14px; color: #6B7280;">You requested a password reset. Click the link below to reset your password. The link will expire in 5 minutes:</p>
+                                                <a href="${resetLink}" style="display: inline-block; background-color: #111827; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-size: 14px;">Reset Password</a>
+                                        <div style="text-align: center; padding-top: 1em;">
+                                                <p style="font-size: 14px; color: #6B7280;">If you did not request a password reset, please ignore this email.</p>
+                                        </div>
+                                </div>
+                        </div>
+                </body>
+        </html>`;
 		try {
 			await sendEmail(email, "Password Reset", htmlContent);
 		} catch (error) {
@@ -226,11 +245,11 @@ export async function getAllRoleRequests() {
 	}
 }
 
-export async function deleteRoleRequest(requestId) {
+export async function deleteRoleRequest(roleRequestId) {
 	try {
 		await prisma.roleRequest.delete({
 			where: {
-				requestId: requestId
+				roleRequestId: roleRequestId
 			}
 		});
 	} catch (error) {
@@ -238,12 +257,29 @@ export async function deleteRoleRequest(requestId) {
 	}
 }
 
-export async function updateRoleRequestStatus(requestId, status) {
+export async function updateRoleRequestStatus(roleRequestId, status) {
 	try {
-		await prisma.roleRequest.update({
-			where: { id: requestId },
-			data: { status: status }
-		});
+		switch (status) {
+			case "APPROVED":
+				await approveRoleRequest(roleRequestId);
+				break;
+			case "DENIED":
+				await denyRoleRequest(roleRequestId);
+				break;
+			case "PENDING": {
+				const roleRequest = await prisma.roleRequest.update({
+					where: { roleRequestId: roleRequestId },
+					data: { status: status }
+				});
+				await prisma.user.update({
+					where: { userId: roleRequest.userId },
+					data: { isRoleVerified: false }
+				});
+				break;
+			}
+			default:
+				break;
+		}
 	} catch (error) {
 		throw new apiError("Error updating role request status", 500);
 	}
@@ -252,7 +288,10 @@ export async function updateRoleRequestStatus(requestId, status) {
 export async function applyForNewRoleRequest(email, role) {
 	const existingRequest = await checkRequestByEmail(email);
 	if (existingRequest) {
-		throw new apiError("Your previous role request is still pending...", 400);
+		throw new apiError(
+			"Your previous role request is still exists, an admin must delete it before you can apply for a new one",
+			400
+		);
 	}
 	try {
 		await prisma.roleRequest.create({
@@ -263,25 +302,48 @@ export async function applyForNewRoleRequest(email, role) {
 			}
 		});
 	} catch (error) {
-		throw new apiError("Error applying for new role request", 500);
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Error applying for new role request", 500);
+		}
 	}
 }
 
-export async function approveRoleRequest(requestId) {
+export async function approveRoleRequest(roleRequestId) {
 	try {
-		const request = await prisma.roleRequest.update({
-			where: { requestId: requestId },
+		const roleRequest = await prisma.roleRequest.update({
+			where: { roleRequestId: roleRequestId },
 			data: { status: "APPROVED" }
 		});
 		const user = await prisma.user.update({
-			where: { userId: request.userId },
+			where: { userId: roleRequest.userId },
 			data: { isRoleVerified: true }
 		});
+		const htmlContent = `
+        <html>
+                <head>
+                        <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
+                        <style>* {font-family: "Nunito Sans", sans-serif;}</style>
+                </head>
+                <body style="background-color: #F3F4F6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;">
+                        <div style="display: flex; justify-content: center; align-items: center; max-width: 500px; margin: auto; padding: 20px;">
+                                <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); width: 100%; padding: 24px; text-align: center;">
+                                                <h3 style="font-size: 24px; font-weight: 600; color: #111827;">Role Request Approved</h3>
+                                                <p style="font-size: 14px; color: #6B7280;">Your request for the role "${roleRequest.roleRequested}" has been Approved! You can now log in.</p>
+                                        <div style="text-align: center; padding-top: 1em;">
+                                        </div>
+                                </div>
+                        </div>
+                </body>
+        </html>`;
 		await sendEmail(
 			user.email,
-			"Role Verification",
-			"Your role has been verified."
+			`Role Request Approval for ${user.firstname} ${user.lastname}`,
+			htmlContent
 		);
+
+		// TODO: Add logic to remove previous role requests after its been approved?
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
@@ -293,19 +355,39 @@ export async function approveRoleRequest(requestId) {
 
 export async function denyRoleRequest(requestId) {
 	try {
-		const request = await prisma.roleRequest.update({
+		const roleRequest = await prisma.roleRequest.update({
 			where: { requestId: requestId },
 			data: { status: "DENIED" }
 		});
 		const user = await prisma.user.update({
-			where: { userId: request.userId },
+			where: { userId: roleRequest.userId },
 			data: { isRoleVerified: false }
 		});
+		const htmlContent = `
+        <html>
+                <head>
+                        <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
+                        <style>* {font-family: "Nunito Sans", sans-serif;}</style>
+                </head>
+                <body style="background-color: #F3F4F6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;">
+                        <div style="display: flex; justify-content: center; align-items: center; max-width: 500px; margin: auto; padding: 20px;">
+                                <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); width: 100%; padding: 24px; text-align: center;">
+                                                <h3 style="font-size: 24px; font-weight: 600; color: #111827;">Role Request Denied</h3>
+                                                <p style="font-size: 14px; color: #6B7280;">Your request for the role "${roleRequest.roleRequested}" has been Denied. 
+												If you are indeed a valid instructor or admin, please reach out to an admin. An admin will have to delete the previous role request
+												before you can apply for a new one </p>
+                                        <div style="text-align: center; padding-top: 1em;">
+                                        </div>
+                                </div>
+                        </div>
+                </body>
+        </html>`;
 		await sendEmail(
 			user.email,
-			"Role Verification",
-			"Your role verification has been denied."
+			`Role Request Denial for ${user.firstname} ${user.lastname}`,
+			htmlContent
 		);
+		// TODO: Add logic to remove previous role requests after its been denied? If a user is denied, they should be able to apply for a new role request
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;

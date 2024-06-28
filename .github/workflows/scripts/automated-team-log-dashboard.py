@@ -104,7 +104,7 @@ with open(team_dashboard, 'w') as f:
     f.write('*  \n  \n')
     f.write('*  \n  \n')
 
-    f.write(f'\n### Team Issues and Hurdles for c-{count+1}\n')
+    f.write(f'\n### Team Issues and Hurdles for c-{count}\n')
     f.write('*  \n  \n')
     f.write('*  \n  \n')
     f.write('*  \n  \n')

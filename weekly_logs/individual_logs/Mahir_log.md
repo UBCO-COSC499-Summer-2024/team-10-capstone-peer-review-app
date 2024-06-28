@@ -72,14 +72,14 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* The last day of 2 we had a team meeting to discuss our use of redux. After further talks with the team, we decided its best to switch our redux implementation to now use Reacts context API instead. My goals thus changed from redux implementation to now focus more on how Context API works 
+* I spent thursday to remove all the redux logic and research the new implementation . Then I handed the branch off to Josh for further Context API development  
+* I am now working on any of the issues on UI that need to be prepared for the linking of the rest of our API calls
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Creae Assignment related api calls for managing assignments 
+* Finish any pending UI components 
+* Make sure project 50% MVP is ready to go by Wednesday 
   
   
 

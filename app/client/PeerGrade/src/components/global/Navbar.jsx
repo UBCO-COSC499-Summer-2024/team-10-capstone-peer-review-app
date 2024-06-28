@@ -112,7 +112,7 @@ export default function AppNavbar() {
         <NavigationMenuList className="flex space-x-2 sm:space-x-1">
           <NavigationMenuItem>
             <Link to="/dashboard">
-              <img src="logo.png" className="w-10 h-10 sm:hidden md:block" alt="Logo"/>
+              <img src="../../../public/logo.png" className="w-10 h-10 sm:hidden md:block" alt="Logo"/>
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>

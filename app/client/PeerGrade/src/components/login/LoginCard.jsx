@@ -11,7 +11,9 @@ import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import {
   Alert,
   AlertDescription,
-} from "@/components/ui/alert"
+} from "@/components/ui/alert";
+import { useToast } from '@/components/ui/use-toast';
+import { Toaster } from '@/components/ui/toaster';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -28,6 +30,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
   const [error, setError] = useState('');
   const query = useQuery();
   const token = query.get('token') || '';
+  const { toast } = useToast();
 
   useEffect(() => {
     if (token) {
@@ -67,11 +70,8 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
-    // TODO: Add a folder directory for API calls? then we can just importthe 
-    // ADD ENV VARS
-    // Create a fetch request to the /login endpoint
-    fetch('http://localhost:3000/api/auth/login', {
+    
+      fetch('http://localhost:3000/api/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -87,10 +87,11 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
       if (data.error && data.error.status === "Error") {
         setError(data.message);
       } else {
-        console.log(`Logged in as: ${data.user.role}`);
-        setError('');
-        dispatch(setCurrentUser(data.user)); // REDUX: sets current user to state with redux dispatch call 
-        navigate('/dashboard');
+        toast({ title: "Welcome", description: "You have successfully logged in!", variant: "positive" });
+        dispatch(setCurrentUser(data.user));
+        if(data.user.role=="ADMIN") {
+        navigate('/admin');
+        } else navigate('/dashboard');
       }
     })
     .catch((error) => {
@@ -183,6 +184,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
           </div>
         </CardFooter>
       </Card>
+      <Toaster />
     </div>
   );
 };

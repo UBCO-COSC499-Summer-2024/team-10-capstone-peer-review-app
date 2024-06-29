@@ -6,6 +6,9 @@ export default {
     ],
   theme: {
     extend: {
+      maxHeight: {
+        'taller-than-98': '35rem',
+      },
       colors: {
         primary: {
           DEFAULT: '#1b2433',

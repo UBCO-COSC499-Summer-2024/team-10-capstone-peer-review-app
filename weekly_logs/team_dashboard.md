@@ -31,12 +31,10 @@
   
 
 ### Team Issues and Hurdles for c-8
+* We ended up scraping our way of doing global state management in our UI with redux, so that has 
+  set us back a bit.
 
-* 
-
-* 
-  
-* 
+* Finals as well have taken up time
   
 
 ### Clockify Dashboard for this Week

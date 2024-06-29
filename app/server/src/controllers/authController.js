@@ -23,7 +23,8 @@ export const login = asyncErrorHandler(async (req, res, next) => {
 		}
 		return res.status(200).json({
 			status: "Success",
-			message: "You have been logged in!"
+			message: "You have been logged in!",
+			userRole: user.role
 		});
 	});
 });

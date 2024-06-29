@@ -37,6 +37,7 @@ function MainLayout() {
 	const navigate = useNavigate();
 	const location = useLocation();
 
+	// May need to change this? Idk if this is necessary of the best way to do redirects
 	useEffect(() => {
 		const fetchCurrentUser = async () => {
 			try {
@@ -70,21 +71,79 @@ function MainLayout() {
 				<Routes>
 					<Route path="/" element={<Login />} />
 					{/* All the routes that need the userContext (the global user state)*/}
-					<UserProvider>
-						<Route path="/dashboard" element={<Dashboard />} />
-						<Route path="/class/:classId" element={<Class />} />
-						<Route
-							path="/class/createAssignment"
-							element={<AssignmentCreation />}
-						/>
-						<Route path="/manageClass" element={<ManageClass />} />
-						<Route path="/search" element={<Search />} />
-						<Route path="/assignment/:assignmentId" element={<Assignment />} />
-						<Route path="/assignedPR/:assignmentId" element={<AssignedPR />} />
-						<Route path="/peer-review" element={<PeerReview />} />
-						<Route path="/settings" element={<Settings />} />
-						<Route path="/admin" element={<AdminDashboard />} />
-					</UserProvider>
+					<Route
+						path="/dashboard"
+						element={
+							<UserProvider>
+								<Dashboard />
+							</UserProvider>
+						}
+					/>
+					<Route
+						path="/class/:classId"
+						element={
+							<UserProvider>
+								<Class />
+							</UserProvider>
+						}
+					/>
+					<Route
+						path="/class/createAssignment"
+						element={
+							<UserProvider>
+								<AssignmentCreation />
+							</UserProvider>
+						}
+					/>
+					<Route
+						path="/manageClass"
+						element={
+							<UserProvider>
+								<ManageClass />
+							</UserProvider>
+						}
+					/>
+					<Route path="/search" element={<Search />} />
+					<Route
+						path="/assignment/:assignmentId"
+						element={
+							<UserProvider>
+								<Assignment />
+							</UserProvider>
+						}
+					/>
+					<Route
+						path="/assignedPR/:assignmentId"
+						element={
+							<UserProvider>
+								<AssignedPR />
+							</UserProvider>
+						}
+					/>
+					<Route
+						path="/peer-review"
+						element={
+							<UserProvider>
+								<PeerReview />
+							</UserProvider>
+						}
+					/>
+					<Route
+						path="/settings"
+						element={
+							<UserProvider>
+								<Settings />
+							</UserProvider>
+						}
+					/>
+					<Route
+						path="/admin"
+						element={
+							<UserProvider>
+								<AdminDashboard />
+							</UserProvider>
+						}
+					/>
 				</Routes>
 			</div>
 			<Toaster />

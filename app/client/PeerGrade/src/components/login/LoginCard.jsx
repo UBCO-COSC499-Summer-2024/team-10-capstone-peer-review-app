@@ -24,7 +24,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 
-import { showStatusToast } from "@/utils/showToastStatus";
+import showStatusToast from "@/utils/showToastStatus";
 import { loginUser, getCurrentUser, confirmEmail } from "@/api/authApi";
 
 function useQuery() {
@@ -69,23 +69,10 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 	// Removed setError in this function for now, instead just using a toast
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		try {
-			await loginUser(email, password);
-			const data = await getCurrentUser();
-			showStatusToast({
-				status: data.status,
-				message: data.message
-			});
-			navigate(data.userInfo.role === "ADMIN" ? "/admin" : "/dashboard");
-		} catch (error) {
-			// May need to change this later on
-			setError("An error occurred while logging in");
-			console.log(error);
-			showStatusToast({
-				// Depending on how the error is caught / handled in the backend, the status/message may need to be changed
-				status: "Error",
-				message: error.message || "Login failed."
-			});
+		// If the apiCall is successfull, it will return an object with the status a message, and any other data neeeded.
+		const response = await loginUser(email, password);
+		if (response) {
+			navigate(response.userRole === "ADMIN" ? "/admin" : "/dashboard");
 		}
 	};
 

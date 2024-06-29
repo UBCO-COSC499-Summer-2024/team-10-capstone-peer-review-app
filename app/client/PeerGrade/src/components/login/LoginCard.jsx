@@ -13,8 +13,6 @@ import {
   AlertDescription,
 } from "@/components/ui/alert";
 import { useToast } from '@/components/ui/use-toast';
-import { Toaster } from '@/components/ui/toaster';
-
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
@@ -101,7 +99,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
   };
 
   return (
-    <div className='relative space-y-5 w-full'>
+    <div className='relative space-y-2 w-full'>
       {tokenReceived && 
         <Alert className='absolute top-0 left-0 w-full flex justify-center items-center space-x-2' variant={verificationSuccessful ? 'success' : 'destructive'}>
           <div>
@@ -184,7 +182,6 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
           </div>
         </CardFooter>
       </Card>
-      <Toaster />
     </div>
   );
 };

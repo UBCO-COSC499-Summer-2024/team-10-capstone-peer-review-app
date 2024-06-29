@@ -14,7 +14,6 @@ export const UserProvider = ({ children }) => {
 		const data = await getCurrentUser();
 		console.log("UserContext data:", data);
 		setUser(data.userInfo);
-		console.log(user);
 	};
 
 	const clearUserContext = () => {

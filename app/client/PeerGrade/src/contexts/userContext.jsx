@@ -7,8 +7,11 @@ export const UserProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
 
 	useEffect(() => {
-		const user = getCurrentUser();
-		setUser(user);
+		const fetchUser = async () => {
+			const user = await getCurrentUser();
+			setUser(user.userInfo);
+		};
+		fetchUser();
 	}, []);
 
 	const setUserContext = (user) => {

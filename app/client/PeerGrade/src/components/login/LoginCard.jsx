@@ -73,8 +73,8 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 			await loginUser(email, password);
 			const data = await getCurrentUser();
 			showStatusToast({
-				status: "Success",
-				message: "You have successfully logged in!"
+				status: data.status,
+				message: data.message
 			});
 			navigate(data.userInfo.role === "ADMIN" ? "/admin" : "/dashboard");
 		} catch (error) {
@@ -82,6 +82,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 			setError("An error occurred while logging in");
 			console.log(error);
 			showStatusToast({
+				// Depending on how the error is caught / handled in the backend, the status/message may need to be changed
 				status: "Error",
 				message: error.message || "Login failed."
 			});

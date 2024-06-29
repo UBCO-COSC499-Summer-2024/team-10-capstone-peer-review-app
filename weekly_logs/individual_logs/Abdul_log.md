@@ -1,4 +1,94 @@
 
+# Abdul's Log for Cycle 8
+
+
+## Tuesday, June 25, 2024, 05:21 PM - Friday, June 28, 2024, 02:57 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[176](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/176)**: Refactor forgot password to work with UI  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[162](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/162)**: Make New Account registration work with Verification e-mail  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[157](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/157)**: View List of Classes UI  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[131](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/131)**: Major Use Case 16-1: Create/Manage Assignment  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+
+## Time entries from Clockify on this cycle:
+
+&nbsp; &nbsp; :watch: **Working on Edit Assignment UI** *(Total duration: 7.75 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, June 28, 2024, 12:13 AM - Friday, June 28, 2024, 02:57 AM *(2.75 hours)*  
+
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 27, 2024, 08:43 PM - Thursday, June 27, 2024, 09:55 PM *(1.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 27, 2024, 04:34 PM - Thursday, June 27, 2024, 08:25 PM *(3.8 hours)*  
+
+&nbsp; &nbsp; :watch: **Linking Manage Class w/ Backend** *(Total duration: 6.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 26, 2024, 10:45 PM - Thursday, June 27, 2024, 02:34 AM *(3.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, June 26, 2024, 05:59 PM - Wednesday, June 26, 2024, 08:58 PM *(3.0 hours)*  
+  
+
+## All Features worked on this cycle:
+
+&nbsp; &nbsp; :arrows_clockwise: **PR-[178](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/178)**: Add base Edit Assignment UI
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[162](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/162)**: Make New Account registration work with Verification e-mail  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[157](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/157)**: View List of Classes UI  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[176](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/176)**: Refactor forgot password to work with UI  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[140](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/140)**: Major Use Case 24: View User Reports   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[132](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/132)**: Major Use Case 17: View Class Dashboard  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[131](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/131)**: Major Use Case 16-1: Create/Manage Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[130](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/130)**: Major Use Case 15: Manage Class  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[123](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/123)**: Major Use Case 8: View Assignments and their details   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[121](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/121)**: Major Use Case 6: Submit Assignment  
+  
+
+## Recap on goals from last cycle
+* Slowly catching up, although not at the pace I wanted to. Running into some holdups with testing elements actually communicating with the backend.
+* Starting to link elements to the backend! Linked ManageClass to the backend during this cycle.
+* Edit Classes UI was taken up by Mahir so I'm working on other parts (that were assigned to me).
+* This cycle was only two days but work should be getting much faster.
+
+## Goals for next cycle
+* Get unit testing finally up and running for the components that are now linked to the backend.
+* Develop more UI (at a much faster pace) this week-long cycle. We plan to get the MVP done by this cycle (I believe I can push to get my parts done, especially with me having just this to focus on (for the most part)).
+* Get (most) of the tests up and running. I'm expecting to not have a 100% of the testing done, but most of it.
+
+
+
 # Abdul's Log for Cycle 7
 
 

@@ -1,4 +1,42 @@
 
+# Team 10's Team Log for Cycle 8
+
+
+## Tuesday, June 25, 2024, 05:21 PM - Thursday, June 27, 2024, 05:21 PM
+
+
+## Tasks currently in the Backlog for c-8:
+![Tasks in Backlog for c-8](./team_log_images/backlog_issues/backlog_issues_c8.png)  
+  
+
+## Tasks currently in Progress for c-8:
+![Tasks in progress for c-8](./team_log_images/in_progress_issues/in_progress_issues_c8.png)  
+  
+
+## Tasks currently in Review for c-8:
+![Tasks in review for c-8](./team_log_images/in_review_issues/in_review_issues_c8.png)  
+  
+
+## Tasks Done for c-8:
+![Tasks done for c-8](./team_log_images/done_issues/done_issues_c8.png)  
+  
+
+## Overall Burn-up Chart of Tasks
+![Burn-Up Chart for c-8](./team_log_images/burnup_charts/burnup_chart_c8.png)  
+  
+
+## Test Reports for c-8
+
+#### Front-end Testing for c-8
+![Front-end Tests for c-8](./team_log_images/front_end_tests/front_end_tests_c8.png)  
+  
+
+#### Back-end Testing for c-8
+![Burn-Up Chart for c-8](./team_log_images/back_end_tests/back_end_test_c8.png)  
+  
+  
+  
+
 # Team 10's Team Log for Cycle 7
 
 

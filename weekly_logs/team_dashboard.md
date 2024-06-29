@@ -1,4 +1,48 @@
 
+# Team 10's Team Dashboard for Cycle 8
+
+
+## Tuesday, June 25, 2024, 05:21 PM - Thursday, June 27, 2024, 05:21 PM
+
+
+### Major features worked on in c-8
+  
+*  Major Use Case 10: Role Requests / Admin UI for accepting and denying role requests
+
+*  Major Use Case 16-1: Create/Manage Assignment
+
+*  Major Use Case 23: Role Requests Page for Admins
+
+*  Replacing Redux with a React Context based system for the session to persist even after refreshing
+  
+
+### Major features completed in c-8
+
+*  None
+  
+
+### Major features to work on for c-9
+
+*  Major Use Case 23: Role Requests Page for Admins
+
+*  Major Use Case 16-1: Create/Manage Assignment - linking the UI to the backend
+  
+*  Major Use Case 10: Role Requests / Admin UI for accepting and denying role requests
+  
+
+### Team Issues and Hurdles for c-8
+* We ended up scraping our way of doing global state management in our UI with redux, so that has 
+  set us back a bit.
+
+* Finals as well have taken up time
+  
+
+### Clockify Dashboard for this Week
+
+![Clockify Dashboard for c-8](./team_dashboard_images/clockify_dashboards/clockify_dashboard_c8.png)
+  
+  
+
 # Team 10's Team Dashboard for Cycle 7
 
 

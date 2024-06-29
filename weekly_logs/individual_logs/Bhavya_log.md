@@ -74,14 +74,14 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* I worked on creating the group CRUD operation and adding checks case for boundary cases
+* Adding add/remove/get students in the group with checks
+* Added groups table and few changes in schema
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Couldn't add more this week as i had final for Phys 112, but try to add more CRUD points this week
+* Try to create student api enpoints 
+* Try to keep test more and further improve schema if necessary
   
   
 

@@ -62,7 +62,6 @@ export async function loginUser(email, password) {
 			throw new apiError("Error logging in user", 500);
 		}
 	}
-	return user;
 }
 
 export async function sendVerificationEmail(email) {
@@ -184,26 +183,39 @@ export async function confirmEmail(token) {
 }
 export async function getCurrentUser(email) {
 	try {
-	  const user = await checkUserByEmail(email);
-	  if (!user) {
-		throw new apiError("No user with that email", 404);
-	  }
-	  return user;
+		let user = await checkUserByEmail(email);
+		if (!user) {
+			throw new apiError("No user with that email", 404);
+		} else {
+			// Changing so that the user object is returned without the password
+			const userInfo = await prisma.user.findUnique({
+				where: { email },
+				select: {
+					userId: true,
+					email: true,
+					password: false,
+					firstname: true,
+					lastname: true,
+					role: true
+				}
+			});
+			return userInfo;
+		}
 	} catch (error) {
-	  if (error instanceof apiError) {
-		throw error;
-	  } else {
-		throw new apiError("Error fetching current user", 500);
-	  }
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Error fetching current user", 500);
+		}
 	}
-  }
-  
-  export default {
+}
+
+export default {
 	registerUser,
 	loginUser,
 	sendVerificationEmail,
 	confirmEmail,
 	sendForgotPasswordEmail,
 	resetPassword,
-	getCurrentUser // Export the new service method
-  };
+	getCurrentUser
+};

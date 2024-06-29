@@ -22,7 +22,6 @@ export const login = asyncErrorHandler(async (req, res, next) => {
 			return next(err);
 		}
 		return res.status(200).json({
-			user: user,
 			status: "Success",
 			message: "You have been logged in!"
 		});
@@ -67,7 +66,7 @@ export const resendVerificationEmail = asyncErrorHandler(async (req, res) => {
 });
 
 export const confirmEmail = asyncErrorHandler(async (req, res) => {
-	const token = req.query.token;
+	const { token } = req.body;
 	await authService.confirmEmail(token);
 	return res.status(200).json({
 		status: "Success",
@@ -76,15 +75,15 @@ export const confirmEmail = asyncErrorHandler(async (req, res) => {
 });
 
 export const currentUser = asyncErrorHandler(async (req, res) => {
-	const user = await authService.getCurrentUser(req.user.email);
+	const userInfo = await authService.getCurrentUser(req.user.email);
 	return res.status(200).json({
-	  user: user,
-	  status: "Success",
-	  message: "Current user fetched successfully!"
+		userInfo: userInfo,
+		status: "Success",
+		message: "Current user fetched successfully!"
 	});
-  });
-  
-  export default {
+});
+
+export default {
 	register,
 	login,
 	logout,
@@ -93,4 +92,4 @@ export const currentUser = asyncErrorHandler(async (req, res) => {
 	resendVerificationEmail,
 	confirmEmail,
 	currentUser // Export the new controller method
-  };
+};

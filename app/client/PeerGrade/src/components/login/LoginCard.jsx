@@ -43,22 +43,15 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 
 	const navigate = useNavigate();
 
+	// Use Effect to check if the email verification JWT send in the url
 	useEffect(() => {
 		const verifyEmail = async () => {
 			if (token) {
-				try {
-					await confirmEmail(token);
+				const response = await confirmEmail(token);
+				if (response.status === "Success") {
 					setVerificationSuccessful(true);
-					showStatusToast({
-						status: "Success",
-						message: "Email verification successful!"
-					});
-				} catch (error) {
+				} else {
 					setVerificationSuccessful(false);
-					showStatusToast({
-						status: "Error",
-						message: "Email verification failed."
-					});
 				}
 				setTokenReceived(true);
 			}
@@ -66,16 +59,8 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 		verifyEmail();
 	}, [token]);
 
-	// // Password validation regex: 8 characters, 1 uppercase, 1 lowercase, 1 special character
-	// const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
-	// if (!passwordRegex.test(password)) {
-	//   setError('Password must be at least 8 characters long, with at least one uppercase letter, one lowercase letter, one number, and one special character.');
-	//   return;
-	// }
-
-	// Removed setError in this function for now, instead just using a toast
-	const handleSubmit = async (e) => {
+	// Login
+	const handleLogin = async (e) => {
 		e.preventDefault();
 
 		const response = await loginUser(email, password);
@@ -118,7 +103,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="flex-1 flex flex-col items-center justify-center space-y-4">
-					<form className="space-y-4 w-full max-m-md" onSubmit={handleSubmit}>
+					<form className="space-y-4 w-full max-m-md" onSubmit={handleLogin}>
 						<div>
 							<label
 								htmlFor="email"

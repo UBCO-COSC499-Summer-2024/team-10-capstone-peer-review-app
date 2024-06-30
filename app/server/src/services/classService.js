@@ -639,6 +639,276 @@ const deleteCriterionForRubric = async (criterionId) => {
 	}
 };
 
+// criterion grade operations
+
+// group operations
+
+const addGroupToClass = async (classId, groupData) => {
+	try {
+		const classInfo = await prisma.class.findUnique({
+			where: {
+				classId: classId
+			},
+			include: {
+				groups: true
+			}
+		});
+
+		if (!classInfo) {
+			throw new apiError("Class not found", 404);
+		}
+
+		const newGroup = await prisma.group.create({
+			data: {
+				...groupData,
+				classId: classId
+			}
+		});
+
+		return newGroup;
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to add group to class", 500);
+		}
+	}
+};
+
+const removeGroupFromClass = async (groupId) => {
+	try {
+		const group = await prisma.group.findUnique({
+			where: {
+				groupId: groupId
+			}
+		});
+
+		if (!group) {
+			throw new apiError("Group not found", 404);
+		}
+
+		await prisma.group.delete({
+			where: {
+				groupId: groupId
+			}
+		});
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to remove group from class", 500);
+		}
+	}
+};
+
+const updateGroupInClass = async (groupId, updateData) => {
+	try {
+
+		const group = await prisma.group.findUnique({
+			where: {
+				groupId: groupId
+			}
+		});
+
+		if (!group) {
+			throw new apiError("Group not found", 404);
+		}
+
+		const updatedGroup = await prisma.group.update({
+			where: {
+				groupId: groupId
+			},
+			data: updateData
+		});
+
+		return updatedGroup;
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to update group in class", 500);
+		}
+	}
+};
+
+const getGroupInClass = async (classId, groupId) => {
+	try {
+		const classInfo = await prisma.class.findUnique({
+			where: {
+				classId: classId
+			},
+			include: {
+				groups: true
+			}
+		});
+
+		if (!classInfo) {
+			throw new apiError("Class not found", 404);
+		}
+
+		const group = await prisma.group.findUnique({
+			where: {
+				groupId: groupId,
+				classId: classId
+			}
+		});
+
+		if (!group) {
+			throw new apiError("Group not found", 404);
+		}
+
+		return group;
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to get group in class", 500);
+		}
+	}
+};
+
+const getGroupsInClass = async (classId) => {
+	try {
+		const classInfo = await prisma.class.findUnique({
+			where: {
+				classId: classId
+			},
+			include: {
+				groups: true
+			}
+		});
+
+		if (!classInfo) {
+			throw new apiError("Class not found", 404);
+		}
+
+		return classInfo.groups;
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to get groups in class", 500);
+		}
+	}
+};
+
+const addGroupMember = async (groupId, userId) => {
+	try {
+		const group = await prisma.group.findUnique({
+			where: {
+				groupId: groupId
+			},
+			include: {
+				students: true
+			}
+		});
+
+		if (!group) {
+			throw new apiError("Group not found", 404);
+		}
+
+		const userInfo = await prisma.user.findUnique({
+			where: {
+				userId: userId
+			}
+		});
+
+		if (!userInfo) {
+			throw new apiError("User not found", 404);
+		}
+
+		if (group.students && group.students.length >= group.groupSize) {
+			throw new apiError("Adding student exceeds group size", 400);
+		}
+
+		await prisma.group.update({
+			where: {
+			  groupId: groupId,
+			},
+			data: {
+			  students: {
+				connect: [{ userId: userId }],
+			  },
+			},
+		});
+
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to add student to group", 500);
+		}
+	}
+};
+
+const removeGroupMember = async (groupId, userId) => {
+	try {
+		const group = await prisma.group.findFirst({
+			where: {
+			  AND: [
+				{ groupId: groupId },
+				{ students: { some: { userId: userId } } },
+			  ],
+			},
+		  });
+
+		if (!group) {
+			throw new apiError("Group not found with student", 404);
+		}
+
+		const userInfo = await prisma.user.findUnique({
+			where: {
+				userId: userId
+			}
+		});
+
+		if (!userInfo) {
+			throw new apiError("User not found", 404);
+		}
+
+		await prisma.group.update({
+			where: {
+			  groupId: groupId,
+			},
+			data: {
+			  students: {
+				disconnect: [{ userId: userId }],
+			  },
+			},
+		});
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to remove student from group", 500);
+		}
+	}
+};
+
+const getGroupMembers = async (groupId) => {
+	try {
+		const group = await prisma.group.findUnique({
+			where: {
+				groupId: groupId
+			},
+			include: {
+				students: true
+			}
+		});
+
+		if (!group) {
+			throw new apiError("Group not found", 404);
+		}
+
+		return group.students;
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to get students in group", 500);
+		}
+	}
+};
 
 
 export default {
@@ -665,5 +935,14 @@ export default {
 	createCriterionForRubric,
 	getCriterionForRubric,
 	updateCriterionForRubric,
-	deleteCriterionForRubric
+	deleteCriterionForRubric,
+
+	addGroupToClass,
+	removeGroupFromClass,
+	updateGroupInClass,
+	getGroupInClass,
+	getGroupsInClass,
+	getGroupMembers,
+	addGroupMember,
+	removeGroupMember
 };

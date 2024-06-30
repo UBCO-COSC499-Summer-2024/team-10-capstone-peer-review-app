@@ -51,6 +51,7 @@ model User {
   reviewsRecieved   Review[]        @relation("Reviewee")
   classesInstructed Class[]         @relation("InstructorClasses")
   Rubric            Rubric[]
+  groups            Group[]
   RoleRequest       RoleRequest?
   enrollRequests    EnrollRequest[]
 }
@@ -82,6 +83,7 @@ model Class {
   endDate       DateTime
   term          String?
   classSize     Int?            @default(0)
+  groups       Group[]
   usersInClass  UserInClass[]
   Assignments   Assignment[]
   instructor    User            @relation("InstructorClasses", fields: [instructorId], references: [userId]) // Only one instructor per class 
@@ -117,7 +119,7 @@ model Assignment {
   dueDate       DateTime
   maxSumissions Int                   @default(1)
   // fileType      SubmissionType
-  isGroup       Boolean               @default(false) // Group assignment or not
+  isGroup       Boolean             @default(false)// Group assignment or not
   classes       Class                 @relation(fields: [classId], references: [classId])
   rubric        RubricForAssignment[] // An assignment can have multiple rubrics, I.E a group review rubric vs an assignment rubric   
   submissions   Submission[]
@@ -125,18 +127,18 @@ model Assignment {
 
 // Group Models
 
-// model Group {
-//   groupId          String            @id @default(uuid())
-//   //assignmentId     String
-//   classId          String
-//   groupName        String
-//   groupDescription String?
-//   groupSize        Int               @default(0)
-//   //assignment       Assignment        @relation(fields: [assignmentId], references: [assignmentId])
-//   class            Class             @relation(fields: [classId], references: [classId])
-//   students         User[]          // Students in the group
-//   submissions      Submission[] // Submissions from the group
-// }
+model Group {
+  groupId          String            @id @default(uuid())
+  //assignmentId     String
+  classId          String
+  groupName        String
+  groupDescription String?
+  groupSize        Int               @default(0)
+  //assignment       Assignment        @relation(fields: [assignmentId], references: [assignmentId])
+  class            Class             @relation(fields: [classId], references: [classId])
+  students         User[]          // Students in the group
+  submissions      Submission[] // Submissions from the group
+}
 
 // model StudentInGroup {
 //   studentId      String
@@ -164,8 +166,8 @@ model Submission {
   // sumbissionType     SubmissionType // Either a File or a URL, we need to discuss file storage options
   finalGrade         Int? // Final grade of the Submission, default to the instructor grade?
   assignment         Assignment @relation(fields: [assignmentId], references: [assignmentId])
-  submitter          User?      @relation(fields: [submitterId], references: [userId])
-  // submitterGroup     Group?     @relation(fields: [submitterGroupId], references: [groupId])
+  submitter          User?       @relation(fields: [submitterId], references: [userId])
+  submitterGroup     Group?      @relation(fields: [submitterGroupId], references: [groupId])
   reviews            Review[]
 }
 

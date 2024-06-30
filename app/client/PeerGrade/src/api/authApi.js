@@ -11,7 +11,7 @@ export const getCurrentUser = async () => {
 		return response.data.userInfo;
 	} catch (error) {
 		handleError(error);
-		return error.response;
+		return error.response.data;
 	}
 };
 
@@ -25,7 +25,7 @@ export const registerUser = async (userDetails) => {
 		return response.data;
 	} catch (error) {
 		handleError(error);
-		return error.response;
+		return error.response.data;
 	}
 };
 
@@ -42,7 +42,7 @@ export const loginUser = async (email, password) => {
 		return response.data;
 	} catch (error) {
 		handleError(error);
-		return error.response;
+		return error.response.data;
 	}
 };
 
@@ -56,7 +56,7 @@ export const logoutUser = async () => {
 		return response.data;
 	} catch (error) {
 		handleError(error);
-		return error.response;
+		return error.response.data;
 	}
 };
 
@@ -72,7 +72,7 @@ export const resendVerificationEmail = async (email) => {
 		return response.data;
 	} catch (error) {
 		handleError(error);
-		return error.response;
+		return error.response.data;
 	}
 };
 
@@ -88,7 +88,7 @@ export const confirmEmail = async (token) => {
 		return response.data;
 	} catch (error) {
 		handleError(error);
-		return error.response;
+		return error.response.data;
 	}
 };
 
@@ -104,7 +104,7 @@ export const sendForgotPasswordEmail = async (email) => {
 		return response.data;
 	} catch (error) {
 		handleError(error);
-		return error.response;
+		return error.response.data;
 	}
 };
 
@@ -121,7 +121,7 @@ export const resetPassword = async (token, newPassword) => {
 		return response.data;
 	} catch (error) {
 		handleError(error);
-		return error.response;
+		return error.response.data;
 	}
 };
 

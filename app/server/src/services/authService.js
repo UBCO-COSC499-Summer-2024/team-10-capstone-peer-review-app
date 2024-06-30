@@ -413,7 +413,7 @@ export default {
 	confirmEmail,
 	sendForgotPasswordEmail,
 	resetPassword,
-	getCurrentUser
+	getCurrentUser,
 	getAllRoleRequests,
 	deleteRoleRequest,
 	approveRoleRequest,

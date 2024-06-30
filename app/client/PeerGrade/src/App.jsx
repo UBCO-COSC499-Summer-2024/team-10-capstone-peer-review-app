@@ -67,7 +67,7 @@ function MainLayout() {
 
 	return (
 		<main className="bg-gray-100 mx-auto">
-			{!isLoginPage && <AppNavbar currentUser={currentUser} />}
+			{!isLoginPage && <UserProvider><AppNavbar currentUser={currentUser} /></UserProvider>}
 			<div className="main-container flex justify-center flex-1">
 				<Routes>
 					<Route path="/" element={<Login />} />

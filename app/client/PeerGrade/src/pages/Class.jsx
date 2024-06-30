@@ -109,7 +109,7 @@ const Class = () => {
         </div>
         <div className="space-y-6">
           {(currentUser.role === 'INSTRUCTOR' || currentUser.role === 'ADMIN') && currentView!='assignmentCreation' &&
-            <Button variant="outline" onClick={() => setCurrentView('assignmentCreation')} className="w-full bg-white">
+            <Button onClick={() => setCurrentView('assignmentCreation')} className="w-full">
               Create Assignment
             </Button>
           }

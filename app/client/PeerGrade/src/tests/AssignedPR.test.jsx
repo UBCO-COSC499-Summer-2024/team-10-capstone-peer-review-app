@@ -18,7 +18,7 @@ jest.mock('react-router-dom', () => ({
     }),
 }));
 
-jest.mock('@/lib/dbData', () => ({
+jest.mock('@/utils/dbData', () => ({
     assignment: [
         { assignment_id: 1, class_id: 1, title: "Assignment Title", description: "Assignment Description" }
     ],

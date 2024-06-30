@@ -93,23 +93,67 @@ export default function AppNavbar() {
 		}
 	}, [currentUser, toast]);
 
-	const userReviewAssignments = assignmentsData
-		.filter((assignment) => {
-			return (
-				Array.isArray(currentUser.classes) &&
-				currentUser.classes.includes(assignment.classId) &&
-				assignment.evaluation_type === "peer"
-			);
-		})
-		.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
-		.slice(0, 3);
+	// TODO Refactor how we use api Calls
 
-	const isActive = (path) => {
-		return (
-			location.pathname === path ||
-			(path === "/dashboard" && location.pathname === "/")
-		);
-	};
+	// useEffect(() => {
+	//   if (currentUser) {
+	//     const fetchUserClasses = async () => {
+	//       try {
+	//         const response = await axios.post('/api/users/get-classes', { userId: currentUser.userId });
+	//         setClassesData(Array.isArray(response.data) ? response.data : []);
+	//       } catch (error) {
+	//         toast({ title: "Error", description: "Failed to fetch classes", variant: "destructive" });
+	//       }
+	//     };
+
+	//     const fetchInstructorClasses = async () => {
+	//       try {
+	//         const response = await axios.post('/api/classes/my-classes');
+	//         setClassesData(Array.isArray(response.data.data) ? response.data.data : []);
+
+	//     const fetchAssignments = async () => {
+	//       try {
+	//         const response = await axios.post('/api/users/get-assignments', { userId: currentUser.userId });
+	//         setAssignmentsData(Array.isArray(response.data) ? response.data : []);
+	//       } catch (error) {
+	//         toast({ title: "Error", description: "Failed to fetch assignments", variant: "destructive" });
+	//       }
+	//     };
+	//     if (currentUser.role === 'INSTRUCTOR') {
+	//       fetchInstructorClasses();
+	//     } else if (currentUser.role === 'STUDENT') {
+	//       fetchUserClasses();
+	//     } else if (currentUser.role === 'ADMIN') {
+	//       // fetchAllClasses();
+	//       fetchUserClasses();
+	//     }
+	//     fetchAssignments();
+	//   }
+	// }, [currentUser, toast]);
+
+	// if (!currentUser) {
+	//   return null;
+	// }
+
+	const [searchQuery, setSearchQuery] = React.useState(""); // State for search query
+
+// 	const userReviewAssignments = assignmentsData
+// 		.filter((assignment) => {
+// 			return (
+// 				Array.isArray(currentUser.classes) &&
+// 				currentUser.classes.includes(assignment.classId) &&
+// 				assignment.evaluation_type === "peer"
+// 			);
+// 		})
+// 		.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
+// 		.slice(0, 3);
+
+// 	const isActive = (path) => {
+// 		return (
+// 			location.pathname === path ||
+// 			(path === "/dashboard" && location.pathname === "/")
+// 		);
+// 	};
 
 	const handleLogout = async () => {
 		try {
@@ -123,6 +167,7 @@ export default function AppNavbar() {
 				variant: "destructive"
 			});
 		}
+
 	};
 
 	const search = () => {
@@ -140,7 +185,7 @@ export default function AppNavbar() {
 		return `${firstInitial}${lastInitial}`;
 	};
 
-	if (!currentUser) {
+	if (!user) {
 		return null;
 	}
 
@@ -151,7 +196,7 @@ export default function AppNavbar() {
 					<NavigationMenuItem>
 						<Link to="/dashboard">
 							<img
-								src="logo.png"
+								src="../../../public/logo.png"
 								className="w-10 h-10 sm:hidden md:block"
 								alt="Logo"
 							/>

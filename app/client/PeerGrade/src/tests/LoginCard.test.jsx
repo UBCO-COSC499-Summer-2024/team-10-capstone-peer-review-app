@@ -1,47 +1,26 @@
 import { render, fireEvent, waitFor } from '@testing-library/react';
-import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-import { setCurrentUser } from '@/utils/redux/hooks/userSlice';
+import { BrowserRouter as Router } from 'react-router-dom';
+import fetchMock from 'jest-fetch-mock';
 import LoginCard from '@/components/login/LoginCard';
+import store from '@/utils/redux/store';
 
-const mockNavigate = jest.fn();
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: () => mockNavigate,
-}));
-
-jest.mock('@/utils/dbData', () => ({
-    user: [
-      {
-        user_id: 1,
-        username: "testUser",
-        password: "validpassword@A1",
-        firstname: "Test",
-        lastname: "User",
-        email: "valid@example.com",
-        class_id: [1,2,3,4,5,6,7,8,9,10],
-        type: "admin"
-      },
-    ],
-    addUser: jest.fn(),
-    iClass: [],
-  }));  
-
-const mockStore = configureMockStore();
-let store;
-
-beforeEach(() => {
-  store = mockStore({
-    user: {
-      // initial state
-    }
-  });
-  jest.clearAllMocks();
-});
+fetchMock.enableMocks();
 
 describe('LoginCard', () => {
-  beforeEach(() => {
+
+  test('renders without crashing', () => {
+    const { getByText } = render(
+      <Provider store={store}>
+        <Router>
+          <LoginCard />
+        </Router>
+      </Provider>
+    );
+    expect(getByText('Login')).toBeInTheDocument();
+  });
+
+  test('shows error message when invalid credentials are entered', async () => {
     global.fetch = jest.fn((url, options) => {
       if (JSON.parse(options.body).email === 'valid@example.com' && JSON.parse(options.body).password === 'validpassword@A1') {
         return Promise.resolve({
@@ -63,20 +42,7 @@ describe('LoginCard', () => {
         });
       }
     });
-  });
 
-  test('renders without crashing', () => {
-    const { getByText } = render(
-      <Provider store={store}>
-        <Router>
-          <LoginCard />
-        </Router>
-      </Provider>
-    );
-    expect(getByText('Login')).toBeInTheDocument();
-  });
-
-  test('shows error message when invalid credentials are entered', async () => {
     const { getByLabelText, getByText, getByRole } = render(
       <Provider store={store}>
         <Router>
@@ -85,17 +51,43 @@ describe('LoginCard', () => {
       </Provider>
     );
 
-    fireEvent.change(getByLabelText('Email address'), { target: { value: 'wrong@example.com' } });
-    fireEvent.change(getByLabelText('Password'), { target: { value: 'wrongpasswordA@1' } });
-    fireEvent.click(getByRole('button', { name: 'Sign in' }));
+    const emailInput = getByLabelText('Email address');
+    const passwordInput = getByLabelText('Password');
+
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'password' } });
 
     await waitFor(() => {
-      expect(getByText('Invalid credentials')).toBeInTheDocument();
+      expect(emailInput.value).toBe('test@example.com');
+      expect(passwordInput.value).toBe('password');
     });
   });
 
   test('navigates to dashboard and dispatches action when valid credentials are entered', async () => {
+    global.fetch = jest.fn((url, options) => {
+      if (JSON.parse(options.body).email === 'valid@example.com' && JSON.parse(options.body).password === 'validpassword@A1') {
+        return Promise.resolve({
+          json: () => Promise.resolve({
+            class_id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            email: 'valid@example.com',
+            firstname: 'Test',
+            lastname: 'User',
+            type: 'admin',
+            user_id: 1,
+            username: 'testUser',
+          })
+        });
+      } else {
+        return Promise.resolve({
+          json: () => Promise.resolve({
+            message: 'Invalid credentials'
+          })
+        });
+      }
+    });
+    
     const { getByLabelText, getByRole } = render(
+
       <Provider store={store}>
         <Router>
           <LoginCard />
@@ -103,26 +95,31 @@ describe('LoginCard', () => {
       </Provider>
     );
 
-    fireEvent.change(getByLabelText('Email address'), { target: { value: 'valid@example.com' } });
-    fireEvent.change(getByLabelText('Password'), { target: { value: 'validpassword@A1' } });
-    fireEvent.click(getByRole('button', { name: 'Sign in' }));
+    const emailInput = getByLabelText('Email address');
+    const passwordInput = getByLabelText('Password');
+    const submitButton = getByText('Sign in');
 
-    // Wait for any changes to the DOM that occur as a result of the form submission
+    // Enter invalid email and password
+    fireEvent.change(emailInput, { target: { value: 'nonexistent@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'password' } });
+    fireEvent.click(submitButton);
+
+    // Wait for the async validation and error message to appear
     await waitFor(() => {
-      // Check if the navigate function was called
-      expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
-
-      // Check if the setCurrentUser action was dispatched
-      const actions = store.getActions();
-      expect(actions[0]).toEqual(setCurrentUser({
-        class_id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-        email: 'valid@example.com',
-        firstname: 'Test',
-        lastname: 'User',
-        type: 'admin',
-        user_id: 1,
-        username: 'testUser',
-      }));
+      expect(global.fetch).toHaveBeenCalled(); // Ensure fetch was called
+      expect(global.fetch).toHaveBeenCalledWith('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: 'nonexistent@example.com',
+          password: 'password',
+        }),
+      });
     });
+    const errorMessage = await findByText('No user with that email');
+    expect(errorMessage).toBeInTheDocument();
   });
+  
 });

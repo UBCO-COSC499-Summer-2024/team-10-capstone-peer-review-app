@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { iClass as classesData, assignment as assignmentsData, Categories as categoriesData, user } from '@/utils/dbData';
 import {
@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button';
 
 const Class = () => {
   const { classId } = useParams();
+  const navigate = useNavigate();
   const classItem = classesData.find((item) => item.class_id === parseInt(classId));
   const [currentView, setCurrentView] = useState('home');
   const [currentUser, setCurrentUser] = useState(null);
@@ -71,13 +72,15 @@ const Class = () => {
                   {classAssignments
                     .filter(assignment => assignment.assignment_id === category.rubric_id)
                     .map((assignment) => (
-                      <Link
-                        key={assignment.assignment_id}
-                        to={`/assignment/${assignment.assignment_id}`}
-                        className="flex items-center space-x-2 bg-gray-100 p-2 rounded hover:bg-gray-200 transition-colors"
-                      >
-                        <span>{assignment.title}</span>
-                      </Link>
+                      <div className='flex w-full'>
+                        <Link
+                          key={assignment.assignment_id}
+                          to={`/assignment/${assignment.assignment_id}`}
+                          className="flex items-center space-x-2 bg-gray-100 p-2 rounded hover:bg-gray-200 transition-colors w-full"
+                        >
+                          <span>{assignment.title}</span>
+                        </Link>
+                      </div>
                     ))}
                 </CardContent>
               </Card>

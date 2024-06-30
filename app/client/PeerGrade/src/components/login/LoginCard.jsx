@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-
 import {
 	Card,
 	CardContent,
@@ -65,6 +64,14 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 		};
 		verifyEmail();
 	}, [token]);
+  
+  	// // Password validation regex: 8 characters, 1 uppercase, 1 lowercase, 1 special character
+	// const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+	// if (!passwordRegex.test(password)) {
+	//   setError('Password must be at least 8 characters long, with at least one uppercase letter, one lowercase letter, one number, and one special character.');
+	//   return;
+	// }
 
 	// Removed setError in this function for now, instead just using a toast
 	const handleSubmit = async (e) => {

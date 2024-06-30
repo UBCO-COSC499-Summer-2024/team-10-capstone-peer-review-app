@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard';
 import Class from './pages/Class';
 import AssignmentCreation from './pages/classNav/AssignmentCreation';
 import Assignment from './pages/Assignment';
+import EditAssignment from './pages/EditAssignment';
 import AssignedPR from './pages/AssignedPR';
 import PeerReview from './pages/PeerReview';
 import Settings from './pages/Settings';

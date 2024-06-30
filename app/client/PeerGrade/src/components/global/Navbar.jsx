@@ -26,10 +26,8 @@ import {
 } from "@/components/ui/hover-card";
 
 import { useUser } from "@/contexts/contextHooks/useUser";
-import {
-  getCurrentUser,
-  logoutUser,
-} from "@/api/authApi"; // Import methods from authApi
+import { getCurrentUser, logoutUser } from "@/api/authApi";
+import { getClassesByUserId, getAllAssignments } from "@/api/classApi";
 
 export default function AppNavbar() {
   const location = useLocation();
@@ -61,10 +59,8 @@ export default function AppNavbar() {
     if (user) {
       const fetchClasses = async () => {
         try {
-          const response = await axios.post("/api/users/get-classes", {
-            userId: user.userId
-          });
-          setClassesData(Array.isArray(response.data) ? response.data : []);
+          const classes = await getClassesByUserId(user.userId);
+          setClassesData(Array.isArray(classes) ? classes : []);
         } catch (error) {
           toast({
             title: "Error",
@@ -76,10 +72,8 @@ export default function AppNavbar() {
 
       const fetchAssignments = async () => {
         try {
-          const response = await axios.post("/api/users/get-assignments", {
-            userId: user.userId
-          });
-          setAssignmentsData(Array.isArray(response.data) ? response.data : []);
+          const assignments = await getAllAssignments(user.userId);
+          setAssignmentsData(Array.isArray(assignments) ? assignments : []);
         } catch (error) {
           toast({
             title: "Error",
@@ -173,7 +167,8 @@ export default function AppNavbar() {
             </NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="bg-white grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                {/* {userReviewAssignments.map((assignment) => (
+                {/* Uncomment this if you have assignmentsData */}
+                {/* {assignmentsData.map((assignment) => (
                   <ListItem
                     key={assignment.assignmentId}
                     title={assignment.title}

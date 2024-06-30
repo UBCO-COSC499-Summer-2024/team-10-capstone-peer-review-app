@@ -5,7 +5,7 @@ const BASE_URL = "/api"; // TODO change this to an environment var?
 
 export const getCurrentUser = async () => {
 	try {
-		const response = await axios.get("/api/auth/current-user", {
+		const response = await axios.get(`${BASE_URL}/auth/current-user`, {
 			withCredentials: true
 		});
 		return response.data.userInfo;
@@ -123,6 +123,7 @@ function handleError(error) {
 			status: error.response.data.status,
 			message: error.response.data.message
 		});
+		return error.response.data;
 	} else {
 		showStatusToast({
 			status: "Error",

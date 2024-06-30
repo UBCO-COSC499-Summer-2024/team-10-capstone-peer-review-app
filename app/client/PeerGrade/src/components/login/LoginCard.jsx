@@ -64,7 +64,6 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 		e.preventDefault();
 
 		const response = await loginUser(email, password);
-		console.log(response);
 		if (response.status === "Success") {
 			navigate(response.userRole === "ADMIN" ? "/admin" : "/dashboard");
 		} else if (response.status === "Error") {

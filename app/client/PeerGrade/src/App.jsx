@@ -21,7 +21,7 @@ import AppNavbar from "./components/global/Navbar";
 import ManageClass from "./pages/ManageClass";
 import Search from "./pages/Search";
 import AdminDashboard from "./pages/AdminDashboard";
-import TestUserContext from "./pages/testUserContext";
+import TestUserContext from "./pages/TestUserContext";
 
 import { Toaster } from "@/components/ui/toaster";
 

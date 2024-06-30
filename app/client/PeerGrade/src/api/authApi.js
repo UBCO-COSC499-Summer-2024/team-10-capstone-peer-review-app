@@ -119,7 +119,6 @@ export const resetPassword = async (token, newPassword) => {
 
 function handleError(error) {
 	if (error.response && error.response.data) {
-		console.log(error.response.data);
 		showStatusToast({
 			status: error.response.data.status,
 			message: error.response.data.message
@@ -131,4 +130,8 @@ function handleError(error) {
 			message: "An unexpected error occurred. Please try again."
 		});
 	}
+	return {
+		status: "Error",
+		message: "An unexpected error occurred. Please try again."
+	};
 }

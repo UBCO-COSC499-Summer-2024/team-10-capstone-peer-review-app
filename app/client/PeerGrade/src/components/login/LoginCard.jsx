@@ -80,6 +80,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 		e.preventDefault();
 		// If the apiCall is successfull, it will return an object with the status a message, and any other data neeeded.
 		const response = await loginUser(email, password);
+		console.log("err", response);
 		if (response) {
 			navigate(response.userRole === "ADMIN" ? "/admin" : "/dashboard");
 			// navigate(response.userRole === "ADMIN" ? "/admin" : "/dashboard");

@@ -5,7 +5,7 @@ export function ensureUser(req, res, next) {
 	if (req.isAuthenticated()) {
 		next();
 	} else {
-		next(new apiError("User is not authenticated", 401));
+		next(new apiError("User is not logged in!", 401));
 	}
 }
 
@@ -14,7 +14,7 @@ export function ensureInstructor(req, res, next) {
 	if (req.user.role === "INSTRUCTOR") {
 		next();
 	} else {
-		next(new apiError("User is not an instructor", 401));
+		next(new apiError("User is not an instructor", 403));
 	}
 }
 
@@ -23,6 +23,6 @@ export function ensureAdmin(req, res, next) {
 	if (req.user.role === "ADMIN") {
 		next();
 	} else {
-		next(new apiError("User is not an admin", 401));
+		next(new apiError("User is not an admin", 403));
 	}
 }

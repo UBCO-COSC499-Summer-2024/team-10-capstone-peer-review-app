@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { updateUser } from '@/utils/redux/hooks/userSlice';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -11,19 +10,38 @@ import { useToast } from '@/components/ui/use-toast';
 import { Toaster } from '@/components/ui/toaster';
 
 const Settings = () => {
-  const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.user.currentUser);
   const { toast } = useToast();
-
+  const [currentUser, setCurrentUser] = useState(null);
   const [selectedTab, setSelectedTab] = useState('profile');
-  const [username, setUsername] = useState(currentUser?.username || '');
-  const [email, setEmail] = useState(currentUser?.email || '');
-  const [bio, setBio] = useState(currentUser?.bio || '');
-  const [url, setUrl] = useState(currentUser?.url || '');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [bio, setBio] = useState('');
+  const [url, setUrl] = useState('');
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await axios.get('/api/auth/current-user', { withCredentials: true });
+        setCurrentUser(response.data.user);
+        setUsername(response.data.user.username || '');
+        setEmail(response.data.user.email || '');
+        setBio(response.data.user.bio || '');
+        setUrl(response.data.user.url || '');
+      } catch (error) {
+        toast({ title: "Error", description: "Failed to fetch current user", variant: "destructive" });
+      }
+    };
+
+    fetchCurrentUser();
+  }, [toast]);
+
   const handleSaveProfile = async () => {
     try {
-      // Assuming updateUser is an async action or you can replace it with your API call
-      await dispatch(updateUser({ username, email, bio, url }));
+      const response = await axios.post('/api/users/update-profile', {
+        username, email, bio, url
+      }, { withCredentials: true });
+
+      setCurrentUser(response.data.user);
       toast({
         title: "Profile Updated",
         description: (

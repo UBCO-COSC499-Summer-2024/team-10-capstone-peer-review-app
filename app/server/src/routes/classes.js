@@ -15,6 +15,7 @@ import {
   removeAssignmentFromClass,
   updateAssignmentInClass,
   getAssignmentInClass,
+  getAllAssignments,
 
   addCriterionToRubric,
   removeCriterionFromRubric,
@@ -39,7 +40,6 @@ import {
   getGroupMembers,
   addGroupMember,
   removeGroupMember
-
 } from "../controllers/classController.js";
 
 import { ensureUser, ensureInstructor, ensureAdmin } from "../middleware/ensureUserTypes.js";
@@ -79,6 +79,9 @@ router.route("/update-assignment")
 
 router.route("/get-assignment")
   .post(ensureUser, ensureInstructor, getAssignmentInClass);
+
+router.route("/get-all-assignments")
+  .post(ensureUser, getAllAssignments);
 
 // Rubric Routes
 
@@ -120,7 +123,6 @@ router.route("/update-criterion-grade")
 router.route("/get-criterion-grade")
   .post(ensureUser, ensureInstructor, getCriterionGrade);
 
-// Group Routes
 router.route("/add-group")
   .post(ensureUser, ensureInstructor, addGroupToClass);
 
@@ -144,6 +146,5 @@ router.route("/add-group-member")
 
 router.route("/remove-group-member")
   .post(ensureUser, ensureInstructor, removeGroupMember);
-
 
 export default router;

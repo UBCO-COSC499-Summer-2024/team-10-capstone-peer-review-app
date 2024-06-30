@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import {useSelector} from 'react-redux'
-import { useParams, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { iClass as classesData, assignment as assignmentsData, Categories as categoriesData, user } from '@/utils/dbData';
 import {
   Menubar,
@@ -17,13 +17,27 @@ import { Button } from '@/components/ui/button';
 
 const Class = () => {
   const { classId } = useParams();
+  const navigate = useNavigate();
   const classItem = classesData.find((item) => item.class_id === parseInt(classId));
   const [currentView, setCurrentView] = useState('home');
-  const currentUser = useSelector((state) => state.user.currentUser); //REDUX: user state, after user state stored in login, it has that user logged info saved
+  const [currentUser, setCurrentUser] = useState(null);
 
-	if (!classItem) {
-		return <div>Class not found</div>;
-	}
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await axios.get('/api/auth/current-user', { withCredentials: true });
+        setCurrentUser(response.data.user);
+      } catch (error) {
+        console.error("Failed to fetch current user", error);
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
+
+  if (!classItem) {
+    return <div>Class not found</div>;
+  }
 
   const classAssignments = assignmentsData.filter(assignment => assignment.class_id === classItem.class_id);
   const categories = categoriesData.filter(category => classAssignments.some(assignment => assignment.assignment_id === category.rubric_id));
@@ -58,13 +72,15 @@ const Class = () => {
                   {classAssignments
                     .filter(assignment => assignment.assignment_id === category.rubric_id)
                     .map((assignment) => (
-                      <Link
-                        key={assignment.assignment_id}
-                        to={`/assignment/${assignment.assignment_id}`}
-                        className="flex items-center space-x-2 bg-gray-100 p-2 rounded hover:bg-gray-200 transition-colors"
-                      >
-                        <span>{assignment.title}</span>
-                      </Link>
+                      <div className='flex w-full'>
+                        <Link
+                          key={assignment.assignment_id}
+                          to={`/assignment/${assignment.assignment_id}`}
+                          className="flex items-center space-x-2 bg-gray-100 p-2 rounded hover:bg-gray-200 transition-colors w-full"
+                        >
+                          <span>{assignment.title}</span>
+                        </Link>
+                      </div>
                     ))}
                 </CardContent>
               </Card>
@@ -105,7 +121,7 @@ const Class = () => {
           {renderContent()}
         </div>
         <div className="space-y-6">
-          {(currentUser.role === 'INSTRUCTOR' || currentUser.role === 'ADMIN') && currentView!='assignmentCreation' &&
+          {(currentUser?.role === 'INSTRUCTOR' || currentUser?.role === 'ADMIN') && currentView !== 'assignmentCreation' &&
             <Button variant="outline" onClick={() => setCurrentView('assignmentCreation')} className="w-full bg-white">
               Create Assignment
             </Button>

@@ -66,10 +66,14 @@ export async function loginUser(email, password) {
 		if (!passwordMatch) {
 			throw new apiError("Invalid password", 400);
 		}
-		if (!user.isEmailVerified) {
+		if (!user.isEmailVerified && !user.isRoleActivated) {
+			throw new apiError(
+				"Your role and email needs to be verified before logging in",
+				400
+			);
+		} else if (!user.isEmailVerified) {
 			throw new apiError("Please verify your email before logging in", 400);
-		}
-		if (!user.isRoleActivated) {
+		} else if (!user.isRoleActivated) {
 			throw new apiError(
 				"Your role needs to be approved before logging in.",
 				400

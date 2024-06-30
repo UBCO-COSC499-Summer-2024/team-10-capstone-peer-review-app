@@ -11,6 +11,7 @@ export const getCurrentUser = async () => {
 		return response.data.userInfo;
 	} catch (error) {
 		handleError(error);
+		return error.response;
 	}
 };
 
@@ -24,6 +25,7 @@ export const registerUser = async (userDetails) => {
 		return response.data;
 	} catch (error) {
 		handleError(error);
+		return error.response;
 	}
 };
 
@@ -40,6 +42,7 @@ export const loginUser = async (email, password) => {
 		return response.data;
 	} catch (error) {
 		handleError(error);
+		return error.response;
 	}
 };
 
@@ -53,6 +56,7 @@ export const logoutUser = async () => {
 		return response.data;
 	} catch (error) {
 		handleError(error);
+		return error.response;
 	}
 };
 
@@ -68,6 +72,7 @@ export const resendVerificationEmail = async (email) => {
 		return response.data;
 	} catch (error) {
 		handleError(error);
+		return error.response;
 	}
 };
 
@@ -83,6 +88,7 @@ export const confirmEmail = async (token) => {
 		return response.data;
 	} catch (error) {
 		handleError(error);
+		return error.response;
 	}
 };
 
@@ -98,6 +104,7 @@ export const sendForgotPasswordEmail = async (email) => {
 		return response.data;
 	} catch (error) {
 		handleError(error);
+		return error.response;
 	}
 };
 
@@ -114,6 +121,7 @@ export const resetPassword = async (token, newPassword) => {
 		return response.data;
 	} catch (error) {
 		handleError(error);
+		return error.response;
 	}
 };
 
@@ -123,15 +131,10 @@ function handleError(error) {
 			status: error.response.data.status,
 			message: error.response.data.message
 		});
-		return error.response.data;
 	} else {
 		showStatusToast({
 			status: "Error",
 			message: "An unexpected error occurred. Please try again."
 		});
 	}
-	return {
-		status: "Error",
-		message: "An unexpected error occurred. Please try again."
-	};
 }

@@ -78,12 +78,12 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 	// Removed setError in this function for now, instead just using a toast
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		// If the apiCall is successfull, it will return an object with the status a message, and any other data neeeded.
+
 		const response = await loginUser(email, password);
-		console.log("err", response);
-		if (response) {
+		if (response.data.status === "Success") {
 			navigate(response.userRole === "ADMIN" ? "/admin" : "/dashboard");
-			// navigate(response.userRole === "ADMIN" ? "/admin" : "/dashboard");
+		} else if (response.data.status === "Error") {
+			setError(response.data.message);
 		}
 	};
 

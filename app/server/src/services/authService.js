@@ -80,6 +80,8 @@ export async function loginUser(email, password) {
 				400
 			);
 		}
+		// Need to return user object to be used in the login controller
+		return user;
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;

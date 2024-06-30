@@ -16,7 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useUser } from "@/contexts/contextHooks/useUser";
 
 function Dashboard() {
-	const { user } = useUser();
+	const { user, userLoading } = useUser();
 
 	const [classes, setClasses] = useState([]);
 	const [assignments, setAssignments] = useState([]);
@@ -32,7 +32,7 @@ function Dashboard() {
 	console.log("User:", user);
 
 	useEffect(() => {
-		if (user) {
+		if (!userLoading && user) {
 			const fetchClasses = async () => {
 				try {
 					const response = await axios.post("/api/users/get-classes", {
@@ -40,6 +40,7 @@ function Dashboard() {
 					});
 					setClasses(Array.isArray(response.data) ? response.data : []);
 				} catch (error) {
+					console.log(error);
 					toast({
 						title: "Error",
 						description: "Failed to fetch classes",
@@ -55,6 +56,7 @@ function Dashboard() {
 					});
 					setAssignments(Array.isArray(response.data) ? response.data : []);
 				} catch (error) {
+					console.log(error);
 					toast({
 						title: "Error",
 						description: "Failed to fetch assignments",
@@ -80,7 +82,8 @@ function Dashboard() {
 			fetchAssignments();
 			fetchReviews();
 		}
-	}, [user, toast]);
+		// Does toast need to be in the dependecy array?
+	}, [user, userLoading, toast]);
 
 	console.log(classes);
 
@@ -190,7 +193,7 @@ function Dashboard() {
 	return (
 		<div className="w-full main-container space-y-6 ">
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-5">
-				{loading
+				{userLoading
 					? // Skeleton for ClassCard
 						Array.from({ length: 3 }).map((_, index) => (
 							<Skeleton key={index} className="h-48 w-full rounded-lg" />
@@ -207,8 +210,11 @@ function Dashboard() {
 						))}
 			</div>
 			<div className="flex justify-between items-start gap-5 pt-5">
+				{/* Need to refactor group card */}
+				{/*
+				
 				<div className="flex w-1/2">
-					{loading ? (
+					{userLoading ? (
 						// Skeleton for GroupCard
 						<Skeleton className="h-96 w-full rounded-lg" />
 					) : (
@@ -219,10 +225,10 @@ function Dashboard() {
 							users={user}
 						/>
 					)}
-				</div>
+				</div> */}
 				<div className="flex w-3/4">
 					<Tabs defaultValue="assignments" className="flex-1">
-						{loading ? (
+						{userLoading ? (
 							<Skeleton className="h-48 w-full rounded-lg" />
 						) : (
 							<TabsList className="grid w-1/3 grid-cols-2">
@@ -231,7 +237,7 @@ function Dashboard() {
 							</TabsList>
 						)}
 						<TabsContent value="assignments">
-							{loading ? (
+							{userLoading ? (
 								// Skeleton for DataTable
 								<Skeleton className="h-48 w-full rounded-lg" />
 							) : (
@@ -244,7 +250,7 @@ function Dashboard() {
 							)}
 						</TabsContent>
 						<TabsContent value="reviews">
-							{loading ? (
+							{userLoading ? (
 								// Skeleton for DataTable
 								<Skeleton className="h-48 w-full rounded-lg" />
 							) : (

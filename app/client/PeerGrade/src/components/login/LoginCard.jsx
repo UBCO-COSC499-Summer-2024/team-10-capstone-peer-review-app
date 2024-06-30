@@ -72,7 +72,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 		// If the apiCall is successfull, it will return an object with the status a message, and any other data neeeded.
 		const response = await loginUser(email, password);
 		if (response) {
-			navigate(response.userRole === "ADMIN" ? "/admin" : "/test-user");
+			navigate(response.userRole === "ADMIN" ? "/admin" : "/dashboard");
 			// navigate(response.userRole === "ADMIN" ? "/admin" : "/dashboard");
 		}
 	};

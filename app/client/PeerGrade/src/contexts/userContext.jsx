@@ -5,27 +5,16 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
-	const [contextLoading, setContentLoading] = useState(true);
+	const [userLoading, setUserLoading] = useState(true);
 
 	useEffect(() => {
-		const fetchUser = async () => {
-			try {
-				const data = await getCurrentUser();
-				console.log("Fetched user info:", data);
-				setUser(data);
-			} catch (error) {
-				console.log("Failed to fetch user:", error);
-			} finally {
-				setContentLoading(false);
-			}
-		};
-
-		fetchUser();
+		setUserContext();
 	}, []);
 
 	const setUserContext = async () => {
-		const data = await getCurrentUser();
-		setUser(data);
+		const userInfo = await getCurrentUser();
+		setUser(userInfo);
+		setUserLoading(false);
 	};
 
 	const clearUserContext = () => {
@@ -34,7 +23,7 @@ export const UserProvider = ({ children }) => {
 
 	return (
 		<UserContext.Provider
-			value={{ user, contextLoading, setUserContext, clearUserContext }}
+			value={{ user, userLoading, setUserContext, clearUserContext }}
 		>
 			{children}
 		</UserContext.Provider>

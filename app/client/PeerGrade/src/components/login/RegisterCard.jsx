@@ -260,6 +260,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 							>
 								Select User Type (debug):
 							</label>
+							{/*Popover content box doesnt match width, will fix later!*/}
 							<Popover open={open} onOpenChange={setOpen} id="selectUserType">
 								<PopoverTrigger asChild>
 									<Button
@@ -280,7 +281,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 										)}
 									</Button>
 								</PopoverTrigger>
-								<PopoverContent className="w-full p-0 rounded-md">
+								<PopoverContent className="p-5 rounded-md">
 									<Command>
 										<CommandList>
 											<CommandGroup>

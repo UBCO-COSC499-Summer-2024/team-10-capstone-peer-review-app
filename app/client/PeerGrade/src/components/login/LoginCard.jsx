@@ -24,22 +24,24 @@ import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 
 import showStatusToast from "@/utils/showToastStatus";
-import { loginUser, getCurrentUser, confirmEmail } from "@/api/authApi";
+import { loginUser, confirmEmail } from "@/api/authApi";
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search);
 }
 
 const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
-	const navigate = useNavigate();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [passwordVisible, setPasswordVisible] = useState(false);
 	const [tokenReceived, setTokenReceived] = useState(false);
 	const [verificationSuccessful, setVerificationSuccessful] = useState(false);
 	const [error, setError] = useState("");
+
 	const query = useQuery();
 	const token = query.get("token") || "";
+
+	const navigate = useNavigate();
 	const { toast } = useToast();
 
 	useEffect(() => {
@@ -64,8 +66,8 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 		};
 		verifyEmail();
 	}, [token]);
-  
-  	// // Password validation regex: 8 characters, 1 uppercase, 1 lowercase, 1 special character
+
+	// // Password validation regex: 8 characters, 1 uppercase, 1 lowercase, 1 special character
 	// const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 	// if (!passwordRegex.test(password)) {
@@ -184,7 +186,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 				<CardFooter className="text-center flex flex-col gap-2 bg-indigo-100">
 					<div className="flex w-full justify-between mt-6">
 						<p className="text-sm text-gray-600">
-							Don't have an account?{" "}
+							Don&apos;t have an account?
 							<button
 								onClick={onSwitchToRegister}
 								className="text-green-600 hover:text-green-500"

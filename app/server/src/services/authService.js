@@ -59,6 +59,7 @@ export async function registerUser(userDetails) {
 export async function loginUser(email, password) {
 	try {
 		const user = await checkUserByEmail(email);
+		console.log(user);
 		if (!user) {
 			throw new apiError("No user with that email", 404);
 		}
@@ -66,16 +67,19 @@ export async function loginUser(email, password) {
 		if (!passwordMatch) {
 			throw new apiError("Invalid password", 400);
 		}
-		if (!user.isEmailVerified) {
+		if (!user.isRoleActivated && !user.isEmailVerified) {
+			throw new apiError(
+				"Your role and email needs to be verified before logging in.",
+				400
+			);
+		} else if (!user.isEmailVerified) {
 			throw new apiError("Please verify your email before logging in", 400);
-		}
-		if (!user.isRoleActivated) {
+		} else if (!user.isRoleActivated) {
 			throw new apiError(
 				"Your role needs to be approved before logging in.",
 				400
 			);
 		}
-		return user;
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
@@ -412,7 +416,7 @@ export default {
 	confirmEmail,
 	sendForgotPasswordEmail,
 	resetPassword,
-	getCurrentUser
+	getCurrentUser,
 	getAllRoleRequests,
 	deleteRoleRequest,
 	approveRoleRequest,

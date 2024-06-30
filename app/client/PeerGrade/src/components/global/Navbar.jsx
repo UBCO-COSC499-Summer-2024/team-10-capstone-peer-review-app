@@ -135,25 +135,23 @@ export default function AppNavbar() {
 	//   return null;
 	// }
 
-	const [searchQuery, setSearchQuery] = React.useState(""); // State for search query
+	// 	const userReviewAssignments = assignmentsData
+	// 		.filter((assignment) => {
+	// 			return (
+	// 				Array.isArray(currentUser.classes) &&
+	// 				currentUser.classes.includes(assignment.classId) &&
+	// 				assignment.evaluation_type === "peer"
+	// 			);
+	// 		})
+	// 		.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
+	// 		.slice(0, 3);
 
-// 	const userReviewAssignments = assignmentsData
-// 		.filter((assignment) => {
-// 			return (
-// 				Array.isArray(currentUser.classes) &&
-// 				currentUser.classes.includes(assignment.classId) &&
-// 				assignment.evaluation_type === "peer"
-// 			);
-// 		})
-// 		.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
-// 		.slice(0, 3);
-
-// 	const isActive = (path) => {
-// 		return (
-// 			location.pathname === path ||
-// 			(path === "/dashboard" && location.pathname === "/")
-// 		);
-// 	};
+	// 	const isActive = (path) => {
+	// 		return (
+	// 			location.pathname === path ||
+	// 			(path === "/dashboard" && location.pathname === "/")
+	// 		);
+	// 	};
 
 	const handleLogout = async () => {
 		try {
@@ -167,7 +165,6 @@ export default function AppNavbar() {
 				variant: "destructive"
 			});
 		}
-
 	};
 
 	const search = () => {

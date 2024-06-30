@@ -119,6 +119,7 @@ export const resetPassword = async (token, newPassword) => {
 
 function handleError(error) {
 	if (error.response && error.response.data) {
+		console.log(error.response.data);
 		showStatusToast({
 			status: error.response.data.status,
 			message: error.response.data.message

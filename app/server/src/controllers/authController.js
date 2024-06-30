@@ -91,14 +91,14 @@ export const confirmEmail = asyncErrorHandler(async (req, res) => {
 	});
 });
 
-
 export const currentUser = asyncErrorHandler(async (req, res) => {
 	const userInfo = await authService.getCurrentUser(req.user.email);
 	return res.status(200).json({
 		userInfo: userInfo,
 		status: "Success",
 		message: "Current user fetched successfully!"
-
+	});
+});
 export const getAllRoleRequests = asyncErrorHandler(async (req, res) => {
 	const requests = await authService.getAllRoleRequests();
 	return res.status(200).json({
@@ -162,7 +162,7 @@ export default {
 	resetPassword,
 	resendVerificationEmail,
 	confirmEmail,
-	currentUser 
+	currentUser,
 	getAllRoleRequests,
 	deleteRoleRequest,
 	approveRoleRequest,

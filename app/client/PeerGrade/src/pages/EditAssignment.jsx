@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -31,6 +31,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { toast } from "@/components/ui/use-toast";
+import { assignment as assignmentsData } from '@/utils/dbData';
 
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -47,8 +48,8 @@ const FormSchema = z.object({
   file: z.any().optional(),
 });
 
-const AssignmentCreation = () => {
-  const { classId } = useParams();
+const EditAssignment = () => {
+  const { assignmentId } = useParams();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const fileInputRef = useRef(null);
@@ -61,7 +62,7 @@ const AssignmentCreation = () => {
       description: "",
       reviewOption: "",
       dueDate: null,
-      rubric: [{ criteria: "", ratings: "", points: "" }],
+      rubric: [{"criteria": "", "ratings": "", "points": ""}],
       file: null,
     }
   });
@@ -81,6 +82,19 @@ const AssignmentCreation = () => {
       label: "Auto",
     }
   ];
+
+  useEffect(() => {
+    // Fetch the current assignment details using the assignmentId and populate the form
+    const assignmentData = assignmentsData.find(a => a.assignment_id === parseInt(assignmentId));
+    if (assignmentData) {
+      form.setValue("title", assignmentData.title);
+      form.setValue("description", assignmentData.description);
+      form.setValue("reviewOption", assignmentData.evaluation_type);
+      form.setValue("dueDate", new Date(assignmentData.due_date));
+      form.setValue("rubric", assignmentData.instructions || [{ criteria: "", ratings: "", points: "" }]);
+      setSelectedFileName(`Assignment.${assignmentData.file_type}`);
+    }
+  }, [assignmentId, form]);
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -103,34 +117,6 @@ const AssignmentCreation = () => {
       ),
     });
 
-    // fetch('http://localhost:3000/api/auth/login', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({
-    //     email: email,
-    //     password: password
-    //   })
-    // })
-    // .then(response => response.json())
-    // .then(data => {
-    //   console.log(data);
-    //   if (data.error && data.error.status === "Error") {
-    //     setError(data.message);
-    //   } else {
-    //     toast({ title: "Welcome", description: "You have successfully logged in!", variant: "positive" });
-    //     dispatch(setCurrentUser(data.user));
-    //     if(data.user.role=="ADMIN") {
-    //     navigate('/admin');
-    //     } else navigate('/dashboard');
-    //   }
-    // })
-    // .catch((error) => {
-    //   console.error('Error:', error);
-    //   setError('An error occurred while logging in');
-    // });
-
     // Update the assignment with the new data
     console.log('Updated assignment data:', simplifiedData);
   };
@@ -144,11 +130,11 @@ const AssignmentCreation = () => {
   }, [remove]);
 
   return (
-    <div className='flex bg-white justify-left flex-row p-4'>
-      <div>
-        <h2 className="text-xl font-semibold mb-4">Add a New Assignment</h2>
+    <div className='flex justify-left flex-row p-4'>
+      <div className="lg:w-2/3">
+        <h2 className="text-xl font-semibold mb-4">Edit Assignment</h2>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="title"
@@ -265,7 +251,7 @@ const AssignmentCreation = () => {
                       />
                     </PopoverContent>
                   </Popover>
-                  <FormDescription>The assignment will be due at 11:59 PM on the selected date. The assignment will then be open for peer review right after the due date.</FormDescription>
+                  <FormDescription>The assignment will be due at 11:59 PM on the selected date.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -354,7 +340,7 @@ const AssignmentCreation = () => {
               <FormDescription>Attach any PDF files related to the assignment.</FormDescription>
               <FormMessage />
             </FormItem>
-            <Button type="submit" className='bg-primary text-white'>Submit</Button>
+            <Button type="submit">Submit</Button>
           </form>
         </Form>
       </div>
@@ -362,4 +348,4 @@ const AssignmentCreation = () => {
   );
 };
 
-export default AssignmentCreation;
+export default EditAssignment;

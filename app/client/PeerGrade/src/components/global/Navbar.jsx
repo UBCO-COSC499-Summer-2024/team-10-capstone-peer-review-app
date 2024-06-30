@@ -33,12 +33,19 @@ export default function AppNavbar() {
 
   useEffect(() => {
     if (currentUser) {
-      const fetchClasses = async () => {
+      const fetchUserClasses = async () => {
         try {
           const response = await axios.post('/api/users/get-classes', { userId: currentUser.userId });
-          console.log(response.data);
           setClassesData(Array.isArray(response.data) ? response.data : []);
-          toast(classesData);
+        } catch (error) {
+          toast({ title: "Error", description: "Failed to fetch classes", variant: "destructive" });
+        }
+      };
+
+      const fetchInstructorClasses = async () => {
+        try {
+          const response = await axios.post('/api/classes/my-classes');
+          setClassesData(Array.isArray(response.data.data) ? response.data.data : []);
         } catch (error) {
           toast({ title: "Error", description: "Failed to fetch classes", variant: "destructive" });
         }
@@ -48,13 +55,18 @@ export default function AppNavbar() {
         try {
           const response = await axios.post('/api/users/get-assignments', { userId: currentUser.userId });
           setAssignmentsData(Array.isArray(response.data) ? response.data : []);
-          toast(assignmentsData)
         } catch (error) {
           toast({ title: "Error", description: "Failed to fetch assignments", variant: "destructive" });
         }
       };
-
-      fetchClasses();
+      if (currentUser.role === 'INSTRUCTOR') {
+        fetchInstructorClasses();
+      } else if (currentUser.role === 'STUDENT') {
+        fetchUserClasses();
+      } else if (currentUser.role === 'ADMIN') {
+        // fetchAllClasses();
+        fetchUserClasses();
+      }
       fetchAssignments();
     }
   }, [currentUser, toast]);
@@ -100,7 +112,7 @@ export default function AppNavbar() {
         <NavigationMenuList className="flex space-x-2 sm:space-x-1">
           <NavigationMenuItem>
             <Link to="/dashboard">
-              <img src="logo.png" className="w-10 h-10 sm:hidden md:block" alt="Logo"/>
+              <img src="../../../public/logo.png" className="w-10 h-10 sm:hidden md:block" alt="Logo"/>
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
@@ -127,7 +139,7 @@ export default function AppNavbar() {
             </NavigationMenuContent>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuTrigger className={cn(navigationMenuTriggerStyle(), isActive('/classes') || isActive('/manageclasses') && 'font-bold')}>
+            <NavigationMenuTrigger className={cn(navigationMenuTriggerStyle(), isActive('/classes') || isActive('/manageClass') && 'font-bold')}>
               Classes
             </NavigationMenuTrigger>
             <NavigationMenuContent>
@@ -144,7 +156,7 @@ export default function AppNavbar() {
                 {(currentUser.role === 'INSTRUCTOR' || currentUser.role === 'ADMIN') && (
                   <ListItem
                     title="Manage Classes"
-                    href="/manageclass"
+                    href="/manageClass"
                     className="bg-blue-100"
                   >
                     Administer classes and assignments.

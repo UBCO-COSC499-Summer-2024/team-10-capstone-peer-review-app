@@ -8,7 +8,7 @@ import Search from '@/pages/Search';
 
 const mockStore = configureStore([]);
 
-jest.mock('@/lib/dbData', () => ({
+jest.mock('@/utils/dbData', () => ({
     iClass: [
         { class_id: 1, instructor_id: 1, classname: "ART 101", description: "Introduction to Art.", start: Date.now(), term: "Winter", end: Date.now(), size: 50 },
         { class_id: 2, instructor_id: 2, classname: "BIO 101", description: "Introduction to Biology.", start: Date.now(), term: "Fall", end: Date.now(), size: 30 },

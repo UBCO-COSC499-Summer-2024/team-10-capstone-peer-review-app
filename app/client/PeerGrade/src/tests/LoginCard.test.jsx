@@ -8,22 +8,42 @@ import store from '@/utils/redux/store';
 fetchMock.enableMocks();
 
 describe('LoginCard', () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });  
 
-  it('renders without crashing', () => {
-    render(
+  test('renders without crashing', () => {
+    const { getByText } = render(
       <Provider store={store}>
         <Router>
           <LoginCard />
         </Router>
       </Provider>
     );
+    expect(getByText('Login')).toBeInTheDocument();
   });
 
-  it('handles input changes', async () => {
-    const { getByLabelText } = render(
+  test('shows error message when invalid credentials are entered', async () => {
+    global.fetch = jest.fn((url, options) => {
+      if (JSON.parse(options.body).email === 'valid@example.com' && JSON.parse(options.body).password === 'validpassword@A1') {
+        return Promise.resolve({
+          json: () => Promise.resolve({
+            class_id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            email: 'valid@example.com',
+            firstname: 'Test',
+            lastname: 'User',
+            type: 'admin',
+            user_id: 1,
+            username: 'testUser',
+          })
+        });
+      } else {
+        return Promise.resolve({
+          json: () => Promise.resolve({
+            message: 'Invalid credentials'
+          })
+        });
+      }
+    });
+
+    const { getByLabelText, getByText, getByRole } = render(
       <Provider store={store}>
         <Router>
           <LoginCard />
@@ -43,15 +63,31 @@ describe('LoginCard', () => {
     });
   });
 
-  it('shows error when non-existent user tries to login', async () => {
-    // Mock the fetch call
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        json: () => Promise.resolve({ error: { status: 'Error', message: 'No user with that email' } }),
-      })
-    );
+  test('navigates to dashboard and dispatches action when valid credentials are entered', async () => {
+    global.fetch = jest.fn((url, options) => {
+      if (JSON.parse(options.body).email === 'valid@example.com' && JSON.parse(options.body).password === 'validpassword@A1') {
+        return Promise.resolve({
+          json: () => Promise.resolve({
+            class_id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            email: 'valid@example.com',
+            firstname: 'Test',
+            lastname: 'User',
+            type: 'admin',
+            user_id: 1,
+            username: 'testUser',
+          })
+        });
+      } else {
+        return Promise.resolve({
+          json: () => Promise.resolve({
+            message: 'Invalid credentials'
+          })
+        });
+      }
+    });
+    
+    const { getByLabelText, getByRole } = render(
 
-    const { getByLabelText, getByText, findByText } = render(
       <Provider store={store}>
         <Router>
           <LoginCard />

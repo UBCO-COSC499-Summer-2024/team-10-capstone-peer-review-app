@@ -18,7 +18,6 @@ describe('RegisterCard', () => {
 
     fireEvent.change(getByLabelText('First Name:'), { target: { value: 'John' } });
     fireEvent.change(getByLabelText('Last Name:'), { target: { value: 'Doe' } });
-    fireEvent.change(getByLabelText('Learning Institution Name:'), { target: { value: 'Example University' } });
     fireEvent.change(getByLabelText('Email Address:'), { target: { value: 'john.doe@example.com' } });
     fireEvent.change(getByLabelText('Password:'), { target: { value: 'passwosrd123@A' } });
     fireEvent.change(getByLabelText('Confirm Password:'), { target: { value: 'differentpassword123@AAAAAAAAA' } });
@@ -28,4 +27,6 @@ describe('RegisterCard', () => {
       expect(getByText('Passwords do not match')).toBeInTheDocument();
     });
   });
+
+  // Add more tests here (on actual functionality, etc.)
 });

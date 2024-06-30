@@ -164,26 +164,27 @@ export async function sendForgotPasswordEmail(email) {
 		}
 		const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: "5m" });
 		// TODO refactor resetLink for frontend deployment
-		const resetLink = `http://localhost:5001/auth/reset-password?token=${token}`;
+		const resetLink = `http://localhost:3000?frgtToken=${token}`;
 		const htmlContent = `
-        <html>
-                <head>
-                        <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
-                        <style>* {font-family: "Nunito Sans", sans-serif;}</style>
-                </head>
-                <body style="background-color: #F3F4F6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;">
-                        <div style="display: flex; justify-content: center; align-items: center; max-width: 500px; margin: auto; padding: 20px;">
-                                <div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); width: 100%; padding: 24px; text-align: center;">
-                                                <h3 style="font-size: 24px; font-weight: 600; color: #111827;">Password Reset Request</h3>
-                                                <p style="font-size: 14px; color: #6B7280;">You requested a password reset. Click the link below to reset your password. The link will expire in 5 minutes:</p>
-                                                <a href="${resetLink}" style="display: inline-block; background-color: #111827; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-size: 14px;">Reset Password</a>
-                                        <div style="text-align: center; padding-top: 1em;">
-                                                <p style="font-size: 14px; color: #6B7280;">If you did not request a password reset, please ignore this email.</p>
-                                        </div>
-                                </div>
-                        </div>
-                </body>
-        </html>`;
+		<html>
+			<head>
+				<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
+				<style>* {font-family: "Nunito Sans", sans-serif;}</style>
+			</head>
+			<body style="background-color: #F3F4F6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;">
+				<div style="display: flex; justify-content: center; align-items: center; max-width: 500px; margin: auto; padding: 20px;">
+					<div style="background-color: white; border-radius: 8px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); width: 100%; padding: 24px; text-align: center;">
+						<h3 style="font-size: 24px; font-weight: 600; color: #111827;">Welcome back to PeerGrade! 👋</h3>
+						<p style="font-size: 14px; color: #6B7280;">You requested a password reset.</p>
+						<p style="font-size: 14px; color: #6B7280; margin-bottom: 16px;">Click this link to reset your password. The link will expire in 5 minutes:</p>
+						<a href="${resetLink}" style="display: inline-block; background-color: #111827; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-size: 14px;">Reset Password</a>
+						<div style="text-align: center; padding-top: 1em;">
+							<p style="font-size: 14px; color: #6B7280;">If you did not request to reset your password for PeerGrade, please ignore this email.</p>
+						</div>
+					</div>
+				</div>
+			</body>
+		</html>`;
 		try {
 			await sendEmail(email, "Password Reset", htmlContent);
 		} catch (error) {

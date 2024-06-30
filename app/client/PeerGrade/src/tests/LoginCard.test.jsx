@@ -41,7 +41,19 @@ beforeEach(() => {
 });
 
 describe('LoginCard', () => {
-  beforeEach(() => {
+
+  test('renders without crashing', () => {
+    const { getByText } = render(
+      <Provider store={store}>
+        <Router>
+          <LoginCard />
+        </Router>
+      </Provider>
+    );
+    expect(getByText('Login')).toBeInTheDocument();
+  });
+
+  test('shows error message when invalid credentials are entered', async () => {
     global.fetch = jest.fn((url, options) => {
       if (JSON.parse(options.body).email === 'valid@example.com' && JSON.parse(options.body).password === 'validpassword@A1') {
         return Promise.resolve({
@@ -63,20 +75,7 @@ describe('LoginCard', () => {
         });
       }
     });
-  });
 
-  test('renders without crashing', () => {
-    const { getByText } = render(
-      <Provider store={store}>
-        <Router>
-          <LoginCard />
-        </Router>
-      </Provider>
-    );
-    expect(getByText('Login')).toBeInTheDocument();
-  });
-
-  test('shows error message when invalid credentials are entered', async () => {
     const { getByLabelText, getByText, getByRole } = render(
       <Provider store={store}>
         <Router>
@@ -95,6 +94,28 @@ describe('LoginCard', () => {
   });
 
   test('navigates to dashboard and dispatches action when valid credentials are entered', async () => {
+    global.fetch = jest.fn((url, options) => {
+      if (JSON.parse(options.body).email === 'valid@example.com' && JSON.parse(options.body).password === 'validpassword@A1') {
+        return Promise.resolve({
+          json: () => Promise.resolve({
+            class_id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            email: 'valid@example.com',
+            firstname: 'Test',
+            lastname: 'User',
+            type: 'admin',
+            user_id: 1,
+            username: 'testUser',
+          })
+        });
+      } else {
+        return Promise.resolve({
+          json: () => Promise.resolve({
+            message: 'Invalid credentials'
+          })
+        });
+      }
+    });
+    
     const { getByLabelText, getByRole } = render(
       <Provider store={store}>
         <Router>

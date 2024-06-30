@@ -21,6 +21,7 @@ import AppNavbar from "./components/global/Navbar";
 import ManageClass from "./pages/ManageClass";
 import Search from "./pages/Search";
 import AdminDashboard from "./pages/AdminDashboard";
+import TestUserContext from "./pages/testUserContext";
 
 import { Toaster } from "@/components/ui/toaster";
 
@@ -141,6 +142,14 @@ function MainLayout() {
 						element={
 							<UserProvider>
 								<AdminDashboard />
+							</UserProvider>
+						}
+					/>
+					<Route
+						path="/test-user"
+						element={
+							<UserProvider>
+								<TestUserContext />
 							</UserProvider>
 						}
 					/>

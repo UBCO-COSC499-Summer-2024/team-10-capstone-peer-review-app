@@ -13,10 +13,10 @@ import { iClass, assignment, user, Group } from "@/utils/dbData"; // Replace thi
 import GroupCard from "@/components/class/GroupCard";
 import { Skeleton } from "@/components/ui/skeleton";
 
-import { UserContext } from "@/contexts/userContext";
+import { useUser } from "@/contexts/contextHooks/useUser";
 
 function Dashboard() {
-	const { user } = useContext(UserContext);
+	const { user } = useUser();
 
 	const [classes, setClasses] = useState([]);
 	const [assignments, setAssignments] = useState([]);

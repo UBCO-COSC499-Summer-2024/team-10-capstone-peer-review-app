@@ -144,11 +144,11 @@ const AssignmentCreation = () => {
   }, [remove]);
 
   return (
-    <div className='flex justify-left flex-row p-4'>
+    <div className='flex bg-white justify-left flex-row p-4'>
       <div>
         <h2 className="text-xl font-semibold mb-4">Add a New Assignment</h2>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
             <FormField
               control={form.control}
               name="title"

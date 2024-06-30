@@ -27,6 +27,10 @@ import {
 } from "@/components/ui/hover-card";
 
 import { useUser } from "@/contexts/contextHooks/useUser";
+import {
+	getCurrentUser,
+	logoutUser,
+} from "@/api/authApi"; // Import methods from authApi
 
 export default function AppNavbar() {
 	const location = useLocation();
@@ -40,10 +44,8 @@ export default function AppNavbar() {
 	useEffect(() => {
 		const fetchCurrentUser = async () => {
 			try {
-				const response = await axios.get("/api/auth/current-user", {
-					withCredentials: true
-				});
-				setCurrentUser(response.data.user);
+				const currentUser = await getCurrentUser();
+				setCurrentUser(currentUser);
 			} catch (error) {
 				toast({
 					title: "Error",
@@ -55,6 +57,7 @@ export default function AppNavbar() {
 
 		fetchCurrentUser();
 	}, [toast]);
+
 
 	useEffect(() => {
 		if (currentUser) {
@@ -135,34 +138,34 @@ export default function AppNavbar() {
 	//   return null;
 	// }
 
-	// 	const userReviewAssignments = assignmentsData
-	// 		.filter((assignment) => {
-	// 			return (
-	// 				Array.isArray(currentUser.classes) &&
-	// 				currentUser.classes.includes(assignment.classId) &&
-	// 				assignment.evaluation_type === "peer"
-	// 			);
-	// 		})
-	// 		.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
-	// 		.slice(0, 3);
+// 	const userReviewAssignments = assignmentsData
+// 		.filter((assignment) => {
+// 			return (
+// 				Array.isArray(currentUser.classes) &&
+// 				currentUser.classes.includes(assignment.classId) &&
+// 				assignment.evaluation_type === "peer"
+// 			);
+// 		})
+// 		.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
+// 		.slice(0, 3);
 
-	// 	const isActive = (path) => {
-	// 		return (
-	// 			location.pathname === path ||
-	// 			(path === "/dashboard" && location.pathname === "/")
-	// 		);
-	// 	};
+// 	const isActive = (path) => {
+// 		return (
+// 			location.pathname === path ||
+// 			(path === "/dashboard" && location.pathname === "/")
+// 		);
+// 	};
 
 	const handleLogout = async () => {
 		try {
-			await axios.post("/api/auth/logout", {}, { withCredentials: true });
+			await logoutUser();
 			setCurrentUser(null);
 			navigate("/");
 		} catch (error) {
 			toast({
 				title: "Error",
 				description: "Failed to logout",
-				variant: "destructive"
+				variant: "destructive",
 			});
 		}
 	};

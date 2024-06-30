@@ -26,9 +26,9 @@ export const login = asyncErrorHandler(async (req, res, next) => {
 			return next(err);
 		}
 		return res.status(200).json({
-			user: user,
 			status: "Success",
-			message: "You have been logged in!"
+			message: "You have been logged in!",
+			userRole: user.role
 		});
 	});
 });
@@ -83,13 +83,21 @@ export const resendVerificationEmail = asyncErrorHandler(async (req, res) => {
 });
 
 export const confirmEmail = asyncErrorHandler(async (req, res) => {
-	const token = req.query.token;
+	const { token } = req.body;
 	await authService.confirmEmail(token);
 	return res.status(200).json({
 		status: "Success",
 		message: "Email has been verified"
 	});
 });
+
+
+export const currentUser = asyncErrorHandler(async (req, res) => {
+	const userInfo = await authService.getCurrentUser(req.user.email);
+	return res.status(200).json({
+		userInfo: userInfo,
+		status: "Success",
+		message: "Current user fetched successfully!"
 
 export const getAllRoleRequests = asyncErrorHandler(async (req, res) => {
 	const requests = await authService.getAllRoleRequests();
@@ -154,6 +162,7 @@ export default {
 	resetPassword,
 	resendVerificationEmail,
 	confirmEmail,
+	currentUser 
 	getAllRoleRequests,
 	deleteRoleRequest,
 	approveRoleRequest,

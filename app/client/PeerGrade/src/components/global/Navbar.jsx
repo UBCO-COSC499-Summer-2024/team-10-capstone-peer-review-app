@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import axios from "axios";
 import { cn } from "@/utils/utils";
 import { useToast } from "@/components/ui/use-toast";
@@ -27,13 +26,72 @@ import {
 	HoverCardTrigger
 } from "@/components/ui/hover-card";
 
+import { useUser } from "@/contexts/contextHooks/useUser";
+
 export default function AppNavbar() {
 	const location = useLocation();
 	const navigate = useNavigate();
-	const currentUser = useSelector((state) => state.user.currentUser);
+	const { user, userLoading } = useUser();
 	const [classesData, setClassesData] = useState([]);
 	const [assignmentsData, setAssignmentsData] = useState([]);
 	const { toast } = useToast();
+	const [searchQuery, setSearchQuery] = useState(""); // State for search query
+
+	useEffect(() => {
+		const fetchCurrentUser = async () => {
+			try {
+				const response = await axios.get("/api/auth/current-user", {
+					withCredentials: true
+				});
+				setCurrentUser(response.data.user);
+			} catch (error) {
+				toast({
+					title: "Error",
+					description: "Failed to fetch current user",
+					variant: "destructive"
+				});
+			}
+		};
+
+		fetchCurrentUser();
+	}, [toast]);
+
+	useEffect(() => {
+		if (currentUser) {
+			const fetchClasses = async () => {
+				try {
+					const response = await axios.post("/api/users/get-classes", {
+						userId: currentUser.userId
+					});
+					setClassesData(Array.isArray(response.data) ? response.data : []);
+				} catch (error) {
+					toast({
+						title: "Error",
+						description: "Failed to fetch classes",
+						variant: "destructive"
+					});
+				}
+			};
+
+			const fetchAssignments = async () => {
+				try {
+					const response = await axios.post("/api/users/get-assignments", {
+						userId: currentUser.userId
+					});
+					setAssignmentsData(Array.isArray(response.data) ? response.data : []);
+				} catch (error) {
+					toast({
+						title: "Error",
+						description: "Failed to fetch assignments",
+						variant: "destructive"
+					});
+				}
+			};
+
+			fetchClasses();
+			fetchAssignments();
+		}
+	}, [currentUser, toast]);
 
 	// TODO Refactor how we use api Calls
 
@@ -79,25 +137,37 @@ export default function AppNavbar() {
 
 	const [searchQuery, setSearchQuery] = React.useState(""); // State for search query
 
-	const userReviewAssignments = assignmentsData
-		.filter((assignment) => {
-			return (
-				Array.isArray(currentUser.classes) &&
-				currentUser.classes.includes(assignment.classId) &&
-				assignment.evaluation_type === "peer"
-			);
-		})
-		.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
-		.slice(0, 3);
+// 	const userReviewAssignments = assignmentsData
+// 		.filter((assignment) => {
+// 			return (
+// 				Array.isArray(currentUser.classes) &&
+// 				currentUser.classes.includes(assignment.classId) &&
+// 				assignment.evaluation_type === "peer"
+// 			);
+// 		})
+// 		.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
+// 		.slice(0, 3);
 
-	const isActive = (path) => {
-		return (
-			location.pathname === path ||
-			(path === "/dashboard" && location.pathname === "/")
-		);
-	};
-	const handleLogout = () => {
-		navigate("/");
+// 	const isActive = (path) => {
+// 		return (
+// 			location.pathname === path ||
+// 			(path === "/dashboard" && location.pathname === "/")
+// 		);
+// 	};
+
+	const handleLogout = async () => {
+		try {
+			await axios.post("/api/auth/logout", {}, { withCredentials: true });
+			setCurrentUser(null);
+			navigate("/");
+		} catch (error) {
+			toast({
+				title: "Error",
+				description: "Failed to logout",
+				variant: "destructive"
+			});
+		}
+
 	};
 
 	const search = () => {
@@ -108,11 +178,16 @@ export default function AppNavbar() {
 			navigate(`/search`);
 		}
 	};
+
 	const getInitials = (firstName, lastName) => {
 		const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : "";
 		const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : "";
 		return `${firstInitial}${lastInitial}`;
 	};
+
+	if (!user) {
+		return null;
+	}
 
 	return (
 		<div className="w-full py-3 px-4 bg-white shadow-md">
@@ -168,8 +243,8 @@ export default function AppNavbar() {
 						<NavigationMenuTrigger
 							className={cn(
 								navigationMenuTriggerStyle(),
-								isActive("/classes") ||
-									(isActive("/manageClass") && "font-bold")
+								(isActive("/classes") || isActive("/manageclass")) &&
+									"font-bold"
 							)}
 						>
 							Classes
@@ -189,7 +264,7 @@ export default function AppNavbar() {
 									currentUser.role === "ADMIN") && (
 									<ListItem
 										title="Manage Classes"
-										href="/manageClass"
+										href="/manageclass"
 										className="bg-blue-100"
 									>
 										Administer classes and assignments.
@@ -234,8 +309,7 @@ export default function AppNavbar() {
 									alt={`${currentUser.firstname} ${currentUser.lastname}`}
 								/>
 								<AvatarFallback>
-									{currentUser.firstname[0]}
-									{currentUser.lastname[0]}
+									{getInitials(currentUser.firstname, currentUser.lastname)}
 								</AvatarFallback>
 							</Avatar>
 						</HoverCardTrigger>

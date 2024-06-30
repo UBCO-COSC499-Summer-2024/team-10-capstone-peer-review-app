@@ -376,6 +376,34 @@ export async function denyRoleRequest(roleRequestId) {
 		}
 	}
 }
+export async function getCurrentUser(email) {
+	try {
+		let user = await checkUserByEmail(email);
+		if (!user) {
+			throw new apiError("No user with that email", 404);
+		} else {
+			// Changing so that the user object is returned without the password
+			const userInfo = await prisma.user.findUnique({
+				where: { email },
+				select: {
+					userId: true,
+					email: true,
+					password: false,
+					firstname: true,
+					lastname: true,
+					role: true
+				}
+			});
+			return userInfo;
+		}
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Error fetching current user", 500);
+		}
+	}
+}
 
 export default {
 	registerUser,
@@ -384,6 +412,7 @@ export default {
 	confirmEmail,
 	sendForgotPasswordEmail,
 	resetPassword,
+	getCurrentUser
 	getAllRoleRequests,
 	deleteRoleRequest,
 	approveRoleRequest,

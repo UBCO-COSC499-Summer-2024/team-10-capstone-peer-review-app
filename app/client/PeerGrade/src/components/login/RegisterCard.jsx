@@ -42,7 +42,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 	const [open, setOpen] = useState(false);
 	const [value, setValue] = useState("");
 
-	const handleSubmit = (e) => {
+	const handleRegister = (e) => {
 		e.preventDefault();
 
 		const passwordRegex =
@@ -59,6 +59,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 			setError("Passwords do not match");
 			return;
 		} else {
+			// Test if this is needed
 			setError("");
 		}
 
@@ -139,7 +140,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="flex-1 my-3 space-y-4">
-					<form className="space-y-4" onSubmit={handleSubmit}>
+					<form className="space-y-4" onSubmit={handleRegister}>
 						<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 							<div>
 								<label

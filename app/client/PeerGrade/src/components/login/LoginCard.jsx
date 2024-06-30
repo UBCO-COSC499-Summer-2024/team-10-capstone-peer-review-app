@@ -42,7 +42,6 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 	const token = query.get("token") || "";
 
 	const navigate = useNavigate();
-	const { toast } = useToast();
 
 	useEffect(() => {
 		const verifyEmail = async () => {
@@ -111,15 +110,15 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 					</div>
 				</Alert>
 			)}
-			<Card className="w-full max-w-lg h-[550px] flex flex-col justify-center item-center">
+			<Card className="w-full max-w-lg h-[650px] flex flex-col justify-center item-center">
 				<CardHeader className="text-center">
 					<CardTitle className="text-2xl font-bold">Login</CardTitle>
 					<CardDescription className="text-gray-600">
 						Please enter your credentials to login
 					</CardDescription>
 				</CardHeader>
-				<CardContent className="flex-1 overflow-y-auto space-y-4">
-					<form className="space-y-4" onSubmit={handleSubmit}>
+				<CardContent className="flex-1 flex flex-col items-center justify-center space-y-4">
+					<form className="space-y-4 w-full max-m-md" onSubmit={handleSubmit}>
 						<div>
 							<label
 								htmlFor="email"

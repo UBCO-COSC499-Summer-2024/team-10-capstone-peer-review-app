@@ -1,3 +1,4 @@
+import apiError from "../utils/apiError.js";
 import authService from "../services/authService.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 
@@ -15,6 +16,9 @@ export const register = asyncErrorHandler(async (req, res) => {
 });
 
 export const login = asyncErrorHandler(async (req, res, next) => {
+	if (req.user) {
+		return next(new apiError("You are already logged in", 400));
+	}
 	const { email, password } = req.body;
 	const user = await authService.loginUser(email, password);
 	req.logIn(user, (err) => {
@@ -29,11 +33,23 @@ export const login = asyncErrorHandler(async (req, res, next) => {
 	});
 });
 
-export const logout = asyncErrorHandler(async (req, res) => {
+export const logout = asyncErrorHandler(async (req, res, next) => {
+	// Check if the user is not logged in
+	if (!req.isAuthenticated()) {
+		return next(new apiError("You are not logged in!", 400));
+	}
 	req.logout(() => {
-		return res.status(200).json({
-			status: "Success",
-			message: "You have been logged out!"
+		// Destroy session after logging out
+		req.session.destroy((err) => {
+			if (err) {
+				return next(err);
+			}
+			// Clear the cookie on the client side browser
+			res.clearCookie("connect.sid");
+			res.status(200).json({
+				status: "Success",
+				message: "You have been logged out!"
+			});
 		});
 	});
 });
@@ -75,6 +91,61 @@ export const confirmEmail = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+export const getAllRoleRequests = asyncErrorHandler(async (req, res) => {
+	const requests = await authService.getAllRoleRequests();
+	return res.status(200).json({
+		status: "Success",
+		message: "Role requests retrieved",
+		data: requests
+	});
+});
+
+export const deleteRoleRequest = asyncErrorHandler(async (req, res) => {
+	const roleRequestId = req.params.roleRequestId;
+	await authService.deleteRoleRequest(roleRequestId);
+	return res.status(200).json({
+		status: "Success",
+		message: `Role request: ${roleRequestId} deleted`
+	});
+});
+
+export const approveRoleRequest = asyncErrorHandler(async (req, res) => {
+	const roleRequestId = req.params.roleRequestId;
+	await authService.approveRoleRequest(roleRequestId);
+	return res.status(200).json({
+		status: "Success",
+		message: "Role request approved"
+	});
+});
+
+export const denyRoleRequest = asyncErrorHandler(async (req, res) => {
+	const roleRequestId = req.params.roleRequestId;
+	await authService.denyRoleRequest(roleRequestId);
+	return res.status(200).json({
+		status: "Success",
+		message: "Role request denied"
+	});
+});
+
+export const updateRoleRequestStatus = asyncErrorHandler(async (req, res) => {
+	const roleRequestId = req.params.roleRequestId;
+	const { status } = req.body;
+	await authService.updateRoleRequestStatus(roleRequestId, status);
+	return res.status(200).json({
+		status: "Success",
+		message: "Role request updated"
+	});
+});
+
+export const applyForNewRoleRequest = asyncErrorHandler(async (req, res) => {
+	const { email, role } = req.body;
+	await authService.applyForNewRoleRequest(email, role);
+	return res.status(200).json({
+		status: "Success",
+		message: "Role request sent"
+	});
+});
+
 export default {
 	register,
 	login,
@@ -82,5 +153,11 @@ export default {
 	forgotPassword,
 	resetPassword,
 	resendVerificationEmail,
-	confirmEmail
+	confirmEmail,
+	getAllRoleRequests,
+	deleteRoleRequest,
+	approveRoleRequest,
+	denyRoleRequest,
+	updateRoleRequestStatus,
+	applyForNewRoleRequest
 };

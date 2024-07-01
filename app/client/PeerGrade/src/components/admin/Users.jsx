@@ -1,54 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import DataTable from '@/components/ui/data-table';
 import NotifCard from '@/components/global/NotifCard';
 import DataChart from '@/components/admin/stats/data-chart';
-
-const usersData = [
-  {
-    userId: "1",
-    username: "johndoe",
-    password: "******",
-    email: "johndoe@example.com",
-    firstname: "John",
-    lastname: "Doe",
-    isEmailVerified: true,
-    role: "STUDENT",
-    classes: 4,
-    submissions: 10,
-    reviewsDone: 5,
-    reviewsRecieved: 3,
-    classesInstructed: 0,
-    Rubric: 1,
-    learningInstitution: "ABC University",
-    description: "Experienced instructor in Computer Science.",
-    dateCreated: "2024-01-01"
-  },
-  {
-    userId: "2",
-    username: "janesmith",
-    password: "******",
-    email: "janesmith@example.com",
-    firstname: "Jane",
-    lastname: "Smith",
-    isEmailVerified: false,
-    role: "STUDENT",
-    classes: 3,
-    submissions: 7,
-    reviewsDone: 4,
-    reviewsRecieved: 2,
-    classesInstructed: 0,
-    Rubric: 0,
-    learningInstitution: "XYZ College",
-    description: "Passionate about teaching mathematics.",
-    dateCreated: "2023-07-15"
-  },
-  // Add more user data here...
-];
+import { useUser } from "@/contexts/contextHooks/useUser";
+import { getAllUsers } from "@/api/adminApi";
 
 const userColumns = [
-  { accessorKey: 'username', header: 'Username' },
-  { accessorKey: 'password', header: 'Password' },
   { accessorKey: 'email', header: 'Email' },
+  { accessorKey: 'password', header: 'Password' },
   { accessorKey: 'firstname', header: 'First Name' },
   { accessorKey: 'lastname', header: 'Last Name' },
   { accessorKey: 'isEmailVerified', header: 'Email Verified' },
@@ -59,8 +18,6 @@ const userColumns = [
   { accessorKey: 'reviewsRecieved', header: 'Reviews Received' },
   { accessorKey: 'classesInstructed', header: 'Classes Instructed' },
   { accessorKey: 'Rubric', header: 'Rubric' },
-  { accessorKey: 'learningInstitution', header: 'Learning Institution' },
-  { accessorKey: 'description', header: 'Description' },
 ];
 
 const instructorApprovals = [
@@ -75,6 +32,22 @@ const instructorApprovals = [
 ];
 
 const Users = () => {
+	const { user, userLoading } = useUser();
+	const [usersData, setUsersData] = useState([]);
+
+  useEffect(() => {
+		if (!userLoading && user) {
+			const fetchAllUsers = async () => {
+				// const allUsers = await getAllUsers();
+        // console.log(allUsers);
+				// if (allUsers.status === "Success") {
+				// 	setUsersData(Array.isArray(allUsers) ? allUsers : []);
+				// }
+			};
+			fetchAllUsers();
+		}
+	}, [user, userLoading]);
+
   const chartData = usersData.map(user => ({
     dateCreated: user.dateCreated,
     role: user.role

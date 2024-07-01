@@ -8,18 +8,19 @@ import DataTable from "@/components/ui/data-table";
 import { ArrowUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { iClass, assignment, user, Group } from "@/utils/dbData"; // Replace this with actual data, only for GroupCard
 import GroupCard from "@/components/class/GroupCard";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { getClassesByUserId, getAllAssignments } from "@/api/classApi";
+import { getGroups } from "@/api/userApi";
 
 function Dashboard() {
 	const { user, userLoading } = useUser();
 
 	const [classes, setClasses] = useState([]);
 	const [assignments, setAssignments] = useState([]);
+	const [groups, setGroups] = useState([]);
 	const [reviews, setReviews] = useState([]);
 	const { toast } = useToast();
 
@@ -53,6 +54,20 @@ function Dashboard() {
 				}
 			};
 
+			const fetchGroups = async () => {
+				try {
+					const groups = await getGroups(user.userId);
+					console.log("groups",groups);
+					setGroups(Array.isArray(groups) ? groups : []);
+				} catch (error) {
+					toast({
+						title: "Error",
+						description: "Failed to fetch groups",
+						variant: "destructive"
+					});
+				}
+			};
+
 			// will change once reviews api calls is figured out.
 			// const fetchReviews = async () => {
 			// 	try {
@@ -67,8 +82,9 @@ function Dashboard() {
 			// 	}
 			// };
 
-			// fetchClasses();
-			// fetchAssignments();
+			fetchClasses();
+			fetchAssignments();
+			fetchGroups();
 			// fetchReviews();
 		}
 	}, [user, userLoading, toast]);
@@ -164,6 +180,8 @@ function Dashboard() {
 		return <p>No user</p>;
 	}
 
+	const classNames = classes.map((classItem) => classItem.classname);
+
 	return (
 		<div className="w-full main-container space-y-6 ">
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-5">
@@ -183,21 +201,19 @@ function Dashboard() {
 						))}
 			</div>
 			<div className="flex justify-between items-start gap-5 pt-5">
-				{/* Need to refactor group card */}
-				{/*
-		<div className="flex w-1/2">
-			{userLoading ? (
-				// Skeleton for GroupCard
-				<Skeleton className="h-96 w-full rounded-lg" />
-			) : (
-				<GroupCard
-					classes={[iClass[0], iClass[1], iClass[2]]}
-					groups={Group}
-					classNames={iClassNames}
-					users={user}
-				/>
-			)}
-		</div> */}
+				<div className="flex w-1/2">
+					{userLoading ? (
+						// Skeleton for GroupCard
+						<Skeleton className="h-96 w-full rounded-lg" />
+					) : (
+						<GroupCard
+							classes={classes}
+							groups={groups}
+							classNames={classNames}
+							users={user}
+						/>
+					)}
+				</div>
 				<div className="flex w-3/4">
 					<Tabs defaultValue="assignments" className="flex-1">
 						{userLoading ? (

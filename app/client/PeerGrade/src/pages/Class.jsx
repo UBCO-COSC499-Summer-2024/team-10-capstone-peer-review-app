@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { iClass as classesData, assignment as assignmentsData, Categories as categoriesData, user } from '@/utils/dbData';
+import { useParams, Link } from 'react-router-dom';
 import {
   Menubar,
   MenubarMenu,
@@ -14,38 +12,49 @@ import Files from './classNav/Files';
 import People from './classNav/People';
 import AssignmentCreation from './classNav/AssignmentCreation';
 import { Button } from '@/components/ui/button';
+import { useUser } from "@/contexts/contextHooks/useUser";
+import { getAllAssignmentsByClassId, getClassById } from "@/api/classApi";
+import { useToast } from "@/components/ui/use-toast";
 
 const Class = () => {
   const { classId } = useParams();
-  const navigate = useNavigate();
-  const classItem = classesData.find((item) => item.class_id === parseInt(classId));
+  const { user, userLoading } = useUser();
   const [currentView, setCurrentView] = useState('home');
-  const [currentUser, setCurrentUser] = useState(null);
+  const [classItem, setClassItem] = useState(null);
+  const [assignments, setAssignments] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const { toast } = useToast();
 
   useEffect(() => {
-    const fetchCurrentUser = async () => {
+    const fetchClassData = async () => {
       try {
-        const response = await axios.get('/api/auth/current-user', { withCredentials: true });
-        setCurrentUser(response.data.user);
+        const fetchedClass = await getClassById(classId);
+        setClassItem(fetchedClass);
+
+        const fetchedCategories = await getCategoriesByClassId(classId);
+        setCategories(fetchedCategories);
       } catch (error) {
-        console.error("Failed to fetch current user", error);
+        toast({
+          title: "Error",
+          description: "Failed to fetch class data",
+          variant: "destructive",
+        });
       }
     };
 
-    fetchCurrentUser();
-  }, []);
+    if (!userLoading && user) {
+      fetchClassData();
+    }
+  }, [classId, user, userLoading, toast]);
 
   if (!classItem) {
     return <div>Class not found</div>;
   }
 
-  const classAssignments = assignmentsData.filter(assignment => assignment.class_id === classItem.class_id);
-  const categories = categoriesData.filter(category => classAssignments.some(assignment => assignment.assignment_id === category.rubric_id));
-
   const renderContent = () => {
     switch (currentView) {
       case 'grades':
-        return <Grades classAssignments={classAssignments} />;
+        return <Grades classAssignments={assignments} />;
       case 'people':
         return <People />;
       case 'groups':
@@ -66,15 +75,14 @@ const Class = () => {
             {categories.map((category, index) => (
               <Card key={index} className="bg-white p-4 shadow-md mb-6">
                 <CardHeader>
-                  <CardTitle className="text-xl font-bold mb-2">{category.title}</CardTitle>
+                  <CardTitle className="text-xl font-bold mb-2">{category}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
-                  {classAssignments
-                    .filter(assignment => assignment.assignment_id === category.rubric_id)
+                  {assignments
+                    .filter(assignment => assignment.category === category)
                     .map((assignment) => (
-                      <div className='flex w-full'>
+                      <div key={assignment.assignment_id} className='flex w-full'>
                         <Link
-                          key={assignment.assignment_id}
                           to={`/assignment/${assignment.assignment_id}`}
                           className="flex items-center space-x-2 bg-gray-100 p-2 rounded hover:bg-gray-200 transition-colors w-full"
                         >
@@ -93,7 +101,9 @@ const Class = () => {
   return (
     <div className="w-screen main-container mx-5 p-6">
       <div className="flex flex-col gap-4 bg-gray-200 p-4 mb-6 rounded-lg">
-        <h1 className="text-3xl font-bold">{classItem.classname}: {user.find(instructor => instructor.user_id === classItem.instructor_id)?.firstname + ' ' + user.find(instructor => instructor.user_id === classItem.instructor_id)?.lastname}</h1>
+        <h1 className="text-3xl font-bold">
+          {classItem.classname}: {classItem.instructor?.firstname} {classItem.instructor?.lastname}
+        </h1>
         <div className="flex rounded-lg">
           <div className="flex justify-between items-center">
             <Menubar className='bg-gray-200'>
@@ -121,7 +131,7 @@ const Class = () => {
           {renderContent()}
         </div>
         <div className="space-y-6">
-          {(currentUser?.role === 'INSTRUCTOR' || currentUser?.role === 'ADMIN') && currentView !== 'assignmentCreation' &&
+          {(user?.role === 'INSTRUCTOR' || user?.role === 'ADMIN') && currentView !== 'assignmentCreation' &&
             <Button variant="outline" onClick={() => setCurrentView('assignmentCreation')} className="w-full bg-white">
               Create Assignment
             </Button>

@@ -39,7 +39,9 @@ import {
   getGroupsInClass,
   getGroupMembers,
   addGroupMember,
-  removeGroupMember
+  removeGroupMember,
+
+  getCategoriesByClassId
 } from "../controllers/classController.js";
 
 import { ensureUser, ensureInstructor, ensureAdmin } from "../middleware/ensureUserTypes.js";
@@ -146,5 +148,9 @@ router.route("/add-group-member")
 
 router.route("/remove-group-member")
   .post(ensureUser, ensureInstructor, removeGroupMember);
+
+router.route("/:classId/categories")
+  .post(ensureUser, getCategoriesByClassId);
+ 
 
 export default router;

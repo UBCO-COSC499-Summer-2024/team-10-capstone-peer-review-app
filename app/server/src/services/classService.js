@@ -910,6 +910,15 @@ const getGroupMembers = async (groupId) => {
 	}
 };
 
+export const getCategoriesByClassId = async (classId) => {
+	return await prisma.category.findMany({
+	  where: { classId },
+	  include: {
+		assignments: true,
+	  },
+	});
+  };
+
 
 export default {
 	getClassesByInstructor,
@@ -944,5 +953,7 @@ export default {
 	getGroupsInClass,
 	getGroupMembers,
 	addGroupMember,
-	removeGroupMember
+	removeGroupMember,
+
+	getCategoriesByClassId
 };

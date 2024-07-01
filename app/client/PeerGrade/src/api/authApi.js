@@ -132,6 +132,7 @@ function handleError(error) {
 			message: error.response.data.message
 		});
 	} else {
+		console.log("Unexpected error from Auth API: ", error);
 		showStatusToast({
 			status: "Error",
 			message: "An unexpected error occurred. Please try again."

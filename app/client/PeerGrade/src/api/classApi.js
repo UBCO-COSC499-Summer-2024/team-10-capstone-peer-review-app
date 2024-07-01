@@ -17,9 +17,12 @@ export const getClassesByUserId = async (userId) => {
 
 export const getAllAssignmentsByClassId = async (classId) => {
 	try {
-		const response = await axios.post(`${BASE_URL}/classes/get-class-assignments`, {
-			classId
-		});
+		const response = await axios.post(
+			`${BASE_URL}/classes/get-class-assignments`,
+			{
+				classId
+			}
+		);
 		return response.data;
 	} catch (error) {
 		handleError(error);
@@ -66,6 +69,7 @@ function handleError(error) {
 			message: error.response.data.message
 		});
 	} else {
+		console.log("Unexpected error from Class API: ", error);
 		showStatusToast({
 			status: "Error",
 			message: "An unexpected error occurred. Please try again."

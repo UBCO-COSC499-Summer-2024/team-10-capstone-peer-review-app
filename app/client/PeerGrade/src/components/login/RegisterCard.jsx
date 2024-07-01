@@ -48,7 +48,8 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 	const handleRegister = async (e) => {
 		e.preventDefault();
 
-		const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+		const passwordRegex =
+			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 		if (!passwordRegex.test(password)) {
 			setError(
@@ -73,10 +74,10 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 			role: role
 		};
 
-		try {
-			const response = await registerUser(newUser);
-			
-		}
+		// try {
+		// 	const response = await registerUser(newUser);
+
+		// }
 	};
 
 	const roleOptions = [

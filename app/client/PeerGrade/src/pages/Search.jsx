@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { iClass as classesData, user } from '@/utils/dbData'; // DB CALL
+import { iClass as classesData, user as mockUser } from '@/utils/dbData'; // DB CALL
 import { Button } from "@/components/ui/button";
 import { ArrowUp, ArrowDown, ChevronUpIcon, ChevronDownIcon, CheckIcon, Dot, Trash2, Pencil } from 'lucide-react';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Command, CommandList, CommandGroup, CommandItem } from '@/components/ui/command';
 import { Link, useLocation } from 'react-router-dom';
 import { Input } from "@/components/ui/input";
+import { useUser } from "@/contexts/contextHooks/useUser";
 import { cn } from '@/utils/utils';
 import {
     Dialog,
@@ -108,10 +108,9 @@ function ClassTable() {
     const totalPages = Math.ceil(filteredClasses.length / itemsPerPage) === 0 ? 1 : Math.ceil(filteredClasses.length / itemsPerPage);
     const currentClasses = filteredClasses.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-    const currentUser = useSelector((state) => state.user.currentUser);
-
-    if (!currentUser || currentUser.role !== 'ADMIN') {
-      return <div>You do not have permission to view this page.</div>;
+	const { user, userLoading } = useUser();
+    if (!userLoading && (!user || user.role !== 'ADMIN')) {
+        return <div>You do not have permission to view this page.</div>;
     }
 
     return (
@@ -236,7 +235,7 @@ function ClassTable() {
                         <TableRow key={index}>
                             <TableCell className="p-2"><Link to={`/class/${classItem.class_id}`}>{classItem.classname}</Link></TableCell>
                             <TableCell className="p-2">
-                                {user.find(instructor => instructor.user_id === classItem.instructor_id)?.firstname + ' ' + user.find(instructor => instructor.user_id === classItem.instructor_id)?.lastname}
+                                {mockUser.find(instructor => instructor.user_id === classItem.instructor_id)?.firstname + ' ' + mockUser.find(instructor => instructor.user_id === classItem.instructor_id)?.lastname}
                             </TableCell>
                             <TableCell className="p-2">{new Date(classItem.start).toLocaleDateString()}</TableCell>
                             <TableCell className="p-2">{new Date(classItem.end).toLocaleDateString()}</TableCell>

@@ -39,34 +39,52 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [passwordVisible, setPasswordVisible] = useState(false);
 	const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
-	const [error, setError] = useState("");
 	const [open, setOpen] = useState(false);
 	const [role, setRole] = useState("");
+	const [apiError, setApiError] = useState("");
+	const [errorState, setErrorState] = useState({
+		firstName: "",
+		lastName: "",
+		email: "",
+		password: "",
+		confirmPassword: "",
+		role: ""
+	});
 
-	const handleRegister = async (e) => {
-		e.preventDefault();
+	const validateFields = () => {
+		let errors = { ...errorState };
 
-		// TODO, find out how to high
 		const passwordRegex =
 			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 		if (!passwordRegex.test(password)) {
-			setError(
-				"Password must be at least 8 characters long, with at least one uppercase letter, one lowercase letter, one number, and one special character."
-			);
-			return;
+			errors.password =
+				"Password must be at least 8 characters long, with at least one uppercase letter, one lowercase letter, one number, and one special character.";
+		} else {
+			errors.password = "";
 		}
 
 		if (password !== confirmPassword) {
-			setError("Passwords do not match");
-			return;
+			errors.confirmPassword = "Passwords do not match";
 		} else {
-			// Test if this is needed
-			setError("");
+			errors.confirmPassword = "";
 		}
 
 		if (role === "") {
-			setError("Please select a role");
+			errors.role = "Please select a role";
+		} else {
+			errors.role = "";
+		}
+
+		setErrorState(errors);
+
+		return Object.values(errors).every((error) => error === "");
+	};
+
+	const handleRegister = async (e) => {
+		e.preventDefault();
+
+		if (!validateFields()) {
 			return;
 		}
 
@@ -86,7 +104,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 		if (response.status === "Success") {
 			onSwitchToLogin();
 		} else if (response.status === "Error") {
-			setError(response.message);
+			setApiError(response.message);
 		}
 	};
 
@@ -184,8 +202,11 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 								onChange={(e) => setPassword(e.target.value)}
 								required
 								// TODO: Find out how to highlght specific fields based on an error and setError
-								className={`block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-100 border ${error ? "border-red-500" : "border-gray-300"} rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+								className={`block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-100 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
 							/>
+							{errorState.password && (
+								<p className="text-red-500 text-sm">{errorState.password}</p>
+							)}
 							<div className="absolute inset-y-0 mt-6 right-0 pr-3 flex items-center">
 								<button
 									type="button"
@@ -289,7 +310,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 								</PopoverContent>
 							</Popover>
 						</div>
-						{error && <p className="text-red-500 text-sm">{error}</p>}
+						{apiError && <p className="text-red-500 text-sm">{apiError}</p>}
 						<div className="flex justify-center">
 							<Button
 								variant="outline"

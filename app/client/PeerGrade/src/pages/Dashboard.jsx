@@ -26,32 +26,52 @@ function Dashboard() {
 	useEffect(() => {
 		if (!userLoading && user) {
 			const fetchClasses = async () => {
-				const classesData = await getClassesByUserId(user.userId);
-				if (classesData.status === "Success") {
+				try {
+					const classesData = await getClassesByUserId(user.userId);
+					console.log(classesData);
 					setClasses(Array.isArray(classesData) ? classesData : []);
+				} catch (error) {
+					toast({
+						title: "Error",
+						description: "Failed to fetch classes",
+						variant: "destructive"
+					});
 				}
 			};
 
 			const fetchAssignments = async () => {
-				const assignmentsData = await getAllAssignments(user.userId);
-				if (assignmentsData.status === "Success") {
+				try {
+					const assignmentsData = await getAllAssignments(user.userId);
+					console.log(assignmentsData);
 					setAssignments(Array.isArray(assignmentsData) ? assignmentsData : []);
+				} catch (error) {
+					toast({
+						title: "Error",
+						description: "Failed to fetch assignments",
+						variant: "destructive"
+					});
 				}
 			};
 
 			// will change once reviews api calls is figured out.
-			const fetchReviews = async () => {
-				// const reviewsData = await axios.get("/api/users/reviews");
-				if (reviewsData.status === "Success") {
-					setReviews(Array.isArray(reviewData) ? reviewData : []);
-				}
-			};
+			// const fetchReviews = async () => {
+			// 	try {
+			// 		const response = await axios.get("/api/users/reviews");
+			// 		setReviews(Array.isArray(response.data) ? response.data : []);
+			// 	} catch (error) {
+			// 		toast({
+			// 			title: "Error",
+			// 			description: "Failed to fetch reviews",
+			// 			variant: "destructive"
+			// 		});
+			// 	}
+			// };
 
-			fetchClasses();
-			fetchAssignments();
-			fetchReviews();
+			// fetchClasses();
+			// fetchAssignments();
+			// fetchReviews();
 		}
-	}, [user, userLoading]);
+	}, [user, userLoading, toast]);
 
 	const assignmentData = assignments.filter(
 		(assignment) => assignment.evaluation_type !== "peer"

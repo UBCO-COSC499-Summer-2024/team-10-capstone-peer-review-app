@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import { cn } from "@/utils/utils";
 import {
 	Card,
@@ -29,6 +30,8 @@ import {
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 
+import { registerUser } from "@/api/authApi";
+
 const RegisterCard = ({ onSwitchToLogin }) => {
 	const { toast } = useToast();
 	const [firstName, setFirstName] = useState("");
@@ -40,13 +43,12 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 	const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 	const [error, setError] = useState("");
 	const [open, setOpen] = useState(false);
-	const [value, setValue] = useState("");
+	const [role, setRole] = useState("");
 
-	const handleRegister = (e) => {
+	const handleRegister = async (e) => {
 		e.preventDefault();
 
-		const passwordRegex =
-			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+		const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 		if (!passwordRegex.test(password)) {
 			setError(
@@ -63,69 +65,31 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 			setError("");
 		}
 
-		const createUser = async (newUser) => {
-			try {
-				const response = await fetch(
-					"http://localhost:3000/api/auth/register",
-					{
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json"
-						},
-						body: JSON.stringify(newUser)
-					}
-				);
-
-				if (!response.ok) {
-					throw new Error(`HTTP error! status: ${response.status}`);
-				}
-
-				const data = await response.json();
-				return data;
-			} catch (error) {
-				console.error("Error:", error);
-				throw error;
-			}
-		};
-
 		const newUser = {
-			username: "testuser",
-			password: password,
 			email: email,
+			password: password,
 			firstname: firstName,
 			lastname: lastName,
-			role: value
+			role: role
 		};
 
-		createUser(newUser)
-			.then(() => {
-				toast({
-					title: "Success",
-					description: "Account created successfully!",
-					variant: "positive"
-				});
-				onSwitchToLogin(); // Switch back to login after registration
-			})
-			.catch((error) => {
-				toast({
-					title: "Error",
-					description: "Failed to create account",
-					variant: "destructive"
-				});
-			});
+		try {
+			const response = await registerUser(newUser);
+			
+		}
 	};
 
-	const dropdown_options = [
+	const roleOptions = [
 		{
-			value: "STUDENT",
+			role: "STUDENT",
 			label: "Student"
 		},
 		{
-			value: "INSTRUCTOR",
+			role: "INSTRUCTOR",
 			label: "Instructor"
 		},
 		{
-			value: "ADMIN",
+			role: "ADMIN",
 			label: "Admin"
 		}
 	];
@@ -270,10 +234,9 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 										aria-expanded={open}
 										className="w-full justify-between bg-white mt-1"
 									>
-										{value
-											? dropdown_options.find(
-													(option) => option.value === value
-												)?.label
+										{role
+											? roleOptions.find((option) => option.role === role)
+													?.label
 											: "Select option..."}
 										{open ? (
 											<ChevronUpIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -286,13 +249,13 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 									<Command>
 										<CommandList>
 											<CommandGroup>
-												{dropdown_options.map((option) => (
+												{roleOptions.map((option) => (
 													<CommandItem
-														key={option.value}
-														value={option.value}
+														key={option.role}
+														value={option.role}
 														onSelect={(currentValue) => {
-															setValue(
-																currentValue === value ? "" : currentValue
+															setRole(
+																currentValue === role ? "" : currentValue
 															);
 															setOpen(false);
 														}}
@@ -301,7 +264,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 														<CheckIcon
 															className={cn(
 																"ml-auto h-4 w-4",
-																value === option.value
+																role === option.role
 																	? "opacity-100"
 																	: "opacity-0"
 															)}

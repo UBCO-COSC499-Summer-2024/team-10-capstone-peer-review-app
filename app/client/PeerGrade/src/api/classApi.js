@@ -27,9 +27,7 @@ export const getClassById = async (classId) => {
   
 export const getCategoriesByClassId = async (classId) => {
     try {
-      console.log("im here")
       const response = await axios.get(`${BASE_URL}/classes/${classId}/categories`);
-      console.log(response.data)
       return response.data.data;
     } catch (error) {
       handleError(error);
@@ -43,7 +41,6 @@ export const getAllAssignmentsByClassId = async (classId) => {
         const response = await axios.post(`${BASE_URL}/classes/get-class-assignments`, {
             classId
         });
-        console.log(response)
         return response.data;
     } catch (error) {
         handleError(error);

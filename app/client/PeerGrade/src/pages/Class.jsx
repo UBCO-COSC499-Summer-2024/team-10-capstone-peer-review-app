@@ -33,6 +33,9 @@ const Class = () => {
 
         const fetchedCategories = await getCategoriesByClassId(classId);
         setCategories(fetchedCategories);
+
+        const fetchedAssignments = await getAllAssignmentsByClassId(classId);
+        setAssignments(fetchedAssignments);
       } catch (error) {
         toast({
           title: "Error",
@@ -78,18 +81,16 @@ const Class = () => {
                   <CardTitle className="text-xl font-bold mb-2">{category.name}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
-                  {assignments
-                    .filter(assignment => assignment.category === category.name)
-                    .map((assignment) => (
-                      <div key={assignment.assignment_id} className='flex w-full'>
-                        <Link
-                          to={`/assignment/${assignment.assignment_id}`}
-                          className="flex items-center space-x-2 bg-gray-100 p-2 rounded hover:bg-gray-200 transition-colors w-full"
-                        >
-                          <span>{assignment.title}</span>
-                        </Link>
-                      </div>
-                    ))}
+                  {category.assignments.map((assignment) => (
+                    <div key={assignment.assignmentId} className='flex w-full'>
+                      <Link
+                        to={`/assignment/${assignment.assignmentId}`}
+                        className="flex items-center space-x-2 bg-gray-100 p-2 rounded hover:bg-gray-200 transition-colors w-full"
+                      >
+                        <span>{assignment.title}</span>
+                      </Link>
+                    </div>
+                  ))}
                 </CardContent>
               </Card>
             ))}

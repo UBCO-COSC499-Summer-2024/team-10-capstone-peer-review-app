@@ -44,6 +44,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 	const navigate = useNavigate();
 
 	// Use Effect to check if the email verification JWT send in the url
+	// TODO: Look into why toasts pop up twice, and how to remove token after it renders once
 	useEffect(() => {
 		const verifyEmail = async () => {
 			if (token) {

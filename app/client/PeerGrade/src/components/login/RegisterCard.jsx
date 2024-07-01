@@ -28,12 +28,10 @@ import {
 	Check as CheckIcon
 } from "lucide-react";
 import { Toaster } from "@/components/ui/toaster";
-import { useToast } from "@/components/ui/use-toast";
 
 import { registerUser } from "@/api/authApi";
 
 const RegisterCard = ({ onSwitchToLogin }) => {
-	const { toast } = useToast();
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
 	const [email, setEmail] = useState("");
@@ -48,6 +46,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 	const handleRegister = async (e) => {
 		e.preventDefault();
 
+		// TODO, find out how to high
 		const passwordRegex =
 			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
@@ -66,18 +65,29 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 			setError("");
 		}
 
+		if (role === "") {
+			setError("Please select a role");
+			return;
+		}
+
 		const newUser = {
 			email: email,
 			password: password,
 			firstname: firstName,
 			lastname: lastName,
-			role: role
+			// This conditional may not be nessesary
+			role: role === "" ? "STUDENT" : role
 		};
 
-		// try {
-		// 	const response = await registerUser(newUser);
+		console.log("Role", role);
 
-		// }
+		const response = await registerUser(newUser);
+		console.log("Register User Response", response);
+		if (response.status === "Success") {
+			onSwitchToLogin();
+		} else if (response.status === "Error") {
+			setError(response.message);
+		}
 	};
 
 	const roleOptions = [
@@ -173,6 +183,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
 								required
+								// TODO: Find out how to highlght specific fields based on an error and setError
 								className={`block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-100 border ${error ? "border-red-500" : "border-gray-300"} rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
 							/>
 							<div className="absolute inset-y-0 mt-6 right-0 pr-3 flex items-center">

@@ -11,7 +11,7 @@ export const register = asyncErrorHandler(async (req, res) => {
 	await authService.sendVerificationEmail(userRegisterInfo.email);
 	return res.status(200).json({
 		status: "Success",
-		message: "Account successfully created! Verification email sent."
+		message: `Account successfully created! Verification email sent to ${userRegisterInfo.email}.`
 	});
 });
 

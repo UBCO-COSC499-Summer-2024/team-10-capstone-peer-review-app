@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import ClassCard from '@/components/class/ClassCard';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
-import axios from 'axios';
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { getClassesByUserId, getAllAssignmentsByClassId, getAllAssignments, createClass, deleteClass } from "@/api/classApi";
 import {

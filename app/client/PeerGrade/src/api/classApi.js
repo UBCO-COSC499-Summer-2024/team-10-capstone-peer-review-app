@@ -27,7 +27,9 @@ export const getClassById = async (classId) => {
   
 export const getCategoriesByClassId = async (classId) => {
     try {
+      console.log("im here")
       const response = await axios.get(`${BASE_URL}/classes/${classId}/categories`);
+      console.log(response.data)
       return response.data.data;
     } catch (error) {
       handleError(error);

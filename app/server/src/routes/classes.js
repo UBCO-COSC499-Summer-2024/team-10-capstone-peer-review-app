@@ -150,7 +150,7 @@ router.route("/remove-group-member")
   .post(ensureUser, ensureInstructor, removeGroupMember);
 
 router.route("/:classId/categories")
-  .post(ensureUser, getCategoriesByClassId);
+  .get(ensureUser, getCategoriesByClassId);
  
 
 export default router;

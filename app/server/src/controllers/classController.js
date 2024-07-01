@@ -364,10 +364,11 @@ export const removeGroupMember = asyncErrorHandler(async (req, res) => {
 });
 
 export const getCategoriesByClassId = asyncErrorHandler(async (req, res) => {
-	const { classId } = req.params;
-	const categories = await getCategoriesByClassId(classId);
-	res.status(200).json({ status: "Success", data: categories });
-  });
+    const { classId } = req.params;
+    const categories = await classService.getCategoriesByClassId(classId);
+	console.log(categories)
+    res.status(200).json({ status: "Success", data: categories });
+});
 
 
 // Export all controller methods

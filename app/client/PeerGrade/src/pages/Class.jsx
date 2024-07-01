@@ -13,7 +13,7 @@ import People from './classNav/People';
 import AssignmentCreation from './classNav/AssignmentCreation';
 import { Button } from '@/components/ui/button';
 import { useUser } from "@/contexts/contextHooks/useUser";
-import { getAllAssignmentsByClassId, getClassById } from "@/api/classApi";
+import { getAllAssignmentsByClassId, getCategoriesByClassId, getClassById } from "@/api/classApi";
 import { useToast } from "@/components/ui/use-toast";
 
 const Class = () => {
@@ -72,14 +72,14 @@ const Class = () => {
               </CardHeader>
               <CardContent className="bg-gray-100 p-4 rounded">No recent announcements</CardContent>
             </Card>
-            {categories.map((category, index) => (
-              <Card key={index} className="bg-white p-4 shadow-md mb-6">
+            {categories.map((category) => (
+              <Card key={category.categoryId} className="bg-white p-4 shadow-md mb-6">
                 <CardHeader>
-                  <CardTitle className="text-xl font-bold mb-2">{category}</CardTitle>
+                  <CardTitle className="text-xl font-bold mb-2">{category.name}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
                   {assignments
-                    .filter(assignment => assignment.category === category)
+                    .filter(assignment => assignment.category === category.name)
                     .map((assignment) => (
                       <div key={assignment.assignment_id} className='flex w-full'>
                         <Link

@@ -86,6 +86,7 @@ model Class {
   groups        Group[]
   usersInClass  UserInClass[]
   Assignments   Assignment[]
+  categories    Category[] // Add this line
   instructor    User            @relation("InstructorClasses", fields: [instructorId], references: [userId]) // Only one instructor per class 
   EnrollRequest EnrollRequest[]
 }
@@ -118,10 +119,11 @@ model Assignment {
   description   String?
   dueDate       DateTime
   maxSumissions Int                   @default(1)
-  // fileType      SubmissionType
-  isGroup       Boolean               @default(false) // Group assignment or not
+  isGroup       Boolean               @default(false)
   classes       Class                 @relation(fields: [classId], references: [classId])
-  rubric        RubricForAssignment[] // An assignment can have multiple rubrics, I.E a group review rubric vs an assignment rubric   
+  categoryId    String?               // Add this line
+  category      Category?             @relation(fields: [categoryId], references: [categoryId]) // Add this line
+  rubric        RubricForAssignment[] 
   submissions   Submission[]
 }
 
@@ -362,6 +364,14 @@ model EnrollRequest {
   class           Class         @relation(fields: [classId], references: [classId])
 
   @@unique([userId, classId], name: "UniqueEnrollRequestPerUser")
+}
+
+model Category {
+  categoryId    String          @id @default(uuid())
+  classId       String
+  name          String
+  class         Class           @relation(fields: [classId], references: [classId])
+  assignments   Assignment[]
 }
 
 enum UserRole {

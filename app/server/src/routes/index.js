@@ -3,6 +3,7 @@ import passport from "passport";
 // Routers
 import authRouter from "./auth.js";
 import classesRouter from "./classes.js";
+import adminsRouter from "./admins.js";
 import instructorsRouter from "./instructors.js";
 import studentsRouter from "./students.js";
 import usersRoutes from "./usersRoutes.js";
@@ -21,7 +22,7 @@ router.use("/classes", classesRouter);
 
 router.use("/students", ensureUser, studentsRouter);
 router.use("/instructors", ensureUser, ensureInstructor, instructorsRouter);
-router.use("/admins", ensureUser, ensureAdmin, instructorsRouter);
+router.use("/admins", ensureUser, ensureAdmin, adminsRouter);
 router.use('/users', usersRoutes);
 
 export default router;

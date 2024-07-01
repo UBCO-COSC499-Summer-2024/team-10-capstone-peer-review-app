@@ -85,7 +85,34 @@ export async function getUserAssignments(userId) {
   }
 }
 
+export async function getGroups(userId) {
+  try {
+    const groups = await prisma.group.findMany({
+      include: {
+        students: true,
+      },
+      where: {
+        students: {
+          some: {
+            userId: userId,
+          },
+        },
+      },
+    });
+    return groups;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw error;
+    } else {
+      console.log(error);
+      throw new ApiError("Failed to get groups in class", 500);
+    }
+  }
+};
+
+
 export default {
   getUserClasses,
   getUserAssignments,
+  getGroups
 };

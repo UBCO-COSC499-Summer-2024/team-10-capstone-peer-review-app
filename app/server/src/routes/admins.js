@@ -4,7 +4,7 @@ const adminsRouter = (prisma) => {
 	const router = express.Router();
 
 	// return a single user by id
-	router.get("/:id", async (req, res) => {
+	router.post("/:id", async (req, res) => {
 		const { id } = req.params;
 		const user = await prisma.user.findUnique({
 			where: {
@@ -14,9 +14,10 @@ const adminsRouter = (prisma) => {
 		res.json(user);
 	});
 
-	router.get("/all-users", async (req, res) => {
+	router.post("/all-users", async (req, res) => {
 		try {
 			const allUsers = await prisma.user.findMany();
+			console.log("allUsers", allUsers);
 			res.status(200).json(allUsers);
 		} catch (error) {
 			res.status(500).json({ message: "Failed to retrieve classes" });
@@ -24,7 +25,7 @@ const adminsRouter = (prisma) => {
 	});
 
 	// returns all classes
-	router.get("/classes", async (req, res) => {
+	router.post("/classes", async (req, res) => {
 		try {
 			const allClasses = await prisma.class.findMany();
 			res.status(200).json(allClasses);

@@ -85,7 +85,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 		return Object.values(errors).every((error) => error === "");
 	};
 
-	const renderErrorDivs = () => {
+	const renderClientErrors = () => {
 		return Object.keys(errorState).map((key) => {
 			if (errorState[key]) {
 				return (
@@ -326,7 +326,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 							</Popover>
 						</div>
 						{apiError && <p className="text-red-500 text-sm">{apiError}</p>}
-						{renderErrorDivs()}
+						{renderClientErrors()}
 						<div className="flex justify-center">
 							<Button
 								variant="outline"

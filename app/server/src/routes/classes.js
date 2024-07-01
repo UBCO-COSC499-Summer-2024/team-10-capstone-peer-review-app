@@ -15,7 +15,7 @@ import {
   removeAssignmentFromClass,
   updateAssignmentInClass,
   getAssignmentInClass,
-  getAllAssignments,
+  getAllAssignmentsByClassId,
 
   addCriterionToRubric,
   removeCriterionFromRubric,
@@ -80,8 +80,8 @@ router.route("/update-assignment")
 router.route("/get-assignment")
   .post(ensureUser, ensureInstructor, getAssignmentInClass);
 
-router.route("/get-all-assignments")
-  .post(ensureUser, getAllAssignments);
+router.route("/get-class-assignments")
+  .post(ensureUser, getAllAssignmentsByClassId);
 
 // Rubric Routes
 

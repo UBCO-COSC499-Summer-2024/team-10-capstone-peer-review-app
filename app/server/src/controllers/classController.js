@@ -26,6 +26,7 @@ export const getClassById = asyncErrorHandler(async (req, res) => {
 export const createClass = asyncErrorHandler(async (req, res) => { 
     const instructorId = req.user.userId
 	const classInfo = req.body;
+	console.log(classInfo);
 	const newClass = await classService.createClass(classInfo, instructorId);
 	return res.status(201).json({
 		status: "Success",
@@ -47,6 +48,7 @@ export const updateClass = asyncErrorHandler(async (req, res) => {
 
 export const deleteClass = asyncErrorHandler(async (req, res) => {
 	const classId = req.params.classId;
+	console.log(req.user);
 	await classService.deleteClass(classId);
 	return res.status(200).json({
 		status: "Success",
@@ -126,9 +128,9 @@ export const getAssignmentInClass = asyncErrorHandler(async (req, res) => {
 	});
 });
 
-export const getAllAssignments = asyncErrorHandler(async (req, res) => {
+export const getAllAssignmentsByClassId = asyncErrorHandler(async (req, res) => {
 	const { classId } = req.body;
-	const assignments = await classService.getAllAssignments(classId);
+	const assignments = await classService.getAllAssignmentsByClassId(classId);
 	return res.status(200).json({
 		status: "Success",
 		data: assignments

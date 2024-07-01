@@ -319,14 +319,14 @@ const getAssignmentInClass = async (classId, assignmentId) => {
 	}
 };
 
-const getAllAssignments = async (classId) => {
+const getAllAssignmentsByClassId = async (classId) => {
 	try {
 	  const classInfo = await prisma.class.findUnique({
 		where: {
 		  classId: classId
 		},
 		include: {
-		  assignments: true
+		  Assignments: true
 		}
 	  });
   
@@ -334,7 +334,7 @@ const getAllAssignments = async (classId) => {
 		throw new apiError("Class not found", 404);
 	  }
   
-	  return classInfo.assignments;
+	  return classInfo.Assignments;
 	} catch (error) {
 	  if (error instanceof apiError) {
 		throw error;
@@ -925,7 +925,7 @@ export default {
 	addAssignmentToClass,
 	removeAssignmentFromClass,
 	getAssignmentInClass,
-	getAllAssignments,
+	getAllAssignmentsByClassId,
 
 	createRubricsForAssignment,
 	getRubricsForAssignment,

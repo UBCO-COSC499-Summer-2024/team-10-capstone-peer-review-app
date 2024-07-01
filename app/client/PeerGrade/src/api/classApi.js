@@ -15,11 +15,43 @@ export const getClassesByUserId = async (userId) => {
 	}
 };
 
+export const getAllAssignmentsByClassId = async (classId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/classes/get-class-assignments`, {
+			classId
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
 export const getAllAssignments = async (userId) => {
 	try {
 		const response = await axios.post(`${BASE_URL}/users/get-assignments`, {
 			userId
 		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const createClass = async (newClass) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/classes/create`, newClass);
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const deleteClass = async (classId) => {
+	try {
+		const response = await axios.delete(`${BASE_URL}/classes/${classId}`);
 		return response.data;
 	} catch (error) {
 		handleError(error);

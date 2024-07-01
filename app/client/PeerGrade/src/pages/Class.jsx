@@ -30,12 +30,6 @@ const Class = () => {
       try {
         const fetchedClass = await getClassById(classId);
         setClassItem(fetchedClass);
-
-        const fetchedCategories = await getCategoriesByClassId(classId);
-        setCategories(fetchedCategories);
-
-        const fetchedAssignments = await getAllAssignmentsByClassId(classId);
-        setAssignments(fetchedAssignments);
       } catch (error) {
         toast({
           title: "Error",
@@ -47,6 +41,44 @@ const Class = () => {
 
     if (!userLoading && user) {
       fetchClassData();
+    }
+  }, [classId, user, userLoading, toast]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const fetchedCategories = await getCategoriesByClassId(classId);
+        setCategories(fetchedCategories);
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to fetch categories",
+          variant: "destructive",
+        });
+      }
+    };
+
+    if (!userLoading && user) {
+      fetchCategories();
+    }
+  }, [classId, user, userLoading, toast]);
+
+  useEffect(() => {
+    const fetchAssignments = async () => {
+      try {
+        const fetchedAssignments = await getAllAssignmentsByClassId(classId);
+        setAssignments(fetchedAssignments);
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to fetch assignments",
+          variant: "destructive",
+        });
+      }
+    };
+
+    if (!userLoading && user) {
+      fetchAssignments();
     }
   }, [classId, user, userLoading, toast]);
 

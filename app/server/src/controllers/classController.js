@@ -1,5 +1,4 @@
 // Import necessary modules and services
-import e from "express";
 import classService from "../services/classService.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 
@@ -99,7 +98,6 @@ export const removeStudentFromClass = asyncErrorHandler(async (req, res) => {
 		data: updatedClass
 	});
 });
-
 
 // Controller methods for rubrics operations
 
@@ -342,7 +340,6 @@ export default {
 
 	addStudentToClass,
 	removeStudentFromClass,
-
 
 	addRubricsToAssignment,
 	removeRubricsFromAssignment,

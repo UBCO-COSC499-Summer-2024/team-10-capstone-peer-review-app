@@ -1,44 +1,47 @@
-import {
-	getUserClasses as getUserClassesService,
-	getUserAssignments as getUserAssignmentsService,
-	getGroups as getGroupsService
-} from "../services/userService.js";
+import userService from "../services/userService.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 
-export async function getUserClasses(req, res, next) {
-	try {
-		console.log("getUserClasses endpoint hit");
-		const userId = req.body.userId;
-		const classes = await getUserClassesService(userId);
-		res.status(200).json(classes);
-	} catch (error) {
-		next(error);
-	}
-}
+export const getAllUsers = asyncErrorHandler(async (req, res, next) => {
+	const users = await userService.getAllUsers();
+	res.status(200).json({
+		status: "Success",
+		message: "All users fetched",
+		data: users
+	});
+});
 
-export async function getUserAssignments(req, res, next) {
-	try {
-		console.log("getUserAssignments endpoint hit");
-		const userId = req.body.userId;
-		const assignments = await getUserAssignmentsService(userId);
-		res.status(200).json(assignments);
-	} catch (error) {
-		next(error);
-	}
-}
+export const getUsersByRole = asyncErrorHandler(async (req, res, next) => {
+	const role = req.params.role;
+	const users = await userService.getUsersByRole(role);
+	res.status(200).json({
+		status: "Success",
+		message: `Users with role ${role} fetched`,
+		data: users
+	});
+});
+// TODO -> Change these to get requests, ALSO, no need to send userId in body, can retrive it from req.user object that passport generates.
+export const getUserClasses = asyncErrorHandler(async (req, res) => {
+	console.log("getUserClasses endpoint hit");
+	const userId = req.body.userId;
+	const classes = await userService.getUserClassesService(userId);
+	res.status(200).json(classes);
+});
 
-export async function getGroups(req, res, next) {
-	try {
-		const userId = req.body.userId;
-		const groupData = await getGroupsService(userId);
-		res.status(200).json({
-			status: "Success",
-			data: groupData
-		});
-	} catch (error) {
-		next(error);
-	}
-};
+export const getUserAssignments = asyncErrorHandler(async (req, res) => {
+	console.log("getUserAssignments endpoint hit");
+	const userId = req.body.userId;
+	const assignments = await userService.getUserAssignmentsService(userId);
+	res.status(200).json(assignments);
+});
+
+export const getGroups = asyncErrorHandler(async (req, res) => {
+	const userId = req.body.userId;
+	const groupData = await userService.getGroupsService(userId);
+	res.status(200).json({
+		status: "Success",
+		data: groupData
+	});
+});
 
 // // Get user peer reviews
 // export const getUserPeerReviews = asyncErrorHandler(async (req, res) => {
@@ -61,6 +64,8 @@ export async function getGroups(req, res, next) {
 // });
 
 export default {
+	getAllUsers,
+	getUsersByRole,
 	getUserClasses,
 	getUserAssignments,
 	getGroups

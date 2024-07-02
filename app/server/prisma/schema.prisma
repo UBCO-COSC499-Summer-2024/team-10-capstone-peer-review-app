@@ -52,7 +52,6 @@ model User {
   reviewsDone       Review[]        @relation("Reviewer")
   reviewsRecieved   Review[]        @relation("Reviewee")
   classesInstructed Class[]         @relation("InstructorClasses")
-  Rubric            Rubric[]
   groups            Group[]
   RoleRequest       RoleRequest?
   enrollRequests    EnrollRequest[]
@@ -268,7 +267,8 @@ model Rubric {
   title       String
   description String?
   totalMarks  Int // Total marks of the rubric? Not sure if this is needed or not 
-  createdBy   User                  @relation(fields: [creatorId], references: [userId])
+  // We may not need this
+  // createdBy   User                  @relation(fields: [creatorId], references: [userId])
   criteria    Criterion[]
   assignments RubricForAssignment[]
   // GroupSubmission     GroupSubmission[]

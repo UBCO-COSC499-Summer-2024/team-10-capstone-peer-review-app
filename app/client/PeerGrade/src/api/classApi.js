@@ -3,6 +3,16 @@ import showStatusToast from "@/utils/showToastStatus";
 
 const BASE_URL = "/api"; // Use environment variable if available
 
+export const getAllClasses = async () => {
+	try {
+		const response = await axios.get(`${BASE_URL}/classes`);
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
 export const getInstructorByClassId = async (classId) => {
 	try {
 		const response = await axios.get(

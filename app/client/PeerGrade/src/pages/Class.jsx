@@ -30,6 +30,7 @@ const Class = () => {
       try {
         const fetchedClass = await getClassById(classId);
         setClassItem(fetchedClass);
+        console.log(fetchedClass);
       } catch (error) {
         toast({
           title: "Error",

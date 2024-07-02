@@ -69,6 +69,9 @@ const getClassById = async (classId) => {
 		const classData = await prisma.class.findUnique({
 			where: {
 				classId: classId
+			},
+			include: {
+				instructor: true
 			}
 		});
 		if (!classData) {
@@ -750,6 +753,10 @@ const addGroupToClass = async (classId, groupData) => {
 			data: {
 				...groupData,
 				classId: classId
+			},
+			include: {
+				students: true,
+				submissions: true  // This is to include the students & submissions in the response. Needed for Groups.jsx atm.
 			}
 		});
 
@@ -858,12 +865,17 @@ const getGroupsInClass = async (classId) => {
 	try {
 		const classInfo = await prisma.class.findUnique({
 			where: {
-				classId: classId
+			  classId: classId
 			},
 			include: {
-				groups: true
+			  groups: {
+				include: {
+				  students: true,
+				  submissions: true // This is to include the students & submissions in the response. Needed for Groups.jsx atm.
+				}
+			  }
 			}
-		});
+		  });
 
 		if (!classInfo) {
 			throw new apiError("Class not found", 404);

@@ -6,6 +6,7 @@ import {
 	updateClass,
 	deleteClass,
 	addStudentToClass,
+	getStudentsByClass,
 	removeStudentFromClass,
 	addAssignmentToClass,
 	removeAssignmentFromClass,
@@ -39,7 +40,8 @@ import {
 import {
 	ensureUser,
 	ensureInstructor,
-	ensureAdmin
+	ensureAdmin,
+	ensureInstructorOrAdmin
 } from "../middleware/ensureUserTypes.js";
 
 const router = express.Router();
@@ -58,7 +60,7 @@ router
 	.put(ensureUser, ensureInstructor, updateClass)
 	.delete(ensureUser, ensureInstructor, deleteClass);
 
-router.route("/:classId/students").get(ensureUser, getStudentsByClassId);
+router.route("/:classId/students").get(ensureUser, getStudentsByClass);
 router.route("/:classId/instructor").get(ensureUser, getInstructorByClass);
 
 // Student Routes
@@ -143,7 +145,7 @@ router
 	.route("/get-criterion-grade")
 	.post(ensureUser, ensureInstructor, getCriterionGrade);
 
-router.route("/add-group").post(ensureUser, ensureInstructor, addGroupToClass);
+router.route("/add-group").post(ensureUser, ensureInstructorOrAdmin, addGroupToClass);
 
 router
 	.route("/remove-group")
@@ -157,7 +159,7 @@ router.route("/get-group").post(ensureUser, ensureInstructor, getGroupInClass);
 
 router
 	.route("/get-groups")
-	.post(ensureUser, ensureInstructor, getGroupsInClass);
+	.post(ensureUser, getGroupsInClass);
 
 router
 	.route("/get-group-members")

@@ -76,6 +76,39 @@ export const getAllAssignmentsByClassId = async (classId) => {
 	}
 };
 
+export const getAllGroupsByClass = async (classId) => {
+	try {
+		const response = await axios.post(
+			`${BASE_URL}/classes/get-groups`,
+			{
+				classId
+			}
+		);
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+
+
+export const createGroup = async (classId, groupData) => {
+	try {
+		const response = await axios.post(
+			`${BASE_URL}/classes/add-group`,
+			{
+				classId,
+				groupData
+			}
+		);
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
 export const getAllAssignments = async (userId) => {
 	try {
 		const response = await axios.post(`${BASE_URL}/users/get-assignments`, {

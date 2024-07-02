@@ -1,7 +1,8 @@
 import express from "express";
 import {
-	getClassesByInstructor,
 	getClassById,
+	getClassesByInstructor,
+	getInstructorByClass,
 	createClass,
 	updateClass,
 	deleteClass,
@@ -33,9 +34,7 @@ import {
 	getGroupMembers,
 	addGroupMember,
 	removeGroupMember,
-	getCategoriesByClassId,
-	getInstructorByClass,
-	getStudentsByClass
+	getCategoriesByClassId
 } from "../controllers/classController.js";
 
 import {
@@ -146,7 +145,9 @@ router
 	.route("/get-criterion-grade")
 	.post(ensureUser, ensureInstructor, getCriterionGrade);
 
-router.route("/add-group").post(ensureUser, ensureInstructorOrAdmin, addGroupToClass);
+router
+	.route("/add-group")
+	.post(ensureUser, ensureInstructorOrAdmin, addGroupToClass);
 
 router
 	.route("/remove-group")
@@ -158,9 +159,7 @@ router
 
 router.route("/get-group").post(ensureUser, ensureInstructor, getGroupInClass);
 
-router
-	.route("/get-groups")
-	.post(ensureUser, getGroupsInClass);
+router.route("/get-groups").post(ensureUser, getGroupsInClass);
 
 router
 	.route("/get-group-members")

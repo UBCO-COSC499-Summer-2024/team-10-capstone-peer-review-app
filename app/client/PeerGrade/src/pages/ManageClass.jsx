@@ -125,6 +125,7 @@ const ManageClass = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [userClasses, setUserClasses] = useState([]);
   const [classAssignments, setClassAssignments] = useState({});
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [selectedClass, setSelectedClass] = useState({});
   const [dialogOpen, setDialogOpen] = useState(false);
   
@@ -159,17 +160,22 @@ const ManageClass = () => {
   }, [user, userLoading]);
 
   const handleDeleteClass = async () => {
-    if (selectedClass) {
-      const classData = await deleteClass(selectedClass.classId);
-      if (classData.status === "Success") {
-        console.log("class data after delete", classData);
-        setDialogOpen(false);
-        setUserClasses(prevClasses => prevClasses.filter(classItem => classItem.classId !== selectedClass.classId));
-      } else {
-        console.error('An error occurred while deleting the class.', classData.message);
-      }
+    if (confirmDelete) {
+        setConfirmDelete(false);
+        if (selectedClass) {
+            const classData = await deleteClass(selectedClass.classId);
+            if (classData.status === "Success") {
+                console.log("deleted class", classData);
+                setDialogOpen(false);
+                setUserClasses(prevClasses => prevClasses.filter(classItem => classItem.classId !== selectedClass.classId));
+            } else {
+                console.error('An error occurred while deleting the class.', classData.message);
+            }
+        }
+    } else {
+        setConfirmDelete(true);
     }
-  };
+};
 
   const handleDeleteClick = (classItem) => {
     setSelectedClass(classItem);
@@ -234,15 +240,16 @@ const ManageClass = () => {
       </div>
       <AddClassModal show={modalOpen} onClose={() => setModalOpen(false)} onAddClass={handleAddClass} />
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent>
-            <DialogHeader>
-                <DialogTitle>Delete Class</DialogTitle>
-            </DialogHeader>
-            Are you sure you want to delete the class '{selectedClass.classname}'?
-            <DialogFooter>
-                <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
-                <Button variant="destructive" onClick={handleDeleteClass}>Delete</Button>
-            </DialogFooter>
+        <DialogContent className={confirmDelete ? 'border-red-950 bg-red-500 text-white' : ''}>
+          <DialogHeader>
+            <DialogTitle>{confirmDelete ? "Confirm" : ""} Delete Class</DialogTitle>
+          </DialogHeader>
+          Are you {confirmDelete ? "really" : ""} sure you want to delete the class {selectedClass.classname}?
+          <span className='font-extrabold'>WARNING: THIS WILL DELETE ALL ASSIGNMENTS, SUBMISSIONS, REVIEWS, CATEGORIES, AND GROUPS ASSOCIATED WITH THIS CLASS.</span>
+          <DialogFooter>
+            <Button onClick={() => setDialogOpen(false)} className={confirmDelete ? 'shadow-md shadow-red-900' : ''}>Cancel</Button>
+            <Button variant="destructive" onClick={handleDeleteClass} className={confirmDelete ? 'shadow-md shadow-red-900' : ''}>Delete</Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

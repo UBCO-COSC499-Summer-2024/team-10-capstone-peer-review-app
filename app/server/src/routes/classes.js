@@ -6,6 +6,7 @@ import {
 	updateClass,
 	deleteClass,
 	addStudentToClass,
+	getStudentsByClass,
 	removeStudentFromClass,
 	addAssignmentToClass,
 	removeAssignmentFromClass,
@@ -40,7 +41,8 @@ import {
 import {
 	ensureUser,
 	ensureInstructor,
-	ensureAdmin
+	ensureAdmin,
+	ensureInstructorOrAdmin
 } from "../middleware/ensureUserTypes.js";
 
 const router = express.Router();
@@ -144,7 +146,7 @@ router
 	.route("/get-criterion-grade")
 	.post(ensureUser, ensureInstructor, getCriterionGrade);
 
-router.route("/add-group").post(ensureUser, ensureInstructor, addGroupToClass);
+router.route("/add-group").post(ensureUser, ensureInstructorOrAdmin, addGroupToClass);
 
 router
 	.route("/remove-group")
@@ -158,7 +160,7 @@ router.route("/get-group").post(ensureUser, ensureInstructor, getGroupInClass);
 
 router
 	.route("/get-groups")
-	.post(ensureUser, ensureInstructor, getGroupsInClass);
+	.post(ensureUser, getGroupsInClass);
 
 router
 	.route("/get-group-members")

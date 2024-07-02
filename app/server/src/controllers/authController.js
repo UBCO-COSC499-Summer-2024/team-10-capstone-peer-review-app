@@ -98,6 +98,8 @@ export const currentUser = asyncErrorHandler(async (req, res) => {
 		userInfo: userInfo,
 		status: "Success",
 		message: "Current user fetched successfully!"
+	});
+});
 
 export const getAllRoleRequests = asyncErrorHandler(async (req, res) => {
 	const requests = await authService.getAllRoleRequests();
@@ -162,7 +164,7 @@ export default {
 	resetPassword,
 	resendVerificationEmail,
 	confirmEmail,
-	currentUser 
+	currentUser,
 	getAllRoleRequests,
 	deleteRoleRequest,
 	approveRoleRequest,

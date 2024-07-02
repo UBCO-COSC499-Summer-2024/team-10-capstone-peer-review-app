@@ -18,6 +18,15 @@ export function ensureInstructor(req, res, next) {
 	}
 }
 
+// Middleware to ensure user is an instructor
+export function ensureStudent(req, res, next) {
+	if (req.user.role === "STUDENT") {
+		next();
+	} else {
+		next(new apiError("User is not a student", 403));
+	}
+}
+
 // Middleware to ensure user is an admin
 export function ensureAdmin(req, res, next) {
 	if (req.user.role === "ADMIN") {

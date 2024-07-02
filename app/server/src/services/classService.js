@@ -5,7 +5,7 @@ import apiError from "../utils/apiError.js";
 
 const getStudentsByClass = async (classId) => {
 	try {
-		const students = await prisma.userInClass.findMany({
+		const classWithStudents = await prisma.userInClass.findMany({
 			where: {
 				classId: classId
 			},
@@ -14,13 +14,13 @@ const getStudentsByClass = async (classId) => {
 					select: {
 						userId: true,
 						email: true,
-						password: false,
 						firstname: true,
 						lastname: true
 					}
 				}
 			}
 		});
+		const students = classWithStudents.map((student) => student.user);
 		return students;
 	} catch (error) {
 		throw new apiError("Failed to retrieve students in class", 500);
@@ -29,7 +29,7 @@ const getStudentsByClass = async (classId) => {
 
 const getInstructorByClass = async (classId) => {
 	try {
-		const instructor = await prisma.class.findUnique({
+		const classWithInstructor = await prisma.class.findUnique({
 			where: {
 				classId: classId
 			},
@@ -38,14 +38,13 @@ const getInstructorByClass = async (classId) => {
 					select: {
 						userId: true,
 						email: true,
-						password: false,
 						firstname: true,
 						lastname: true
 					}
 				}
 			}
 		});
-		return instructor;
+		return classWithInstructor.instructor;
 	} catch (error) {
 		throw new apiError("Failed to retrieve instructor in class", 500);
 	}

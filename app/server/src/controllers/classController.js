@@ -17,7 +17,7 @@ export const getInstructorByClass = asyncErrorHandler(async (req, res) => {
 
 export const getStudentsByClass = asyncErrorHandler(async (req, res) => {
 	const classId = req.params.classId;
-	const students = await classService.getAllStudents(classId);
+	const students = await classService.getStudentsByClass(classId);
 	return res.status(200).json({
 		status: "Success",
 		message: "Students retrieved",

@@ -33,7 +33,8 @@ import {
 	addGroupMember,
 	removeGroupMember,
 	getCategoriesByClassId,
-	getInstructorByClass
+	getInstructorByClass,
+	getStudentsByClass
 } from "../controllers/classController.js";
 
 import {
@@ -58,7 +59,7 @@ router
 	.put(ensureUser, ensureInstructor, updateClass)
 	.delete(ensureUser, ensureInstructor, deleteClass);
 
-router.route("/:classId/students").get(ensureUser, getStudentsByClassId);
+router.route("/:classId/students").get(ensureUser, getStudentsByClass);
 router.route("/:classId/instructor").get(ensureUser, getInstructorByClass);
 
 // Student Routes

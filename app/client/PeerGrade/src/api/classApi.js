@@ -41,7 +41,7 @@ export const getClassById = async (classId) => {
 	try {
 		const response = await axios.get(`${BASE_URL}/classes/${classId}`);
 		// Not sure if this was intentional? .data.data? ask mahir soon about it, it was intentional but look into code that calls it
-		return response.data.data;
+		return response.data;
 	} catch (error) {
 		handleError(error);
 		return error.response.data;
@@ -54,7 +54,7 @@ export const getCategoriesByClassId = async (classId) => {
 			`${BASE_URL}/classes/${classId}/categories`
 		);
 		// Not sure if this was intentional? .data.data?
-		return response.data.data;
+		return response.data;
 	} catch (error) {
 		handleError(error);
 		return error.response.data;

@@ -94,7 +94,7 @@ model Class {
 model UserInClass {
   userId  String
   classId String
-  student User   @relation(fields: [userId], references: [userId])
+  user    User   @relation(fields: [userId], references: [userId])
   class   Class  @relation(fields: [classId], references: [classId])
 
   @@id([userId, classId], name: "UserInClassId")
@@ -121,9 +121,9 @@ model Assignment {
   maxSumissions Int                   @default(1)
   isGroup       Boolean               @default(false)
   classes       Class                 @relation(fields: [classId], references: [classId])
-  categoryId    String?               // Add this line
+  categoryId    String? // Add this line
   category      Category?             @relation(fields: [categoryId], references: [categoryId]) // Add this line
-  rubric        RubricForAssignment[] 
+  rubric        RubricForAssignment[]
   submissions   Submission[]
 }
 
@@ -367,11 +367,11 @@ model EnrollRequest {
 }
 
 model Category {
-  categoryId    String          @id @default(uuid())
-  classId       String
-  name          String
-  class         Class           @relation(fields: [classId], references: [classId])
-  assignments   Assignment[]
+  categoryId  String       @id @default(uuid())
+  classId     String
+  name        String
+  class       Class        @relation(fields: [classId], references: [classId])
+  assignments Assignment[]
 }
 
 enum UserRole {

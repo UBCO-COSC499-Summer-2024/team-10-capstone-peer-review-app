@@ -44,6 +44,8 @@ model User {
   lastname          String
   isEmailVerified   Boolean         @default(false)
   isRoleActivated   Boolean         @default(false)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
   role              UserRole        @default(STUDENT)
   classes           UserInClass[]
   submissions       Submission[]

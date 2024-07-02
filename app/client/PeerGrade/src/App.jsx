@@ -23,11 +23,13 @@ import Search from "./pages/Search";
 import AdminDashboard from "./pages/AdminDashboard";
 import TestUserContext from "./pages/TestUserContext";
 
+import TitleUpdater from "@/utils/TitleUpdater";
 import { Toaster } from "@/components/ui/toaster";
 
 function App() {
 	return (
 		<Router>
+			<TitleUpdater />
 			<MainLayout />
 		</Router>
 	);

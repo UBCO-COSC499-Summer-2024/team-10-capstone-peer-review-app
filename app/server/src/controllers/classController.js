@@ -5,6 +5,26 @@ import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 
 // Controller methods for class operations
 
+export const getInstructorByClass = asyncErrorHandler(async (req, res) => {
+	const classId = req.params.classId;
+	const instructor = await classService.getInstructorByClass(classId);
+	return res.status(200).json({
+		status: "Success",
+		message: "Instructor retrieved",
+		data: instructor
+	});
+});
+
+export const getStudentsByClass = asyncErrorHandler(async (req, res) => {
+	const classId = req.params.classId;
+	const students = await classService.getStudentsByClass(classId);
+	return res.status(200).json({
+		status: "Success",
+		message: "Students retrieved",
+		data: students
+	});
+});
+
 export const getClassesByInstructor = asyncErrorHandler(async (req, res) => {
 	const instructorId = req.user.userId;
 	const classes = await classService.getClassesByInstructor(instructorId);
@@ -23,8 +43,8 @@ export const getClassById = asyncErrorHandler(async (req, res) => {
 	});
 });
 
-export const createClass = asyncErrorHandler(async (req, res) => { 
-    const instructorId = req.user.userId
+export const createClass = asyncErrorHandler(async (req, res) => {
+	const instructorId = req.user.userId;
 	const classInfo = req.body;
 	console.log(classInfo);
 	const newClass = await classService.createClass(classInfo, instructorId);
@@ -85,7 +105,7 @@ export const removeStudentFromClass = asyncErrorHandler(async (req, res) => {
 
 export const addRubricsToAssignment = asyncErrorHandler(async (req, res) => {
 	const creatorId = req.user.userId;
-	const {assignmentId, rubricData } = req.body;
+	const { assignmentId, rubricData } = req.body;
 	const updatedClass = await classService.createRubricsForAssignment(
 		creatorId,
 		assignmentId,
@@ -98,15 +118,18 @@ export const addRubricsToAssignment = asyncErrorHandler(async (req, res) => {
 	});
 });
 
-export const removeRubricsFromAssignment = asyncErrorHandler(async (req, res) => {
-	const { rubricId } = req.body;
-	const updatedClass = await classService.deleteRubricsForAssignment(rubricId);
-	return res.status(200).json({
-		status: "Success",
-		message: "Rubric successfully removed from assignment",
-		data: updatedClass
-	});
-});
+export const removeRubricsFromAssignment = asyncErrorHandler(
+	async (req, res) => {
+		const { rubricId } = req.body;
+		const updatedClass =
+			await classService.deleteRubricsForAssignment(rubricId);
+		return res.status(200).json({
+			status: "Success",
+			message: "Rubric successfully removed from assignment",
+			data: updatedClass
+		});
+	}
+);
 
 export const updateRubricsInAssignment = asyncErrorHandler(async (req, res) => {
 	const { rubricId, updateData } = req.body;
@@ -119,7 +142,7 @@ export const updateRubricsInAssignment = asyncErrorHandler(async (req, res) => {
 		message: "Rubric successfully updated in assignment",
 		data: updatedClass
 	});
-});	
+});
 
 export const getRubricsInAssignment = asyncErrorHandler(async (req, res) => {
 	const { assignmentId } = req.body;
@@ -146,9 +169,7 @@ export const addCriterionToRubric = asyncErrorHandler(async (req, res) => {
 
 export const removeCriterionFromRubric = asyncErrorHandler(async (req, res) => {
 	const { criterionId } = req.body;
-	const updatedClass = await classService.deleteCriterionForRubric(
-		criterionId
-	);
+	const updatedClass = await classService.deleteCriterionForRubric(criterionId);
 	return res.status(200).json({
 		status: "Success",
 		message: "Criterion successfully removed from rubric",
@@ -171,9 +192,7 @@ export const updateCriterionInRubric = asyncErrorHandler(async (req, res) => {
 
 export const getCriterionInRubric = asyncErrorHandler(async (req, res) => {
 	const { rubricId } = req.body;
-	const criterionData = await classService.getCriterionForRubric(
-		rubricId
-	);
+	const criterionData = await classService.getCriterionForRubric(rubricId);
 	return res.status(200).json({
 		status: "Success",
 		data: criterionData
@@ -196,9 +215,7 @@ export const addCriterionGrade = asyncErrorHandler(async (req, res) => {
 
 export const removeCriterionGrade = asyncErrorHandler(async (req, res) => {
 	const { criterionId } = req.body;
-	const updatedClass = await classService.deleteCriterionForRubric(
-		criterionId
-	);
+	const updatedClass = await classService.deleteCriterionForRubric(criterionId);
 	return res.status(200).json({
 		status: "Success",
 		message: "Criterion successfully removed from rubric",
@@ -221,9 +238,7 @@ export const updateCriterionGrade = asyncErrorHandler(async (req, res) => {
 
 export const getCriterionGrade = asyncErrorHandler(async (req, res) => {
 	const { rubricId } = req.body;
-	const criterionData = await classService.getCriterionForRubric(
-		rubricId
-	);
+	const criterionData = await classService.getCriterionForRubric(rubricId);
 	return res.status(200).json({
 		status: "Success",
 		data: criterionData
@@ -252,7 +267,10 @@ export const removeGroupFromClass = asyncErrorHandler(async (req, res) => {
 
 export const updateGroupInClass = asyncErrorHandler(async (req, res) => {
 	const { groupId, updateData } = req.body;
-	const updatedClass = await classService.updateGroupInClass(groupId, updateData);
+	const updatedClass = await classService.updateGroupInClass(
+		groupId,
+		updateData
+	);
 	return res.status(200).json({
 		status: "Success",
 		message: "Group successfully updated in class",
@@ -308,12 +326,11 @@ export const removeGroupMember = asyncErrorHandler(async (req, res) => {
 });
 
 export const getCategoriesByClassId = asyncErrorHandler(async (req, res) => {
-    const { classId } = req.params;
-    const categories = await classService.getCategoriesByClassId(classId);
-	console.log(categories)
-    res.status(200).json({ status: "Success", data: categories });
+	const { classId } = req.params;
+	const categories = await classService.getCategoriesByClassId(classId);
+	console.log(categories);
+	res.status(200).json({ status: "Success", data: categories });
 });
-
 
 // Export all controller methods
 export default {
@@ -322,7 +339,7 @@ export default {
 	createClass,
 	updateClass,
 	deleteClass,
-	
+
 	addStudentToClass,
 	removeStudentFromClass,
 
@@ -351,5 +368,5 @@ export default {
 	addGroupMember,
 	removeGroupMember,
 
-	getCategoriesByClassId,
+	getCategoriesByClassId
 };

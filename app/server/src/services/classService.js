@@ -3,6 +3,53 @@ import apiError from "../utils/apiError.js";
 
 // class operations
 
+const getStudentsByClass = async (classId) => {
+	try {
+		const classWithStudents = await prisma.userInClass.findMany({
+			where: {
+				classId: classId
+			},
+			include: {
+				user: {
+					select: {
+						userId: true,
+						email: true,
+						firstname: true,
+						lastname: true
+					}
+				}
+			}
+		});
+		const students = classWithStudents.map((student) => student.user);
+		return students;
+	} catch (error) {
+		throw new apiError("Failed to retrieve students in class", 500);
+	}
+};
+
+const getInstructorByClass = async (classId) => {
+	try {
+		const classWithInstructor = await prisma.class.findUnique({
+			where: {
+				classId: classId
+			},
+			include: {
+				instructor: {
+					select: {
+						userId: true,
+						email: true,
+						firstname: true,
+						lastname: true
+					}
+				}
+			}
+		});
+		return classWithInstructor.instructor;
+	} catch (error) {
+		throw new apiError("Failed to retrieve instructor in class", 500);
+	}
+};
+
 const getClassesByInstructor = async (instructorId) => {
 	try {
 		const classes = await prisma.class.findMany({
@@ -21,6 +68,9 @@ const getClassById = async (classId) => {
 		const classData = await prisma.class.findUnique({
 			where: {
 				classId: classId
+			},
+			include: {
+				instructor: true
 			}
 		});
 		if (!classData) {
@@ -38,7 +88,8 @@ const getClassById = async (classId) => {
 
 const createClass = async (newClass, instructorId) => {
 	try {
-		const { classname, description, startDate, endDate, term, classSize } = newClass;
+		const { classname, description, startDate, endDate, term, classSize } =
+			newClass;
 		const createdClass = await prisma.class.create({
 			data: {
 				instructorId,
@@ -47,7 +98,7 @@ const createClass = async (newClass, instructorId) => {
 				startDate,
 				endDate,
 				term,
-				classSize,
+				classSize
 			}
 		});
 		return createdClass;
@@ -175,7 +226,11 @@ const removeStudentFromClass = async (classId, studentId) => {
 
 
 // rubric operations
-const createRubricsForAssignment = async (creatorId, assignmentId, rubricData) => {
+const createRubricsForAssignment = async (
+	creatorId,
+	assignmentId,
+	rubricData
+) => {
 	try {
 		const assignment = await prisma.assignment.findUnique({
 			where: {
@@ -229,22 +284,22 @@ const getRubricsForAssignment = async (assignmentId) => {
 		}
 
 		const rubricAssignments = await prisma.rubricForAssignment.findMany({
-            where: {
-                assignmentId: assignmentId,
-            },
-            include: {
-                rubric: true, // Include the related rubric details
-            },
-        });
+			where: {
+				assignmentId: assignmentId
+			},
+			include: {
+				rubric: true // Include the related rubric details
+			}
+		});
 
-        if (!rubricAssignments.length) {
-            throw new apiError("Rubrics not found for the assignment", 404);
-        }
+		if (!rubricAssignments.length) {
+			throw new apiError("Rubrics not found for the assignment", 404);
+		}
 
-        // Map the result to only include rubric details
-        const rubrics = rubricAssignments.map(ra => ra.rubric);
+		// Map the result to only include rubric details
+		const rubrics = rubricAssignments.map((ra) => ra.rubric);
 
-        return rubrics;
+		return rubrics;
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
@@ -297,9 +352,9 @@ const deleteRubricsForAssignment = async (rubricId) => {
 
 		await prisma.rubricForAssignment.deleteMany({
 			where: {
-			  rubricId: rubricId,
-			},
-		  });
+				rubricId: rubricId
+			}
+		});
 
 		await prisma.rubric.delete({
 			where: {
@@ -323,7 +378,7 @@ const createCriterionForRubric = async (rubricId, criterionData) => {
 				rubricId: rubricId
 			},
 			include: {
-			  criteria: true
+				criteria: true
 			}
 		});
 
@@ -333,20 +388,34 @@ const createCriterionForRubric = async (rubricId, criterionData) => {
 		//console.log(rubric.criteria.reduce((sum, criterion) => sum + criterion.maxMark, 0));
 
 		// Check if maxMark and minMark are positive
-		if (criterionData.maxMark <= 0 || criterionData.minMark <= 0 || criterionData.maxMark < criterionData.minMark || criterionData.maxMark > rubric.totalMarks) {
-			throw new apiError("Criterion maxMark and minMark are not set properly", 400);
+		if (
+			criterionData.maxMark <= 0 ||
+			criterionData.minMark <= 0 ||
+			criterionData.maxMark < criterionData.minMark ||
+			criterionData.maxMark > rubric.totalMarks
+		) {
+			throw new apiError(
+				"Criterion maxMark and minMark are not set properly",
+				400
+			);
 		}
 
 		let existingMaxMarksSum = 0;
 		if (rubric.criteria || rubric.criteria.length > 0) {
-			existingMaxMarksSum = rubric.criteria.reduce((sum, criterion) => sum + criterion.maxMark, 0);
+			existingMaxMarksSum = rubric.criteria.reduce(
+				(sum, criterion) => sum + criterion.maxMark,
+				0
+			);
 			//console.log(existingMaxMarksSum);
 		}
 
 		//console.log(`Existing Max Marks Sum: ${existingMaxMarksSum}, New Criterion Max Mark: ${criterionData.maxMark}, Rubric Total Marks: ${rubric.totalMarks}`);
 		// Check if the sum of maxMarks including the new criterion exceeds totalMarks
 		if (existingMaxMarksSum + criterionData.maxMark > rubric.totalMarks) {
-			throw new apiError("maxMarks of criteria exceed the rubric's totalMarks", 400);
+			throw new apiError(
+				"maxMarks of criteria exceed the rubric's totalMarks",
+				400
+			);
 		}
 
 		const newCriterion = await prisma.criterion.create({
@@ -401,7 +470,8 @@ const updateCriterionForRubric = async (criterionId, updateData) => {
 		const rubric = await prisma.rubric.findUnique({
 			where: {
 				rubricId: criterion.rubricId
-			}, include: {
+			},
+			include: {
 				criteria: true
 			}
 		});
@@ -411,18 +481,34 @@ const updateCriterionForRubric = async (criterionId, updateData) => {
 		}
 
 		// Check if maxMark and minMark are positive
-		if (updateData.maxMark <= 0 || updateData.minMark <= 0 || updateData.maxMark < updateData.minMark || updateData.maxMark > rubric.totalMarks) {
-			throw new apiError("Criterion maxMark and minMark are not set properly", 400);
+		if (
+			updateData.maxMark <= 0 ||
+			updateData.minMark <= 0 ||
+			updateData.maxMark < updateData.minMark ||
+			updateData.maxMark > rubric.totalMarks
+		) {
+			throw new apiError(
+				"Criterion maxMark and minMark are not set properly",
+				400
+			);
 		}
 
 		let existingMaxMarksSum = 0;
 		if (rubric.criteria || rubric.criteria.length > 0) {
-			const otherCriteria = rubric.criteria.filter(criterion => criterion.criterionId !== criterionId);
-			existingMaxMarksSum = otherCriteria.reduce((sum, criterion) => sum + criterion.maxMark, 0);
+			const otherCriteria = rubric.criteria.filter(
+				(criterion) => criterion.criterionId !== criterionId
+			);
+			existingMaxMarksSum = otherCriteria.reduce(
+				(sum, criterion) => sum + criterion.maxMark,
+				0
+			);
 			// console.log(existingMaxMarksSum, updateData.maxMark, rubric.totalMarks);
 		}
 		if (existingMaxMarksSum + updateData.maxMark > rubric.totalMarks) {
-			throw new apiError("maxMarks of criteria exceed the rubric's totalMarks", 400);
+			throw new apiError(
+				"maxMarks of criteria exceed the rubric's totalMarks",
+				400
+			);
 		}
 
 		const updatedCriterion = await prisma.criterion.update({
@@ -491,6 +577,10 @@ const addGroupToClass = async (classId, groupData) => {
 			data: {
 				...groupData,
 				classId: classId
+			},
+			include: {
+				students: true,
+				submissions: true  // This is to include the students & submissions in the response. Needed for Groups.jsx atm.
 			}
 		});
 
@@ -532,7 +622,6 @@ const removeGroupFromClass = async (groupId) => {
 
 const updateGroupInClass = async (groupId, updateData) => {
 	try {
-
 		const group = await prisma.group.findUnique({
 			where: {
 				groupId: groupId
@@ -600,12 +689,17 @@ const getGroupsInClass = async (classId) => {
 	try {
 		const classInfo = await prisma.class.findUnique({
 			where: {
-				classId: classId
+			  classId: classId
 			},
 			include: {
-				groups: true
+			  groups: {
+				include: {
+				  students: true,
+				  submissions: true // This is to include the students & submissions in the response. Needed for Groups.jsx atm.
+				}
+			  }
 			}
-		});
+		  });
 
 		if (!classInfo) {
 			throw new apiError("Class not found", 404);
@@ -652,15 +746,14 @@ const addGroupMember = async (groupId, userId) => {
 
 		await prisma.group.update({
 			where: {
-			  groupId: groupId,
+				groupId: groupId
 			},
 			data: {
-			  students: {
-				connect: [{ userId: userId }],
-			  },
-			},
+				students: {
+					connect: [{ userId: userId }]
+				}
+			}
 		});
-
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
@@ -674,12 +767,9 @@ const removeGroupMember = async (groupId, userId) => {
 	try {
 		const group = await prisma.group.findFirst({
 			where: {
-			  AND: [
-				{ groupId: groupId },
-				{ students: { some: { userId: userId } } },
-			  ],
-			},
-		  });
+				AND: [{ groupId: groupId }, { students: { some: { userId: userId } } }]
+			}
+		});
 
 		if (!group) {
 			throw new apiError("Group not found with student", 404);
@@ -697,13 +787,13 @@ const removeGroupMember = async (groupId, userId) => {
 
 		await prisma.group.update({
 			where: {
-			  groupId: groupId,
+				groupId: groupId
 			},
 			data: {
-			  students: {
-				disconnect: [{ userId: userId }],
-			  },
-			},
+				students: {
+					disconnect: [{ userId: userId }]
+				}
+			}
 		});
 	} catch (error) {
 		if (error instanceof apiError) {
@@ -741,15 +831,16 @@ const getGroupMembers = async (groupId) => {
 
 export const getCategoriesByClassId = async (classId) => {
 	return await prisma.category.findMany({
-	  where: { classId },
-	  include: {
-		assignments: true,
-	  },
+		where: { classId },
+		include: {
+			assignments: true
+		}
 	});
-  };
-
+};
 
 export default {
+	getInstructorByClass,
+	getStudentsByClass,
 	getClassesByInstructor,
 	getClassById,
 	createClass,

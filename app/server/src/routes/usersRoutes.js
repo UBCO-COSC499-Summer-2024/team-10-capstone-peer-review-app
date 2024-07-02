@@ -1,5 +1,5 @@
 import express from "express";
-import { getUserClasses, getUserAssignments } from "../controllers/userController.js";
+import { getUserClasses, getUserAssignments, getGroups } from "../controllers/userController.js";
 
 const router = express.Router();
 
@@ -9,5 +9,6 @@ router.get("/", (req, res) => {
 
 router.route("/get-classes").post(getUserClasses);
 router.route("/get-assignments").post(getUserAssignments);
+router.route("/get-groups").post(getGroups);
 
 export default router;

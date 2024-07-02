@@ -1,39 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Avatar } from '@/components/ui/avatar';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { useUser } from "@/contexts/contextHooks/useUser";
 import { useToast } from '@/components/ui/use-toast';
-import { Toaster } from '@/components/ui/toaster';
 
 const Settings = () => {
   const { toast } = useToast();
-  const [currentUser, setCurrentUser] = useState(null);
+	const { user, userLoading } = useUser();
   const [selectedTab, setSelectedTab] = useState('profile');
-  const [username, setUsername] = useState('');
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');
   const [bio, setBio] = useState('');
   const [url, setUrl] = useState('');
 
   useEffect(() => {
-    const fetchCurrentUser = async () => {
-      try {
-        const response = await axios.get('/api/auth/current-user', { withCredentials: true });
-        setCurrentUser(response.data.user);
-        setUsername(response.data.user.username || '');
-        setEmail(response.data.user.email || '');
-        setBio(response.data.user.bio || '');
-        setUrl(response.data.user.url || '');
-      } catch (error) {
-        toast({ title: "Error", description: "Failed to fetch current user", variant: "destructive" });
-      }
-    };
-
-    fetchCurrentUser();
-  }, [toast]);
+    if (!userLoading && user) {
+        setFirstname(user.firstname || '');
+        setLastname(user.lastname || '');
+        setEmail(user.email || '');
+        setBio(user.bio || '');
+        setUrl(user.url || '');
+    }
+  }, [user, userLoading]);
 
   const handleSaveProfile = async () => {
     try {
@@ -41,12 +34,12 @@ const Settings = () => {
         username, email, bio, url
       }, { withCredentials: true });
 
-      setCurrentUser(response.data.user);
+      // setCurrentUser(response.data.user);
       toast({
         title: "Profile Updated",
         description: (
           <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify({ username, email, bio, url }, null, 2)}</code>
+            <code className="text-white">{JSON.stringify({ firstname, lastname, email, bio, url }, null, 2)}</code>
           </pre>
         ),
         variant: "positive"
@@ -75,21 +68,29 @@ const Settings = () => {
           <Card className="flex flex-col lg:flex-row gap-4 bg-gray-100 p-4 mb-6 rounded-lg">
             <div className="flex flex-col items-center lg:items-start lg:w-1/3">
               <Avatar className="w-32 h-32 bg-gray-200 rounded-full border border-black" />
-              <h2 className="text-lg font-semibold mt-4">{currentUser?.firstname} {currentUser?.lastname}</h2>
-              <p className="text-gray-500">{currentUser?.description}</p>
+              <h2 className="text-lg font-semibold mt-4">{user?.firstname} {user?.lastname}</h2>
+              <p className="text-gray-500">{user?.description}</p>
             </div>
             <div className="lg:w-2/3">
               <h2 className="text-xl font-semibold mb-4">Profile</h2>
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
+                  <label htmlFor="firstname" className="block text-sm font-medium text-gray-700">First Name</label>
                   <Input 
-                    id="username"
+                    id="firstname"
                     type="text" 
-                    value={username} 
-                    onChange={(e) => setUsername(e.target.value)} 
+                    value={firstname} 
+                    onChange={(e) => setFirstname(e.target.value)} 
                   />
-                  <p className="text-xs text-gray-500 mt-1">This is your public display name. It can be your real name or a pseudonym. You can only change this once every 30 days.</p>
+                </div>
+                <div>
+                  <label htmlFor="lastname" className="block text-sm font-medium text-gray-700">Last Name</label>
+                  <Input 
+                    id="lastname"
+                    type="text" 
+                    value={lastname} 
+                    onChange={(e) => setLastname(e.target.value)} 
+                  />
                 </div>
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
@@ -175,7 +176,6 @@ const Settings = () => {
           </Card>
         </TabsContent>
       </Tabs>
-      <Toaster />
     </div>
   );
 };

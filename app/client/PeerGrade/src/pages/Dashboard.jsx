@@ -1,6 +1,5 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import ClassCard from "@/components/class/ClassCard";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
@@ -9,38 +8,30 @@ import DataTable from "@/components/ui/data-table";
 import { ArrowUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { iClass, assignment, user, Group } from "@/utils/dbData"; // Replace this with actual data, only for GroupCard
 import GroupCard from "@/components/class/GroupCard";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { useUser } from "@/contexts/contextHooks/useUser";
+import { getClassesByUserId, getAllAssignments } from "@/api/classApi";
+import { getGroups } from "@/api/userApi";
 
 function Dashboard() {
 	const { user, userLoading } = useUser();
 
 	const [classes, setClasses] = useState([]);
 	const [assignments, setAssignments] = useState([]);
+	const [groups, setGroups] = useState([]);
 	const [reviews, setReviews] = useState([]);
-
 	const { toast } = useToast();
-
-	const iClassNames = iClass.map((cls) => ({
-		class_id: cls.class_id,
-		classname: cls.classname
-	})); // only for GroupCard
-
-	console.log("User:", user);
 
 	useEffect(() => {
 		if (!userLoading && user) {
 			const fetchClasses = async () => {
 				try {
-					const response = await axios.post("/api/users/get-classes", {
-						userId: user.userId
-					});
-					setClasses(Array.isArray(response.data) ? response.data : []);
+					const classesData = await getClassesByUserId(user.userId);
+					console.log(classesData);
+					setClasses(Array.isArray(classesData) ? classesData : []);
 				} catch (error) {
-					console.log(error);
 					toast({
 						title: "Error",
 						description: "Failed to fetch classes",
@@ -51,12 +42,10 @@ function Dashboard() {
 
 			const fetchAssignments = async () => {
 				try {
-					const response = await axios.post("/api/users/get-assignments", {
-						userId: user.userId
-					});
-					setAssignments(Array.isArray(response.data) ? response.data : []);
+					const assignmentsData = await getAllAssignments(user.userId);
+					console.log(assignmentsData);
+					setAssignments(Array.isArray(assignmentsData) ? assignmentsData : []);
 				} catch (error) {
-					console.log(error);
 					toast({
 						title: "Error",
 						description: "Failed to fetch assignments",
@@ -65,43 +54,40 @@ function Dashboard() {
 				}
 			};
 
-			const fetchReviews = async () => {
+			const fetchGroups = async () => {
 				try {
-					const response = await axios.get("/api/users/reviews");
-					setReviews(Array.isArray(response.data) ? response.data : []);
+					const groups = await getGroups(user.userId);
+					console.log("groups",groups);
+					setGroups(Array.isArray(groups) ? groups : []);
 				} catch (error) {
 					toast({
 						title: "Error",
-						description: "Failed to fetch reviews",
+						description: "Failed to fetch groups",
 						variant: "destructive"
 					});
 				}
 			};
 
+			// will change once reviews api calls is figured out.
+			// const fetchReviews = async () => {
+			// 	try {
+			// 		const response = await axios.get("/api/users/reviews");
+			// 		setReviews(Array.isArray(response.data) ? response.data : []);
+			// 	} catch (error) {
+			// 		toast({
+			// 			title: "Error",
+			// 			description: "Failed to fetch reviews",
+			// 			variant: "destructive"
+			// 		});
+			// 	}
+			// };
+
 			fetchClasses();
 			fetchAssignments();
-			fetchReviews();
+			fetchGroups();
+			// fetchReviews();
 		}
-		// Does toast need to be in the dependecy array?
 	}, [user, userLoading, toast]);
-
-	console.log(classes);
-
-	// Loading state
-	const [loading, setLoading] = useState(true);
-
-	useEffect(() => {
-		// Simulate loading time for now. Replace this with actual API call timing.
-		const timer = setTimeout(() => {
-			setLoading(false);
-		}, 2000);
-
-		return () => clearTimeout(timer);
-	}, []);
-
-	if (!user) {
-		return <p>No user</p>;
-	}
 
 	const assignmentData = assignments.filter(
 		(assignment) => assignment.evaluation_type !== "peer"
@@ -121,17 +107,15 @@ function Dashboard() {
 		},
 		{
 			accessorKey: "dueDate",
-			header: ({ column }) => {
-				return (
-					<Button
-						variant="ghost"
-						onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-					>
-						Due
-						<ArrowUpDown className="ml-2 h-4 w-4" />
-					</Button>
-				);
-			},
+			header: ({ column }) => (
+				<Button
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					Due
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</Button>
+			),
 			cell: ({ row }) => (
 				<Badge variant="destructive">{row.getValue("dueDate")}</Badge>
 			)
@@ -161,17 +145,15 @@ function Dashboard() {
 		},
 		{
 			accessorKey: "dueDate",
-			header: ({ column }) => {
-				return (
-					<Button
-						variant="ghost"
-						onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-					>
-						Review Due
-						<ArrowUpDown className="ml-2 h-4 w-4" />
-					</Button>
-				);
-			},
+			header: ({ column }) => (
+				<Button
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					Review Due
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</Button>
+			),
 			cell: ({ row }) => (
 				<Badge variant="destructive">{row.getValue("dueDate")}</Badge>
 			)
@@ -190,12 +172,21 @@ function Dashboard() {
 		}
 	];
 
+	if (userLoading) {
+		return <div>Loading...</div>;
+	}
+
+	if (!user) {
+		return <p>No user</p>;
+	}
+
+	const classNames = classes.map((classItem) => classItem.classname);
+
 	return (
 		<div className="w-full main-container space-y-6 ">
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-5">
 				{userLoading
-					? // Skeleton for ClassCard
-						Array.from({ length: 3 }).map((_, index) => (
+					? Array.from({ length: 3 }).map((_, index) => (
 							<Skeleton key={index} className="h-48 w-full rounded-lg" />
 						))
 					: classes.map((classItem) => (
@@ -210,22 +201,19 @@ function Dashboard() {
 						))}
 			</div>
 			<div className="flex justify-between items-start gap-5 pt-5">
-				{/* Need to refactor group card */}
-				{/*
-				
 				<div className="flex w-1/2">
 					{userLoading ? (
 						// Skeleton for GroupCard
 						<Skeleton className="h-96 w-full rounded-lg" />
 					) : (
 						<GroupCard
-							classes={[iClass[0], iClass[1], iClass[2]]}
-							groups={Group}
-							classNames={iClassNames}
+							classes={classes}
+							groups={groups}
+							classNames={classNames}
 							users={user}
 						/>
 					)}
-				</div> */}
+				</div>
 				<div className="flex w-3/4">
 					<Tabs defaultValue="assignments" className="flex-1">
 						{userLoading ? (
@@ -238,7 +226,6 @@ function Dashboard() {
 						)}
 						<TabsContent value="assignments">
 							{userLoading ? (
-								// Skeleton for DataTable
 								<Skeleton className="h-48 w-full rounded-lg" />
 							) : (
 								<DataTable
@@ -251,7 +238,6 @@ function Dashboard() {
 						</TabsContent>
 						<TabsContent value="reviews">
 							{userLoading ? (
-								// Skeleton for DataTable
 								<Skeleton className="h-48 w-full rounded-lg" />
 							) : (
 								<DataTable

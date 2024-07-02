@@ -7,11 +7,12 @@ import Search from './Search';
 import Assignments from '@/components/admin/Assign';
 import Interactions from '@/components/admin/Interactions';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { useUser } from "@/contexts/contextHooks/useUser";
 import PRassign from '@/components/admin/PRassign';
 
 const AdminDashboard = () => {
-  const currentUser = useSelector((state) => state.user.currentUser);
-  if (!currentUser || currentUser.role !== 'ADMIN') {
+	const { user, userLoading } = useUser();
+  if (!userLoading && (!user || user.role !== 'ADMIN')) {
     return <div>You do not have permission to view this page.</div>;
   }
 

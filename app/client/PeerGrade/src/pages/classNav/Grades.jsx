@@ -14,10 +14,10 @@ const Grades = ({ classAssignments }) => {
   };
 
   // Filter submissions for the current user and class assignments
-  const userSubmissions = submissionsData.filter(submission => 
-    submission.student_id === currentUser.user_id && 
-    classAssignments.some(assignment => assignment.assignment_id === submission.assignment_id)
-  );
+  // const userSubmissions = submissionsData.filter(submission => 
+  //   submission.student_id === currentUser.user_id && 
+  //   classAssignments.find(assignment => assignment.assignment_id === submission.assignment_id)
+  // );
 
   return (
     <Card className="w-full">
@@ -36,7 +36,7 @@ const Grades = ({ classAssignments }) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {userSubmissions.map((submission) => (
+            {/* {userSubmissions.map((submission) => (
               <React.Fragment key={submission.submission_id}>
                 <TableRow>
                   <TableCell className="flex items-center">
@@ -63,7 +63,7 @@ const Grades = ({ classAssignments }) => {
                   </TableRow>
                 )}
               </React.Fragment>
-            ))}
+            ))} */}
           </TableBody>
         </Table>
       </CardContent>

@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { iClass as classesData, user } from '@/utils/dbData'; // DB CALL
 import { Button } from "@/components/ui/button";
 import { ArrowUp, ArrowDown, ChevronUpIcon, ChevronDownIcon, CheckIcon, Dot, Trash2, Pencil } from 'lucide-react';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Command, CommandList, CommandGroup, CommandItem } from '@/components/ui/command';
 import { Link, useLocation } from 'react-router-dom';
 import { Input } from "@/components/ui/input";
+import { useUser } from "@/contexts/contextHooks/useUser";
 import { cn } from '@/utils/utils';
+import { getClassesByUserId, deleteClass } from "@/api/classApi";
+import { getAllClasses } from "@/api/adminApi";
 import {
     Dialog,
     DialogContent,
@@ -27,10 +28,31 @@ function ClassTable() {
     const [filter, setFilter] = useState({ term: '', size: '', searchQuery: '', instructorQuery: '' });
     const [openTerm, setOpenTerm] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
-    const [selectedClass, setSelectedClass] = useState({class_id: 1,instructor_id: 1,classname: "ART 101",description: "Introduction to Art.",start: Date.now(),term: "Winter",end: Date.now(),size: 50});
+    const [userClasses, setUserClasses] = useState([]);
+    const [selectedClass, setSelectedClass] = useState({});
+    const [confirmDelete, setConfirmDelete] = useState(false);
     const itemsPerPage = 5;
     const query = useQuery();
     const queryClassname = query.get('query') || '';
+	const { user, userLoading } = useUser();
+
+    if (!userLoading && (!user || user.role !== 'ADMIN')) {
+        return <div>You do not have permission to view this page.</div>;
+    }
+
+    useEffect(() => {
+        if (!userLoading && user && user.role === 'ADMIN') {
+            const fetchClasses = async () => {
+                const classesData = await getClassesByUserId(user.userId);
+                // const classesData = await getAllClasses(); // !!!TODO: CURRENT BEHAVIOUR IS INCORRECT, we need admins/classes to be working in the backend to see all classes in the system.
+                console.log("classes data",classesData);
+                if (classesData) {
+                    setUserClasses(Array.isArray(classesData) ? classesData : []);
+                }
+            };
+            fetchClasses();
+        }
+    }, [user, userLoading]);
 
     useEffect(() => {
         if (queryClassname) {
@@ -53,38 +75,38 @@ function ClassTable() {
     };
 
     const handleTrashClick = (selected_class) => {
+        setConfirmDelete(false);
         setSelectedClass(selected_class);
         setDialogOpen(true);
     };
 
     const handleDeleteClass = async () => {
-        // try {
-        //     const response = await fetch(`/api/delete/class/${selectedClass.class_id}`, {
-        //         method: 'DELETE',
-        //     });
-        //     if (response.ok) {
-        //         setDialogOpen(false);
-        //         // Remove the deleted class from the classesData array
-        //         const updatedClasses = classesData.filter(classItem => classItem.class_id !== selectedClass.class_id);
-        //         // Update the local state (Assuming classesData is in state)
-        //         setClassesData(updatedClasses);
-        //     } else {
-        //         console.error("Failed to delete the class.");
-        //     }
-        // } catch (error) {
-        //     console.error("Error deleting the class:", error);
-        // }
+        if (confirmDelete) {
+            setConfirmDelete(false);
+            if (selectedClass) {
+                const classData = await deleteClass(selectedClass.classId);
+                if (classData.status === "Success") {
+                    console.log("deleted class", classData);
+                    setDialogOpen(false);
+                    setUserClasses(prevClasses => prevClasses.filter(classItem => classItem.classId !== selectedClass.classId));
+                } else {
+                    console.error('An error occurred while deleting the class.', classData.message);
+                }
+            }
+        } else {
+            setConfirmDelete(true);
+        }
     };
 
-    const filteredClasses = classesData
+    const filteredClasses = userClasses
         .filter(classItem => 
             (filter.searchQuery ? classItem.classname.toLowerCase().includes(filter.searchQuery.toLowerCase()) : true) &&
             (filter.instructorQuery ? (
-                user.find(instructor => instructor.user_id === classItem.instructor_id)?.firstname.toLowerCase().includes(filter.instructorQuery.toLowerCase()) ||
-                user.find(instructor => instructor.user_id === classItem.instructor_id)?.lastname.toLowerCase().includes(filter.instructorQuery.toLowerCase())
+                classItem.instructor?.firstname.toLowerCase().includes(filter.instructorQuery.toLowerCase()) ||
+                classItem.instructor?.lastname.toLowerCase().includes(filter.instructorQuery.toLowerCase())
             ) : true) &&
             (filter.term ? classItem.term === filter.term : true) &&
-            (filter.size ? classItem.size === parseInt(filter.size) : true)
+            (filter.size ? classItem.classSize === parseInt(filter.size) : true)
         )
         .sort((a, b) => {
             const { key, order } = sortOrder;
@@ -103,16 +125,10 @@ function ClassTable() {
         const uniqueTerms = Array.from(new Set(classes.map(classItem => classItem.term)));
         return [{ value: '', label: 'All' }, ...uniqueTerms.map(term => ({ value: term, label: term }))];
     };
-    const dropdownOptionsTerm = getDropdownOptionsTerm(classesData);  
+    const dropdownOptionsTerm = getDropdownOptionsTerm(userClasses);  
 
     const totalPages = Math.ceil(filteredClasses.length / itemsPerPage) === 0 ? 1 : Math.ceil(filteredClasses.length / itemsPerPage);
     const currentClasses = filteredClasses.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-
-    const currentUser = useSelector((state) => state.user.currentUser);
-
-    if (!currentUser || currentUser.role !== 'ADMIN') {
-      return <div>You do not have permission to view this page.</div>;
-    }
 
     return (
         <div className="w-full bg-white shadow-md rounded-lg">
@@ -234,16 +250,16 @@ function ClassTable() {
                 <TableBody>
                     {currentClasses.map((classItem, index) => (
                         <TableRow key={index}>
-                            <TableCell className="p-2"><Link to={`/class/${classItem.class_id}`}>{classItem.classname}</Link></TableCell>
+                            <TableCell className="p-2"><Link to={`/class/${classItem.classId}`}>{classItem.classname}</Link></TableCell>
                             <TableCell className="p-2">
-                                {user.find(instructor => instructor.user_id === classItem.instructor_id)?.firstname + ' ' + user.find(instructor => instructor.user_id === classItem.instructor_id)?.lastname}
+                                {classItem.instructor?.firstname}{" "}{classItem.instructor?.lastname}
                             </TableCell>
-                            <TableCell className="p-2">{new Date(classItem.start).toLocaleDateString()}</TableCell>
-                            <TableCell className="p-2">{new Date(classItem.end).toLocaleDateString()}</TableCell>
+                            <TableCell className="p-2">{new Date(classItem.startDate).toLocaleDateString()}</TableCell>
+                            <TableCell className="p-2">{new Date(classItem.endDate).toLocaleDateString()}</TableCell>
                             <TableCell className="p-2">{classItem.term}</TableCell>
-                            <TableCell className="p-2">{classItem.size}</TableCell>
+                            <TableCell className="p-2">{classItem.classSize}</TableCell>
                             <TableCell className="p-2">
-                                <Button variant="ghost" size="icon" className="text-red-500 hover:bg-red-100" onClick={() => handleTrashClick(classItem)} data-testid={`delete-button-${classItem.class_id}`}>
+                                <Button variant="ghost" size="icon" className="text-red-500 hover:bg-red-100" onClick={() => handleTrashClick(classItem)} data-testid={`delete-button-${classItem.classId}`}>
                                     <Trash2 className="h-5 w-5" />
                                 </Button>
                                 <Button variant="ghost" size="icon" className="text-blue-500 hover:bg-blue-100" data-testid="edit-button">
@@ -264,14 +280,15 @@ function ClassTable() {
                 </Button>
             </div>
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-                <DialogContent>
+                <DialogContent className={confirmDelete ? 'border-red-950 bg-red-500 text-white' : ''}>
                     <DialogHeader>
-                        <DialogTitle>Delete Class</DialogTitle>
+                        <DialogTitle>{confirmDelete ? "Confirm" : ""} Delete Class</DialogTitle>
                     </DialogHeader>
-                    Are you sure you want to delete the class {selectedClass.classname}?
+                    Are you {confirmDelete ? "really" : ""} sure you want to delete the class {selectedClass.classname}?
+                    <span className='font-extrabold'>WARNING: THIS WILL DELETE ALL ASSIGNMENTS, SUBMISSIONS, REVIEWS, CATEGORIES, AND GROUPS ASSOCIATED WITH THIS CLASS.</span>
                     <DialogFooter>
-                        <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
-                        <Button variant="destructive" onClick={handleDeleteClass}>Delete</Button>
+                        <Button onClick={() => setDialogOpen(false)} className={confirmDelete ? 'shadow-md shadow-red-900' : ''}>Cancel</Button>
+                        <Button variant="destructive" onClick={handleDeleteClass} className={confirmDelete ? 'shadow-md shadow-red-900' : ''}>Delete</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>

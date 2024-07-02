@@ -3,11 +3,20 @@ import showStatusToast from "@/utils/showToastStatus";
 
 const BASE_URL = "/api"; // TODO change this to an environment var?
 
-export const getGroups = async (userId) => {
+export const getAllUsers = async () => {
 	try {
-		const response = await axios.post(`${BASE_URL}/users/get-groups`, {
-			userId
-		});
+		const response = await axios.post(`${BASE_URL}/admins/all-users`);
+        console.log("response", response);
+		return response;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const getAllClasses = async (classId) => {
+	try {
+		const response = await axios.get(`${BASE_URL}/admins/classes`);
 		return response.data;
 	} catch (error) {
 		handleError(error);
@@ -22,7 +31,6 @@ function handleError(error) {
 			message: error.response.data.message
 		});
 	} else {
-		console.log("Unexpected error from Auth API: ", error);
 		showStatusToast({
 			status: "Error",
 			message: "An unexpected error occurred. Please try again."

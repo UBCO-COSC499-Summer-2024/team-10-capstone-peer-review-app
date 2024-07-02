@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import {
 	Card,
 	CardContent,
@@ -12,7 +11,7 @@ import {
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useToast } from "@/components/ui/use-toast";
+import { confirmEmail, resetPassword, sendForgotPasswordEmail } from "@/api/authApi";
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search);
@@ -20,7 +19,6 @@ function useQuery() {
 
 const ForgotPasswordCard = ({ onSwitchToLogin }) => {
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
@@ -34,34 +32,21 @@ const ForgotPasswordCard = ({ onSwitchToLogin }) => {
 	const [resetSuccessful, setResetSuccessful] = useState(false);
 	const [passwordVisible, setPasswordVisible] = useState(false);
 	const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
-	const { toast } = useToast();
 
 	// TODO => Refactor to use apiCalls file instead so we dont have a ton of server calls in the component files
 	useEffect(() => {
 		if (frgtToken && !password) {
-			fetch(`http://localhost:3000/api/auth/confirm-email?token=${frgtToken}`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				}
-			})
-				.then((response) => response.json())
-				.then((data) => {
-					console.log(data);
-					if (data.error && data.error.status === "Server Fail") {
-						setTokenValid(false);
-					} else {
-						console.log(
-							`Received token ${frgtToken} was successfully processed.`
-						);
-						setTokenValid(true);
-					}
-				})
-				.catch((error) => {
-					console.error("Verification error:", error);
+			const verifyEmail = async () => {
+				const response = await confirmEmail(frgtToken);
+				if (response.status === "Success") {
+					setTokenValid(true);
+				} else {
 					setTokenValid(false);
-				});
-			setTokenReceived(true);
+					setError(response.message);
+				}
+				setTokenReceived(true);
+			};
+			verifyEmail();
 		}
 	}, [frgtToken]);
 
@@ -69,7 +54,7 @@ const ForgotPasswordCard = ({ onSwitchToLogin }) => {
 		e.preventDefault();
 
 		if (tokenReceived && tokenValid) {
-			if (frgtToken && password) {
+			if (frgtToken && password) { // if the token is present and password is entered, reset password
 				const passwordRegex =
 					/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
@@ -87,74 +72,36 @@ const ForgotPasswordCard = ({ onSwitchToLogin }) => {
 					setError("");
 				}
 
-				fetch(
-					`http://localhost:3000/api/auth/reset-password?token=${frgtToken}`,
-					{
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json"
-						},
-						body: JSON.stringify({
-							password: password
-						})
-					}
-				)
-					.then((response) => response.json())
-					.then((data) => {
-						console.log(data);
-						if (data.error && data.error.status === "Error") {
-							setError(data.message);
-						} else {
-							console.log(
-								`Received token ${frgtToken} was successfully processed.`
-							);
-							toast({
-								title: "Success",
-								description:
-									"Your password was successfully reset! You may now login.",
-								variant: "positive"
-							});
-							navigate("/");
-							onSwitchToLogin();
-						}
-					})
-					.catch((error) => {
-						console.error("Verification error:", error);
-					});
-			}
-		} else {
-			fetch(`http://localhost:3000/api/auth/forgot-password`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify({
-					email: email
-				})
-			})
-				.then((response) => response.json())
-				.then((data) => {
-					console.log(data);
-					if (data.error && data.error.status === "Error") {
-						setError(data.message);
+				const rstPassword = async () => {
+					const response = await resetPassword(frgtToken, password);
+					if (response.status === "Success") {
+						setResetSuccessful(true);
+						navigate("/");
+						onSwitchToLogin();
 					} else {
-						console.log(
-							`Received token ${frgtToken} was successfully processed. Email sent to user.`
-						);
-						setEmailSent(true);
-						setError("");
+						setError(response.message);
+						console.log("reset password error:", response);
 					}
-				})
-				.catch((error) => {
-					console.error("Email verification error:", error);
-					setError("This e-mail does not belong to a registered user.");
-				});
+				};
+				rstPassword();
+			}
+		} else { // if no token is present, send email (via forgot-password) on form submit
+			const sendEmail = async () => {
+				const response = await sendForgotPasswordEmail(email);
+				if (response.status === "Success") {
+					setEmailSent(true);
+					setError("");
+				} else if (response.status === "Error") {
+					setError(response.message);
+				}
+			};
+			sendEmail();
 		}
 	};
 
 	return (
 		<div className="relative space-y-2 w-full">
-			{tokenReceived && (
+			{tokenReceived && ( // Show success or failure alert if token is received
 				<Alert
 					className="absolute top-0 left-0 w-full flex justify-center items-center space-x-2"
 					variant={tokenValid ? "success" : "destructive"}
@@ -185,14 +132,14 @@ const ForgotPasswordCard = ({ onSwitchToLogin }) => {
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="space-y-4">
-					{emailSent ? (
+					{emailSent ? ( // Show success message if email is sent
 						<p className="text-green-500 text-sm">
 							An email has been sent to your email address! Please check it for
 							a verification link and reset your password there.
 						</p>
-					) : (
+					) : ( // Show form if email is not sent (as it's false either when the email has not been submitted or if a token is already present)
 						<form className="space-y-4" onSubmit={handleSubmit}>
-							{tokenValid ? (
+							{tokenValid ? ( // Show new password fields if token is valid
 								<div className="space-y-4">
 									<div className="relative">
 										<label
@@ -255,7 +202,7 @@ const ForgotPasswordCard = ({ onSwitchToLogin }) => {
 										</div>
 									</div>
 								</div>
-							) : (
+							) : ( // Show email field if token is not valid or not present
 								<div>
 									<label
 										htmlFor="email"
@@ -274,8 +221,8 @@ const ForgotPasswordCard = ({ onSwitchToLogin }) => {
 									/>
 								</div>
 							)}
-							{error && <p className="text-red-500 text-sm">{error}</p>}
-							<div>
+							{error && <p className="text-red-500 text-sm">{error}</p>} 
+							<div> 
 								<button
 									type="submit"
 									className="w-full px-4 py-2 text-sm font-medium text-white bg-[#111827] border border-transparent rounded-md shadow-sm hover:bg-[#374151] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -283,7 +230,7 @@ const ForgotPasswordCard = ({ onSwitchToLogin }) => {
 									{tokenValid ? "Submit" : "Send Reset Email"}
 								</button>
 							</div>
-						</form>
+						</form>	// Show submit button & error irregardless of token valid or not, unless email is sent in which case shows success message only
 					)}
 				</CardContent>
 				<CardFooter className="text-center">

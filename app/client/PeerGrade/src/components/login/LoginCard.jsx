@@ -24,63 +24,51 @@ import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 
 import showStatusToast from "@/utils/showToastStatus";
-import { loginUser, getCurrentUser, confirmEmail } from "@/api/authApi";
+import { loginUser, confirmEmail } from "@/api/authApi";
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search);
 }
 
 const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
-	const navigate = useNavigate();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [passwordVisible, setPasswordVisible] = useState(false);
 	const [tokenReceived, setTokenReceived] = useState(false);
 	const [verificationSuccessful, setVerificationSuccessful] = useState(false);
 	const [error, setError] = useState("");
+
 	const query = useQuery();
 	const token = query.get("token") || "";
-	const { toast } = useToast();
 
+	const navigate = useNavigate();
+
+	// Use Effect to check if the email verification JWT send in the url
+	// TODO: Look into why toasts pop up twice, and how to remove token after it renders once
 	useEffect(() => {
 		const verifyEmail = async () => {
 			if (token) {
-				try {
-					await confirmEmail(token);
+				const response = await confirmEmail(token);
+				if (response.status === "Success") {
 					setVerificationSuccessful(true);
-					showStatusToast({
-						status: "Success",
-						message: "Email verification successful!"
-					});
-				} catch (error) {
+				} else {
 					setVerificationSuccessful(false);
-					showStatusToast({
-						status: "Error",
-						message: "Email verification failed."
-					});
 				}
 				setTokenReceived(true);
 			}
 		};
 		verifyEmail();
 	}, [token]);
-  
-  	// // Password validation regex: 8 characters, 1 uppercase, 1 lowercase, 1 special character
-	// const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-	// if (!passwordRegex.test(password)) {
-	//   setError('Password must be at least 8 characters long, with at least one uppercase letter, one lowercase letter, one number, and one special character.');
-	//   return;
-	// }
-
-	// Removed setError in this function for now, instead just using a toast
-	const handleSubmit = async (e) => {
+	// Login
+	const handleLogin = async (e) => {
 		e.preventDefault();
-		// If the apiCall is successfull, it will return an object with the status a message, and any other data neeeded.
+
 		const response = await loginUser(email, password);
-		if (response) {
+		if (response.status === "Success") {
 			navigate(response.userRole === "ADMIN" ? "/admin" : "/dashboard");
-			// navigate(response.userRole === "ADMIN" ? "/admin" : "/dashboard");
+		} else if (response.status === "Error") {
+			setError(response.message);
 		}
 	};
 
@@ -107,15 +95,15 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 					</div>
 				</Alert>
 			)}
-			<Card className="w-full max-w-lg h-[550px] flex flex-col justify-center item-center">
+			<Card className="w-full max-w-lg h-[650px] flex flex-col justify-center item-center">
 				<CardHeader className="text-center">
 					<CardTitle className="text-2xl font-bold">Login</CardTitle>
 					<CardDescription className="text-gray-600">
 						Please enter your credentials to login
 					</CardDescription>
 				</CardHeader>
-				<CardContent className="flex-1 overflow-y-auto space-y-4">
-					<form className="space-y-4" onSubmit={handleSubmit}>
+				<CardContent className="flex-1 flex flex-col items-center justify-center space-y-4">
+					<form className="space-y-4 w-full max-m-md" onSubmit={handleLogin}>
 						<div>
 							<label
 								htmlFor="email"
@@ -184,7 +172,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 				<CardFooter className="text-center flex flex-col gap-2 bg-indigo-100">
 					<div className="flex w-full justify-between mt-6">
 						<p className="text-sm text-gray-600">
-							Don't have an account?{" "}
+							Don&apos;t have an account?
 							<button
 								onClick={onSwitchToRegister}
 								className="text-green-600 hover:text-green-500"

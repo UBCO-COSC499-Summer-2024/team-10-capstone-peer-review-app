@@ -1,14 +1,14 @@
 import express from "express";
 import {
-  register,
-  login,
-  logout,
-  forgotPassword,
-  resetPassword,
-  resendVerificationEmail,
-  confirmEmail,
-  currentUser, 
-  getAllRoleRequests,
+	register,
+	login,
+	logout,
+	forgotPassword,
+	resetPassword,
+	resendVerificationEmail,
+	confirmEmail,
+	currentUser,
+	getAllRoleRequests,
 	deleteRoleRequest,
 	approveRoleRequest,
 	denyRoleRequest,
@@ -17,8 +17,6 @@ import {
 } from "../controllers/authController.js";
 
 import { ensureUser, ensureAdmin } from "../middleware/ensureUserTypes.js";
-
-import express from "express";
 
 const router = express.Router();
 

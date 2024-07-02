@@ -1,5 +1,3 @@
-// Import necessary modules and services
-import e from "express";
 import assignService from "../services/assignService.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 
@@ -49,6 +47,7 @@ export const getAssignmentInClass = asyncErrorHandler(async (req, res) => {
 		data: assignmentData
 	});
 });
+
 
 export const getAllAssignmentsByClassId = asyncErrorHandler(async (req, res) => {
 	const { classId } = req.body;

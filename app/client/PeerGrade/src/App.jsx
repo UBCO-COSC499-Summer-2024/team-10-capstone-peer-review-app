@@ -112,7 +112,7 @@ function MainLayout() {
 					/>
 					<Route path="/search" element={<Search />} />
 					<Route
-						path="/assignment/:assignmentId"
+						path="/class/:classId/assignment/:assignmentId"
 						element={
 							<UserProvider>
 								<Assignment />

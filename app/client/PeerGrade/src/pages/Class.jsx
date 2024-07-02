@@ -13,8 +13,9 @@ import People from './classNav/People';
 import AssignmentCreation from './classNav/AssignmentCreation';
 import { Button } from '@/components/ui/button';
 import { useUser } from "@/contexts/contextHooks/useUser";
-import { getAllAssignmentsByClassId, getCategoriesByClassId, getClassById } from "@/api/classApi";
-import { useToast } from "@/components/ui/use-toast";
+import { getAllAssignmentsByClassId } from '@/api/assignmentApi';
+import { getCategoriesByClassId, getClassById } from '@/api/classApi';
+import { useToast } from '@/components/ui/use-toast';
 
 const Class = () => {
   const { classId } = useParams();

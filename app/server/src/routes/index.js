@@ -7,6 +7,7 @@ import adminsRouter from "./admins.js";
 import instructorsRouter from "./instructors.js";
 import studentsRouter from "./students.js";
 import usersRoutes from "./usersRoutes.js";
+import assignmentRouter from "./assignment.js";
 // Middlewares
 import localStrategy from "../middleware/passportStrategies/localStrategy.js";
 import { ensureUser, ensureInstructor, ensureAdmin } from "../middleware/ensureUserTypes.js";
@@ -19,7 +20,7 @@ localStrategy(passport);
 router.use("/auth", authRouter);
 // Routes that require authentication
 router.use("/classes", classesRouter);
-
+router.use("/assignment", assignmentRouter);
 router.use("/students", ensureUser, studentsRouter);
 router.use("/instructors", ensureUser, ensureInstructor, instructorsRouter);
 router.use("/admins", ensureUser, ensureAdmin, adminsRouter);

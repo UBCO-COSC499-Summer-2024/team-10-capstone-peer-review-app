@@ -4,7 +4,8 @@ import ClassCard from '@/components/class/ClassCard';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { useUser } from "@/contexts/contextHooks/useUser";
-import { getClassesByUserId, getAllAssignmentsByClassId, getAllAssignments, createClass, deleteClass } from "@/api/classApi";
+import { getAllAssignmentsByClassId } from '@/api/assignmentApi';
+import { getClassesByUserId, getAllAssignments, createClass, deleteClass } from "@/api/classApi";
 import {
     Dialog,
     DialogContent,

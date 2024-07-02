@@ -23,7 +23,7 @@ router.use("/classes", classesRouter);
 router.use("/assignment", assignmentRouter);
 router.use("/students", ensureUser, studentsRouter);
 router.use("/instructors", ensureUser, ensureInstructor, instructorsRouter);
-router.use("/admins", ensureUser, ensureAdmin, adminsRouter);
+router.use("/admins", adminsRouter);
 router.use('/users', usersRoutes);
 
 export default router;

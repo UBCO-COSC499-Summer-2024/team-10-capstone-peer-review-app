@@ -129,6 +129,7 @@ const deleteClass = async (classId) => {
 			}
 		});
 	} catch (error) {
+		console.log(error);
 		throw new apiError("Failed to delete class", 500);
 	}
 };

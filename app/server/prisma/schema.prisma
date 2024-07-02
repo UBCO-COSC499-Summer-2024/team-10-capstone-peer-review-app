@@ -94,8 +94,8 @@ model Class {
 model UserInClass {
   userId  String
   classId String
-  user    User   @relation(fields: [userId], references: [userId])
-  class   Class  @relation(fields: [classId], references: [classId])
+  user    User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  class   Class  @relation(fields: [classId], references: [classId], onDelete: Cascade)
 
   @@id([userId, classId], name: "UserInClassId")
 }
@@ -120,7 +120,7 @@ model Assignment {
   dueDate       DateTime
   maxSumissions Int                   @default(1)
   isGroup       Boolean               @default(false)
-  classes       Class                 @relation(fields: [classId], references: [classId])
+  classes       Class                 @relation(fields: [classId], references: [classId], onDelete: Cascade)
   categoryId    String? // Add this line
   category      Category?             @relation(fields: [categoryId], references: [categoryId]) // Add this line
   rubric        RubricForAssignment[]
@@ -137,7 +137,7 @@ model Group {
   groupDescription String?
   groupSize        Int          @default(0)
   //assignment       Assignment        @relation(fields: [assignmentId], references: [assignmentId])
-  class            Class        @relation(fields: [classId], references: [classId])
+  class            Class        @relation(fields: [classId], references: [classId], onDelete: Cascade)
   students         User[] // Students in the group
   submissions      Submission[] // Submissions from the group
 }
@@ -167,7 +167,7 @@ model Submission {
   sumbissionFilePath String
   // sumbissionType     SubmissionType // Either a File or a URL, we need to discuss file storage options
   finalGrade         Int? // Final grade of the Submission, default to the instructor grade?
-  assignment         Assignment @relation(fields: [assignmentId], references: [assignmentId])
+  assignment         Assignment @relation(fields: [assignmentId], references: [assignmentId], onDelete: Cascade)
   submitter          User?      @relation(fields: [submitterId], references: [userId])
   submitterGroup     Group?     @relation(fields: [submitterGroupId], references: [groupId])
   reviews            Review[]
@@ -217,7 +217,7 @@ model Review {
   isGroup         Boolean          @default(false)
   isPeerReview    Boolean          @default(false)
   reviewGrade     Int // Total grade of the review = sum of reviewerCriteronGrades
-  submission      Submission       @relation(fields: [submissionId], references: [submissionId])
+  submission      Submission       @relation(fields: [submissionId], references: [submissionId], onDelete: Cascade)
   reviewer        User?            @relation("Reviewer", fields: [reviewerId], references: [userId])
   reviewee        User             @relation("Reviewee", fields: [revieweeId], references: [userId])
   criterionGrades CriterionGrade[]
@@ -236,7 +236,7 @@ model Review {
 //   createdAt                DateTime                   @default(now())
 //   updatedAt                DateTime                   @updatedAt
 //   instructorReviewGrade    Int // Total grade of the review = sum of instructorCriteronGrades
-//   submission               Submission                 @relation(fields: [submissionId], references: [submissionId])
+//   submission               Submission                 @relation(fields: [submissionId], references: [submissionId], onDelete: Cascade)
 //   reviewerInstructor       Instructor                 @relation("ReviewerInstructor", fields: [instructorReviewerId], references: [instructorId])
 //   reviewee                 Student                    @relation("RevieweeStudent", fields: [revieweeId], references: [studentId])
 //   instructorCriterionGrade InstructorCriterionGrade[]
@@ -361,7 +361,7 @@ model EnrollRequest {
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
   user            User          @relation(fields: [userId], references: [userId])
-  class           Class         @relation(fields: [classId], references: [classId])
+  class           Class         @relation(fields: [classId], references: [classId], onDelete: Cascade)
 
   @@unique([userId, classId], name: "UniqueEnrollRequestPerUser")
 }
@@ -370,7 +370,7 @@ model Category {
   categoryId  String       @id @default(uuid())
   classId     String
   name        String
-  class       Class        @relation(fields: [classId], references: [classId])
+  class       Class        @relation(fields: [classId], references: [classId], onDelete: Cascade)
   assignments Assignment[]
 }
 

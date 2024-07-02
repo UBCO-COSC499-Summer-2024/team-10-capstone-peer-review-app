@@ -226,7 +226,7 @@ export default function AppNavbar() {
 							Settings
 						</Link>
 					</NavigationMenuItem>
-					{location.pathname !== "/search" && user.role === "ADMIN" && (
+					{/* {location.pathname !== "/search" && user.role === "ADMIN" && (
 						<NavigationMenuItem>
 							<div className="flex w-full max-w-sm items-center space-x-2">
 								<Input
@@ -240,7 +240,7 @@ export default function AppNavbar() {
 								</Button>
 							</div>
 						</NavigationMenuItem>
-					)}
+					)} */}
 				</NavigationMenuList>
 				<div className="flex items-center space-x-4">
 					<HoverCard>

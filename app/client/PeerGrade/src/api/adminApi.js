@@ -14,6 +14,16 @@ export const getAllUsers = async () => {
 	}
 };
 
+export const getAllClasses = async (classId) => {
+	try {
+		const response = await axios.get(`${BASE_URL}/admins/classes`);
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
 function handleError(error) {
 	if (error.response && error.response.data) {
 		showStatusToast({

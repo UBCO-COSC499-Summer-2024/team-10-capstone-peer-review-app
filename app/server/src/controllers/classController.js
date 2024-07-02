@@ -67,7 +67,6 @@ export const updateClass = asyncErrorHandler(async (req, res) => {
 
 export const deleteClass = asyncErrorHandler(async (req, res) => {
 	const classId = req.params.classId;
-	console.log(req.user);
 	await classService.deleteClass(classId);
 	return res.status(200).json({
 		status: "Success",

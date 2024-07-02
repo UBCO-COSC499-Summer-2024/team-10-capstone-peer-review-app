@@ -47,13 +47,13 @@ router
 	.route("/my-classes")
 	.get(ensureUser, ensureInstructor, getClassesByInstructor);
 
-router.route("/create").post(ensureUser, ensureInstructor, createClass);
+router.route("/create").post(ensureUser, ensureInstructorOrAdmin, createClass);
 
 router
 	.route("/:classId")
 	.get(ensureUser, getClassById)
 	.put(ensureUser, ensureInstructor, updateClass)
-	.delete(ensureUser, ensureInstructor, deleteClass);
+	.delete(ensureUser, ensureInstructorOrAdmin, deleteClass);
 
 router.route("/:classId/students").get(ensureUser, getStudentsByClass);
 router.route("/:classId/instructor").get(ensureUser, getInstructorByClass);
@@ -61,11 +61,11 @@ router.route("/:classId/instructor").get(ensureUser, getInstructorByClass);
 // Student Routes
 router
 	.route("/add-student")
-	.post(ensureUser, ensureInstructor, addStudentToClass);
+	.post(ensureUser, ensureInstructorOrAdmin, addStudentToClass);
 
 router
 	.route("/remove-student")
-	.post(ensureUser, ensureInstructor, removeStudentFromClass);
+	.post(ensureUser, ensureInstructorOrAdmin, removeStudentFromClass);
 
 // Rubric Routes
 
@@ -125,7 +125,7 @@ router
 
 router
 	.route("/remove-group")
-	.post(ensureUser, ensureInstructor, removeGroupFromClass);
+	.post(ensureUser, ensureInstructorOrAdmin, removeGroupFromClass);
 
 router
 	.route("/update-group")

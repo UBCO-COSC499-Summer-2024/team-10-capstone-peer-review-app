@@ -100,68 +100,6 @@ export const removeStudentFromClass = asyncErrorHandler(async (req, res) => {
 	});
 });
 
-// Controller methods for assignment operations
-
-export const addAssignmentToClass = asyncErrorHandler(async (req, res) => {
-	const { classId, assignmentData } = req.body;
-	const updatedClass = await classService.addAssignmentToClass(
-		classId,
-		assignmentData
-	);
-	return res.status(200).json({
-		status: "Success",
-		message: "Assignment successfully added to class",
-		data: updatedClass
-	});
-});
-
-export const removeAssignmentFromClass = asyncErrorHandler(async (req, res) => {
-	const { assignmentId } = req.body;
-	const updatedClass =
-		await classService.removeAssignmentFromClass(assignmentId);
-	return res.status(200).json({
-		status: "Success",
-		message: "Assignment successfully removed from class",
-		data: updatedClass
-	});
-});
-
-export const updateAssignmentInClass = asyncErrorHandler(async (req, res) => {
-	const { classId, assignmentId, updateData } = req.body;
-	const updatedClass = await classService.updateAssignmentInClass(
-		classId,
-		assignmentId,
-		updateData
-	);
-	return res.status(200).json({
-		status: "Success",
-		message: "Assignment successfully updated in class",
-		data: updatedClass
-	});
-});
-
-export const getAssignmentInClass = asyncErrorHandler(async (req, res) => {
-	const { classId, assignmentId } = req.body;
-	const assignmentData = await classService.getAssignmentInClass(
-		classId,
-		assignmentId
-	);
-	return res.status(200).json({
-		status: "Success",
-		data: assignmentData
-	});
-});
-
-export const getAllAssignmentsByClassId = asyncErrorHandler(
-	async (req, res) => {
-		const { classId } = req.body;
-		const assignments = await classService.getAllAssignmentsByClassId(classId);
-		return res.status(200).json({
-			status: "Success",
-			data: assignments
-		});
-	}
-);
 
 // Controller methods for rubrics operations
 
@@ -405,10 +343,6 @@ export default {
 	addStudentToClass,
 	removeStudentFromClass,
 
-	addAssignmentToClass,
-	removeAssignmentFromClass,
-	updateAssignmentInClass,
-	getAssignmentInClass,
 
 	addRubricsToAssignment,
 	removeRubricsFromAssignment,

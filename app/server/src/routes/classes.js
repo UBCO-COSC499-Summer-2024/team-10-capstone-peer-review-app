@@ -1,19 +1,14 @@
 import express from "express";
 import {
-	getClassById,
 	getClassesByInstructor,
 	getInstructorByClass,
+	getClassById,
 	createClass,
 	updateClass,
 	deleteClass,
 	addStudentToClass,
-	getStudentsByClass,
 	removeStudentFromClass,
-	addAssignmentToClass,
-	removeAssignmentFromClass,
-	updateAssignmentInClass,
-	getAssignmentInClass,
-	getAllAssignmentsByClassId,
+	getStudentsByClass,
 	addCriterionToRubric,
 	removeCriterionFromRubric,
 	updateCriterionInRubric,
@@ -71,27 +66,6 @@ router
 router
 	.route("/remove-student")
 	.post(ensureUser, ensureInstructor, removeStudentFromClass);
-
-//Assignment Routes
-router
-	.route("/add-assignment")
-	.post(ensureUser, ensureInstructor, addAssignmentToClass);
-
-router
-	.route("/remove-assignment")
-	.post(ensureUser, ensureInstructor, removeAssignmentFromClass);
-
-router
-	.route("/update-assignment")
-	.post(ensureUser, ensureInstructor, updateAssignmentInClass);
-
-router
-	.route("/get-assignment")
-	.post(ensureUser, ensureInstructor, getAssignmentInClass);
-
-router
-	.route("/get-class-assignments")
-	.post(ensureUser, getAllAssignmentsByClassId);
 
 // Rubric Routes
 

@@ -291,7 +291,7 @@ const getAssignmentInClass = async (classId, assignmentId) => {
 				classId: classId
 			},
 			include: {
-				assignments: true
+				Assignments: true
 			}
 		});
 
@@ -314,7 +314,7 @@ const getAssignmentInClass = async (classId, assignmentId) => {
 		if (error instanceof apiError) {
 			throw error;
 		} else {
-			throw new apiError("Failed to get assignment in class", 500);
+			throw new apiError("Failed to get assignment in class " + error, 500);
 		}
 	}
 };

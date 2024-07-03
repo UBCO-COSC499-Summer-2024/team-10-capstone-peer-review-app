@@ -43,11 +43,10 @@ function ClassTable() {
     useEffect(() => {
         if (!userLoading && user && user.role === 'ADMIN') {
             const fetchClasses = async () => {
-                const classesData = await getClassesByUserId(user.userId);
-                // const classesData = await getAllClasses(); // !!!TODO: CURRENT BEHAVIOUR IS INCORRECT, we need admins/classes to be working in the backend to see all classes in the system.
-                console.log("classes data",classesData);
+                const classesData = await getAllClasses();
+                console.log("classes data",classesData.data);
                 if (classesData) {
-                    setUserClasses(Array.isArray(classesData) ? classesData : []);
+                    setUserClasses(Array.isArray(classesData.data) ? classesData.data : []);
                 }
             };
             fetchClasses();

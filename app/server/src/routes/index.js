@@ -19,12 +19,12 @@ localStrategy(passport);
 // Routes that do not require authentication
 router.use("/auth", authRouter);
 // Routes that require authentication
-router.use("/classes", classesRouter);
-router.use("/assignment", assignmentRouter);
+router.use("/classes", ensureUser, classesRouter);
+router.use("/assignment", ensureUser, assignmentRouter);
 router.use("/students", ensureUser, studentsRouter);
 router.use("/instructors", ensureUser, ensureInstructor, instructorsRouter);
-router.use("/admins", adminsRouter);
-router.use('/users', usersRoutes);
+router.use("/admins", ensureUser, ensureAdmin, adminsRouter);
+router.use('/users', ensureUser, usersRoutes);
 
 export default router;
 

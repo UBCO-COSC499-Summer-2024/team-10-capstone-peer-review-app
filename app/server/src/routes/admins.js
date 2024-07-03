@@ -1,40 +1,23 @@
 import express from "express";
+import {
+	getAdminByID,
+	getAllUsers,
+	getAllClasses,
+} from "../controllers/adminController.js";
 
-const adminsRouter = (prisma) => {
-	const router = express.Router();
+import {
+	ensureUser,
+	ensureAdmin,
+} from "../middleware/ensureUserTypes.js";
 
-	// return a single user by id
-	router.post("/:id", async (req, res) => {
-		const { id } = req.params;
-		const user = await prisma.user.findUnique({
-			where: {
-				userId: id
-			}
-		});
-		res.json(user);
-	});
+const router = express.Router();
 
-	router.post("/all-users", async (req, res) => {
-		try {
-			const allUsers = await prisma.user.findMany();
-			console.log("allUsers", allUsers);
-			res.status(200).json(allUsers);
-		} catch (error) {
-			res.status(500).json({ message: "Failed to retrieve classes" });
-		}
-	});
+// Class Routes
 
-	// returns all classes
-	router.post("/classes", async (req, res) => {
-		try {
-			const allClasses = await prisma.class.findMany();
-			res.status(200).json(allClasses);
-		} catch (error) {
-			res.status(500).json({ message: "Failed to retrieve classes" });
-		}
-	});
+router.route("/all-users").post(ensureUser, ensureAdmin, getAllUsers);
 
-	return router;
-};
+router.route("/all-classes").post(ensureUser, ensureAdmin, getAllClasses);
 
-export default adminsRouter;
+router.route("/:adminId").post(ensureUser, ensureAdmin, getAdminByID);
+
+export default router;

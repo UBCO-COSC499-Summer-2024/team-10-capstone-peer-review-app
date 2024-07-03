@@ -14,9 +14,10 @@ export const getAllUsers = async () => {
 	}
 };
 
-export const getAllClasses = async (classId) => {
+export const getAllClasses = async () => {
 	try {
-		const response = await axios.get(`${BASE_URL}/admins/classes`);
+		const response = await axios.post(`${BASE_URL}/admins/all-classes`);
+        console.log("response", response);
 		return response.data;
 	} catch (error) {
 		handleError(error);

@@ -23,20 +23,20 @@ export const getUsersByRole = asyncErrorHandler(async (req, res, next) => {
 export const getUserClasses = asyncErrorHandler(async (req, res) => {
 	console.log("getUserClasses endpoint hit");
 	const userId = req.body.userId;
-	const classes = await userService.getUserClassesService(userId);
+	const classes = await userService.getUserClasses(userId);
 	res.status(200).json(classes);
 });
 
 export const getUserAssignments = asyncErrorHandler(async (req, res) => {
 	console.log("getUserAssignments endpoint hit");
 	const userId = req.body.userId;
-	const assignments = await userService.getUserAssignmentsService(userId);
+	const assignments = await userService.getUserAssignments(userId);
 	res.status(200).json(assignments);
 });
 
 export const getGroups = asyncErrorHandler(async (req, res) => {
 	const userId = req.body.userId;
-	const groupData = await userService.getGroupsService(userId);
+	const groupData = await userService.getGroups(userId);
 	res.status(200).json({
 		status: "Success",
 		data: groupData

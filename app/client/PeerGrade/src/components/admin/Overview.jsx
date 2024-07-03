@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect } from "react";
 
 import {
 	UsersIcon,
@@ -12,6 +12,8 @@ import StatCard from "@/components/admin/stats/StatCard";
 import DataTable from "@/components/ui/data-table";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+
+import { getUsersByRole } from "@/api/userApi";
 
 const generateRandomNumber = (min, max) =>
 	Math.floor(Math.random() * (max - min + 1)) + min;
@@ -63,6 +65,8 @@ const instructorApprovalsData = [
 ];
 
 const Overview = () => {
+	useEffect(() => {}, []);
+
 	const users = generateRandomNumber(50, 100);
 	const students = generateRandomNumber(30, 50);
 	const instructors = generateRandomNumber(2, 5);
@@ -93,7 +97,7 @@ const Overview = () => {
 			accessorKey: "actions",
 			header: "Actions",
 			cell: ({ row }) => (
-				<div className="flex justify-around">
+				<div className="flex justify-start ju">
 					<Button
 						variant="ghost"
 						size="icon"

@@ -3,6 +3,16 @@ import showStatusToast from "@/utils/showToastStatus";
 
 const BASE_URL = "/api"; // TODO change this to an environment var?
 
+export const getAllUsers = async () => {
+	try {
+		const response = await axios.get(`${BASE_URL}/users/all`);
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
 export const getUsersByRole = async (role) => {
 	try {
 		const response = await axios.get(`${BASE_URL}/users/role/${role}`);

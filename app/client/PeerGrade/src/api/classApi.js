@@ -5,7 +5,7 @@ const BASE_URL = "/api"; // Use environment variable if available
 
 export const getAllClasses = async () => {
 	try {
-		const response = await axios.get(`${BASE_URL}/classes`);
+		const response = await axios.get(`${BASE_URL}/classes/all`);
 		return response.data;
 	} catch (error) {
 		handleError(error);

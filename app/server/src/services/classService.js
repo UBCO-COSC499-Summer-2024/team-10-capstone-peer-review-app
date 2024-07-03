@@ -3,6 +3,23 @@ import apiError from "../utils/apiError.js";
 
 // class operations
 
+const getAllClasses = async () => {
+	try {
+		const classes = await prisma.class.findMany({
+			include: {
+				groups: true,
+				usersInClass: true,
+				Assignments: true,
+				instructor: true,
+				EnrollRequest: true
+			}
+		});
+		return classes;
+	} catch (error) {
+		throw new apiError("Failed to retrieve classes", 500);
+	}
+};
+
 const getStudentsByClass = async (classId) => {
 	try {
 		const classWithStudents = await prisma.userInClass.findMany({
@@ -224,7 +241,6 @@ const removeStudentFromClass = async (classId, studentId) => {
 		}
 	}
 };
-
 
 // rubric operations
 const createRubricsForAssignment = async (
@@ -581,7 +597,7 @@ const addGroupToClass = async (classId, groupData) => {
 			},
 			include: {
 				students: true,
-				submissions: true  // This is to include the students & submissions in the response. Needed for Groups.jsx atm.
+				submissions: true // This is to include the students & submissions in the response. Needed for Groups.jsx atm.
 			}
 		});
 
@@ -690,17 +706,17 @@ const getGroupsInClass = async (classId) => {
 	try {
 		const classInfo = await prisma.class.findUnique({
 			where: {
-			  classId: classId
+				classId: classId
 			},
 			include: {
-			  groups: {
-				include: {
-				  students: true,
-				  submissions: true // This is to include the students & submissions in the response. Needed for Groups.jsx atm.
+				groups: {
+					include: {
+						students: true,
+						submissions: true // This is to include the students & submissions in the response. Needed for Groups.jsx atm.
+					}
 				}
-			  }
 			}
-		  });
+		});
 
 		if (!classInfo) {
 			throw new apiError("Class not found", 404);
@@ -843,6 +859,7 @@ export default {
 	getInstructorByClass,
 	getStudentsByClass,
 	getClassesByInstructor,
+	getAllClasses,
 	getClassById,
 	createClass,
 	updateClass,

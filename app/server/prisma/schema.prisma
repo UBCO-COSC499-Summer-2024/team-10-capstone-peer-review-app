@@ -114,18 +114,20 @@ model UserInClass {
 
 // Make a many to many relationship with rubric 
 model Assignment {
-  assignmentId  String                @id @default(uuid())
-  classId       String
-  title         String
-  description   String?
-  dueDate       DateTime
-  maxSumissions Int                   @default(1)
-  isGroup       Boolean               @default(false)
-  classes       Class                 @relation(fields: [classId], references: [classId], onDelete: Cascade)
-  categoryId    String? // Add this line
-  category      Category?             @relation(fields: [categoryId], references: [categoryId]) // Add this line
-  rubric        RubricForAssignment[]
-  submissions   Submission[]
+  assignmentId       String                @id @default(uuid())
+  classId            String
+  title              String
+  description        String?
+  dueDate            DateTime
+  maxSumissions      Int                   @default(1)
+  isGroup            Boolean               @default(false)
+  // assignmentType     SubmissionType // Either a File or a URL, we need to discuss file storage options 
+  assignmentFilePath String
+  classes            Class                 @relation(fields: [classId], references: [classId], onDelete: Cascade)
+  categoryId         String? // Add this line
+  category           Category?             @relation(fields: [categoryId], references: [categoryId]) // Add this line
+  rubric             RubricForAssignment[]
+  submissions        Submission[]
 }
 
 // Group Models

@@ -113,6 +113,7 @@ const Users = () => {
 	const [usersData, setUsersData] = useState([]);
 	const [roleRequests, setRoleRequests] = useState([]);
 
+	// TODO -> decrypt passwords for admins to view them in plain text
 	useEffect(() => {
 		const fetchUsers = async () => {
 			const allUsers = await getAllUsers();

@@ -1,4 +1,124 @@
 
+# Mahir's Log for Cycle 9
+
+
+## Thursday, June 27, 2024, 05:22 PM - Tuesday, July 02, 2024, 05:22 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[181](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/181)**: Major userContext Refactor, also need to refactor all API calls on the front-end  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[174](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/174)**: Remove Redux  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[150](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/150)**: Integrate Api calls with UI, Create Redux Slices for api calls (For this week: User Info, Auth, Class info, Assignment? Maybe)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[131](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/131)**: Major Use Case 16-1: Create/Manage Assignment  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[108](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/108)**: Redux - More slices   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **131/assignment_ops** *(Total duration: 1.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 02, 2024, 11:48 AM - Tuesday, July 02, 2024, 12:30 PM *(0.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 02, 2024, 10:18 AM - Tuesday, July 02, 2024, 11:33 AM *(1.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **181/merge_to_dev** *(Total duration: 0.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 01, 2024, 09:52 PM - Monday, July 01, 2024, 10:30 PM *(0.6 hours)*  
+  
+&nbsp; &nbsp; :watch: **181/Assignment api** *(Total duration: 1.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 01, 2024, 08:02 PM - Monday, July 01, 2024, 09:52 PM *(1.8 hours)*  
+  
+&nbsp; &nbsp; :watch: **181/Major_refactor** *(Total duration: 10.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 01, 2024, 03:42 PM - Monday, July 01, 2024, 04:27 PM *(0.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 01, 2024, 01:53 PM - Monday, July 01, 2024, 02:03 PM *(0.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 01, 2024, 12:49 PM - Monday, July 01, 2024, 01:45 PM *(0.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 01, 2024, 12:20 AM - Monday, July 01, 2024, 02:18 AM *(2.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 30, 2024, 09:11 PM - Sunday, June 30, 2024, 10:15 PM *(1.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 30, 2024, 06:14 PM - Sunday, June 30, 2024, 09:06 PM *(2.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 30, 2024, 12:02 PM - Sunday, June 30, 2024, 03:13 PM *(3.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **123/Assignment_ops** *(Total duration: 0.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 30, 2024, 10:27 AM - Sunday, June 30, 2024, 11:00 AM *(0.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 30, 2024, 05:52 AM - Sunday, June 30, 2024, 06:09 AM *(0.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **Reviewing/Resolving/Merging PRs** *(Total duration: 1.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 30, 2024, 03:48 AM - Sunday, June 30, 2024, 04:58 AM *(1.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **174/removing redux** *(Total duration: 1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, June 28, 2024, 10:00 AM - Friday, June 28, 2024, 11:00 AM *(1.0 hours)*  
+  
+&nbsp; &nbsp; :watch: **Context API React Research** *(Total duration: 0.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 27, 2024, 10:44 PM - Thursday, June 27, 2024, 10:58 PM *(0.2 hours)*  
+  
+
+## All Features worked on this cycle:
+
+## Features completed on this cycle:
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[181](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/181)**: Major userContext Refactor, also need to refactor all API calls on the front-end  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[174](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/174)**: Remove Redux  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[150](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/150)**: Integrate Api calls with UI, Create Redux Slices for api calls (For this week: User Info, Auth, Class info, Assignment? Maybe)  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[108](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/108)**: Redux - More slices   
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[131](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/131)**: Major Use Case 16-1: Create/Manage Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[128](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/128)**: Major Use Case 13: Join Group / Accept Invite  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[127](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/127)**: Major Use Case 12: Manage Group   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Create a Group for an Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[122](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/122)**: Major Use Case 7: View Submission Feedback (from instructor)   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[120](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/120)**: Major Use Case 5: Send Reports to Admin   
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Mahir's Log for Cycle 8
 
 

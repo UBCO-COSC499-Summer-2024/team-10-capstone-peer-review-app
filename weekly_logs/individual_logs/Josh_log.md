@@ -1,4 +1,172 @@
 
+# Josh's Log for Cycle 9
+
+
+## Thursday, June 27, 2024, 05:22 PM - Tuesday, July 02, 2024, 05:22 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[183](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/183)**: Link enroll requests back-end to front-end ui for admins   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[181](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/181)**: Major userContext Refactor, also need to refactor all API calls on the front-end  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[176](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/176)**: Refactor forgot password to work with UI  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[169](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/169)**: Refactor envConfig to accomodate commonJS   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[168](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/168)**: Requests Model / Api Endpoints for Signups, Backend Tests, and some front-end integrations  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: testing, type: database, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[160](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/160)**: Reorganize route names and api-endpoints.   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[150](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/150)**: Integrate Api calls with UI, Create Redux Slices for api calls (For this week: User Info, Auth, Class info, Assignment? Maybe)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[95](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/95)**: Add tests to the backend, integrate into drone  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: testing, type: api 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Refactoring Admins Approvals board on users to do the role requests** *(Total duration: 0.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 02, 2024, 04:49 PM - Tuesday, July 02, 2024, 05:04 PM *(0.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **Refactoring the mockData to database data in instructor Overview** *(Total duration: 0.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 02, 2024, 04:35 PM - Tuesday, July 02, 2024, 04:48 PM *(0.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 02, 2024, 03:36 PM - Tuesday, July 02, 2024, 03:51 PM *(0.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **Creating new admin routes / controllers / services for back-end.** *(Total duration: 1.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 02, 2024, 02:08 PM - Tuesday, July 02, 2024, 03:29 PM *(1.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **Implementing role requests into admin dashboard** *(Total duration: 0.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 02, 2024, 01:25 PM - Tuesday, July 02, 2024, 02:07 PM *(0.7 hours)*  
+  
+&nbsp; &nbsp; :watch: **Refactoring register card, adding peoples to classNav, other small changes** *(Total duration: 4.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 01, 2024, 09:32 PM - Monday, July 01, 2024, 10:04 PM *(0.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 01, 2024, 07:11 PM - Monday, July 01, 2024, 09:32 PM *(2.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 01, 2024, 04:01 PM - Monday, July 01, 2024, 04:33 PM *(0.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 01, 2024, 02:55 PM - Monday, July 01, 2024, 03:44 PM *(0.8 hours)*  
+  
+&nbsp; &nbsp; :watch: **Merging all of our PRS so we can start refactoring how API calls are done in the front-end + getting rid of redux** *(Total duration: 6.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 30, 2024, 06:13 PM - Sunday, June 30, 2024, 07:13 PM *(1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 30, 2024, 06:12 PM - Sunday, June 30, 2024, 06:13 PM *(0.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 30, 2024, 11:45 AM - Sunday, June 30, 2024, 03:04 PM *(3.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 30, 2024, 10:02 AM - Sunday, June 30, 2024, 11:45 AM *(1.7 hours)*  
+  
+&nbsp; &nbsp; :watch: **Getting user context to work, need to refactor alot of front end to use api calls. Also PR reviewing** *(Total duration: 2.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, June 29, 2024, 06:57 PM - Saturday, June 29, 2024, 09:05 PM *(2.1 hours)*  
+  
+&nbsp; &nbsp; :watch: **trying to access error messages from responses, refactoring authApi in front end** *(Total duration: 0.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, June 29, 2024, 12:46 PM - Saturday, June 29, 2024, 01:41 PM *(0.9 hours)*  
+  
+&nbsp; &nbsp; :watch: **Creating user context for global user state, adding Api folder** *(Total duration: 3.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, June 29, 2024, 11:00 AM - Saturday, June 29, 2024, 12:46 PM *(1.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, June 28, 2024, 05:54 PM - Friday, June 28, 2024, 07:18 PM *(1.4 hours)*  
+  
+&nbsp; &nbsp; :watch: **Adding new mock role request testing to authService tests** *(Total duration: 0.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, June 28, 2024, 10:02 AM - Friday, June 28, 2024, 10:56 AM *(0.9 hours)*  
+  
+&nbsp; &nbsp; :watch: **Manually testing role requests, adding emails to approve / deny role requests** *(Total duration: 0.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 27, 2024, 07:09 PM - Thursday, June 27, 2024, 07:24 PM *(0.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **Cookie Session issues** *(Total duration: 0.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 27, 2024, 06:00 PM - Thursday, June 27, 2024, 06:16 PM *(0.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **Debugging login / register** *(Total duration: 0.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 27, 2024, 05:43 PM - Thursday, June 27, 2024, 06:00 PM *(0.3 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[184](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/184)**: Refactoring Admins page to reflect database   
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[182](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/182)**: Major Refactor for API calls in the front-end, also userContext state  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[177](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/177)**: Logs review for cycle 8   
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[182](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/182)**: Major Refactor for API calls in the front-end, also userContext state  
+  
+&nbsp; &nbsp; :arrow_heading_up: **PR-[177](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/177)**: Logs review for cycle 8   
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[181](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/181)**: Major userContext Refactor, also need to refactor all API calls on the front-end  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[176](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/176)**: Refactor forgot password to work with UI  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[169](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/169)**: Refactor envConfig to accomodate commonJS   
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[168](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/168)**: Requests Model / Api Endpoints for Signups, Backend Tests, and some front-end integrations  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[160](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/160)**: Reorganize route names and api-endpoints.   
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[150](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/150)**: Integrate Api calls with UI, Create Redux Slices for api calls (For this week: User Info, Auth, Class info, Assignment? Maybe)  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[95](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/95)**: Add tests to the backend, integrate into drone  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[183](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/183)**: Link enroll requests back-end to front-end ui for admins   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[149](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/149)**: implement JOI for api-data validation  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[130](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/130)**: Major Use Case 15: Manage Class  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Create a Group for an Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[125](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/125)**: Major Use Case 10: Requests to Become Instructor / Admin  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[88](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/88)**: Integrate Enroll Request in Classes  
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Josh's Log for Cycle 8
 
 

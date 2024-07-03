@@ -12,9 +12,8 @@
 ## Tasks currently in Progress for c-9:
 ![Tasks in progress for c-9](./team_log_images/in_progress_issues/in_progress_issues_c9.png)  
   
-
 ## Tasks currently in Review for c-9:
-![Tasks in review for c-9](./team_log_images/in_review_issues/in_review_issues_c9.png)  
+No Tasks currenty in Review for c-9
   
 
 ## Tasks Done for c-9:
@@ -24,19 +23,19 @@
 ## Overall Burn-up Chart of Tasks
 ![Burn-Up Chart for c-9](./team_log_images/burnup_charts/burnup_chart_c9.png)  
   
-
+s
 ## Test Reports for c-9
 
 #### Front-end Testing for c-9
-![Front-end Tests for c-9](./team_log_images/front_end_tests/front_end_tests_c9.png)  
+![Front-end Tests for c-9](./team_log_images/front_end_tests/front_end_tests_c8.png)  
   
 
 #### Back-end Testing for c-9
-![Burn-Up Chart for c-9](./team_log_images/back_end_tests/back_end_tests_c9.png)  
+![Back-end Tests for c-9](./team_log_images/back_end_tests/back_end_test_c8.png)  
   
   
   
-
+s
 # Team 10's Team Log for Cycle 8
 
 

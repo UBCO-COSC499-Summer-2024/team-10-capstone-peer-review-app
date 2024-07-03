@@ -6,35 +6,38 @@
 
 
 ### Major features worked on in c-9
-*  
-  
-*  
-  
-*  
+* Major Use Case 23: Role Requests Page for Admins
+
+* Major Use Case 16-1: Create/Manage Assignment - linking the UI to the backend
+
+* Major Use Case 6, 8: View Assignment details (This is set up) and Submit Assignment (Submissions not setup yet)
+
+* Major Use Case 4, 14, 17, 19ish: Create View, and Delete Classes (Delete is set up for Admin not for instructor tho)
+
+* Major Use Case 10: Role Requests / Admin UI for accepting and denying role requests (Just need to link back-end functionalities)
   
 
 ### Major features completed in c-9
-*  
+* Major Use Case 23: Role Requests Page for Admins 
+
+* Major Use Case 4, 14, 17: Create View, and Delete Classes (Delete is set up for Admin)
   
-*  
-  
-*  
+* Major Use Case 10: Role Requests / Admin UI for accepting and denying role requests (Just need to link back-end functionalities)
   
 
 ### Major features to work on for c-10
-*  
+* Major Use Case 6, 8: View Assignment details (This is set up) and Submit Assignment (Submissions not setup yet)
   
-*  
+* Major Use Case 15: Manage Class (for instructors)
   
-*  
+* Major Use Case 19: Delete class (for instructors) 
+
+* Major Use Case 16-1: Create/Manage Assignment - linking the UI to the backend
   
 
 ### Team Issues and Hurdles for c-9
-*  
+*  A big part of this cycle was merging all of our branches together and refactoring the scrapping of redux, we hade to change alot of our files to accomodate for this so this was the first big step in getting everything linked together
   
-*  
-  
-*  
   
 
 ### Clockify Dashboard for this Week

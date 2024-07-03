@@ -108,14 +108,15 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* For this cycle the main focus was on refactoring redux to be removed and implementing Josh's new context API functions wherever needed and I believe that was accomplished. 
+* The next major work relied on linking the backend to the UI and Josh, Abdul, and I had spent a few days working continuously on a refactoring branch (181) to get the initial refactoring and linking done to get our dashboards and Class pages up and running
+* We still have the Assignment and Peer review side of things pending however we had a team meeting last night to discuss our tasks and are all similarly working on a new branch together (183) to get the second remaining portion of all Api links done.
+* Some backend Api calls may need to be refactored as we will have to change the Prisma schema to add information that is currently missing.
 
 ## Goals for next cycle
-* 
-* 
-* 
+* For the next cycle, my goal is to finish linking up the Assignment portion to the backend, I currently have editing and uploading an assignment left (viewing works at the moment) and I also need to figure out how file storage will be implemented. 
+* After that, another priority is to make sure our presentation for the 50% MVP is good to go, most of Thursday's focus will be on this
+* If we get the time, I will also try to implement the Peer-Review side of our app however, this is a big task in itself so I've also asked Abdul to help me out after I get the assignment upload parts done.
   
   
 

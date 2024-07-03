@@ -156,16 +156,15 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* In terms of goals from Last cycle, Mahir, Abdul, and I were all able to refactor and create alot of the api-calls done on the front-end. We are in the process still of refactoring and adding new api-endpoints and are working to link together new things such as Edit assignment, create assignment => Which also entails creating a rubric, and so on
+* I was able to create a userContext hook that now replaces the old redux selector and slice, It is still a tad buggy its use effect needs to be refactored to not try to fetch user data on a non-user page I.E login
+* I started to work on the role-requests on Monday to link with the front-end but there was alot of other things to work on for the admin page so I got side-tracked by that and worked on refactoring how some of the admin navbars appear, Going to get role-request approvals / user view for instructors up and running by tomorrow! 
 
 ## Goals for next cycle
-* 
-* 
-* 
-  
-  
+* Link Role requests to Front-end
+* Continue creating / refactoring admin page 
+* Help with other Main features, geared more towards Assignment, Submission, and Rubric 
+
 
 # Josh's Log for Cycle 8
 

@@ -3,16 +3,21 @@ import apiError from "../utils/apiError.js";
 
 // Review operations
 
-const getStudentReview = async (studentId, submissionId) => {
+const getPeerReviews = async (submissionId) => {
     try {
-        const submission = await prisma.submission.findFirst({
+        const submission = await prisma.review.findFirst({
             where: {
-                studentId: studentId,
-                id: submissionId
+                submissionId: submissionId
+            }, include: {
+                reviewer: true
             }
         });
 
-        return submission;
+        if (submission.reviewer.role === "STUDENT") {
+            return submission;
+        }
+
+        return;
     }
     catch (error) {
         throw new apiError("Failed to retrieve submission", 500);
@@ -20,16 +25,21 @@ const getStudentReview = async (studentId, submissionId) => {
 }
 
 
-const getInstructorReview = async (instructorId, submissionId) => {
+const getInstructorReview = async (submissionId) => {
     try {
-        const submission = await prisma.submission.findFirst({
+        const submission = await prisma.review.findFirst({
             where: {
-                instructorId: instructorId,
-                id: submissionId
+                submissionId: submissionId
+            }, include: {
+                reviewer: true
             }
         });
 
-        return submission;
+        if (submission.reviewer.role === "INSTRUCTOR") {
+            return submission;
+        }
+
+        return;
     } catch (error) {
         throw new apiError("Failed to retrieve submission", 500);
     }
@@ -49,9 +59,10 @@ const getAllReviews = async (submissionId) => {
     }
 }
 
-const createReview = async (review) => {
+const createReview = async (userId, review) => {
     try {
         const newReview = await prisma.review.create({
+            reviewerId: userId,
             data: review
         });
 
@@ -65,7 +76,7 @@ const updateReview = async (reviewId, review) => {
     try {
         const updatedReview = await prisma.review.update({
             where: {
-                id: reviewId
+                reviewId: reviewId
             },
             data: review
         });
@@ -80,7 +91,7 @@ const deleteReview = async (reviewId) => {
     try {
         await prisma.review.delete({
             where: {
-                id: reviewId
+                reviewId: reviewId
             }
         });
 
@@ -91,7 +102,7 @@ const deleteReview = async (reviewId) => {
 }
 
 export default {
-    getStudentReview,
+    getPeerReviews,
     getInstructorReview,
     getAllReviews,
     createReview,

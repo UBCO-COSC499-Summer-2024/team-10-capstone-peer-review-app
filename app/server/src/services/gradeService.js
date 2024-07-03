@@ -5,7 +5,7 @@ import apiError from "../utils/apiError.js";
 
 const getGrades = async (studentId) => {
     try {
-        const grades = await prisma.grade.findMany({
+        const grades = await prisma.criterionGrade.findMany({
             where: {
                 studentId: studentId
             }
@@ -19,11 +19,29 @@ const getGrades = async (studentId) => {
 
 const getSubmissionGrade = async (submissionId) => {
     try {
-        const grade = await prisma.grade.findFirst({
+
+        const submission = await prisma.review.findMany({
             where: {
                 submissionId: submissionId
+            }, include: {
+                reviewer: true,
+                criterionGrades: true
             }
         });
+
+        let grade = 0;
+        if (submission.reviewer.role === "INSTRUCTOR") {
+            criterionGrades = submission.criterionGrades;
+            criterionGrades.forEach(criterionGrade => {
+                grade += criterionGrade.grade;
+            });
+        }
+
+        // const grade = await prisma.criterionGrade.findFirst({
+        //     where: {
+        //         submissionId: submissionId
+        //     }
+        // });
 
         return grade;
     } catch (error) {
@@ -33,7 +51,7 @@ const getSubmissionGrade = async (submissionId) => {
 
 const createGrade = async (grade) => {
     try {
-        const newGrade = await prisma.grade.create({
+        const newGrade = await prisma.criterionGrade.create({
             data: grade
         });
 
@@ -45,9 +63,9 @@ const createGrade = async (grade) => {
 
 const updateGrade = async (gradeId, grade) => {
     try {
-        const updatedGrade = await prisma.grade.update({
+        const updatedGrade = await prisma.criterionGrade.update({
             where: {
-                id: gradeId
+                criterionGradeId: gradeId
             },
             data: grade
         });
@@ -60,9 +78,9 @@ const updateGrade = async (gradeId, grade) => {
 
 const deleteGrade = async (gradeId) => {
     try {
-        const deletedGrade = await prisma.grade.delete({
+        const deletedGrade = await prisma.criterionGrade.delete({
             where: {
-                id: gradeId
+                criterionGradeId: gradeId
             }
         });
 

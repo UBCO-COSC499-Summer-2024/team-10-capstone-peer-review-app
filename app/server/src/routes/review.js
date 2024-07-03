@@ -1,11 +1,11 @@
 import express from "express";
 import {  
-  getStudentReview,
     getInstructorReview,
     getAllReviews,
     createReview,
     updateReview,
-    deleteReview
+    deleteReview,
+    getPeerReviews
 } from "../controllers/reviewController.js";
 
 const router = express.Router();
@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
   res.status(200).send("Review route is working!");
 });
 
-router.post("/studentReview", getStudentReview);
+router.post("/studentReview", getPeerReviews);
 
 router.post("/instructorReview", getInstructorReview);
 

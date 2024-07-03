@@ -5,10 +5,9 @@ import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 
 // Controller methods for review operations
 
-export const getStudentReview = asyncErrorHandler(async (req, res) => {
-    const studentId = req.user.userId;
+export const getPeerReviews = asyncErrorHandler(async (req, res) => {
     const submissionId = req.body.submissionId;
-    const studentData = await reviewService.getStudentReview(studentId, submissionId);
+    const studentData = await reviewService.getPeerReviews(submissionId);
     return res.status(200).json({
         status: "Success",
         data: studentData
@@ -16,9 +15,8 @@ export const getStudentReview = asyncErrorHandler(async (req, res) => {
 });
 
 export const getInstructorReview = asyncErrorHandler(async (req, res) => {
-    const instructorId = req.user.userId;
     const submissionId = req.body.submissionId;
-    const instructorData = await reviewService.getInstructorReview(instructorId, submissionId);
+    const instructorData = await reviewService.getInstructorReview(submissionId);
     return res.status(200).json({
         status: "Success",
         data: instructorData
@@ -35,8 +33,9 @@ export const getAllReviews = asyncErrorHandler(async (req, res) => {
 });
 
 export const createReview = asyncErrorHandler(async (req, res) => {
+    const userId = req.user.id;
     const review = req.body;
-    const newReview = await reviewService.createReview(review);
+    const newReview = await reviewService.createReview(userId, review);
     return res.status(200).json({
         status: "Success",
         data: newReview
@@ -63,7 +62,7 @@ export const deleteReview = asyncErrorHandler(async (req, res) => {
 
 // Export all controller methods
 export default {
-    getStudentReview,
+    getPeerReviews,
     getInstructorReview,
     getAllReviews,
     createReview,

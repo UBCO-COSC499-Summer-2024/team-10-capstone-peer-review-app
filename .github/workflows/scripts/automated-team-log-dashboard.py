@@ -76,7 +76,7 @@ with open(team_log, 'w') as f:
 
     f.write(f'\n#### Back-end Testing for c-{count}\n')
 
-    f.write(f'![Burn-Up Chart for c-{count}](./team_log_images/back_end_tests/back_end_tests_c{count}.png)  \n  \n')
+    f.write(f'![Back end Tests for c-{count}](./team_log_images/back_end_tests/back_end_tests_c{count}.png)  \n  \n')
 
     
     f.write('  \n  \n') 

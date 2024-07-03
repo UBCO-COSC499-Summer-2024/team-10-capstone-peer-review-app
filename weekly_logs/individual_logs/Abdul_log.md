@@ -1,4 +1,114 @@
 
+# Abdul's Log for Cycle 9
+
+
+## Thursday, June 27, 2024, 05:22 PM - Tuesday, July 02, 2024, 05:22 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[181](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/181)**: Major userContext Refactor, also need to refactor all API calls on the front-end  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[176](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/176)**: Refactor forgot password to work with UI  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[131](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/131)**: Major Use Case 16-1: Create/Manage Assignment  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[130](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/130)**: Major Use Case 15: Manage Class  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+
+## Time entries from Clockify on this cycle:
+
+&nbsp; &nbsp; :watch: **Working on Edit Class UI** *(Total duration: 2.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 02, 2024, 10:30 PM - Tuesday, July 03, 2024, 12:18 AM *(1.7 hours)*  
+
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 02, 2024, 09:00 PM - Tuesday, July 02, 2024, 09:15 PM *(0.3 hours)*  
+
+&nbsp; &nbsp; :watch: **Linking Search to the back-end** *(Total duration: 3.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 02, 2024, 05:54 PM - Tuesday, July 02, 2024, 07:19 PM *(1.4 hours)*  
+
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 02, 2024, 12:40 AM - Tuesday, July 02, 2024, 02:33 AM *(1.9 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on Major Refactor branch** *(Total duration: 10.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 01, 2024, 03:39 PM - Monday, July 01, 2024, 07:12 PM *(3.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 30, 2024, 06:31 PM - Sunday, June 30, 2024, 09:40 PM *(3.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 30, 2024, 02:35 PM - Sunday, June 30, 2024, 06:31 PM *(3.9 hours)*  
+  
+&nbsp; &nbsp; :watch: **Fixing front-end unit tests** *(Total duration: 1.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 30, 2024, 12:52 AM - Sunday, June 30, 2024, 02:17 AM *(1.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, June 29, 2024, 01:43 AM - Saturday, June 29, 2024, 01:59 AM *(0.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on Edit Assignment UI** *(Total duration: 4.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, June 30, 2024, 12:16 AM - Sunday, June 30, 2024, 12:22 AM *(0.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, June 28, 2024, 12:13 AM - Friday, June 28, 2024, 02:57 AM *(2.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, June 27, 2024, 08:43 PM - Thursday, June 27, 2024, 09:55 PM *(1.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on Forgot Password UI & Linking to the back-end** *(Total duration: 2.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, June 28, 2024, 09:43 PM - Friday, June 28, 2024, 11:55 PM *(2.2 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[179](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/179)**: Linked Forgot Password to the back-end, now fully-functional  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[178](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/178)**: Add base Edit Assignment UI  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[179](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/179)**: Linked Forgot Password to the back-end, now fully-functional  
+  
+&nbsp; &nbsp; :arrow_heading_up: **PR-[178](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/178)**: Add base Edit Assignment UI  
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[181](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/181)**: Major userContext Refactor, also need to refactor all API calls on the front-end  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[176](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/176)**: Refactor forgot password to work with UI  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[140](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/140)**: Major Use Case 24: View User Reports   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[132](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/132)**: Major Use Case 17: View Class Dashboard  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[131](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/131)**: Major Use Case 16-1: Create/Manage Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[130](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/130)**: Major Use Case 15: Manage Class  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[123](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/123)**: Major Use Case 8: View Assignments and their details   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[121](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/121)**: Major Use Case 6: Submit Assignment  
+
+
+## Recap on goals from last cycle
+* I got a lot more work done which is encouraging! Especially considering this cycle was 5 days long. Would've liked to do a bit more but I'm sort of satisfied.
+* Still haven't gotten unit testing fully back up ever since we started linking components up to the back-end and adding new ones.
+
+## Goals for next cycle
+* Work on more of the project and make parts of it more consistent. Right now, we're focusing on getting parts done rather than refactoring old components for consistency for the MVP deadline.
+* NEED to get unit testing back up and running by the end of Friday at the very least.
+* Work on mostly the presentation from mid-Thursday onwards.
+  
+  
+
 # Abdul's Log for Cycle 8
 
 

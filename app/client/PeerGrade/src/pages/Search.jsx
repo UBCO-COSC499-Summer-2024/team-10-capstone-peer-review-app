@@ -29,7 +29,7 @@ import {
 	CommandGroup,
 	CommandItem
 } from "@/components/ui/command";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { cn } from "@/utils/utils";
@@ -67,6 +67,7 @@ function ClassTable() {
 	const query = useQuery();
 	const queryClassname = query.get("query") || "";
 	const { user, userLoading } = useUser();
+	const navigate = useNavigate();
 
 	if (!userLoading && (!user || user.role !== "ADMIN")) {
 		return <div>You do not have permission to view this page.</div>;
@@ -389,6 +390,7 @@ function ClassTable() {
 									variant="ghost"
 									size="icon"
 									className="text-blue-500 hover:bg-blue-100"
+									onClick={() => navigate(`/class/${classItem.classId}/edit`)}
 									data-testid="edit-button"
 								>
 									<Pencil className="h-5 w-5" />

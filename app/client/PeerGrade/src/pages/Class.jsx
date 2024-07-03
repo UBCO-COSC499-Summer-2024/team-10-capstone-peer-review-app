@@ -7,6 +7,7 @@ import Groups from "./classNav/Groups";
 import Files from "./classNav/Files";
 import People from "./classNav/People";
 import AssignmentCreation from "./classNav/AssignmentCreation";
+import EditClass from "./classNav/EditClass";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { getAllAssignmentsByClassId } from '@/api/assignmentApi';
@@ -93,6 +94,8 @@ const Class = () => {
 				return <Files classId={classId} />;
 			case "assignmentCreation":
 				return <AssignmentCreation />;
+			case "edit":
+				return <EditClass />;
 			default:
 				return (
 					<>
@@ -120,8 +123,8 @@ const Class = () => {
 									{category.assignments.map((assignment) => (
 										<div key={assignment.assignmentId} className="flex w-full">
 											<Link
-                        to={`/class/${classId}/assignment/${assignment.assignmentId}`}
-                        className="flex items-center space-x-2 bg-gray-100 p-2 rounded hover:bg-gray-200 transition-colors w-full"
+											to={`/class/${classId}/assignment/${assignment.assignmentId}`}
+											className="flex items-center space-x-2 bg-gray-100 p-2 rounded hover:bg-gray-200 transition-colors w-full"
 											>
 												<span>{assignment.title}</span>
 											</Link>
@@ -185,6 +188,16 @@ const Class = () => {
 									FILES
 								</MenubarTrigger>
 							</MenubarMenu>
+							{(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (
+								<MenubarMenu>
+									<MenubarTrigger
+									className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
+									onClick={() => setCurrentView("edit")}
+								>
+									EDIT
+								</MenubarTrigger>
+								</MenubarMenu>
+							)}
 						</Menubar>
 					</div>
 				</div>

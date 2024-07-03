@@ -12,6 +12,7 @@ import axios from "axios";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Class from "./pages/Class";
+import EditClass from "./pages/classNav/EditClass";
 import AssignmentCreation from "./pages/classNav/AssignmentCreation";
 import Assignment from "./pages/Assignment";
 import AssignedPR from "./pages/AssignedPR";
@@ -91,6 +92,14 @@ function MainLayout() {
 						element={
 							<UserProvider>
 								<Class />
+							</UserProvider>
+						}
+					/>
+					<Route
+						path="/class/:classId/edit"
+						element={
+							<UserProvider>
+								<EditClass />
 							</UserProvider>
 						}
 					/>

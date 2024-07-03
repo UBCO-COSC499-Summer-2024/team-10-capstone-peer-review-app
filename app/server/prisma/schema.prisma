@@ -121,7 +121,7 @@ model Assignment {
   dueDate            DateTime
   maxSumissions      Int                   @default(1)
   isGroup            Boolean               @default(false)
-  // assignmentType     SubmissionType // Either a File or a URL, we need to discuss file storage options 
+  assignmentType     SubmissionType // Either a File or a URL, we need to discuss file storage options  
   assignmentFilePath String
   classes            Class                 @relation(fields: [classId], references: [classId], onDelete: Cascade)
   categoryId         String? // Add this line
@@ -168,7 +168,6 @@ model Submission {
   createdAt          DateTime   @default(now())
   updatedAt          DateTime   @updatedAt
   sumbissionFilePath String
-  // sumbissionType     SubmissionType // Either a File or a URL, we need to discuss file storage options
   finalGrade         Int? // Final grade of the Submission, default to the instructor grade?
   assignment         Assignment @relation(fields: [assignmentId], references: [assignmentId], onDelete: Cascade)
   submitter          User?      @relation(fields: [submitterId], references: [userId])

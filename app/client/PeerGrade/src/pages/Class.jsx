@@ -120,8 +120,8 @@ const Class = () => {
 									{category.assignments.map((assignment) => (
 										<div key={assignment.assignmentId} className="flex w-full">
 											<Link
-												to={`/assignment/${assignment.assignmentId}`}
-												className="flex items-center space-x-2 bg-gray-100 p-2 rounded hover:bg-gray-200 transition-colors w-full"
+                        to={`/class/${classId}/assignment/${assignment.assignmentId}`}
+                        className="flex items-center space-x-2 bg-gray-100 p-2 rounded hover:bg-gray-200 transition-colors w-full"
 											>
 												<span>{assignment.title}</span>
 											</Link>

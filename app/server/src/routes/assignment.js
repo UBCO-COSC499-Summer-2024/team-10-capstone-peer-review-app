@@ -22,7 +22,7 @@ router.route("/remove-assignment")
 router.route("/update-assignment")
   .post(ensureUser, ensureInstructor, updateAssignmentInClass);
 
-router.route("/get-assignment")
+  router.route("/get-assignment")
   .post(ensureUser, ensureInstructor, getAssignmentInClass);
 
 router.route("/get-class-assignments")

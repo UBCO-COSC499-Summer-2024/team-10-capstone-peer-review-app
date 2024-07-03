@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { assignment as assignmentsData, submission as submissionsData } from '@/utils/dbData';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from '@/components/ui/button';
@@ -10,29 +8,50 @@ import { Textarea } from "@/components/ui/textarea";
 import PDFViewer from '@/components/assign/PDFViewer';
 import EditAssignment from './EditAssignment';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { getAssignmentInClass } from '@/api/assignmentApi';  // Import the API function
+import { toast } from "@/components/ui/use-toast";
+import { useUser } from "@/contexts/contextHooks/useUser";  // Import useUser hook
 
 const Assignment = () => {
-  const { assignmentId } = useParams();
-  const assignment = assignmentsData.find((item) => item.assignment_id === parseInt(assignmentId));
+  const { classId, assignmentId } = useParams();
+  const [assignment, setAssignment] = useState(null);
   const navigate = useNavigate();
-  const currentUser = useSelector((state) => state.user.currentUser);
+  const { user, userLoading } = useUser();
   const [isSubmitCardVisible, setSubmitCardVisible] = useState(false);
+
+  useEffect(() => {
+    const fetchAssignment = async () => {
+      try {
+        const fetchedAssignment = await getAssignmentInClass(classId, assignmentId);
+        setAssignment(fetchedAssignment.data);
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to fetch assignment data",
+          variant: "destructive",
+        });
+      }
+    };
+
+    fetchAssignment();
+  }, [classId, assignmentId, toast]);
+
+  if (userLoading) {
+    return <div>Loading...</div>;
+  }
 
   if (!assignment) {
     return <div>Assignment not found</div>;
   }
 
   const handleBackClick = () => {
-    navigate(`/class/${assignment.class_id}`);
+    navigate(`/class/${classId}`);
   };
-
-  // Filter submissions for the current assignment
-  const assignmentSubmissions = submissionsData.filter(submission => submission.assignment_id === assignment.assignment_id);
 
   return (
     <div className="w-screen main-container mx-5 p-6">
       <Tabs defaultValue="view" className="flex-1">
-        {(currentUser.role === 'INSTRUCTOR' || currentUser.role === 'ADMIN') && (
+        {(user.role === 'INSTRUCTOR' || user.role === 'ADMIN') && (
           <TabsList className="grid w-1/3 grid-cols-2 mb-3">
             <TabsTrigger value="view">View</TabsTrigger>
             <TabsTrigger value="edit">Edit</TabsTrigger>
@@ -55,8 +74,8 @@ const Assignment = () => {
                 <CardContent>
                   <div className="flex justify-between mb-4">
                     <div>
-                      <p>Due: {new Date(assignment.due_date).toLocaleDateString()}</p>
-                      <p>Required File Type: {assignment.file_type.toUpperCase()}</p>
+                      <p>Due: {new Date(assignment.dueDate).toLocaleDateString()}</p>
+                      <p>Required File Type: NA</p>
                     </div>
                     <Button onClick={() => setSubmitCardVisible(true)} className="bg-red-200">Submit</Button>
                   </div>
@@ -64,7 +83,7 @@ const Assignment = () => {
                 </CardContent>
               </Card>
               <div className='white rounded-md flex justify-center items-center'>
-                <PDFViewer url="https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK" scale="1"/>
+                <PDFViewer url={assignment.fileUrl} scale="1"/>
               </div>
             </div>
             <div className="space-y-6">
@@ -76,17 +95,13 @@ const Assignment = () => {
                   <CardTitle className="text-xl font-bold mb-2">Submissions</CardTitle>
                 </CardHeader>
                 <CardContent className="bg-gray-100 p-4 rounded">
-                  {assignmentSubmissions.map((submission, index) => (
-                    <p key={index}>
-                      Submission {index + 1}: {submission.file_path.split('/').pop()} - {new Date(submission.submission_date).toLocaleDateString()}
-                    </p>
-                  ))}
+                  {/* You can display assignment submissions here */}
                 </CardContent>
               </Card>
             </div>
           </div>
         </TabsContent>
-        {(currentUser.role === 'INSTRUCTOR' || currentUser.role === 'ADMIN') && (
+        {(user.role === 'INSTRUCTOR' || user.role === 'ADMIN') && (
           <TabsContent value="edit">
             <EditAssignment assignment={assignment} />
           </TabsContent>

@@ -58,14 +58,14 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Since I had a final exam on Friday June 28, I cannot work on many things but I worked on creating the Student Routes which includes all the function a student can access on our site, including get assignment, rubric, group, class, group members and also update group info if enrolled
+* I also worked on modifying classes routes to make them more robust and added checks to them for boundary cases
+* Currently worked on creating routes for Review, Submission and Grades, which includes all the basic CRUD operations for all three as well as segregating them into routes, controllers and service page as decided in team meetings.
 
 ## Goals for next cycle
-* 
-* 
-* 
+* keep working on the routes and make them more accessible and robust in nature
+* work on admin functionality and add suitable features as outlined in our project plan
+* add more routes to students/classes to make more features available to the user
   
   
 

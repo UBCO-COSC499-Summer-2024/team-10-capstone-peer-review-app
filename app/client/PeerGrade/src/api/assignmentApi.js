@@ -35,7 +35,12 @@ export const removeAssignmentFromClass = async (classId, assignmentId) => {
 
 export const getAssignmentInClass = async (classId, assignmentId) => {
     try {
-        const response = await axios.get(`${BASE_URL}/assignment/${classId}/get-assignment/${assignmentId}`);
+        console.log(classId, assignmentId)
+        const response = await axios.post(`${BASE_URL}/assignment/get-assignment`, {
+            classId,
+            assignmentId
+        });
+        console.log(response.data)
         return response.data;
     } catch (error) {
         handleError(error);

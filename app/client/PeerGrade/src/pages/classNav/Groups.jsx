@@ -125,10 +125,10 @@ const Groups = () => {
 							)}
 						</div>
 						<div className='flex flex-row items-center justify-center space-x-2'>
-							{(myGroups?.filter(myGroup => myGroup.groupId === group.groupId).length > 0) && (user.role ) ? (
+							{(myGroups?.filter(myGroup => myGroup.groupId === group.groupId).length > 0) && (user.role === "STUDENT") ? (
 								<Button variant='destructive' className='p-4'>Leave</Button>
 							) : (
-								<Button variant='ghost' className='bg-gray-200 p-4'>Join</Button>
+								<Button variant='ghost' className='bg-gray-200 p-4' onClick={joinGroup}>Join</Button>
 							)}
 						</div>
 					</CardContent>

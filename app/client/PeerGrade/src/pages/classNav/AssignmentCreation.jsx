@@ -1,6 +1,6 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { format } from "date-fns";
@@ -23,7 +23,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
-import RubricDrawer from '@/components/assign/RubricDrawer';  // Import the new drawer component
+import RubricDrawer from '@/components/assign/RubricDrawer';
+import { getCategoriesByClassId } from '@/api/classApi';  // Import the function
 
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -37,17 +38,21 @@ const FormSchema = z.object({
     ratings: z.array(z.string().min(1, "Rating is required")),
     points: z.string().min(1, "Points is required").regex(/^\d+$/, "Points must be a numeric value"),
   })).min(1, "At least one rubric row is required."),
+  category: z.string().min(1, "Category is required"),
   file: z.any().optional(),
 });
 
 const AssignmentCreation = () => {
   const { classId } = useParams();
   const [open, setOpen] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);  // New state for the drawer
+  const [openCat, setOpenCat] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [value, setValue] = useState("");
   const fileInputRef = useRef(null);
   const [selectedFileName, setSelectedFileName] = useState('');
-  const [rubricData, setRubricData] = useState([{ criteria: "", ratings: [""], points: "" }]);  // State to hold rubric data
+  const [rubricData, setRubricData] = useState([{ criteria: "", ratings: [""], points: "" }]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -55,6 +60,7 @@ const AssignmentCreation = () => {
       title: "",
       description: "",
       maxSubmissions: "",
+      category: "",
       reviewOption: "",
       dueDate: null,
       rubric: [],
@@ -72,6 +78,21 @@ const AssignmentCreation = () => {
       label: "Auto",
     }
   ];
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await getCategoriesByClassId(classId);
+        console.log('Categories:resp', response.data);
+        setCategories(response.data);
+        console.log('Categories:', categories);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, [classId]);
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -95,7 +116,6 @@ const AssignmentCreation = () => {
       ),
     });
 
-    // Update the assignment with the new data
     console.log('Updated assignment data:', simplifiedData);
   };
 
@@ -241,6 +261,64 @@ const AssignmentCreation = () => {
                     </PopoverContent>
                   </Popover>
                   <FormDescription>The assignment will be due at 11:59 PM on the selected date. The assignment will then be open for peer review right after the due date.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem style={{ display: 'flex', flexDirection: 'column' }}>
+                  <FormLabel>Category</FormLabel>
+                  <Popover open={openCat} onOpenChange={setOpenCat}>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={open}
+                          className="w-[200px] justify-between bg-white"
+                        >
+                          {selectedCategory
+                            ? categories.find((category) => category.categoryId === selectedCategory)?.name
+                            : "Select category..."}
+                          {open
+                            ? <ChevronUpIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            : <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          }
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0 rounded-md">
+                      <Command>
+                        <CommandList>
+                          <CommandGroup>
+                            {categories.map((category) => (
+                              <CommandItem
+                                key={category.categoryId}
+                                value={category.categoryId}
+                                onSelect={(currentValue) => {
+                                  setSelectedCategory(currentValue === selectedCategory ? "" : currentValue);
+                                  setOpenCat(false);
+                                  field.onChange(currentValue);
+                                }}
+                              >
+                                {category.name}
+                                <CheckIcon
+                                  className={cn(
+                                    "ml-auto h-4 w-4",
+                                    selectedCategory === category.categoryId ? "opacity-100" : "opacity-0"
+                                  )}
+                                />
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  <FormDescription>Select a category for this assignment.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

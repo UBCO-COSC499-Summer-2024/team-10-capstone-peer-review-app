@@ -5,12 +5,13 @@ const BASE_URL = "/api"; // TODO change this to an environment var?
 
 export const getCurrentUser = async () => {
 	try {
-		const response = await axios.get("/api/auth/current-user", {
+		const response = await axios.get(`${BASE_URL}/auth/current-user`, {
 			withCredentials: true
 		});
 		return response.data.userInfo;
 	} catch (error) {
 		handleError(error);
+		return error.response.data;
 	}
 };
 
@@ -24,6 +25,7 @@ export const registerUser = async (userDetails) => {
 		return response.data;
 	} catch (error) {
 		handleError(error);
+		return error.response.data;
 	}
 };
 
@@ -40,6 +42,7 @@ export const loginUser = async (email, password) => {
 		return response.data;
 	} catch (error) {
 		handleError(error);
+		return error.response.data;
 	}
 };
 
@@ -53,6 +56,7 @@ export const logoutUser = async () => {
 		return response.data;
 	} catch (error) {
 		handleError(error);
+		return error.response.data;
 	}
 };
 
@@ -68,6 +72,7 @@ export const resendVerificationEmail = async (email) => {
 		return response.data;
 	} catch (error) {
 		handleError(error);
+		return error.response.data;
 	}
 };
 
@@ -83,6 +88,7 @@ export const confirmEmail = async (token) => {
 		return response.data;
 	} catch (error) {
 		handleError(error);
+		return error.response.data;
 	}
 };
 
@@ -98,6 +104,7 @@ export const sendForgotPasswordEmail = async (email) => {
 		return response.data;
 	} catch (error) {
 		handleError(error);
+		return error.response.data;
 	}
 };
 
@@ -114,6 +121,7 @@ export const resetPassword = async (token, newPassword) => {
 		return response.data;
 	} catch (error) {
 		handleError(error);
+		return error.response.data;
 	}
 };
 
@@ -124,6 +132,7 @@ function handleError(error) {
 			message: error.response.data.message
 		});
 	} else {
+		console.log("Unexpected error from Auth API: ", error);
 		showStatusToast({
 			status: "Error",
 			message: "An unexpected error occurred. Please try again."

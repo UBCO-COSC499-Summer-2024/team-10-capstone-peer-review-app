@@ -11,7 +11,7 @@ export const register = asyncErrorHandler(async (req, res) => {
 	await authService.sendVerificationEmail(userRegisterInfo.email);
 	return res.status(200).json({
 		status: "Success",
-		message: "Account successfully created! Verification email sent."
+		message: `Account successfully created! Verification email sent to ${userRegisterInfo.email}.`
 	});
 });
 
@@ -64,9 +64,8 @@ export const forgotPassword = asyncErrorHandler(async (req, res) => {
 });
 
 export const resetPassword = asyncErrorHandler(async (req, res) => {
-	const token = req.query.token;
-	const { password } = req.body;
-	await authService.resetPassword(token, password);
+	const { token, newPassword } = req.body;
+	await authService.resetPassword(token, newPassword);
 	return res.status(200).json({
 		status: "Success",
 		message: "Password has been reset"
@@ -90,7 +89,6 @@ export const confirmEmail = asyncErrorHandler(async (req, res) => {
 		message: "Email has been verified"
 	});
 });
-
 
 export const currentUser = asyncErrorHandler(async (req, res) => {
 	const userInfo = await authService.getCurrentUser(req.user.email);

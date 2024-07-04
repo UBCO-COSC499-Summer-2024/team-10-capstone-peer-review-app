@@ -35,3 +35,12 @@ export function ensureAdmin(req, res, next) {
 		next(new apiError("User is not an admin", 403));
 	}
 }
+
+// Middleware to ensure user is an admin
+export function ensureInstructorOrAdmin(req, res, next) {
+	if (req.user.role === "ADMIN" || req.user.role === "INSTRUCTOR") {
+		next();
+	} else {
+		next(new apiError("User is not an admin or an instructor", 403));
+	}
+}

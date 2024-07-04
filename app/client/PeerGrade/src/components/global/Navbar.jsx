@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { cn } from "@/utils/utils";
 import { useToast } from "@/components/ui/use-toast";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -27,11 +26,13 @@ import {
 } from "@/components/ui/hover-card";
 
 import { useUser } from "@/contexts/contextHooks/useUser";
+import { getCurrentUser, logoutUser } from "@/api/authApi";
+import { getClassesByUserId, getAllAssignments } from "@/api/classApi";
 
 export default function AppNavbar() {
 	const location = useLocation();
 	const navigate = useNavigate();
-	const { user, userLoading } = useUser();
+	const { user, userLoading, setUserContext, clearUserContext } = useUser();
 	const [classesData, setClassesData] = useState([]);
 	const [assignmentsData, setAssignmentsData] = useState([]);
 	const { toast } = useToast();
@@ -40,10 +41,8 @@ export default function AppNavbar() {
 	useEffect(() => {
 		const fetchCurrentUser = async () => {
 			try {
-				const response = await axios.get("/api/auth/current-user", {
-					withCredentials: true
-				});
-				setCurrentUser(response.data.user);
+				const currentUser = await getCurrentUser();
+				setUserContext(currentUser);
 			} catch (error) {
 				toast({
 					title: "Error",
@@ -57,13 +56,11 @@ export default function AppNavbar() {
 	}, [toast]);
 
 	useEffect(() => {
-		if (currentUser) {
+		if (user) {
 			const fetchClasses = async () => {
 				try {
-					const response = await axios.post("/api/users/get-classes", {
-						userId: currentUser.userId
-					});
-					setClassesData(Array.isArray(response.data) ? response.data : []);
+					const classes = await getClassesByUserId(user.userId);
+					setClassesData(Array.isArray(classes) ? classes : []);
 				} catch (error) {
 					toast({
 						title: "Error",
@@ -75,10 +72,8 @@ export default function AppNavbar() {
 
 			const fetchAssignments = async () => {
 				try {
-					const response = await axios.post("/api/users/get-assignments", {
-						userId: currentUser.userId
-					});
-					setAssignmentsData(Array.isArray(response.data) ? response.data : []);
+					const assignments = await getAllAssignments(user.userId);
+					setAssignmentsData(Array.isArray(assignments) ? assignments : []);
 				} catch (error) {
 					toast({
 						title: "Error",
@@ -91,74 +86,12 @@ export default function AppNavbar() {
 			fetchClasses();
 			fetchAssignments();
 		}
-	}, [currentUser, toast]);
-
-	// TODO Refactor how we use api Calls
-
-	// useEffect(() => {
-	//   if (currentUser) {
-	//     const fetchUserClasses = async () => {
-	//       try {
-	//         const response = await axios.post('/api/users/get-classes', { userId: currentUser.userId });
-	//         setClassesData(Array.isArray(response.data) ? response.data : []);
-	//       } catch (error) {
-	//         toast({ title: "Error", description: "Failed to fetch classes", variant: "destructive" });
-	//       }
-	//     };
-
-	//     const fetchInstructorClasses = async () => {
-	//       try {
-	//         const response = await axios.post('/api/classes/my-classes');
-	//         setClassesData(Array.isArray(response.data.data) ? response.data.data : []);
-
-	//     const fetchAssignments = async () => {
-	//       try {
-	//         const response = await axios.post('/api/users/get-assignments', { userId: currentUser.userId });
-	//         setAssignmentsData(Array.isArray(response.data) ? response.data : []);
-	//       } catch (error) {
-	//         toast({ title: "Error", description: "Failed to fetch assignments", variant: "destructive" });
-	//       }
-	//     };
-	//     if (currentUser.role === 'INSTRUCTOR') {
-	//       fetchInstructorClasses();
-	//     } else if (currentUser.role === 'STUDENT') {
-	//       fetchUserClasses();
-	//     } else if (currentUser.role === 'ADMIN') {
-	//       // fetchAllClasses();
-	//       fetchUserClasses();
-	//     }
-	//     fetchAssignments();
-	//   }
-	// }, [currentUser, toast]);
-
-	// if (!currentUser) {
-	//   return null;
-	// }
-
-	const [searchQuery, setSearchQuery] = React.useState(""); // State for search query
-
-// 	const userReviewAssignments = assignmentsData
-// 		.filter((assignment) => {
-// 			return (
-// 				Array.isArray(currentUser.classes) &&
-// 				currentUser.classes.includes(assignment.classId) &&
-// 				assignment.evaluation_type === "peer"
-// 			);
-// 		})
-// 		.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
-// 		.slice(0, 3);
-
-// 	const isActive = (path) => {
-// 		return (
-// 			location.pathname === path ||
-// 			(path === "/dashboard" && location.pathname === "/")
-// 		);
-// 	};
+	}, [user, toast]);
 
 	const handleLogout = async () => {
 		try {
-			await axios.post("/api/auth/logout", {}, { withCredentials: true });
-			setCurrentUser(null);
+			await logoutUser();
+			clearUserContext();
 			navigate("/");
 		} catch (error) {
 			toast({
@@ -167,7 +100,6 @@ export default function AppNavbar() {
 				variant: "destructive"
 			});
 		}
-
 	};
 
 	const search = () => {
@@ -185,9 +117,20 @@ export default function AppNavbar() {
 		return `${firstInitial}${lastInitial}`;
 	};
 
+	if (userLoading) {
+		return <div>Loading...</div>;
+	}
+
 	if (!user) {
 		return null;
 	}
+
+	const isActive = (path) => {
+		return (
+			location.pathname === path ||
+			(path === "/dashboard" && location.pathname === "/")
+		);
+	};
 
 	return (
 		<div className="w-full py-3 px-4 bg-white shadow-md">
@@ -204,12 +147,11 @@ export default function AppNavbar() {
 					</NavigationMenuItem>
 					<NavigationMenuItem>
 						<Link
-							to={currentUser.role === "ADMIN" ? "/admin" : "/dashboard"}
+							to={user.role === "ADMIN" ? "/admin" : "/dashboard"}
 							className={cn(
 								navigationMenuTriggerStyle(),
-								isActive(
-									currentUser.role === "ADMIN" ? "/admin" : "/dashboard"
-								) && "font-bold"
+								isActive(user.role === "ADMIN" ? "/admin" : "/dashboard") &&
+									"font-bold"
 							)}
 						>
 							Dashboard
@@ -227,15 +169,16 @@ export default function AppNavbar() {
 						</NavigationMenuTrigger>
 						<NavigationMenuContent>
 							<ul className="bg-white grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-								{userReviewAssignments.map((assignment) => (
-									<ListItem
-										key={assignment.assignmentId}
-										title={assignment.title}
-										href={`/assignedPR/${assignment.assignmentId}`}
-									>
-										{assignment.description}
-									</ListItem>
-								))}
+								{/* Uncomment this if you have assignmentsData */}
+								{/* {assignmentsData.map((assignment) => (
+                  <ListItem
+                    key={assignment.assignmentId}
+                    title={assignment.title}
+                    href={`/assignedPR/${assignment.assignmentId}`}
+                  >
+                    {assignment.description}
+                  </ListItem>
+                ))} */}
 							</ul>
 						</NavigationMenuContent>
 					</NavigationMenuItem>
@@ -260,8 +203,7 @@ export default function AppNavbar() {
 										{classItem.description}
 									</ListItem>
 								))}
-								{(currentUser.role === "INSTRUCTOR" ||
-									currentUser.role === "ADMIN") && (
+								{(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (
 									<ListItem
 										title="Manage Classes"
 										href="/manageclass"
@@ -284,7 +226,7 @@ export default function AppNavbar() {
 							Settings
 						</Link>
 					</NavigationMenuItem>
-					{location.pathname !== "/search" && currentUser.role === "ADMIN" && (
+					{/* {location.pathname !== "/search" && user.role === "ADMIN" && (
 						<NavigationMenuItem>
 							<div className="flex w-full max-w-sm items-center space-x-2">
 								<Input
@@ -298,18 +240,19 @@ export default function AppNavbar() {
 								</Button>
 							</div>
 						</NavigationMenuItem>
-					)}
+					)} */}
 				</NavigationMenuList>
 				<div className="flex items-center space-x-4">
 					<HoverCard>
 						<HoverCardTrigger>
 							<Avatar className="w-9 h-9 bg-gray-200 rounded-full shadow-md">
 								<AvatarImage
-									src={currentUser.avatarUrl}
-									alt={`${currentUser.firstname} ${currentUser.lastname}`}
+									// For future development, we can add an avatarUrl to the user object to render a profile picture
+									src={user.avatarUrl}
+									alt={`${user.firstname} ${user.lastname}`}
 								/>
 								<AvatarFallback>
-									{getInitials(currentUser.firstname, currentUser.lastname)}
+									{getInitials(user.firstname, user.lastname)}
 								</AvatarFallback>
 							</Avatar>
 						</HoverCardTrigger>

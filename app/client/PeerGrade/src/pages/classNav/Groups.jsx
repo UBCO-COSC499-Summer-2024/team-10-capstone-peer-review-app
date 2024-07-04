@@ -1,20 +1,96 @@
-import { useState } from 'react';
-import { groupsData } from '../../utils/data';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { getAllGroupsByClass, createGroup } from "@/api/classApi";
+import { getGroups } from "@/api/userApi";
+import { useUser } from "@/contexts/contextHooks/useUser";
+import { ChevronDown, ChevronUp, Plus } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const Groups = () => {
+	const { classId } = useParams();
+	const { user, userLoading } = useUser();
+	const [groups, setGroups] = useState([]);
+	const [myGroups, setMyGroups] = useState([]);
 	const [searchTerm, setSearchTerm] = useState("");
+	const [dialogOpen, setDialogOpen] = useState(false);
 	const [expandedGroup, setExpandedGroup] = useState(null);
+	const [groupName, setGroupName] = useState('');
+	const [description, setDescription] = useState('');
+	const [size, setSize] = useState('');
 
-	const filteredGroups = groupsData.filter((group) =>
-		group.name.toLowerCase().includes(searchTerm.toLowerCase())
+	useEffect(() => {
+		if (!userLoading && user) {
+			const fetchAllGroups = async () => {
+				try {
+					const groups = await getAllGroupsByClass(classId);
+					console.log("groups", groups.data);
+					setGroups(Array.isArray(groups.data) ? groups.data : []);
+				} catch (error) {
+					toast({
+						title: "Error",
+						description: "Failed to fetch class' groups",
+						variant: "destructive"
+					});
+				}
+			};
+			const fetchMyGroups = async () => {
+				try {
+					const groups = await getGroups(user.userId);
+					console.log("my groups", groups.data);
+					setMyGroups(Array.isArray(groups.data) ? groups.data.filter(group => group.classId === classId) : []);
+				} catch (error) {
+					toast({
+						title: "Error",
+						description: "Failed to fetch user's groups",
+						variant: "destructive"
+					});
+				}
+			};
+
+			fetchMyGroups();
+			fetchAllGroups();
+		}
+	}, [user, userLoading, classId]);
+
+	const filteredGroups = groups.filter((group) =>
+		group.groupName.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 
 	const toggleGroup = (groupId) => {
 		setExpandedGroup(expandedGroup === groupId ? null : groupId);
+	};
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		const newGroup = {
+		  groupName,
+		  groupDescription : description,
+		  groupSize: parseInt(size, 10),
+		//   students: [],
+		//   submissions: []
+		};
+	
+		const groupCreate = async () => {
+		  const groupData = await createGroup(classId, newGroup);
+		  if (groupData.status === "Success") {
+			console.log("group data from create", groupData);
+			setGroups([...groups, groupData.data]);
+			console.log("groups after create", groups);
+			setDialogOpen(false);
+		  } else {
+			console.error('An error occurred while creating the group.', groupData.message);
+		  }
+		};
+		groupCreate();
 	};
 
 	return (
@@ -27,31 +103,96 @@ const Groups = () => {
 					onChange={(e) => setSearchTerm(e.target.value)}
 					className="mr-4"
 				/>
-				<Button variant="outline">Add Group +</Button>
+				{(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (
+					<Button variant="outline" onClick={() => setDialogOpen(true)}>
+						Add Group <Plus className='w-4 h-4 ml-2'/>
+					</Button>
+				)}
 			</div>
 			{filteredGroups.map((group) => (
-				<Card key={group.id} className="mb-4">
+				<Card key={group.groupId} className="mb-4">
 					<CardHeader
 						className="flex justify-between items-center bg-gray-200 p-4 rounded-t-lg cursor-pointer"
-						onClick={() => toggleGroup(group.id)}
+						onClick={() => toggleGroup(group.groupId)}
 					>
 						<CardTitle className="text-lg font-bold flex items-center space-x-2">
-							<span>{group.name}</span>
-							{expandedGroup === group.id ? <ChevronUp /> : <ChevronDown />}
+							<span>{group.groupName}</span>
+							{expandedGroup === group.groupId ? <ChevronUp /> : <ChevronDown />}
 						</CardTitle>
+						{expandedGroup === group.groupId && (
+						<CardDescription>
+							<span className='text-sm text-gray-600 mr-2'>{group.groupDescription ? group.groupDescription : ""}</span>
+						</CardDescription>
+						)}
 					</CardHeader>
-					{expandedGroup === group.id && (
-						<CardContent className="p-4">
-							{group.members.map((member) => (
-								<div key={member.id} className="flex items-center mb-2">
-									<div className="w-10 h-10 rounded-full bg-gray-300 mr-4"></div>
-									<span>{member.name}</span>
-								</div>
-							))}
+					{expandedGroup === group.groupId && (
+						<CardContent className="p-4 flex flex-row items-center justify-between">
+							<div>
+								{group.students.map((student) => (
+									<div key={student.userId} className="flex items-center mb-2">
+										<div className="w-10 h-10 rounded-full bg-gray-300 mr-4"></div>
+										<span>{student.firstname} {student.lastname}</span>
+									</div>
+								))}
+							</div>
+							{/* <Button variant='ghost' className='bg-gray-200 p-4'>{(myGroups?.filter(myGroup => myGroup.groupId === group.groupId).length > 0) ? "Leave" : "Join"}</Button> */}
 						</CardContent>
 					)}
 				</Card>
 			))}
+			<Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+				<DialogContent>
+					<DialogHeader>
+						<DialogTitle>Add Group</DialogTitle>
+					</DialogHeader>
+					<form onSubmit={handleSubmit}>
+						<div className="mb-4">
+							<label htmlFor="groupName" className="block text-sm font-medium text-gray-700">
+								Group Name
+							</label>
+							<input
+								type="text"
+								id="groupName"
+								value={groupName}
+								onChange={(e) => setGroupName(e.target.value)}
+								required
+								className="w-full px-3 py-2 border rounded-md"
+							/>
+						</div>
+						<div className="mb-4">
+							<label htmlFor="description" className="block text-sm font-medium text-gray-700">
+								Group Description
+							</label>
+							<input
+								type="text"
+								id="description"
+								value={description}
+								onChange={(e) => setDescription(e.target.value)}
+								required
+								className="w-full px-3 py-2 border rounded-md"
+							/>
+						</div>
+						<div className="mb-4">
+							<label htmlFor="size" className="block text-sm font-medium text-gray-700">
+								Group Size
+							</label>
+							<input
+								type="number"
+								id="size"
+								value={size}
+								min="1"
+								onChange={(e) => setSize(e.target.value)}
+								required
+								className="w-full px-3 py-2 border rounded-md"
+							/>
+						</div>
+						<DialogFooter>
+							<Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+							<Button variant="destructive" type="submit">Submit</Button>
+						</DialogFooter>
+					</form>
+				</DialogContent>
+			</Dialog>
 		</div>
 	);
 };

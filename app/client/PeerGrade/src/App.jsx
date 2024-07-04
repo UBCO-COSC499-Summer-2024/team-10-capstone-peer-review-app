@@ -21,13 +21,15 @@ import AppNavbar from "./components/global/Navbar";
 import ManageClass from "./pages/ManageClass";
 import Search from "./pages/Search";
 import AdminDashboard from "./pages/AdminDashboard";
-import TestUserContext from "./pages/testUserContext";
+import TestUserContext from "./pages/TestUserContext";
 
+import TitleUpdater from "@/utils/TitleUpdater";
 import { Toaster } from "@/components/ui/toaster";
 
 function App() {
 	return (
 		<Router>
+			<TitleUpdater />
 			<MainLayout />
 		</Router>
 	);
@@ -67,7 +69,11 @@ function MainLayout() {
 
 	return (
 		<main className="bg-gray-100 mx-auto">
-			{!isLoginPage && <AppNavbar currentUser={currentUser} />}
+			{!isLoginPage && (
+				<UserProvider>
+					<AppNavbar currentUser={currentUser} />
+				</UserProvider>
+			)}
 			<div className="main-container flex justify-center flex-1">
 				<Routes>
 					<Route path="/" element={<Login />} />

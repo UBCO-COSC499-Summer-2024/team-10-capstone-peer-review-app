@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ClassCard from '@/components/class/ClassCard';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
-import { Toaster } from '@/components/ui/toaster';
-import { useToast } from '@/components/ui/use-toast';
-import { toast } from "@/components/ui/use-toast";
-import axios from 'axios';
-import { iClass as mockClasses, PeerReview, submission } from '@/utils/dbData';
+import { useUser } from "@/contexts/contextHooks/useUser";
+import { getAllAssignmentsByClassId } from '@/api/assignmentApi';
+import { getClassesByUserId, getAllAssignments, createClass, deleteClass } from "@/api/classApi";
+import {
+    Dialog,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
+import { iClass as mockClasses, PeerReview, submission } from '@/utils/dbData'; // Remove when mock data isn't needed
 
 const AddClassModal = ({ show, onClose, onAddClass }) => {
   const [classname, setClassname] = useState('');
@@ -27,25 +32,16 @@ const AddClassModal = ({ show, onClose, onAddClass }) => {
       classSize: parseInt(size, 10)
     };
 
-    fetch('http://localhost:3000/api/classes/create', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newClass)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === "Server Fail") {
-          throw new Error(data.message);
-        } else {
-            toast({ title: data.status, description: data.message, variant: "positive" });
-            onAddClass(data.data);
-        }
-    })
-    .catch((error) => {
-        console.error('An error occurred while creating the class:', error);
-    });  
+    const classCreate = async () => {
+      const classData = await createClass(newClass);
+      if (classData.status === "Success") {
+        console.log("class data after create", classData);
+        onAddClass(classData.data);
+      } else {
+        console.error('An error occurred while creating the class.', classData.message);
+      }
+    };
+    classCreate();
 
     onClose();
   };
@@ -125,32 +121,31 @@ const AddClassModal = ({ show, onClose, onAddClass }) => {
 };
 
 const ManageClass = () => {
+	const { user, userLoading } = useUser();
   const [modalOpen, setModalOpen] = useState(false);
   const [userClasses, setUserClasses] = useState([]);
   const [classAssignments, setClassAssignments] = useState({});
-  const currentUser = useSelector((state) => state.user.currentUser);
-  const { toast } = useToast();
-
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [selectedClass, setSelectedClass] = useState({});
+  const [dialogOpen, setDialogOpen] = useState(false);
+  
   useEffect(() => {
-    if (currentUser && (currentUser.role === 'INSTRUCTOR' || currentUser.role === 'ADMIN')) {
-      const fetchClasses = async () => {
-        try {
-          const response = await axios.post('/api/users/get-classes', { userId: currentUser.userId });
-          setUserClasses(Array.isArray(response.data) ? response.data : []);
-        } catch (error) {
-          toast({ title: "Error", description: "Failed to fetch classes", variant: "destructive" });
-        }
-      };
+    if (!userLoading && user && (user.role === 'INSTRUCTOR' || user.role === 'ADMIN')) {
+			const fetchClasses = async () => {
+				const classesData = await getClassesByUserId(user.userId);
+        console.log("classes data",classesData);
+				if (classesData) {
+					setUserClasses(Array.isArray(classesData) ? classesData : []);
+				}
+			};
 
-      const fetchAssignments = async (classId) => {
-        try {
-          const response = await axios.post('/api/classes/get-all-assignments', { classId });
-          return response.data.data;
-        } catch (error) {
-          console.error('An error occurred while retrieving assignments for the class:', error);
-          return [];
-        }
-      };
+			const fetchAssignments = async (classId) => {
+				const assignmentsData = await getAllAssignmentsByClassId(classId);
+        console.log(assignmentsData.data);
+				if (assignmentsData.status === "Success") {
+          return assignmentsData.data;
+				}
+			};
 
       const fetchAllAssignments = async () => {
         const assignments = {};
@@ -162,30 +157,32 @@ const ManageClass = () => {
 
       fetchClasses().then(fetchAllAssignments);
     }
-  }, [currentUser, toast]);
+  }, [user, userLoading]);
 
-  const handleDeleteClass = (classId) => {
-    fetch(`http://localhost:3000/api/classes/${classId}`, {
-      method: 'DELETE',
-      headers: {
-          'Content-Type': 'application/json'
-      },
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === "Server Fail") {
-          throw new Error(data.message);
-        } else {
-            toast({ title: data.status, description: data.message, variant: "positive" });
-            setUserClasses(prevClasses => prevClasses.filter(classItem => classItem.classId !== classId));
+  const handleDeleteClass = async () => {
+    if (confirmDelete) {
+        setConfirmDelete(false);
+        if (selectedClass) {
+            const classData = await deleteClass(selectedClass.classId);
+            if (classData.status === "Success") {
+                console.log("deleted class", classData);
+                setDialogOpen(false);
+                setUserClasses(prevClasses => prevClasses.filter(classItem => classItem.classId !== selectedClass.classId));
+            } else {
+                console.error('An error occurred while deleting the class.', classData.message);
+            }
         }
-    })
-    .catch((error) => {
-        console.error('An error occurred while deleting the class: ', error);
-    });  
+    } else {
+        setConfirmDelete(true);
+    }
+};
+
+  const handleDeleteClick = (classItem) => {
+    setSelectedClass(classItem);
+    setDialogOpen(true);
   };
 
-  if (!currentUser || (currentUser.role !== 'INSTRUCTOR' && currentUser.role !== 'ADMIN')) {
+  if (!user || (user.role !== 'INSTRUCTOR' && user.role !== 'ADMIN')) {
     return <div>You do not have permission to view this page.</div>;
   }
 
@@ -209,7 +206,7 @@ const ManageClass = () => {
               <ClassCard
                 classId={classItem.classId}
                 className={classItem.classname}
-                instructor={`${currentUser.firstname} ${currentUser.lastname}`}
+                instructor={`${user.firstname} ${user.lastname}`}
                 numStudents={classItem.classSize}
                 numAssignments={classAssignments[classItem.classId]?.length || 0}
                 numPeerReviews={PeerReview.filter((review) => {
@@ -219,7 +216,7 @@ const ManageClass = () => {
               />
             </Link>
             <button
-              onClick={() => handleDeleteClass(classItem.classId)}
+              onClick={() => handleDeleteClick(classItem)}
               className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
               data-testid={`delete-class-${classItem.classId}`}
             >
@@ -242,7 +239,19 @@ const ManageClass = () => {
         ))}
       </div>
       <AddClassModal show={modalOpen} onClose={() => setModalOpen(false)} onAddClass={handleAddClass} />
-      <Toaster />
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className={confirmDelete ? 'border-red-950 bg-red-500 text-white' : ''}>
+          <DialogHeader>
+            <DialogTitle>{confirmDelete ? "Confirm" : ""} Delete Class</DialogTitle>
+          </DialogHeader>
+          Are you {confirmDelete ? "really" : ""} sure you want to delete the class {selectedClass.classname}?
+          <span className='font-extrabold'>WARNING: THIS WILL DELETE ALL ASSIGNMENTS, SUBMISSIONS, REVIEWS, CATEGORIES, AND GROUPS ASSOCIATED WITH THIS CLASS.</span>
+          <DialogFooter>
+            <Button onClick={() => setDialogOpen(false)} className={confirmDelete ? 'shadow-md shadow-red-900' : ''}>Cancel</Button>
+            <Button variant="destructive" onClick={handleDeleteClass} className={confirmDelete ? 'shadow-md shadow-red-900' : ''}>Delete</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

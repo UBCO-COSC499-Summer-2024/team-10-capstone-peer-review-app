@@ -1,12 +1,14 @@
 import DataTable from "@/components/ui/data-table";
-import NotifCard from "@/components/global/NotifCard";
 import DataChart from "@/components/admin/stats/data-chart";
+
+import RoleRequestsCard from "@/components/admin/users/RoleRequestsCard";
 
 import { getAllUsers } from "@/api/userApi";
 import { useEffect, useState } from "react";
 import { getAllRoleRequests } from "@/api/authApi";
+import { getStatusDetails } from "@/utils/statusIcons";
 
-const usersData = [
+const usersData2 = [
 	{
 		userId: "1",
 		username: "johndoe",
@@ -56,14 +58,16 @@ const userColumns = [
 	{ accessorKey: "role", header: "Role" },
 	{ accessorKey: "isEmailVerified", header: "Email Verified" },
 	{ accessorKey: "isRoleActivated", header: "Role Activated" },
-	{ accessorKey: "classes", header: "Classes" },
-	{ accessorKey: "submissions", header: "Submissions" },
-	{ accessorKey: "reviewsDone", header: "Reviews Done" },
-	{ accessorKey: "reviewsRecieved", header: "Reviews Received" },
-	{ accessorKey: "classesInstructed", header: "Classes Instructed" },
-	{ accessorKey: "Rubric", header: "Rubric" },
-	{ accessorKey: "learningInstitution", header: "Learning Institution" },
-	{ accessorKey: "description", header: "Description" }
+	{ accessorKey: "createdAt", header: "Date Joined" },
+	{ accessorKey: "updatedAt", header: "Last Updated" }
+	// { accessorKey: "classes", header: "Classes" },
+	// { accessorKey: "submissions", header: "Submissions" },
+	// { accessorKey: "reviewsDone", header: "Reviews Done" },
+	// { accessorKey: "reviewsRecieved", header: "Reviews Received" },
+	// { accessorKey: "classesInstructed", header: "Classes Instructed" },
+	// { accessorKey: "Rubric", header: "Rubric" },
+	// { accessorKey: "learningInstitution", header: "Learning Institution" },
+	// { accessorKey: "description", header: "Description" }
 ];
 
 const instructorApprovals = [
@@ -113,30 +117,30 @@ const Users = () => {
 	const [usersData, setUsersData] = useState([]);
 	const [roleRequests, setRoleRequests] = useState([]);
 
+	const fetchRoleRequests = async () => {
+		const allRoleRequests = await getAllRoleRequests();
+		if (allRoleRequests.status === "Success") {
+			setRoleRequests(allRoleRequests.data);
+		}
+		console.log("roleRequestsData: ", roleRequests);
+	};
+
+	const fetchUsers = async () => {
+		const allUsers = await getAllUsers();
+		if (allUsers.status === "Success") {
+			setUsersData(allUsers.data);
+		}
+		console.log("usersData: ", usersData);
+	};
+
 	// TODO -> decrypt passwords for admins to view them in plain text
 	useEffect(() => {
-		const fetchUsers = async () => {
-			const allUsers = await getAllUsers();
-			if (allUsers.status === "Success") {
-				setUsersData(allUsers.data);
-			}
-			console.log("usersData: ", usersData);
-		};
-
 		fetchUsers();
-	}, [usersData]);
+	}, []);
 
 	useEffect(() => {
-		const fetchRoleRequests = async () => {
-			const allRoleRequests = await getAllRoleRequests();
-			if (allRoleRequests.status === "Success") {
-				setRoleRequests(allRoleRequests.data);
-			}
-			console.log("roleRequestsData: ", roleRequests);
-		};
-
 		fetchRoleRequests();
-	}, [roleRequests]);
+	}, []);
 
 	const chartData = usersData.map((user) => ({
 		dateCreated: user.dateCreated,
@@ -157,24 +161,34 @@ const Users = () => {
 			</div>
 			<div className="flex gap-5 pt-3 max-h-taller-than-98">
 				<DataChart
-					data={chartData}
 					title="User Registration Trends"
+					data={chartData}
 					xAxisLabel="Date"
 					yAxisLabel="Number of Users"
 					filterTypes={["All", "Student", "Instructor"]}
 				/>
 				<div className="flex flex-col md:w-1/3 overflow-y-auto rounded-md">
-					<p className="text-xl ml-5 mb-4">Instructor Approvals</p>
+					<p className="text-xl ml-5 mb-4">Role Requests</p>
 					<div className="space-y-1">
-						{instructorApprovals.map((approval) => (
-							<NotifCard
-								key={approval.id}
-								title={approval.title}
-								description={approval.description}
-								showDrawer={true}
-								showAlertDialog={true}
-							/>
-						))}
+						{roleRequests.map((roleRequest) => {
+							const { color } = getStatusDetails(roleRequest.status);
+							return (
+								<RoleRequestsCard
+									key={roleRequest.roleRequestId}
+									roleRequest={roleRequest}
+									refreshRoleRequests={fetchRoleRequests}
+									title={`Role Request: ${roleRequest.roleRequested}`}
+									description={
+										<span className={color}>
+											Role Request for {roleRequest.user.firstname}{" "}
+											{roleRequest.user.lastname}
+										</span>
+									}
+									showDrawer={true}
+									showAlertDialog={true}
+								/>
+							);
+						})}
 					</div>
 				</div>
 			</div>

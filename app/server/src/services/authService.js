@@ -235,7 +235,9 @@ async function createRoleRequest(userId, role) {
 }
 
 export async function getAllRoleRequests() {
-	const requests = await prisma.roleRequest.findMany();
+	const requests = await prisma.roleRequest.findMany({
+		include: { user: true }
+	});
 	return requests;
 }
 

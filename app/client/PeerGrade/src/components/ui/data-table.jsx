@@ -177,11 +177,11 @@ const DataTable = ({
 									{row.getVisibleCells().map((cell) => (
 										<TableCell
 											key={cell.id}
-											className={`
+											className={
 												cell.column.id === "dueDate"
 													? "flex justify-center items-center"
 													: ""
-											}`}
+											}
 										>
 											{cell.column.id === "dueDate" ? (
 												<Badge variant="destructive">

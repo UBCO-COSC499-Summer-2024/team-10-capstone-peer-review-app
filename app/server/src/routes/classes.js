@@ -130,7 +130,7 @@ router
 
 router
 	.route("/add-group")
-	.post(ensureUser, ensureInstructorOrAdmin, addGroupToClass);
+	.post(ensureUser, addGroupToClass);
 
 router
 	.route("/remove-group")

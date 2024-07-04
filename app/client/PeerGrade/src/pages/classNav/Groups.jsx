@@ -75,8 +75,6 @@ const Groups = () => {
 		  groupName,
 		  groupDescription : description,
 		  groupSize: parseInt(size, 10),
-		//   students: [],
-		//   submissions: []
 		};
 	
 		const groupCreate = async () => {
@@ -103,11 +101,9 @@ const Groups = () => {
 					onChange={(e) => setSearchTerm(e.target.value)}
 					className="mr-4"
 				/>
-				{(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (
-					<Button variant="outline" onClick={() => setDialogOpen(true)}>
-						Add Group <Plus className='w-4 h-4 ml-2'/>
-					</Button>
-				)}
+				<Button variant="outline" onClick={() => setDialogOpen(true)}>
+					Add Group <Plus className='w-4 h-4 ml-2'/>
+				</Button>
 			</div>
 			{groups.length === 0 && <div className="text-center text-sm text-gray-500">No groups found.</div>}
 			{filteredGroups.map((group) => (
@@ -129,7 +125,7 @@ const Groups = () => {
 							)}
 						</div>
 						<div className='flex flex-row items-center justify-center space-x-2'>
-							{myGroups?.filter(myGroup => myGroup.groupId === group.groupId).length > 0 ? (
+							{(myGroups?.filter(myGroup => myGroup.groupId === group.groupId).length > 0) && (user.role ) ? (
 								<Button variant='destructive' className='p-4'>Leave</Button>
 							) : (
 								<Button variant='ghost' className='bg-gray-200 p-4'>Join</Button>

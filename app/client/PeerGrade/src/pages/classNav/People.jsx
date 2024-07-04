@@ -253,12 +253,12 @@ const People = ({ classId }) => {
 			<Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
 				<DialogContent className={confirmDelete ? 'border-red-950 bg-red-500 text-white' : ''}>
 				<DialogHeader>
-					<DialogTitle>{confirmDelete ? "Confirm" : ""} Delete User</DialogTitle>
+					<DialogTitle>{confirmDelete ? "Confirm" : ""} Remove Student</DialogTitle>
 				</DialogHeader>
 				Are you {confirmDelete ? "really" : ""} sure you want to remove the student {selectedStudent.firstname}{' '}{selectedStudent.lastname} from this class?
 				<DialogFooter>
 					<Button onClick={() => setDialogOpen(false)} className={confirmDelete ? 'shadow-md shadow-red-900' : ''}>Cancel</Button>
-					<Button variant="destructive" onClick={handleDeleteStudent} className={confirmDelete ? 'shadow-md shadow-red-900' : ''}>Delete</Button>
+					<Button variant="destructive" onClick={handleDeleteStudent} className={confirmDelete ? 'shadow-md shadow-red-900' : ''}>Remove</Button>
 				</DialogFooter>
 				</DialogContent>
 			</Dialog>

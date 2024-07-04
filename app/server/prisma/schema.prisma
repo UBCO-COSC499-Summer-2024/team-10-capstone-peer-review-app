@@ -119,7 +119,7 @@ model Assignment {
   title              String
   description        String?
   dueDate            DateTime
-  maxSumissions      Int                   @default(1)
+  maxSubmissions     Int                   @default(1)
   isGroup            Boolean               @default(false)
   assignmentType     SubmissionType        @default(URL)
   assignmentFilePath String?
@@ -128,6 +128,7 @@ model Assignment {
   category           Category?             @relation(fields: [categoryId], references: [categoryId]) // Add this line
   rubric             RubricForAssignment[]
   submissions        Submission[]
+  reviewOption       String?            
 }
 
 // Group Models

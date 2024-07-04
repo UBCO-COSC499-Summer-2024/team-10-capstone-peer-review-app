@@ -116,16 +116,18 @@ const Groups = () => {
 						className="flex justify-between items-center bg-gray-200 p-4 rounded-t-lg cursor-pointer"
 						onClick={() => toggleGroup(group.groupId)}
 					>
-						<CardTitle className="text-lg font-bold flex items-center space-x-2">
-							<span>{group.groupName}</span>
-							{expandedGroup === group.groupId ? <ChevronUp /> : <ChevronDown />}
-							
-						</CardTitle>
-						{expandedGroup === group.groupId && (
-							<CardDescription>
-								<span className='text-sm text-gray-600'>{group.groupDescription ? group.groupDescription : ""}</span>
-							</CardDescription>
+						<div className='flex flex-col'>
+							<CardTitle className="text-lg font-bold flex items-center space-x-2">
+								<span>{group.groupName}</span>
+								{expandedGroup === group.groupId ? <ChevronUp /> : <ChevronDown />}
+								
+							</CardTitle>
+							{expandedGroup === group.groupId && (
+								<CardDescription>
+									<span className='text-sm text-gray-600'>{group.groupDescription ? group.groupDescription : ""}</span>
+								</CardDescription>
 							)}
+						</div>
 						<div className='flex flex-row items-center justify-center space-x-2'>
 							{myGroups?.filter(myGroup => myGroup.groupId === group.groupId).length > 0 ? (
 								<Button variant='destructive' className='p-4'>Leave</Button>

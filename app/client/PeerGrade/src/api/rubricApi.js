@@ -39,6 +39,19 @@ export const addCriterionRating = async (criterionId, ratingData) => {
     }
 };
 
+export const addCriterionGrade = async (criterionId, gradeData) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/classes/give-criterion-grade`, {
+            criterionId,
+            ...gradeData,
+        });
+        return response.data;
+    } catch (error) {
+        handleError(error);
+        throw error;
+    }
+};
+
 export const addExtensiveRubric = async (rubricData) => {
     try {
         // Add the rubric
@@ -50,12 +63,21 @@ export const addExtensiveRubric = async (rubricData) => {
             const addedCriterion = await addCriterion(rubricId, {
                 criteria: criterion.criteria,
                 points: criterion.points,
+                minPoints: criterion.minPoints,
+                maxPoints: criterion.maxPoints,
             });
             const criterionId = addedCriterion.id;
 
+            // Add ratings for the criterion
             for (const rating of criterion.ratings) {
                 await addCriterionRating(criterionId, { rating });
             }
+
+            // Add the min and max points for the criterion as criterion grades
+            await addCriterionGrade(criterionId, {
+                minPoints: criterion.minPoints,
+                maxPoints: criterion.maxPoints,
+            });
         }
 
         return rubric;

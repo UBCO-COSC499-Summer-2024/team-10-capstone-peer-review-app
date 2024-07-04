@@ -1,18 +1,18 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { format } from "date-fns";
-import { Calendar as CalendarIcon, ChevronDown as ChevronDownIcon, ChevronUp as ChevronUpIcon, Check as CheckIcon, Upload, Plus, MinusCircle } from "lucide-react";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { format } from 'date-fns';
+import { Calendar as CalendarIcon, ChevronDown as ChevronDownIcon, ChevronUp as ChevronUpIcon, Check as CheckIcon, Upload } from 'lucide-react';
 
-import { cn } from "@/utils/utils";
+import { cn } from '@/utils/utils';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Command, CommandGroup, CommandItem, CommandList } from '@/components/ui/command';
 import {
   Form,
   FormControl,
@@ -21,10 +21,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { toast } from "@/components/ui/use-toast";
+} from '@/components/ui/form';
+import { toast } from '@/components/ui/use-toast';
 import RubricDrawer from '@/components/assign/RubricDrawer';
-import { getCategoriesByClassId } from '@/api/classApi';  // Import the function
+import { getCategoriesByClassId } from '@/api/classApi';
+import { addAssignmentToClass } from '@/api/assignmentApi';
+import { addExtensiveRubric } from '@/api/rubricApi';
 
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -45,7 +47,7 @@ const FormSchema = z.object({
 const AssignmentCreation = () => {
   const { classId } = useParams();
   const [open, setOpen] = useState(false);
-  const [openCat, setOpenCat] = useState(false)
+  const [openCat, setOpenCat] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [value, setValue] = useState("");
   const fileInputRef = useRef(null);
@@ -64,7 +66,7 @@ const AssignmentCreation = () => {
       reviewOption: "",
       dueDate: null,
       rubric: [],
-      file: null,
+      // file: null,
     }
   });
 
@@ -83,9 +85,7 @@ const AssignmentCreation = () => {
     const fetchCategories = async () => {
       try {
         const response = await getCategoriesByClassId(classId);
-        console.log('Categories:resp', response.data);
         setCategories(response.data);
-        console.log('Categories:', categories);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -100,23 +100,43 @@ const AssignmentCreation = () => {
     form.setValue("file", selectedFile);
   };
 
-  const onSubmit = (data) => {
-    const simplifiedData = {
-      ...data,
-      file: selectedFileName,
-      rubric: rubricData,
-    };
-
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(simplifiedData, null, 2)}</code>
-        </pre>
-      ),
-    });
-
-    console.log('Updated assignment data:', simplifiedData);
+  const onSubmit = async (data) => {
+    try {
+      const formData = new FormData();
+      formData.append('classId', classId);
+      formData.append('assignmentData', JSON.stringify({
+        title: data.title,
+        description: data.description,
+        dueDate: data.dueDate,
+        reviewOption: data.reviewOption,
+        maxSubmissions: data.maxSubmissions
+      }));
+      // formData.append('file', data.file[0]); // Append the file
+  
+      const response = await fetch('/api/assignment/add-assignment', {
+        method: 'POST',
+        body: formData
+      });
+  
+      const result = await response.json();
+  
+      if (response.ok) {
+        toast({
+          title: 'Assignment Created',
+          description: 'The assignment and its rubric have been successfully created.',
+          status: 'success'
+        });
+      } else {
+        throw new Error(result.message);
+      }
+    } catch (error) {
+      console.error('Error submitting assignment:', error);
+      toast({
+        title: 'Error',
+        description: 'There was an error creating the assignment.',
+        status: 'error'
+      });
+    }
   };
 
   const handleRubricSubmit = (rubric) => {
@@ -330,7 +350,7 @@ const AssignmentCreation = () => {
               </Button>
               <RubricDrawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} onSubmit={handleRubricSubmit} />
             </div>
-            <FormItem>
+            {/* <FormItem>
               <FormLabel htmlFor="file-upload">Upload File</FormLabel>
               <input
                 type="file"
@@ -349,8 +369,8 @@ const AssignmentCreation = () => {
               </div>
               <FormDescription>Attach any PDF files related to the assignment.</FormDescription>
               <FormMessage />
-            </FormItem>
-            <Button type="submit" className='bg-primary text-white'>Submit</Button>
+            </FormItem> */}
+            <Button type="submit" className='bg-primary text-white' onClick={onSubmit}>Submit</Button>
           </form>
         </Form>
       </div>

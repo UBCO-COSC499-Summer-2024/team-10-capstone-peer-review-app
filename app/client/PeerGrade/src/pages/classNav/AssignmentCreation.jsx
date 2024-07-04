@@ -1,6 +1,6 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { format } from "date-fns";
@@ -22,15 +22,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
 import { toast } from "@/components/ui/use-toast";
+import RubricDrawer from '@/components/assign/RubricDrawer';
+import { getCategoriesByClassId } from '@/api/classApi';  // Import the function
 
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -41,34 +35,37 @@ const FormSchema = z.object({
   }),
   rubric: z.array(z.object({
     criteria: z.string().min(1, "Criteria is required"),
-    ratings: z.string().min(1, "Ratings is required"),
+    ratings: z.array(z.string().min(1, "Rating is required")),
     points: z.string().min(1, "Points is required").regex(/^\d+$/, "Points must be a numeric value"),
   })).min(1, "At least one rubric row is required."),
+  category: z.string().min(1, "Category is required"),
   file: z.any().optional(),
 });
 
 const AssignmentCreation = () => {
   const { classId } = useParams();
   const [open, setOpen] = useState(false);
+  const [openCat, setOpenCat] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [value, setValue] = useState("");
   const fileInputRef = useRef(null);
   const [selectedFileName, setSelectedFileName] = useState('');
+  const [rubricData, setRubricData] = useState([{ criteria: "", ratings: [""], points: "" }]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       title: "",
       description: "",
+      maxSubmissions: "",
+      category: "",
       reviewOption: "",
       dueDate: null,
-      rubric: [{ criteria: "", ratings: "", points: "" }],
+      rubric: [],
       file: null,
     }
-  });
-
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: "rubric"
   });
 
   const dropdown_options = [
@@ -82,6 +79,21 @@ const AssignmentCreation = () => {
     }
   ];
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await getCategoriesByClassId(classId);
+        console.log('Categories:resp', response.data);
+        setCategories(response.data);
+        console.log('Categories:', categories);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, [classId]);
+
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     setSelectedFileName(selectedFile.name);
@@ -92,6 +104,7 @@ const AssignmentCreation = () => {
     const simplifiedData = {
       ...data,
       file: selectedFileName,
+      rubric: rubricData,
     };
 
     toast({
@@ -103,45 +116,13 @@ const AssignmentCreation = () => {
       ),
     });
 
-    // fetch('http://localhost:3000/api/auth/login', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({
-    //     email: email,
-    //     password: password
-    //   })
-    // })
-    // .then(response => response.json())
-    // .then(data => {
-    //   console.log(data);
-    //   if (data.error && data.error.status === "Error") {
-    //     setError(data.message);
-    //   } else {
-    //     toast({ title: "Welcome", description: "You have successfully logged in!", variant: "positive" });
-    //     dispatch(setCurrentUser(data.user));
-    //     if(data.user.role=="ADMIN") {
-    //     navigate('/admin');
-    //     } else navigate('/dashboard');
-    //   }
-    // })
-    // .catch((error) => {
-    //   console.error('Error:', error);
-    //   setError('An error occurred while logging in');
-    // });
-
-    // Update the assignment with the new data
     console.log('Updated assignment data:', simplifiedData);
   };
 
-  const addRow = useCallback(() => {
-    append({ criteria: "", ratings: "", points: "" });
-  }, [append]);
-
-  const removeRow = useCallback((index) => {
-    remove(index);
-  }, [remove]);
+  const handleRubricSubmit = (rubric) => {
+    setRubricData(rubric);
+    setDrawerOpen(false);
+  };
 
   return (
     <div className='flex bg-white justify-left flex-row p-4'>
@@ -173,6 +154,20 @@ const AssignmentCreation = () => {
                     <Textarea placeholder="e.g. Use 12pt double-spaced font..." {...field} />
                   </FormControl>
                   <FormDescription>This is the text that will show as the assignment's description.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="maxSubmissions"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Attempts</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g. 5" {...field} />
+                  </FormControl>
+                  <FormDescription>Max number of submissions.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -270,69 +265,70 @@ const AssignmentCreation = () => {
                 </FormItem>
               )}
             />
-            <div>
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem style={{ display: 'flex', flexDirection: 'column' }}>
+                  <FormLabel>Category</FormLabel>
+                  <Popover open={openCat} onOpenChange={setOpenCat}>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={open}
+                          className="w-[200px] justify-between bg-white"
+                        >
+                          {selectedCategory
+                            ? categories.find((category) => category.categoryId === selectedCategory)?.name
+                            : "Select category..."}
+                          {open
+                            ? <ChevronUpIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            : <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          }
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0 rounded-md">
+                      <Command>
+                        <CommandList>
+                          <CommandGroup>
+                            {categories.map((category) => (
+                              <CommandItem
+                                key={category.categoryId}
+                                value={category.categoryId}
+                                onSelect={(currentValue) => {
+                                  setSelectedCategory(currentValue === selectedCategory ? "" : currentValue);
+                                  setOpenCat(false);
+                                  field.onChange(currentValue);
+                                }}
+                              >
+                                {category.name}
+                                <CheckIcon
+                                  className={cn(
+                                    "ml-auto h-4 w-4",
+                                    selectedCategory === category.categoryId ? "opacity-100" : "opacity-0"
+                                  )}
+                                />
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  <FormDescription>Select a category for this assignment.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className='flex gap-2 flex-col w-1/4'>
               <FormLabel>Rubric</FormLabel>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Criteria</TableHead>
-                    <TableHead>Ratings</TableHead>
-                    <TableHead>Points</TableHead>
-                    <TableHead></TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {fields.map((item, index) => (
-                    <TableRow key={item.id}>
-                      <TableCell>
-                        <FormField
-                          control={form.control}
-                          name={`rubric.${index}.criteria`}
-                          render={({ field }) => (
-                            <FormControl>
-                              <Input {...field} placeholder="Criteria" />
-                            </FormControl>
-                          )}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <FormField
-                          control={form.control}
-                          name={`rubric.${index}.ratings`}
-                          render={({ field }) => (
-                            <FormControl>
-                              <Input {...field} placeholder="Ratings" />
-                            </FormControl>
-                          )}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <FormField
-                          control={form.control}
-                          name={`rubric.${index}.points`}
-                          render={({ field }) => (
-                            <FormControl>
-                              <Input {...field} placeholder="Points" type="number" className="hide-arrows"/>
-                            </FormControl>
-                          )}
-                        />
-                      </TableCell>
-                      <TableCell className='flex flex-row space-x-2'>
-                        {fields.length > 1 && (
-                          <Button type="button" variant="outline" onClick={() => removeRow(index)}>
-                            <MinusCircle className="h-4 w-4" />
-                          </Button>
-                        )}
-                        {index === fields.length - 1 && (
-                          <Button type="button" variant="outline" onClick={addRow}>
-                            <Plus className="h-4 w-4" />
-                          </Button>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              <Button variant="outline" onClick={() => setDrawerOpen(true)}>
+                Edit Rubric
+              </Button>
+              <RubricDrawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} onSubmit={handleRubricSubmit} />
             </div>
             <FormItem>
               <FormLabel htmlFor="file-upload">Upload File</FormLabel>

@@ -571,6 +571,22 @@ const deleteCriterionForRubric = async (criterionId) => {
 	}
 };
 
+const createCriterionRating = async (criterionId, ratingData) => {
+	try {
+	  const newRating = await prisma.criteronRating.create({
+		data: {
+		  ...ratingData,
+		  criterionId: criterionId,
+		},
+	  });
+	  return newRating;
+	} catch (error) {
+	  throw new apiError("Failed to create criterion rating", 500);
+	}
+  };
+
+  //add update and delete and get crieterion rating here
+
 // criterion grade operations
 
 // group operations
@@ -877,6 +893,7 @@ export default {
 	getCriterionForRubric,
 	updateCriterionForRubric,
 	deleteCriterionForRubric,
+	createCriterionRating,
 
 	addGroupToClass,
 	removeGroupFromClass,

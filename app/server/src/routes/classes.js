@@ -22,6 +22,7 @@ import {
 	removeCriterionGrade,
 	updateCriterionGrade,
 	getCriterionGrade,
+	addCriterionRating,
 	addGroupToClass,
 	removeGroupFromClass,
 	updateGroupInClass,
@@ -103,6 +104,12 @@ router
 router
 	.route("/get-criterion")
 	.post(ensureUser, ensureInstructor, getCriterionInRubric);
+
+router
+	.route("/add-criterion-rating")
+	.post(ensureUser, ensureInstructor, addCriterionRating);
+  
+  //add update and delete here for rating
 
 // Criterion Grade Routes
 router

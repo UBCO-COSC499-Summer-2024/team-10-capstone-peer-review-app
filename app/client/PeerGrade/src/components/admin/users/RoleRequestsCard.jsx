@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Terminal, Cog, Trash } from "lucide-react";
 import RoleApprovalDrawer from "@/components/admin/users/RoleApprovalDrawer";
 import { DelDialog } from "@/components/admin/users/DelDialog";
+import { deleteRoleRequest, updateRoleRequestStatus } from "@/api/authApi";
 
 import { getStatusDetails } from "@/utils/statusIcons";
 // TODO get state to fetch single roleRequest
@@ -13,13 +14,64 @@ const RoleRequestsCard = ({
 	roleRequest,
 	refreshRoleRequests,
 	title,
-	description,
-	showDrawer,
-	showAlertDialog
+	description
 }) => {
 	// const [roleRequest, setRoleRequest] = React.useState(null);
-	const { color, icon } = getStatusDetails(roleRequest.status);
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const { icon } = getStatusDetails(roleRequest.status);
+
+	const handleApprove = async () => {
+		setIsLoading(true);
+		const response = await updateRoleRequestStatus(
+			roleRequest.roleRequestId,
+			"APPROVED"
+		);
+		if (response.status === "Success") {
+			closeDrawer();
+			// change to refresh single role request? Not all? May have to have each roll request have seperate state and fetch that way only have to update one role request
+			refreshRoleRequests();
+		}
+		setIsLoading(false);
+	};
+
+	// Handle deny action
+	const handleDeny = async () => {
+		setIsLoading(true);
+		const response = await updateRoleRequestStatus(
+			roleRequest.roleRequestId,
+			"DENIED"
+		);
+		if (response.status === "Success") {
+			closeDrawer();
+			// change to refresh single role request? Not all? May have to have each roll request have seperate state and fetch that way only have to update one role request
+			refreshRoleRequests();
+		}
+		setIsLoading(false);
+	};
+
+	const handlePending = async () => {
+		setIsLoading(true);
+		const response = await updateRoleRequestStatus(
+			roleRequest.roleRequestId,
+			"PENDING"
+		);
+		if (response.status === "Success") {
+			closeDrawer();
+			// change to refresh single role request? Not all? May have to have each roll request have seperate state and fetch that way only have to update one role request
+			refreshRoleRequests();
+		}
+		setIsLoading(false);
+	};
+
+	const handleDelete = async () => {
+		setIsLoading(true);
+		const response = await deleteRoleRequest(roleRequest.roleRequestId);
+		if (response.status === "Success") {
+			refreshRoleRequests();
+		}
+		setIsLoading(false);
+	};
 
 	const closeDrawer = () => {
 		setIsDrawerOpen(false);
@@ -38,33 +90,24 @@ const RoleRequestsCard = ({
 					<AlertDescription>{description}</AlertDescription>
 				</div>
 				<div className="flex ml-2 flex-col items-end">
-					{showDrawer ? (
-						<RoleApprovalDrawer
-							roleRequest={roleRequest}
-							refreshRoleRequests={refreshRoleRequests}
-							isDrawerOpen={isDrawerOpen}
-							closeDrawer={closeDrawer}
-						>
-							<Button variant="ghost" size="icon" className="h-5 w-5 p-0">
-								<Cog className="h-4 w-4" onClick={openDrawer} />
-							</Button>
-						</RoleApprovalDrawer>
-					) : (
+					<RoleApprovalDrawer
+						roleRequest={roleRequest}
+						handleApprove={handleApprove}
+						handleDeny={handleDeny}
+						handlePending={handlePending}
+						isLoading={isLoading}
+						isDrawerOpen={isDrawerOpen}
+						closeDrawer={closeDrawer}
+					>
 						<Button variant="ghost" size="icon" className="h-5 w-5 p-0">
-							<Cog className="h-4 w-4" />
+							<Cog className="h-4 w-4" onClick={openDrawer} />
 						</Button>
-					)}
-					{showAlertDialog ? (
-						<DelDialog>
-							<Button variant="ghost" size="icon" className="h-5 w-5 p-0 mt-2">
-								<Trash className="h-4 w-4 text-red-600" />
-							</Button>
-						</DelDialog>
-					) : (
+					</RoleApprovalDrawer>
+					<DelDialog handleActionClick={handleDelete}>
 						<Button variant="ghost" size="icon" className="h-5 w-5 p-0 mt-2">
 							<Trash className="h-4 w-4 text-red-600" />
 						</Button>
-					)}
+					</DelDialog>
 				</div>
 			</div>
 		</Alert>

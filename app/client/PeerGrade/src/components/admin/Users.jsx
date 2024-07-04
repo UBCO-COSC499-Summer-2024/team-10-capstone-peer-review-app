@@ -189,8 +189,6 @@ const Users = () => {
 											</p>
 										</>
 									}
-									showDrawer={true}
-									showAlertDialog={true}
 								/>
 							);
 						})}

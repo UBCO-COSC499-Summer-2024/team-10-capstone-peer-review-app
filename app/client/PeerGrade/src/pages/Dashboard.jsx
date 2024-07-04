@@ -103,7 +103,7 @@ function Dashboard() {
 			header: "Assignment Name"
 		},
 		{
-			accessorKey: "className",
+			accessorKey: "classes.classname",
 			header: "Class Name"
 		},
 		{
@@ -118,7 +118,7 @@ function Dashboard() {
 				</Button>
 			),
 			cell: ({ row }) => (
-				<span>{format(new Date(row.getValue("dueDate")), 'MMM dd, yyyy')}</span>
+				<span>{format(parseISO(row.getValue("dueDate")), "yyyy-MM-dd")}</span>
 			)
 		},
 		{
@@ -141,7 +141,7 @@ function Dashboard() {
 			header: "Assignment Name"
 		},
 		{
-			accessorKey: "className",
+			accessorKey: "classes.classname",
 			header: "Class Name"
 		},
 		{

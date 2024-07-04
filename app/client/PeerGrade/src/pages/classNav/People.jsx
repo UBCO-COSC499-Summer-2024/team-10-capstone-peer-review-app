@@ -278,10 +278,11 @@ const People = ({ classId }) => {
 						<div className="mb-4">
 							<label
 								htmlFor="selectStudents"
-								className="block text-sm font-medium text-gray-700"
+								className="block text-sm font-medium text-gray-700 hidden"
 							>
 								Select students to add to the class:
 								</label>
+								{/* Label is only present for screen readers, can be removed. */}
 							<Popover open={open} onOpenChange={setOpen} id="selectStudents">
 								<PopoverTrigger asChild>
 									<Button

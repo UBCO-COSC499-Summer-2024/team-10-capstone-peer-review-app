@@ -18,7 +18,7 @@ import Assignment from "./pages/Assignment";
 import AssignedPR from "./pages/AssignedPR";
 import PeerReview from "./pages/PeerReview";
 import Settings from "./pages/Settings";
-import AppNavbar from "./components/global/Navbar";
+import AppNavbar from "./components/login/global/Navbar";
 import ManageClass from "./pages/ManageClass";
 import Search from "./pages/Search";
 import AdminDashboard from "./pages/AdminDashboard";

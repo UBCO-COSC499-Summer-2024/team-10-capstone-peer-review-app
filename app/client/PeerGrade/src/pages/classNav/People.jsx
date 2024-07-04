@@ -16,6 +16,8 @@ import {
 } from "@/components/ui/popover";
 import {
 	Command,
+	CommandInput,
+	CommandEmpty,
 	CommandGroup,
 	CommandItem,
 	CommandList
@@ -123,6 +125,11 @@ const People = ({ classId }) => {
 		setDialogOpen(true);
 	};
 
+	const handleAddClick = () => {									// handles the actual click event to add a student
+		setSelectedStudents([]);
+		setAddDialogOpen(true);
+	};
+
 	const handleDeleteStudent = async () => {					    // handles the deletion of a student via the backend
 		if (confirmDelete) {
 			setConfirmDelete(false);
@@ -210,7 +217,7 @@ const People = ({ classId }) => {
 				<div className="flex flex-row items-center justify-between mb-2">
 					<h2 className="text-lg font-bold inline-block">Students</h2>
 					{(user.role === "INSTRUCTOR" || user.role === "ADMIN") && 
-						<Button variant="ghost" className="bg-gray-100 h-7 w-7" onClick={() => setAddDialogOpen(true)}>
+						<Button variant="ghost" className="bg-gray-100 h-7 w-7" onClick={handleAddClick}>
 							<Plus className='w-5 h-5'/>
 						</Button>
 					}
@@ -295,13 +302,14 @@ const People = ({ classId }) => {
 								</PopoverTrigger>
 								<PopoverContent className="p-5 rounded-md">
 									<Command>
+										<CommandInput placeholder="Search students..." />
 										<CommandList>
+											<CommandEmpty>No students found.</CommandEmpty>
 											<CommandGroup>
-												{studentOptions.length === 0 && <span className="text-sm text-gray-500">No students available to add.</span>}
 												{studentOptions.map((student) => (
 													<CommandItem
 														key={student.studentId}
-														value={student.studentId}
+														value={student.label}
 														onSelect={() => handleStudentSelection(student.studentId)}
 													> 
 														{student.label}

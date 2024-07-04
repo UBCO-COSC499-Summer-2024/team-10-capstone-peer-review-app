@@ -54,7 +54,7 @@ router.route("/create").post(ensureUser, ensureInstructorOrAdmin, createClass);
 router
 	.route("/:classId")
 	.get(ensureUser, getClassById)
-	.put(ensureUser, ensureInstructor, updateClass)
+	.put(ensureUser, ensureInstructorOrAdmin, updateClass)
 	.delete(ensureUser, ensureInstructorOrAdmin, deleteClass);
 
 router.route("/:classId/students").get(ensureUser, getStudentsByClass);
@@ -131,9 +131,9 @@ router
 
 router
 	.route("/update-group")
-	.post(ensureUser, ensureInstructor, updateGroupInClass);
+	.post(ensureUser, ensureInstructorOrAdmin, updateGroupInClass);
 
-router.route("/get-group").post(ensureUser, ensureInstructor, getGroupInClass);
+router.route("/get-group").post(ensureUser, ensureInstructorOrAdmin, getGroupInClass);
 
 router.route("/get-groups").post(ensureUser, getGroupsInClass);
 

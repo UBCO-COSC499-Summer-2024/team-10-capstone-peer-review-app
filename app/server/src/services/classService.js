@@ -194,7 +194,7 @@ const addStudentToClass = async (classId, studentId) => {
 			}
 		});
 
-		//return updatedClass;
+		return userInfo;
 	} catch (error) {
 		// Rethrow the error if it's an instance of apiError, else throw general apiError
 		if (error instanceof apiError) {

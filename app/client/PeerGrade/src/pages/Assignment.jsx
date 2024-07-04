@@ -13,11 +13,11 @@ import { toast } from "@/components/ui/use-toast";
 import { useUser } from "@/contexts/contextHooks/useUser";  // Import useUser hook
 
 const Assignment = () => {
+  const { user, userLoading } = useUser();
   const { classId, assignmentId } = useParams();
   const [assignment, setAssignment] = useState(null);
-  const navigate = useNavigate();
-  const { user, userLoading } = useUser();
   const [isSubmitCardVisible, setSubmitCardVisible] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAssignment = async () => {

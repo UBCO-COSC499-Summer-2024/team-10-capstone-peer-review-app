@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { getAllGroupsByClass, createGroup } from "@/api/classApi";
@@ -93,6 +93,17 @@ const Groups = () => {
 		groupCreate();
 	};
 
+	if (groups.length === 0) {
+		return (
+			<Card>
+				<CardContent className="p-4 flex flex-row items-center justify-center">
+					<div className='text-center text-sm text-gray-500'>No groups were found.</div>
+				</CardContent>
+			</Card>
+			
+		);
+	}
+
 	return (
 		<div className="w-full p-6">
 			<div className="flex items-center mb-6">
@@ -111,7 +122,7 @@ const Groups = () => {
 			</div>
 			{filteredGroups.map((group) => (
 				<Card key={group.groupId} className="mb-4">
-					<CardHeader
+					<CardContent
 						className="flex justify-between items-center bg-gray-200 p-4 rounded-t-lg cursor-pointer"
 						onClick={() => toggleGroup(group.groupId)}
 					>
@@ -124,7 +135,7 @@ const Groups = () => {
 							<span className='text-sm text-gray-600 mr-2'>{group.groupDescription ? group.groupDescription : ""}</span>
 						</CardDescription>
 						)}
-					</CardHeader>
+					</CardContent>
 					{expandedGroup === group.groupId && (
 						<CardContent className="p-4 flex flex-row items-center justify-between">
 							<div>

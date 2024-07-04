@@ -175,7 +175,7 @@ const ManageClass = () => {
     } else {
         setConfirmDelete(true);
     }
-};
+  };
 
   const handleDeleteClick = (classItem) => {
     setSelectedClass(classItem);

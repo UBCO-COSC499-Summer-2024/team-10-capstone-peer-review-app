@@ -23,7 +23,7 @@ router.route("/update-assignment")
   .post(ensureUser, ensureInstructor, updateAssignmentInClass);
 
   router.route("/get-assignment")
-  .post(ensureUser, ensureInstructor, getAssignmentInClass);
+  .post(ensureUser, getAssignmentInClass);
 
 router.route("/get-class-assignments")
   .post(ensureUser, getAllAssignmentsByClassId);

@@ -20,7 +20,7 @@ router.get("/", (req, res) => {
 });
 
 router.route("/all").get(ensureUser, ensureAdmin, getAllUsers);
-router.route("/role/:role").get(ensureUser, ensureAdmin, getUsersByRole);
+router.route("/role/:role").get(ensureUser, ensureInstructorOrAdmin, getUsersByRole);
 
 // Why are these post requests? They should be get requests
 router.route("/get-classes").post(getUserClasses);

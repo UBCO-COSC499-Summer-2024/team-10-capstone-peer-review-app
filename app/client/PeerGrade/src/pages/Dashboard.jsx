@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import GroupCard from "@/components/class/GroupCard";
 import { Skeleton } from "@/components/ui/skeleton";
 
+import { format, parseISO } from "date-fns";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { getClassesByUserId, getAllAssignments } from "@/api/classApi";
 import { getGroups } from "@/api/userApi";
@@ -102,7 +103,7 @@ function Dashboard() {
 			header: "Assignment Name"
 		},
 		{
-			accessorKey: "className",
+			accessorKey: "classes.classname",
 			header: "Class Name"
 		},
 		{
@@ -117,7 +118,7 @@ function Dashboard() {
 				</Button>
 			),
 			cell: ({ row }) => (
-				<Badge variant="destructive">{row.getValue("dueDate")}</Badge>
+				<span>{format(parseISO(row.getValue("dueDate")), "yyyy-MM-dd")}</span>
 			)
 		},
 		{
@@ -125,10 +126,10 @@ function Dashboard() {
 			header: "Actions",
 			cell: ({ row }) => (
 				<Link
-					to={row.original.link}
-					className="bg-green-100 text-blue-500 px-2 py-1 rounded-md"
+					to={`/class/${row.original.classId}/assignment/${row.original.assignmentId}`}
+					className="bg-green-100 px-2 py-1 rounded-md"
 				>
-					{row.getValue("action")}
+					Open
 				</Link>
 			)
 		}
@@ -140,7 +141,7 @@ function Dashboard() {
 			header: "Assignment Name"
 		},
 		{
-			accessorKey: "className",
+			accessorKey: "classes.classname",
 			header: "Class Name"
 		},
 		{
@@ -155,7 +156,7 @@ function Dashboard() {
 				</Button>
 			),
 			cell: ({ row }) => (
-				<Badge variant="destructive">{row.getValue("dueDate")}</Badge>
+				<span>{parseISO(row.getValue("dueDate"))}</span>
 			)
 		},
 		{

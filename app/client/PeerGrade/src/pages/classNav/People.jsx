@@ -25,7 +25,7 @@ import { MinusCircle, Plus, CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lu
 
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { getInstructorByClassId, getStudentsByClassId, removeStudentFromClass, addStudentToClass } from "@/api/classApi";
-import { getUsersByRole } from "@/api/userApi";
+import { getUsersByRole, getGroups } from "@/api/userApi";
 
 const People = ({ classId }) => {
 	const [searchTerm, setSearchTerm] = useState("");
@@ -39,6 +39,7 @@ const People = ({ classId }) => {
 	const [addDialogOpen, setAddDialogOpen] = useState(false);
 	const [studentOptions, setStudentOptions] = useState([]);
 	const [selectedStudents, setSelectedStudents] = useState([]);
+	const [myGroups, setMyGroups] = useState([]);
 	const [open, setOpen] = useState(false);
 
 	useEffect(() => {
@@ -49,9 +50,23 @@ const People = ({ classId }) => {
 				setInstructor(instructor.data);
 			}
 		};
+		const fetchMyGroups = async () => {
+			try {
+				const groups = await getGroups(user.userId);
+				console.log("my groups", groups.data);
+				setMyGroups(Array.isArray(groups.data) ? groups.data.filter(group => group.classId === classId) : []);
+			} catch (error) {
+				toast({
+					title: "Error",
+					description: "Failed to fetch user's groups",
+					variant: "destructive"
+				});
+			}
+		};
 
+		fetchMyGroups();
 		fetchInstructor();
-	}, [classId]);
+	}, [user, userLoading, classId]);
 
 	useEffect(() => {
 		const fetchStudents = async () => {
@@ -63,31 +78,33 @@ const People = ({ classId }) => {
 		};
 
 		fetchStudents();
-	}, [classId]);
+	}, [user, userLoading, classId]);
 
 	useEffect(() => {
-		const fetchAllStudents = async () => {
-		  try {
-			const response = await getUsersByRole("STUDENT");
-			if (response.status === "Success") {
-				const currentStudentIds = students.map(student => student.userId);
-				const transformedStudents = response.data
-				.filter(student => !currentStudentIds.includes(student.userId))
-				.map(student => ({
-				  studentId: student.userId,
-				  label: student.firstname + ' ' + student.lastname,
-				}));
-			  	setStudentOptions(transformedStudents);
-			} else {
-			  console.error('An error occurred while getting students.', response.message);
-			}
-		  } catch (error) {
-			console.error('An error occurred while fetching students.', error);
-		  }
-		};
-	
-		fetchAllStudents();
-	  }, [students]);
+		if (user.role === "INSTRUCTOR" || user.role === "ADMIN") {
+			const fetchAllStudents = async () => {
+			  try {
+				const response = await getUsersByRole("STUDENT");
+				if (response.status === "Success") {
+					const currentStudentIds = students.map(student => student.userId);
+					const transformedStudents = response.data
+					.filter(student => !currentStudentIds.includes(student.userId))
+					.map(student => ({
+					  studentId: student.userId,
+					  label: student.firstname + ' ' + student.lastname,
+					}));
+					  setStudentOptions(transformedStudents);
+				} else {
+				  console.error('An error occurred while getting students.', response.message);
+				}
+			  } catch (error) {
+				console.error('An error occurred while fetching students.', error);
+			  }
+			};
+		
+			fetchAllStudents();
+		}
+	  }, [user, userLoading, students]);
 
 	const handleStudentSelection = (studentId) => {					// deals with selecting/deselecting students to add to the class
 		setSelectedStudents((prevSelected) => {
@@ -224,9 +241,11 @@ const People = ({ classId }) => {
 									<MinusCircle className='w-5 h-5 mr-2'/> Delete
 								</Button>
 							}
-							<Button variant="outline" className="bg-gray-100">
-								Add to Group
-							</Button>
+							{ myGroups.length > 0 &&
+								<Button variant="outline" className="bg-gray-100">
+									Add to Group
+								</Button>
+							}
 						</div>
 					</Card>
 				))}

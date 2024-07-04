@@ -128,7 +128,7 @@ const Groups = () => {
 							{(myGroups?.filter(myGroup => myGroup.groupId === group.groupId).length > 0) && (user.role === "STUDENT") ? (
 								<Button variant='destructive' className='p-4'>Leave</Button>
 							) : (
-								<Button variant='ghost' className='bg-gray-200 p-4' onClick={joinGroup}>Join</Button>
+								<Button variant='ghost' className='bg-gray-200 p-4'>Join</Button>
 							)}
 						</div>
 					</CardContent>

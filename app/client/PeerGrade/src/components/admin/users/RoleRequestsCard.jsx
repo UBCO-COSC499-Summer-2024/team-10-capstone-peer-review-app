@@ -9,6 +9,7 @@ import { getStatusDetails } from "@/utils/statusIcons";
 // TODO get state to fetch single roleRequest
 
 const RoleRequestsCard = ({
+	key,
 	roleRequest,
 	refreshRoleRequests,
 	title,
@@ -18,8 +19,15 @@ const RoleRequestsCard = ({
 }) => {
 	// const [roleRequest, setRoleRequest] = React.useState(null);
 	const { color, icon } = getStatusDetails(roleRequest.status);
+	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-	const openDrawer = () => {};
+	const closeDrawer = () => {
+		setIsDrawerOpen(false);
+	};
+
+	const openDrawer = () => {
+		setIsDrawerOpen(true);
+	};
 
 	return (
 		<Alert>
@@ -34,6 +42,8 @@ const RoleRequestsCard = ({
 						<RoleApprovalDrawer
 							roleRequest={roleRequest}
 							refreshRoleRequests={refreshRoleRequests}
+							isDrawerOpen={isDrawerOpen}
+							closeDrawer={closeDrawer}
 						>
 							<Button variant="ghost" size="icon" className="h-5 w-5 p-0">
 								<Cog className="h-4 w-4" onClick={openDrawer} />

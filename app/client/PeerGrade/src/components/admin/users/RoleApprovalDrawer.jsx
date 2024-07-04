@@ -10,17 +10,24 @@ import {
 	DrawerTrigger
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { DelDialog } from "./DelDialog";
 
-import { approveRoleRequest, denyRoleRequest } from "@/api/authApi";
+import { updateRoleRequestStatus } from "@/api/authApi";
 
-const RoleApprovalDrawer = ({ children, roleRequest, refreshRoleRequests }) => {
-	const [isDrawerOpen, setIsDrawerOpen] = useState(true);
+const RoleApprovalDrawer = ({
+	children,
+	roleRequest,
+	refreshRoleRequests,
+	isDrawerOpen,
+	closeDrawer
+}) => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const handleApprove = async () => {
 		setIsLoading(true);
-		const response = await approveRoleRequest(roleRequest.roleRequestId);
+		const response = await updateRoleRequestStatus(
+			roleRequest.roleRequestId,
+			"APPROVED"
+		);
 		if (response.status === "Success") {
 			closeDrawer();
 			// change to refresh single role request? Not all? May have to have each roll request have seperate state and fetch that way only have to update one role request
@@ -31,7 +38,10 @@ const RoleApprovalDrawer = ({ children, roleRequest, refreshRoleRequests }) => {
 
 	// Handle deny action
 	const handleDeny = async () => {
-		const response = await denyRoleRequest(roleRequest.roleRequestId);
+		const response = await updateRoleRequestStatus(
+			roleRequest.roleRequestId,
+			"DENIED"
+		);
 		if (response.status === "Success") {
 			closeDrawer();
 			// change to refresh single role request? Not all? May have to have each roll request have seperate state and fetch that way only have to update one role request
@@ -40,16 +50,21 @@ const RoleApprovalDrawer = ({ children, roleRequest, refreshRoleRequests }) => {
 		setIsLoading(false);
 	};
 
-	const closeDrawer = () => {
-		setIsDrawerOpen(false);
-	};
-
-	const openDrawer = () => {
-		setIsDrawerOpen(false);
+	const handlePending = async () => {
+		const response = await updateRoleRequestStatus(
+			roleRequest.roleRequestId,
+			"PENDING"
+		);
+		if (response.status === "Success") {
+			closeDrawer();
+			// change to refresh single role request? Not all? May have to have each roll request have seperate state and fetch that way only have to update one role request
+			refreshRoleRequests();
+		}
+		setIsLoading(false);
 	};
 
 	return (
-		<Drawer open={isDrawerOpen}>
+		<Drawer open={isDrawerOpen} onClose={closeDrawer}>
 			<DrawerTrigger asChild>{children}</DrawerTrigger>
 			<DrawerContent>
 				<div className="mx-auto w-full max-w-sm">
@@ -73,11 +88,16 @@ const RoleApprovalDrawer = ({ children, roleRequest, refreshRoleRequests }) => {
 						<Button onClick={handleApprove} disabled={isLoading}>
 							Approve
 						</Button>
-						{/* <DelDialog> */}
 						<Button onClick={handleDeny} disabled={isLoading} variant="outline">
 							Deny
 						</Button>
-						{/* </DelDialog> */}
+						<Button
+							onClick={handlePending}
+							disabled={isLoading}
+							variant="outline"
+						>
+							Pending
+						</Button>
 						<DrawerClose asChild>
 							<Button variant="outline" onClick={closeDrawer}>
 								Cancel

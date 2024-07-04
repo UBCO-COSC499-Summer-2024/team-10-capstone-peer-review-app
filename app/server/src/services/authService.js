@@ -383,6 +383,7 @@ export async function denyRoleRequest(roleRequestId) {
 		}
 	}
 }
+
 export async function getCurrentUser(email) {
 	try {
 		let user = await checkUserByEmail(email);

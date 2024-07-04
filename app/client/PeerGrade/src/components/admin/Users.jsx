@@ -179,10 +179,15 @@ const Users = () => {
 									refreshRoleRequests={fetchRoleRequests}
 									title={`Role Request: ${roleRequest.roleRequested}`}
 									description={
-										<span className={color}>
-											Role Request for {roleRequest.user.firstname}{" "}
-											{roleRequest.user.lastname}
-										</span>
+										<>
+											<p className={color}>
+												Role Request for {roleRequest.user.firstname}{" "}
+												{roleRequest.user.lastname}
+											</p>
+											<p className="text-gray-500">
+												Status: {roleRequest.status}
+											</p>
+										</>
 									}
 									showDrawer={true}
 									showAlertDialog={true}

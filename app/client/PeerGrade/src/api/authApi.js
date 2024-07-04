@@ -158,6 +158,7 @@ export const deleteRoleRequest = async (roleRequestId) => {
 
 export const approveRoleRequest = async (roleRequestId) => {
 	try {
+		// should change to a patch
 		const response = await axios.post(
 			`${BASE_URL}/auth/role-request/approve/${roleRequestId}`,
 			{},
@@ -178,8 +179,30 @@ export const approveRoleRequest = async (roleRequestId) => {
 
 export const denyRoleRequest = async (roleRequestId) => {
 	try {
+		// should change to a patch
 		const response = await axios.post(
 			`${BASE_URL}/auth/role-request/deny/${roleRequestId}`,
+			{},
+			{
+				withCredentials: true
+			}
+		);
+		showStatusToast({
+			status: response.data.status,
+			message: response.data.message
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const pendRoleRequest = async (roleRequestId) => {
+	try {
+		// should change to a patch
+		const response = await axios.post(
+			`${BASE_URL}/auth/role-request/pending/${roleRequestId}`,
 			{},
 			{
 				withCredentials: true

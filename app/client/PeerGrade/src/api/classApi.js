@@ -158,6 +158,26 @@ export const removeStudentFromClass = async (classId, studentId) => {
 	}
 };
 
+export const joinGroup = async (groupId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/classes/join-group`, {groupId});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const leaveGroup = async (groupId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/classes/leave-group`, {groupId});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
 function handleError(error) {
 	if (error.response && error.response.data) {
 		showStatusToast({

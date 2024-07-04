@@ -19,6 +19,7 @@ export const getUsersByRole = asyncErrorHandler(async (req, res, next) => {
 		data: users
 	});
 });
+
 // TODO -> Change these to get requests, ALSO, no need to send userId in body, can retrive it from req.user object that passport generates.
 export const getUserClasses = asyncErrorHandler(async (req, res) => {
 	console.log("getUserClasses endpoint hit");

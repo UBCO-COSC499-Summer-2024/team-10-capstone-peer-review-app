@@ -21,9 +21,14 @@ const Class = () => {
 	const [classItem, setClassItem] = useState(null);
 	const [assignments, setAssignments] = useState([]);
 	const [categories, setCategories] = useState([]);
+	const [refresh, setRefresh] = useState(false);
 	const { toast } = useToast();
 
-	// Ask kevin about clearn up functions? abort controllers?
+	const handleRefresh = () => {
+		setRefresh(!refresh);
+	};
+
+	// Ask kevin about clean up functions? abort controllers?
 	useEffect(() => {
 		const fetchClassData = async () => {
 			try {
@@ -40,7 +45,7 @@ const Class = () => {
 		};
 
 		fetchClassData();
-	}, [classId, toast]);
+	}, [classId, refresh, toast]);
 
 	useEffect(() => {
 		const fetchCategories = async () => {
@@ -95,7 +100,7 @@ const Class = () => {
 			case "assignmentCreation":
 				return <AssignmentCreation />;
 			case "edit":
-				return <EditClass />;
+				return <EditClass onUpdate={handleRefresh}/>;
 			default:
 				return (
 					<>

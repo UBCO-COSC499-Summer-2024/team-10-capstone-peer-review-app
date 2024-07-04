@@ -118,9 +118,29 @@ export const createClass = async (newClass) => {
 	}
 };
 
+export const updateClass = async (classId, updateData) => {
+	try {
+		const response = await axios.put(`${BASE_URL}/classes/${classId}`, updateData);
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
 export const deleteClass = async (classId) => {
 	try {
 		const response = await axios.delete(`${BASE_URL}/classes/${classId}`);
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const removeStudentFromClass = async (classId, studentId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/classes/remove-student`, {classId, studentId});
 		return response.data;
 	} catch (error) {
 		handleError(error);

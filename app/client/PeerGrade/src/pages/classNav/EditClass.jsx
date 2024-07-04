@@ -29,7 +29,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import { getClassById } from "@/api/classApi";
+import { getClassById, updateClass } from "@/api/classApi";
 import { toast } from "@/components/ui/use-toast";
 
 // Zod schema for form validation
@@ -48,7 +48,7 @@ const FormSchema = z.object({
   }),
 });
 
-const EditClass = () => {
+const EditClass = ({ onUpdate }) => {
   const { classId } = useParams();
   const [open, setOpen] = useState(false);
   const [selectedFileName, setSelectedFileName] = useState('');
@@ -81,7 +81,7 @@ const EditClass = () => {
         description: data.description,
         startDate: parseISO(data.startDate),
         endDate: parseISO(data.endDate),
-        term: data.term,
+        term: data.term || undefined,
         classSize: data.classSize,
       });
     };
@@ -95,23 +95,22 @@ const EditClass = () => {
     form.setValue("file", selectedFile);
   };
 
-  const onSubmit = (data) => {
-    const simplifiedData = {
-      ...data,
-      file: selectedFileName,
-    };
-
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(simplifiedData, null, 2)}</code>
-        </pre>
-      ),
-    });
-
-    // Update the class with the new data
-    console.log('Updated class data:', simplifiedData);
+  const onSubmit = async (updateData) => {
+    const classUpdate = await updateClass(classId, updateData);
+    if (classUpdate.status === "Success") {
+        console.log("updated class", classUpdate);
+        onUpdate();
+        toast({
+          title: "You submitted the following values:",
+          description: (
+            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+              <code className="text-white">{JSON.stringify(classUpdate, null, 2)}</code>
+            </pre>
+          ),
+        });
+    } else {
+        console.error('An error occurred while updating the class.', classUpdate.message);
+    }
   };
 
   const handleBackClick = () => {
@@ -250,7 +249,7 @@ const EditClass = () => {
                 <FormItem>
                   <FormLabel>Class Size</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="e.g. 30" {...field} className="" />
+                    <Input type="number" placeholder="e.g. 30" {...field} onChange={(e) => field.onChange(Number(e.target.value))} />
                   </FormControl>
                   <FormDescription>This is the maximum number of students allowed in the class.</FormDescription>
                   <FormMessage />

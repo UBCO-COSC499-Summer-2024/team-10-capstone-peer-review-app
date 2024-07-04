@@ -30,7 +30,6 @@ router.use("/submit", ensureUser, submitRouter);
 router.use("/review", ensureUser, reviewRouter);
 router.use("/grade", ensureUser, gradesRouter);
 
-router.use("/student", ensureUser, studentsRouter);
 router.use("/instructors", ensureUser, ensureInstructor, instructorsRouter);
 router.use("/admins", adminsRouter);
 router.use('/users', usersRoutes);

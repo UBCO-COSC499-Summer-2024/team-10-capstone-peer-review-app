@@ -18,7 +18,6 @@ import {
 
 import { ensureUser, ensureAdmin } from "../middleware/ensureUserTypes.js";
 
-
 const router = express.Router();
 
 // General Auth routes for User flow at start

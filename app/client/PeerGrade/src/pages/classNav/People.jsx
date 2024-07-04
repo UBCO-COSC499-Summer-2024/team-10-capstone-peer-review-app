@@ -89,7 +89,7 @@ const People = ({ classId }) => {
 		fetchAllStudents();
 	  }, [students]);
 
-	const handleStudentSelection = (studentId) => {
+	const handleStudentSelection = (studentId) => {					// deals with selecting/deselecting students to add to the class
 		setSelectedStudents((prevSelected) => {
 			if (prevSelected.includes(studentId)) {
 				return prevSelected.filter(id => id !== studentId);
@@ -99,14 +99,14 @@ const People = ({ classId }) => {
 		});
 	};
 
-	const handleDeleteClick = (selectedStudent) => {
+	const handleDeleteClick = (selectedStudent) => {				// handles the actual click event to delete a student
 		setConfirmDelete(false);
 		setSelectedStudent(selectedStudent);
 		console.log(selectedStudents);
 		setDialogOpen(true);
 	};
 
-	const handleDeleteStudent = async () => {
+	const handleDeleteStudent = async () => {					    // handles the deletion of a student via the backend
 		if (confirmDelete) {
 			setConfirmDelete(false);
 			if (selectedStudent) {
@@ -125,7 +125,7 @@ const People = ({ classId }) => {
 		}
 	};
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = async (e) => {								// handles the submission of the form to add students to the class
 		e.preventDefault();
 		console.log('Selected Students:', selectedStudents);
 
@@ -236,7 +236,7 @@ const People = ({ classId }) => {
 				<DialogHeader>
 					<DialogTitle>{confirmDelete ? "Confirm" : ""} Delete User</DialogTitle>
 				</DialogHeader>
-				Are you {confirmDelete ? "really" : ""} sure you want to delete the user {selectedStudent.firstname}{' '}{selectedStudent.lastname}?
+				Are you {confirmDelete ? "really" : ""} sure you want to remove the student {selectedStudent.firstname}{' '}{selectedStudent.lastname} from this class?
 				<DialogFooter>
 					<Button onClick={() => setDialogOpen(false)} className={confirmDelete ? 'shadow-md shadow-red-900' : ''}>Cancel</Button>
 					<Button variant="destructive" onClick={handleDeleteStudent} className={confirmDelete ? 'shadow-md shadow-red-900' : ''}>Delete</Button>
@@ -298,7 +298,7 @@ const People = ({ classId }) => {
 							</Popover>
 						</div>
 						<DialogFooter>
-							<Button onClick={() => setAddDialogOpen(false)}>Cancel</Button>
+							<Button onClick={() => setAddDialogOpen(false)} type="button">Cancel</Button>
 							<Button variant="destructive" type="submit">Submit</Button>
 						</DialogFooter>
 					</form>

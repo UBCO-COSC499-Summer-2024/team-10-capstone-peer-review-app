@@ -138,6 +138,16 @@ export const deleteClass = async (classId) => {
 	}
 };
 
+export const addStudentToClass = async (classId, studentId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/classes/add-student`, {classId, studentId});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
 export const removeStudentFromClass = async (classId, studentId) => {
 	try {
 		const response = await axios.post(`${BASE_URL}/classes/remove-student`, {classId, studentId});

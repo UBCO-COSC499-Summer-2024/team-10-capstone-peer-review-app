@@ -51,10 +51,6 @@ const FormSchema = z.object({
 const EditClass = ({ onUpdate }) => {
   const { classId } = useParams();
   const [open, setOpen] = useState(false);
-  const [selectedFileName, setSelectedFileName] = useState('');
-  const fileInputRef = useRef(null);
-  const [selectedClass, setSelectedClass] = useState({});
-  const [dialogOpen, setDialogOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -88,12 +84,6 @@ const EditClass = ({ onUpdate }) => {
 
     fetchClassData();
   }, [classId, form]);
-
-  const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
-    setSelectedFileName(selectedFile.name);
-    form.setValue("file", selectedFile);
-  };
 
   const onSubmit = async (updateData) => {
     const classUpdate = await updateClass(classId, updateData);
@@ -260,19 +250,6 @@ const EditClass = ({ onUpdate }) => {
           </form>
         </Form>
       </div>
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Delete Class</DialogTitle>
-          </DialogHeader>
-          Are you sure you want to delete the class?
-          <span className='font-extrabold'>WARNING: THIS WILL DELETE ALL ASSIGNMENTS, SUBMISSIONS, REVIEWS, CATEGORIES, AND GROUPS ASSOCIATED WITH THIS CLASS.</span>
-          <DialogFooter>
-            <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
-            <Button variant="destructive">Delete</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };

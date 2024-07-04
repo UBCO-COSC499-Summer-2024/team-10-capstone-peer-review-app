@@ -93,17 +93,6 @@ const Groups = () => {
 		groupCreate();
 	};
 
-	if (groups.length === 0) {
-		return (
-			<Card>
-				<CardContent className="p-4 flex flex-row items-center justify-center">
-					<div className='text-center text-sm text-gray-500'>No groups were found.</div>
-				</CardContent>
-			</Card>
-			
-		);
-	}
-
 	return (
 		<div className="w-full p-6">
 			<div className="flex items-center mb-6">
@@ -120,6 +109,7 @@ const Groups = () => {
 					</Button>
 				)}
 			</div>
+			{groups.length === 0 && <div className="text-center text-sm text-gray-500">No groups found.</div>}
 			{filteredGroups.map((group) => (
 				<Card key={group.groupId} className="mb-4">
 					<CardContent

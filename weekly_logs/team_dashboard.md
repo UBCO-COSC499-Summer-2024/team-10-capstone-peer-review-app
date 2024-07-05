@@ -6,40 +6,55 @@
 
 
 ### Major features worked on in c-10
-*  
+* Major Use Case 6, 8: View Assignment details (This is set up) and Submit Assignment (Submissions not setup yet)
   
-*  
+* Major Use Case 15: Manage Class (for instructors)
   
-*  
+* Major Use Case 19: Delete class (for instructors) 
+
+* Major Use Case 16-1: Create/Manage Assignment - linking the UI to the backend
+
+* Major Use Case 16-2: Create/Manage Rubric - linking the UI to the backend
+
+* Major Use Case 12, 13: Manage, Join Group 
   
 
 ### Major features completed in c-10
-*  
+* Major Use Case 6: View Assignment details
   
-*  
+* Major Use Case 15: Manage Class 
   
-*  
+* Major Use Case 19: Delete class 
+
+* Major Use Case 13: Join Group 
+
   
 
 ### Major features to work on for c-11
-*  
+* Major Use Case 8: Submit Assignment (Submissions not setup yet)
+    * The most crucial and difficult part about the following Major Use cases, I.E. 8 and 16-1 is going to be file handling for uploading and downloading. We are going to be setting up a service to handle this and ideally have it integrated with all of our Assignment and Submission Calls by the end of Cycle 12. 
   
-*  
-  
-*  
+* Major Use Case 16-1: Create/Manage Assignment 
+
+* Major Use Case 16-2: Create/Manage Rubric 
+
+* Major Use Case 12, 13: Manage, Join Group 
   
 
 ### Team Issues and Hurdles for c-10
-*  
   
-*  
+*  Setting things up in time for the presentation 
   
-*  
+*  Realizing we are 40-50% complete of a lot of features rather than 40-50% Complete of core features. 
   
 
 ### Clockify Dashboard for this Week
 
 ![Clockify Dashboard for c-10](./team_dashboard_images/clockify_dashboards/clockify_dashboard_c10.png)
+
+### Burnup Charp for This Cycle 
+
+![Burn up chart for c-10](./team_log_images/burnup_charts/burnup_chart_c10.png)
   
   
 

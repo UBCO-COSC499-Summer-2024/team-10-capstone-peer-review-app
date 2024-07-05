@@ -14,7 +14,7 @@
   
 
 ## Tasks currently in Review for c-10:
-![Tasks in review for c-10](./team_log_images/in_review_issues/in_review_issues_c10.png)  
+No tasks currently in Review
   
 
 ## Tasks Done for c-10:
@@ -28,11 +28,11 @@
 ## Test Reports for c-10
 
 #### Front-end Testing for c-10
-![Front-end Tests for c-10](./team_log_images/front_end_tests/front_end_tests_c10.png)  
+![Front-end Tests for c-10](./team_log_images/front_end_tests/front_end_tests_c8.png)  
   
 
 #### Back-end Testing for c-10
-![Back end Tests for c-10](./team_log_images/back_end_tests/back_end_tests_c10.png)  
+![Back end Tests for c-10](./team_log_images/back_end_tests/)  
   
   
   

@@ -152,15 +152,15 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* In terms of goals from last cycle, I wanted to finish linking Role Requests to the UI and in general help out with other api endpoint links
+* I was able to finish role-requests, I was having some issues lifting state and learning some React concepts on state techniques but I eventually got it all set-up (To approve, deny, set to pending, cancel, and delete)
+* I was also debugging other smaller issues that popped up with new implementations and older ones, I.E. verify email not clearing the JWT token in the URL, as well as the search bar not filtering people in the people tabs. 
+* I spent a fair amount of time setting up the slides with abdul as well for the presentation. 
 
 ## Goals for next cycle
-* 
-* 
-* 
-  
+* Fix Classes navbar state, since I noticted that wasnt refreshing state when a new class is added.  
+* Fix forgot password to clear the URL when a JWT is found in the URL, also revamp the checkEmail functionality. 
+* Set up a dockerized testing enviroment for integration tests, rather than just doing our isolated unit tests for the backend. 
   
 
 # Josh's Log for Cycle 9

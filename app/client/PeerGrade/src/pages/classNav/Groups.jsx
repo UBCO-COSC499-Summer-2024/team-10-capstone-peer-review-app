@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { getAllGroupsByClass, createGroup } from "@/api/classApi";
+import { getAllGroupsByClass, createGroup, joinGroup, leaveGroup } from "@/api/classApi";
 import { getGroups } from "@/api/userApi";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { ChevronDown, ChevronUp, Plus } from "lucide-react";
@@ -26,6 +26,7 @@ const Groups = () => {
 	const [groupName, setGroupName] = useState('');
 	const [description, setDescription] = useState('');
 	const [size, setSize] = useState('');
+	const [refresh, setRefresh] = useState(false);
 
 	useEffect(() => {
 		if (!userLoading && user) {
@@ -59,7 +60,7 @@ const Groups = () => {
 			fetchMyGroups();
 			fetchAllGroups();
 		}
-	}, [user, userLoading, classId]);
+	}, [user, userLoading, classId, refresh]);
 
 	const filteredGroups = groups.filter((group) =>
 		group.groupName.toLowerCase().includes(searchTerm.toLowerCase())
@@ -75,8 +76,6 @@ const Groups = () => {
 		  groupName,
 		  groupDescription : description,
 		  groupSize: parseInt(size, 10),
-		//   students: [],
-		//   submissions: []
 		};
 	
 		const groupCreate = async () => {
@@ -93,16 +92,25 @@ const Groups = () => {
 		groupCreate();
 	};
 
-	if (groups.length === 0) {
-		return (
-			<Card>
-				<CardContent className="p-4 flex flex-row items-center justify-center">
-					<div className='text-center text-sm text-gray-500'>No groups were found.</div>
-				</CardContent>
-			</Card>
-			
-		);
-	}
+	const handleJoinGroup = async (groupId) => {
+		const groupData = await joinGroup(groupId);
+		if (groupData.status === "Success") {
+		  console.log("joined group", groupData);
+		  setRefresh(!refresh);
+		} else {
+		  console.error('An error occurred while joining the group.', groupData.message);
+		}
+	};
+
+	const handleLeaveGroup = async (groupId) => {
+		const groupData = await leaveGroup(groupId);
+		if (groupData.status === "Success") {
+			console.log("left group", groupData);
+			setRefresh(!refresh);
+		} else {
+			console.error('An error occurred while leaving the group.', groupData.message);
+		}
+	};
 
 	return (
 		<div className="w-full p-6">
@@ -114,29 +122,38 @@ const Groups = () => {
 					onChange={(e) => setSearchTerm(e.target.value)}
 					className="mr-4"
 				/>
-				{(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (
-					<Button variant="outline" onClick={() => setDialogOpen(true)}>
-						Add Group <Plus className='w-4 h-4 ml-2'/>
-					</Button>
-				)}
+				<Button variant="outline" onClick={() => setDialogOpen(true)}>
+					Add Group <Plus className='w-4 h-4 ml-2'/>
+				</Button>
 			</div>
+			{groups.length === 0 && <div className="text-center text-sm text-gray-500">No groups found.</div>}
 			{filteredGroups.map((group) => (
 				<Card key={group.groupId} className="mb-4">
 					<CardContent
 						className="flex justify-between items-center bg-gray-200 p-4 rounded-t-lg cursor-pointer"
 						onClick={() => toggleGroup(group.groupId)}
 					>
-						<CardTitle className="text-lg font-bold flex items-center space-x-2">
-							<span>{group.groupName}</span>
-							{expandedGroup === group.groupId ? <ChevronUp /> : <ChevronDown />}
-						</CardTitle>
-						{expandedGroup === group.groupId && (
-						<CardDescription>
-							<span className='text-sm text-gray-600 mr-2'>{group.groupDescription ? group.groupDescription : ""}</span>
-						</CardDescription>
-						)}
+						<div className='flex flex-col'>
+							<CardTitle className="text-lg font-bold flex items-center space-x-2">
+								<span>{group.groupName}</span>
+								{expandedGroup === group.groupId ? <ChevronUp /> : <ChevronDown />}
+								
+							</CardTitle>
+							{expandedGroup === group.groupId && (
+								<CardDescription>
+									<span className='text-sm text-gray-600'>{group.groupDescription ? group.groupDescription : ""}</span>
+								</CardDescription>
+							)}
+						</div>
+						<div className='flex flex-row items-center justify-center space-x-2'>
+							{(myGroups?.filter(myGroup => myGroup.groupId === group.groupId).length > 0) && (user.role === "STUDENT") ? (
+								<Button variant='destructive' className='p-4' onClick={() => handleLeaveGroup(group.groupId)}>Leave</Button>
+							) : (myGroups?.length < 1) && (
+								<Button variant='ghost' className='bg-gray-200 p-4' onClick={() => handleJoinGroup(group.groupId)}>Join</Button>
+							)}
+						</div>
 					</CardContent>
-					{expandedGroup === group.groupId && (
+					{expandedGroup === group.groupId && (group.students.length > 0) && (
 						<CardContent className="p-4 flex flex-row items-center justify-between">
 							<div>
 								{group.students.map((student) => (
@@ -146,7 +163,6 @@ const Groups = () => {
 									</div>
 								))}
 							</div>
-							{/* <Button variant='ghost' className='bg-gray-200 p-4'>{(myGroups?.filter(myGroup => myGroup.groupId === group.groupId).length > 0) ? "Leave" : "Join"}</Button> */}
 						</CardContent>
 					)}
 				</Card>

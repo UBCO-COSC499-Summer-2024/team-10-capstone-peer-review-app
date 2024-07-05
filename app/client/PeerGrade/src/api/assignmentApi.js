@@ -5,7 +5,10 @@ const BASE_URL = "/api"; // Use environment variable if available
 
 export const addAssignmentToClass = async (classId, assignmentData) => {
     try {
-        const response = await axios.post(`${BASE_URL}/assignment/${classId}/assignments`, assignmentData);
+        const response = await axios.post(`${BASE_URL}/assignment/add-assignment`, {
+            classId,
+            assignmentData
+        });
         return response.data;
     } catch (error) {
         handleError(error);

@@ -1,6 +1,12 @@
-import { User, FileText, CheckSquare } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { Link } from 'react-router-dom';
+import { User, FileText, CheckSquare } from "lucide-react";
+import {
+	Card,
+	CardHeader,
+	CardTitle,
+	CardDescription,
+	CardContent
+} from "@/components/ui/card";
+import { Link } from "react-router-dom";
 
 const ClassCard = ({
 	classId,

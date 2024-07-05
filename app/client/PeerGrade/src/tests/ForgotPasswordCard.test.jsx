@@ -1,84 +1,204 @@
-import { render, fireEvent, waitFor } from '@testing-library/react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store';
-import { setCurrentUser } from '@/utils/redux/hooks/userSlice';
+import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { MemoryRouter, useLocation } from 'react-router-dom';
 import ForgotPasswordCard from '@/components/login/ForgotPasswordCard';
+import {
+	confirmEmail,
+	resetPassword,
+	sendForgotPasswordEmail,
+} from '@/api/authApi';
 
-const mockNavigate = jest.fn();
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: () => mockNavigate,
+// Mock the API calls
+jest.mock('@/api/authApi', () => ({
+	confirmEmail: jest.fn(),
+	resetPassword: jest.fn(),
+	sendForgotPasswordEmail: jest.fn(),
 }));
-jest.mock('@/utils/dbData', () => ({
-    user: [
-      {
-        user_id: 1,
-        username: "testUser",
-        password: "validpassword@A1",
-        firstname: "Test",
-        lastname: "User",
-        email: "valid@example.com",
-        class_id: [1,2,3,4,5,6,7,8,9,10],
-        type: "admin"
-      },
-    ],
-    addUser: jest.fn(),
-    iClass: [],
-  }));  
 
+jest.mock('@heroicons/react/24/outline', () => ({
+	CheckCircleIcon: (props) => <svg {...props} data-testid="CheckCircleIcon" />,
+	XCircleIcon: (props) => <svg {...props} data-testid="XCircleIcon" />,
+}));
+
+jest.mock('@heroicons/react/24/solid', () => ({
+	EyeIcon: (props) => <svg {...props} data-testid="EyeIcon" />,
+	EyeSlashIcon: (props) => <svg {...props} data-testid="EyeSlashIcon" />,
+}));
+
+jest.mock('react-router-dom', () => ({
+	...jest.requireActual('react-router-dom'),
+	useNavigate: () => jest.fn(),
+	useLocation: jest.fn(),
+}));
+
+const mockUseLocation = useLocation;
+const mockNavigate = jest.fn();
 
 describe('ForgotPasswordCard', () => {
-  const mockStore = configureMockStore();
-  let store;
-  
-  beforeEach(() => {
-    store = mockStore({
-        user: {
-          // initial state
-        }
-      });
-  });
+	beforeEach(() => {
+		mockUseLocation.mockReturnValue({
+			search: '',
+		});
+	});
 
-  test('renders without crashing', () => {
-    const { getByText } = render(
-      <Provider store={store}>
-        <Router>
-          <ForgotPasswordCard />
-        </Router>
-      </Provider>
-    );
-    expect(getByText('Reset Password')).toBeInTheDocument();
-  });
+	it('renders the component', () => {
+		render(
+			<MemoryRouter>
+				<ForgotPasswordCard onSwitchToLogin={jest.fn()} />
+			</MemoryRouter>
+		);
 
-  test('shows error message when invalid credentials are entered', () => {
-    const { getByLabelText, getByText, getByRole } = render(
-      <Provider store={store}>
-        <Router>
-          <ForgotPasswordCard />
-        </Router>
-      </Provider>
-    );
+		expect(screen.getByText(/Reset Password/i)).toBeInTheDocument();
+	});
 
-    fireEvent.change(getByLabelText('Email address'), { target: { value: 'wrong@example.com' } });
-    fireEvent.click(getByRole('button', { name: 'Send Reset Email' }));
+	it('shows email input initially', () => {
+		render(
+			<MemoryRouter>
+				<ForgotPasswordCard onSwitchToLogin={jest.fn()} />
+			</MemoryRouter>
+		);
 
-    expect(getByText('This e-mail does not belong to a registered user.')).toBeInTheDocument();
-  });
+		expect(screen.getByLabelText(/Email address/i)).toBeInTheDocument();
+	});
 
-  test('switches to verification code screen', async () => {
-    const { getByLabelText, getByRole, getByText } = render(
-        <Provider store={store}>
-        <Router>
-            <ForgotPasswordCard />
-        </Router>
-        </Provider>
-    );
+	it('sends a reset email', async () => {
+		sendForgotPasswordEmail.mockResolvedValueOnce({ status: 'Success' });
 
-    fireEvent.change(getByLabelText('Email address'), { target: { value: 'valid@example.com' } });
-    fireEvent.click(getByRole('button', { name: 'Send Reset Email' }));
+		render(
+			<MemoryRouter>
+				<ForgotPasswordCard onSwitchToLogin={jest.fn()} />
+			</MemoryRouter>
+		);
 
-    expect(getByText('An email has been sent to your email address! Please check it for a verification code and enter it below.')).toBeInTheDocument();
-    expect(getByText('Submit')).toBeInTheDocument();
-  });
+		fireEvent.change(screen.getByLabelText(/Email address/i), {
+			target: { value: 'test@example.com' },
+		});
+		fireEvent.click(screen.getByText(/Send Reset Email/i));
+
+		await waitFor(() =>
+			expect(screen.getByText(/An email has been sent/i)).toBeInTheDocument()
+		);
+	});
+
+	it('shows error if reset email fails', async () => {
+		sendForgotPasswordEmail.mockResolvedValueOnce({
+			status: 'Error',
+			message: 'Email not found',
+		});
+
+		render(
+			<MemoryRouter>
+				<ForgotPasswordCard onSwitchToLogin={jest.fn()} />
+			</MemoryRouter>
+		);
+
+		fireEvent.change(screen.getByLabelText(/Email address/i), {
+			target: { value: 'test@example.com' },
+		});
+		fireEvent.click(screen.getByText(/Send Reset Email/i));
+
+		await waitFor(() =>
+			expect(screen.getByText(/Email not found/i)).toBeInTheDocument()
+		);
+	});
+
+	it('validates the token and shows password fields', async () => {
+		mockUseLocation.mockReturnValue({
+			search: '?frgtToken=validToken',
+		});
+
+		confirmEmail.mockResolvedValueOnce({ status: 'Success' });
+
+		render(
+			<MemoryRouter>
+				<ForgotPasswordCard onSwitchToLogin={jest.fn()} />
+			</MemoryRouter>
+		);
+
+		await waitFor(() =>
+			expect(
+				screen.getByText(/Please enter your new password/i)
+			).toBeInTheDocument()
+		);
+	});
+
+	it('shows error if token validation fails', async () => {
+		mockUseLocation.mockReturnValue({
+			search: '?frgtToken=invalidToken',
+		});
+
+		confirmEmail.mockResolvedValueOnce({
+			status: 'Error',
+			message: 'Invalid token',
+		});
+
+		render(
+			<MemoryRouter>
+				<ForgotPasswordCard onSwitchToLogin={jest.fn()} />
+			</MemoryRouter>
+		);
+
+		await waitFor(() =>
+			expect(screen.getByText(/Invalid token/i)).toBeInTheDocument()
+		);
+	});
+
+	it('resets the password and calls resetPassword', async () => {
+		mockUseLocation.mockReturnValue({
+			search: '?frgtToken=validToken',
+		});
+
+		confirmEmail.mockResolvedValueOnce({ status: 'Success' });
+		resetPassword.mockResolvedValueOnce({ status: 'Success' });
+
+		render(
+			<MemoryRouter>
+				<ForgotPasswordCard onSwitchToLogin={jest.fn()} />
+			</MemoryRouter>
+		);
+
+		await waitFor(() =>
+			expect(screen.getByLabelText("Password:")).toBeInTheDocument()
+		);
+
+		fireEvent.change(screen.getByLabelText("Password:"), {
+			target: { value: 'ValidPass@1' },
+		});
+		fireEvent.change(screen.getByLabelText("Confirm Password:"), {
+			target: { value: 'ValidPass@1' },
+		});
+		fireEvent.click(screen.getByText("Submit"));
+
+		await waitFor(() => expect(resetPassword).toHaveBeenCalledWith('validToken', 'ValidPass@1'));
+	});
+
+	it('shows error if passwords do not match', async () => {
+		mockUseLocation.mockReturnValue({
+			search: '?frgtToken=validToken',
+		});
+
+		confirmEmail.mockResolvedValueOnce({ status: 'Success' });
+
+		render(
+			<MemoryRouter>
+				<ForgotPasswordCard onSwitchToLogin={jest.fn()} />
+			</MemoryRouter>
+		);
+
+		await waitFor(() =>
+			expect(screen.getByLabelText("Password:")).toBeInTheDocument()
+		);
+
+		fireEvent.change(screen.getByLabelText("Password:"), {
+			target: { value: 'ValidPass@1' },
+		});
+		fireEvent.change(screen.getByLabelText("Confirm Password:"), {
+			target: { value: 'DifferentPass@1' },
+		});
+		fireEvent.click(screen.getByText("Submit"));
+
+		await waitFor(() =>
+			expect(screen.getByText("Passwords do not match")).toBeInTheDocument()
+		);
+	});
 });

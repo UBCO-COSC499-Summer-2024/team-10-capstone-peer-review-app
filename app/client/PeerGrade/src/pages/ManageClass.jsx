@@ -13,7 +13,6 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import { iClass as mockClasses, PeerReview, submission } from '@/utils/dbData'; // Remove when mock data isn't needed
 
 const AddClassModal = ({ show, onClose, onAddClass }) => {
   const [classname, setClassname] = useState('');
@@ -209,10 +208,10 @@ const ManageClass = () => {
                 instructor={`${user.firstname} ${user.lastname}`}
                 numStudents={classItem.classSize}
                 numAssignments={classAssignments[classItem.classId]?.length || 0}
-                numPeerReviews={PeerReview.filter((review) => {
-                  const sub = submission.find((sub) => sub.submission_id === review.submission_id);
-                  return sub && sub.assignment_id === classItem.classId;
-                }).length}
+                // numPeerReviews={PeerReview.filter((review) => {
+                //   const sub = submission.find((sub) => sub.submission_id === review.submission_id);
+                //   return sub && sub.assignment_id === classItem.classId;
+                // }).length}
               />
             </Link>
             <button
@@ -222,19 +221,6 @@ const ManageClass = () => {
             >
               &times;
             </button>
-          </div>
-        ))}
-      </div>
-      <h2 className='my-4'>Mocked Classes (debug only)</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {mockClasses.map((classItem) => (
-          <div key={classItem.class_id} className="relative">
-            <Link to={`/class/${classItem.class_id}`}>
-              <ClassCard
-                classId={classItem.class_id}
-                className={classItem.classname}
-              />
-            </Link>
           </div>
         ))}
       </div>

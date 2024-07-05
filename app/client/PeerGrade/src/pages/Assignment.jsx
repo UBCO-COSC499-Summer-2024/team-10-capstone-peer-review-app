@@ -23,6 +23,7 @@ const Assignment = () => {
     const fetchAssignment = async () => {
       try {
         const fetchedAssignment = await getAssignmentInClass(classId, assignmentId);
+        console.log(fetchedAssignment.data);
         setAssignment(fetchedAssignment.data);
       } catch (error) {
         toast({
@@ -83,7 +84,7 @@ const Assignment = () => {
                 </CardContent>
               </Card>
               <div className='white rounded-md flex justify-center items-center'>
-                <PDFViewer url={assignment.fileUrl} scale="1"/>
+                <PDFViewer url={assignment.assignmentFilePath} scale="1"/>
               </div>
             </div>
             <div className="space-y-6">

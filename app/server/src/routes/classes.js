@@ -31,7 +31,9 @@ import {
 	getGroupMembers,
 	addGroupMember,
 	removeGroupMember,
-	getCategoriesByClassId
+	getCategoriesByClassId,
+	joinGroup,
+	leaveGroup
 } from "../controllers/classController.js";
 
 import {
@@ -130,11 +132,19 @@ router
 
 router
 	.route("/add-group")
-	.post(ensureUser, ensureInstructorOrAdmin, addGroupToClass);
+	.post(ensureUser, addGroupToClass);
 
 router
 	.route("/remove-group")
 	.post(ensureUser, ensureInstructorOrAdmin, removeGroupFromClass);
+
+router
+	.route("/join-group")
+	.post(ensureUser, joinGroup);
+
+router
+	.route("/leave-group")
+	.post(ensureUser, leaveGroup);
 
 router
 	.route("/update-group")

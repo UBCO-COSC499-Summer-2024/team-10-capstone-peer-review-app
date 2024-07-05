@@ -47,7 +47,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 	// TODO: Look into why toasts pop up twice, and how to remove token after it renders once
 	useEffect(() => {
 		const verifyEmail = async () => {
-			if (token) {
+			if (token && !verificationSuccessful) {
 				const response = await confirmEmail(token);
 				if (response.status === "Success") {
 					setVerificationSuccessful(true);
@@ -55,6 +55,11 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 					setVerificationSuccessful(false);
 				}
 				setTokenReceived(true);
+				query.delete("token");
+				const newSearch = query.toString();
+				navigate(newSearch ? `?${newSearch}` : location.pathname, {
+					replace: true
+				});
 			}
 		};
 		verifyEmail();

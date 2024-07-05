@@ -66,8 +66,6 @@ export async function getUserClasses(userId) {
 
 export async function getUserAssignments(userId) {
 	try {
-		console.log(`Fetching assignments for user with ID: ${userId}`);
-
 		// Find the user
 		const user = await prisma.user.findUnique({
 			where: { userId: userId },
@@ -90,19 +88,14 @@ export async function getUserAssignments(userId) {
 			);
 		}
 
-		console.log(`Class IDs: ${classIds}`);
-
 		// Retrieve assignments based on class IDs
 		const assignments = await prisma.assignment.findMany({
 			where: { classId: { in: classIds } },
 			include: { classes: true } // Correctly include the related `classes` field
 		});
 
-		console.log(`Assignments: ${JSON.stringify(assignments)}`);
-
 		return assignments;
 	} catch (error) {
-		console.error("Error in getUserAssignments:", error);
 		if (error instanceof apiError) {
 			throw error;
 		} else {
@@ -130,7 +123,6 @@ export async function getGroups(userId) {
 		if (error instanceof apiError) {
 			throw error;
 		} else {
-			console.log(error);
 			throw new apiError("Failed to get groups in class", 500);
 		}
 	}

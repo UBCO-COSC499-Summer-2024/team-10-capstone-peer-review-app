@@ -9,8 +9,9 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 
-export function DelDialog({ children }) {
+export function DelDialog({ children, handleActionClick }) {
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
@@ -24,7 +25,9 @@ export function DelDialog({ children }) {
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel>Cancel</AlertDialogCancel>
-					<AlertDialogAction>Continue</AlertDialogAction>
+					<AlertDialogAction onClick={handleActionClick}>
+						Continue
+					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>
 		</AlertDialog>

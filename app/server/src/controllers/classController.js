@@ -343,6 +343,28 @@ export const removeGroupMember = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+export const joinGroup = asyncErrorHandler(async (req, res) => {
+	const { groupId } = req.body;
+	const userId = req.user.userId;
+	const updatedGroup = await classService.addGroupMember(groupId, userId);
+	return res.status(200).json({
+		status: "Success",
+		message: "Successfully joined group",
+		data: updatedGroup
+	});
+});
+
+export const leaveGroup = asyncErrorHandler(async (req, res) => {
+	const { groupId } = req.body;
+	const userId = req.user.userId;
+	const updatedGroup = await classService.removeGroupMember(groupId, userId);
+	return res.status(200).json({
+		status: "Success",
+		message: "Successfully left group",
+		data: updatedGroup
+	});
+});
+
 export const getCategoriesByClassId = asyncErrorHandler(async (req, res) => {
 	const { classId } = req.params;
 	const categories = await classService.getCategoriesByClassId(classId);

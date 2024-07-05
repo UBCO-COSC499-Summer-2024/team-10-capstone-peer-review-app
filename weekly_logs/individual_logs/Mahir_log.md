@@ -1,4 +1,121 @@
 
+# Mahir's Log for Cycle 10
+
+
+## Tuesday, July 02, 2024, 05:21 PM - Thursday, July 04, 2024, 05:21 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[150](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/150)**: Integrate Api calls with UI, Create Redux Slices for api calls (For this week: User Info, Auth, Class info, Assignment? Maybe)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[145](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/145)**: Toasts for msgs from api-endpoints  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[139](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/139)**: Major Use Case 23: Role Requests Page for Admins  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[131](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/131)**: Major Use Case 16-1: Create/Manage Assignment  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[129](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/129)**: Major Use Case 14: Create New Class  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[128](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/128)**: Major Use Case 13: Join Group  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[127](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/127)**: Major Use Case 12: Manage Group   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[122](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/122)**: Major Use Case 7: View Submission Feedback (from instructor)   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[120](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/120)**: Major Use Case 5: Send Reports to Admin   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **183/Assignment_operations** *(Total duration: 6.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 03, 2024, 07:33 PM - Wednesday, July 03, 2024, 10:13 PM *(2.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 03, 2024, 06:05 PM - Wednesday, July 03, 2024, 06:24 PM *(0.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 03, 2024, 02:15 PM - Wednesday, July 03, 2024, 04:15 PM *(2.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 03, 2024, 12:36 PM - Wednesday, July 03, 2024, 01:36 PM *(1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 03, 2024, 11:11 AM - Wednesday, July 03, 2024, 11:33 AM *(0.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 03, 2024, 05:05 AM - Wednesday, July 03, 2024, 05:25 AM *(0.3 hours)*  
+  
+
+## All Features worked on this cycle:
+
+## Features completed on this cycle:
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[150](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/150)**: Integrate Api calls with UI, Create Redux Slices for api calls (For this week: User Info, Auth, Class info, Assignment? Maybe)  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[145](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/145)**: Toasts for msgs from api-endpoints  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[139](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/139)**: Major Use Case 23: Role Requests Page for Admins  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[129](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/129)**: Major Use Case 14: Create New Class  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[128](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/128)**: Major Use Case 13: Join Group  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[131](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/131)**: Major Use Case 16-1: Create/Manage Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[127](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/127)**: Major Use Case 12: Manage Group   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[122](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/122)**: Major Use Case 7: View Submission Feedback (from instructor)   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[120](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/120)**: Major Use Case 5: Send Reports to Admin   
+  
+
+## Recap on goals from last cycle
+* The assignment was able to be properly linked to view the information on both the view tabs and the edit tabs however, the edit tab doesn't yet update the newly inputted information to the actual db  (only fetches the currently existing information)
+* I had to think out and work exactly how the rubric system would be implemented and I attempted to make a rubricApi.js file (on the client side) that facilitates the requirements for submitting a rubric. I had to also edit the UI in order to match up with a similar layout/style to a message Parsa shared through Slack which was helpful. After setting it up, I failed to actually get it working where the rubric submits properly (a whole lot of debugging left to do to make it work properly...)
+* Uploading an assignment feature works but I've run into a really annoying problem on the client side that's preventing me from gathering and sending any form data to my API call. I was however, successful in getting everything else in assignment upload functioning (e.g API calls were successful, adding to the db/class and fetching current category info + updating info were all successful) but for some reason, the submit button on the form refuses to work and I spent my entire flight coming back from Toronto testing + trying to figure that out and failed...
+* I also tried working on local upload and file storage however, this will take a lot more time to fully finalize as we need to make some team decisions regarding how this should be structured. I decided to leave it out as a part of the assignment upload (just wanted to get the basic upload information working first and tackle file uploading after the 50% MVP).
+* I wish I focused on this whole process in the opposite manner of how I went at it. Meaning, that I should have started off trying to upload the basic assignment details and then worked on the rubric and file upload... I spent the majority of the time on the latter two and if I hadn't, perhaps we could've had something up and running for the 50% MVP.
+
+## Goals for next cycle
+* Figure out Assignment upload client-side bugs
+* Rework and also figure out rubric upload along with assignment upload
+* Also have a team talk about structuring and implementing how file storage will work for our application when uploading an assignment and editing assignment files.
+  
+
 # Mahir's Log for Cycle 9
 
 

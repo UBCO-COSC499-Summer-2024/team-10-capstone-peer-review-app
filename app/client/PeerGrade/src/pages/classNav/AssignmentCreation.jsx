@@ -26,7 +26,7 @@ import { toast } from '@/components/ui/use-toast';
 import RubricDrawer from '@/components/assign/RubricDrawer';
 import { getCategoriesByClassId } from '@/api/classApi';
 import { addAssignmentToClass } from '@/api/assignmentApi';
-import { addExtensiveRubric } from '@/api/rubricApi';
+// import { addExtensiveRubric } from '@/api/rubricApi';
 
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -50,9 +50,9 @@ const AssignmentCreation = () => {
   const [openCat, setOpenCat] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [value, setValue] = useState("");
-  const fileInputRef = useRef(null);
-  const [selectedFileName, setSelectedFileName] = useState('');
-  const [rubricData, setRubricData] = useState([{ criteria: "", ratings: [""], points: "" }]);
+  // const fileInputRef = useRef(null);
+  // const [selectedFileName, setSelectedFileName] = useState('');
+  // const [rubricData, setRubricData] = useState([{ criteria: "", ratings: [""], points: "" }]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
 
@@ -74,13 +74,7 @@ const AssignmentCreation = () => {
     {
       value: "manual",
       label: "Manual",
-    },
-    {
-      value: "auto",
-      label: "Auto",
-    }
-  ];
-
+    },  
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -102,33 +96,9 @@ const AssignmentCreation = () => {
 
   const onSubmit = async (data) => {
     try {
-      const formData = new FormData();
-      formData.append('classId', classId);
-      formData.append('assignmentData', JSON.stringify({
-        title: data.title,
-        description: data.description,
-        dueDate: data.dueDate,
-        reviewOption: data.reviewOption,
-        maxSubmissions: data.maxSubmissions
-      }));
-      // formData.append('file', data.file[0]); // Append the file
-  
-      const response = await fetch('/api/assignment/add-assignment', {
-        method: 'POST',
-        body: formData
-      });
-  
-      const result = await response.json();
-  
-      if (response.ok) {
-        toast({
-          title: 'Assignment Created',
-          description: 'The assignment and its rubric have been successfully created.',
-          status: 'success'
-        });
-      } else {
-        throw new Error(result.message);
-      }
+      console.log(data)
+      addAssignmentToClass(classId, data)
+
     } catch (error) {
       console.error('Error submitting assignment:', error);
       toast({
@@ -343,13 +313,14 @@ const AssignmentCreation = () => {
                 </FormItem>
               )}
             />
-            <div className='flex gap-2 flex-col w-1/4'>
+            {/* <div className='flex gap-2 flex-col w-1/4'>
               <FormLabel>Rubric</FormLabel>
               <Button variant="outline" onClick={() => setDrawerOpen(true)}>
                 Edit Rubric
               </Button>
-              <RubricDrawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} onSubmit={handleRubricSubmit} />
-            </div>
+              <RubricDrawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)}  />
+               onSubmit={handleRubricSubmit} 
+         </div> */}
             {/* <FormItem>
               <FormLabel htmlFor="file-upload">Upload File</FormLabel>
               <input
@@ -370,7 +341,7 @@ const AssignmentCreation = () => {
               <FormDescription>Attach any PDF files related to the assignment.</FormDescription>
               <FormMessage />
             </FormItem> */}
-            <Button type="submit" className='bg-primary text-white' onClick={onSubmit}>Submit</Button>
+            <Button type="submit"  variant="default">Submit</Button>
           </form>
         </Form>
       </div>

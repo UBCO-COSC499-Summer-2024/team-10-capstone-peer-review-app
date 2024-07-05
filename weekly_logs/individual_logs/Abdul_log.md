@@ -2,7 +2,7 @@
 # Abdul's Log for Cycle 10
 
 
-## Tuesday, July 02, 2024, 05:21 PM - Thursday, July 04, 2024, 05:21 PM
+## Tuesday, July 02, 2024, 05:21 PM - Thursday, July 04, 2024, 09:26 PM
 
 
 ## Tasks worked on this cycle:
@@ -60,9 +60,14 @@
   
 
 ## Time entries from Clockify on this cycle:
-&nbsp; &nbsp; :watch: **Working on the Groups page in Josh's Branch** *(Total duration: 1.9 hours)*  
+
+&nbsp; &nbsp; :watch: **Working on the Presentation slides + minor refactoring & tests** *(Total duration: 2.9 hours)*  
   
-&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 04, 2024, 02:25 PM - Thursday, July 04, 2024, 04:19 PM *(1.9 hours)*  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 04, 2024, 06:30 PM - Thursday, July 04, 2024, 09:26 PM *(2.9 hours)*  
+
+&nbsp; &nbsp; :watch: **Working on the Groups page in Josh's Branch** *(Total duration: 2.75 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 04, 2024, 02:25 PM - Thursday, July 04, 2024, 05:10 PM *(2.75 hours)*  
   
 &nbsp; &nbsp; :watch: **Working on Edit Class UI** *(Total duration: 8.3 hours)*  
   
@@ -114,15 +119,15 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Making a lot more progress now compared to when I wasn't doing as much 1-2 weeks ago!
+* Tests weren't worked on as much as I expected I would. We mostly focused on getting the MVP and the presentation done on-time.
+* While I worked on adding functionality, I didn't get to work on ensuring UI consistency in other parts of the app (that I didn't work on in this cycle).
 
 ## Goals for next cycle
-* 
-* 
-* 
-  
+* Make unit tests for the front-end. Fast.
+* Set up integration testing with the help of the team (to figure out how back-end testing was done for instance).
+* Ramp up coding since we'd be done with the MVP and its presentation by the end of the class.
+
   
 
 # Abdul's Log for Cycle 9

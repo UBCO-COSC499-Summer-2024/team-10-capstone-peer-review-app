@@ -146,7 +146,6 @@ const deleteClass = async (classId) => {
 			}
 		});
 	} catch (error) {
-		console.log(error);
 		throw new apiError("Failed to delete class", 500);
 	}
 };
@@ -187,7 +186,7 @@ const addStudentToClass = async (classId, studentId) => {
 		}
 
 		// Proceed to add the student if class size is not exceeded
-		await prisma.UserInClass.create({
+		await prisma.userInClass.create({
 			data: {
 				userId: studentId,
 				classId: classId
@@ -200,7 +199,8 @@ const addStudentToClass = async (classId, studentId) => {
 		if (error instanceof apiError) {
 			throw error;
 		} else {
-			throw new apiError("Failed to add student to class", 500);
+			console.log(error);
+			throw new apiError(`Failed to add student to class: ${error}`, 500);
 		}
 	}
 };
@@ -573,19 +573,19 @@ const deleteCriterionForRubric = async (criterionId) => {
 
 const createCriterionRating = async (criterionId, ratingData) => {
 	try {
-	  const newRating = await prisma.criteronRating.create({
-		data: {
-		  ...ratingData,
-		  criterionId: criterionId,
-		},
-	  });
-	  return newRating;
+		const newRating = await prisma.criteronRating.create({
+			data: {
+				...ratingData,
+				criterionId: criterionId
+			}
+		});
+		return newRating;
 	} catch (error) {
-	  throw new apiError("Failed to create criterion rating", 500);
+		throw new apiError("Failed to create criterion rating", 500);
 	}
-  };
+};
 
-  //add update and delete and get crieterion rating here
+//add update and delete and get crieterion rating here
 
 // criterion grade operations
 

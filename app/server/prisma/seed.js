@@ -86,7 +86,8 @@ async function main() {
 			description: "This is an advanced test class",
 			startDate: new Date(),
 			endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
-			instructorId: instructor.userId
+			instructorId: instructor.userId, 
+			classSize: 5
 		}
 	});
 

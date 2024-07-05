@@ -75,6 +75,12 @@ const AssignmentCreation = () => {
       value: "manual",
       label: "Manual",
     },  
+    {
+      value: "auto",
+      label: "Auto",
+    }
+  ];
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -95,6 +101,13 @@ const AssignmentCreation = () => {
   };
 
   const onSubmit = async (data) => {
+
+    const simplifiedData = {
+      ...data,
+      file: selectedFileName,
+      rubric: rubricData,
+    };
+
     try {
       console.log(data)
       addAssignmentToClass(classId, data)
@@ -102,11 +115,15 @@ const AssignmentCreation = () => {
     } catch (error) {
       console.error('Error submitting assignment:', error);
       toast({
-        title: 'Error',
-        description: 'There was an error creating the assignment.',
-        status: 'error'
+      title: "You submitted the following values:",
+        description: (
+          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+            <code className="text-white">{JSON.stringify(simplifiedData, null, 2)}</code>
+          </pre>
+        ),
       });
     }
+    console.log('Updated assignment data:', simplifiedData);
   };
 
   const handleRubricSubmit = (rubric) => {

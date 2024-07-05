@@ -32,7 +32,7 @@ No tasks currently in Review
   
 
 #### Back-end Testing for c-10
-![Back end Tests for c-10](./team_log_images/back_end_tests/)  
+![Back end Tests for c-10](./team_log_images/back_end_tests/back_end_tests_c10.png)  
   
   
   

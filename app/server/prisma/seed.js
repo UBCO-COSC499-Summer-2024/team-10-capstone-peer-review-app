@@ -167,6 +167,7 @@ async function main() {
 			description: "This is a test assignment",
 			dueDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
 			classId: class1.classId,
+			assignmentFilePath: "https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK", // dummy file
 			categoryId: category1.categoryId // Link to category
 		}
 	});
@@ -177,6 +178,7 @@ async function main() {
 			description: "This is another test assignment",
 			dueDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
 			classId: class2.classId,
+			assignmentFilePath: "https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK", // dummy file
 			categoryId: category2.categoryId // Link to category
 		}
 	});
@@ -187,6 +189,7 @@ async function main() {
 			description: "This is a test exam",
 			dueDate: new Date(new Date().setMonth(new Date().getMonth() + 2)),
 			classId: class3.classId,
+			assignmentFilePath: "https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK", // dummy file
 			categoryId: category3.categoryId // Link to category
 		}
 	});
@@ -197,6 +200,7 @@ async function main() {
 			description: "This is a test project",
 			dueDate: new Date(new Date().setMonth(new Date().getMonth() + 3)),
 			classId: class4.classId,
+			assignmentFilePath: "https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK", // dummy file
 			categoryId: category4.categoryId // Link to category
 		}
 	});

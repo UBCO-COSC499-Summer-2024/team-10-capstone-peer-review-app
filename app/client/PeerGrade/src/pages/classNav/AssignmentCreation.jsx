@@ -104,13 +104,13 @@ const AssignmentCreation = () => {
 
     const simplifiedData = {
       ...data,
-      file: selectedFileName,
-      rubric: rubricData,
+      // file: selectedFileName,
+      // rubric: rubricData,
     };
 
     try {
-      console.log(data)
-      addAssignmentToClass(classId, data)
+      console.log(simplifiedData)
+      addAssignmentToClass(classId, simplifiedData)
 
     } catch (error) {
       console.error('Error submitting assignment:', error);
@@ -358,7 +358,7 @@ const AssignmentCreation = () => {
               <FormDescription>Attach any PDF files related to the assignment.</FormDescription>
               <FormMessage />
             </FormItem> */}
-            <Button type="submit"  variant="default">Submit</Button>
+            <Button type="submit" onClick={onSubmit} variant="default">Submit</Button>
           </form>
         </Form>
       </div>

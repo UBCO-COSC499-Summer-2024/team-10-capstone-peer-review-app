@@ -82,14 +82,14 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Worked on initiating testing env jest and supertest and research into them to be able to manage api requests
+* Manually tested routes assignments and classes to be able to make them more robust
+* made new checks for boundary cases in submit route
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Test our backend services more and try to automate it as soon as possible
+* Add more routes with more functions between our tables
+* Add more editing and functionalities in our schema (to make their flow logical)
   
   
 

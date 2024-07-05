@@ -87,6 +87,7 @@
   
 
 ## Features completed on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[186](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/186)**: Adding Edit Class UI & functionality + adding/removing students as an instructor/admin (merged into PR [#184](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/184))
 
 ## Completed tasks:
 &nbsp; &nbsp; :purple_circle: **Issue-[176](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/176)**: Refactor forgot password to work with UI  

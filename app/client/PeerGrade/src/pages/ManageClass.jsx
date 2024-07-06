@@ -7,23 +7,13 @@ import { Plus, Calendar as CalendarIcon } from "lucide-react";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { getAllAssignmentsByClassId } from "@/api/assignmentApi";
 import { format, parseISO } from "date-fns";
-import {
-	getClassesByUserId,
-	getAllAssignments,
-	createClass,
-	deleteClass
-} from "@/api/classApi";
+
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger
 } from "@/components/ui/popover";
-import {
-	Command,
-	CommandGroup,
-	CommandItem,
-	CommandList
-} from "@/components/ui/command";
+
 import {
 	Dialog,
 	DialogContent,
@@ -33,7 +23,9 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/utils/utils";
 
-const AddClassModal = ({ show, onClose, onAddClass }) => {
+import { useClass } from "@/contexts/contextHooks/useClass";
+
+const AddClassModal = ({ show, onClose }) => {
 	const [classname, setClassname] = useState("");
 	const [description, setDescription] = useState("");
 	const [term, setTerm] = useState("");
@@ -41,6 +33,8 @@ const AddClassModal = ({ show, onClose, onAddClass }) => {
 	const [startDate, setStartDate] = useState("");
 	const [endDate, setEndDate] = useState("");
 	const [error, setError] = useState("");
+
+	const { isClassLoading, createClass } = useClass();
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -63,25 +57,16 @@ const AddClassModal = ({ show, onClose, onAddClass }) => {
 		};
 
 		const classCreate = async () => {
-			const classData = await createClass(newClass);
-			if (classData.status === "Success") {
-				console.log("class data after create", classData);
-				onAddClass(classData.data);
-			} else {
-				console.error(
-					"An error occurred while creating the class.",
-					classData.message
-				);
-			}
+			createClass(newClass);
+			onClose();
 		};
+
+		if (!show) {
+			return null;
+		}
+
 		classCreate();
-
-		onClose();
 	};
-
-	if (!show) {
-		return null;
-	}
 
 	return (
 		<div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
@@ -229,7 +214,12 @@ const AddClassModal = ({ show, onClose, onAddClass }) => {
 					{error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
 					<div className="flex justify-end">
-						<Button type="button" onClick={onClose} className="mr-2">
+						<Button
+							type="button"
+							onClick={onClose}
+							disabled={isClassLoading}
+							className="mr-2"
+						>
 							Cancel
 						</Button>
 						<Button type="submit">Add Class</Button>
@@ -243,26 +233,20 @@ const AddClassModal = ({ show, onClose, onAddClass }) => {
 const ManageClass = () => {
 	const { user, userLoading } = useUser();
 	const [modalOpen, setModalOpen] = useState(false);
-	const [userClasses, setUserClasses] = useState([]);
 	const [classAssignments, setClassAssignments] = useState({});
 	const [confirmDelete, setConfirmDelete] = useState(false);
 	const [selectedClass, setSelectedClass] = useState({});
 	const [dialogOpen, setDialogOpen] = useState(false);
 
+	const { classes, isClassLoading, deleteClass } = useClass();
+
+	// TODO Refactor to get all classed from classContext
 	useEffect(() => {
 		if (
 			!userLoading &&
 			user &&
 			(user.role === "INSTRUCTOR" || user.role === "ADMIN")
 		) {
-			const fetchClasses = async () => {
-				const classesData = await getClassesByUserId(user.userId);
-				console.log("classes data", classesData);
-				if (classesData) {
-					setUserClasses(Array.isArray(classesData) ? classesData : []);
-				}
-			};
-
 			const fetchAssignments = async (classId) => {
 				const assignmentsData = await getAllAssignmentsByClassId(classId);
 				console.log(assignmentsData.data);
@@ -273,7 +257,7 @@ const ManageClass = () => {
 
 			const fetchAllAssignments = async () => {
 				const assignments = {};
-				for (const classItem of userClasses) {
+				for (const classItem of classes) {
 					assignments[classItem.classId] = await fetchAssignments(
 						classItem.classId
 					);
@@ -281,7 +265,7 @@ const ManageClass = () => {
 				setClassAssignments(assignments);
 			};
 
-			fetchClasses().then(fetchAllAssignments);
+			fetchAllAssignments();
 		}
 	}, [user, userLoading]);
 
@@ -289,21 +273,13 @@ const ManageClass = () => {
 		if (confirmDelete) {
 			setConfirmDelete(false);
 			if (selectedClass) {
-				const classData = await deleteClass(selectedClass.classId);
-				if (classData.status === "Success") {
-					console.log("deleted class", classData);
-					setDialogOpen(false);
-					setUserClasses((prevClasses) =>
-						prevClasses.filter(
-							(classItem) => classItem.classId !== selectedClass.classId
-						)
-					);
-				} else {
-					console.error(
-						"An error occurred while deleting the class.",
-						classData.message
-					);
-				}
+				deleteClass(selectedClass.classId);
+				setDialogOpen(false);
+			} else {
+				console.error(
+					"An error occurred while deleting the class.",
+					classData.message
+				);
 			}
 		} else {
 			setConfirmDelete(true);
@@ -319,14 +295,10 @@ const ManageClass = () => {
 		return <div>You do not have permission to view this page.</div>;
 	}
 
-	const handleAddClass = (newClass) => {
-		setUserClasses((prevClasses) => [...prevClasses, newClass]);
-	};
-
 	return (
 		<div className="max-w-7xl mx-auto p-6">
-			<div className="flex justify-between items-center mb-6">
-				<h1 className="text-3xl font-bold">My Classrooms</h1>
+			<div className="flex justify-between items-center mb-4">
+				<h1 className="text-3xl font-bold mr-3">My Classrooms</h1>
 				<Button
 					onClick={() => setModalOpen(true)}
 					className="flex items-center"
@@ -335,8 +307,13 @@ const ManageClass = () => {
 					Add a class
 				</Button>
 			</div>
+			{classes.length === 0 && (
+				<div className="text-sm text-gray-500 text-center mt-2 w-full">
+					No classes were found.
+				</div>
+			)}
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-				{userClasses.map((classItem) => (
+				{classes.map((classItem) => (
 					<div key={classItem.classId} className="relative">
 						<Link to={`/class/${classItem.classId}`}>
 							<ClassCard
@@ -363,11 +340,7 @@ const ManageClass = () => {
 					</div>
 				))}
 			</div>
-			<AddClassModal
-				show={modalOpen}
-				onClose={() => setModalOpen(false)}
-				onAddClass={handleAddClass}
-			/>
+			<AddClassModal show={modalOpen} onClose={() => setModalOpen(false)} />
 			<Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
 				<DialogContent
 					className={

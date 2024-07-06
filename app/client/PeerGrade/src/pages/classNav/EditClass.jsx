@@ -52,7 +52,7 @@ const EditClass = ({ classItem }) => {
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	const { updateClasses } = useClass();
+	const { updateClasses, isClassLoading } = useClass();
 
 	const form = useForm({
 		resolver: zodResolver(FormSchema),
@@ -84,25 +84,6 @@ const EditClass = ({ classItem }) => {
 
 	const onSubmit = async (updateData) => {
 		updateClasses(classItem.classId, updateData);
-
-		// const classUpdate = await updateClass(classId, updateData);
-		// if (classUpdate.status === "Success") {
-		// 	toast({
-		// 		title: "You submitted the following values:",
-		// 		description: (
-		// 			<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-		// 				<code className="text-white">
-		// 					{JSON.stringify(classUpdate, null, 2)}
-		// 				</code>
-		// 			</pre>
-		// 		)
-		// 	});
-		// } else {
-		// 	console.error(
-		// 		"An error occurred while updating the class.",
-		// 		classUpdate.message
-		// 	);
-		// }
 	};
 
 	const handleBackClick = () => {
@@ -283,7 +264,11 @@ const EditClass = ({ classItem }) => {
 								</FormItem>
 							)}
 						/>
-						<Button type="submit" className="bg-primary text-white">
+						<Button
+							type="submit"
+							className="bg-primary text-white"
+							disabled={isClassLoading}
+						>
 							Submit
 						</Button>
 					</form>

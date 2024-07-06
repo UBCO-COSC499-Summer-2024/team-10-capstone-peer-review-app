@@ -120,7 +120,14 @@ export const createClass = async (newClass) => {
 
 export const updateClass = async (classId, updateData) => {
 	try {
-		const response = await axios.put(`${BASE_URL}/classes/${classId}`, updateData);
+		const response = await axios.put(
+			`${BASE_URL}/classes/${classId}`,
+			updateData
+		);
+		showStatusToast({
+			status: response.data.status,
+			message: response.data.message
+		});
 		return response.data;
 	} catch (error) {
 		handleError(error);
@@ -140,7 +147,10 @@ export const deleteClass = async (classId) => {
 
 export const addStudentToClass = async (classId, studentId) => {
 	try {
-		const response = await axios.post(`${BASE_URL}/classes/add-student`, {classId, studentId});
+		const response = await axios.post(`${BASE_URL}/classes/add-student`, {
+			classId,
+			studentId
+		});
 		return response.data;
 	} catch (error) {
 		handleError(error);
@@ -150,7 +160,10 @@ export const addStudentToClass = async (classId, studentId) => {
 
 export const removeStudentFromClass = async (classId, studentId) => {
 	try {
-		const response = await axios.post(`${BASE_URL}/classes/remove-student`, {classId, studentId});
+		const response = await axios.post(`${BASE_URL}/classes/remove-student`, {
+			classId,
+			studentId
+		});
 		return response.data;
 	} catch (error) {
 		handleError(error);
@@ -160,7 +173,9 @@ export const removeStudentFromClass = async (classId, studentId) => {
 
 export const joinGroup = async (groupId) => {
 	try {
-		const response = await axios.post(`${BASE_URL}/classes/join-group`, {groupId});
+		const response = await axios.post(`${BASE_URL}/classes/join-group`, {
+			groupId
+		});
 		return response.data;
 	} catch (error) {
 		handleError(error);
@@ -170,7 +185,9 @@ export const joinGroup = async (groupId) => {
 
 export const leaveGroup = async (groupId) => {
 	try {
-		const response = await axios.post(`${BASE_URL}/classes/leave-group`, {groupId});
+		const response = await axios.post(`${BASE_URL}/classes/leave-group`, {
+			groupId
+		});
 		return response.data;
 	} catch (error) {
 		handleError(error);

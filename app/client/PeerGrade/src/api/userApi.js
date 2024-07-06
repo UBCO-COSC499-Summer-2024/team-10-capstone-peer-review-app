@@ -23,6 +23,18 @@ export const getUsersByRole = async (role) => {
 	}
 };
 
+export const isEmailVerifiedJWT = async (email) => {
+	try {
+		const response = await axios.get(`${BASE_URL}/`, {
+			email
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
 export const getGroups = async (userId) => {
 	try {
 		const response = await axios.post(`${BASE_URL}/users/get-groups`, {

@@ -92,6 +92,21 @@ export const confirmEmail = async (token) => {
 	}
 };
 
+export const isEmailVerifiedJWT = async (token) => {
+	try {
+		const response = await axios.post(
+			`${BASE_URL}/auth/is-email-verified-jwt`,
+			{
+				token
+			}
+		);
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
 export const sendForgotPasswordEmail = async (email) => {
 	try {
 		const response = await axios.post(`${BASE_URL}/auth/forgot-password`, {

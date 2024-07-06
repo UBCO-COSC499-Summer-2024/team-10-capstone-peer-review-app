@@ -59,7 +59,7 @@ export async function getUserClasses(userId) {
 		if (error instanceof apiError) {
 			throw error;
 		} else {
-			throw new apiError("Failed to retrieve user's classes", 500);
+			throw error;
 		}
 	}
 }
@@ -99,7 +99,7 @@ export async function getUserAssignments(userId) {
 		if (error instanceof apiError) {
 			throw error;
 		} else {
-			throw new apiError("Failed to retrieve user's assignments", 500);
+			throw error;
 		}
 	}
 }
@@ -123,7 +123,7 @@ export async function getGroups(userId) {
 		if (error instanceof apiError) {
 			throw error;
 		} else {
-			throw new apiError("Failed to get groups in class", 500);
+			throw error;
 		}
 	}
 }

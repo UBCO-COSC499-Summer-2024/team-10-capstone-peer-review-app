@@ -17,13 +17,13 @@ import { useClass } from "@/contexts/contextHooks/useClass";
 
 const Class = () => {
 	const { classId } = useParams();
-	const { user, userLoading } = useUser();
 	const [currentView, setCurrentView] = useState("home");
 	const [assignments, setAssignments] = useState([]);
 	const [categories, setCategories] = useState([]);
 
 	const { toast } = useToast();
-	const { classes } = useClass();
+	const { user, userLoading } = useUser();
+	const { classes, setUserClasses } = useClass();
 
 	// Retrieve Specific data from the class context
 	const classItem = classes.find((classItem) => classItem.classId === classId);
@@ -47,7 +47,7 @@ const Class = () => {
 		};
 
 		fetchCategories();
-	}, [classId, toast]);
+	}, [classes, classId, toast]);
 
 	useEffect(() => {
 		const fetchAssignments = async () => {
@@ -67,7 +67,7 @@ const Class = () => {
 		if (!userLoading && user) {
 			fetchAssignments();
 		}
-	}, [classId, user, userLoading, toast]);
+	}, [classes, classId, user, userLoading, toast]);
 
 	if (!classItem) {
 		return <div>Class not found</div>;

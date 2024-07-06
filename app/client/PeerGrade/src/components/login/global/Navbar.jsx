@@ -34,11 +34,9 @@ import { useClass } from "@/contexts/contextHooks/useClass";
 export default function AppNavbar() {
 	const location = useLocation();
 	const navigate = useNavigate();
-
-	const [classesData, setClassesData] = useState([]);
 	const [assignmentsData, setAssignmentsData] = useState([]);
-	const { toast } = useToast();
 	const [searchQuery, setSearchQuery] = useState(""); // State for search query
+	const { toast } = useToast();
 
 	const { user, userLoading, setUserContext, clearUserContext } = useUser();
 	const { classes, setUserClasses, setAdminClasses } = useClass();

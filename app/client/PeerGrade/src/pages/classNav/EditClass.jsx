@@ -1,16 +1,10 @@
-import React, { useRef, useState, useEffect } from "react";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { format, parseISO } from "date-fns";
-import {
-	Calendar as CalendarIcon,
-	ChevronDown as ChevronDownIcon,
-	ChevronUp as ChevronUpIcon,
-	Check as CheckIcon,
-	ArrowLeft
-} from "lucide-react";
+import { Calendar as CalendarIcon, ArrowLeft } from "lucide-react";
 
 import { cn } from "@/utils/utils";
 import { Input } from "@/components/ui/input";
@@ -23,12 +17,6 @@ import {
 	PopoverTrigger
 } from "@/components/ui/popover";
 import {
-	Command,
-	CommandGroup,
-	CommandItem,
-	CommandList
-} from "@/components/ui/command";
-import {
 	Form,
 	FormControl,
 	FormDescription,
@@ -37,16 +25,7 @@ import {
 	FormLabel,
 	FormMessage
 } from "@/components/ui/form";
-import {
-	Dialog,
-	DialogContent,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle
-} from "@/components/ui/dialog";
-import { getClassById, updateClass } from "@/api/classApi";
 
-import { toast } from "@/components/ui/use-toast";
 import { useClass } from "@/contexts/contextHooks/useClass";
 
 // Zod schema for form validation
@@ -87,9 +66,9 @@ const EditClass = ({ classItem }) => {
 		}
 	});
 
-	// Fetch existing class data using classId
+	// Fetch form values from classItem
 	useEffect(() => {
-		const fetchClassData = async () => {
+		const fetchClassData = async (classItem) => {
 			form.reset({
 				classname: classItem.classname,
 				description: classItem.description,
@@ -100,35 +79,38 @@ const EditClass = ({ classItem }) => {
 			});
 		};
 
-		fetchClassData();
-	}, [classId, form]);
+		fetchClassData(classItem);
+	}, [classItem]);
 
 	const onSubmit = async (updateData) => {
-		const classUpdate = await updateClass(classId, updateData);
-		if (classUpdate.status === "Success") {
-			toast({
-				title: "You submitted the following values:",
-				description: (
-					<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-						<code className="text-white">
-							{JSON.stringify(classUpdate, null, 2)}
-						</code>
-					</pre>
-				)
-			});
-		} else {
-			console.error(
-				"An error occurred while updating the class.",
-				classUpdate.message
-			);
-		}
+		updateClasses(classItem.classId, updateData);
+
+		// const classUpdate = await updateClass(classId, updateData);
+		// if (classUpdate.status === "Success") {
+		// 	toast({
+		// 		title: "You submitted the following values:",
+		// 		description: (
+		// 			<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+		// 				<code className="text-white">
+		// 					{JSON.stringify(classUpdate, null, 2)}
+		// 				</code>
+		// 			</pre>
+		// 		)
+		// 	});
+		// } else {
+		// 	console.error(
+		// 		"An error occurred while updating the class.",
+		// 		classUpdate.message
+		// 	);
+		// }
 	};
 
 	const handleBackClick = () => {
 		navigate(-1);
 	};
 
-	const wasDirectlyAccessed = location.pathname === `/class/${classId}/edit`;
+	const wasDirectlyAccessed =
+		location.pathname === `/class/${classItem.classId}/edit`;
 
 	return (
 		<div className="flex bg-white justify-left flex-row p-4 main-container mx-5 w-full">

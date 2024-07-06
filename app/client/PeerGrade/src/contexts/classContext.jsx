@@ -8,18 +8,21 @@ import {
 	updateClass
 } from "@/api/classApi";
 
+import { useUser } from "./contextHooks/useUser";
+
 export const ClassContext = createContext();
 
 export const ClassProvider = ({ children }) => {
 	const [classes, setClasses] = useState([]);
 	const [isClassLoading, setIsClassLoading] = useState(false);
+	const { user } = useUser();
 
-	// This is intended to be used by pages for Instructors or Students
-	const setUserClasses = async (userId) => {
+	// These are the setClass States that retrieve any new data from the backend
+	// setUserClasses = students and instructors
+	const setUserClasses = async () => {
 		try {
 			setIsClassLoading(true);
-			const classesData = await getClassesByUserId(userId);
-			console.log("classesData", classesData);
+			const classesData = await getClassesByUserId(user.userId);
 			if (Array.isArray(classesData.data)) {
 				setClasses(classesData.data);
 			}
@@ -29,7 +32,7 @@ export const ClassProvider = ({ children }) => {
 		}
 	};
 
-	// This is intended to be used by pages for Admins
+	// setAdminClasses = instructors and admins
 	// Depending on how many classes are in the database, this could be a very expensive operation, consider pagination for future implementations
 	const setAdminClasses = async () => {
 		try {
@@ -48,7 +51,6 @@ export const ClassProvider = ({ children }) => {
 			setIsClassLoading(true);
 			const newClassData = await createClass(newClass);
 			setClasses((prevClasses) => [...prevClasses, newClassData.data]);
-			setIsClassLoading(false);
 		} catch (error) {
 			console.error("Failed to add class", error);
 		}
@@ -67,13 +69,10 @@ export const ClassProvider = ({ children }) => {
 		}
 	};
 
-	const updateClasses = async (updatedClass) => {
+	const updateClasses = async (classId, updatedClass) => {
 		try {
 			setIsClassLoading(true);
-			const updatedClassData = await updateClass(
-				updatedClass.classId,
-				updatedClass
-			);
+			const updatedClassData = await updateClass(classId, updatedClass);
 			setClasses((prevClasses) =>
 				prevClasses.map((cls) =>
 					cls.id === updatedClassData.data.classId ? updatedClassData.data : cls

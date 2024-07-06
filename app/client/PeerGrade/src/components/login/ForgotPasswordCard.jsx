@@ -45,10 +45,10 @@ const ForgotPasswordCard = ({ onSwitchToLogin }) => {
 				console.log(response);
 				if (response && response.status === "Success") {
 					setTokenValid(true);
-					query.delete("forgotPasswordToken");
-					navigate("/", {
-						replace: true
-					});
+					// query.delete("forgotPasswordToken");
+					// navigate("/", {
+					// 	replace: true
+					// });
 				} else {
 					setTokenValid(false);
 					setError(response.message);
@@ -63,7 +63,7 @@ const ForgotPasswordCard = ({ onSwitchToLogin }) => {
 		e.preventDefault();
 
 		if (tokenReceived && tokenValid) {
-			if (forgotPasswordToken && password) {
+			if (password) {
 				// if the token is present and password is entered, reset password
 				const passwordRegex =
 					/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -92,6 +92,7 @@ const ForgotPasswordCard = ({ onSwitchToLogin }) => {
 						});
 						onSwitchToLogin();
 					} else {
+						console.log(response);
 						setError(response.message);
 					}
 					setIsLoading(false);

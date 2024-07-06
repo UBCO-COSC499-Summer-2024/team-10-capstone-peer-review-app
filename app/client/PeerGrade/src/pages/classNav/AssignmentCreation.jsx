@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { format } from 'date-fns';
@@ -31,17 +31,18 @@ import { addAssignmentToClass } from '@/api/assignmentApi';
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
+  maxSubmissions: z.number().min(1, "Max submissions is required"),
+  categoryId: z.string().min(1, "Category is required"),
   reviewOption: z.string().min(1, "Review option is required"),
   dueDate: z.date({
     required_error: "Due date is required",
   }),
-  rubric: z.array(z.object({
-    criteria: z.string().min(1, "Criteria is required"),
-    ratings: z.array(z.string().min(1, "Rating is required")),
-    points: z.string().min(1, "Points is required").regex(/^\d+$/, "Points must be a numeric value"),
-  })).min(1, "At least one rubric row is required."),
-  category: z.string().min(1, "Category is required"),
-  file: z.any().optional(),
+  // rubric: z.array(z.object({
+  //   criteria: z.string().min(1, "Criteria is required"),
+  //   ratings: z.string().min(1, "Ratings is required"),
+  //   points: z.string().min(1, "Points is required").regex(/^\d+$/, "Points must be a numeric value"),
+  // })).min(1, "At least one rubric row is required."),
+  // file: z.any().optional(),
 });
 
 const AssignmentCreation = () => {
@@ -50,36 +51,49 @@ const AssignmentCreation = () => {
   const [openCat, setOpenCat] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [value, setValue] = useState("");
-  // const fileInputRef = useRef(null);
-  // const [selectedFileName, setSelectedFileName] = useState('');
+  const fileInputRef = useRef(null);
+  const [selectedFileName, setSelectedFileName] = useState('');
   // const [rubricData, setRubricData] = useState([{ criteria: "", ratings: [""], points: "" }]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
+
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       title: "",
       description: "",
-      maxSubmissions: "",
-      category: "",
+      maxSubmissions: 1,
+      categoryId: "",
       reviewOption: "",
       dueDate: null,
-      rubric: [],
+      // rubric: [],
       // file: null,
     }
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "rubric"
   });
 
   const dropdown_options = [
     {
       value: "manual",
       label: "Manual",
-    },  
+    },
     {
       value: "auto",
       label: "Auto",
     }
   ];
+
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    setSelectedFileName(selectedFile.name);
+    form.setValue("file", selectedFile);
+  };
+
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -94,25 +108,17 @@ const AssignmentCreation = () => {
     fetchCategories();
   }, [classId]);
 
-  const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
-    setSelectedFileName(selectedFile.name);
-    form.setValue("file", selectedFile);
-  };
-
-  const onSubmit = async (data) => {
-
+  const onSubmit = (data) => {
     const simplifiedData = {
       ...data,
       // file: selectedFileName,
-      // rubric: rubricData,
     };
 
     try {
-      console.log(simplifiedData)
+      console.log('simp data:', simplifiedData)
       addAssignmentToClass(classId, simplifiedData)
 
-    } catch (error) {
+    } catch(error) {
       console.error('Error submitting assignment:', error);
       toast({
       title: "You submitted the following values:",
@@ -124,11 +130,6 @@ const AssignmentCreation = () => {
       });
     }
     console.log('Updated assignment data:', simplifiedData);
-  };
-
-  const handleRubricSubmit = (rubric) => {
-    setRubricData(rubric);
-    setDrawerOpen(false);
   };
 
   return (
@@ -165,14 +166,14 @@ const AssignmentCreation = () => {
                 </FormItem>
               )}
             />
-            <FormField
+             <FormField
               control={form.control}
               name="maxSubmissions"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Attempts</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g. 5" {...field} />
+                    <Input  {...field} type="number" />
                   </FormControl>
                   <FormDescription>Max number of submissions.</FormDescription>
                   <FormMessage />
@@ -274,7 +275,7 @@ const AssignmentCreation = () => {
             />
             <FormField
               control={form.control}
-              name="category"
+              name="categoryId"
               render={({ field }) => (
                 <FormItem style={{ display: 'flex', flexDirection: 'column' }}>
                   <FormLabel>Category</FormLabel>
@@ -330,14 +331,70 @@ const AssignmentCreation = () => {
                 </FormItem>
               )}
             />
-            {/* <div className='flex gap-2 flex-col w-1/4'>
+            {/* <div>
               <FormLabel>Rubric</FormLabel>
-              <Button variant="outline" onClick={() => setDrawerOpen(true)}>
-                Edit Rubric
-              </Button>
-              <RubricDrawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)}  />
-               onSubmit={handleRubricSubmit} 
-         </div> */}
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Criteria</TableHead>
+                    <TableHead>Ratings</TableHead>
+                    <TableHead>Points</TableHead>
+                    <TableHead></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {fields.map((item, index) => (
+                    <TableRow key={item.id}>
+                      <TableCell>
+                        <FormField
+                          control={form.control}
+                          name={`rubric.${index}.criteria`}
+                          render={({ field }) => (
+                            <FormControl>
+                              <Input {...field} placeholder="Criteria" />
+                            </FormControl>
+                          )}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <FormField
+                          control={form.control}
+                          name={`rubric.${index}.ratings`}
+                          render={({ field }) => (
+                            <FormControl>
+                              <Input {...field} placeholder="Ratings" />
+                            </FormControl>
+                          )}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <FormField
+                          control={form.control}
+                          name={`rubric.${index}.points`}
+                          render={({ field }) => (
+                            <FormControl>
+                              <Input {...field} placeholder="Points" type="number" className="hide-arrows"/>
+                            </FormControl>
+                          )}
+                        />
+                      </TableCell>
+                      <TableCell className='flex flex-row space-x-2'>
+                        {fields.length > 1 && (
+                          <Button type="button" variant="outline" onClick={() => removeRow(index)}>
+                            <MinusCircle className="h-4 w-4" />
+                          </Button>
+                        )}
+                        {index === fields.length - 1 && (
+                          <Button type="button" variant="outline" onClick={addRow}>
+                            <Plus className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div> */}
             {/* <FormItem>
               <FormLabel htmlFor="file-upload">Upload File</FormLabel>
               <input
@@ -358,7 +415,7 @@ const AssignmentCreation = () => {
               <FormDescription>Attach any PDF files related to the assignment.</FormDescription>
               <FormMessage />
             </FormItem> */}
-            <Button type="submit" onClick={onSubmit} variant="default">Submit</Button>
+            <Button type="submit" className='bg-primary text-white'>Submit</Button>
           </form>
         </Form>
       </div>

@@ -17,7 +17,6 @@ import {
 	navigationMenuTriggerStyle
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
 	HoverCard,
@@ -26,7 +25,7 @@ import {
 } from "@/components/ui/hover-card";
 
 import { useUser } from "@/contexts/contextHooks/useUser";
-import { getCurrentUser, logoutUser } from "@/api/authApi";
+import { logoutUser } from "@/api/authApi";
 import { getClassesByUserId, getAllAssignments } from "@/api/classApi";
 
 export default function AppNavbar() {
@@ -38,22 +37,7 @@ export default function AppNavbar() {
 	const { toast } = useToast();
 	const [searchQuery, setSearchQuery] = useState(""); // State for search query
 
-	useEffect(() => {
-		const fetchCurrentUser = async () => {
-			try {
-				const currentUser = await getCurrentUser();
-				setUserContext(currentUser);
-			} catch (error) {
-				toast({
-					title: "Error",
-					description: "Failed to fetch current user",
-					variant: "destructive"
-				});
-			}
-		};
-
-		fetchCurrentUser();
-	}, [toast]);
+	setUserContext(); // Fetch user data
 
 	useEffect(() => {
 		if (user) {

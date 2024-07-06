@@ -207,15 +207,18 @@ export const getCriterionInRubric = asyncErrorHandler(async (req, res) => {
 
 export const addCriterionRating = asyncErrorHandler(async (req, res) => {
 	const { criterionId, ratingData } = req.body;
-	const newRating = await classService.createCriterionRating(criterionId, ratingData);
+	const newRating = await classService.createCriterionRating(
+		criterionId,
+		ratingData
+	);
 	return res.status(201).json({
-	  status: "Success",
-	  message: "Criterion rating successfully added",
-	  data: newRating,
+		status: "Success",
+		message: "Criterion rating successfully added",
+		data: newRating
 	});
-  });
+});
 
-  //add update and delete here
+//add update and delete here
 
 // Controller methods for criterion Grade operations
 export const addCriterionGrade = asyncErrorHandler(async (req, res) => {

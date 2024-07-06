@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ClassCard from '@/components/class/ClassCard';
 import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
+import { Calendar } from "@/components/ui/calendar";
+import { Plus, Calendar as CalendarIcon } from 'lucide-react';
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { getAllAssignmentsByClassId } from '@/api/assignmentApi';
+import { format, parseISO } from "date-fns";
 import { getClassesByUserId, getAllAssignments, createClass, deleteClass } from "@/api/classApi";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
 import {
     Dialog,
     DialogContent,
@@ -13,20 +17,33 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
+import { cn } from '@/utils/utils';
 
 const AddClassModal = ({ show, onClose, onAddClass }) => {
   const [classname, setClassname] = useState('');
   const [description, setDescription] = useState('');
   const [term, setTerm] = useState('');
   const [size, setSize] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    console.log("start date", startDate);
+    console.log("end date", endDate);
+
+    if (startDate === '' || endDate === '') {
+      setError('Please select start and end dates for the class.');
+      return;
+    }
+
     const newClass = {
       classname,
       description,
-      startDate: new Date(),                                                    // Hardcoded start date for now
-      endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),  // Hardcoded end date for now
+      startDate: new Date(startDate),
+      endDate: new Date(endDate),
       term,
       classSize: parseInt(size, 10)
     };
@@ -107,6 +124,67 @@ const AddClassModal = ({ show, onClose, onAddClass }) => {
               className="w-full px-3 py-2 border rounded-md"
             />
           </div>
+          <div className='flex flex-col space-y-1 mb-4'>
+            <label htmlFor="startDate" className="block text-sm font-medium text-gray-700">
+              Start Date
+            </label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "w-[200px] font-normal bg-white flex flex-start",
+                    !startDate && "text-muted-foreground"
+                  )}
+                  id="startDate"
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {startDate ? format(startDate, "PPP") : <span>Pick a date</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <Calendar
+                  mode="single"
+                  selected={startDate}
+                  onSelect={(currentValue) => setStartDate(currentValue)}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+            <span className='text-sm text-gray-500'>Select the end date for the class.</span>
+          </div>
+          <div className='flex flex-col space-y-1 mb-4'>
+            <label htmlFor="endDate" className="block text-sm font-medium text-gray-700">
+              End Date
+            </label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "w-[200px] font-normal bg-white flex flex-start",
+                    !endDate && "text-muted-foreground"
+                  )}
+                  id="startDate"
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {endDate ? format(endDate, "PPP") : <span>Pick a date</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <Calendar
+                  mode="single"
+                  selected={endDate}
+                  onSelect={(currentValue) => setEndDate(currentValue)}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+            <span className='text-sm text-gray-500'>Select the end date for the class.</span>
+          </div>
+
+					{error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+          
           <div className="flex justify-end">
             <Button type="button" onClick={onClose} className="mr-2">
               Cancel

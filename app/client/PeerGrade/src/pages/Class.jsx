@@ -11,7 +11,7 @@ import EditClass from "./classNav/EditClass";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { getAllAssignmentsByClassId } from "@/api/assignmentApi";
-import { getCategoriesByClassId, getClassById } from "@/api/classApi";
+import { getCategoriesByClassId } from "@/api/classApi";
 import { useToast } from "@/components/ui/use-toast";
 import { useClass } from "@/contexts/contextHooks/useClass";
 
@@ -23,7 +23,7 @@ const Class = () => {
 
 	const { toast } = useToast();
 	const { user, userLoading } = useUser();
-	const { classes, setUserClasses } = useClass();
+	const { classes } = useClass();
 
 	// Retrieve Specific data from the class context
 	const classItem = classes.find((classItem) => classItem.classId === classId);
@@ -131,11 +131,12 @@ const Class = () => {
 
 	return (
 		<div className="w-screen main-container mx-5 p-6">
-			<div className="flex flex-col gap-4 bg-gray-200 p-4 mb-6 rounded-lg">
-				<h1 className="text-3xl font-bold">
-					{classItem.classname}: {classItem.instructor?.firstname}{" "}
-					{classItem.instructor?.lastname}
-				</h1>
+			<div className="flex flex-col gap-1 bg-gray-200 p-4 mb-6 rounded-lg">
+				<h1 className="text-3xl font-bold">{classItem.classname}</h1>
+				<span className="ml-1 text-sm text-gray-500 mb-2 ">
+					{" "}
+					{classItem.description}{" "}
+				</span>
 				<div className="flex rounded-lg">
 					<div className="flex justify-between items-center">
 						<Menubar className="bg-gray-200">

@@ -73,11 +73,13 @@ export const ClassProvider = ({ children }) => {
 		try {
 			setIsClassLoading(true);
 			const updatedClassData = await updateClass(classId, updatedClass);
-			setClasses((prevClasses) =>
-				prevClasses.map((cls) =>
-					cls.id === updatedClassData.data.classId ? updatedClassData.data : cls
-				)
-			);
+			if (updatedClassData.status === "Success") {
+				setClasses((prevClasses) => {
+					return prevClasses.map((classItem) =>
+						classItem.classId === classId ? updatedClassData.data : classItem
+					);
+				});
+			}
 			setIsClassLoading(false);
 		} catch (error) {
 			console.error("Failed to update class", error);

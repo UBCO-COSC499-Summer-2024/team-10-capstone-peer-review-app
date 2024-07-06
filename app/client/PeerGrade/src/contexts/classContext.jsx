@@ -8,17 +8,18 @@ import {
 	updateClass
 } from "@/api/classApi";
 
-const ClassContext = createContext();
+export const ClassContext = createContext();
 
 export const ClassProvider = ({ children }) => {
 	const [classes, setClasses] = useState([]);
 	const [isClassLoading, setIsClassLoading] = useState(false);
 
 	// This is intended to be used by pages for Instructors or Students
-	const getUserClasses = async (userId) => {
+	const setUserClasses = async (userId) => {
 		try {
 			setIsClassLoading(true);
 			const classesData = await getClassesByUserId(userId);
+			console.log("classesData", classesData);
 			if (Array.isArray(classesData.data)) {
 				setClasses(classesData.data);
 			}
@@ -30,7 +31,7 @@ export const ClassProvider = ({ children }) => {
 
 	// This is intended to be used by pages for Admins
 	// Depending on how many classes are in the database, this could be a very expensive operation, consider pagination for future implementations
-	const getAdminClasses = async () => {
+	const setAdminClasses = async () => {
 		try {
 			setIsClassLoading(true);
 			const classesData = await getAllClasses();
@@ -89,8 +90,8 @@ export const ClassProvider = ({ children }) => {
 			value={{
 				classes,
 				isClassLoading,
-				getUserClasses,
-				getAdminClasses,
+				setUserClasses,
+				setAdminClasses,
 				addClass,
 				removeClass,
 				updateClasses

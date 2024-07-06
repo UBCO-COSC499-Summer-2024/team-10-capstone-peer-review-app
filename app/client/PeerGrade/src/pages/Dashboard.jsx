@@ -12,41 +12,35 @@ import GroupCard from "@/components/class/GroupCard";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { format, parseISO } from "date-fns";
-import { useUser } from "@/contexts/contextHooks/useUser";
-import { getClassesByUserId, getAllAssignments } from "@/api/classApi";
+
+import { getAllAssignments } from "@/api/classApi";
 import { getGroups } from "@/api/userApi";
+
+import { useUser } from "@/contexts/contextHooks/useUser";
+import { useClass } from "@/contexts/contextHooks/useClass";
 
 function Dashboard() {
 	const { user, userLoading } = useUser();
 
-	const [classes, setClasses] = useState([]);
+	const { classes } = useClass();
 	const [assignments, setAssignments] = useState([]);
 	const [groups, setGroups] = useState([]);
-	const [reviews, setReviews] = useState([]);
+	// const [reviews, setReviews] = useState([]);
 	const { toast } = useToast();
 
 	useEffect(() => {
-		if (!userLoading && user) {
-			const fetchClasses = async () => {
-				try {
-					const classesData = await getClassesByUserId(user.userId);
-					console.log(classesData);
-					setClasses(Array.isArray(classesData) ? classesData : []);
-				} catch (error) {
-					toast({
-						title: "Error",
-						description: "Failed to fetch classes",
-						variant: "destructive"
-					});
-				}
-			};
-
+		// No need to check if userLoading, if user is truthy, will not run if its undefined or null
+		if (user) {
+			console.log("classes", classes);
 			const fetchAssignments = async () => {
 				try {
 					const assignmentsData = await getAllAssignments(user.userId);
-					console.log(assignmentsData);
-					setAssignments(Array.isArray(assignmentsData) ? assignmentsData : []);
+					console.log("assignmentsData", assignmentsData);
+					setAssignments(
+						Array.isArray(assignmentsData.data) ? assignmentsData.data : []
+					);
 				} catch (error) {
+					console.error("Failed to fetch assignments", error);
 					toast({
 						title: "Error",
 						description: "Failed to fetch assignments",
@@ -83,12 +77,13 @@ function Dashboard() {
 			// 	}
 			// };
 
-			fetchClasses();
 			fetchAssignments();
 			fetchGroups();
 			// fetchReviews();
 		}
 	}, [user]);
+
+	useEffect(() => {}, [user]);
 
 	const assignmentData = assignments.filter(
 		(assignment) => assignment.evaluation_type !== "peer"

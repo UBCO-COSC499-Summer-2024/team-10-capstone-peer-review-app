@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
 import {
 	BrowserRouter as Router,
 	Routes,
 	Route,
-	useLocation,
-	useNavigate
+	useLocation
 } from "react-router-dom";
 import { UserProvider } from "./contexts/userContext";
-import axios from "axios";
+import { ClassProvider } from "./contexts/classContext";
 
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -32,7 +30,9 @@ function App() {
 		<Router>
 			<TitleUpdater />
 			<UserProvider>
-				<MainLayout />
+				<ClassProvider>
+					<MainLayout />
+				</ClassProvider>
 			</UserProvider>
 		</Router>
 	);
@@ -51,7 +51,6 @@ function MainLayout() {
 			<div className="main-container flex justify-center flex-1">
 				<Routes>
 					<Route path="/" element={<Login />} />
-					{/* All the routes that need the userContext (the global user state)*/}
 					<Route path="/dashboard" element={<Dashboard />} />
 					<Route path="/class/:classId" element={<Class />} />
 					<Route path="/class/:classId/edit" element={<EditClass />} />

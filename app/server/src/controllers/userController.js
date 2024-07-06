@@ -25,14 +25,22 @@ export const getUserClasses = asyncErrorHandler(async (req, res) => {
 	console.log("getUserClasses endpoint hit");
 	const userId = req.body.userId;
 	const classes = await userService.getUserClasses(userId);
-	res.status(200).json(classes);
+	res.status(200).json({
+		status: "Success",
+		message: "User classes fetched",
+		data: classes
+	});
 });
 
 export const getUserAssignments = asyncErrorHandler(async (req, res) => {
 	console.log("getUserAssignments endpoint hit");
 	const userId = req.body.userId;
 	const assignments = await userService.getUserAssignments(userId);
-	res.status(200).json(assignments);
+	res.status(200).json({
+		status: "Success",
+		message: "User assignments fetched",
+		data: assignments
+	});
 });
 
 export const getGroups = asyncErrorHandler(async (req, res) => {
@@ -40,6 +48,7 @@ export const getGroups = asyncErrorHandler(async (req, res) => {
 	const groupData = await userService.getGroups(userId);
 	res.status(200).json({
 		status: "Success",
+		message: "User groups fetched",
 		data: groupData
 	});
 });

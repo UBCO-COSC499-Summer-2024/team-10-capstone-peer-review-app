@@ -24,39 +24,44 @@ import {
 	HoverCardTrigger
 } from "@/components/ui/hover-card";
 
-import { useUser } from "@/contexts/contextHooks/useUser";
 import { logoutUser } from "@/api/authApi";
-import { getClassesByUserId, getAllAssignments } from "@/api/classApi";
+import { getAllAssignments } from "@/api/classApi";
+
+import { useUser } from "@/contexts/contextHooks/useUser";
+
+import { useClass } from "@/contexts/contextHooks/useClass";
 
 export default function AppNavbar() {
 	const location = useLocation();
 	const navigate = useNavigate();
-	const { user, userLoading, setUserContext, clearUserContext } = useUser();
+
 	const [classesData, setClassesData] = useState([]);
 	const [assignmentsData, setAssignmentsData] = useState([]);
 	const { toast } = useToast();
 	const [searchQuery, setSearchQuery] = useState(""); // State for search query
 
-	// Fetch the user data on mount
+	const { user, userLoading, setUserContext, clearUserContext } = useUser();
+	const { classes, setUserClasses, setAdminClasses } = useClass();
+
+	// Fetch the user data on mount, this is from the userContext
 	useEffect(() => {
 		setUserContext();
 	}, []);
 
+	// Fetch the classes data on mount, this is from the classContext
 	useEffect(() => {
 		if (user) {
-			const fetchClasses = async () => {
-				try {
-					const classes = await getClassesByUserId(user.userId);
-					setClassesData(Array.isArray(classes) ? classes : []);
-				} catch (error) {
-					toast({
-						title: "Error",
-						description: "Failed to fetch classes",
-						variant: "destructive"
-					});
-				}
-			};
+			console.log("user", user);
+			if (user.role === "ADMIN") {
+				setAdminClasses();
+			} else {
+				setUserClasses(user.userId);
+			}
+		}
+	}, [user]);
 
+	useEffect(() => {
+		if (user) {
 			const fetchAssignments = async () => {
 				try {
 					const assignments = await getAllAssignments(user.userId);
@@ -69,11 +74,9 @@ export default function AppNavbar() {
 					});
 				}
 			};
-
-			fetchClasses();
 			fetchAssignments();
 		}
-	}, [user, toast]);
+	}, [user]);
 
 	const handleLogout = async () => {
 		try {
@@ -89,14 +92,16 @@ export default function AppNavbar() {
 		}
 	};
 
-	const search = () => {
-		const trimmedQuery = searchQuery.trim();
-		if (trimmedQuery) {
-			navigate(`/search?query=${trimmedQuery}`);
-		} else {
-			navigate(`/search`);
-		}
-	};
+	// This is no longer used yes? I think it now is used in admin for classes, should rename component?
+
+	// const search = () => {
+	// 	const trimmedQuery = searchQuery.trim();
+	// 	if (trimmedQuery) {
+	// 		navigate(`/search?query=${trimmedQuery}`);
+	// 	} else {
+	// 		navigate(`/search`);
+	// 	}
+	// };
 
 	const getInitials = (firstName, lastName) => {
 		const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : "";
@@ -181,7 +186,7 @@ export default function AppNavbar() {
 						</NavigationMenuTrigger>
 						<NavigationMenuContent>
 							<ul className="bg-white grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-								{classesData.map((classItem) => (
+								{classes.map((classItem) => (
 									<ListItem
 										key={classItem.classId}
 										title={classItem.classname}

@@ -10,42 +10,27 @@ import AssignmentCreation from "./classNav/AssignmentCreation";
 import EditClass from "./classNav/EditClass";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/contexts/contextHooks/useUser";
-import { getAllAssignmentsByClassId } from '@/api/assignmentApi';
-import { getCategoriesByClassId, getClassById } from '@/api/classApi';
-import { useToast } from '@/components/ui/use-toast';
+import { getAllAssignmentsByClassId } from "@/api/assignmentApi";
+import { getCategoriesByClassId, getClassById } from "@/api/classApi";
+import { useToast } from "@/components/ui/use-toast";
+import { useClass } from "@/contexts/contextHooks/useClass";
 
 const Class = () => {
 	const { classId } = useParams();
 	const { user, userLoading } = useUser();
 	const [currentView, setCurrentView] = useState("home");
-	const [classItem, setClassItem] = useState(null);
 	const [assignments, setAssignments] = useState([]);
 	const [categories, setCategories] = useState([]);
-	const [refresh, setRefresh] = useState(false);
-	const { toast } = useToast();
 
-	const handleRefresh = () => {
-		setRefresh(!refresh);
-	};
+	const { toast } = useToast();
+	const { classes } = useClass();
+
+	// Retrieve Specific data from the class context
+	const classItem = classes.find((classItem) => classItem.classId === classId);
 
 	// Ask kevin about clean up functions? abort controllers?
-	useEffect(() => {
-		const fetchClassData = async () => {
-			try {
-				const fetchedClass = await getClassById(classId);
-				setClassItem(fetchedClass.data);
-				console.log(fetchedClass.data);
-			} catch (error) {
-				toast({
-					title: "Error",
-					description: "Failed to fetch class data",
-					variant: "destructive"
-				});
-			}
-		};
 
-		fetchClassData();
-	}, [classId, refresh, toast]);
+	// TODO add class context to class page
 
 	useEffect(() => {
 		const fetchCategories = async () => {
@@ -70,6 +55,7 @@ const Class = () => {
 				const fetchedAssignments = await getAllAssignmentsByClassId(classId);
 				setAssignments(fetchedAssignments.data);
 			} catch (error) {
+				console.error("Failed to fetch assignments", error);
 				toast({
 					title: "Error",
 					description: "Failed to fetch assignments",
@@ -100,7 +86,7 @@ const Class = () => {
 			case "assignmentCreation":
 				return <AssignmentCreation />;
 			case "edit":
-				return <EditClass onUpdate={handleRefresh}/>;
+				return <EditClass classItem={classItem} />;
 			default:
 				return (
 					<>
@@ -128,8 +114,8 @@ const Class = () => {
 									{category.assignments.map((assignment) => (
 										<div key={assignment.assignmentId} className="flex w-full">
 											<Link
-											to={`/class/${classId}/assignment/${assignment.assignmentId}`}
-											className="flex items-center space-x-2 bg-gray-100 p-2 rounded hover:bg-gray-200 transition-colors w-full"
+												to={`/class/${classId}/assignment/${assignment.assignmentId}`}
+												className="flex items-center space-x-2 bg-gray-100 p-2 rounded hover:bg-gray-200 transition-colors w-full"
 											>
 												<span>{assignment.title}</span>
 											</Link>
@@ -196,11 +182,11 @@ const Class = () => {
 							{(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (
 								<MenubarMenu>
 									<MenubarTrigger
-									className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
-									onClick={() => setCurrentView("edit")}
-								>
-									EDIT
-								</MenubarTrigger>
+										className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
+										onClick={() => setCurrentView("edit")}
+									>
+										EDIT
+									</MenubarTrigger>
 								</MenubarMenu>
 							)}
 						</Menubar>

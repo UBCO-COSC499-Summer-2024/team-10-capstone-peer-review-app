@@ -1,4 +1,4 @@
 import { useContext } from "react";
-import { classContext } from "@/contexts/classContext";
+import { ClassContext } from "@/contexts/classContext";
 
-export const useClass = () => useContext(classContext);
+export const useClass = () => useContext(ClassContext);

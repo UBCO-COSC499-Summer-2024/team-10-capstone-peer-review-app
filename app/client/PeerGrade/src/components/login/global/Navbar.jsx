@@ -37,7 +37,10 @@ export default function AppNavbar() {
 	const { toast } = useToast();
 	const [searchQuery, setSearchQuery] = useState(""); // State for search query
 
-	setUserContext(); // Fetch user data
+	// Fetch the user data on mount
+	useEffect(() => {
+		setUserContext();
+	}, []);
 
 	useEffect(() => {
 		if (user) {

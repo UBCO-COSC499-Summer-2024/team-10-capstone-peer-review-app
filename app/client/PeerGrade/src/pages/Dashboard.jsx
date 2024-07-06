@@ -58,7 +58,7 @@ function Dashboard() {
 			const fetchGroups = async () => {
 				try {
 					const groups = await getGroups(user.userId);
-					console.log("groups",groups);
+					console.log("groups", groups);
 					setGroups(Array.isArray(groups) ? groups : []);
 				} catch (error) {
 					toast({
@@ -88,7 +88,7 @@ function Dashboard() {
 			fetchGroups();
 			// fetchReviews();
 		}
-	}, [user, userLoading, toast]);
+	}, [user]);
 
 	const assignmentData = assignments.filter(
 		(assignment) => assignment.evaluation_type !== "peer"
@@ -155,9 +155,7 @@ function Dashboard() {
 					<ArrowUpDown className="ml-2 h-4 w-4" />
 				</Button>
 			),
-			cell: ({ row }) => (
-				<span>{parseISO(row.getValue("dueDate"))}</span>
-			)
+			cell: ({ row }) => <span>{parseISO(row.getValue("dueDate"))}</span>
 		},
 		{
 			accessorKey: "action",

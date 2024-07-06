@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState } from "react";
 import { getCurrentUser } from "@/api/authApi";
 
 export const UserContext = createContext();
@@ -6,10 +6,6 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
 	const [userLoading, setUserLoading] = useState(false);
-
-	useEffect(() => {
-		setUserContext();
-	}, []);
 
 	const setUserContext = async () => {
 		try {

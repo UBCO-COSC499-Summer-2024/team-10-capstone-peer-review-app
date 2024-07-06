@@ -24,7 +24,6 @@ import {
 import { cn } from "@/utils/utils";
 
 import { useClass } from "@/contexts/contextHooks/useClass";
-import { create } from "domain";
 
 const AddClassModal = ({ show, onClose }) => {
 	const [classname, setClassname] = useState("");

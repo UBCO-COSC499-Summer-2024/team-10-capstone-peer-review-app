@@ -124,17 +124,6 @@ const createClass = async (newClass, instructorId) => {
 				endDate,
 				term,
 				classSize
-			},
-			include: {
-				instructor: {
-					select: {
-						userId: true,
-						email: true,
-						firstname: true,
-						lastname: true,
-						classesInstructed: true
-					}
-				}
 			}
 		});
 		return createdClass;

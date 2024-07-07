@@ -1,0 +1,179 @@
+// Import necessary modules and services
+import rubricService from "../services/rubricService.js";
+import asyncErrorHandler from "../utils/asyncErrorHandler.js";
+
+export const addRubricsToAssignment = asyncErrorHandler(async (req, res) => {
+	const creatorId = req.user.userId;
+	const { assignmentId, rubricData } = req.body;
+	const updatedClass = await rubricService.createRubricsForAssignment(
+		creatorId,
+		assignmentId,
+		rubricData
+	);
+	return res.status(200).json({
+		status: "Success",
+		message: "Rubric successfully added to assignment",
+		data: updatedClass
+	});
+});
+
+export const removeRubricsFromAssignment = asyncErrorHandler(
+	async (req, res) => {
+		const { rubricId } = req.body;
+		const updatedClass =
+			await rubricService.deleteRubricsForAssignment(rubricId);
+		return res.status(200).json({
+			status: "Success",
+			message: "Rubric successfully removed from assignment",
+			data: updatedClass
+		});
+	}
+);
+
+export const updateRubricsInAssignment = asyncErrorHandler(async (req, res) => {
+	const { rubricId, updateData } = req.body;
+	const updatedClass = await rubricService.updateRubricsForAssignment(
+		rubricId,
+		updateData
+	);
+	return res.status(200).json({
+		status: "Success",
+		message: "Rubric successfully updated in assignment",
+		data: updatedClass
+	});
+});
+
+export const getRubricsInAssignment = asyncErrorHandler(async (req, res) => {
+	const { assignmentId } = req.body;
+	const rubricData = await rubricService.getRubricsForAssignment(assignmentId);
+	return res.status(200).json({
+		status: "Success",
+		data: rubricData
+	});
+});
+
+// Controller methods for criterion operations
+export const addCriterionToRubric = asyncErrorHandler(async (req, res) => {
+	const { rubricId, criterionData } = req.body;
+	const updatedClass = await rubricService.createCriterionForRubric(
+		rubricId,
+		criterionData
+	);
+	return res.status(200).json({
+		status: "Success",
+		message: "Criterion successfully added to rubric",
+		data: updatedClass
+	});
+});
+
+export const removeCriterionFromRubric = asyncErrorHandler(async (req, res) => {
+	const { criterionId } = req.body;
+	const updatedClass = await rubricService.deleteCriterionForRubric(criterionId);
+	return res.status(200).json({
+		status: "Success",
+		message: "Criterion successfully removed from rubric",
+		data: updatedClass
+	});
+});
+
+export const updateCriterionInRubric = asyncErrorHandler(async (req, res) => {
+	const { criterionId, updateData } = req.body;
+	const updatedClass = await rubricService.updateCriterionForRubric(
+		criterionId,
+		updateData
+	);
+	return res.status(200).json({
+		status: "Success",
+		message: "Criterion successfully updated in rubric",
+		data: updatedClass
+	});
+});
+
+export const getCriterionInRubric = asyncErrorHandler(async (req, res) => {
+	const { rubricId } = req.body;
+	const criterionData = await rubricService.getCriterionForRubric(rubricId);
+	return res.status(200).json({
+		status: "Success",
+		data: criterionData
+	});
+});
+
+export const addCriterionRating = asyncErrorHandler(async (req, res) => {
+	const { criterionId, ratingData } = req.body;
+	const newRating = await rubricService.createCriterionRating(
+		criterionId,
+		ratingData
+	);
+	return res.status(201).json({
+		status: "Success",
+		message: "Criterion rating successfully added",
+		data: newRating
+	});
+});
+
+//add update and delete here
+
+// Controller methods for criterion Grade operations
+export const addCriterionGrade = asyncErrorHandler(async (req, res) => {
+	const { rubricId, criterionData } = req.body;
+	const updatedClass = await rubricService.createCriterionForRubric(
+		rubricId,
+		criterionData
+	);
+	return res.status(200).json({
+		status: "Success",
+		message: "Criterion successfully added to rubric",
+		data: updatedClass
+	});
+});
+
+export const removeCriterionGrade = asyncErrorHandler(async (req, res) => {
+	const { criterionId } = req.body;
+	const updatedClass = await rubricService.deleteCriterionForRubric(criterionId);
+	return res.status(200).json({
+		status: "Success",
+		message: "Criterion successfully removed from rubric",
+		data: updatedClass
+	});
+});
+
+export const updateCriterionGrade = asyncErrorHandler(async (req, res) => {
+	const { criterionId, updateData } = req.body;
+	const updatedClass = await rubricService.updateCriterionForRubric(
+		criterionId,
+		updateData
+	);
+	return res.status(200).json({
+		status: "Success",
+		message: "Criterion successfully updated in rubric",
+		data: updatedClass
+	});
+});
+
+export const getCriterionGrade = asyncErrorHandler(async (req, res) => {
+	const { rubricId } = req.body;
+	const criterionData = await rubricService.getCriterionForRubric(rubricId);
+	return res.status(200).json({
+		status: "Success",
+		data: criterionData
+	});
+});
+
+// Export all controller methods
+export default {
+	addRubricsToAssignment,
+	removeRubricsFromAssignment,
+	updateRubricsInAssignment,
+	getRubricsInAssignment,
+
+	addCriterionToRubric,
+	removeCriterionFromRubric,
+	updateCriterionInRubric,
+	getCriterionInRubric,
+
+	addCriterionGrade,
+	removeCriterionGrade,
+	updateCriterionGrade,
+	getCriterionGrade,
+	addCriterionRating,
+};

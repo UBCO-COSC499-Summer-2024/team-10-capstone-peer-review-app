@@ -26,7 +26,4 @@ COPY . /usr/server/
 EXPOSE ${BACKEND_PORT}
 
 # Run the commands needed to generate Prisma client, push the database schema, run migrations, and seed the database
-CMD npx prisma generate && \
-    npx prisma db push && \
-    npm run seed && \
-    npm run dev
+CMD npm run prisma:push && npm run seed && npm run dev:watch

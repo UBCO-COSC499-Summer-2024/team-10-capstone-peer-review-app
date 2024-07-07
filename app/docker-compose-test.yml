@@ -1,6 +1,6 @@
 version: '3'
 services:
-  peergrade-db-test:
+  db:
     container_name: peergrade-db-test
     image: postgres:latest
     environment:
@@ -9,11 +9,9 @@ services:
       POSTGRES_DB: ${TEST_DB_NAME}
     ports:
       - ${TEST_DB_PORT}:5433
-    volumes:
-      - db-test-data:/var/lib/postgresql/data
 
 
-  peergrade-server-test:
+  server:
     container_name: peergrade-server-test
     build:
       context: ./server
@@ -30,9 +28,8 @@ services:
       - ./server:/usr/server
       - server_test_node_modules:/usr/server/node_modules
     depends_on:
-      - peergrade-db-test 
-    command: npm run test
+      - db 
+    command: ["npm", "run", "test"]
 
 volumes:
-  db-test-data: 
   server_test_node_modules:

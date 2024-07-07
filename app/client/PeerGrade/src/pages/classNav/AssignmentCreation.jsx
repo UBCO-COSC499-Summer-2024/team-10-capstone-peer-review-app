@@ -111,11 +111,12 @@ const AssignmentCreation = () => {
   const onSubmit = (data) => {
     const simplifiedData = {
       ...data,
+      maxSubmissions: parseInt(data.maxSubmissions, 10),
       // file: selectedFileName,
     };
 
     try {
-      console.log('simp data:', simplifiedData)
+      console.log('simple data:', simplifiedData)
       addAssignmentToClass(classId, simplifiedData)
 
     } catch(error) {
@@ -173,7 +174,7 @@ const AssignmentCreation = () => {
                 <FormItem>
                   <FormLabel>Attempts</FormLabel>
                   <FormControl>
-                    <Input  {...field} type="number" />
+                    <Input  {...field} type="number" onBlur={(e) => field.onChange(Number(e.target.value))}/>
                   </FormControl>
                   <FormDescription>Max number of submissions.</FormDescription>
                   <FormMessage />

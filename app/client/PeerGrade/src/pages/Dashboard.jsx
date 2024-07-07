@@ -167,7 +167,7 @@ function Dashboard() {
 	}
 
 	if (!user) {
-		return <p>No user</p>;
+		return <p>User's not logged in.</p>;
 	}
 
 	const classNames = classes.map((classItem) => classItem.classname);
@@ -212,7 +212,7 @@ function Dashboard() {
 						{userLoading ? (
 							<Skeleton className="h-48 w-full rounded-lg" />
 						) : (
-							<TabsList className="grid w-1/3 grid-cols-2">
+							<TabsList className="grid w-1/2 grid-cols-2">
 								<TabsTrigger value="assignments">Assignments</TabsTrigger>
 								<TabsTrigger value="reviews">Reviews</TabsTrigger>
 							</TabsList>

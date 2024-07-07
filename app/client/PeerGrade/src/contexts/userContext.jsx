@@ -1,20 +1,21 @@
-import { createContext, useState, useEffect } from "react";
-import { getCurrentUser, loginUser, logoutUser } from "@/api/authApi";
+import { createContext, useState } from "react";
+import { getCurrentUser } from "@/api/authApi";
 
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
-	const [userLoading, setUserLoading] = useState(true);
-
-	useEffect(() => {
-		setUserContext();
-	}, []);
+	const [userLoading, setUserLoading] = useState(false);
 
 	const setUserContext = async () => {
-		const userInfo = await getCurrentUser();
-		setUser(userInfo);
-		setUserLoading(false);
+		try {
+			setUserLoading(true);
+			const userInfo = await getCurrentUser();
+			setUser(userInfo);
+			setUserLoading(false);
+		} catch (error) {
+			console.error("Failed to fetch user", error);
+		}
 	};
 
 	const clearUserContext = () => {

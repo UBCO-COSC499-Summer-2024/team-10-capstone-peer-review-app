@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from "react";
 import {
 	BrowserRouter as Router,
 	Routes,
 	Route,
-	useLocation,
-	useNavigate
+	useLocation
 } from "react-router-dom";
 import { UserProvider } from "./contexts/userContext";
-import axios from "axios";
+import { ClassProvider } from "./contexts/classContext";
 
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Class from "./pages/Class";
+import EditClass from "./pages/classNav/EditClass";
 import AssignmentCreation from "./pages/classNav/AssignmentCreation";
 import Assignment from "./pages/Assignment";
 import AssignedPR from "./pages/AssignedPR";
 import PeerReview from "./pages/PeerReview";
 import Settings from "./pages/Settings";
-import AppNavbar from "./components/global/Navbar";
+import AppNavbar from "./components/login/global/Navbar";
 import ManageClass from "./pages/ManageClass";
 import Search from "./pages/Search";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -30,135 +29,46 @@ function App() {
 	return (
 		<Router>
 			<TitleUpdater />
-			<MainLayout />
+			<UserProvider>
+				<ClassProvider>
+					<MainLayout />
+				</ClassProvider>
+			</UserProvider>
 		</Router>
 	);
 }
 
 function MainLayout() {
-	const [currentUser, setCurrentUser] = useState(null);
-	const navigate = useNavigate();
 	const location = useLocation();
 
 	// May need to change this? Idk if this is necessary of the best way to do redirects
-	useEffect(() => {
-		const fetchCurrentUser = async () => {
-			try {
-				const response = await axios.get("/api/auth/current-user", {
-					withCredentials: true
-				});
-				setCurrentUser(response.data.user);
-				if (location.pathname === "/") {
-					if (response.data.user.role === "ADMIN") {
-						navigate("/admin");
-					} else {
-						navigate("/dashboard");
-					}
-				}
-			} catch (error) {
-				if (location.pathname !== "/") {
-					navigate("/");
-				}
-			}
-		};
-
-		fetchCurrentUser();
-	}, [location, navigate]);
 
 	const isLoginPage = location.pathname === "/";
 
 	return (
 		<main className="bg-gray-100 mx-auto">
-			{!isLoginPage && (
-				<UserProvider>
-					<AppNavbar currentUser={currentUser} />
-				</UserProvider>
-			)}
+			{!isLoginPage && <AppNavbar />}
 			<div className="main-container flex justify-center flex-1">
 				<Routes>
 					<Route path="/" element={<Login />} />
-					{/* All the routes that need the userContext (the global user state)*/}
-					<Route
-						path="/dashboard"
-						element={
-							<UserProvider>
-								<Dashboard />
-							</UserProvider>
-						}
-					/>
-					<Route
-						path="/class/:classId"
-						element={
-							<UserProvider>
-								<Class />
-							</UserProvider>
-						}
-					/>
+					<Route path="/dashboard" element={<Dashboard />} />
+					<Route path="/class/:classId" element={<Class />} />
+					<Route path="/class/:classId/edit" element={<EditClass />} />
 					<Route
 						path="/class/createAssignment"
-						element={
-							<UserProvider>
-								<AssignmentCreation />
-							</UserProvider>
-						}
+						element={<AssignmentCreation />}
 					/>
-					<Route
-						path="/manageClass"
-						element={
-							<UserProvider>
-								<ManageClass />
-							</UserProvider>
-						}
-					/>
+					<Route path="/manageClass" element={<ManageClass />} />
 					<Route path="/search" element={<Search />} />
 					<Route
-						path="/assignment/:assignmentId"
-						element={
-							<UserProvider>
-								<Assignment />
-							</UserProvider>
-						}
+						path="/class/:classId/assignment/:assignmentId"
+						element={<Assignment />}
 					/>
-					<Route
-						path="/assignedPR/:assignmentId"
-						element={
-							<UserProvider>
-								<AssignedPR />
-							</UserProvider>
-						}
-					/>
-					<Route
-						path="/peer-review"
-						element={
-							<UserProvider>
-								<PeerReview />
-							</UserProvider>
-						}
-					/>
-					<Route
-						path="/settings"
-						element={
-							<UserProvider>
-								<Settings />
-							</UserProvider>
-						}
-					/>
-					<Route
-						path="/admin"
-						element={
-							<UserProvider>
-								<AdminDashboard />
-							</UserProvider>
-						}
-					/>
-					<Route
-						path="/test-user"
-						element={
-							<UserProvider>
-								<TestUserContext />
-							</UserProvider>
-						}
-					/>
+					<Route path="/assignedPR/:assignmentId" element={<AssignedPR />} />
+					<Route path="/peer-review" element={<PeerReview />} />
+					<Route path="/settings" element={<Settings />} />
+					<Route path="/admin" element={<AdminDashboard />} />
+					<Route path="/test-user" element={<TestUserContext />} />
 				</Routes>
 			</div>
 			<Toaster />

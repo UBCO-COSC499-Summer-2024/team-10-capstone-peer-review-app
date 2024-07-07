@@ -20,10 +20,8 @@ import {
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 
-import showStatusToast from "@/utils/showToastStatus";
 import { loginUser, confirmEmail } from "@/api/authApi";
 
 function useQuery() {
@@ -39,7 +37,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 	const [error, setError] = useState("");
 
 	const query = useQuery();
-	const token = query.get("token") || "";
+	const verifyEmailToken = query.get("verifyEmailToken") || "";
 
 	const navigate = useNavigate();
 
@@ -47,18 +45,22 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 	// TODO: Look into why toasts pop up twice, and how to remove token after it renders once
 	useEffect(() => {
 		const verifyEmail = async () => {
-			if (token) {
-				const response = await confirmEmail(token);
+			if (verifyEmailToken && !verificationSuccessful) {
+				const response = await confirmEmail(verifyEmailToken);
 				if (response.status === "Success") {
 					setVerificationSuccessful(true);
 				} else {
 					setVerificationSuccessful(false);
 				}
 				setTokenReceived(true);
+				query.delete("verifyEmailToken");
+				navigate("/", {
+					replace: true
+				});
 			}
 		};
 		verifyEmail();
-	}, [token]);
+	}, [verifyEmailToken]);
 
 	// Login
 	const handleLogin = async (e) => {
@@ -160,14 +162,24 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 							</button>
 						</div>
 					</form>
-					<p className="text-sm text-gray-600">
-						<button
-							onClick={onSwitchToForgotPassword}
-							className="text-green-600 hover:text-green-500"
-						>
-							Forgot your password?
-						</button>
-					</p>
+					<div className="flex flex-col justify-center text-center space-x-1 space-y-1">
+						<p className="text-sm text-gray-600">
+							<button
+								onClick={onSwitchToForgotPassword}
+								className="text-green-600 hover:text-green-500"
+							>
+								Forgot your password?
+							</button>
+						</p>
+						<p className="text-sm text-gray-600">
+							<button
+								onClick={onSwitchToForgotPassword}
+								className="text-green-600 hover:text-green-500"
+							>
+								TODO: Apply for another role request?
+							</button>
+						</p>
+					</div>
 				</CardContent>
 				<CardFooter className="text-center flex flex-col gap-2 bg-indigo-100">
 					<div className="flex w-full justify-between mt-6">
@@ -175,7 +187,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 							Don&apos;t have an account?
 							<button
 								onClick={onSwitchToRegister}
-								className="text-green-600 hover:text-green-500"
+								className="text-green-600 hover:text-green-500 pl-2"
 							>
 								Sign up
 							</button>

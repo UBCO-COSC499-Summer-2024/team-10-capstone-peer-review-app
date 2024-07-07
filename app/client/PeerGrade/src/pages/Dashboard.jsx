@@ -6,46 +6,39 @@ import { useToast } from "@/components/ui/use-toast";
 
 import DataTable from "@/components/ui/data-table";
 import { ArrowUpDown } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import GroupCard from "@/components/class/GroupCard";
 import { Skeleton } from "@/components/ui/skeleton";
 
-import { useUser } from "@/contexts/contextHooks/useUser";
-import { getClassesByUserId, getAllAssignments } from "@/api/classApi";
+import { format, parseISO } from "date-fns";
+
+import { getAllAssignments } from "@/api/classApi";
 import { getGroups } from "@/api/userApi";
+
+import { useUser } from "@/contexts/contextHooks/useUser";
+import { useClass } from "@/contexts/contextHooks/useClass";
 
 function Dashboard() {
 	const { user, userLoading } = useUser();
 
-	const [classes, setClasses] = useState([]);
+	const { classes, isClassLoading } = useClass();
 	const [assignments, setAssignments] = useState([]);
 	const [groups, setGroups] = useState([]);
-	const [reviews, setReviews] = useState([]);
+	// const [reviews, setReviews] = useState([]);
 	const { toast } = useToast();
 
 	useEffect(() => {
-		if (!userLoading && user) {
-			const fetchClasses = async () => {
-				try {
-					const classesData = await getClassesByUserId(user.userId);
-					console.log(classesData);
-					setClasses(Array.isArray(classesData) ? classesData : []);
-				} catch (error) {
-					toast({
-						title: "Error",
-						description: "Failed to fetch classes",
-						variant: "destructive"
-					});
-				}
-			};
-
+		// No need to check if userLoading, if user is truthy, will not run if its undefined or null
+		if (user) {
 			const fetchAssignments = async () => {
 				try {
 					const assignmentsData = await getAllAssignments(user.userId);
-					console.log(assignmentsData);
-					setAssignments(Array.isArray(assignmentsData) ? assignmentsData : []);
+					console.log("assignmentsData", assignmentsData);
+					setAssignments(
+						Array.isArray(assignmentsData.data) ? assignmentsData.data : []
+					);
 				} catch (error) {
+					console.error("Failed to fetch assignments", error);
 					toast({
 						title: "Error",
 						description: "Failed to fetch assignments",
@@ -57,7 +50,7 @@ function Dashboard() {
 			const fetchGroups = async () => {
 				try {
 					const groups = await getGroups(user.userId);
-					console.log("groups",groups);
+					console.log("groups", groups);
 					setGroups(Array.isArray(groups) ? groups : []);
 				} catch (error) {
 					toast({
@@ -82,12 +75,11 @@ function Dashboard() {
 			// 	}
 			// };
 
-			fetchClasses();
 			fetchAssignments();
 			fetchGroups();
 			// fetchReviews();
 		}
-	}, [user, userLoading, toast]);
+	}, [user]);
 
 	const assignmentData = assignments.filter(
 		(assignment) => assignment.evaluation_type !== "peer"
@@ -102,7 +94,7 @@ function Dashboard() {
 			header: "Assignment Name"
 		},
 		{
-			accessorKey: "className",
+			accessorKey: "classes.classname",
 			header: "Class Name"
 		},
 		{
@@ -117,7 +109,7 @@ function Dashboard() {
 				</Button>
 			),
 			cell: ({ row }) => (
-				<Badge variant="destructive">{row.getValue("dueDate")}</Badge>
+				<span>{format(parseISO(row.getValue("dueDate")), "yyyy-MM-dd")}</span>
 			)
 		},
 		{
@@ -125,10 +117,10 @@ function Dashboard() {
 			header: "Actions",
 			cell: ({ row }) => (
 				<Link
-					to={row.original.link}
-					className="bg-green-100 text-blue-500 px-2 py-1 rounded-md"
+					to={`/class/${row.original.classId}/assignment/${row.original.assignmentId}`}
+					className="bg-green-100 px-2 py-1 rounded-md"
 				>
-					{row.getValue("action")}
+					Open
 				</Link>
 			)
 		}
@@ -140,7 +132,7 @@ function Dashboard() {
 			header: "Assignment Name"
 		},
 		{
-			accessorKey: "className",
+			accessorKey: "classes.classname",
 			header: "Class Name"
 		},
 		{
@@ -154,9 +146,7 @@ function Dashboard() {
 					<ArrowUpDown className="ml-2 h-4 w-4" />
 				</Button>
 			),
-			cell: ({ row }) => (
-				<Badge variant="destructive">{row.getValue("dueDate")}</Badge>
-			)
+			cell: ({ row }) => <span>{parseISO(row.getValue("dueDate"))}</span>
 		},
 		{
 			accessorKey: "action",
@@ -177,28 +167,31 @@ function Dashboard() {
 	}
 
 	if (!user) {
-		return <p>No user</p>;
+		return <p>User's not logged in.</p>;
 	}
 
 	const classNames = classes.map((classItem) => classItem.classname);
 
 	return (
 		<div className="w-full main-container space-y-6 ">
-			<div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-5">
-				{userLoading
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-5">
+				{isClassLoading && !classes
 					? Array.from({ length: 3 }).map((_, index) => (
 							<Skeleton key={index} className="h-48 w-full rounded-lg" />
 						))
-					: classes.map((classItem) => (
-							<ClassCard
-								key={classItem.classId}
-								classId={classItem.classId}
-								className={classItem.classname}
-								instructor={`${classItem.instructor.firstname} ${classItem.instructor.lastname}`}
-								numStudents={classItem.classSize}
-								term={classItem.term}
-							/>
-						))}
+					: classes.map((classItem) => {
+							console.log("classItem: ", classItem); // This will log each classItem object
+							return (
+								<ClassCard
+									key={classItem.classId}
+									classId={classItem.classId}
+									className={classItem.classname}
+									instructor={`${classItem.instructor.firstname} ${classItem.instructor.lastname}`}
+									numStudents={classItem.classSize}
+									term={classItem.term}
+								/>
+							);
+						})}
 			</div>
 			<div className="flex justify-between items-start gap-5 pt-5">
 				<div className="flex w-1/2">
@@ -219,7 +212,7 @@ function Dashboard() {
 						{userLoading ? (
 							<Skeleton className="h-48 w-full rounded-lg" />
 						) : (
-							<TabsList className="grid w-1/3 grid-cols-2">
+							<TabsList className="grid w-1/2 grid-cols-2">
 								<TabsTrigger value="assignments">Assignments</TabsTrigger>
 								<TabsTrigger value="reviews">Reviews</TabsTrigger>
 							</TabsList>

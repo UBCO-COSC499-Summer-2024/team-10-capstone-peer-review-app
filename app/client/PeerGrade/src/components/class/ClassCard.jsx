@@ -26,17 +26,17 @@ const ClassCard = ({
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="flex flex-col space-y-2 pl-0 border-collapse">
-					<div className="flex items-center space-x-2">
+					{numStudents !== undefined && <div className="flex items-center space-x-2">
 						<User className="w-4 h-4 text-gray-700" />
 						<span className="text-gray-700">{numStudents} Students</span>
-					</div>
-					{numAssignments && <div className="flex items-center space-x-2">
+					</div>}
+					{numAssignments !== undefined && <div className="flex items-center space-x-2">
 						<FileText className="w-4 h-4 text-gray-700" />
 						<span className="text-gray-700">
 							{numAssignments} Assignments Due
 						</span>
 					</div>}
-					{numPeerReviews && <div className="flex items-center space-x-2">
+					{numPeerReviews !== undefined && <div className="flex items-center space-x-2">
 						<CheckSquare className="w-4 h-4 text-gray-700" />
 						<span className="text-gray-700">
 							{numPeerReviews} Peer Reviews Left

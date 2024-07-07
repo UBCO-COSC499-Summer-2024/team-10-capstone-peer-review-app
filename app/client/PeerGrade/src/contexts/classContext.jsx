@@ -51,6 +51,7 @@ export const ClassProvider = ({ children }) => {
 			setIsClassLoading(true);
 			const newClassData = await createClass(newClass);
 			setClasses((prevClasses) => [...prevClasses, newClassData.data]);
+			setIsClassLoading(false);
 		} catch (error) {
 			console.error("Failed to add class", error);
 		}
@@ -59,7 +60,7 @@ export const ClassProvider = ({ children }) => {
 	const removeClass = async (classId) => {
 		try {
 			setIsClassLoading(true);
-			const deletedClass = await deleteClass(classId);
+			await deleteClass(classId);
 			setClasses((prevClasses) =>
 				prevClasses.filter((cls) => cls.classId !== classId)
 			);

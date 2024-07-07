@@ -51,7 +51,17 @@ export async function getUserClasses(userId) {
 		// Retrieve classes based on class IDs
 		const classes = await prisma.class.findMany({
 			where: { classId: { in: classIds } },
-			include: { instructor: true } // Include any related data you need
+			include: {
+				instructor: {
+					select: {
+						userId: true,
+						email: true,
+						firstname: true,
+						lastname: true,
+						classesInstructed: true
+					}
+				}
+			}
 		});
 
 		return classes;

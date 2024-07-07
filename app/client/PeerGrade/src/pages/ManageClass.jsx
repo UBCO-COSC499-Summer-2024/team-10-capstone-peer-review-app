@@ -64,9 +64,9 @@ const AddClassModal = ({ show, onClose }) => {
 		classCreate();
 	};
 
-  if (!show) {
-    return null;
-  }
+	if (!show) {
+		return null;
+	}
 
 	return (
 		<div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center transition">

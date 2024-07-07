@@ -49,7 +49,6 @@ export default function AppNavbar() {
 	// Fetch the classes data on mount, this is from the classContext
 	useEffect(() => {
 		if (user) {
-			console.log("user", user);
 			if (user.role === "ADMIN") {
 				setAdminClasses();
 			} else {
@@ -184,15 +183,6 @@ export default function AppNavbar() {
 						</NavigationMenuTrigger>
 						<NavigationMenuContent>
 							<ul className="bg-white grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-								{classes.map((classItem) => (
-									<ListItem
-										key={classItem.classId}
-										title={classItem.classname}
-										href={`/class/${classItem.classId}`}
-									>
-										{classItem.description}
-									</ListItem>
-								))}
 								{(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (
 									<ListItem
 										title="Manage Classes"
@@ -202,6 +192,15 @@ export default function AppNavbar() {
 										Administer classes and assignments.
 									</ListItem>
 								)}
+								{classes.map((classItem) => (
+									<ListItem
+										key={classItem.classId}
+										title={classItem.classname}
+										href={`/class/${classItem.classId}`}
+									>
+										{classItem.description}
+									</ListItem>
+								))}
 							</ul>
 						</NavigationMenuContent>
 					</NavigationMenuItem>

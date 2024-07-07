@@ -5,6 +5,8 @@ import {
 	updateCriterionInRubric,
 	getCriterionInRubric,
 	addRubricsToAssignment,
+	getAllRubrics,
+	getRubricById,
 	removeRubricsFromAssignment,
 	updateRubricsInAssignment,
 	getRubricsInAssignment,
@@ -25,10 +27,11 @@ import {
 const router = express.Router();
 
 // Rubric Routes
+console.log("rubric router");
 
 router
 	.route("/add-rubrics")
-	.post(ensureUser, ensureInstructor, addRubricsToAssignment);
+	.post(addRubricsToAssignment);
 
 router
 	.route("/remove-rubrics")
@@ -41,6 +44,14 @@ router
 router
 	.route("/get-rubrics")
 	.post(ensureUser, ensureInstructor, getRubricsInAssignment);
+
+router
+	.route("/get-all-rubrics")
+	.post( getAllRubrics);
+
+router
+	.route("/get-rubric-by-id")
+	.post( getRubricById);
 
 // Criterion Routes
 router

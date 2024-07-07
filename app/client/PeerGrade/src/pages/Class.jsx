@@ -6,6 +6,7 @@ import Grades from "./classNav/Grades";
 import Groups from "./classNav/Groups";
 import Files from "./classNav/Files";
 import People from "./classNav/People";
+import Rubrics from "./classNav/Rubrics";
 import AssignmentCreation from "./classNav/AssignmentCreation";
 import EditClass from "./classNav/EditClass";
 import { Button } from "@/components/ui/button";
@@ -87,6 +88,8 @@ const Class = () => {
 				return <AssignmentCreation />;
 			case "edit":
 				return <EditClass classItem={classItem} />;
+			case "rubrics":
+				return <Rubrics />;
 			default:
 				return (
 					<>
@@ -187,6 +190,16 @@ const Class = () => {
 										onClick={() => setCurrentView("edit")}
 									>
 										EDIT
+									</MenubarTrigger>
+								</MenubarMenu>
+							)}
+							{(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (
+								<MenubarMenu>
+									<MenubarTrigger
+										className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
+										onClick={() => setCurrentView("rubrics")}
+									>
+										RUBRICS
 									</MenubarTrigger>
 								</MenubarMenu>
 							)}

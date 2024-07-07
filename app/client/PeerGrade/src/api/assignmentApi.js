@@ -71,6 +71,11 @@ export const getAllAssignmentsByClassId = async (classId) => {
         });
         return response.data;
     } catch (error) {
+        toast({
+            title: "Error",
+            description: "An error occurred while fetching assignments. Please try again.",
+            status: "error"
+        });
         handleError(error);
         return error.response.data;
     }

@@ -26,7 +26,7 @@ router.route("/update-assignment")
   .post(ensureUser, getAssignmentInClass);
 
 router.route("/get-class-assignments")
-  .post(ensureUser, getAllAssignmentsByClassId);
+  .post( getAllAssignmentsByClassId);
 
 
 export default router;

@@ -10,7 +10,15 @@ const getAllClasses = async () => {
 				groups: true,
 				usersInClass: true,
 				Assignments: true,
-				instructor: true,
+				instructor: {
+					select: {
+						userId: true,
+						email: true,
+						firstname: true,
+						lastname: true,
+						classesInstructed: true
+					}
+				},
 				EnrollRequest: true
 			}
 		});

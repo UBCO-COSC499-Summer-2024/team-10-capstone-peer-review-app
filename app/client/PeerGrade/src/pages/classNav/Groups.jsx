@@ -145,13 +145,15 @@ const Groups = () => {
 								</CardDescription>
 							)}
 						</div>
-						<div className='flex flex-row items-center justify-center space-x-2'>
-							{(myGroups?.filter(myGroup => myGroup.groupId === group.groupId).length > 0) && (user.role === "STUDENT") ? (
-								<Button variant='destructive' className='p-4' onClick={() => handleLeaveGroup(group.groupId)}>Leave</Button>
-							) : (myGroups?.length < 1) && (
-								<Button variant='ghost' className='bg-gray-200 p-4' onClick={() => handleJoinGroup(group.groupId)}>Join</Button>
-							)}
-						</div>
+						{(user.role === "STUDENT") && 
+							<div className='flex flex-row items-center justify-center space-x-2'>
+								{myGroups?.filter(myGroup => myGroup.groupId === group.groupId).length > 0 ? (
+									<Button variant='destructive' className='p-4' onClick={() => handleLeaveGroup(group.groupId)}>Leave</Button>
+								) : (myGroups?.length < 1) && (
+									<Button variant='ghost' className='bg-gray-200 p-4' onClick={() => handleJoinGroup(group.groupId)}>Join</Button>
+								)}
+							</div>
+						}
 					</CardContent>
 					{expandedGroup === group.groupId && (group.students.length > 0) && (
 						<CardContent className="p-4 flex flex-row items-center justify-between">

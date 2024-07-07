@@ -6,7 +6,6 @@ import { useToast } from "@/components/ui/use-toast";
 
 import DataTable from "@/components/ui/data-table";
 import { ArrowUpDown } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import GroupCard from "@/components/class/GroupCard";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -22,7 +21,7 @@ import { useClass } from "@/contexts/contextHooks/useClass";
 function Dashboard() {
 	const { user, userLoading } = useUser();
 
-	const { classes } = useClass();
+	const { classes, isClassLoading } = useClass();
 	const [assignments, setAssignments] = useState([]);
 	const [groups, setGroups] = useState([]);
 	// const [reviews, setReviews] = useState([]);
@@ -31,7 +30,6 @@ function Dashboard() {
 	useEffect(() => {
 		// No need to check if userLoading, if user is truthy, will not run if its undefined or null
 		if (user) {
-			console.log("classes", classes);
 			const fetchAssignments = async () => {
 				try {
 					const assignmentsData = await getAllAssignments(user.userId);
@@ -82,8 +80,6 @@ function Dashboard() {
 			// fetchReviews();
 		}
 	}, [user]);
-
-	useEffect(() => {}, [user]);
 
 	const assignmentData = assignments.filter(
 		(assignment) => assignment.evaluation_type !== "peer"
@@ -171,28 +167,31 @@ function Dashboard() {
 	}
 
 	if (!user) {
-		return <p>No user</p>;
+		return <p>User's not logged in.</p>;
 	}
 
 	const classNames = classes.map((classItem) => classItem.classname);
 
 	return (
 		<div className="w-full main-container space-y-6 ">
-			<div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-5">
-				{userLoading
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-5">
+				{isClassLoading && !classes
 					? Array.from({ length: 3 }).map((_, index) => (
 							<Skeleton key={index} className="h-48 w-full rounded-lg" />
 						))
-					: classes.map((classItem) => (
-							<ClassCard
-								key={classItem.classId}
-								classId={classItem.classId}
-								className={classItem.classname}
-								instructor={`${classItem.instructor.firstname} ${classItem.instructor.lastname}`}
-								numStudents={classItem.classSize}
-								term={classItem.term}
-							/>
-						))}
+					: classes.map((classItem) => {
+							console.log("classItem: ", classItem); // This will log each classItem object
+							return (
+								<ClassCard
+									key={classItem.classId}
+									classId={classItem.classId}
+									className={classItem.classname}
+									instructor={`${classItem.instructor.firstname} ${classItem.instructor.lastname}`}
+									numStudents={classItem.classSize}
+									term={classItem.term}
+								/>
+							);
+						})}
 			</div>
 			<div className="flex justify-between items-start gap-5 pt-5">
 				<div className="flex w-1/2">
@@ -213,7 +212,7 @@ function Dashboard() {
 						{userLoading ? (
 							<Skeleton className="h-48 w-full rounded-lg" />
 						) : (
-							<TabsList className="grid w-1/3 grid-cols-2">
+							<TabsList className="grid w-1/2 grid-cols-2">
 								<TabsTrigger value="assignments">Assignments</TabsTrigger>
 								<TabsTrigger value="reviews">Reviews</TabsTrigger>
 							</TabsList>

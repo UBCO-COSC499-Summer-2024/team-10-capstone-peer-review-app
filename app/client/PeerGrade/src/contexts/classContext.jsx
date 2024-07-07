@@ -50,7 +50,13 @@ export const ClassProvider = ({ children }) => {
 		try {
 			setIsClassLoading(true);
 			const newClassData = await createClass(newClass);
-			setClasses((prevClasses) => [...prevClasses, newClassData.data]);
+			console.log("newClassData", newClassData);
+			if (user && user.role === "ADMIN") {
+				setAdminClasses();
+			} else if (user) {
+				setUserClasses();
+			}
+			setIsClassLoading(false);
 		} catch (error) {
 			console.error("Failed to add class", error);
 		}
@@ -59,10 +65,12 @@ export const ClassProvider = ({ children }) => {
 	const removeClass = async (classId) => {
 		try {
 			setIsClassLoading(true);
-			const deletedClass = await deleteClass(classId);
-			setClasses((prevClasses) =>
-				prevClasses.filter((cls) => cls.classId !== deletedClass.data.classId)
-			);
+			await deleteClass(classId);
+			if (user && user.role === "ADMIN") {
+				setAdminClasses();
+			} else if (user) {
+				setUserClasses();
+			}
 			setIsClassLoading(false);
 		} catch (error) {
 			console.error("Failed to remove class", error);
@@ -72,13 +80,11 @@ export const ClassProvider = ({ children }) => {
 	const updateClasses = async (classId, updatedClass) => {
 		try {
 			setIsClassLoading(true);
-			const updatedClassData = await updateClass(classId, updatedClass);
-			if (updatedClassData.status === "Success") {
-				setClasses((prevClasses) => {
-					return prevClasses.map((classItem) =>
-						classItem.classId === classId ? updatedClassData.data : classItem
-					);
-				});
+			await updateClass(classId, updatedClass);
+			if (user && user.role === "ADMIN") {
+				setAdminClasses();
+			} else if (user) {
+				setUserClasses();
 			}
 			setIsClassLoading(false);
 		} catch (error) {

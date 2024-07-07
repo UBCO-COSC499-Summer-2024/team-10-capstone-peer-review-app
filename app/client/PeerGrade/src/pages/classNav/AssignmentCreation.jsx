@@ -186,7 +186,7 @@ const AssignmentCreation = () => {
                 <FormItem>
                   <FormLabel>Attempts</FormLabel>
                   <FormControl>
-                    <Input  {...field} type="number" />
+                    <Input  {...field} type="number" onBlur={(e) => field.onChange(Number(e.target.value))}/>
                   </FormControl>
                   <FormDescription>Max number of submissions.</FormDescription>
                   <FormMessage />

@@ -34,7 +34,7 @@ const AddClassModal = ({ show, onClose }) => {
 	const [endDate, setEndDate] = useState("");
 	const [error, setError] = useState("");
 
-	const { isClassLoading, createClass } = useClass();
+	const { isClassLoading, addClass } = useClass();
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -45,7 +45,15 @@ const AddClassModal = ({ show, onClose }) => {
 		if (startDate === "" || endDate === "") {
 			setError("Please select start and end dates for the class.");
 			return;
-		}
+		} else if (startDate > endDate) {
+			setError("Please select an end date that is after the start date.");
+			return;
+      // !!! TODO: CHECK FOR THIS IN THE BACK-END TOO.
+    } else if (startDate === endDate) {
+      setError("Please select an end date that is not the same as the start date.");
+      return;
+      // !!! TODO: CHECK FOR THIS IN THE BACK-END TOO.
+    }
 
 		const newClass = {
 			classname,
@@ -57,20 +65,20 @@ const AddClassModal = ({ show, onClose }) => {
 		};
 
 		const classCreate = async () => {
-			createClass(newClass);
+			addClass(newClass);
 			onClose();
 		};
-
-		if (!show) {
-			return null;
-		}
 
 		classCreate();
 	};
 
+	if (!show) {
+		return null;
+	}
+
 	return (
-		<div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
-			<div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
+		<div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+			<div className="bg-white p-6 rounded-lg shadow-lg w-1/2">
 				<h2 className="text-xl font-bold mb-4">Add a New Class</h2>
 				<form onSubmit={handleSubmit}>
 					<div className="mb-4">
@@ -238,7 +246,7 @@ const ManageClass = () => {
 	const [selectedClass, setSelectedClass] = useState({});
 	const [dialogOpen, setDialogOpen] = useState(false);
 
-	const { classes, isClassLoading, deleteClass } = useClass();
+	const { classes, isClassLoading, removeClass } = useClass();
 
 	// TODO Refactor to get all classed from classContext
 	useEffect(() => {
@@ -273,7 +281,7 @@ const ManageClass = () => {
 		if (confirmDelete) {
 			setConfirmDelete(false);
 			if (selectedClass) {
-				deleteClass(selectedClass.classId);
+				removeClass(selectedClass.classId);
 				setDialogOpen(false);
 			} else {
 				console.error(

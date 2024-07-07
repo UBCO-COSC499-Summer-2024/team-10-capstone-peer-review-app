@@ -61,16 +61,16 @@ const AddClassModal = ({ show, onClose }) => {
 			onClose();
 		};
 
-		if (!show) {
-			return null;
-		}
-
 		classCreate();
 	};
 
+  if (!show) {
+    return null;
+  }
+
 	return (
-		<div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
-			<div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
+		<div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center transition">
+			<div className="bg-white p-6 rounded-lg shadow-lg w-1/2">
 				<h2 className="text-xl font-bold mb-4">Add a New Class</h2>
 				<form onSubmit={handleSubmit}>
 					<div className="mb-4">

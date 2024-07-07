@@ -3,14 +3,14 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, useLocation } from 'react-router-dom';
 import ForgotPasswordCard from '@/components/login/ForgotPasswordCard';
 import {
-	confirmEmail,
+	isEmailVerifiedJWT,
 	resetPassword,
 	sendForgotPasswordEmail,
 } from '@/api/authApi';
 
 // Mock the API calls
 jest.mock('@/api/authApi', () => ({
-	confirmEmail: jest.fn(),
+	isEmailVerifiedJWT: jest.fn(),
 	resetPassword: jest.fn(),
 	sendForgotPasswordEmail: jest.fn(),
 }));
@@ -104,10 +104,10 @@ describe('ForgotPasswordCard', () => {
 
 	it('validates the token and shows password fields', async () => {
 		mockUseLocation.mockReturnValue({
-			search: '?frgtToken=validToken',
+			search: '?forgotPasswordToken=validToken',
 		});
 
-		confirmEmail.mockResolvedValueOnce({ status: 'Success' });
+		isEmailVerifiedJWT.mockResolvedValueOnce({ status: 'Success' });
 
 		render(
 			<MemoryRouter>
@@ -124,10 +124,10 @@ describe('ForgotPasswordCard', () => {
 
 	it('shows error if token validation fails', async () => {
 		mockUseLocation.mockReturnValue({
-			search: '?frgtToken=invalidToken',
+			search: '?forgotPasswordToken=invalidToken',
 		});
 
-		confirmEmail.mockResolvedValueOnce({
+		isEmailVerifiedJWT.mockResolvedValueOnce({
 			status: 'Error',
 			message: 'Invalid token',
 		});
@@ -145,10 +145,10 @@ describe('ForgotPasswordCard', () => {
 
 	it('resets the password and calls resetPassword', async () => {
 		mockUseLocation.mockReturnValue({
-			search: '?frgtToken=validToken',
+			search: '?forgotPasswordToken=validToken',
 		});
 
-		confirmEmail.mockResolvedValueOnce({ status: 'Success' });
+		isEmailVerifiedJWT.mockResolvedValueOnce({ status: 'Success' });
 		resetPassword.mockResolvedValueOnce({ status: 'Success' });
 
 		render(
@@ -174,10 +174,10 @@ describe('ForgotPasswordCard', () => {
 
 	it('shows error if passwords do not match', async () => {
 		mockUseLocation.mockReturnValue({
-			search: '?frgtToken=validToken',
+			search: '?forgotPasswordToken=validToken',
 		});
 
-		confirmEmail.mockResolvedValueOnce({ status: 'Success' });
+		isEmailVerifiedJWT.mockResolvedValueOnce({ status: 'Success' });
 
 		render(
 			<MemoryRouter>

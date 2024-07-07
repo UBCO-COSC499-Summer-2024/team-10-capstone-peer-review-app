@@ -146,6 +146,32 @@ export const leaveGroup = async (groupId) => {
 	}
 };
 
+export const addGroupMember = async (groupId, userId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/classes/add-group-member`, {
+			groupId,
+			userId
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const deleteGroupMember = async (groupId, userId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/classes/remove-group-member`, {
+			groupId,
+			userId
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
 
 export const getAllAssignments = async (userId) => {
 	try {

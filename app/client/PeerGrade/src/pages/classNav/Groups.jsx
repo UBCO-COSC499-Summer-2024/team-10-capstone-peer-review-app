@@ -3,10 +3,10 @@ import { useParams } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { getAllGroupsByClass, createGroup, deleteGroup, updateGroup, joinGroup, leaveGroup } from "@/api/classApi";
+import { getAllGroupsByClass, createGroup, deleteGroup, updateGroup, joinGroup, leaveGroup, addGroupMember, deleteGroupMember, getStudentsByClassId } from "@/api/classApi";
 import { getGroups } from "@/api/userApi";
 import { useUser } from "@/contexts/contextHooks/useUser";
-import { ChevronDown, ChevronUp, Plus, Trash2, Pencil } from "lucide-react";
+import { ChevronDown, ChevronUp, Plus, Trash2, Pencil, MinusCircle, UserPlus, CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -14,6 +14,19 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger
+} from "@/components/ui/popover";
+import {
+	Command,
+	CommandInput,
+	CommandEmpty,
+	CommandGroup,
+	CommandItem,
+	CommandList
+} from "@/components/ui/command";
 
 const Groups = () => {
 	const { classId } = useParams();
@@ -26,15 +39,22 @@ const Groups = () => {
 	const [description, setDescription] = useState('');
 	const [size, setSize] = useState('');
 	const [refresh, setRefresh] = useState(false);
+	const [open, setOpen] = useState(false);
 
 	const [editDialogOpen, setEditDialogOpen] = useState(false);
 	const [addGroupDialogOpen, setAddGroupDialogOpen] = useState(false);
-	const [deleteConfirmDialog, setDeleteConfirmDialogOpen] = useState(false);
+
+	const [deleteConfirmDialog, setDeleteConfirmDialogOpen] = useState(false); 	// for deletion dialog
 	const [confirmDelete, setConfirmDelete] = useState(false);
 	const [selectedGroup, setSelectedGroup] = useState({});
+	const [selectedGroupMember, setSelectedGroupMember] = useState({});
+	const [deleteTarget, setDeleteTarget] = useState('group');	  
+
+	const [studentOptions, setStudentOptions] = useState([]);					// for adding students to a group
+	const [selectedStudents, setSelectedStudents] = useState([]); 
 
 	useEffect(() => {
-		if (!userLoading && user) {
+		if (user) {
 			const fetchAllGroups = async () => {
 				try {
 					const groups = await getAllGroupsByClass(classId);
@@ -61,7 +81,22 @@ const Groups = () => {
 					});
 				}
 			};
-
+			if (user.role === "INSTRUCTOR" || user.role === "ADMIN") {
+				const fetchStudents = async () => {
+					const students = await getStudentsByClassId(classId);
+					console.log("students", students);
+					if (students.status === "Success") {
+						const transformedStudents = students.data
+							.map((student) => ({
+								studentId: student.userId,
+								label: student.firstname + " " + student.lastname
+							}));
+						setStudentOptions(transformedStudents);
+					}
+				};
+				fetchStudents();
+			}
+			
 			fetchMyGroups();
 			fetchAllGroups();
 		}
@@ -106,18 +141,34 @@ const Groups = () => {
 		};
 
 		const groupEdit = async () => {
-		  const groupData = await updateGroup(selectedGroup.groupId, updatedData);
-		  if (groupData.status === "Success") {
-			console.log("group data from editing", groupData);
-			setGroups(groups.map((group) => 
-				group.groupId === selectedGroup.groupId ? groupData.data : group
-			));
-			console.log("groups after editing", groups);
-			setEditDialogOpen(false);
-		  } else {
-			console.error('An error occurred while editing the group.', groupData.message);
-		  }
+			if (selectedStudents.length > 0) {
+				const groupMemberAdd = async (studentId) => {
+					const groupData = await addGroupMember(selectedGroup.groupId, studentId);
+					if (groupData.status === "Success") {
+						// setGroups(groups.map((group) => 
+						// 	group.groupId === selectedGroup.groupId ? groupData.data : group
+						// ));
+						setRefresh(!refresh);
+						console.log("in add select student",groupData);
+					} else {
+						console.error('An error occurred while adding a group member.', groupData.message);
+					}
+				};
+				selectedStudents.forEach((studentId) => groupMemberAdd(studentId));
+			}
+
+			const groupData = await updateGroup(selectedGroup.groupId, updatedData);
+			if (groupData.status === "Success") {
+				setGroups(groups.map((group) => 
+					group.groupId === selectedGroup.groupId ? groupData.data : group
+				));
+				console.log("after add select student",groupData);
+				setEditDialogOpen(false);
+			} else {
+				console.error('An error occurred while editing the group.', groupData.message);
+			}
 		};
+
 		groupEdit();
 	};
 
@@ -157,18 +208,63 @@ const Groups = () => {
 		}
 	};
 
-	const handleAddGroupDialogOpen = (group) => {
+	const handleDeleteGroupMember = async (groupId, userId) => {
+		if (confirmDelete) {
+			setConfirmDelete(false);
+			const groupData = await deleteGroupMember(groupId, userId);
+			if (groupData.status === "Success") {
+				setDeleteConfirmDialogOpen(false);
+				setRefresh(!refresh);
+				console.log("deleted group member", groupData);
+			} else {
+				console.error('An error occurred while deleting the group member.', groupData.message);
+			}
+		} else {
+			setConfirmDelete(true);
+		}
+	};
+
+	const handleDeleteGroupClick = (group) => {
 		setSelectedGroup(group);
+		setDeleteTarget('group');
 		setConfirmDelete(false);
 		setDeleteConfirmDialogOpen(true);
 	};
 
-	const handleEditGroupDialogOpen = (group) => {
+	const handleDeleteGroupMemberClick = (group, groupMember) => {
+		setSelectedGroup(group);
+		setSelectedGroupMember(groupMember);
+		setDeleteTarget('groupMember');
+		setConfirmDelete(false);
+		setDeleteConfirmDialogOpen(true);
+	};
+
+	const handleEditGroupClick = (group) => {
 		setSelectedGroup(group);
 		setGroupName(group.groupName);
 		setDescription(group.groupDescription);
 		setSize(group.groupSize.toString());
+		setSelectedStudents([]);
 		setEditDialogOpen(true);
+	};
+
+	const handleStudentSelection = (studentId) => {
+		// deals with selecting/deselecting students to add to the class
+		setSelectedStudents((prevSelected) => {
+			if (prevSelected.includes(studentId)) {
+				return prevSelected.filter((id) => id !== studentId);
+			} else {
+				return [...prevSelected, studentId];
+			}
+		});
+	};
+
+	const filterStudentOptions = (group) => {
+		const selectedStudentIds = group.students.map((student) => student.userId);
+		// Filter out the selected students from the studentOptions
+		return studentOptions.filter(
+			(option) => !selectedStudentIds.includes(option.studentId)
+		);
 	};
 
 	return (
@@ -215,22 +311,33 @@ const Groups = () => {
 						}
 						{(user.role === "INSTRUCTOR" || user.role === "ADMIN") && 
 							<div className='flex flex-row items-center justify-center space-x-2'>
-									<Button className='p-4 w-10 h-10' onClick={() => handleEditGroupDialogOpen(group)}>
+									<Button className='p-4 w-10 h-10' onClick={() => handleEditGroupClick(group)}>
 										<Pencil className='w-4 h-4' />
 									</Button>
-									<Button variant='destructive' className='p-4 w-10 h-10' onClick={() => handleAddGroupDialogOpen(group)}>
+									<Button variant='destructive' className='p-4 w-10 h-10' onClick={() => handleDeleteGroupClick(group)}>
 										<Trash2 className='w-4 h-4' />
 									</Button>
 							</div>
 						}
 					</CardContent>
 					{expandedGroup === group.groupId && (group.students.length > 0) && (
-						<CardContent className="p-4 flex flex-row items-center justify-between">
-							<div>
+						<CardContent className="p-4">
+							<div className='space-y-4'>
 								{group.students.map((student) => (
-									<div key={student.userId} className="flex items-center mb-2">
-										<div className="w-10 h-10 rounded-full bg-gray-300 mr-4"></div>
-										<span>{student.firstname} {student.lastname}</span>
+									<div key={student.userId} className="flex flex-row justify-between">
+										<div className='flex flex-row items-center justify-center'>
+											<div className="w-10 h-10 rounded-full bg-gray-300 mr-4"></div>
+											<span>{student.firstname} {student.lastname}</span>
+										</div>
+										{(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (
+											<Button
+												variant="outline"
+												className="bg-gray-100"
+												onClick={() => handleDeleteGroupMemberClick(group, student)}
+											>
+												<MinusCircle className="w-5 h-5 mr-2" /> Delete
+											</Button>
+										)}
 									</div>
 								))}
 							</div>
@@ -287,14 +394,14 @@ const Groups = () => {
 							/>
 						</div>
 						<DialogFooter>
-							<Button onClick={() => setAddGroupDialogOpen(false)}>Cancel</Button>
+							<Button type="button" onClick={() => setAddGroupDialogOpen(false)}>Cancel</Button>
 							<Button variant="destructive" type="submit">Submit</Button>
 						</DialogFooter>
 					</form>
 				</DialogContent>
 			</Dialog>
 
-			{/* Dialog for deletion of a group */}
+			{/* Dialog for deletion of a group/group member */}
 			<Dialog open={deleteConfirmDialog} onOpenChange={setDeleteConfirmDialogOpen}>
 				<DialogContent
 					className={
@@ -303,13 +410,14 @@ const Groups = () => {
 				>
 					<DialogHeader>
 						<DialogTitle>
-							{confirmDelete ? "Confirm" : ""} Delete Group
+							{confirmDelete ? "Confirm" : ""} Delete {deleteTarget === 'group' ? "Group" : "Group Member" }
 						</DialogTitle>
 					</DialogHeader>
-					Are you {confirmDelete ? "really" : ""} sure you want to delete the
-					group '{selectedGroup.groupName}'?
+					Are you {confirmDelete ? "really" : ""} sure you want to {deleteTarget === 'group' ? "delete" : "remove"} the
+					{deleteTarget === 'group' ? ` group '${selectedGroup.groupName}'` : ` group member '${selectedGroupMember.firstname} ${selectedGroupMember.lastname}' from the group '${selectedGroup.groupName}'` }?
 					<DialogFooter>
 						<Button
+						 	type="button"
 							onClick={() => setDeleteConfirmDialogOpen(false)}
 							className={confirmDelete ? "shadow-md shadow-red-900" : ""}
 						>
@@ -317,7 +425,10 @@ const Groups = () => {
 						</Button>
 						<Button
 							variant="destructive"
-							onClick={() => handleDeleteGroup(selectedGroup.groupId)}
+							onClick={() => {
+								if (deleteTarget === 'group') handleDeleteGroup(selectedGroup.groupId);
+								else handleDeleteGroupMember(selectedGroup.groupId, selectedGroupMember.userId);
+							}}
 							className={confirmDelete ? "shadow-md shadow-red-900" : ""}
 						>
 							Delete
@@ -373,8 +484,56 @@ const Groups = () => {
 								className="w-full px-3 py-2 border rounded-md"
 							/>
 						</div>
+						<div className="mb-4 space-y-1">
+							<label htmlFor="size" className="block text-sm font-medium text-gray-700">
+								Add Group Members
+							</label>
+							<Popover open={open} onOpenChange={setOpen} id="selectStudents">
+								<PopoverTrigger asChild>
+									<Button
+										variant="outline"
+										role="combobox"
+										aria-expanded={open}
+										className={`w-full justify-between bg-white mt-1 border`}
+									>
+										{selectedStudents.length > 0
+											? `${selectedStudents.length} student(s) selected`
+											: "Select students..."}
+										{open ? (
+											<ChevronUpIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+										) : (
+											<ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+										)}
+									</Button>
+								</PopoverTrigger>
+								<PopoverContent className="p-5 rounded-md">
+									<Command>
+										<CommandInput placeholder="Search students..." />
+										<CommandList>
+											<CommandEmpty>No students found.</CommandEmpty>
+											<CommandGroup>
+												{selectedGroup.students && filterStudentOptions(selectedGroup).map((student) => (
+													<CommandItem
+														key={student.studentId}
+														value={student.label}
+														onSelect={() =>
+															handleStudentSelection(student.studentId)
+														}
+													>
+														{student.label}
+														<CheckIcon
+															className={`ml-auto h-4 w-4 ${selectedStudents.includes(student.studentId) ? "opacity-100" : "opacity-0"}`}
+														/>
+													</CommandItem>
+												))}
+											</CommandGroup>
+										</CommandList>
+									</Command>
+								</PopoverContent>
+							</Popover>
+						</div>
 						<DialogFooter>
-							<Button onClick={() => setEditDialogOpen(false)}>Cancel</Button>
+							<Button type="button" onClick={() => setEditDialogOpen(false)}>Cancel</Button>
 							<Button variant="destructive" type="submit">Submit</Button>
 						</DialogFooter>
 					</form>

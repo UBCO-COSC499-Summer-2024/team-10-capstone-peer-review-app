@@ -50,6 +50,7 @@ export const ClassProvider = ({ children }) => {
 		try {
 			setIsClassLoading(true);
 			const newClassData = await createClass(newClass);
+			console.log("newClassData", newClassData);
 			setClasses((prevClasses) => [...prevClasses, newClassData.data]);
 			setIsClassLoading(false);
 		} catch (error) {

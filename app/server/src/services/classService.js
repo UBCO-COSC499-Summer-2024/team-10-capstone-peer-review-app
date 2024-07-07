@@ -10,7 +10,15 @@ const getAllClasses = async () => {
 				groups: true,
 				usersInClass: true,
 				Assignments: true,
-				instructor: true,
+				instructor: {
+					select: {
+						userId: true,
+						email: true,
+						firstname: true,
+						lastname: true,
+						classesInstructed: true
+					}
+				},
 				EnrollRequest: true
 			}
 		});
@@ -116,6 +124,17 @@ const createClass = async (newClass, instructorId) => {
 				endDate,
 				term,
 				classSize
+			},
+			include: {
+				instructor: {
+					select: {
+						userId: true,
+						email: true,
+						firstname: true,
+						lastname: true,
+						classesInstructed: true
+					}
+				}
 			}
 		});
 		return createdClass;

@@ -677,7 +677,11 @@ const updateGroupInClass = async (groupId, updateData) => {
 			where: {
 				groupId: groupId
 			},
-			data: updateData
+			data: updateData,
+			include: {
+				students: true,
+				submissions: true // This is to include the students & submissions in the response. Needed for Groups.jsx atm.
+			}
 		});
 
 		return updatedGroup;

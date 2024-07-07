@@ -268,34 +268,34 @@ export const getCriterionGrade = asyncErrorHandler(async (req, res) => {
 
 export const addGroupToClass = asyncErrorHandler(async (req, res) => {
 	const { classId, groupData } = req.body;
-	const updatedClass = await classService.addGroupToClass(classId, groupData);
+	const updatedGroup = await classService.addGroupToClass(classId, groupData);
 	return res.status(200).json({
 		status: "Success",
 		message: "Group successfully added to class",
-		data: updatedClass
+		data: updatedGroup
 	});
 });
 
 export const removeGroupFromClass = asyncErrorHandler(async (req, res) => {
 	const { groupId } = req.body;
-	const updatedClass = await classService.removeGroupFromClass(groupId);
+	const updatedGroup = await classService.removeGroupFromClass(groupId);
 	return res.status(200).json({
 		status: "Success",
 		message: "Group successfully removed from class",
-		data: updatedClass
+		data: updatedGroup
 	});
 });
 
 export const updateGroupInClass = asyncErrorHandler(async (req, res) => {
 	const { groupId, updateData } = req.body;
-	const updatedClass = await classService.updateGroupInClass(
+	const updatedGroup = await classService.updateGroupInClass(
 		groupId,
 		updateData
 	);
 	return res.status(200).json({
 		status: "Success",
 		message: "Group successfully updated in class",
-		data: updatedClass
+		data: updatedGroup
 	});
 });
 

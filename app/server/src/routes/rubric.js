@@ -31,7 +31,7 @@ console.log("rubric router");
 
 router
 	.route("/add-rubrics")
-	.post(addRubricsToAssignment);
+	.post(ensureUser, ensureInstructor, addRubricsToAssignment);
 
 router
 	.route("/remove-rubrics")
@@ -47,11 +47,11 @@ router
 
 router
 	.route("/get-all-rubrics")
-	.post( getAllRubrics);
+	.post(ensureUser, ensureInstructor, getAllRubrics);
 
 router
 	.route("/get-rubric-by-id")
-	.post( getRubricById);
+	.post(ensureUser, ensureInstructor, getRubricById);
 
 // Criterion Routes
 router

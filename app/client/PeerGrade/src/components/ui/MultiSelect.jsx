@@ -3,7 +3,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem, SelectGr
 
 const MultiSelect = ({ options, value, onChange }) => {
   return (
-    <Select multiple value={value} onValueChange={onChange}>
+    <Select multiple value={value} onValueChange={(values) => onChange(values)}>
       <SelectTrigger>
         <SelectValue placeholder="Select assignments" />
       </SelectTrigger>

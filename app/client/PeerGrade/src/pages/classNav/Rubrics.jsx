@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription } from '@/components/ui/drawer';
-import { getAllRubrics, getRubricById , addRubricToAssignment} from '@/api/rubricApi';
+import { getAllRubrics, getRubricById, addRubricToAssignment } from '@/api/rubricApi';
 import { getAllAssignmentsByClassId } from '@/api/assignmentApi';
 import RubricDataTable from '@/components/class/RubricDataTable';
 import { useParams } from 'react-router-dom';
@@ -19,7 +19,6 @@ const Rubrics = () => {
     title: "",
     criteria: [{ criteria: "", ratings: [{ text: "", points: "" }], minPoints: "", maxPoints: "" }]
   });
-  
 
   useEffect(() => {
     const fetchRubrics = async () => {
@@ -54,7 +53,7 @@ const Rubrics = () => {
         setAssignments([]);
       }
     };
-  
+
     fetchAssignments();
   }, [classId]);
 
@@ -79,10 +78,10 @@ const Rubrics = () => {
       if (selectedAssignments.length === 0) {
         throw new Error("No assignments selected");
       }
-  
+
       const formattedRubricData = {
         title: newRubricData.title,
-        description: "Rubric description", // You might want to add a description field as well
+        // description: newRubricData.description, // You might want to add a description field as well
         totalMarks: newRubricData.criteria.reduce((total, criterion) => total + parseInt(criterion.maxPoints || 0), 0),
         criterion: newRubricData.criteria.map(criterion => ({
           title: criterion.criteria,
@@ -94,18 +93,19 @@ const Rubrics = () => {
           }))
         }))
       };
-  
+      console.log('formattedRubricData:', formattedRubricData);
       const userId = "fe5dafdb-c936-4086-89e4-3bc81a9dfee4"; // Replace with actual user ID or fetch from context/state
-  
+
       // Add rubric to each selected assignment
-      for (const assignmentId of selectedAssignments) {
+      const assignmentId = selectedAssignments;
+        console.log('Adding rubric to assignment:', assignmentId);
         await addRubricToAssignment({
           userId,
           assignmentId,
           rubricData: formattedRubricData
         });
-      }
-  
+      
+
       console.log('Rubric added to selected assignments');
       setIsCreateDrawerOpen(false);
       setNewRubricData({
@@ -113,7 +113,7 @@ const Rubrics = () => {
         criteria: [{ criteria: "", ratings: [{ text: "", points: "" }], minPoints: "", maxPoints: "" }]
       });
       setSelectedAssignments([]);
-      
+
       // Refresh the rubrics list
       const updatedRubrics = await getAllRubrics();
       setRubrics(updatedRubrics.data.data);
@@ -124,6 +124,7 @@ const Rubrics = () => {
   };
 
   const handleAssignmentSelection = (selectedValues) => {
+    console.log('Selected assignments:', selectedValues);
     setSelectedAssignments(selectedValues);
   };
 

@@ -13,8 +13,12 @@ export const getRubricById = async (rubricId) => {
 };
 
 export const addRubricToAssignment = async (data) => {
+  const { userId, assignmentId, rubricData } = data;
+  console.log('userId:', userId);
+  console.log('assignmentId:', assignmentId);
+  console.log('rubricData:', rubricData);
   try {
-    const response = await axios.post(`${BASE_URL}/rubric/add-rubrics`, data);
+    const response = await axios.post(`${BASE_URL}/rubric/add-rubrics`, { userId, assignmentId, rubricData });
     showStatusToast({
       status: "Success",
       message: "Rubric added successfully"

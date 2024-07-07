@@ -22,11 +22,11 @@ router.route("/remove-assignment")
 router.route("/update-assignment")
   .post(ensureUser, ensureInstructor, updateAssignmentInClass);
 
-  router.route("/get-assignment")
+router.route("/get-assignment")
   .post(ensureUser, getAssignmentInClass);
 
 router.route("/get-class-assignments")
-  .post( getAllAssignmentsByClassId);
+  .post(ensureUser, ensureInstructor, getAllAssignmentsByClassId);
 
 
 export default router;

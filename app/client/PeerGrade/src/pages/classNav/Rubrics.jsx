@@ -6,9 +6,11 @@ import { getAllAssignmentsByClassId } from '@/api/assignmentApi';
 import RubricDataTable from '@/components/class/RubricDataTable';
 import { useParams } from 'react-router-dom';
 import MultiSelect from '@/components/ui/MultiSelect';
+import { useUser } from "@/contexts/contextHooks/useUser";
 
 const Rubrics = () => {
   const { classId } = useParams();
+  const { user, userLoading } = useUser();
   const [rubrics, setRubrics] = useState([]);
   const [selectedRubric, setSelectedRubric] = useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -94,7 +96,8 @@ const Rubrics = () => {
         }))
       };
       console.log('formattedRubricData:', formattedRubricData);
-      const userId = "fe5dafdb-c936-4086-89e4-3bc81a9dfee4"; // Replace with actual user ID or fetch from context/state
+      console.log(user);
+      const userId = user.userId // Replace with actual user ID or fetch from context/state
 
       // Add rubric to each selected assignment
       const assignmentId = selectedAssignments;

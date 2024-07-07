@@ -174,7 +174,7 @@ function Dashboard() {
 
 	return (
 		<div className="w-full main-container space-y-6 ">
-			<div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-5">
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-5">
 				{isClassLoading && !classes
 					? Array.from({ length: 3 }).map((_, index) => (
 							<Skeleton key={index} className="h-48 w-full rounded-lg" />

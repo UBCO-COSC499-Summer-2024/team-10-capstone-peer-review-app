@@ -19,7 +19,7 @@ const ClassCard = ({
 	return (
 		<Link to={`/class/${classId}`}>
 			<Card className="w-full p-1 flex items-center justify-between bg-white shadow-md rounded-lg hover:shadow-lg overflow-hidden h-full">
-				<CardHeader className="border-r-3 pr-0 border-collapse">
+				<CardHeader className="border-r-3 border-collapse">
 					<CardTitle className="text-xl font-bold">{className}</CardTitle>
 					<CardDescription className="text-gray-500">
 						{instructor}

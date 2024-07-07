@@ -1,35 +1,75 @@
 version: '3'
 services:
+
   db:
     container_name: peergrade-db-test
     image: postgres:latest
+    env_file:
+      - ./server/envs/.env.test
     environment:
       POSTGRES_USER: ${TEST_DB_USER}
       POSTGRES_PASSWORD: ${TEST_DB_PASSWORD}
       POSTGRES_DB: ${TEST_DB_NAME}
     ports:
-      - ${TEST_DB_PORT}:5433
+      - ${TEST_DB_PORT}:5432
+    networks:
+      - peergrade-test-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${TEST_DB_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
 
   server:
     container_name: peergrade-server-test
+    env_file:
+      - ./server/envs/.env.test 
     build:
       context: ./server
       dockerfile: Dockerfile.test
       args:
-      - TEST_BACKEND_PORT=${BACKEND_PORT} 
-      - TEST_DB_NAME=${DB_NAME} 
-      - TEST_DB_PORT=${DB_PORT} 
-    env_file:
-      - ./server/.env.test 
+        - TEST_BACKEND_PORT=${TEST_BACKEND_PORT}
+        - TEST_DB_NAME=${TEST_DB_NAME}
+        - TEST_DB_PORT=${TEST_DB_PORT}
     ports:
-      - ${BACKEND_PORT}:5002 
+      - ${TEST_BACKEND_PORT}:5001
     volumes:
       - ./server:/usr/server
       - server_test_node_modules:/usr/server/node_modules
+    networks:
+      - peergrade-test-network
     depends_on:
-      - db 
-    command: ["npm", "run", "test"]
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost ${TEST_BACKEND_PORT} || exit 1"]
+      interval: 5s
+      timeout: 2s
+      retries: 3
+      start_period: 5s
+
+  server-test-runner:
+    container_name: peergrade-server-test-runner
+    env_file:
+      - ./server/envs/.env.test
+    build:
+      context: ./server
+      dockerfile: Dockerfile.test
+    volumes:
+      - ./server:/usr/server
+      - server_test_node_modules:/usr/server/node_modules
+    networks:
+      - peergrade-test-network
+    depends_on:
+      server:
+        condition: service_healthy
+    command: ["npm", "run", "test:integration"]
 
 volumes:
   server_test_node_modules:
+  
+networks:
+  peergrade-test-network:
+    name: peergrade-test-network

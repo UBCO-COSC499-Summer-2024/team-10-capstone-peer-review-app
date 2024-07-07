@@ -7,7 +7,10 @@ ARG DB_NAME
 ARG BACKEND_PORT
 
 # Install dependencies for Prisma
-RUN apt-get update -y && apt-get install -y openssl
+RUN apt-get update -y && \
+    apt-get install -y openssl netcat-openbsd && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
 WORKDIR /usr/server/ 

@@ -5,6 +5,7 @@ import setupRoutes from "./routes/index.js";
 import apiError from "./utils/apiError.js";
 import globalErrorHandler from "./middleware/globalErrorHandler.js";
 import shutdown from "./utils/shutdown.js";
+import prisma from "../prisma/prismaClient.js";
 // Dynamically set up environment variables based on NODE_ENV
 import { setupEnv } from "./utils/envConfig.js";
 setupEnv();

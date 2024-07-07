@@ -61,7 +61,7 @@ export const ClassProvider = ({ children }) => {
 			setIsClassLoading(true);
 			const deletedClass = await deleteClass(classId);
 			setClasses((prevClasses) =>
-				prevClasses.filter((cls) => cls.classId !== deletedClass.data.classId)
+				prevClasses.filter((cls) => cls.classId !== classId)
 			);
 			setIsClassLoading(false);
 		} catch (error) {

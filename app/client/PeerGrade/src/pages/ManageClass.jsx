@@ -34,7 +34,7 @@ const AddClassModal = ({ show, onClose }) => {
 	const [endDate, setEndDate] = useState("");
 	const [error, setError] = useState("");
 
-	const { isClassLoading, createClass } = useClass();
+	const { isClassLoading, addClass } = useClass();
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -57,7 +57,7 @@ const AddClassModal = ({ show, onClose }) => {
 		};
 
 		const classCreate = async () => {
-			createClass(newClass);
+			addClass(newClass);
 			onClose();
 		};
 
@@ -238,7 +238,7 @@ const ManageClass = () => {
 	const [selectedClass, setSelectedClass] = useState({});
 	const [dialogOpen, setDialogOpen] = useState(false);
 
-	const { classes, isClassLoading, deleteClass } = useClass();
+	const { classes, isClassLoading, removeClass } = useClass();
 
 	// TODO Refactor to get all classed from classContext
 	useEffect(() => {
@@ -273,7 +273,7 @@ const ManageClass = () => {
 		if (confirmDelete) {
 			setConfirmDelete(false);
 			if (selectedClass) {
-				deleteClass(selectedClass.classId);
+				removeClass(selectedClass.classId);
 				setDialogOpen(false);
 			} else {
 				console.error(

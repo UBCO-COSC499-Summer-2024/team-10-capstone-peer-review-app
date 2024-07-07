@@ -92,6 +92,21 @@ export const confirmEmail = async (token) => {
 	}
 };
 
+export const isEmailVerifiedJWT = async (token) => {
+	try {
+		const response = await axios.post(
+			`${BASE_URL}/auth/is-email-verified-jwt`,
+			{
+				token
+			}
+		);
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
 export const sendForgotPasswordEmail = async (email) => {
 	try {
 		const response = await axios.post(`${BASE_URL}/auth/forgot-password`, {
@@ -114,6 +129,140 @@ export const resetPassword = async (token, newPassword) => {
 			token,
 			newPassword
 		});
+		showStatusToast({
+			status: response.data.status,
+			message: response.data.message
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const getAllRoleRequests = async () => {
+	try {
+		const response = await axios.get(`${BASE_URL}/auth/role-request`, {
+			withCredentials: true
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const deleteRoleRequest = async (roleRequestId) => {
+	try {
+		const response = await axios.delete(
+			`${BASE_URL}/auth/role-request/${roleRequestId}`,
+			{
+				withCredentials: true
+			}
+		);
+		showStatusToast({
+			status: response.data.status,
+			message: response.data.message
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const approveRoleRequest = async (roleRequestId) => {
+	try {
+		// should change to a patch
+		const response = await axios.post(
+			`${BASE_URL}/auth/role-request/approve/${roleRequestId}`,
+			{},
+			{
+				withCredentials: true
+			}
+		);
+		showStatusToast({
+			status: response.data.status,
+			message: response.data.message
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const denyRoleRequest = async (roleRequestId) => {
+	try {
+		// should change to a patch
+		const response = await axios.post(
+			`${BASE_URL}/auth/role-request/deny/${roleRequestId}`,
+			{},
+			{
+				withCredentials: true
+			}
+		);
+		showStatusToast({
+			status: response.data.status,
+			message: response.data.message
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const pendRoleRequest = async (roleRequestId) => {
+	try {
+		// should change to a patch
+		const response = await axios.post(
+			`${BASE_URL}/auth/role-request/pending/${roleRequestId}`,
+			{},
+			{
+				withCredentials: true
+			}
+		);
+		showStatusToast({
+			status: response.data.status,
+			message: response.data.message
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const updateRoleRequestStatus = async (roleRequestId, status) => {
+	try {
+		const response = await axios.put(
+			`${BASE_URL}/auth/role-request/${roleRequestId}`,
+			{ status },
+			{
+				withCredentials: true
+			}
+		);
+		showStatusToast({
+			status: response.data.status,
+			message: response.data.message
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const applyForNewRoleRequest = async (roleRequest) => {
+	try {
+		const response = await axios.post(
+			`${BASE_URL}/auth/role-request`,
+			roleRequest,
+			{
+				withCredentials: true
+			}
+		);
 		showStatusToast({
 			status: response.data.status,
 			message: response.data.message

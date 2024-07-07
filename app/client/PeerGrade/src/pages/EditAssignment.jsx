@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { format } from "date-fns";
-import { Calendar as CalendarIcon, ChevronDown as ChevronDownIcon, ChevronUp as ChevronUpIcon, Check as CheckIcon, Upload, Plus, MinusCircle } from "lucide-react";
+import { Calendar as CalendarIcon, ChevronDown as ChevronDownIcon, ChevronUp as ChevronUpIcon, Check as CheckIcon, Upload } from "lucide-react";
 
 import { cn } from "@/utils/utils";
 import { Input } from '@/components/ui/input';
@@ -22,16 +22,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
 import { toast } from "@/components/ui/use-toast";
-import { assignment as assignmentsData } from '@/utils/dbData';
+import { getAssignmentInClass, updateAssignmentInClass } from '@/api/assignmentApi';
+import RubricDrawer from '@/components/assign/RubricDrawer';  // Import the new drawer component
 
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -42,34 +35,32 @@ const FormSchema = z.object({
   }),
   rubric: z.array(z.object({
     criteria: z.string().min(1, "Criteria is required"),
-    ratings: z.string().min(1, "Ratings is required"),
+    ratings: z.array(z.string().min(1, "Rating is required")),
     points: z.string().min(1, "Points is required").regex(/^\d+$/, "Points must be a numeric value"),
   })).min(1, "At least one rubric row is required."),
   file: z.any().optional(),
 });
 
 const EditAssignment = () => {
-  const { assignmentId } = useParams();
+  const { classId, assignmentId } = useParams();
+  const [openDrawer, setOpenDrawer] = useState(false);  // State to handle drawer open/close
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
-  const fileInputRef = useRef(null);
   const [selectedFileName, setSelectedFileName] = useState('');
+  const [rubricData, setRubricData] = useState([]);  // State to hold rubric data
+  const [assignmentData, setAssignmentData] = useState(null);
+  const fileInputRef = useRef(null);  // Define the ref here
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       title: "",
       description: "",
+      maxSubmissions: "",
       reviewOption: "",
       dueDate: null,
-      rubric: [{"criteria": "", "ratings": "", "points": ""}],
+      rubric: [],
       file: null,
     }
-  });
-
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: "rubric"
   });
 
   const dropdown_options = [
@@ -81,56 +72,75 @@ const EditAssignment = () => {
       value: "auto",
       label: "Auto",
     }
-  ];
+  ]; 
 
-  useEffect(() => {
-    // Fetch the current assignment details using the assignmentId and populate the form
-    const assignmentData = assignmentsData.find(a => a.assignment_id === parseInt(assignmentId));
-    if (assignmentData) {
-      form.setValue("title", assignmentData.title);
-      form.setValue("description", assignmentData.description);
-      form.setValue("reviewOption", assignmentData.evaluation_type);
-      form.setValue("dueDate", new Date(assignmentData.due_date));
-      form.setValue("rubric", assignmentData.instructions || [{ criteria: "", ratings: "", points: "" }]);
-      setSelectedFileName(`Assignment.${assignmentData.file_type}`);
-    }
-  }, [assignmentId, form]);
+  useEffect(() => { 
+    const fetchAssignment = async  () => {
+      try {
+        const fetchedAssignment = await getAssignmentInClass(classId, assignmentId);
+        setAssignmentData(fetchedAssignment.data);
+        form.setValue("title", assignmentData.title);
+        form.setValue("description", assignmentData.description);
+        form.setValue("maxSubmissions", assignmentData.maxSubmissions );
+        form.setValue("reviewOption", assignmentData.reviewOption || "manual");
+        form.setValue("dueDate", new Date(assignmentData.dueDate));
+        setRubricData([{ criteria: "", ratings: [""], points: "" }]);
+        setSelectedFileName(`Assignment.${assignmentData.assignmentType}`);
+      } catch (error) { 
+        toast({
+          title: "Error",
+          description: "Failed to fetch assignment data",
+          variant: "destructive",
+        });
+      }
+    };
+    fetchAssignment();
+  }, [classId, assignmentId, form, toast]);
 
-  const handleFileChange = (event) => {
+   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     setSelectedFileName(selectedFile.name);
     form.setValue("file", selectedFile);
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const simplifiedData = {
       ...data,
       file: selectedFileName,
+      rubric: rubricData,
     };
 
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(simplifiedData, null, 2)}</code>
-        </pre>
-      ),
-    });
-
-    // Update the assignment with the new data
-    console.log('Updated assignment data:', simplifiedData);
+    try {
+      await updateAssignmentInClass(classId, assignmentId, simplifiedData);
+      toast({
+        title: "Assignment updated successfully",
+        description: (
+          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+            <code className="text-white">{JSON.stringify(simplifiedData, null, 2)}</code>
+          </pre>
+        ),
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update assignment",
+        variant: "destructive",
+      });
+    }
   };
 
-  const addRow = useCallback(() => {
-    append({ criteria: "", ratings: "", points: "" });
-  }, [append]);
+  const handleReviewSelect = (value) => {
+    form.setValue("reviewOption", value);
+    setOpen(false);
+  };
 
-  const removeRow = useCallback((index) => {
-    remove(index);
-  }, [remove]);
+  const handleRubricSubmit = (rubric) => {
+    setRubricData(rubric);
+    setOpenDrawer(false);
+  };
 
   return (
-    <div className='flex justify-left flex-row p-4'>
+    <div className='bg-white flex justify-left flex-row p-4'>
       <div className="lg:w-2/3">
         <h2 className="text-xl font-semibold mb-4">Edit Assignment</h2>
         <Form {...form}>
@@ -161,6 +171,20 @@ const EditAssignment = () => {
                   <FormDescription>This is the text that will show as the assignment's description.</FormDescription>
                   <FormMessage />
                 </FormItem>
+              )} 
+            />
+            <FormField
+              control={form.control}
+              name="maxSubmissions"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Attempts</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g. 5" {...field} />
+                  </FormControl>
+                  <FormDescription>Max number of submissions.</FormDescription>
+                  <FormMessage />
+                </FormItem>
               )}
             />
             <FormField
@@ -171,15 +195,15 @@ const EditAssignment = () => {
                   <FormLabel>Manual/Auto Review</FormLabel>
                   <Popover open={open} onOpenChange={setOpen}>
                     <PopoverTrigger asChild>
-                      <FormControl>
+                      <FormControl  >
                         <Button
                           variant="outline"
                           role="combobox"
                           aria-expanded={open}
                           className="w-[200px] justify-between bg-white"
                         >
-                          {value
-                            ? dropdown_options.find((option) => option.value === value)?.label
+                          {field.value
+                            ? dropdown_options.find((option) => option.value === field.value)?.label
                             : "Select option..."}
                           {open
                             ? <ChevronUpIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -197,16 +221,15 @@ const EditAssignment = () => {
                                 key={option.value}
                                 value={option.value}
                                 onSelect={(currentValue) => {
-                                  setValue(currentValue === value ? "" : currentValue);
+                                  field.onChange(currentValue === field.value ? "" : currentValue);
                                   setOpen(false);
-                                  field.onChange(currentValue);
                                 }}
                               >
                                 {option.label}
                                 <CheckIcon
                                   className={cn(
                                     "ml-auto h-4 w-4",
-                                    value === option.value ? "opacity-100" : "opacity-0"
+                                    field.value === option.value ? "opacity-100" : "opacity-0"
                                   )}
                                 />
                               </CommandItem>
@@ -254,71 +277,14 @@ const EditAssignment = () => {
                   <FormDescription>The assignment will be due at 11:59 PM on the selected date.</FormDescription>
                   <FormMessage />
                 </FormItem>
-              )}
+              )}  
             />
-            <div>
+            <div className='flex gap-2 flex-col w-1/3'>
               <FormLabel>Rubric</FormLabel>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Criteria</TableHead>
-                    <TableHead>Ratings</TableHead>
-                    <TableHead>Points</TableHead>
-                    <TableHead></TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {fields.map((item, index) => (
-                    <TableRow key={item.id}>
-                      <TableCell>
-                        <FormField
-                          control={form.control}
-                          name={`rubric.${index}.criteria`}
-                          render={({ field }) => (
-                            <FormControl>
-                              <Input {...field} placeholder="Criteria" />
-                            </FormControl>
-                          )}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <FormField
-                          control={form.control}
-                          name={`rubric.${index}.ratings`}
-                          render={({ field }) => (
-                            <FormControl>
-                              <Input {...field} placeholder="Ratings" />
-                            </FormControl>
-                          )}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <FormField
-                          control={form.control}
-                          name={`rubric.${index}.points`}
-                          render={({ field }) => (
-                            <FormControl>
-                              <Input {...field} placeholder="Points" type="number" className="hide-arrows"/>
-                            </FormControl>
-                          )}
-                        />
-                      </TableCell>
-                      <TableCell className='flex flex-row space-x-2'>
-                        {fields.length > 1 && (
-                          <Button type="button" variant="outline" onClick={() => removeRow(index)}>
-                            <MinusCircle className="h-4 w-4" />
-                          </Button>
-                        )}
-                        {index === fields.length - 1 && (
-                          <Button type="button" variant="outline" onClick={addRow}>
-                            <Plus className="h-4 w-4" />
-                          </Button>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              <Button variant="outline" onClick={() => setOpenDrawer(true)}>
+                Edit Rubric
+              </Button> 
+              <RubricDrawer isOpen={openDrawer} onClose={() => setOpenDrawer(false)} onSubmit={handleRubricSubmit} />
             </div>
             <FormItem>
               <FormLabel htmlFor="file-upload">Upload File</FormLabel>

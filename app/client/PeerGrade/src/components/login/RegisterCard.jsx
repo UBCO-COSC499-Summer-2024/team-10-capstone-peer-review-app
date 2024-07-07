@@ -25,13 +25,15 @@ import {
 import {
 	ChevronDown as ChevronDownIcon,
 	ChevronUp as ChevronUpIcon,
-	Check as CheckIcon
+	Check as CheckIcon,
+	LoaderCircle as Loader
 } from "lucide-react";
 import { Toaster } from "@/components/ui/toaster";
 
 import { registerUser } from "@/api/authApi";
 
 const RegisterCard = ({ onSwitchToLogin }) => {
+	const [isLoading, setIsLoading] = useState(false);
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
 	const [email, setEmail] = useState("");
@@ -114,7 +116,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 			role: role === "" ? "STUDENT" : role
 		};
 
-		console.log("Role", role);
+		setIsLoading(true);
 
 		const response = await registerUser(newUser);
 		console.log("Register User Response", response);
@@ -123,6 +125,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 		} else if (response.status === "Error") {
 			setApiError(response.message);
 		}
+		setIsLoading(false);
 	};
 
 	const roleOptions = [
@@ -332,8 +335,13 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 								variant="outline"
 								type="submit"
 								className="w-full bg-green-200"
+								disabled={isLoading}
 							>
-								Sign up
+								{isLoading ? (
+									<Loader className="animate-spin h-5 w-5" />
+								) : (
+									"Sign up"
+								)}
 							</Button>
 						</div>
 					</form>

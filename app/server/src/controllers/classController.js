@@ -4,6 +4,15 @@ import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 
 // Controller methods for class operations
 
+export const getAllClasses = asyncErrorHandler(async (req, res) => {
+	const classes = await classService.getAllClasses();
+	return res.status(200).json({
+		status: "Success",
+		message: "Classes retrieved",
+		data: classes
+	});
+});
+
 export const getInstructorByClass = asyncErrorHandler(async (req, res) => {
 	const classId = req.params.classId;
 	const instructor = await classService.getInstructorByClass(classId);
@@ -196,6 +205,21 @@ export const getCriterionInRubric = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+export const addCriterionRating = asyncErrorHandler(async (req, res) => {
+	const { criterionId, ratingData } = req.body;
+	const newRating = await classService.createCriterionRating(
+		criterionId,
+		ratingData
+	);
+	return res.status(201).json({
+		status: "Success",
+		message: "Criterion rating successfully added",
+		data: newRating
+	});
+});
+
+//add update and delete here
+
 // Controller methods for criterion Grade operations
 export const addCriterionGrade = asyncErrorHandler(async (req, res) => {
 	const { rubricId, criterionData } = req.body;
@@ -322,6 +346,28 @@ export const removeGroupMember = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+export const joinGroup = asyncErrorHandler(async (req, res) => {
+	const { groupId } = req.body;
+	const userId = req.user.userId;
+	const updatedGroup = await classService.addGroupMember(groupId, userId);
+	return res.status(200).json({
+		status: "Success",
+		message: "Successfully joined group",
+		data: updatedGroup
+	});
+});
+
+export const leaveGroup = asyncErrorHandler(async (req, res) => {
+	const { groupId } = req.body;
+	const userId = req.user.userId;
+	const updatedGroup = await classService.removeGroupMember(groupId, userId);
+	return res.status(200).json({
+		status: "Success",
+		message: "Successfully left group",
+		data: updatedGroup
+	});
+});
+
 export const getCategoriesByClassId = asyncErrorHandler(async (req, res) => {
 	const { classId } = req.params;
 	const categories = await classService.getCategoriesByClassId(classId);
@@ -354,6 +400,7 @@ export default {
 	removeCriterionGrade,
 	updateCriterionGrade,
 	getCriterionGrade,
+	addCriterionRating,
 
 	addGroupToClass,
 	removeGroupFromClass,

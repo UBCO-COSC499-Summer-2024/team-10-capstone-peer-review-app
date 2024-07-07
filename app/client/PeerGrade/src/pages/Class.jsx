@@ -7,39 +7,30 @@ import Groups from "./classNav/Groups";
 import Files from "./classNav/Files";
 import People from "./classNav/People";
 import AssignmentCreation from "./classNav/AssignmentCreation";
+import EditClass from "./classNav/EditClass";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/contexts/contextHooks/useUser";
-import { getAllAssignmentsByClassId } from '@/api/assignmentApi';
-import { getCategoriesByClassId, getClassById } from '@/api/classApi';
-import { useToast } from '@/components/ui/use-toast';
+import { getAllAssignmentsByClassId } from "@/api/assignmentApi";
+import { getCategoriesByClassId } from "@/api/classApi";
+import { useToast } from "@/components/ui/use-toast";
+import { useClass } from "@/contexts/contextHooks/useClass";
 
 const Class = () => {
 	const { classId } = useParams();
-	const { user, userLoading } = useUser();
 	const [currentView, setCurrentView] = useState("home");
-	const [classItem, setClassItem] = useState(null);
 	const [assignments, setAssignments] = useState([]);
 	const [categories, setCategories] = useState([]);
+
 	const { toast } = useToast();
+	const { user, userLoading } = useUser();
+	const { classes } = useClass();
 
-	// Ask kevin about clearn up functions? abort controllers?
-	useEffect(() => {
-		const fetchClassData = async () => {
-			try {
-				const fetchedClass = await getClassById(classId);
-				setClassItem(fetchedClass.data);
-				console.log(fetchedClass.data);
-			} catch (error) {
-				toast({
-					title: "Error",
-					description: "Failed to fetch class data",
-					variant: "destructive"
-				});
-			}
-		};
+	// Retrieve Specific data from the class context
+	const classItem = classes.find((classItem) => classItem.classId === classId);
 
-		fetchClassData();
-	}, [classId, toast]);
+	// Ask kevin about clean up functions? abort controllers?
+
+	// TODO add class context to class page
 
 	useEffect(() => {
 		const fetchCategories = async () => {
@@ -56,7 +47,7 @@ const Class = () => {
 		};
 
 		fetchCategories();
-	}, [classId, toast]);
+	}, [classes, classId, toast]);
 
 	useEffect(() => {
 		const fetchAssignments = async () => {
@@ -64,6 +55,7 @@ const Class = () => {
 				const fetchedAssignments = await getAllAssignmentsByClassId(classId);
 				setAssignments(fetchedAssignments.data);
 			} catch (error) {
+				console.error("Failed to fetch assignments", error);
 				toast({
 					title: "Error",
 					description: "Failed to fetch assignments",
@@ -75,7 +67,7 @@ const Class = () => {
 		if (!userLoading && user) {
 			fetchAssignments();
 		}
-	}, [classId, user, userLoading, toast]);
+	}, [classes, classId, user, userLoading, toast]);
 
 	if (!classItem) {
 		return <div>Class not found</div>;
@@ -93,6 +85,8 @@ const Class = () => {
 				return <Files classId={classId} />;
 			case "assignmentCreation":
 				return <AssignmentCreation />;
+			case "edit":
+				return <EditClass classItem={classItem} />;
 			default:
 				return (
 					<>
@@ -120,7 +114,7 @@ const Class = () => {
 									{category.assignments.map((assignment) => (
 										<div key={assignment.assignmentId} className="flex w-full">
 											<Link
-												to={`/assignment/${assignment.assignmentId}`}
+												to={`/class/${classId}/assignment/${assignment.assignmentId}`}
 												className="flex items-center space-x-2 bg-gray-100 p-2 rounded hover:bg-gray-200 transition-colors w-full"
 											>
 												<span>{assignment.title}</span>
@@ -137,11 +131,12 @@ const Class = () => {
 
 	return (
 		<div className="w-screen main-container mx-5 p-6">
-			<div className="flex flex-col gap-4 bg-gray-200 p-4 mb-6 rounded-lg">
-				<h1 className="text-3xl font-bold">
-					{classItem.classname}: {classItem.instructor?.firstname}{" "}
-					{classItem.instructor?.lastname}
-				</h1>
+			<div className="flex flex-col gap-1 bg-gray-200 p-4 mb-6 rounded-lg">
+				<h1 className="text-3xl font-bold">{classItem.classname}</h1>
+				<span className="ml-1 text-sm text-gray-500 mb-2 ">
+					{" "}
+					{classItem.description}{" "}
+				</span>
 				<div className="flex rounded-lg">
 					<div className="flex justify-between items-center">
 						<Menubar className="bg-gray-200">
@@ -185,6 +180,16 @@ const Class = () => {
 									FILES
 								</MenubarTrigger>
 							</MenubarMenu>
+							{(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (
+								<MenubarMenu>
+									<MenubarTrigger
+										className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
+										onClick={() => setCurrentView("edit")}
+									>
+										EDIT
+									</MenubarTrigger>
+								</MenubarMenu>
+							)}
 						</Menubar>
 					</div>
 				</div>

@@ -6,12 +6,12 @@ import { useLocation } from "react-router-dom";
 const routeTitles = {
 	"/": "Welcome!",
 	"/dashboard": "Dashboard",
-	"/class/:classId": "Class Details",
+	"/class/*": "Class Details",
 	"/class/createAssignment": "Create Assignment",
 	"/manageClass": "Manage Class",
 	"/search": "Search",
-	"/assignment/:assignmentId": "Assignment Details",
-	"/assignedPR/:assignmentId": "Assigned Peer Reviews",
+	"/assignment/*": "Assignment Details",
+	"/assignedPR/*": "Assigned Peer Reviews",
 	"/peer-review": "Peer Review",
 	"/settings": "Settings",
 	"/admin": "Admin Dashboard",
@@ -22,7 +22,18 @@ function TitleUpdater() {
 	const location = useLocation();
 
 	useEffect(() => {
-		const title = `PeerGrade | ${routeTitles[location.pathname]}`;
+		const pathname = location.pathname;
+		const titleKey =
+			Object.keys(routeTitles).find((key) => {
+				if (key.includes("*")) {
+					// Handle wildcard routes
+					const baseRoute = key.split("*")[0];
+					return pathname.startsWith(baseRoute);
+				}
+				return key === pathname;
+			}) || pathname;
+
+		const title = `PeerGrade | ${routeTitles[titleKey]}`;
 		document.title = title;
 	}, [location]);
 

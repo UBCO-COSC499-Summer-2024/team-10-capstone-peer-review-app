@@ -3,6 +3,16 @@ import showStatusToast from "@/utils/showToastStatus";
 
 const BASE_URL = "/api"; // Use environment variable if available
 
+export const getAllClasses = async () => {
+	try {
+		const response = await axios.get(`${BASE_URL}/classes/all`);
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
 export const getInstructorByClassId = async (classId) => {
 	try {
 		const response = await axios.get(
@@ -108,9 +118,76 @@ export const createClass = async (newClass) => {
 	}
 };
 
+export const updateClass = async (classId, updateData) => {
+	try {
+		const response = await axios.put(
+			`${BASE_URL}/classes/${classId}`,
+			updateData
+		);
+		showStatusToast({
+			status: response.data.status,
+			message: response.data.message
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
 export const deleteClass = async (classId) => {
 	try {
 		const response = await axios.delete(`${BASE_URL}/classes/${classId}`);
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const addStudentToClass = async (classId, studentId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/classes/add-student`, {
+			classId,
+			studentId
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const removeStudentFromClass = async (classId, studentId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/classes/remove-student`, {
+			classId,
+			studentId
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const joinGroup = async (groupId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/classes/join-group`, {
+			groupId
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const leaveGroup = async (groupId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/classes/leave-group`, {
+			groupId
+		});
 		return response.data;
 	} catch (error) {
 		handleError(error);

@@ -1,12 +1,13 @@
-// Import necessary modules and services
-import e from "express";
 import assignService from "../services/assignService.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 
 // Controller methods for assignment operations
 export const addAssignmentToClass = asyncErrorHandler(async (req, res) => {
 	const { classId, assignmentData } = req.body;
-	const updatedClass = await assignService.addAssignmentToClass(classId,assignmentData);
+	const updatedClass = await assignService.addAssignmentToClass(
+		classId,
+		assignmentData
+	);
 	return res.status(200).json({
 		status: "Success",
 		message: "Assignment successfully added to class",
@@ -16,7 +17,8 @@ export const addAssignmentToClass = asyncErrorHandler(async (req, res) => {
 
 export const removeAssignmentFromClass = asyncErrorHandler(async (req, res) => {
 	const { assignmentId } = req.body;
-	const updatedClass = await assignService.removeAssignmentFromClass(assignmentId);
+	const updatedClass =
+		await assignService.removeAssignmentFromClass(assignmentId);
 	return res.status(200).json({
 		status: "Success",
 		message: "Assignment successfully removed from class",
@@ -50,14 +52,16 @@ export const getAssignmentInClass = asyncErrorHandler(async (req, res) => {
 	});
 });
 
-export const getAllAssignmentsByClassId = asyncErrorHandler(async (req, res) => {
-	const { classId } = req.body;
-	const assignments = await assignService.getAllAssignmentsByClassId(classId);
-	return res.status(200).json({
-		status: "Success",
-		data: assignments
-	});
-});
+export const getAllAssignmentsByClassId = asyncErrorHandler(
+	async (req, res) => {
+		const { classId } = req.body;
+		const assignments = await assignService.getAllAssignmentsByClassId(classId);
+		return res.status(200).json({
+			status: "Success",
+			data: assignments
+		});
+	}
+);
 
 // Export all controller methods
 export default {
@@ -65,6 +69,5 @@ export default {
 	removeAssignmentFromClass,
 	updateAssignmentInClass,
 	getAssignmentInClass,
-    getAllAssignmentsByClassId,
-
+	getAllAssignmentsByClassId
 };

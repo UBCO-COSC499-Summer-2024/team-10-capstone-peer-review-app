@@ -317,7 +317,7 @@ export async function applyForNewRoleRequest(email, role) {
 	const existingRequest = await checkRequestByEmail(email);
 	if (existingRequest) {
 		throw new apiError(
-			"Your previous role request is still exists, an admin must delete it before you can apply for a new one",
+			"Your previous role request still exists, an admin must delete it before you can apply for a new one",
 			400
 		);
 	}

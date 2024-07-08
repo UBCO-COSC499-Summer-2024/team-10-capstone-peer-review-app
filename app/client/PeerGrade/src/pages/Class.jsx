@@ -6,6 +6,7 @@ import Grades from "./classNav/Grades";
 import Groups from "./classNav/Groups";
 import Files from "./classNav/Files";
 import People from "./classNav/People";
+import Rubrics from "./classNav/Rubrics";
 import AssignmentCreation from "./classNav/AssignmentCreation";
 import EditClass from "./classNav/EditClass";
 import { Button } from "@/components/ui/button";
@@ -25,49 +26,36 @@ const Class = () => {
 	const { user, userLoading } = useUser();
 	const { classes } = useClass();
 
-	// Retrieve Specific data from the class context
 	const classItem = classes.find((classItem) => classItem.classId === classId);
 
-	// Ask kevin about clean up functions? abort controllers?
-
-	// TODO add class context to class page
-
-	useEffect(() => {
-		const fetchCategories = async () => {
-			try {
-				const fetchedCategories = await getCategoriesByClassId(classId);
-				setCategories(fetchedCategories.data);
-			} catch (error) {
-				toast({
-					title: "Error",
-					description: "Failed to fetch categories",
-					variant: "destructive"
-				});
-			}
-		};
-
-		fetchCategories();
-	}, [classes, classId, toast]);
-
-	useEffect(() => {
-		const fetchAssignments = async () => {
-			try {
-				const fetchedAssignments = await getAllAssignmentsByClassId(classId);
-				setAssignments(fetchedAssignments.data);
-			} catch (error) {
-				console.error("Failed to fetch assignments", error);
-				toast({
-					title: "Error",
-					description: "Failed to fetch assignments",
-					variant: "destructive"
-				});
-			}
-		};
-
-		if (!userLoading && user) {
-			fetchAssignments();
+	const fetchClassData = async () => {
+		try {
+			const [fetchedAssignments, fetchedCategories] = await Promise.all([
+				getAllAssignmentsByClassId(classId),
+				getCategoriesByClassId(classId)
+			]);
+			setAssignments(fetchedAssignments.data);
+			setCategories(fetchedCategories.data);
+		} catch (error) {
+			console.error("Failed to fetch class data", error);
+			toast({
+				title: "Error",
+				description: "Failed to fetch class data",
+				variant: "destructive"
+			});
 		}
-	}, [classes, classId, user, userLoading, toast]);
+	};
+
+	useEffect(() => {
+		if (!userLoading && user) {
+			fetchClassData();
+		}
+	}, [classId, user, userLoading, currentView]);
+
+	const handleViewChange = (view) => {
+		setCurrentView(view);
+		fetchClassData();
+	};
 
 	if (!classItem) {
 		return <div>Class not found</div>;
@@ -84,9 +72,14 @@ const Class = () => {
 			case "files":
 				return <Files classId={classId} />;
 			case "assignmentCreation":
-				return <AssignmentCreation />;
+				return <AssignmentCreation onAssignmentCreated={() => {
+					fetchClassData();
+					handleViewChange("files");
+				}} />;
 			case "edit":
 				return <EditClass classItem={classItem} />;
+			case "rubrics":
+				return <Rubrics />;
 			default:
 				return (
 					<>
@@ -143,7 +136,7 @@ const Class = () => {
 							<MenubarMenu>
 								<MenubarTrigger
 									className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
-									onClick={() => setCurrentView("home")}
+									onClick={() => handleViewChange("home")}
 								>
 									HOME
 								</MenubarTrigger>
@@ -151,7 +144,7 @@ const Class = () => {
 							<MenubarMenu>
 								<MenubarTrigger
 									className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
-									onClick={() => setCurrentView("grades")}
+									onClick={() => handleViewChange("grades")}
 								>
 									GRADES
 								</MenubarTrigger>
@@ -159,7 +152,7 @@ const Class = () => {
 							<MenubarMenu>
 								<MenubarTrigger
 									className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
-									onClick={() => setCurrentView("people")}
+									onClick={() => handleViewChange("people")}
 								>
 									PEOPLE
 								</MenubarTrigger>
@@ -167,7 +160,7 @@ const Class = () => {
 							<MenubarMenu>
 								<MenubarTrigger
 									className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
-									onClick={() => setCurrentView("groups")}
+									onClick={() => handleViewChange("groups")}
 								>
 									GROUPS
 								</MenubarTrigger>
@@ -175,7 +168,7 @@ const Class = () => {
 							<MenubarMenu>
 								<MenubarTrigger
 									className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
-									onClick={() => setCurrentView("files")}
+									onClick={() => handleViewChange("files")}
 								>
 									FILES
 								</MenubarTrigger>
@@ -184,9 +177,19 @@ const Class = () => {
 								<MenubarMenu>
 									<MenubarTrigger
 										className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
-										onClick={() => setCurrentView("edit")}
+										onClick={() => handleViewChange("edit")}
 									>
 										EDIT
+									</MenubarTrigger>
+								</MenubarMenu>
+							)}
+							{(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (
+								<MenubarMenu>
+									<MenubarTrigger
+										className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
+										onClick={() => handleViewChange("rubrics")}
+									>
+										RUBRICS
 									</MenubarTrigger>
 								</MenubarMenu>
 							)}
@@ -201,7 +204,7 @@ const Class = () => {
 						currentView !== "assignmentCreation" && (
 							<Button
 								variant="outline"
-								onClick={() => setCurrentView("assignmentCreation")}
+								onClick={() => handleViewChange("assignmentCreation")}
 								className="w-full bg-white"
 							>
 								Create Assignment

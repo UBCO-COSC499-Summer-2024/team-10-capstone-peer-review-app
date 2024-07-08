@@ -1,20 +1,33 @@
 import axios from "axios";
 import showStatusToast from "@/utils/showToastStatus";
+import { toast } from "@/components/ui/use-toast";
 
 const BASE_URL = "/api"; // Use environment variable if available
 
-export const addAssignmentToClass = async (classId, assignmentData) => {
+export const addAssignmentToClass = async (formData) => {
     try {
-        const response = await axios.post(`${BASE_URL}/assignment/add-assignment`, {
-            classId,
-            assignmentData
-        });
-        return response.data;
+        const response = await axios.post('/api/assignment/add-assignment', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          });
+
+          if (response.data.status === 'Success') {
+            toast({
+              title: "Assignment Created",
+              description: "The assignment and its rubric have been successfully created.",
+              status: "success"
+            });
+          }
+          console.log('Updated assignment data:', response.data);
+
+         return response.data;
     } catch (error) {
         handleError(error);
         return error.response.data;
     }
 };
+
 
 export const updateAssignmentInClass = async (classId, assignmentId, updateData) => {
     try {
@@ -58,6 +71,11 @@ export const getAllAssignmentsByClassId = async (classId) => {
         });
         return response.data;
     } catch (error) {
+        toast({
+            title: "Error",
+            description: "An error occurred while fetching assignments. Please try again.",
+            status: "error"
+        });
         handleError(error);
         return error.response.data;
     }

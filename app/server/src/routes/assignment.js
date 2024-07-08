@@ -14,7 +14,7 @@ const router = express.Router();
 
 //Assignment Routes
 router.route("/add-assignment")
-  .post( addAssignmentToClass);
+  .post( ensureUser, ensureInstructor, addAssignmentToClass);
 
 router.route("/remove-assignment")
   .post(ensureUser, ensureInstructor, removeAssignmentFromClass);
@@ -22,7 +22,7 @@ router.route("/remove-assignment")
 router.route("/update-assignment")
   .post(ensureUser, ensureInstructor, updateAssignmentInClass);
 
-  router.route("/get-assignment")
+router.route("/get-assignment")
   .post(ensureUser, getAssignmentInClass);
 
 router.route("/get-class-assignments")

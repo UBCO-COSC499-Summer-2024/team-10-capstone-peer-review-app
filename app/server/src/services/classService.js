@@ -272,7 +272,7 @@ const createRubricsForAssignment = async (
 				...rubricData,
 				creatorId: creatorId,
 				assignments: {
-					create: {
+					connect: {
 						assignmentId: assignmentId
 					}
 				}
@@ -284,7 +284,7 @@ const createRubricsForAssignment = async (
 		if (error instanceof apiError) {
 			throw error;
 		} else {
-			throw new apiError("Failed to create rubrics for assignment", 500);
+			throw new apiError("Failed to create rubrics for assignment" + error, 500);
 		}
 	}
 };
@@ -308,23 +308,23 @@ const getRubricsForAssignment = async (assignmentId) => {
 			throw new apiError("Rubrics not found", 404);
 		}
 
-		const rubricAssignments = await prisma.rubricForAssignment.findMany({
-			where: {
-				assignmentId: assignmentId
-			},
-			include: {
-				rubric: true // Include the related rubric details
-			}
-		});
+		// const rubricAssignments = await prisma.rubricForAssignment.findMany({
+		// 	where: {
+		// 		assignmentId: assignmentId
+		// 	},
+		// 	include: {
+		// 		rubric: true // Include the related rubric details
+		// 	}
+		// });
 
-		if (!rubricAssignments.length) {
-			throw new apiError("Rubrics not found for the assignment", 404);
-		}
+		// if (!rubricAssignments.length) {
+		// 	throw new apiError("Rubrics not found for the assignment", 404);
+		// }
 
 		// Map the result to only include rubric details
-		const rubrics = rubricAssignments.map((ra) => ra.rubric);
+		// const rubrics = rubricAssignments.map((ra) => ra.rubric);
 
-		return rubrics;
+		return assignment.rubric;
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
@@ -375,11 +375,11 @@ const deleteRubricsForAssignment = async (rubricId) => {
 			throw new apiError("Rubric not found", 404);
 		}
 
-		await prisma.rubricForAssignment.deleteMany({
-			where: {
-				rubricId: rubricId
-			}
-		});
+		// await prisma.rubricForAssignment.deleteMany({
+		// 	where: {
+		// 		rubricId: rubricId
+		// 	}
+		// });
 
 		await prisma.rubric.delete({
 			where: {
@@ -454,7 +454,7 @@ const createCriterionForRubric = async (rubricId, criterionData) => {
 		if (error instanceof apiError) {
 			throw error;
 		} else {
-			throw new apiError("Failed to create criterion for rubric", 500);
+			throw new apiError("Failed to create criterion for rubric" + error, 500);
 		}
 	}
 };
@@ -774,6 +774,8 @@ const addGroupMember = async (groupId, userId) => {
 		const userInfo = await prisma.user.findUnique({
 			where: {
 				userId: userId
+			}, include: {
+				classes: true
 			}
 		});
 
@@ -784,6 +786,11 @@ const addGroupMember = async (groupId, userId) => {
 		if (group.students && group.students.length >= group.groupSize) {
 			throw new apiError("Adding student exceeds group size", 400);
 		}
+
+		if (!userInfo.classes.some((c) => c.classId === group.classId)) {
+			throw new apiError("Student not enrolled in class", 400);
+		}
+
 
 		await prisma.group.update({
 			where: {
@@ -799,7 +806,7 @@ const addGroupMember = async (groupId, userId) => {
 		if (error instanceof apiError) {
 			throw error;
 		} else {
-			throw new apiError("Failed to add student to group", 500);
+			throw new apiError("Failed to add student to group" + error, 500);
 		}
 	}
 };

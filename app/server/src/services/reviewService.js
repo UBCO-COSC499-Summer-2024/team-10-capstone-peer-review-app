@@ -59,7 +59,7 @@ const getAllReviews = async (submissionId) => {
     }
 }
 
-const createReview = async (userId, review) => {
+const createReviewForSubmission = async (submissionId, review) => {
     try {
         const newReview = await prisma.review.create({
             reviewerId: userId,

@@ -33,8 +33,6 @@ const getStudentSubmission = async (studentId) => {
             allSubmissions = allSubmissions.concat(groupSubmission);
         }
 
-
-
         return allSubmissions;
     } catch (error) {
         throw new apiError("Failed to retrieve submission", 500);
@@ -151,7 +149,7 @@ const createSubmission = async (studentId, assignmentId, submissionFilePath) => 
 
         return newSubmission;
     } catch (error) {
-        throw new apiError("Failed to create submission", 500);
+        throw new apiError("Failed to create submission" + error, 500);
     }
 };
 

@@ -3,15 +3,15 @@ import { mockDeep, mockReset } from "jest-mock-extended";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-import prisma from "../../prisma/prismaClient.js";
-import apiError from "../../src/utils/apiError.js";
-import sendEmail from "../../src/utils/mailer.js";
-import authService from "../../src/services/authService.js";
+import prisma from "../../../prisma/prismaClient.js";
+import apiError from "../../../src/utils/apiError.js";
+import sendEmail from "../../../src/utils/mailer.js";
+import authService from "../../../src/services/authService.js";
 
 // TODO convert to singleton file for reusablility
 
 // Mock prisma
-jest.mock("../../prisma/prismaClient.js", () => ({
+jest.mock("../../../prisma/prismaClient.js", () => ({
 	user: mockDeep(),
 	roleRequest: mockDeep()
 }));
@@ -29,7 +29,7 @@ jest.mock("jsonwebtoken", () => ({
 }));
 
 // Mock sendEmail
-jest.mock("../../src/utils/mailer.js");
+jest.mock("../../../src/utils/mailer.js");
 
 describe("authService", () => {
 	beforeEach(() => {

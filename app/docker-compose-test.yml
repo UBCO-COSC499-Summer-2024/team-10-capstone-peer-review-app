@@ -68,7 +68,6 @@ services:
     command: ["npm", "run", "test:integration"]
 
 volumes:
-  server_test_node_modules:
   
 networks:
   peergrade-test-network:

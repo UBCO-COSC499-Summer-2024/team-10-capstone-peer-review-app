@@ -23,10 +23,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { toast } from '@/components/ui/use-toast';
-import RubricDrawer from '@/components/assign/RubricDrawer';
 import { getCategoriesByClassId } from '@/api/classApi';
 import { addAssignmentToClass } from '@/api/assignmentApi';
-// import { addExtensiveRubric } from '@/api/rubricApi';
 
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -44,7 +42,6 @@ const AssignmentCreation = () => {
   const { classId } = useParams();
   const [open, setOpen] = useState(false);
   const [openCat, setOpenCat] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const [value, setValue] = useState("");
   const fileInputRef = useRef(null);
   const [selectedFileName, setSelectedFileName] = useState('');

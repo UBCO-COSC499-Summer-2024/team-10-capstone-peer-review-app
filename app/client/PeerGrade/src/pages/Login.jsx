@@ -23,7 +23,7 @@ const Login = () => {
 
   return (
     <main className="flex items-center justify-center min-h-screen ">
-      <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-[500px]">
+      <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-[400px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="login">Login</TabsTrigger>
           <TabsTrigger value="register">Register</TabsTrigger>

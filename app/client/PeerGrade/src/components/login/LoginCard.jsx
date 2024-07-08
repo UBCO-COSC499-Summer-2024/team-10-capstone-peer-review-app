@@ -73,7 +73,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 	};
 
 	return (
-		<div className="relative space-y-5 w-full">
+		<div className="relative w-full">
 			{tokenReceived && (
 				<Alert
 					className="absolute top-0 left-0 w-full flex justify-center items-center space-x-2"
@@ -172,16 +172,16 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 				<CardFooter className="text-center flex flex-col gap-2 bg-indigo-100">
 					<div className="flex w-full justify-between mt-6">
 						<p className="text-sm text-gray-600">
-							Don&apos;t have an account?
+							Don&apos;t have an account? 
 							<button
 								onClick={onSwitchToRegister}
-								className="text-green-600 hover:text-green-500"
+								className="text-green-600 hover:text-green-500 ml-1"
 							>
 								Sign up
 							</button>
 						</p>
 						<HoverCard>
-							<HoverCardTrigger className="hover:bg-amber-100 rounded-full ease-in-out duration-500">
+							<HoverCardTrigger className="hover:bg-green-100 hover:shadow-md rounded-full ease-in-out duration-500">
 								<QuestionMarkCircleIcon className="w-6 h-6" />
 							</HoverCardTrigger>
 							<HoverCardContent className="text-center p-4">

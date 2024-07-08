@@ -34,7 +34,7 @@ const GroupCard = ({ classes, groups, classNames, users }) => {
 	return (
 		<div>
 			{(selectedClass && filteredGroups) ?
-				(<Card className="w-full max-w-lg p-8 bg-white shadow-md rounded-lg">
+				(<Card className="w-full border-none max-w-lg p-8 bg-white shadow-md rounded-lg">
 					<CardHeader>
 						<CardTitle>Group Members</CardTitle>
 						<CardDescription>

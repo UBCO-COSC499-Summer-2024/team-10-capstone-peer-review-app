@@ -136,7 +136,7 @@ const Class = () => {
 	};
 
 	return (
-		<div className="w-screen main-container mx-5 p-6">
+		<div className="w-full px-6">
 			<div className="flex flex-col gap-4 bg-gray-200 p-4 mb-6 rounded-lg">
 				<h1 className="text-3xl font-bold">
 					{classItem.classname}: {classItem.instructor?.firstname}{" "}

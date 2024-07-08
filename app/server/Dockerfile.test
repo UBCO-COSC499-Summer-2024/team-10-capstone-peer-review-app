@@ -3,6 +3,8 @@
 FROM node:22-slim 
 
 # Arguments for database and backend configurations
+ARG TEST_DB_PORT 
+ARG TEST_DB_NAME
 ARG TEST_BACKEND_PORT
 
 ENV NODE_ENV=test

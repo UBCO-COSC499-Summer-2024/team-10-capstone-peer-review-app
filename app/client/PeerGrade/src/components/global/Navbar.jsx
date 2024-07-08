@@ -18,10 +18,9 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger
-} from "@/components/ui/hover-card";
+  Card,
+  CardContent,
+} from "@/components/ui/card";
 
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { getCurrentUser, logoutUser } from "@/api/authApi";
@@ -35,6 +34,7 @@ export default function AppNavbar() {
   const [assignmentsData, setAssignmentsData] = useState([]);
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
+  const [isCardVisible, setIsCardVisible] = useState(false); // State to manage card visibility
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -121,8 +121,12 @@ export default function AppNavbar() {
     );
   };
 
+  const toggleCardVisibility = () => {
+    setIsCardVisible(!isCardVisible);
+  };
+
   return (
-    <div className="flex w-[200px] h-screen fixed">
+    <div className="flex w-[200px] z-50 h-screen fixed">
       <div className="py-4 bg-white shadow-md flex flex-col items-center justify-between">
         <div>
           <div className="mb-6">
@@ -160,11 +164,10 @@ export default function AppNavbar() {
                   <SheetContent side="left" className="w-[300px]">
                     <SheetHeader>
                       <SheetTitle>My Peer-Reviews</SheetTitle>
-					  <SheetDescription>
-						<p className="text-sm leading-snug text-muted-foreground">
-						  {assignmentsData.length} Reviews Assigned
-						</p>
-                      
+                      <SheetDescription>
+                        <p className="text-sm leading-snug text-muted-foreground">
+                          {assignmentsData.length} Reviews Assigned
+                        </p>
                         <ul className="bg-white flex flex-col justify-center items-center gap-3 p-6 w-full">
                           {assignmentsData.map((assignment) => (
                             <ListItem
@@ -184,8 +187,7 @@ export default function AppNavbar() {
                             View all peer reviews.
                           </ListItem>
                         </ul>
-						</SheetDescription>
-
+                      </SheetDescription>
                     </SheetHeader>
                   </SheetContent>
                 </Sheet>
@@ -248,20 +250,20 @@ export default function AppNavbar() {
           </NavigationMenu>
         </div>
         <div className="flex items-center">
-          <HoverCard>
-            <HoverCardTrigger>
-              <Avatar className="w-14 h-14 bg-gray-200 rounded-full shadow-md">
-                <AvatarImage
-                  src={user.avatarUrl}
-                  alt={`${user.firstname} ${user.lastname}`}
-                />
-                <AvatarFallback>
-                  {getInitials(user.firstname, user.lastname)}
-                </AvatarFallback>
-              </Avatar>
-            </HoverCardTrigger>
-            <HoverCardContent className="w-full transform translate-x-40 translate-y-16">
-              <div className="space-y-4">
+          <Button variant="ghost" onClick={toggleCardVisibility}>
+            <Avatar className="w-14 h-14 bg-gray-200 rounded-full shadow-md">
+              <AvatarImage
+                src={user.avatarUrl}
+                alt={`${user.firstname} ${user.lastname}`}
+              />
+              <AvatarFallback>
+                {getInitials(user.firstname, user.lastname)}
+              </AvatarFallback>
+            </Avatar>
+          </Button>
+          {isCardVisible && (
+            <Card className="absolute  w-[400px] transform -translate-y-48 translate-x-36">
+              <CardContent className="space-y-4 ">
                 <div className="flex flex-col gap-1">
                   <NotifCard
                     title="Admin: Heads up!"
@@ -292,9 +294,9 @@ export default function AppNavbar() {
                     </Button>
                   </Link>
                 </div>
-              </div>
-            </HoverCardContent>
-          </HoverCard>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
       <div className="flex-1 overflow-auto ml-60">

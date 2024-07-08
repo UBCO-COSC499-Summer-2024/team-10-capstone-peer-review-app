@@ -14,7 +14,13 @@ async function checkUserByEmail(email) {
 }
 
 async function checkRequestByEmail(email) {
-	return await prisma.roleRequest.findUnique({ where: { email } });
+	return await prisma.roleRequest.findUnique({
+		where: {
+			user: {
+				email
+			}
+		}
+	});
 }
 
 // AUTHENTICATION RELATED DATABASE SERVICES

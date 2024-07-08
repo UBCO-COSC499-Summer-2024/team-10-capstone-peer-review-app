@@ -38,7 +38,7 @@ const FormSchema = z.object({
   file: z.any().optional(),
 });
 
-const AssignmentCreation = () => {
+const AssignmentCreation = ({ onAssignmentCreated }) => {
   const { classId } = useParams();
   const [open, setOpen] = useState(false);
   const [openCat, setOpenCat] = useState(false);
@@ -99,21 +99,22 @@ const AssignmentCreation = () => {
   const onSubmit = async (data) => {
     console.log('Form submitted:', data);  // Add logging to check form data
     console.log('selectedCategory:', selectedCategory);
-    try {
-      const formData = new FormData();
-      formData.append('classId', classId);
-      formData.append('categoryId', selectedCategory);
-      formData.append('assignmentData', JSON.stringify({
-        title: data.title,
-        description: data.description,
-        dueDate: data.dueDate,
-        reviewOption: data.reviewOption,
-        maxSubmissions: data.maxSubmissions,
-      }));
-      if (fileInputRef.current.files[0]) {
-        formData.append('file', fileInputRef.current.files[0]);
-      }
+   
+    const formData = new FormData();
+    formData.append('classId', classId);
+    formData.append('categoryId', selectedCategory);
+    formData.append('assignmentData', JSON.stringify({
+      title: data.title,
+      description: data.description,
+      dueDate: data.dueDate,
+      reviewOption: data.reviewOption,
+      maxSubmissions: data.maxSubmissions,
+    }));
+    if (fileInputRef.current.files[0]) {
+      formData.append('file', fileInputRef.current.files[0]);
+    }
 
+    try {
       const response = await addAssignmentToClass(formData);
 
       if (response.status === 'Success') {
@@ -125,6 +126,9 @@ const AssignmentCreation = () => {
         form.reset();
         setSelectedFileName('');
         setSelectedCategory('');
+        
+        // Call the callback function to refresh assignments
+        onAssignmentCreated();
       } else {
         toast({
           title: "Error",

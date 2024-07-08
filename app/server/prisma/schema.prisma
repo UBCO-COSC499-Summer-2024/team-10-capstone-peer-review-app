@@ -169,6 +169,7 @@ model Submission {
   submitterGroupId   String?
   createdAt          DateTime   @default(now())
   updatedAt          DateTime   @updatedAt
+  // sumbissionType     SubmissionType // Either a File or a URL, we need to discuss file storage options
   sumbissionFilePath String?
   finalGrade         Int? // Final grade of the Submission, default to the instructor grade?
   assignment         Assignment @relation(fields: [assignmentId], references: [assignmentId], onDelete: Cascade)

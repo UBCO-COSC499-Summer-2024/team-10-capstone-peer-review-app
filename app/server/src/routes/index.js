@@ -6,6 +6,9 @@ import classesRouter from "./classes.js";
 import instructorsRouter from "./instructors.js";
 import studentsRouter from "./students.js";
 import usersRoutes from "./usersRoutes.js";
+import gradesRouter from "./grade.js";
+import reviewRouter from "./review.js";
+import submitRouter from "./submit.js";
 import assignmentRouter from "./assignment.js";
 // Middlewares
 import localStrategy from "../middleware/passportStrategies/localStrategy.js";
@@ -25,6 +28,11 @@ router.use("/classes", classesRouter);
 router.use("/assignment", assignmentRouter);
 router.use("/users", usersRoutes);
 router.use("/students", ensureUser, studentsRouter);
+
+router.use("/submit", ensureUser, submitRouter);
+router.use("/review", ensureUser, reviewRouter);
+router.use("/grade", ensureUser, gradesRouter);
+
 router.use("/instructors", ensureUser, ensureInstructor, instructorsRouter);
 
 export default router;

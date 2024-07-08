@@ -62,7 +62,7 @@ export default function AppNavbar() {
 			const fetchAssignments = async () => {
 				try {
 					const assignments = await getAllAssignments(user.userId);
-					setAssignmentsData(Array.isArray(assignments) ? assignments : []);
+					setAssignmentsData(Array.isArray(assignments.data) ? assignments.data : []);
 				} catch (error) {
 					toast({
 						title: "Error",
@@ -158,16 +158,15 @@ export default function AppNavbar() {
 						</NavigationMenuTrigger>
 						<NavigationMenuContent>
 							<ul className="bg-white grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-								{/* Uncomment this if you have assignmentsData */}
-								{/* {assignmentsData.map((assignment) => (
-                  <ListItem
-                    key={assignment.assignmentId}
-                    title={assignment.title}
-                    href={`/assignedPR/${assignment.assignmentId}`}
-                  >
-                    {assignment.description}
-                  </ListItem>
-                ))} */}
+								{assignmentsData.map((assignment) => (
+								<ListItem
+									key={assignment.assignmentId}
+									title={assignment.title}
+									href={`/assignedPR/${assignment.assignmentId}`}
+								>
+									{assignment.description}
+								</ListItem>
+								))}
 							</ul>
 						</NavigationMenuContent>
 					</NavigationMenuItem>
@@ -215,21 +214,6 @@ export default function AppNavbar() {
 							Settings
 						</Link>
 					</NavigationMenuItem>
-					{/* {location.pathname !== "/search" && user.role === "ADMIN" && (
-						<NavigationMenuItem>
-							<div className="flex w-full max-w-sm items-center space-x-2">
-								<Input
-									placeholder="Search classes"
-									value={searchQuery}
-									onChange={(e) => setSearchQuery(e.target.value)} // Update state on input change
-									className="sm:hidden md:hidden lg:block"
-								/>
-								<Button onClick={search} className="h-10 w-10">
-									<SearchIcon className="w-5 h-5 sm:p-0 sm:m-0" />
-								</Button>
-							</div>
-						</NavigationMenuItem>
-					)} */}
 				</NavigationMenuList>
 				<div className="flex items-center space-x-4">
 					<HoverCard>

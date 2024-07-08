@@ -277,13 +277,14 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 								Select User Type (debug):
 							</label>
 							{/*Popover content box doesnt match width, will fix later!*/}
-							<Popover open={open} onOpenChange={setOpen} id="selectUserType">
+							<Popover open={open} onOpenChange={setOpen}>
 								<PopoverTrigger asChild>
 									<Button
 										variant="outline"
 										role="combobox"
 										aria-expanded={open}
 										className={`w-full justify-between bg-white mt-1 border ${errorState.role ? "border-red-500" : "border-gray-300"}`}
+										id="selectUserType"
 									>
 										{role
 											? roleOptions.find((option) => option.role === role)

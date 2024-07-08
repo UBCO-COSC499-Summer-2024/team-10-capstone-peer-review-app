@@ -31,7 +31,7 @@ jest.mock("jsonwebtoken", () => ({
 // Mock sendEmail
 jest.mock("../../../src/utils/mailer.js");
 
-describe("authService", () => {
+describe("authService Deep Mocking Unit Tests", () => {
 	beforeEach(() => {
 		mockReset(prisma.user);
 		mockReset(prisma.roleRequest);

@@ -6,6 +6,8 @@ ARG DB_PORT
 ARG DB_NAME
 ARG BACKEND_PORT
 
+ENV NODE_ENV=dev
+
 # Install dependencies for Prisma
 RUN apt-get update -y && \
     apt-get install -y openssl netcat-openbsd && \

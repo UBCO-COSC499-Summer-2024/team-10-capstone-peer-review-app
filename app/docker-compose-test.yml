@@ -4,18 +4,16 @@ services:
   db:
     container_name: peergrade-db-test
     image: postgres:latest
-    env_file:
-      - ./server/envs/.env.test
     environment:
       POSTGRES_USER: ${TEST_DB_USER}
       POSTGRES_PASSWORD: ${TEST_DB_PASSWORD}
       POSTGRES_DB: ${TEST_DB_NAME}
     ports:
       - ${TEST_DB_PORT}:5432
-    networks:
-      - peergrade-test-network
+    volumes:
+      - db-test-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${TEST_DB_USER}"]
+      test: ["CMD-SHELL", "pg_isready -U ${TEST_DB_USER} -d ${TEST_DB_NAME}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -37,9 +35,7 @@ services:
       - ${TEST_BACKEND_PORT}:5001
     volumes:
       - ./server:/usr/server
-      - server_test_node_modules:/usr/server/node_modules
-    networks:
-      - peergrade-test-network
+      - server-test-node-modules:/usr/server/node_modules
     depends_on:
       db:
         condition: service_healthy
@@ -49,6 +45,7 @@ services:
       timeout: 2s
       retries: 3
       start_period: 5s
+    command: ["npm", "run", "start:test"]
 
   server-test-runner:
     container_name: peergrade-server-test-runner
@@ -59,16 +56,13 @@ services:
       dockerfile: Dockerfile.test
     volumes:
       - ./server:/usr/server
-      - server_test_node_modules:/usr/server/node_modules
-    networks:
-      - peergrade-test-network
+      - server-test-node-modules:/usr/server/node_modules
     depends_on:
       server:
         condition: service_healthy
     command: ["npm", "run", "test:integration"]
 
 volumes:
+  server-test-node-modules:
+  db-test-data:
   
-networks:
-  peergrade-test-network:
-    name: peergrade-test-network

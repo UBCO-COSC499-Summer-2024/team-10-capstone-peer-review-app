@@ -1,9 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Plus, Minus } from 'lucide-react';
 
-const RubricDataTable = ({ rubricData, setRubricData }) => {
+const RubricDataTable = ({ rubricData, setRubricData, setIsValid }) => {
+    const [errors, setErrors] = useState({});
+
+    useEffect(() => {
+        validateRubric();
+    }, [rubricData]);
+
+    const validateRubric = () => {
+        let newErrors = {};
+        let isValid = true;
+
+        rubricData.criteria.forEach((criterion, index) => {
+            const maxPoints = parseFloat(criterion.maxPoints);
+            const totalRatingPoints = criterion.ratings.reduce((sum, rating) => sum + parseFloat(rating.points || 0), 0);
+
+            if (maxPoints !== totalRatingPoints) {
+                newErrors[`criterion_${index}`] = `Total rating points (${totalRatingPoints}) must equal max points (${maxPoints})`;
+                isValid = false;
+            }
+        });
+
+        setErrors(newErrors);
+        setIsValid(isValid);
+    };
+
     const handleTitleChange = (value) => {
         setRubricData({ ...rubricData, title: value });
     };
@@ -91,7 +115,7 @@ const RubricDataTable = ({ rubricData, setRubricData }) => {
                                     placeholder="Points"
                                     value={rating.points}
                                     onChange={(e) => handleRatingsChange(index, ratingIndex, 'points', e.target.value)}
-                                    className="w-1/4 mr-2"
+                                    className={`w-1/4 mr-2 ${errors[`criterion_${index}`] ? 'border-red-500' : ''}`}
                                 />
                                 <Button variant="outline" onClick={() => removeRating(index, ratingIndex)} className="h-8 w-8 p-0 flex items-center justify-center">
                                     <Minus className="h-4 w-4" />
@@ -113,9 +137,12 @@ const RubricDataTable = ({ rubricData, setRubricData }) => {
                             placeholder="Max Points"
                             value={item.maxPoints}
                             onChange={(e) => handleMaxPointsChange(index, e.target.value)}
-                            className="w-1/2"
+                            className={`w-1/2 ${errors[`criterion_${index}`] ? 'border-red-500' : ''}`}
                         />
                     </div>
+                    {errors[`criterion_${index}`] && (
+                        <p className="text-red-500 text-xs mt-1">{errors[`criterion_${index}`]}</p>
+                    )}
                 </div>
             ))}
             <Button variant="outline" onClick={addCriteria} className="h-8 w-8 p-0 flex items-center justify-center">

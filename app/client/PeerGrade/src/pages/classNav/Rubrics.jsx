@@ -21,6 +21,8 @@ const Rubrics = () => {
     title: "",
     criteria: [{ criteria: "", ratings: [{ text: "", points: "" }], minPoints: "", maxPoints: "" }]
   });
+  const [isValid, setIsValid] = useState(false);
+
 
   useEffect(() => {
     const fetchRubrics = async () => {
@@ -190,8 +192,8 @@ const Rubrics = () => {
                 onChange={handleAssignmentSelection}
               />
             </div>
-            <RubricDataTable rubricData={newRubricData} setRubricData={setNewRubricData} />
-            <Button onClick={handleCreateRubric} className="mt-4">Save Rubric</Button>
+            <RubricDataTable rubricData={newRubricData} setRubricData={setNewRubricData} setIsValid={setIsValid} />
+            <Button onClick={handleCreateRubric}  disabled={!isValid} className="mt-4">Save Rubric</Button>
           </div>
         </DrawerContent>
       </Drawer>

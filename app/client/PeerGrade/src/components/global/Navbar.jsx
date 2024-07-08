@@ -122,7 +122,7 @@ export default function AppNavbar() {
   };
 
   return (
-    <div className="flex h-screen fixed">
+    <div className="flex w-[200px] h-screen fixed">
       <div className="py-4 bg-white shadow-md flex flex-col items-center justify-between">
         <div>
           <div className="mb-6">
@@ -157,10 +157,14 @@ export default function AppNavbar() {
                       Peer-Review
                     </Button>
                   </SheetTrigger>
-                  <SheetContent side="left">
+                  <SheetContent side="left" className="w-[300px]">
                     <SheetHeader>
                       <SheetTitle>My Peer-Reviews</SheetTitle>
-                      <SheetDescription>
+					  <SheetDescription>
+						<p className="text-sm leading-snug text-muted-foreground">
+						  {assignmentsData.length} Reviews Assigned
+						</p>
+                      
                         <ul className="bg-white flex flex-col justify-center items-center gap-3 p-6 w-full">
                           {assignmentsData.map((assignment) => (
                             <ListItem
@@ -180,7 +184,8 @@ export default function AppNavbar() {
                             View all peer reviews.
                           </ListItem>
                         </ul>
-                      </SheetDescription>
+						</SheetDescription>
+
                     </SheetHeader>
                   </SheetContent>
                 </Sheet>
@@ -197,7 +202,7 @@ export default function AppNavbar() {
                       Classes
                     </Button>
                   </SheetTrigger>
-                  <SheetContent side="left">
+                  <SheetContent side="left" className="w-[300px]">
                     <SheetHeader>
                       <SheetTitle>My Classes</SheetTitle>
                       <SheetDescription>
@@ -307,7 +312,7 @@ const ListItem = React.forwardRef(
           <Link
             to={href}
             className={cn(
-              "block w-[300px] shadow hover:shadow-lg select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+              "block w-[250px] shadow hover:shadow-lg select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
               className
             )}
             {...props}

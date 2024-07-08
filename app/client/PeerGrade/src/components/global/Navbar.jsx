@@ -250,10 +250,10 @@ export default function AppNavbar() {
           </NavigationMenu>
         </div>
         <div className="flex items-center">
-          <Button variant="ghost" onClick={toggleCardVisibility}>
-            <Avatar className="w-14 h-14 bg-gray-200 rounded-full shadow-md">
+          <Button className="hover:shadow-md" variant="ghost" onClick={toggleCardVisibility}>
+            <Avatar className="w-14 h-14 rounded-full shadow-md">
               <AvatarImage
-                src={user.avatarUrl}
+                src={user.avatarUrl}	
                 alt={`${user.firstname} ${user.lastname}`}
               />
               <AvatarFallback>
@@ -262,7 +262,7 @@ export default function AppNavbar() {
             </Avatar>
           </Button>
           {isCardVisible && (
-            <Card className="absolute  w-[400px] transform -translate-y-48 translate-x-36">
+            <Card className="absolute  w-[400px] transform -translate-y-56 translate-x-36">
               <CardContent className="space-y-4 ">
                 <div className="flex flex-col gap-1">
                   <NotifCard
@@ -281,15 +281,15 @@ export default function AppNavbar() {
                     title="Admin: Heads up!"
                     description="You have received a new message"
                   />
-                  <Button variant="outline">View All</Button>
+                  <Button variant="outline" className="bg-green-100">View All</Button>
                 </div>
                 <div className="flex justify-between">
-                  <Button variant="outline" size="sm" onClick={handleLogout}>
+                  <Button variant="destructive" size="sm" onClick={handleLogout}>
                     <LogOut className="w-4 h-4 mr-2 inline-block" />
                     Logout
                   </Button>
                   <Link to="/settings">
-                    <Button variant="outline" size="sm">
+                    <Button variant="default" size="sm">
                       Visit Profile
                     </Button>
                   </Link>

@@ -7,11 +7,13 @@ const upload = multer({ dest: 'uploads/' });
 
 export const addAssignmentToClass = [
     upload.single('file'), // Handle single file upload
+
     asyncErrorHandler(async (req, res) => {
         const classId = req.body.classId;
 		const categoryId = req.body.categoryId;
         const assignmentData = JSON.parse(req.body.assignmentData);
-        const fileUrl = req.file ? `uploads/${req.file.filename}.pdf` : null; // Construct file URL
+        // const fileUrl = req.file ? `uploads/${req.file.filename}.pdf` : null; // Construct file URL
+		const fileUrl = req.file ? `http://localhost:8080/${req.file.filename}` : "/no_file_found";
 
         const newAssignment = await assignService.addAssignmentToClass(classId, categoryId, {
             ...assignmentData,

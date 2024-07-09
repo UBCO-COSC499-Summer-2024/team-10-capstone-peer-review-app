@@ -27,6 +27,7 @@ import {
 	CommandItem,
 	CommandList
 } from "@/components/ui/command";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const Groups = () => {
 	const { classId } = useParams();
@@ -125,6 +126,9 @@ const Groups = () => {
 			setGroups([...groups, groupData.data]);
 			console.log("groups after create", groups);
 			setAddGroupDialogOpen(false);
+			if (user.role === "STUDENT") {
+				handleJoinGroup(groupData.data.groupId);
+			}
 		  } else {
 			console.error('An error occurred while creating the group.', groupData.message);
 		  }
@@ -326,7 +330,16 @@ const Groups = () => {
 								{group.students.map((student) => (
 									<div key={student.userId} className="flex flex-row justify-between">
 										<div className='flex flex-row items-center justify-center'>
-											<div className="w-10 h-10 rounded-full bg-gray-300 mr-4"></div>
+											<Avatar className="w-8 h-8 mr-4">
+												<AvatarImage
+													src={student.avatarUrl}
+													alt={`${student.firstname} ${student.lastname}`}
+												/>
+												<AvatarFallback>
+													{student.firstname[0]}
+													{student.lastname[0]}
+												</AvatarFallback>
+											</Avatar>
 											<span>{student.firstname} {student.lastname}</span>
 										</div>
 										{(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (

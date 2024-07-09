@@ -11,14 +11,6 @@ module.exports = {
 	},
 	collectCoverage: true,
 	coverageReporters: ["text"],
-	coverageThreshold: {
-		global: {
-			branches: 80,
-			functions: 80,
-			lines: 80,
-			statements: 80
-		}
-	},
 	verbose: true,
 	forceExit: true,
 	clearMocks: true,

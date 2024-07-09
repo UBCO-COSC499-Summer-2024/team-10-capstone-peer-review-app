@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "../../../prisma/prismaClient.js";
 import authService from "../../../src/services/authService.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
@@ -11,10 +11,8 @@ jest.mock("../../../src/utils/mailer.js", () => ({
 }));
 
 // Create a new Prisma client for tests
-let prisma;
 
 beforeAll(async () => {
-	prisma = new PrismaClient();
 	await prisma.$connect();
 });
 

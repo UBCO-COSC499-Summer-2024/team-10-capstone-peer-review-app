@@ -1,38 +1,189 @@
-import { render, fireEvent } from '@testing-library/react';
+import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import People from '@/pages/classNav/People';
+import { useUser } from '@/contexts/contextHooks/useUser';
+import {
+  getInstructorByClassId,
+  getStudentsByClassId,
+  removeStudentFromClass,
+  addStudentToClass
+} from '@/api/classApi';
+import { getUsersByRole, getGroups } from '@/api/userApi';
 
-// Mock the peopleData
-jest.mock('../utils/data', () => ({
-  peopleData: {
-    instructors: [
-      { id: '1', name: 'Instructor 1' },
-      { id: '2', name: 'Instructor 2' },
-    ],
-    students: [
-      { id: '3', name: 'Student 1' },
-      { id: '4', name: 'Student 2' },
-    ],
-  },
-}));
+jest.mock('@/contexts/contextHooks/useUser');
+jest.mock('@/api/classApi');
+jest.mock('@/api/userApi');
 
-describe('People', () => {
-  it('renders without crashing', () => {
-    render(<People />);
+window.HTMLElement.prototype.scrollIntoView = jest.fn();
+
+const mockUser = {
+  userId: '1',
+  role: 'INSTRUCTOR'
+};
+
+describe('People component', () => {
+  beforeEach(() => {
+    useUser.mockReturnValue({
+      user: mockUser,
+      userLoading: false
+    });
   });
 
-  it('filters instructors and students based on search term', () => {
-    const { getByPlaceholderText, queryByText } = render(<People />);
-    const searchInput = getByPlaceholderText('Search people');
+  it('renders the component and fetches initial data', async () => {
+    getInstructorByClassId.mockResolvedValue({
+      status: 'Success',
+      data: { userId: '2', firstname: 'John', lastname: 'Doe' }
+    });
+    getStudentsByClassId.mockResolvedValue({
+      status: 'Success',
+      data: [
+        { userId: '3', firstname: 'Jane', lastname: 'Smith', avatarUrl: '' },
+        { userId: '4', firstname: 'Bob', lastname: 'Brown', avatarUrl: '' }
+      ]
+    });
+    getGroups.mockResolvedValue({
+      status: 'Success',
+      data: []
+    });
 
-    // Initially, all instructors and students should be visible
-    expect(queryByText('Instructor 1')).toBeInTheDocument();
-    expect(queryByText('Student 1')).toBeInTheDocument();
+    render(<People classId="123" />);
 
-    // When we type 'Instructor 1' into the search box, only 'Instructor 1' should be visible
-    fireEvent.change(searchInput, { target: { value: 'Instructor 1' } });
-    expect(queryByText('Instructor 1')).toBeInTheDocument();
-    expect(queryByText('Instructor 2')).not.toBeInTheDocument();
-    expect(queryByText('Student 1')).not.toBeInTheDocument();
-    expect(queryByText('Student 2')).not.toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Search people')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('John Doe')).toBeInTheDocument();
+    });
+    await waitFor(() => {
+      expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+      expect(screen.getByText('Bob Brown')).toBeInTheDocument();
+    });
+  });
+
+  it('filters students based on search term', async () => {
+    getInstructorByClassId.mockResolvedValue({
+      status: 'Success',
+      data: { userId: '2', firstname: 'John', lastname: 'Doe' }
+    });
+    getStudentsByClassId.mockResolvedValue({
+      status: 'Success',
+      data: [
+        { userId: '3', firstname: 'Jane', lastname: 'Smith', avatarUrl: '' },
+        { userId: '4', firstname: 'Bob', lastname: 'Brown', avatarUrl: '' }
+      ]
+    });
+    getGroups.mockResolvedValue({
+      status: 'Success',
+      data: []
+    });
+
+    render(<People classId="123" />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+    });
+
+    fireEvent.change(screen.getByPlaceholderText('Search people'), {
+      target: { value: 'Jane' }
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+      expect(screen.queryByText('Bob Brown')).not.toBeInTheDocument();
+    });
+  });
+
+  it('adds a student to the class', async () => {
+    getInstructorByClassId.mockResolvedValue({
+      status: 'Success',
+      data: { userId: '2', firstname: 'John', lastname: 'Doe' }
+    });
+    getStudentsByClassId.mockResolvedValue({
+      status: 'Success',
+      data: [
+        { userId: '3', firstname: 'Jane', lastname: 'Smith', avatarUrl: '' },
+        { userId: '4', firstname: 'Bob', lastname: 'Brown', avatarUrl: '' }
+      ]
+    });
+    getUsersByRole.mockResolvedValue({
+      status: 'Success',
+      data: [
+        { userId: '5', firstname: 'Alice', lastname: 'White' },
+        { userId: '6', firstname: 'Tom', lastname: 'Green' }
+      ]
+    });
+    getGroups.mockResolvedValue({
+      status: 'Success',
+      data: []
+    });
+    addStudentToClass.mockResolvedValue({
+      status: 'Success',
+      data: { userId: '5', firstname: 'Alice', lastname: 'White', avatarUrl: '' }
+    });
+
+    render(<People classId="123" />);
+
+    fireEvent.click(screen.getByTestId('add-student-button'));
+
+    await waitFor(() => {
+      expect(screen.getByLabelText('Select students to add to the class:')).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByTestId('add-student-dropdown'));
+    
+    await waitFor(() => {
+      expect(screen.getByText('Alice White')).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByText('Alice White'));
+    fireEvent.click(screen.getByText('Submit'));
+
+    await waitFor(() => {
+      expect(screen.getByText('Alice White')).toBeInTheDocument();
+    });
+  });
+
+  it('removes a student from the class', async () => {
+    getInstructorByClassId.mockResolvedValue({
+      status: 'Success',
+      data: { userId: '2', firstname: 'John', lastname: 'Doe' }
+    });
+    getStudentsByClassId.mockResolvedValue({
+      status: 'Success',
+      data: [
+        { userId: '3', firstname: 'Jane', lastname: 'Smith', avatarUrl: '' },
+        { userId: '4', firstname: 'Bob', lastname: 'Brown', avatarUrl: '' }
+      ]
+    });
+    removeStudentFromClass.mockResolvedValue({
+      status: 'Success'
+    });
+    getGroups.mockResolvedValue({
+      status: 'Success',
+      data: []
+    });
+
+    render(<People classId="123" />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByTestId('remove-student-button-3'));
+
+    await waitFor(() => {
+      expect(screen.getByText('Remove Student')).toBeInTheDocument();
+      expect(screen.getByText('Are you sure you want to remove the student Jane Smith from this class?')).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByText('Remove'));
+
+    await waitFor(() => {
+      expect(screen.getByText('Confirm Remove Student')).toBeInTheDocument();
+      expect(screen.getByText('Are you really sure you want to remove the student Jane Smith from this class?')).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByText('Remove'));
+
+    await waitFor(() => {
+      expect(screen.queryByText('Jane Smith')).not.toBeInTheDocument();
+    });
   });
 });

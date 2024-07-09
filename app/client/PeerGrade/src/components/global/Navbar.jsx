@@ -20,6 +20,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
   Card,
   CardContent,
+  CardTitle,
 } from "@/components/ui/card";
 
 import { useUser } from "@/contexts/contextHooks/useUser";
@@ -35,6 +36,21 @@ export default function AppNavbar() {
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const [isCardVisible, setIsCardVisible] = useState(false); // State to manage card visibility
+  const [cardOpacity, setCardOpacity] = useState(0);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isCardVisible && !event.target.closest('.notification-card')) {
+        toggleCardVisibility();
+      }
+    };
+  
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isCardVisible]);
+
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -122,11 +138,17 @@ export default function AppNavbar() {
   };
 
   const toggleCardVisibility = () => {
-    setIsCardVisible(!isCardVisible);
-  };
+  if (isCardVisible) {
+    setCardOpacity(0);
+    setTimeout(() => setIsCardVisible(false), 300); // Wait for fade out to complete
+  } else {
+    setIsCardVisible(true);
+    setTimeout(() => setCardOpacity(1), 50); // Small delay to ensure the card is rendered before fading in
+  }
+};
 
   return (
-    <div className="flex w-[200px] z-50 h-screen fixed">
+    <div className="flex w-[200px] z-[60] h-screen fixed">
       <div className="py-4 bg-white shadow-md flex flex-col items-center justify-between">
         <div>
           <div className="mb-6">
@@ -262,8 +284,12 @@ export default function AppNavbar() {
             </Avatar>
           </Button>
           {isCardVisible && (
-            <Card className="absolute  w-[400px] transform -translate-y-56 translate-x-36">
-              <CardContent className="space-y-4 ">
+            <Card 
+              className="absolute w-[400px] transform -translate-y-56 translate-x-36 transition-opacity duration-300 ease-in-out notification-card"
+              style={{ opacity: cardOpacity }}
+            >              
+            <CardContent className="space-y-4 ">
+                <CardTitle className="text-lg font-bold">Hey <span className="text-blue-600">{user.firstname}</span>!</CardTitle>
                 <div className="flex flex-col gap-1">
                   <NotifCard
                     title="Admin: Heads up!"

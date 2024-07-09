@@ -16,12 +16,13 @@ const SheetPortal = SheetPrimitive.Portal
 const SheetOverlay = React.forwardRef(({ className, ...props }, ref) => (
   <SheetPrimitive.Overlay
     className={cn(
-      "fixed ml-[200px] inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 ml-[200px]",
       className
     )}
     {...props}
     ref={ref} />
 ))
+
 SheetOverlay.displayName = SheetPrimitive.Overlay.displayName
 
 const sheetVariants = cva(
@@ -50,7 +51,7 @@ const SheetContent = React.forwardRef(({ side = "right", className, children, ..
       ref={ref} 
       className={cn(
         sheetVariants({ side }), 
-        "left-[200px] w-[300px]", // Add these classes
+        "left-[185px] w-[300px] z-55", // Add z-index here
         className
       )} 
       {...props}
@@ -64,6 +65,7 @@ const SheetContent = React.forwardRef(({ side = "right", className, children, ..
     </SheetPrimitive.Content>
   </SheetPortal>
 ))
+
 SheetContent.displayName = SheetPrimitive.Content.displayName
 
 const SheetHeader = ({

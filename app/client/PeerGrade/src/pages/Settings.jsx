@@ -90,7 +90,7 @@ const Settings = () => {
             </div>
             <div className="lg:w-2/3">
               <h2 className="text-xl font-semibold mb-4">Profile</h2>
-              <div className="space-y-4">
+              <form onSubmit={handleSaveProfile} className='space-y-4'>
                 <div>
                   <label htmlFor="firstname" className="block text-sm font-medium text-gray-700">First Name</label>
                   <Input 
@@ -113,15 +113,16 @@ const Settings = () => {
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
                   <Input 
                     id="email"
-                    type="email" 
+                    name="email"
+                    type="email"
                     value={email} 
                     onChange={(e) => setEmail(e.target.value)} 
                   />
                 </div>
-                <Button onClick={handleSaveProfile} className="bg-[#111827] text-white">
+                <Button type="submit" className="bg-[#111827] text-white">
                   Save
                 </Button>
-              </div>
+              </form>
             </div>
           </Card>
         </TabsContent>

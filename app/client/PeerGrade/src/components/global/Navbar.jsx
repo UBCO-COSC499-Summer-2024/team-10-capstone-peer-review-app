@@ -154,17 +154,17 @@ export default function AppNavbar() {
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem className="w-full">
-                <Sheet>
-                  <SheetTrigger asChild>
-                    <Button variant="ghost" className={cn(navigationMenuTriggerStyle(), "font-bold flex items-center w-full")}>
-                      <ClipboardList className="w-4 h-4 mr-2 inline-block" />
-                      Peer-Review
-                    </Button>
-                  </SheetTrigger>
-                  <SheetContent side="left" className="w-[300px]">
-                    <SheetHeader>
-                      <SheetTitle>My Peer-Reviews</SheetTitle>
-                      <SheetDescription>
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" className={cn(navigationMenuTriggerStyle(), "font-bold flex items-center w-full")}>
+                    <ClipboardList className="w-4 h-4 mr-2 inline-block" />
+                    Peer-Review
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="w-[300px] border-l border-gray-200">
+                  <SheetHeader>
+                    <SheetTitle>My Peer-Reviews</SheetTitle>
+                    <SheetDescription>
                         <p className="text-sm leading-snug text-muted-foreground">
                           {assignmentsData.length} Reviews Assigned
                         </p>

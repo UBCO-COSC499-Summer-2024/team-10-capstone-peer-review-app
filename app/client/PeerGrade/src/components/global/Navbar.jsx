@@ -309,12 +309,12 @@ export default function AppNavbar() {
 const ListItem = React.forwardRef(
   ({ className, title, children, href, ...props }, ref) => {
     return (
-      <li>
+      <li className="w-[250px] ">
         <NavigationMenuLink asChild>
           <Link
             to={href}
             className={cn(
-              "block w-[250px] shadow hover:shadow-lg select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+              "block shadow hover:shadow-lg select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
               className
             )}
             {...props}

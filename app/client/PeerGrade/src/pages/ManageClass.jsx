@@ -48,12 +48,12 @@ const AddClassModal = ({ show, onClose }) => {
 		} else if (startDate > endDate) {
 			setError("Please select an end date that is after the start date.");
 			return;
-      // !!! TODO: CHECK FOR THIS IN THE BACK-END TOO.
-    } else if (startDate === endDate) {
-      setError("Please select an end date that is not the same as the start date.");
-      return;
-      // !!! TODO: CHECK FOR THIS IN THE BACK-END TOO.
-    }
+			// !!! TODO: CHECK FOR THIS IN THE BACK-END TOO.
+		} else if (startDate === endDate) {
+			setError("Please select an end date that is not the same as the start date.");
+			return;
+			// !!! TODO: CHECK FOR THIS IN THE BACK-END TOO.
+		}
 
 		const newClass = {
 			classname,

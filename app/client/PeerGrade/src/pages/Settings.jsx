@@ -34,6 +34,8 @@ const Settings = () => {
       email
 		};
 
+    // NEED TO IMPLEMENT A CHECK MAYBE FOR VERIFYING IF ITS A VALID EMAIL
+    
 		const updateUserProfile = async () => {
       const updatedProfile = await updateProfile(user.userId, updatedData);
       // setUser(updatedProfile.data);
@@ -118,6 +120,7 @@ const Settings = () => {
                     value={email} 
                     onChange={(e) => setEmail(e.target.value)} 
                   />
+                  <p className='text-sm text-gray-500'>Note: This ideally would require e-mail verification for the user to be able to change their e-mail address.</p>
                 </div>
                 <Button type="submit" className="bg-[#111827] text-white">
                   Save

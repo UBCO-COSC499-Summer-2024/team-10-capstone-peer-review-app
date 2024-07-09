@@ -37,6 +37,8 @@ export default function AppNavbar() {
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const [isCardVisible, setIsCardVisible] = useState(false); // State to manage card visibility
   const [cardOpacity, setCardOpacity] = useState(0);
+  const [isPeerReviewSheetOpen, setIsPeerReviewSheetOpen] = useState(false);
+  const [isClassesSheetOpen, setIsClassesSheetOpen] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -176,17 +178,21 @@ export default function AppNavbar() {
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem className="w-full">
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="ghost" className={cn(navigationMenuTriggerStyle(), "font-bold flex items-center w-full")}>
-                    <ClipboardList className="w-4 h-4 mr-2 inline-block" />
-                    Peer-Review
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="left" className="w-[300px] border-l border-gray-200">
-                  <SheetHeader>
-                    <SheetTitle>My Peer-Reviews</SheetTitle>
-                    <SheetDescription>
+                <Sheet open={isPeerReviewSheetOpen} onOpenChange={setIsPeerReviewSheetOpen}>
+                  <SheetTrigger asChild>
+                    <Button 
+                      variant="ghost" 
+                      className={cn(navigationMenuTriggerStyle(), "font-bold flex items-center w-full")}
+                      onClick={() => setIsPeerReviewSheetOpen(true)}
+                    >
+                      <ClipboardList className="w-4 h-4 mr-2 inline-block" />
+                      Peer-Review
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="left" className="w-[300px] border-l border-gray-200">
+                    <SheetHeader>
+                      <SheetTitle>My Peer-Reviews</SheetTitle>
+                      <SheetDescription>
                         <p className="text-sm leading-snug text-muted-foreground">
                           {assignmentsData.length} Reviews Assigned
                         </p>
@@ -197,6 +203,7 @@ export default function AppNavbar() {
                               title={assignment.title}
                               href={`/assignedPR/${assignment.assignmentId}`}
                               className="w-full"
+                              onItemClick={() => setIsPeerReviewSheetOpen(false)}
                             >
                               {assignment.description}
                             </ListItem>
@@ -205,6 +212,7 @@ export default function AppNavbar() {
                             title="All Peer Reviews"
                             href="/peer-review"
                             className="w-full bg-blue-100"
+                            onItemClick={() => setIsPeerReviewSheetOpen(false)}
                           >
                             View all peer reviews.
                           </ListItem>
@@ -215,9 +223,10 @@ export default function AppNavbar() {
                 </Sheet>
               </NavigationMenuItem>
               <NavigationMenuItem className="w-full">
-                <Sheet>
+                <Sheet open={isClassesSheetOpen} onOpenChange={setIsClassesSheetOpen}>
                   <SheetTrigger asChild>
-                    <Button variant="ghost" className={cn(
+                    <Button variant="ghost" onClick={() => setIsClassesSheetOpen(true)}
+                      className={cn(
                       navigationMenuTriggerStyle(),
                       (isActive("/classes") || isActive("/manageclass")) &&
                       "font-bold flex items-center w-full"
@@ -237,6 +246,7 @@ export default function AppNavbar() {
                               title={classItem.classname}
                               href={`/class/${classItem.classId}`}
                               className="w-full"
+                              onItemClick={() => setIsClassesSheetOpen(false)}
                             >
                               {classItem.description}
                             </ListItem>
@@ -246,6 +256,7 @@ export default function AppNavbar() {
                               title="Manage Classes"
                               href="/manageclass"
                               className="w-full bg-blue-100"
+                              onItemClick={() => setIsClassesSheetOpen(false)}
                             >
                               Administer classes and assignments.
                             </ListItem>
@@ -333,7 +344,7 @@ export default function AppNavbar() {
 }
 
 const ListItem = React.forwardRef(
-  ({ className, title, children, href, ...props }, ref) => {
+  ({ className, title, children, href, onItemClick, ...props }, ref) => {
     return (
       <li className="w-[250px] ">
         <NavigationMenuLink asChild>
@@ -343,6 +354,7 @@ const ListItem = React.forwardRef(
               "block shadow hover:shadow-lg select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
               className
             )}
+            onClick={onItemClick}
             {...props}
           >
             <div className="text-sm font-medium leading-none">{title}</div>

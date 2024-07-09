@@ -272,13 +272,13 @@ export default function AppNavbar() {
           </NavigationMenu>
         </div>
         <div className="flex items-center">
-          <Button className="hover:shadow-md" variant="ghost" onClick={toggleCardVisibility}>
-            <Avatar className="w-14 h-14 rounded-full shadow-md">
+          <Button className="w-16 h-16 rounded-full shadow-lg" variant="avatar" onClick={toggleCardVisibility} disabled={!user}>
+            <Avatar className="w-14 h-14 rounded-full ">
               <AvatarImage
                 src={user.avatarUrl}	
                 alt={`${user.firstname} ${user.lastname}`}
               />
-              <AvatarFallback>
+              <AvatarFallback >
                 {getInitials(user.firstname, user.lastname)}
               </AvatarFallback>
             </Avatar>

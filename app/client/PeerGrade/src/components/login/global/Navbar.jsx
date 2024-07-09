@@ -46,7 +46,7 @@ export default function AppNavbar() {
 		setUserContext();
 	}, []);
 
-	// Fetch the classes data on mount, this is from the classContext
+	// Fetch the classes data on mount and when the user changes, this is from the classContext
 	useEffect(() => {
 		if (user) {
 			if (user.role === "ADMIN") {

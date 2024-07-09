@@ -1,19 +1,38 @@
 import assignService from "../services/assignService.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 import multer from 'multer';
+import fs from 'fs';
+import path from 'path';
+import { v4 as uuidv4 } from 'uuid'; 
 
-// Configure Multer for file upload
-const upload = multer({ dest: 'uploads/' });
+const BASE_URL = "http://localhost:8080/"; //ngix storage (replace with cloud storage once developed)
+
+const upload = multer({ storage: multer.memoryStorage() });
+const UPLOAD_PATH = '/usr/server/uploads';
 
 export const addAssignmentToClass = [
     upload.single('file'), // Handle single file upload
 
     asyncErrorHandler(async (req, res) => {
         const classId = req.body.classId;
-		const categoryId = req.body.categoryId;
+        const categoryId = req.body.categoryId;
         const assignmentData = JSON.parse(req.body.assignmentData);
-        // const fileUrl = req.file ? `uploads/${req.file.filename}.pdf` : null; // Construct file URL
-		const fileUrl = req.file ? `http://localhost:8080/${req.file.filename}` : "/no_file_found";
+
+        let fileUrl = null;
+        if (req.file) {
+            const uniqueFilename = `${uuidv4()}${path.extname(req.file.originalname)}`;
+			console.log("uniqueFilename", uniqueFilename);
+            const filePath = path.join(UPLOAD_PATH, uniqueFilename);
+
+            // Ensure the upload directory exists
+            fs.mkdirSync(UPLOAD_PATH, { recursive: true });
+
+            // Write the file to the shared volume
+            fs.writeFileSync(filePath, req.file.buffer);
+
+            // Construct the URL that Nginx will serve
+            fileUrl = `${BASE_URL}/${uniqueFilename}`;
+        }
 
         const newAssignment = await assignService.addAssignmentToClass(classId, categoryId, {
             ...assignmentData,

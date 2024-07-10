@@ -1,4 +1,220 @@
 
+# Mahir's Log for Cycle 11
+
+
+## Thursday, July 04, 2024, 05:22 PM - Tuesday, July 09, 2024, 05:22 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[211](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/211)**: Dockerize file storage: Creating a file storage Volume  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: docker 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[209](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/209)**: Link Rubric Operations (api refactor)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: database, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[206](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/206)**: Redesign Platform based on Design feedback  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[199](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/199)**: Create Classes Context, integrate into all components that require it.   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[190](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/190)**: Refactor Profile icon to be clickable, add a color or shadow when hovering to indicate pressable  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[181](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/181)**: Major userContext Refactor, also need to refactor all API calls on the front-end  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[150](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/150)**: Integrate Api calls with UI, Create Redux Slices for api calls (For this week: User Info, Auth, Class info, Assignment? Maybe)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[147](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/147)**: File Storage Worker Service: Redis DB, FileSystemUploadQueue, UploadtoService, etc.   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: database, type: api 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[145](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/145)**: Toasts for msgs from api-endpoints  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[139](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/139)**: Major Use Case 23: Role Requests Page for Admins  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[131](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/131)**: Major Use Case 16-1: Create/Manage Assignment  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[129](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/129)**: Major Use Case 14: Create New Class  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[128](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/128)**: Major Use Case 13: Join Group  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[123](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/123)**: Major Use Case 8: View Assignments and their details   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[121](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/121)**: Major Use Case 6: Submit (User Submission) Assignment  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Merge_conflicts** *(Total duration: 0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 09, 2024, 04:33 PM - Ongoing *(Ongoing)*  
+  
+&nbsp; &nbsp; :watch: **206/UI Redesign** *(Total duration: 9.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 09, 2024, 05:23 AM - Tuesday, July 09, 2024, 07:13 AM *(1.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 08, 2024, 08:41 AM - Monday, July 08, 2024, 09:25 AM *(0.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 08, 2024, 01:39 AM - Monday, July 08, 2024, 04:13 AM *(2.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 08, 2024, 12:18 AM - Monday, July 08, 2024, 12:38 AM *(0.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 07, 2024, 09:49 PM - Sunday, July 07, 2024, 11:53 PM *(2.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 07, 2024, 05:31 PM - Sunday, July 07, 2024, 07:15 PM *(1.7 hours)*  
+  
+&nbsp; &nbsp; :watch: **211/ngix_docker_testing** *(Total duration: 0.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 09, 2024, 02:50 AM - Tuesday, July 09, 2024, 03:27 AM *(0.6 hours)*  
+  
+&nbsp; &nbsp; :watch: **Research: File Storage** *(Total duration: 1.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 09, 2024, 01:40 AM - Tuesday, July 09, 2024, 02:50 AM *(1.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **183/bug fixes** *(Total duration: 1.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 08, 2024, 01:13 PM - Monday, July 08, 2024, 02:20 PM *(1.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 08, 2024, 11:48 AM - Monday, July 08, 2024, 12:33 PM *(0.7 hours)*  
+  
+&nbsp; &nbsp; :watch: **183/Rubric operations** *(Total duration: 6.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 07, 2024, 01:11 PM - Sunday, July 07, 2024, 03:49 PM *(2.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 07, 2024, 04:13 AM - Sunday, July 07, 2024, 06:00 AM *(1.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 07, 2024, 02:24 AM - Sunday, July 07, 2024, 03:00 AM *(0.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 06, 2024, 11:41 PM - Sunday, July 07, 2024, 01:20 AM *(1.7 hours)*  
+  
+&nbsp; &nbsp; :watch: **183/Assignment_operations** *(Total duration: 1.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 06, 2024, 08:23 PM - Saturday, July 06, 2024, 10:17 PM *(1.9 hours)*  
+  
+&nbsp; &nbsp; :watch: **183.2/assignment_upload** *(Total duration: 8.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 06, 2024, 02:05 PM - Saturday, July 06, 2024, 06:09 PM *(4.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 05, 2024, 07:57 PM - Saturday, July 06, 2024, 12:00 AM *(4.0 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[212](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/212)**: 211/docker file storage  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[210](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/210)**: UI Redesign for more Canvas look/ Profile avatar clickable  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[208](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/208)**: Dev refactor to #206  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[203](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/203)**: Assignment Upload/File storage  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[203](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/203)**: Assignment Upload/File storage  
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[209](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/209)**: Link Rubric Operations (api refactor)  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[199](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/199)**: Create Classes Context, integrate into all components that require it.   
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[181](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/181)**: Major userContext Refactor, also need to refactor all API calls on the front-end  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[150](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/150)**: Integrate Api calls with UI, Create Redux Slices for api calls (For this week: User Info, Auth, Class info, Assignment? Maybe)  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[145](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/145)**: Toasts for msgs from api-endpoints  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[139](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/139)**: Major Use Case 23: Role Requests Page for Admins  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[131](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/131)**: Major Use Case 16-1: Create/Manage Assignment  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[129](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/129)**: Major Use Case 14: Create New Class  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[128](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/128)**: Major Use Case 13: Join Group  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[123](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/123)**: Major Use Case 8: View Assignments and their details   
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[211](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/211)**: Dockerize file storage: Creating a file storage Volume  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[206](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/206)**: Redesign Platform based on Design feedback  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[190](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/190)**: Refactor Profile icon to be clickable, add a color or shadow when hovering to indicate pressable  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[147](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/147)**: File Storage Worker Service: Redis DB, FileSystemUploadQueue, UploadtoService, etc.   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[122](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/122)**: Major Use Case 7: View Submission Feedback (from instructor)   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[121](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/121)**: Major Use Case 6: Submit (User Submission) Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[120](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/120)**: Major Use Case 5: Send Reports to Admin   
+  
+
+## Recap on goals from last cycle
+* My cycle started off by focusing on the assignment upload and file storage implementation. Most of Friday night  was spent figuring out the bugs and linking all the APIs properly (from fresh because the last version had some annoying bugs).
+* The next major task was to set up our rubric uploads for each assignment. The UI needed work so the next day or so, I updated the UI and successfully enabled rubric upload and linked new rubrics with selected assignments. 
+* For the latter half of Sunday and most of Monday I spent working on making more changes to the class assignment/rubric features so that there would be refreshed assignment views and rubric views whenever you upload a new one (to see changes immediately) and a few more design tweaks to help facilitate other processes (a files tab was generated to view all assignment uploads).
+* I had read the comments of our design feedback and our presentation feedback and realized we really need to update our design to be more "canvas" like. I worked on a UI refactor branch to update the views of the navbar and a fix a few ui bugs that were persisting and was able to bring it a little closer to the the preferred design. 
+* I revisited the file storage architecture and spent a good while researching how to facilitate a cloud storage environment to save us from putting a heavy load on our database. Then, I figured it was best to set up a Nginx docker container for file uploads and after a few attempts, I was successful in creating this container and facilitating file uploads to the localhost:8080 port. 
+
+## Goals for next cycle
+* Using localhost:8080 to retrieve the stored assignment files and link to the current view assignment page
+* Create a separate submission page consisting of rubric details so that students can submit assignments 
+* Setting up assignment submissions with the API's and rubric submissions for peer review with the APi links as well
+* Adding tooltips and hints throughout the app for a better user experience. 
+
+Reflection over the last week: 
+* I feel like I have picked up the pace recently for my development toward the project and also feeling like I am on a roll with a few things. I hope this streak keeps going for me till the end because we do still have quite a bit left to do and I worry that we may fall behind if we are not on top of things as we go. I have a lot more ideas and features I wanted to get to but given our current status, it may be difficult to achieve any reach goals.
+* I think a good idea for us as a team may be to do more in-person group meetups where all 4 of us can work on things together for a good while. Josh Abdul and I frequently meet on call to have work sessions together and I noticed that although we may not always work on the same thing together, having a different perspective around always helps me out in the development.
+
+
 # Mahir's Log for Cycle 10
 
 

@@ -1,4 +1,202 @@
 
+# Abdul's Log for Cycle 11
+
+
+## Thursday, July 04, 2024, 05:22 PM - Tuesday, July 09, 2024, 05:22 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[213](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/213)**: updating settings page to work as intended  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[202](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/202)**: Separate Delete Class dialog from Search.jsx & ManageClass.jsx  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[199](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/199)**: Create Classes Context, integrate into all components that require it.   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[193](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/193)**: Delete groups for instructor, add / remove students from groups   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[192](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/192)**: Set up profile to actually be able to update user info I.E. email, firstname lastname   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[191](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/191)**: Refactor Create class so navbar highlighting doesn't bug in UI, also add start and end dates   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[190](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/190)**: Refactor Profile icon to be clickable, add a color or shadow when hovering to indicate pressable  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[189](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/189)**: Refactor UI overflow for class cards, remove extra fields in card for now  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[181](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/181)**: Major userContext Refactor, also need to refactor all API calls on the front-end  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[176](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/176)**: Refactor forgot password to work with UI  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[172](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/172)**: Refactor front-end test  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[140](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/140)**: Major Use Case 24: View User Reports   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[135](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/135)**: Major Use Case 19: Delete Classes  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[132](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/132)**: Major Use Case 17: View Class Dashboard  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[130](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/130)**: Major Use Case 15: Manage Class  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[127](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/127)**: Major Use Case 12: Manage Group   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[123](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/123)**: Major Use Case 8: View Assignments and their details   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[119](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/119)**: Major Use Case 4: View List of Classes  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[118](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/118)**: Major Use Case 3: Forgot Password / Email validation   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[111](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/111)**: Automate frontend tests via Drone CI/Github Actions  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: testing, type: automation 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Working on Refactoring Tests** *(Total duration: 3.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 09, 2024, 03:04 PM - Tuesday, July 09, 2024, 04:03 PM *(1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 08, 2024, 12:20 AM - Monday, July 08, 2024, 02:30 AM *(2.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on Adding Settings Back-end functionality + UI linking** *(Total duration: 1.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 08, 2024, 11:04 PM - Tuesday, July 09, 2024, 12:10 AM *(1.1 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on Manage Groups** *(Total duration: 8.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 08, 2024, 06:26 PM - Monday, July 08, 2024, 08:29 PM *(2.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 06, 2024, 11:30 PM - Sunday, July 07, 2024, 03:04 AM *(3.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 06, 2024, 08:11 PM - Saturday, July 06, 2024, 09:33 PM *(1.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 06, 2024, 06:41 PM - Saturday, July 06, 2024, 07:49 PM *(1.1 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working of fixing bugs/reviewing the File Upload PR** *(Total duration: 1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 08, 2024, 01:15 PM - Monday, July 08, 2024, 02:16 PM *(1.0 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on refactoring in branch 183/role_req_link_ui** *(Total duration: 3.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 06, 2024, 03:15 PM - Saturday, July 06, 2024, 06:32 PM *(3.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on Forgot Password refactor & some tests refactor** *(Total duration: 0.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 05, 2024, 10:20 PM - Friday, July 05, 2024, 11:05 PM *(0.8 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on the Presentation slides + minor refactoring & tests** *(Total duration: 2.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 04, 2024, 06:30 PM - Thursday, July 04, 2024, 09:26 PM *(2.9 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[205](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/205)**: Manage Groups UI, refactored Settings profile editing, & added back-end functionality  
+  
+
+## Features completed on this cycle:
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[213](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/213)**: updating settings page to work as intended  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[199](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/199)**: Create Classes Context, integrate into all components that require it.   
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[192](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/192)**: Set up profile to actually be able to update user info I.E. email, firstname lastname   
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[191](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/191)**: Refactor Create class so navbar highlighting doesn't bug in UI, also add start and end dates   
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[189](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/189)**: Refactor UI overflow for class cards, remove extra fields in card for now  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[181](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/181)**: Major userContext Refactor, also need to refactor all API calls on the front-end  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[176](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/176)**: Refactor forgot password to work with UI  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[135](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/135)**: Major Use Case 19: Delete Classes  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[132](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/132)**: Major Use Case 17: View Class Dashboard  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[130](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/130)**: Major Use Case 15: Manage Class  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[123](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/123)**: Major Use Case 8: View Assignments and their details   
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[119](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/119)**: Major Use Case 4: View List of Classes  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[118](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/118)**: Major Use Case 3: Forgot Password / Email validation   
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[111](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/111)**: Automate frontend tests via Drone CI/Github Actions  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[202](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/202)**: Separate Delete Class dialog from Search.jsx & ManageClass.jsx  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[193](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/193)**: Delete groups for instructor, add / remove students from groups   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[190](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/190)**: Refactor Profile icon to be clickable, add a color or shadow when hovering to indicate pressable  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[172](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/172)**: Refactor front-end test  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[140](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/140)**: Major Use Case 24: View User Reports   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[127](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/127)**: Major Use Case 12: Manage Group   
+  
+
+## Recap on goals from last cycle
+* Worked on a lot of items and semi-major features!
+* Didn't refactor as many front-end unit tests as I'd wanted (did about 8 out of 22), but I did hold back on refactoring some files as we're yet again going through a major UI overhaul.
+
+## Goals for next cycle
+* Testing. Again. Need to do a lot more of it so that we don't do testing later, code first which isn't ideal.
+* Get assignments up and running for next cycle, including PDF viewing. File storage is sorted out in a PR that hasn't been merged yet & assignment back-end linking has been done for the most part already.
+  
+  
+
 # Abdul's Log for Cycle 10
 
 

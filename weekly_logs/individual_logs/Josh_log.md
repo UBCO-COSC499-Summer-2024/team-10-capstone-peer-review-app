@@ -1,4 +1,191 @@
 
+# Josh's Log for Cycle 11
+
+
+## Thursday, July 04, 2024, 05:22 PM - Tuesday, July 09, 2024, 05:22 PM
+
+
+## Tasks worked on this cycle:  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[201](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/201)**: Add a wrapper route component to the routes for role-based access and not logged in   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[199](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/199)**: Create Classes Context, integrate into all components that require it.   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[197](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/197)**: Dockerized Testing environment to do integration testing   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: testing, type: CI/CD 
+  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[176](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/176)**: Refactor forgot password to work with UI  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[169](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/169)**: Refactor envConfig to accomodate commonJS   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Fixing merge conflicts with mahir** *(Total duration: 0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 09, 2024, 05:07 PM - Ongoing *(Ongoing)*  
+  
+&nbsp; &nbsp; :watch: **Trying to figure logic for auto login if session exists and is valid** *(Total duration: 1.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 09, 2024, 03:49 PM - Tuesday, July 09, 2024, 04:59 PM *(1.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 09, 2024, 03:28 PM - Tuesday, July 09, 2024, 03:29 PM *(0.0 hours)*  
+  
+&nbsp; &nbsp; :watch: **Creating a wrapper component for react router dom elements for role-based-access and 404 not found pages** *(Total duration: 2.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 09, 2024, 02:29 PM - Tuesday, July 09, 2024, 03:26 PM *(1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 09, 2024, 01:25 PM - Tuesday, July 09, 2024, 02:09 PM *(0.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 09, 2024, 01:12 PM - Tuesday, July 09, 2024, 01:23 PM *(0.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 09, 2024, 12:24 PM - Tuesday, July 09, 2024, 01:12 PM *(0.8 hours)*  
+  
+&nbsp; &nbsp; :watch: **Changing project board, reviewing PRS** *(Total duration: 0.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 09, 2024, 11:48 AM - Tuesday, July 09, 2024, 11:58 AM *(0.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **Creating new tests and changing package json scripts** *(Total duration: 3.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 08, 2024, 07:04 PM - Monday, July 08, 2024, 08:22 PM *(1.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 08, 2024, 01:00 PM - Monday, July 08, 2024, 02:06 PM *(1.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 07, 2024, 05:32 PM - Sunday, July 07, 2024, 06:22 PM *(0.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 07, 2024, 05:11 PM - Sunday, July 07, 2024, 05:14 PM *(0.0 hours)*  
+  
+&nbsp; &nbsp; :watch: **Trying to figure out port bug..** *(Total duration: 2.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 08, 2024, 12:12 PM - Monday, July 08, 2024, 12:52 PM *(0.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 08, 2024, 11:45 AM - Monday, July 08, 2024, 12:07 PM *(0.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 07, 2024, 07:57 PM - Sunday, July 07, 2024, 09:16 PM *(1.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **Reviewing PR's** *(Total duration: 0.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 08, 2024, 11:01 AM - Monday, July 08, 2024, 11:37 AM *(0.6 hours)*  
+  
+&nbsp; &nbsp; :watch: **Creating dockerized test enviroment with test runner, refactored previous composes with health checks** *(Total duration: 1.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 07, 2024, 04:19 PM - Sunday, July 07, 2024, 04:23 PM *(0.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 07, 2024, 02:01 PM - Sunday, July 07, 2024, 03:45 PM *(1.7 hours)*  
+  
+&nbsp; &nbsp; :watch: **Refactoring jest calls to be more verbose on the back-end, including coverage, creating new docker env** *(Total duration: 0.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 07, 2024, 10:50 AM - Sunday, July 07, 2024, 11:42 AM *(0.9 hours)*  
+  
+&nbsp; &nbsp; :watch: **Drafting / Researching how to do dockerized testing environment for back-end integration tests** *(Total duration: 1.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 07, 2024, 09:21 AM - Sunday, July 07, 2024, 10:27 AM *(1.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 07, 2024, 09:05 AM - Sunday, July 07, 2024, 09:15 AM *(0.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **Minor UI changes for navbar** *(Total duration: 0.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 06, 2024, 06:19 PM - Saturday, July 06, 2024, 06:28 PM *(0.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 06, 2024, 06:18 PM - Saturday, July 06, 2024, 06:18 PM *(0.0 hours)*  
+  
+&nbsp; &nbsp; :watch: **Changing apiCalls for class Context** *(Total duration: 1.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 06, 2024, 04:56 PM - Saturday, July 06, 2024, 06:16 PM *(1.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **Refactoring new class Context** *(Total duration: 1.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 06, 2024, 04:51 PM - Saturday, July 06, 2024, 04:52 PM *(0.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 06, 2024, 03:24 PM - Saturday, July 06, 2024, 03:41 PM *(0.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 06, 2024, 02:10 PM - Saturday, July 06, 2024, 03:24 PM *(1.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **Refactoring UserContext to not render also in Login, have to add setUserContext in each component that uses it.** *(Total duration: 2.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 06, 2024, 01:24 PM - Saturday, July 06, 2024, 01:33 PM *(0.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 06, 2024, 10:10 AM - Saturday, July 06, 2024, 12:12 PM *(2.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 06, 2024, 09:56 AM - Saturday, July 06, 2024, 10:04 AM *(0.1 hours)*  
+  
+&nbsp; &nbsp; :watch: **Creating / Drafting a classes context** *(Total duration: 1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 06, 2024, 07:19 AM - Saturday, July 06, 2024, 08:21 AM *(1.0 hours)*  
+  
+&nbsp; &nbsp; :watch: **Adding new Issues from pre-presentation Look through** *(Total duration: 1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 06, 2024, 06:45 AM - Saturday, July 06, 2024, 07:07 AM *(0.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 06, 2024, 06:10 AM - Saturday, July 06, 2024, 06:44 AM *(0.6 hours)*  
+  
+&nbsp; &nbsp; :watch: **Refactoring Forgot password** *(Total duration: 1.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 05, 2024, 05:13 PM - Friday, July 05, 2024, 06:55 PM *(1.7 hours)*  
+  
+&nbsp; &nbsp; :watch: **Team Dashboard / Logs** *(Total duration: 0.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 05, 2024, 06:14 AM - Friday, July 05, 2024, 06:23 AM *(0.1 hours)*  
+  
+&nbsp; &nbsp; :watch: **Setting up Presentation** *(Total duration: 1.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 04, 2024, 08:08 PM - Thursday, July 04, 2024, 09:30 PM *(1.4 hours)*  
+  
+&nbsp; &nbsp; :watch: **Adding Mock tests for Class, User, and Assign** *(Total duration: 1.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 04, 2024, 06:56 PM - Thursday, July 04, 2024, 08:05 PM *(1.2 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[214](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/214)**: Role-Based-Access Route Wrapper, Role Request Card, Graceful Logouts, ETC  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[204](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/204)**: Dockerized Test ENV, currently for back-end, soon to integrate into drone  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[188](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/188)**: Logs review for cycle 10  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[188](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/188)**: Logs review for cycle 10  
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[199](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/199)**: Create Classes Context, integrate into all components that require it.   
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[169](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/169)**: Refactor envConfig to accomodate commonJS      
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[207](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/207)**: Integrate back-end testing env into drone  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[201](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/201)**: Add a wrapper route component to the routes for role-based access and not logged in   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[200](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/200)**: Apply for new Role Request Card  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[197](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/197)**: Dockerized Testing environment to do integration testing   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[147](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/147)**: File Storage Worker Service: Redis DB, FileSystemUploadQueue, UploadtoService, etc.   
+
+## Recap on goals from last cycle
+* Based on goals from last cycle, I was able to fix classes navbar state changes by creating a new class context, and adding a hook to the class context to update the navbar state when a new class is added, mahir and abdul helped by also adding in the hooks in the other components that needed to usethe context.
+* I started to work on the forgot password token clear, was getting some issues and abdul was able to help me with it and he got it work. 
+* I have a dockerized testing enviroment for integration tests, I was able to get it working with the some service tests, and a controller test, I was getting some issues with the ports but I think its because of how I am using ENV vars in my docker-compose file, my other files
+* I started working on cleaning up permissions / session state things for the front-end, such as protecting our roles VIA a route wrapper for role-based access and permissions issue. I also wanted to make it so that if the user has a valid session, if they acess the login page, they are redirected to the dashboard. Mahir made some mahir UI changes that haven't been merged to dev yet though and if was forked off of an older branch so I may end up just restarting to not deal with bad merge conflicts. 
+
+## Goals for next cycle
+* Complete PR-214, for route wrapper etc. 
+* Finish up some more tests for the integration tests, get merged into dev. 
+* Start helping mahir with the ngnix upload service, try to get it working to also download files from the server too. 
+  
+  
+
 # Josh's Log for Cycle 10
 
 

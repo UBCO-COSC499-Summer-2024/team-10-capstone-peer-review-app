@@ -134,7 +134,7 @@ const Rubrics = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 bg-slate-50 rounded-lg">
       <h1 className="text-2xl font-semibold mb-4">Rubrics</h1>
       <Button onClick={() => setIsCreateDrawerOpen(true)} className="mb-4">Add a Rubric</Button>
       <div className="grid grid-cols-1 gap-4">

@@ -134,7 +134,7 @@ const Class = () => {
 				<Menubar className="flex gap-2 ">
 					<MenubarMenu>
 						<MenubarTrigger
-							className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
+							className="border border-gray-600 rounded-lg hover:bg-white cursor-pointer"
 							onClick={() => handleViewChange("home")}
 						>
 							HOME

@@ -27,15 +27,15 @@ export default {
           foreground: '#000000',
         },
         background: {
-          DEFAULT: "#FFFFFF",
+          DEFAULT: "#FFFFFF", // Slate color
           foreground: "#1C232E"
         },
         muted: {
-          DEFAULT: "#F4F8FB",
+          DEFAULT: "#b0bec5", // Slate color
           foreground: "#758196"
         },
         popover: {
-          DEFAULT: "#FFFFFF",
+          DEFAULT: "#f5f5f5", // Slate color
           foreground: "#1C232E"
         },
         card: {
@@ -43,12 +43,25 @@ export default {
           foreground: "#1C232E"
         },
         accent: {
-          DEFAULT: "#F4F8FB",
+          DEFAULT: "#cfd8dc", // Slate color
           foreground: "#1C232E"
         },
         secondary: {
-          DEFAULT: "#F4F8FB",
+          DEFAULT: "#e0e7ff", // Soft Indigo color
           foreground: "#1C232E"
+        },
+        slate: {
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
+          foreground: '#ffffff',
         }
       },
       keyframes: {

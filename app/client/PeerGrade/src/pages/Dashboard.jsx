@@ -183,30 +183,7 @@ function Dashboard() {
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-    
-        {/* <div className="flex flex-col bg-[#fff] justify-center gap-2 h-full items-center rounded-lg ">
-          {userLoading ? (
-            <Skeleton className="h-48 w-full rounded-lg" />
-          ) : (
-            <Carousel className="w-3/4 ">
-              <CarouselContent>
-                {classes.map((classItem) => (
-                  <CarouselItem key={classItem.classId}>
-                    <ClassCard
-                      classId={classItem.classId}
-                      className={classItem.classname}
-                      instructor={`${classItem.instructor.firstname} ${classItem.instructor.lastname}`}
-                      numStudents={classItem.classSize}
-                      term={classItem.term}
-                    />
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
-          )}
-        </div> */}
+
     <div className="bg-white p-4 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold mb-4">Recent Announcements</h2>
           <div>
@@ -226,7 +203,7 @@ function Dashboard() {
           )}
         </div>
       </div>
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="bg-white p-4 rounded-lg shadow-md">
           <Tabs defaultValue="assignments">
             <TabsList className="grid w-full grid-cols-2 mb-4">
@@ -250,6 +227,29 @@ function Dashboard() {
               />
             </TabsContent>
           </Tabs>
+        </div>
+		<div className="flex flex-col bg-[#fff] justify-center gap-2 h-full items-center rounded-lg ">
+          {userLoading ? (
+            <Skeleton className="h-48 w-full rounded-lg" />
+          ) : (
+            <Carousel className="w-3/4 ">
+              <CarouselContent>
+                {classes.map((classItem) => (
+                  <CarouselItem key={classItem.classId}>
+                    <ClassCard
+                      classId={classItem.classId}
+                      className={classItem.classname}
+                      instructor={`${classItem.instructor.firstname} ${classItem.instructor.lastname}`}
+                      numStudents={classItem.classSize}
+                      term={classItem.term}
+                    />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          )}
         </div>
       </div>
     </div>

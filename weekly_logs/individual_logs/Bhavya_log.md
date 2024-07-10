@@ -98,14 +98,14 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Add more routes with more functions between our tables and modified our schema to make it look more robust and logical. Also, completed the major CRUD review and grading routes which is now more robust than before. Therefore from the backend perspective, our Peer Review functionality is done!
+* Added more fields and functionalities in our schema (to make their flow logical). We had some inconsistencies in Review table and assignments table which I fixed.
+* Tested our backend services manually but now working on writing tests on jest
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Complete additional routes for the review table so that the frontend can have more features.
+* Start with testing older api routes created
+* Look for adding more routes if needed in the submit routes 
   
   
 

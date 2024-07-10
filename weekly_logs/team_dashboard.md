@@ -6,40 +6,50 @@
 
 
 ### Major features worked on in c-11
-*  
-  
-*  
-  
-*  
-  
+* Major Use Case 8: Submit Assignment (Submissions not setup yet)
+
+* Major Use Case 16-1: Create/Manage Assignment  
+
+* Major Use Case 16-2: Create/Manage Rubric 
+
+* Major Use Case 12, 13: Manage, Join Group 
+
+* Setting up a docker service to handle uploading and downloading files
+
+* Dockerized testing environment for integration testing
+
 
 ### Major features completed in c-11
-*  
-  
-*  
-  
-*  
+* Major Use Case 12, 13: Manage, Join Group 
+
+* Major Use Case 16-1: Create/Manage Assignment (Almost done, may need factor uploads to have both assignment files and descrption files, need to also include downloading files)
+
+* Major Use Case 16-2: Create/Manage Rubric 
   
 
 ### Major features to work on for c-12
-*  
-  
-*  
-  
-*  
-  
+* Major Use Case 8: Submit Assignment (Submissions not setup yet) 
+
+* Setting up a docker service to handle uploading and downloading files
+
+* Dockerized testing environment for integration testing
+
 
 ### Team Issues and Hurdles for c-11
-*  
+*  Refactors to the front-end for accessing classes, created a classContext to handle 
+   global state, this took a bit of refactoring to get working. 
   
-*  
-  
-*  
+*  Once we set up file downloading, submissions and assignments be completely set up.
   
 
 ### Clockify Dashboard for this Week
 
 ![Clockify Dashboard for c-11](./team_dashboard_images/clockify_dashboards/clockify_dashboard_c11.png)
+
+### Burnup Charp for This Cycle 
+
+Removed all done tasks since the last cycle, burn up looks relatively low because of creation of lots of new tasks. We also have 5 issues that are currenty in review and will be added to the done section in the next cycle.
+![Burn up chart for c-1`](./team_log_images/burnup_charts/burnup_chart_c11.png)
   
   
 

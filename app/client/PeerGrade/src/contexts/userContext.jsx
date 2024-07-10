@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import { getCurrentUser } from "@/api/authApi";
 
 export const UserContext = createContext();
@@ -36,6 +36,10 @@ export const UserProvider = ({ children }) => {
 			setUserLoading(false);
 		}
 	};
+
+	// useEffect(() => {
+	// 	setUserContext();
+	// }, []);
 
 	return (
 		<UserContext.Provider

@@ -123,7 +123,7 @@ const Class = () => {
 	};
 
 	return (
-		<div className="w-screen main-container mx-5 p-6">
+		<div className="w-full px-6">
 			<div className="flex flex-col gap-1 bg-gray-200 p-4 mb-6 rounded-lg">
 				<h1 className="text-3xl font-bold">{classItem.classname}</h1>
 				<span className="ml-1 text-sm text-gray-500 mb-2 ">

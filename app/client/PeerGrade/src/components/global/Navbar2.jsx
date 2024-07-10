@@ -29,7 +29,7 @@ import { useUser } from "@/contexts/contextHooks/useUser";
 
 import { useClass } from "@/contexts/contextHooks/useClass";
 
-export default function AppNavbar() {
+export default function AppNavbar2() {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const [assignmentsData, setAssignmentsData] = useState([]);

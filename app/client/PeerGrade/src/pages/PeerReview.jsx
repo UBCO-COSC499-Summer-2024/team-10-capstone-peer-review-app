@@ -28,7 +28,7 @@ const PeerReview = () => {
     );
 
   return (
-    <div className="main-container w-screen p-6">
+    <div className="w-full px-6">
       <h1 className="text-2xl font-bold mb-4">Peer Reviews</h1>
 
       <div className="flex justify-end items-center mb-6">

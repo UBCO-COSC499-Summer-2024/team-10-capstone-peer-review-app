@@ -54,7 +54,7 @@ const Settings = () => {
   };
 
   return (
-    <div className="w-screen mx-5 p-6">
+    <div>
       <Tabs value={selectedTab} onValueChange={setSelectedTab} className="max-w-5xl mx-auto">
         <TabsList className="flex justify-between mb-6">
           <TabsTrigger value="profile">Profile</TabsTrigger>

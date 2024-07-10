@@ -14,6 +14,13 @@ import { format, parseISO } from "date-fns";
 
 import { getAllAssignments } from "@/api/classApi";
 import { getGroups } from "@/api/userApi";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { useClass } from "@/contexts/contextHooks/useClass";
@@ -173,79 +180,79 @@ function Dashboard() {
 	const classNames = classes.map((classItem) => classItem.classname);
 
 	return (
-		<div className="w-full main-container space-y-6 ">
-			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-5">
-				{isClassLoading && !classes
-					? Array.from({ length: 3 }).map((_, index) => (
-							<Skeleton key={index} className="h-48 w-full rounded-lg" />
-						))
-					: classes.map((classItem) => {
-							console.log("classItem: ", classItem); // This will log each classItem object
-							return (
-								<ClassCard
-									key={classItem.classId}
-									classId={classItem.classId}
-									className={classItem.classname}
-									instructor={`${classItem.instructor.firstname} ${classItem.instructor.lastname}`}
-									numStudents={classItem.classSize}
-									term={classItem.term}
-								/>
-							);
-						})}
-			</div>
-			<div className="flex justify-between items-start gap-5 pt-5">
-				<div className="flex w-1/2">
-					{userLoading ? (
-						// Skeleton for GroupCard
-						<Skeleton className="h-96 w-full rounded-lg" />
-					) : (
-						<GroupCard
-							classes={classes}
-							groups={groups}
-							classNames={classNames}
-							users={user}
-						/>
-					)}
-				</div>
-				<div className="flex w-3/4">
-					<Tabs defaultValue="assignments" className="flex-1">
-						{userLoading ? (
-							<Skeleton className="h-48 w-full rounded-lg" />
-						) : (
-							<TabsList className="grid w-1/2 grid-cols-2">
-								<TabsTrigger value="assignments">Assignments</TabsTrigger>
-								<TabsTrigger value="reviews">Reviews</TabsTrigger>
-							</TabsList>
-						)}
-						<TabsContent value="assignments">
-							{userLoading ? (
-								<Skeleton className="h-48 w-full rounded-lg" />
-							) : (
-								<DataTable
-									title="Upcoming Assignments"
-									data={assignmentData}
-									columns={assignmentColumns}
-									pageSize={4}
-								/>
-							)}
-						</TabsContent>
-						<TabsContent value="reviews">
-							{userLoading ? (
-								<Skeleton className="h-48 w-full rounded-lg" />
-							) : (
-								<DataTable
-									title="Upcoming Reviews"
-									data={reviewData}
-									columns={reviewColumns}
-									pageSize={4}
-								/>
-							)}
-						</TabsContent>
-					</Tabs>
-				</div>
-			</div>
-		</div>
-	);
-}
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
 
+    <div className="bg-white p-4 rounded-lg shadow-md">
+          <h2 className="text-xl font-semibold mb-4">Recent Announcements</h2>
+          <div>
+            <p>No recent announcements.</p>
+          </div>
+        </div>
+        <div className="bg-white flex justify-center items-center p-2 rounded-lg shadow-md">
+          {userLoading ? (
+            <Skeleton className="h-48 w-full rounded-lg" />
+          ) : (
+            <GroupCard
+              classes={classes}
+              groups={groups}
+              classNames={classNames}
+              users={user}
+            />
+          )}
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-white p-4 rounded-lg shadow-md">
+          <Tabs defaultValue="assignments">
+            <TabsList className="grid w-full grid-cols-2 mb-4">
+              <TabsTrigger value="assignments">Assignments</TabsTrigger>
+              <TabsTrigger value="reviews">Reviews</TabsTrigger>
+            </TabsList>
+            <TabsContent value="assignments">
+              <DataTable
+                title="Upcoming Assignments"
+                data={assignmentData}
+                columns={assignmentColumns}
+                pageSize={4}
+              />
+            </TabsContent>
+            <TabsContent value="reviews">
+              <DataTable
+                title="Upcoming Reviews"
+                data={reviewData}
+                columns={reviewColumns}
+                pageSize={4}
+              />
+            </TabsContent>
+          </Tabs>
+        </div>
+		<div className="flex flex-col bg-[#fff] justify-center gap-2 h-full items-center rounded-lg ">
+          {userLoading ? (
+            <Skeleton className="h-48 w-full rounded-lg" />
+          ) : (
+            <Carousel className="w-3/4 ">
+              <CarouselContent>
+                {classes.map((classItem) => (
+                  <CarouselItem key={classItem.classId}>
+                    <ClassCard
+                      classId={classItem.classId}
+                      className={classItem.classname}
+                      instructor={`${classItem.instructor.firstname} ${classItem.instructor.lastname}`}
+                      numStudents={classItem.classSize}
+                      term={classItem.term}
+                    />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
 export default Dashboard;

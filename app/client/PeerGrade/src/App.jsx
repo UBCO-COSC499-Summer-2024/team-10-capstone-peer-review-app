@@ -30,7 +30,7 @@ function App() {
 		<Router>
 			<UserProvider>
 				<ClassProvider>
-          <TitleUpdater />
+					<TitleUpdater />
 					<MainLayout />
 				</ClassProvider>
 			</UserProvider>
@@ -48,7 +48,7 @@ function MainLayout() {
 	return (
     <main className="bg-gray-100 min-h-screen flex">
 			{!isLoginPage && <AppNavbar />}
-			<div className="main-container flex-grow p-6">
+			<div className="main-container gradient-background flex-grow p-6">
 				<Routes>
 					<Route path="/" element={<Login />} />
 					<Route path="/dashboard" element={<Dashboard />} />

@@ -1,32 +1,38 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import { getCurrentUser } from "@/api/authApi";
 
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-	const [user, setUser] = useState(null);
-	const [userLoading, setUserLoading] = useState(false);
+  const [user, setUser] = useState(null);
+  const [userLoading, setUserLoading] = useState(false);
 
-	const setUserContext = async () => {
-		try {
-			setUserLoading(true);
-			const userInfo = await getCurrentUser();
-			setUser(userInfo);
-			setUserLoading(false);
-		} catch (error) {
-			console.error("Failed to fetch user", error);
-		}
-	};
+  const setUserContext = async () => {
+    try {
+      setUserLoading(true);
+      const userInfo = await getCurrentUser();
+      console.log("Fetched user info:", userInfo);
+      setUser(userInfo);
+    } catch (error) {
+      console.error("Failed to fetch user", error);
+    } finally {
+      setUserLoading(false);
+    }
+  };
 
-	const clearUserContext = () => {
-		setUser(null);
-	};
+  const clearUserContext = () => {
+    setUser(null);
+  };
 
-	return (
-		<UserContext.Provider
-			value={{ user, userLoading, setUserContext, clearUserContext }}
-		>
-			{children}
-		</UserContext.Provider>
-	);
+  useEffect(() => {
+    setUserContext();
+  }, []);
+
+  return (
+    <UserContext.Provider
+      value={{ user, userLoading, setUserContext, clearUserContext }}
+    >
+      {children}
+    </UserContext.Provider>
+  );
 };

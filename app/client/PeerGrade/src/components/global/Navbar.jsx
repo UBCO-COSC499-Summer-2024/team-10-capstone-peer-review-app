@@ -1,29 +1,21 @@
-//doesn't work
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { cn } from "@/utils/utils";
 import { useToast } from "@/components/ui/use-toast";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import {  Home, Users, ClipboardList, Settings, LogOut } from "lucide-react";
+import { Home, Users, ClipboardList, Settings, LogOut } from "lucide-react";
 import NotifCard from "./NotifCard";
 import {
-	NavigationMenu,
-	NavigationMenuContent,
-	NavigationMenuItem,
-	NavigationMenuLink,
-	NavigationMenuList,
-	NavigationMenuTrigger,
-	navigationMenuTriggerStyle
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  navigationMenuTriggerStyle 
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import {
-  Card,
-  CardContent,
-  CardTitle,
-} from "@/components/ui/card";
-import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
-
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 
 import { logoutUser } from "@/api/authApi";
 import { getAllAssignments } from "@/api/classApi";
@@ -31,127 +23,103 @@ import { useUser } from "@/contexts/contextHooks/useUser";
 import { useClass } from "@/contexts/contextHooks/useClass";
 
 export default function AppNavbar() {
-	const location = useLocation();
-	const navigate = useNavigate();
-	const [assignmentsData, setAssignmentsData] = useState([]);
-	// const [searchQuery, setSearchQuery] = useState(""); // State for search query
-  const [isCardVisible, setIsCardVisible] = useState(false); // State to manage card visibility
+  const { user, userLoading, clearUserContext, setUserContext } = useUser();
+  const { classes, setUserClasses, setAdminClasses } = useClass();
+  const { toast } = useToast();
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [assignmentsData, setAssignmentsData] = useState([]);
+  const [isCardVisible, setIsCardVisible] = useState(false);
   const [cardOpacity, setCardOpacity] = useState(0);
   const [isPeerReviewSheetOpen, setIsPeerReviewSheetOpen] = useState(false);
   const [isClassesSheetOpen, setIsClassesSheetOpen] = useState(false);
 
-	const { user, userLoading, clearUserContext } = useUser();
-	const { classes, setUserClasses, setAdminClasses } = useClass();
-
-	const { toast } = useToast();
-
-
-	// Fetch the classes data on mount and when the user changes, this is from the classContext
-	useEffect(() => {
-    const fetchClasses = async () => {
-      if (user) {
-        if (user.role === "ADMIN") {
-          await setAdminClasses();
-        } else {
-          await setUserClasses(user.userId);
-        }
-      }
-    };
-    fetchClasses();
-    console.log("User:", user);
-    console.log("Classes:", classes);
-  }, [user]);
-
   useEffect(() => {
-    const fetchAssignments = async () => {
+    const fetchData = async () => {
+      if (!user && !userLoading) {
+        console.log("User is null and not loading, calling setUserContext");
+        await setUserContext();
+      }
       if (user) {
         try {
+          console.log("Fetching classes and assignments for user:", user);
+          if (user.role === "ADMIN") {
+            await setAdminClasses();
+          } else {
+            await setUserClasses(user.userId);
+          }
+
           const assignments = await getAllAssignments(user.userId);
-          console.log("Fetched assignments:", assignments);
           setAssignmentsData(Array.isArray(assignments) ? assignments : []);
         } catch (error) {
-          console.error("Failed to fetch assignments", error);
+          console.error("Failed to fetch data", error);
           toast({
             title: "Error",
-            description: "Failed to fetch assignments",
-            variant: "destructive"
+            description: "Failed to fetch data",
+            variant: "destructive",
           });
         }
       }
     };
-    fetchAssignments();
-  }, [user]);
 
-	const handleLogout = async () => {
-		try {
-			await logoutUser();
-			clearUserContext();
-			navigate("/");
-		} catch (error) {
-			toast({
-				title: "Error",
-				description: "Failed to logout",
-				variant: "destructive"
-			});
-		}
-	};
+    fetchData();
+  }, [user, toast]);
 
-	// This is no longer used yes? I think it now is used in admin for classes, should rename component?
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isCardVisible && !event.target.closest(".notification-card")) {
+        toggleCardVisibility();
+      }
+    };
 
-	// const search = () => {
-	// 	const trimmedQuery = searchQuery.trim();
-	// 	if (trimmedQuery) {
-	// 		navigate(`/search?query=${trimmedQuery}`);
-	// 	} else {
-	// 		navigate(`/search`);
-	// 	}
-	// };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isCardVisible]);
 
-	const getInitials = (firstName, lastName) => {
-		const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : "";
-		const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : "";
-		return `${firstInitial}${lastInitial}`;
-	};
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+      clearUserContext();
+      navigate("/");
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to logout",
+        variant: "destructive",
+      });
+    }
+  };
 
-	if (userLoading) {
-		return <div>Loading...</div>;
-	}
+  const getInitials = (firstName, lastName) => {
+    const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : "";
+    const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : "";
+    return `${firstInitial}${lastInitial}`;
+  };
 
-	if (!user) {
-		return null;
-	}
-
-	const isActive = (path) => {
-		return (
-			location.pathname === path ||
-			(path === "/dashboard" && location.pathname === "/")
-		);
-	};
+  const isActive = (path) => {
+    return location.pathname === path || (path === "/dashboard" && location.pathname === "/");
+  };
 
   const toggleCardVisibility = () => {
     if (isCardVisible) {
       setCardOpacity(0);
-      setTimeout(() => setIsCardVisible(false), 300); // Wait for fade out to complete
+      setTimeout(() => setIsCardVisible(false), 300);
     } else {
       setIsCardVisible(true);
-      setTimeout(() => setCardOpacity(1), 50); // Small delay to ensure the card is rendered before fading in
+      setTimeout(() => setCardOpacity(1), 50);
     }
   };
-  
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (isCardVisible && !event.target.closest('.notification-card')) {
-        toggleCardVisibility();
-      }
-    };
-  
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isCardVisible]);
+  if (userLoading) {
+    return <div>Loading...</div>;
+  }
 
+  if (!user) {
+    return null;
+  }
 
   return (
     <div className="flex w-[200px] z-[60] h-screen fixed">
@@ -375,4 +343,3 @@ const ListItem = React.forwardRef(
   }
 );
 ListItem.displayName = "ListItem";
-

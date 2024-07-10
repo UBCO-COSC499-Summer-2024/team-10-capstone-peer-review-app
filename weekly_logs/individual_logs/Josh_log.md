@@ -273,15 +273,20 @@
 &nbsp; &nbsp; :orange_circle: **Issue-[88](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/88)**: Integrate Enroll Request in Classes  
   
 
+  * Fix Classes navbar state, since I noticted that wasnt refreshing state when a new class is added.  
+* Fix forgot password to clear the URL when a JWT is found in the URL, also revamp the checkEmail functionality. 
+* Set up a dockerized testing enviroment for integration tests, rather than just doing our isolated unit tests for the backend. 
+
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Based on goals from last cycle, I was able to fix classes navbar state changes by creating a new class context, and adding a hook to the class context to update the navbar state when a new class is added, mahir and abdul helped by also adding in the hooks in the other components that needed to usethe context.
+* I started to work on the forgot password token clear, was getting some issues and abdul was able to help me with it and he got it work. 
+* I have a dockerized testing enviroment for integration tests, I was able to get it working with the some service tests, and a controller test, I was getting some issues with the ports but I think its because of how I am using ENV vars in my docker-compose file, my other files
+* I started working on cleaning up permissions / session state things for the front-end, such as protecting our roles VIA a route wrapper for role-based access and permissions issue. I also wanted to make it so that if the user has a valid session, if they acess the login page, they are redirected to the dashboard. Mahir made some mahir UI changes that haven't been merged to dev yet though and if was forked off of an older branch so I may end up just restarting to not deal with bad merge conflicts. 
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Complete PR-214, for route wrapper etc. 
+* Finish up some more tests for the integration tests, get merged into dev. 
+* Start helping mahir with the ngnix upload service, try to get it working to also download files from the server too. 
   
   
 

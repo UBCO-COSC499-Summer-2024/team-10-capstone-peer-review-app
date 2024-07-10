@@ -188,14 +188,12 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Worked on a lot of items and semi-major features!
+* Didn't refactor as many front-end unit tests as I'd wanted (did about 8 out of 22), but I did hold back on refactoring some files as we're yet again going through a major UI overhaul.
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Testing. Again. Need to do a lot more of it so that we don't do testing later, code first which isn't ideal.
+* Get assignments up and running for next cycle, including PDF viewing. File storage is sorted out in a PR that hasn't been merged yet & assignment back-end linking has been done for the most part already.
   
   
 

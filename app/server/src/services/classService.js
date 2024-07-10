@@ -3,6 +3,31 @@ import apiError from "../utils/apiError.js";
 
 // class operations
 
+const getAllClasses = async () => {
+	try {
+		const classes = await prisma.class.findMany({
+			include: {
+				groups: true,
+				usersInClass: true,
+				Assignments: true,
+				instructor: {
+					select: {
+						userId: true,
+						email: true,
+						firstname: true,
+						lastname: true,
+						classesInstructed: true
+					}
+				},
+				EnrollRequest: true
+			}
+		});
+		return classes;
+	} catch (error) {
+		throw new apiError("Failed to retrieve classes", 500);
+	}
+};
+
 const getStudentsByClass = async (classId) => {
 	try {
 		const classWithStudents = await prisma.userInClass.findMany({
@@ -129,7 +154,6 @@ const deleteClass = async (classId) => {
 			}
 		});
 	} catch (error) {
-		console.log(error);
 		throw new apiError("Failed to delete class", 500);
 	}
 };
@@ -170,20 +194,21 @@ const addStudentToClass = async (classId, studentId) => {
 		}
 
 		// Proceed to add the student if class size is not exceeded
-		await prisma.UserInClass.create({
+		await prisma.userInClass.create({
 			data: {
 				userId: studentId,
 				classId: classId
 			}
 		});
 
-		//return updatedClass;
+		return userInfo;
 	} catch (error) {
 		// Rethrow the error if it's an instance of apiError, else throw general apiError
 		if (error instanceof apiError) {
 			throw error;
 		} else {
-			throw new apiError("Failed to add student to class", 500);
+			console.log(error);
+			throw new apiError(`Failed to add student to class: ${error}`, 500);
 		}
 	}
 };
@@ -226,339 +251,6 @@ const removeStudentFromClass = async (classId, studentId) => {
 };
 
 
-// rubric operations
-const createRubricsForAssignment = async (
-	creatorId,
-	assignmentId,
-	rubricData
-) => {
-	try {
-		const assignment = await prisma.assignment.findUnique({
-			where: {
-				assignmentId: assignmentId
-			}
-		});
-
-		if (!assignment) {
-			throw new apiError("Assignment not found", 404);
-		}
-
-		const newRubric = await prisma.rubric.create({
-			data: {
-				...rubricData,
-				creatorId: creatorId,
-				assignments: {
-					create: {
-						assignmentId: assignmentId
-					}
-				}
-			}
-		});
-
-		return newRubric;
-	} catch (error) {
-		if (error instanceof apiError) {
-			throw error;
-		} else {
-			throw new apiError("Failed to create rubrics for assignment", 500);
-		}
-	}
-};
-
-const getRubricsForAssignment = async (assignmentId) => {
-	try {
-		const assignment = await prisma.assignment.findUnique({
-			where: {
-				assignmentId: assignmentId
-			},
-			include: {
-				rubric: true
-			}
-		});
-
-		if (!assignment) {
-			throw new apiError("Assignment not found", 404);
-		}
-
-		if (!assignment.rubric) {
-			throw new apiError("Rubrics not found", 404);
-		}
-
-		const rubricAssignments = await prisma.rubricForAssignment.findMany({
-			where: {
-				assignmentId: assignmentId
-			},
-			include: {
-				rubric: true // Include the related rubric details
-			}
-		});
-
-		if (!rubricAssignments.length) {
-			throw new apiError("Rubrics not found for the assignment", 404);
-		}
-
-		// Map the result to only include rubric details
-		const rubrics = rubricAssignments.map((ra) => ra.rubric);
-
-		return rubrics;
-	} catch (error) {
-		if (error instanceof apiError) {
-			throw error;
-		} else {
-			throw new apiError("Failed to get rubrics for assignment", 500);
-		}
-	}
-};
-
-const updateRubricsForAssignment = async (rubricId, updateData) => {
-	try {
-		const rubric = await prisma.rubric.findUnique({
-			where: {
-				rubricId: rubricId
-			}
-		});
-
-		if (!rubric) {
-			throw new apiError("Rubric not found", 404);
-		}
-
-		const updatedRubric = await prisma.rubric.update({
-			where: {
-				rubricId: rubricId
-			},
-			data: updateData
-		});
-
-		return updatedRubric;
-	} catch (error) {
-		if (error instanceof apiError) {
-			throw error;
-		} else {
-			throw new apiError("Failed to update rubrics for assignment", 500);
-		}
-	}
-};
-
-const deleteRubricsForAssignment = async (rubricId) => {
-	try {
-		const rubric = await prisma.rubric.findUnique({
-			where: {
-				rubricId: rubricId
-			}
-		});
-
-		if (!rubric) {
-			throw new apiError("Rubric not found", 404);
-		}
-
-		await prisma.rubricForAssignment.deleteMany({
-			where: {
-				rubricId: rubricId
-			}
-		});
-
-		await prisma.rubric.delete({
-			where: {
-				rubricId: rubricId
-			}
-		});
-	} catch (error) {
-		if (error instanceof apiError) {
-			throw error;
-		} else {
-			throw new apiError("Failed to delete rubrics for assignment", 500);
-		}
-	}
-};
-
-// criterion operations
-const createCriterionForRubric = async (rubricId, criterionData) => {
-	try {
-		const rubric = await prisma.rubric.findUnique({
-			where: {
-				rubricId: rubricId
-			},
-			include: {
-				criteria: true
-			}
-		});
-
-		if (!rubric) {
-			throw new apiError("Rubric not found", 404);
-		}
-		//console.log(rubric.criteria.reduce((sum, criterion) => sum + criterion.maxMark, 0));
-
-		// Check if maxMark and minMark are positive
-		if (
-			criterionData.maxMark <= 0 ||
-			criterionData.minMark <= 0 ||
-			criterionData.maxMark < criterionData.minMark ||
-			criterionData.maxMark > rubric.totalMarks
-		) {
-			throw new apiError(
-				"Criterion maxMark and minMark are not set properly",
-				400
-			);
-		}
-
-		let existingMaxMarksSum = 0;
-		if (rubric.criteria || rubric.criteria.length > 0) {
-			existingMaxMarksSum = rubric.criteria.reduce(
-				(sum, criterion) => sum + criterion.maxMark,
-				0
-			);
-			//console.log(existingMaxMarksSum);
-		}
-
-		//console.log(`Existing Max Marks Sum: ${existingMaxMarksSum}, New Criterion Max Mark: ${criterionData.maxMark}, Rubric Total Marks: ${rubric.totalMarks}`);
-		// Check if the sum of maxMarks including the new criterion exceeds totalMarks
-		if (existingMaxMarksSum + criterionData.maxMark > rubric.totalMarks) {
-			throw new apiError(
-				"maxMarks of criteria exceed the rubric's totalMarks",
-				400
-			);
-		}
-
-		const newCriterion = await prisma.criterion.create({
-			data: {
-				...criterionData,
-				rubricId: rubricId
-			}
-		});
-		return newCriterion;
-	} catch (error) {
-		if (error instanceof apiError) {
-			throw error;
-		} else {
-			throw new apiError("Failed to create criterion for rubric", 500);
-		}
-	}
-};
-
-const getCriterionForRubric = async (rubricId) => {
-	try {
-		const rubric = await prisma.rubric.findUnique({
-			where: {
-				rubricId: rubricId
-			},
-			include: {
-				criteria: true
-			}
-		});
-
-		if (!rubric) {
-			throw new apiError("Rubric not found", 404);
-		}
-
-		return rubric.criteria;
-	} catch (error) {
-		if (error instanceof apiError) {
-			throw error;
-		} else {
-			throw new apiError("Failed to get criteria for rubric", 500);
-		}
-	}
-};
-
-const updateCriterionForRubric = async (criterionId, updateData) => {
-	try {
-		const criterion = await prisma.criterion.findUnique({
-			where: {
-				criterionId: criterionId
-			}
-		});
-
-		const rubric = await prisma.rubric.findUnique({
-			where: {
-				rubricId: criterion.rubricId
-			},
-			include: {
-				criteria: true
-			}
-		});
-
-		if (!criterion) {
-			throw new apiError("Criterion not found", 404);
-		}
-
-		// Check if maxMark and minMark are positive
-		if (
-			updateData.maxMark <= 0 ||
-			updateData.minMark <= 0 ||
-			updateData.maxMark < updateData.minMark ||
-			updateData.maxMark > rubric.totalMarks
-		) {
-			throw new apiError(
-				"Criterion maxMark and minMark are not set properly",
-				400
-			);
-		}
-
-		let existingMaxMarksSum = 0;
-		if (rubric.criteria || rubric.criteria.length > 0) {
-			const otherCriteria = rubric.criteria.filter(
-				(criterion) => criterion.criterionId !== criterionId
-			);
-			existingMaxMarksSum = otherCriteria.reduce(
-				(sum, criterion) => sum + criterion.maxMark,
-				0
-			);
-			// console.log(existingMaxMarksSum, updateData.maxMark, rubric.totalMarks);
-		}
-		if (existingMaxMarksSum + updateData.maxMark > rubric.totalMarks) {
-			throw new apiError(
-				"maxMarks of criteria exceed the rubric's totalMarks",
-				400
-			);
-		}
-
-		const updatedCriterion = await prisma.criterion.update({
-			where: {
-				criterionId: criterionId
-			},
-			data: updateData
-		});
-
-		return updatedCriterion;
-	} catch (error) {
-		if (error instanceof apiError) {
-			throw error;
-		} else {
-			throw new apiError("Failed to update criterion for rubric", 500);
-		}
-	}
-};
-
-const deleteCriterionForRubric = async (criterionId) => {
-	try {
-		const criterion = await prisma.criterion.findUnique({
-			where: {
-				criterionId: criterionId
-			}
-		});
-
-		if (!criterion) {
-			throw new apiError("Criterion not found", 404);
-		}
-
-		await prisma.criterion.delete({
-			where: {
-				criterionId: criterionId
-			}
-		});
-	} catch (error) {
-		if (error instanceof apiError) {
-			throw error;
-		} else {
-			throw new apiError("Failed to delete criterion for rubric", 500);
-		}
-	}
-};
-
-// criterion grade operations
-
-// group operations
-
 const addGroupToClass = async (classId, groupData) => {
 	try {
 		const classInfo = await prisma.class.findUnique({
@@ -581,7 +273,7 @@ const addGroupToClass = async (classId, groupData) => {
 			},
 			include: {
 				students: true,
-				submissions: true  // This is to include the students & submissions in the response. Needed for Groups.jsx atm.
+				submissions: true // This is to include the students & submissions in the response. Needed for Groups.jsx atm.
 			}
 		});
 
@@ -690,17 +382,17 @@ const getGroupsInClass = async (classId) => {
 	try {
 		const classInfo = await prisma.class.findUnique({
 			where: {
-			  classId: classId
+				classId: classId
 			},
 			include: {
-			  groups: {
-				include: {
-				  students: true,
-				  submissions: true // This is to include the students & submissions in the response. Needed for Groups.jsx atm.
+				groups: {
+					include: {
+						students: true,
+						submissions: true // This is to include the students & submissions in the response. Needed for Groups.jsx atm.
+					}
 				}
-			  }
 			}
-		  });
+		});
 
 		if (!classInfo) {
 			throw new apiError("Class not found", 404);
@@ -843,6 +535,7 @@ export default {
 	getInstructorByClass,
 	getStudentsByClass,
 	getClassesByInstructor,
+	getAllClasses,
 	getClassById,
 	createClass,
 	updateClass,
@@ -850,16 +543,6 @@ export default {
 
 	addStudentToClass,
 	removeStudentFromClass,
-
-	createRubricsForAssignment,
-	getRubricsForAssignment,
-	updateRubricsForAssignment,
-	deleteRubricsForAssignment,
-
-	createCriterionForRubric,
-	getCriterionForRubric,
-	updateCriterionForRubric,
-	deleteCriterionForRubric,
 
 	addGroupToClass,
 	removeGroupFromClass,

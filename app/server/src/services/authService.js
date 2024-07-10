@@ -97,9 +97,11 @@ export async function sendVerificationEmail(email) {
 			throw new apiError("No user with that email", 404);
 		}
 
-		const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: "5m" });
+		const verifyEmailToken = jwt.sign({ email }, JWT_SECRET, {
+			expiresIn: "5m"
+		});
 		// TODO refactor resetLink for frontend deployment
-		const verificationLink = `http://localhost:3000?token=${token}`;
+		const verificationLink = `http://localhost:3000?verifyEmailToken=${verifyEmailToken}`;
 
 		const htmlContent = `
 		<html>
@@ -153,7 +155,9 @@ export async function resetPassword(token, newPassword) {
 			data: { password: hashedPassword }
 		});
 	} catch (error) {
-		if (error instanceof apiError) {
+		if (error instanceof jwt.TokenExpiredError) {
+			throw new apiError("Your reset password link has expired", 401);
+		} else if (error instanceof apiError) {
 			throw error;
 		} else {
 			throw error;
@@ -167,9 +171,11 @@ export async function sendForgotPasswordEmail(email) {
 		if (!user) {
 			throw new apiError("No user with that email", 404);
 		}
-		const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: "5m" });
+		const forgotPasswordToken = jwt.sign({ email }, JWT_SECRET, {
+			expiresIn: "5m"
+		});
 		// TODO refactor resetLink for frontend deployment
-		const resetLink = `http://localhost:3000?frgtToken=${token}`;
+		const resetLink = `http://localhost:3000?forgotPasswordToken=${forgotPasswordToken}`;
 		const htmlContent = `
 		<html>
 			<head>
@@ -216,7 +222,28 @@ export async function confirmEmail(token) {
 			data: { isEmailVerified: true }
 		});
 	} catch (error) {
-		if (error instanceof apiError) {
+		if (error instanceof jwt.TokenExpiredError) {
+			throw new apiError("Your verify email link has expired", 401);
+		} else if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw error;
+		}
+	}
+}
+
+export async function isEmailVerifiedJWT(token) {
+	try {
+		const decoded = jwt.verify(token, JWT_SECRET);
+		const user = await checkUserByEmail(decoded.email);
+		if (!user) {
+			throw new apiError("No user with that email", 404);
+		}
+		return user.isEmailVerified;
+	} catch (error) {
+		if (error instanceof jwt.TokenExpiredError) {
+			throw new apiError("Your link has expired", 401);
+		} else if (error instanceof apiError) {
 			throw error;
 		} else {
 			throw error;
@@ -235,7 +262,9 @@ async function createRoleRequest(userId, role) {
 }
 
 export async function getAllRoleRequests() {
-	const requests = await prisma.roleRequest.findMany();
+	const requests = await prisma.roleRequest.findMany({
+		include: { user: true }
+	});
 	return requests;
 }
 
@@ -381,6 +410,7 @@ export async function denyRoleRequest(roleRequestId) {
 		}
 	}
 }
+
 export async function getCurrentUser(email) {
 	try {
 		let user = await checkUserByEmail(email);
@@ -415,6 +445,7 @@ export default {
 	loginUser,
 	sendVerificationEmail,
 	confirmEmail,
+	isEmailVerifiedJWT,
 	sendForgotPasswordEmail,
 	resetPassword,
 	getCurrentUser,

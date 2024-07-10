@@ -18,9 +18,9 @@ steps:
       - npm install
       - npm test
 
-  # - name: Run server tests
-  #   image: node:22-slim
-  #   commands:
-  #     - cd app/server
-  #     - npm install
-  #     - npm test
+  - name: Run server tests
+    image: node:22-slim
+    commands:
+      - cd app/server
+      - npm install
+      - npm run test

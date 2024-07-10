@@ -1,44 +1,143 @@
-"use client";
-
+//doesn't work
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { cn } from "@/utils/utils";
 import { useToast } from "@/components/ui/use-toast";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Home, Users, ClipboardList, Settings, LogOut } from "lucide-react";
+import {  Home, Users, ClipboardList, Settings, LogOut } from "lucide-react";
 import NotifCard from "./NotifCard";
 import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle
+	NavigationMenu,
+	NavigationMenuContent,
+	NavigationMenuItem,
+	NavigationMenuLink,
+	NavigationMenuList,
+	NavigationMenuTrigger,
+	navigationMenuTriggerStyle
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
   Card,
   CardContent,
   CardTitle,
 } from "@/components/ui/card";
+import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 
+
+import { logoutUser } from "@/api/authApi";
+import { getAllAssignments } from "@/api/classApi";
 import { useUser } from "@/contexts/contextHooks/useUser";
-import { getCurrentUser, logoutUser } from "@/api/authApi";
-import { getClassesByUserId, getAllAssignments } from "@/api/classApi";
+import { useClass } from "@/contexts/contextHooks/useClass";
 
 export default function AppNavbar() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { user, userLoading, setUserContext, clearUserContext } = useUser();
-  const [classesData, setClassesData] = useState([]);
-  const [assignmentsData, setAssignmentsData] = useState([]);
-  const { toast } = useToast();
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
+	const location = useLocation();
+	const navigate = useNavigate();
+	const [assignmentsData, setAssignmentsData] = useState([]);
+	// const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const [isCardVisible, setIsCardVisible] = useState(false); // State to manage card visibility
   const [cardOpacity, setCardOpacity] = useState(0);
   const [isPeerReviewSheetOpen, setIsPeerReviewSheetOpen] = useState(false);
   const [isClassesSheetOpen, setIsClassesSheetOpen] = useState(false);
+
+	const { user, userLoading, clearUserContext } = useUser();
+	const { classes, setUserClasses, setAdminClasses } = useClass();
+
+	const { toast } = useToast();
+
+
+	// Fetch the classes data on mount and when the user changes, this is from the classContext
+	useEffect(() => {
+    const fetchClasses = async () => {
+      if (user) {
+        if (user.role === "ADMIN") {
+          await setAdminClasses();
+        } else {
+          await setUserClasses(user.userId);
+        }
+      }
+    };
+    fetchClasses();
+    console.log("User:", user);
+    console.log("Classes:", classes);
+  }, [user]);
+
+  useEffect(() => {
+    const fetchAssignments = async () => {
+      if (user) {
+        try {
+          const assignments = await getAllAssignments(user.userId);
+          console.log("Fetched assignments:", assignments);
+          setAssignmentsData(Array.isArray(assignments) ? assignments : []);
+        } catch (error) {
+          console.error("Failed to fetch assignments", error);
+          toast({
+            title: "Error",
+            description: "Failed to fetch assignments",
+            variant: "destructive"
+          });
+        }
+      }
+    };
+    fetchAssignments();
+  }, [user]);
+
+	const handleLogout = async () => {
+		try {
+			await logoutUser();
+			clearUserContext();
+			navigate("/");
+		} catch (error) {
+			toast({
+				title: "Error",
+				description: "Failed to logout",
+				variant: "destructive"
+			});
+		}
+	};
+
+	// This is no longer used yes? I think it now is used in admin for classes, should rename component?
+
+	// const search = () => {
+	// 	const trimmedQuery = searchQuery.trim();
+	// 	if (trimmedQuery) {
+	// 		navigate(`/search?query=${trimmedQuery}`);
+	// 	} else {
+	// 		navigate(`/search`);
+	// 	}
+	// };
+
+	const getInitials = (firstName, lastName) => {
+		const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : "";
+		const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : "";
+		return `${firstInitial}${lastInitial}`;
+	};
+
+	if (userLoading) {
+		return <div>Loading...</div>;
+	}
+
+	if (!user) {
+		return null;
+	}
+
+	const isActive = (path) => {
+		return (
+			location.pathname === path ||
+			(path === "/dashboard" && location.pathname === "/")
+		);
+	};
+
+  const toggleCardVisibility = () => {
+    if (isCardVisible) {
+      setCardOpacity(0);
+      setTimeout(() => setIsCardVisible(false), 300); // Wait for fade out to complete
+    } else {
+      setIsCardVisible(true);
+      setTimeout(() => setCardOpacity(1), 50); // Small delay to ensure the card is rendered before fading in
+    }
+  };
+  
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -53,101 +152,6 @@ export default function AppNavbar() {
     };
   }, [isCardVisible]);
 
-
-  useEffect(() => {
-    const fetchCurrentUser = async () => {
-      try {
-        const currentUser = await getCurrentUser();
-        setUserContext(currentUser);
-      } catch (error) {
-        toast({
-          title: "Error",
-          description: "Failed to fetch current user",
-          variant: "destructive"
-        });
-      }
-    };
-
-    fetchCurrentUser();
-  }, [toast]);
-
-  useEffect(() => {
-    if (user) {
-      const fetchClasses = async () => {
-        try {
-          const classes = await getClassesByUserId(user.userId);
-          setClassesData(Array.isArray(classes) ? classes : []);
-        } catch (error) {
-          toast({
-            title: "Error",
-            description: "Failed to fetch classes",
-            variant: "destructive"
-          });
-        }
-      };
-
-      const fetchAssignments = async () => {
-        try {
-          const assignments = await getAllAssignments(user.userId);
-          setAssignmentsData(Array.isArray(assignments) ? assignments : []);
-        } catch (error) {
-          toast({
-            title: "Error",
-            description: "Failed to fetch assignments",
-            variant: "destructive"
-          });
-        }
-      };
-
-      fetchClasses();
-      fetchAssignments();
-    }
-  }, [user, toast]);
-
-  const handleLogout = async () => {
-    try {
-      await logoutUser();
-      clearUserContext();
-      navigate("/");
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to logout",
-        variant: "destructive"
-      });
-    }
-  };
-
-  const getInitials = (firstName, lastName) => {
-    const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : "";
-    const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : "";
-    return `${firstInitial}${lastInitial}`;
-  };
-
-  if (userLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!user) {
-    return null;
-  }
-
-  const isActive = (path) => {
-    return (
-      location.pathname === path ||
-      (path === "/dashboard" && location.pathname === "/")
-    );
-  };
-
-  const toggleCardVisibility = () => {
-  if (isCardVisible) {
-    setCardOpacity(0);
-    setTimeout(() => setIsCardVisible(false), 300); // Wait for fade out to complete
-  } else {
-    setIsCardVisible(true);
-    setTimeout(() => setCardOpacity(1), 50); // Small delay to ensure the card is rendered before fading in
-  }
-};
 
   return (
     <div className="flex w-[200px] z-[60] h-screen fixed">
@@ -192,33 +196,33 @@ export default function AppNavbar() {
                   <SheetContent side="left" className="w-[300px] border-l border-gray-200">
                     <SheetHeader>
                       <SheetTitle>My Peer-Reviews</SheetTitle>
-                      <SheetDescription>
-                        <p className="text-sm leading-snug text-muted-foreground">
-                          {assignmentsData.length} Reviews Assigned
-                        </p>
-                        <ul className="bg-white flex flex-col justify-center items-center gap-3 p-6 w-full">
-                          {assignmentsData.map((assignment) => (
-                            <ListItem
-                              key={assignment.assignmentId}
-                              title={assignment.title}
-                              href={`/assignedPR/${assignment.assignmentId}`}
-                              className="w-full"
-                              onItemClick={() => setIsPeerReviewSheetOpen(false)}
-                            >
-                              {assignment.description}
-                            </ListItem>
-                          ))}
+                    </SheetHeader>
+                    <div className="mt-4">
+                      <p className="text-sm leading-snug text-muted-foreground">
+                        {assignmentsData.length} Reviews Assigned
+                      </p>
+                      <ul className="bg-white flex flex-col justify-center items-center gap-3 p-6 w-full mt-2">
+                        {assignmentsData.map((assignment) => (
                           <ListItem
-                            title="All Peer Reviews"
-                            href="/peer-review"
-                            className="w-full bg-blue-100"
+                            key={assignment.assignmentId}
+                            title={assignment.title}
+                            href={`/assignedPR/${assignment.assignmentId}`}
+                            className="w-full"
                             onItemClick={() => setIsPeerReviewSheetOpen(false)}
                           >
-                            View all peer reviews.
+                            {assignment.description}
                           </ListItem>
-                        </ul>
-                      </SheetDescription>
-                    </SheetHeader>
+                        ))}
+                        <ListItem
+                          title="All Peer Reviews"
+                          href="/peer-review"
+                          className="w-full bg-blue-100"
+                          onItemClick={() => setIsPeerReviewSheetOpen(false)}
+                        >
+                          View all peer reviews.
+                        </ListItem>
+                      </ul>
+                    </div>
                   </SheetContent>
                 </Sheet>
               </NavigationMenuItem>
@@ -238,32 +242,35 @@ export default function AppNavbar() {
                   <SheetContent side="left" className="w-[300px]">
                     <SheetHeader>
                       <SheetTitle>My Classes</SheetTitle>
-                      <SheetDescription>
-                        <ul className="bg-white flex flex-col justify-center items-center gap-3 p-6 w-full">
-                          {classesData.map((classItem) => (
-                            <ListItem
-                              key={classItem.classId}
-                              title={classItem.classname}
-                              href={`/class/${classItem.classId}`}
-                              className="w-full"
-                              onItemClick={() => setIsClassesSheetOpen(false)}
-                            >
-                              {classItem.description}
-                            </ListItem>
-                          ))}
-                          {(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (
-                            <ListItem
-                              title="Manage Classes"
-                              href="/manageclass"
-                              className="w-full bg-blue-100"
-                              onItemClick={() => setIsClassesSheetOpen(false)}
-                            >
-                              Administer classes and assignments.
-                            </ListItem>
-                          )}
-                        </ul>
-                      </SheetDescription>
                     </SheetHeader>
+                    <div className="mt-4">
+                      <p className="text-sm leading-snug text-muted-foreground">
+                        {classes.length} Active Classes
+                      </p>
+                      <ul className="bg-white flex flex-col justify-center items-center gap-3 p-6 w-full">
+                        {classes.map((classItem) => (
+                          <ListItem
+                            key={classItem.classId}
+                            title={classItem.classname}
+                            href={`/class/${classItem.classId}`}
+                            className="w-full"
+                            onItemClick={() => setIsClassesSheetOpen(false)}
+                          >
+                            {classItem.description}
+                          </ListItem>
+                        ))}
+                        {(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (
+                          <ListItem
+                            title="Manage Classes"
+                            href="/manageclass"
+                            className="w-full bg-blue-100"
+                            onItemClick={() => setIsClassesSheetOpen(false)}
+                          >
+                            Administer classes and assignments.
+                          </ListItem>
+                        )}
+                      </ul>
+                    </div>
                   </SheetContent>
                 </Sheet>
               </NavigationMenuItem>
@@ -368,3 +375,4 @@ const ListItem = React.forwardRef(
   }
 );
 ListItem.displayName = "ListItem";
+

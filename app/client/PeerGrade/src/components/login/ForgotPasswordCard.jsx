@@ -11,7 +11,9 @@ import {
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { confirmEmail, resetPassword, sendForgotPasswordEmail } from "@/api/authApi";
+import { resetPassword, sendForgotPasswordEmail } from "@/api/authApi";
+
+import { isEmailVerifiedJWT } from "@/api/authApi";
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search);
@@ -23,23 +25,30 @@ const ForgotPasswordCard = ({ onSwitchToLogin }) => {
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [emailSent, setEmailSent] = useState(false);
-	const [verificationCode, setVerificationCode] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
+
 	const [error, setError] = useState("");
-	const query = useQuery();
-	const frgtToken = query.get("frgtToken") || "";
 	const [tokenReceived, setTokenReceived] = useState(false);
 	const [tokenValid, setTokenValid] = useState(false);
-	const [resetSuccessful, setResetSuccessful] = useState(false);
 	const [passwordVisible, setPasswordVisible] = useState(false);
 	const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
+	const query = useQuery();
+	const forgotPasswordToken = query.get("forgotPasswordToken") || "";
+
 	// TODO => Refactor to use apiCalls file instead so we dont have a ton of server calls in the component files
 	useEffect(() => {
-		if (frgtToken && !password) {
+		if (forgotPasswordToken && !password) {
 			const verifyEmail = async () => {
-				const response = await confirmEmail(frgtToken);
-				if (response.status === "Success") {
+				console.log(forgotPasswordToken);
+				const response = await isEmailVerifiedJWT(forgotPasswordToken);
+				console.log(response);
+				if (response && response.status === "Success") {
 					setTokenValid(true);
+					// query.delete("forgotPasswordToken");
+					// navigate("/", {
+					// 	replace: true
+					// });
 				} else {
 					setTokenValid(false);
 					setError(response.message);
@@ -48,13 +57,14 @@ const ForgotPasswordCard = ({ onSwitchToLogin }) => {
 			};
 			verifyEmail();
 		}
-	}, [frgtToken]);
+	}, [forgotPasswordToken]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
 		if (tokenReceived && tokenValid) {
-			if (frgtToken && password) { // if the token is present and password is entered, reset password
+			if (password) {
+				// if the token is present and password is entered, reset password
 				const passwordRegex =
 					/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
@@ -73,20 +83,26 @@ const ForgotPasswordCard = ({ onSwitchToLogin }) => {
 				}
 
 				const rstPassword = async () => {
-					const response = await resetPassword(frgtToken, password);
+					setIsLoading(true);
+					const response = await resetPassword(forgotPasswordToken, password);
 					if (response.status === "Success") {
-						setResetSuccessful(true);
-						navigate("/");
+						query.delete("forgotPasswordToken");
+						navigate("/", {
+							replace: true
+						});
 						onSwitchToLogin();
 					} else {
+						console.log(response);
 						setError(response.message);
-						console.log("reset password error:", response);
 					}
+					setIsLoading(false);
 				};
 				rstPassword();
 			}
-		} else { // if no token is present, send email (via forgot-password) on form submit
+		} else {
+			// if no token is present, send email (via forgot-password) on form submit
 			const sendEmail = async () => {
+				setIsLoading(true);
 				const response = await sendForgotPasswordEmail(email);
 				if (response.status === "Success") {
 					setEmailSent(true);
@@ -94,6 +110,7 @@ const ForgotPasswordCard = ({ onSwitchToLogin }) => {
 				} else if (response.status === "Error") {
 					setError(response.message);
 				}
+				setIsLoading(false);
 			};
 			sendEmail();
 		}
@@ -137,7 +154,8 @@ const ForgotPasswordCard = ({ onSwitchToLogin }) => {
 							An email has been sent to your email address! Please check it for
 							a verification link and reset your password there.
 						</p>
-					) : ( // Show form if email is not sent (as it's false either when the email has not been submitted or if a token is already present)
+					) : (
+						// Show form if email is not sent (as it's false either when the email has not been submitted or if a token is already present)
 						<form className="space-y-4" onSubmit={handleSubmit}>
 							{tokenValid ? ( // Show new password fields if token is valid
 								<div className="space-y-4">
@@ -202,7 +220,8 @@ const ForgotPasswordCard = ({ onSwitchToLogin }) => {
 										</div>
 									</div>
 								</div>
-							) : ( // Show email field if token is not valid or not present
+							) : (
+								// Show email field if token is not valid or not present
 								<div>
 									<label
 										htmlFor="email"
@@ -221,16 +240,17 @@ const ForgotPasswordCard = ({ onSwitchToLogin }) => {
 									/>
 								</div>
 							)}
-							{error && <p className="text-red-500 text-sm">{error}</p>} 
-							<div> 
+							{error && <p className="text-red-500 text-sm">{error}</p>}
+							<div>
 								<button
 									type="submit"
 									className="w-full px-4 py-2 text-sm font-medium text-white bg-[#111827] border border-transparent rounded-md shadow-sm hover:bg-[#374151] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+									disabled={isLoading}
 								>
 									{tokenValid ? "Submit" : "Send Reset Email"}
 								</button>
 							</div>
-						</form>	// Show submit button & error irregardless of token valid or not, unless email is sent in which case shows success message only
+						</form> // Show submit button & error irregardless of token valid or not, unless email is sent in which case shows success message only
 					)}
 				</CardContent>
 				<CardFooter className="text-center">

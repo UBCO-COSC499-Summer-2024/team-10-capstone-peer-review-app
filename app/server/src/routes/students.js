@@ -1,39 +1,88 @@
 import express from "express";
+import {
+  getClassesHavingStudent,
 
-const usersRouter = (prisma) => {
-	const router = express.Router();
+  getClassById,
 
-	// return a single user by id
-	router.get("/:id", async (req, res) => {
-		const { id } = req.params;
-		const user = await prisma.user.findUnique({
-			where: {
-				userId: id
-			}
-		});
-		res.json(user);
-	});
+	getAssignment,
+  getClassAssignment,
 
-	// USER ROUTE get all classes a user is in.
-	router.get("/classes", async (req, res) => {
-		try {
-			const userId = req.user.userId; // Get user'ID from the request object from the JWT middleware
-			const userClasses = await prisma.class.findMany({
-				where: {
-					userId: userId
-				},
-				include: {
-					class: true
-				}
-			});
-			const classes = userClasses.map((userClass) => userClass.class);
-			res.status(200).json(classes);
-		} catch (error) {
-			res.status(500).json({ error: "Failed to retrieve classes" });
-		}
-	});
+	getStudentAssignment,
 
-	return router;
-};
+  getCriterionInRubric,
 
-export default usersRouter;
+  getRubricsInAssignment,
+
+  addCriterionGrade,
+  removeCriterionGrade,
+  updateCriterionGrade,
+  getCriterionGrade,
+
+  updateGroupInClass, 
+  getGroupInClass,
+  getGroupsInClass,
+  getGroupMembers
+
+} from "../controllers/studentController.js";
+
+import { ensureUser, ensureStudent } from "../middleware/ensureUserTypes.js";
+
+const router = express.Router();
+
+// Class Routes
+
+
+router.route("/my-assignments")
+  .get(ensureUser, ensureStudent, getStudentAssignment);
+
+router.route("/my-classes")
+  .get(ensureUser, ensureStudent, getClassesHavingStudent);
+
+router.route("/get-assignment")
+  .post(ensureUser, ensureStudent, getAssignment);
+
+router.route("/get-class-assignment")
+  .post(ensureUser, ensureStudent, getClassAssignment);
+
+// Rubric Routes
+
+router.route("/get-rubrics")
+  .post(ensureUser, ensureStudent, getRubricsInAssignment);
+
+// Criterion Routes
+
+router.route("/get-criterion")
+  .post(ensureUser, ensureStudent, getCriterionInRubric);
+
+// Criterion Grade Routes
+router.route("/give-criterion-grade")
+  .post(ensureUser, ensureStudent, addCriterionGrade);
+
+router.route("/remove-criterion-grade")
+  .post(ensureUser, ensureStudent, removeCriterionGrade);
+
+router.route("/update-criterion-grade")
+  .post(ensureUser, ensureStudent, updateCriterionGrade);
+
+router.route("/get-criterion-grade")
+  .post(ensureUser, ensureStudent, getCriterionGrade);
+
+// Group Routes
+
+router.route("/update-group-info")
+  .post(ensureUser, ensureStudent, updateGroupInClass);
+
+router.route("/get-group")
+  .post(ensureUser, ensureStudent, getGroupInClass);
+
+router.route("/get-groups")
+  .post(ensureUser, ensureStudent, getGroupsInClass);
+
+router.route("/get-group-members")
+  .post(ensureUser, ensureStudent, getGroupMembers);
+
+router.route("/:classId")
+  .get(ensureUser, ensureStudent, getClassById);
+
+export default router;
+

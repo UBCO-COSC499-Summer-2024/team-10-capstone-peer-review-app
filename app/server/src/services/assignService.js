@@ -2,48 +2,57 @@ import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
 
 // assignment operations
-const addAssignmentToClass = async (classId, assignmentData) => {
-	try {
-		const classInfo = await prisma.class.findUnique({
-			where: {
-				classId: classId
-			},
-			include: {
-				Assignments: true
-			}
-		});
+const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
+    console.log('assignmentFilePath:', assignmentData.assignmentFilePath);
+    try {
+        const classInfo = await prisma.class.findUnique({
+            where: { classId },
+            include: { Assignments: true }
+        });
 
-		// Check if the assignment due date is within the class duration
-		let dueDate = new Date(assignmentData.dueDate);
-    	let startDate = new Date(classInfo.startDate);
-    	let endDate = new Date(classInfo.endDate);
+        if (!classInfo) {
+            throw new apiError("Class not found", 404);
+        }
 
-		if ( dueDate < startDate || dueDate > endDate) {
-			throw new apiError("Assignment due date is outside the class duration", 400);
-		}
+        // Check if the assignment due date is within the class duration
+        let dueDate = new Date(assignmentData.dueDate);
+        let startDate = new Date(classInfo.startDate);
+        let endDate = new Date(classInfo.endDate);
+
+        if (dueDate < startDate || dueDate > endDate) {
+            throw new apiError("Assignment due date is outside the class duration", 400);
+        }
+
+        const newAssignment = await prisma.assignment.create({
+            data: {
+                ...assignmentData,
+                classId,
+                categoryId // Ensure the assignment is associated with the category
+            }
+        });
+
+		console.log('assignmendafdfstData:')
 
 
-		if (!classInfo) {
-			throw new apiError("Class not found", 404);
-		}
+        // Update the Category table
+        await prisma.category.update({
+            where: { categoryId },
+            data: {
+                assignments: {
+                    connect: { assignmentId: newAssignment.assignmentId }
+                }
+            }
+        });
 
-		const newAssignment = await prisma.assignment.create({
-			data: {
-				...assignmentData,
-				classId: classId
-			}
-		});
-
-		return newAssignment;
-	} catch (error) {
-		if (error instanceof apiError) {
-			throw error;
-		} else {
-			throw new apiError("Failed to add assignment to class", 500);
-		}
-	}
+        return newAssignment;
+    } catch (error) {
+        if (error instanceof apiError) {
+            throw error;
+        } else {
+            throw new apiError("Failed to jkjkjkjkadd assignment to class", 500);
+        }
+    }
 };
-
 const removeAssignmentFromClass = async (assignmentId) => {
 	try {
 		const assignment = await prisma.assignment.findUnique({
@@ -112,6 +121,7 @@ const updateAssignmentInClass = async (classId, assignmentId, updateData) => {
 	}
 };
 
+
 const getAssignmentInClass = async (classId, assignmentId) => {
 	try {
 		const classInfo = await prisma.class.findUnique({
@@ -119,7 +129,7 @@ const getAssignmentInClass = async (classId, assignmentId) => {
 				classId: classId
 			},
 			include: {
-				assignments: true
+				Assignments: true
 			}
 		});
 
@@ -142,10 +152,12 @@ const getAssignmentInClass = async (classId, assignmentId) => {
 		if (error instanceof apiError) {
 			throw error;
 		} else {
-			throw new apiError("Failed to get assignment in class", 500);
+			throw new apiError("Failed to get assignment in class " + error, 500);
 		}
 	}
 };
+
+
 
 const getAllAssignmentsByClassId = async (classId) => {
 	try {

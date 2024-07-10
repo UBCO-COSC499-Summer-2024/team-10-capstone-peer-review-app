@@ -90,6 +90,24 @@ export const confirmEmail = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+export const isEmailVerifiedJWT = asyncErrorHandler(async (req, res) => {
+	const { token } = req.body;
+	console.log("token from controller", token);
+	const isVerified = await authService.isEmailVerifiedJWT(token);
+	if (isVerified) {
+		return res.status(200).json({
+			status: "Success",
+			message: "Email is verified"
+		});
+	} else {
+		return res.status(403).json({
+			status: "Error",
+			message:
+				"Email is not verified, please verify your email before changing your password"
+		});
+	}
+});
+
 export const currentUser = asyncErrorHandler(async (req, res) => {
 	const userInfo = await authService.getCurrentUser(req.user.email);
 	return res.status(200).json({
@@ -162,6 +180,7 @@ export default {
 	resetPassword,
 	resendVerificationEmail,
 	confirmEmail,
+	isEmailVerifiedJWT,
 	currentUser,
 	getAllRoleRequests,
 	deleteRoleRequest,

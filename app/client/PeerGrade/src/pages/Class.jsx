@@ -6,76 +6,56 @@ import Grades from "./classNav/Grades";
 import Groups from "./classNav/Groups";
 import Files from "./classNav/Files";
 import People from "./classNav/People";
+import Rubrics from "./classNav/Rubrics";
 import AssignmentCreation from "./classNav/AssignmentCreation";
+import EditClass from "./classNav/EditClass";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/contexts/contextHooks/useUser";
-import { getAllAssignmentsByClassId } from '@/api/assignmentApi';
-import { getCategoriesByClassId, getClassById } from '@/api/classApi';
-import { useToast } from '@/components/ui/use-toast';
+import { getAllAssignmentsByClassId } from "@/api/assignmentApi";
+import { getCategoriesByClassId } from "@/api/classApi";
+import { useToast } from "@/components/ui/use-toast";
+import { useClass } from "@/contexts/contextHooks/useClass";
 
 const Class = () => {
 	const { classId } = useParams();
-	const { user, userLoading } = useUser();
 	const [currentView, setCurrentView] = useState("home");
-	const [classItem, setClassItem] = useState(null);
 	const [assignments, setAssignments] = useState([]);
 	const [categories, setCategories] = useState([]);
+
 	const { toast } = useToast();
+	const { user, userLoading } = useUser();
+	const { classes } = useClass();
 
-	// Ask kevin about clearn up functions? abort controllers?
-	useEffect(() => {
-		const fetchClassData = async () => {
-			try {
-				const fetchedClass = await getClassById(classId);
-				setClassItem(fetchedClass.data);
-				console.log(fetchedClass.data);
-			} catch (error) {
-				toast({
-					title: "Error",
-					description: "Failed to fetch class data",
-					variant: "destructive"
-				});
-			}
-		};
+	const classItem = classes.find((classItem) => classItem.classId === classId);
 
-		fetchClassData();
-	}, [classId, toast]);
-
-	useEffect(() => {
-		const fetchCategories = async () => {
-			try {
-				const fetchedCategories = await getCategoriesByClassId(classId);
-				setCategories(fetchedCategories.data);
-			} catch (error) {
-				toast({
-					title: "Error",
-					description: "Failed to fetch categories",
-					variant: "destructive"
-				});
-			}
-		};
-
-		fetchCategories();
-	}, [classId, toast]);
-
-	useEffect(() => {
-		const fetchAssignments = async () => {
-			try {
-				const fetchedAssignments = await getAllAssignmentsByClassId(classId);
-				setAssignments(fetchedAssignments.data);
-			} catch (error) {
-				toast({
-					title: "Error",
-					description: "Failed to fetch assignments",
-					variant: "destructive"
-				});
-			}
-		};
-
-		if (!userLoading && user) {
-			fetchAssignments();
+	const fetchClassData = async () => {
+		try {
+			const [fetchedAssignments, fetchedCategories] = await Promise.all([
+				getAllAssignmentsByClassId(classId),
+				getCategoriesByClassId(classId)
+			]);
+			setAssignments(fetchedAssignments.data);
+			setCategories(fetchedCategories.data);
+		} catch (error) {
+			console.error("Failed to fetch class data", error);
+			toast({
+				title: "Error",
+				description: "Failed to fetch class data",
+				variant: "destructive"
+			});
 		}
-	}, [classId, user, userLoading, toast]);
+	};
+
+	useEffect(() => {
+		if (!userLoading && user) {
+			fetchClassData();
+		}
+	}, [classId, user, userLoading, currentView]);
+
+	const handleViewChange = (view) => {
+		setCurrentView(view);
+		fetchClassData();
+	};
 
 	if (!classItem) {
 		return <div>Class not found</div>;
@@ -92,7 +72,14 @@ const Class = () => {
 			case "files":
 				return <Files classId={classId} />;
 			case "assignmentCreation":
-				return <AssignmentCreation />;
+				return <AssignmentCreation onAssignmentCreated={() => {
+					fetchClassData();
+					handleViewChange("files");
+				}} />;
+			case "edit":
+				return <EditClass classItem={classItem} />;
+			case "rubrics":
+				return <Rubrics />;
 			default:
 				return (
 					<>
@@ -120,7 +107,7 @@ const Class = () => {
 									{category.assignments.map((assignment) => (
 										<div key={assignment.assignmentId} className="flex w-full">
 											<Link
-												to={`/assignment/${assignment.assignmentId}`}
+												to={`/class/${classId}/assignment/${assignment.assignmentId}`}
 												className="flex items-center space-x-2 bg-gray-100 p-2 rounded hover:bg-gray-200 transition-colors w-full"
 											>
 												<span>{assignment.title}</span>
@@ -137,18 +124,19 @@ const Class = () => {
 
 	return (
 		<div className="w-full px-6">
-			<div className="flex flex-col gap-4 bg-gray-200 p-4 mb-6 rounded-lg">
-				<h1 className="text-3xl font-bold">
-					{classItem.classname}: {classItem.instructor?.firstname}{" "}
-					{classItem.instructor?.lastname}
-				</h1>
+			<div className="flex flex-col gap-1 bg-gray-200 p-4 mb-6 rounded-lg">
+				<h1 className="text-3xl font-bold">{classItem.classname}</h1>
+				<span className="ml-1 text-sm text-gray-500 mb-2 ">
+					{" "}
+					{classItem.description}{" "}
+				</span>
 				<div className="flex rounded-lg">
 					<div className="flex justify-between items-center">
 						<Menubar className="bg-gray-200">
 							<MenubarMenu>
 								<MenubarTrigger
 									className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
-									onClick={() => setCurrentView("home")}
+									onClick={() => handleViewChange("home")}
 								>
 									HOME
 								</MenubarTrigger>
@@ -156,7 +144,7 @@ const Class = () => {
 							<MenubarMenu>
 								<MenubarTrigger
 									className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
-									onClick={() => setCurrentView("grades")}
+									onClick={() => handleViewChange("grades")}
 								>
 									GRADES
 								</MenubarTrigger>
@@ -164,7 +152,7 @@ const Class = () => {
 							<MenubarMenu>
 								<MenubarTrigger
 									className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
-									onClick={() => setCurrentView("people")}
+									onClick={() => handleViewChange("people")}
 								>
 									PEOPLE
 								</MenubarTrigger>
@@ -172,7 +160,7 @@ const Class = () => {
 							<MenubarMenu>
 								<MenubarTrigger
 									className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
-									onClick={() => setCurrentView("groups")}
+									onClick={() => handleViewChange("groups")}
 								>
 									GROUPS
 								</MenubarTrigger>
@@ -180,11 +168,31 @@ const Class = () => {
 							<MenubarMenu>
 								<MenubarTrigger
 									className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
-									onClick={() => setCurrentView("files")}
+									onClick={() => handleViewChange("files")}
 								>
 									FILES
 								</MenubarTrigger>
 							</MenubarMenu>
+							{(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (
+								<MenubarMenu>
+									<MenubarTrigger
+										className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
+										onClick={() => handleViewChange("edit")}
+									>
+										EDIT
+									</MenubarTrigger>
+								</MenubarMenu>
+							)}
+							{(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (
+								<MenubarMenu>
+									<MenubarTrigger
+										className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
+										onClick={() => handleViewChange("rubrics")}
+									>
+										RUBRICS
+									</MenubarTrigger>
+								</MenubarMenu>
+							)}
 						</Menubar>
 					</div>
 				</div>
@@ -196,7 +204,7 @@ const Class = () => {
 						currentView !== "assignmentCreation" && (
 							<Button
 								variant="outline"
-								onClick={() => setCurrentView("assignmentCreation")}
+								onClick={() => handleViewChange("assignmentCreation")}
 								className="w-full bg-white"
 							>
 								Create Assignment

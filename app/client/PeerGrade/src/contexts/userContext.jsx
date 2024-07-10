@@ -11,10 +11,8 @@ export const UserProvider = ({ children }) => {
     try {
       setUserLoading(true);
       const userInfo = await getCurrentUser();
-      console.log("Fetched user info:", userInfo);
       setUser(userInfo);
     } catch (error) {
-      console.error("Failed to fetch user", error);
     } finally {
       setUserLoading(false);
     }
@@ -23,10 +21,6 @@ export const UserProvider = ({ children }) => {
   const clearUserContext = () => {
     setUser(null);
   };
-
-  useEffect(() => {
-    setUserContext();
-  }, []);
 
   return (
     <UserContext.Provider

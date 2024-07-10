@@ -124,78 +124,76 @@ const Class = () => {
 
 	return (
 		<div className="w-full px-6">
-			<div className="flex flex-col gap-1 bg-gray-200 p-4 mb-6 rounded-lg">
+			<div className="flex flex-col gap-1 mt-5 mb-6 rounded-lg">
 				<h1 className="text-3xl font-bold">{classItem.classname}</h1>
 				<span className="ml-1 text-sm text-gray-500 mb-2 ">
 					{" "}
 					{classItem.description}{" "}
 				</span>
-				<div className="flex rounded-lg">
-					<div className="flex justify-between items-center">
-						<Menubar className="bg-gray-200">
-							<MenubarMenu>
-								<MenubarTrigger
-									className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
-									onClick={() => handleViewChange("home")}
-								>
-									HOME
-								</MenubarTrigger>
-							</MenubarMenu>
-							<MenubarMenu>
-								<MenubarTrigger
-									className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
-									onClick={() => handleViewChange("grades")}
-								>
-									GRADES
-								</MenubarTrigger>
-							</MenubarMenu>
-							<MenubarMenu>
-								<MenubarTrigger
-									className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
-									onClick={() => handleViewChange("people")}
-								>
-									PEOPLE
-								</MenubarTrigger>
-							</MenubarMenu>
-							<MenubarMenu>
-								<MenubarTrigger
-									className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
-									onClick={() => handleViewChange("groups")}
-								>
-									GROUPS
-								</MenubarTrigger>
-							</MenubarMenu>
-							<MenubarMenu>
-								<MenubarTrigger
-									className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
-									onClick={() => handleViewChange("files")}
-								>
-									FILES
-								</MenubarTrigger>
-							</MenubarMenu>
-							{(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (
-								<MenubarMenu>
-									<MenubarTrigger
-										className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
-										onClick={() => handleViewChange("edit")}
-									>
-										EDIT
-									</MenubarTrigger>
-								</MenubarMenu>
-							)}
-							{(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (
-								<MenubarMenu>
-									<MenubarTrigger
-										className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
-										onClick={() => handleViewChange("rubrics")}
-									>
-										RUBRICS
-									</MenubarTrigger>
-								</MenubarMenu>
-							)}
-						</Menubar>
-					</div>
-				</div>
+				
+				<Menubar className="flex gap-2 ">
+					<MenubarMenu>
+						<MenubarTrigger
+							className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
+							onClick={() => handleViewChange("home")}
+						>
+							HOME
+						</MenubarTrigger>
+					</MenubarMenu>
+					<MenubarMenu>
+						<MenubarTrigger
+							className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
+							onClick={() => handleViewChange("grades")}
+						>
+							GRADES
+						</MenubarTrigger>
+					</MenubarMenu>
+					<MenubarMenu>
+						<MenubarTrigger
+							className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
+							onClick={() => handleViewChange("people")}
+						>
+							PEOPLE
+						</MenubarTrigger>
+					</MenubarMenu>
+					<MenubarMenu>
+						<MenubarTrigger
+							className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
+							onClick={() => handleViewChange("groups")}
+						>
+							GROUPS
+						</MenubarTrigger>
+					</MenubarMenu>
+					<MenubarMenu>
+						<MenubarTrigger
+							className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
+							onClick={() => handleViewChange("files")}
+						>
+							FILES
+						</MenubarTrigger>
+					</MenubarMenu>
+					{(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (
+						<MenubarMenu>
+							<MenubarTrigger
+								className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
+								onClick={() => handleViewChange("edit")}
+							>
+								EDIT
+							</MenubarTrigger>
+						</MenubarMenu>
+					)}
+					{(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (
+						<MenubarMenu>
+							<MenubarTrigger
+								className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
+								onClick={() => handleViewChange("rubrics")}
+							>
+								RUBRICS
+							</MenubarTrigger>
+						</MenubarMenu>
+					)}
+				</Menubar>
+					
 			</div>
 			<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 				<div className="lg:col-span-2">{renderContent()}</div>

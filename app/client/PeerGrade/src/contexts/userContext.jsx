@@ -8,18 +8,33 @@ export const UserProvider = ({ children }) => {
 	const [userLoading, setUserLoading] = useState(false);
 
 	const setUserContext = async () => {
+		console.log("setUserContext called");
 		try {
 			setUserLoading(true);
+			console.log("Fetching user info...");
 			const userInfo = await getCurrentUser();
-			setUser(userInfo);
-			setUserLoading(false);
+			console.log("User info received:", userInfo);
+			if (userInfo.status === "Success") {
+				console.log("Setting user:", userInfo.userInfo);
+				setUser(userInfo.userInfo);
+			}
 		} catch (error) {
 			console.error("Failed to fetch user", error);
+		} finally {
+			setUserLoading(false);
+			console.log("Final user state:", user);
 		}
 	};
 
 	const clearUserContext = () => {
-		setUser(null);
+		try {
+			setUserLoading(true);
+			setUser(null);
+		} catch (error) {
+			console.error("Failed to clear user", error);
+		} finally {
+			setUserLoading(false);
+		}
 	};
 
 	return (

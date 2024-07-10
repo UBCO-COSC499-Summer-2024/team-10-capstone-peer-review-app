@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { cn } from "@/utils/utils";
@@ -38,13 +36,10 @@ export default function AppNavbar() {
 	const [searchQuery, setSearchQuery] = useState(""); // State for search query
 	const { toast } = useToast();
 
-	const { user, userLoading, setUserContext, clearUserContext } = useUser();
+	const { user, userLoading, clearUserContext } = useUser();
 	const { classes, setUserClasses, setAdminClasses } = useClass();
 
 	// Fetch the user data on mount, this is from the userContext
-	useEffect(() => {
-		setUserContext();
-	}, []);
 
 	// Fetch the classes data on mount and when the user changes, this is from the classContext
 	useEffect(() => {

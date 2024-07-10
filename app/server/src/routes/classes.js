@@ -10,7 +10,6 @@ import {
 	addStudentToClass,
 	removeStudentFromClass,
 	getStudentsByClass,
-	
 	addGroupToClass,
 	removeGroupFromClass,
 	updateGroupInClass,
@@ -60,27 +59,23 @@ router
 	.route("/remove-student")
 	.post(ensureUser, ensureInstructorOrAdmin, removeStudentFromClass);
 
-router
-	.route("/add-group")
-	.post(ensureUser, addGroupToClass);
+router.route("/add-group").post(ensureUser, addGroupToClass);
 
 router
 	.route("/remove-group")
 	.post(ensureUser, ensureInstructorOrAdmin, removeGroupFromClass);
 
-router
-	.route("/join-group")
-	.post(ensureUser, joinGroup);
+router.route("/join-group").post(ensureUser, joinGroup);
 
-router
-	.route("/leave-group")
-	.post(ensureUser, leaveGroup);
+router.route("/leave-group").post(ensureUser, leaveGroup);
 
 router
 	.route("/update-group")
 	.post(ensureUser, ensureInstructorOrAdmin, updateGroupInClass);
 
-router.route("/get-group").post(ensureUser, ensureInstructorOrAdmin, getGroupInClass);
+router
+	.route("/get-group")
+	.post(ensureUser, ensureInstructorOrAdmin, getGroupInClass);
 
 router.route("/get-groups").post(ensureUser, getGroupsInClass);
 

@@ -435,7 +435,7 @@ export async function getCurrentUser(email) {
 		if (error instanceof apiError) {
 			throw error;
 		} else {
-			throw new apiError("Error fetching current user", 500);
+			throw error;
 		}
 	}
 }

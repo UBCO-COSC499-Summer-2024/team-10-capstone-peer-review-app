@@ -48,12 +48,14 @@ const AddClassModal = ({ show, onClose }) => {
 		} else if (startDate > endDate) {
 			setError("Please select an end date that is after the start date.");
 			return;
-      // !!! TODO: CHECK FOR THIS IN THE BACK-END TOO.
-    } else if (startDate === endDate) {
-      setError("Please select an end date that is not the same as the start date.");
-      return;
-      // !!! TODO: CHECK FOR THIS IN THE BACK-END TOO.
-    }
+			// !!! TODO: CHECK FOR THIS IN THE BACK-END TOO.
+		} else if (startDate === endDate) {
+			setError(
+				"Please select an end date that is not the same as the start date."
+			);
+			return;
+			// !!! TODO: CHECK FOR THIS IN THE BACK-END TOO.
+		}
 
 		const newClass = {
 			classname,
@@ -298,8 +300,10 @@ const ManageClass = () => {
 		setSelectedClass(classItem);
 		setDialogOpen(true);
 	};
-
-	if (!user || (user.role !== "INSTRUCTOR" && user.role !== "ADMIN")) {
+	if (!user) {
+		return <div>Loading manageclass ...</div>;
+	}
+	if (user && user.role !== "INSTRUCTOR" && user.role !== "ADMIN") {
 		return <div>You do not have permission to view this page.</div>;
 	}
 

@@ -26,9 +26,10 @@ export const ClassProvider = ({ children }) => {
 			if (Array.isArray(classesData.data)) {
 				setClasses(classesData.data);
 			}
-			setIsClassLoading(false);
 		} catch (error) {
 			console.error("Failed to fetch classes", error);
+		} finally {
+			setIsClassLoading(false);
 		}
 	};
 
@@ -41,9 +42,10 @@ export const ClassProvider = ({ children }) => {
 			if (Array.isArray(classesData.data)) {
 				setClasses(classesData.data);
 			}
-			setIsClassLoading(false);
 		} catch (error) {
 			console.error("Failed to fetch classes", error);
+		} finally {
+			setIsClassLoading(false);
 		}
 	};
 	const addClass = async (newClass) => {
@@ -56,9 +58,10 @@ export const ClassProvider = ({ children }) => {
 			} else if (user) {
 				setUserClasses();
 			}
-			setIsClassLoading(false);
 		} catch (error) {
 			console.error("Failed to add class", error);
+		} finally {
+			setIsClassLoading(false);
 		}
 	};
 
@@ -71,9 +74,10 @@ export const ClassProvider = ({ children }) => {
 			} else if (user) {
 				setUserClasses();
 			}
-			setIsClassLoading(false);
 		} catch (error) {
 			console.error("Failed to remove class", error);
+		} finally {
+			setIsClassLoading(false);
 		}
 	};
 
@@ -86,9 +90,10 @@ export const ClassProvider = ({ children }) => {
 			} else if (user) {
 				setUserClasses();
 			}
-			setIsClassLoading(false);
 		} catch (error) {
 			console.error("Failed to update class", error);
+		} finally {
+			setIsClassLoading(false);
 		}
 	};
 

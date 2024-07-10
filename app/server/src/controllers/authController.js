@@ -109,12 +109,22 @@ export const isEmailVerifiedJWT = asyncErrorHandler(async (req, res) => {
 });
 
 export const currentUser = asyncErrorHandler(async (req, res) => {
-	const userInfo = await authService.getCurrentUser(req.user.email);
-	return res.status(200).json({
-		userInfo: userInfo,
-		status: "Success",
-		message: "Current user fetched successfully!"
-	});
+	// Check if the user is authenticated and there exist a valid session
+	if (req.user) {
+		const userInfo = await authService.getCurrentUser(req.user.email);
+		return res.status(200).json({
+			userInfo: userInfo,
+			status: "Success",
+			message: "Current user fetched successfully!"
+		});
+		// If there isnt a valid session, return an error
+	} else {
+		return res.status(401).json({
+			userInfo: null,
+			status: "Error",
+			message: "Invalid session, are you logged in?"
+		});
+	}
 });
 
 export const getAllRoleRequests = asyncErrorHandler(async (req, res) => {

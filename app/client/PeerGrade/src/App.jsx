@@ -21,6 +21,9 @@ import ManageClass from "./pages/ManageClass";
 import Search from "./pages/Search";
 import AdminDashboard from "./pages/AdminDashboard";
 import TestUserContext from "./pages/TestUserContext";
+import NotFound from "./components/login/global/NotFound";
+import ProtectedRoute from "./components/handlers/ProtectedRoute";
+import AuthHandler from "./components/handlers/authHandler";
 
 import TitleUpdater from "@/utils/TitleUpdater";
 import { Toaster } from "@/components/ui/toaster";
@@ -31,6 +34,7 @@ function App() {
 			<TitleUpdater />
 			<UserProvider>
 				<ClassProvider>
+					<AuthHandler />
 					<MainLayout />
 				</ClassProvider>
 			</UserProvider>
@@ -51,24 +55,120 @@ function MainLayout() {
 			<div className="main-container flex justify-center flex-1">
 				<Routes>
 					<Route path="/" element={<Login />} />
-					<Route path="/dashboard" element={<Dashboard />} />
-					<Route path="/class/:classId" element={<Class />} />
-					<Route path="/class/:classId/edit" element={<EditClass />} />
+					<Route
+						path="/dashboard"
+						element={
+							<ProtectedRoute
+								element={<Dashboard />}
+								allowedRoles={["STUDENT", "INSTRUCTOR", "ADMIN"]}
+							/>
+						}
+					/>
+					<Route
+						path="/class/:classId"
+						element={
+							<ProtectedRoute
+								element={<Class />}
+								allowedRoles={["STUDENT", "INSTRUCTOR", "ADMIN"]}
+							/>
+						}
+					/>
+					<Route
+						path="/class/:classId/edit"
+						element={
+							<ProtectedRoute
+								element={<EditClass />}
+								allowedRoles={["INSTRUCTOR", "ADMIN"]}
+							/>
+						}
+					/>
 					<Route
 						path="/class/createAssignment"
-						element={<AssignmentCreation />}
+						element={
+							<ProtectedRoute
+								element={<AssignmentCreation />}
+								allowedRoles={["INSTRUCTOR", "ADMIN"]}
+							/>
+						}
 					/>
-					<Route path="/manageClass" element={<ManageClass />} />
-					<Route path="/search" element={<Search />} />
+					<Route
+						path="/manageClass"
+						element={
+							<ProtectedRoute
+								element={<ManageClass />}
+								allowedRoles={["INSTRUCTOR", "ADMIN"]}
+							/>
+						}
+					/>
+					<Route
+						path="/search"
+						element={
+							<ProtectedRoute element={<Search />} allowedRoles={["ADMIN"]} />
+						}
+					/>
 					<Route
 						path="/class/:classId/assignment/:assignmentId"
-						element={<Assignment />}
+						element={
+							<ProtectedRoute
+								element={<Assignment />}
+								allowedRoles={["STUDENT", "INSTRUCTOR", "ADMIN"]}
+							/>
+						}
 					/>
-					<Route path="/assignedPR/:assignmentId" element={<AssignedPR />} />
-					<Route path="/peer-review" element={<PeerReview />} />
-					<Route path="/settings" element={<Settings />} />
-					<Route path="/admin" element={<AdminDashboard />} />
-					<Route path="/test-user" element={<TestUserContext />} />
+					<Route
+						path="/assignedPR/:assignmentId"
+						element={
+							<ProtectedRoute
+								element={<AssignedPR />}
+								allowedRoles={["STUDENT", "INSTRUCTOR", "ADMIN"]}
+							/>
+						}
+					/>
+					<Route
+						path="/peer-review"
+						element={
+							<ProtectedRoute
+								element={<PeerReview />}
+								allowedRoles={["STUDENT", "INSTRUCTOR", "ADMIN"]}
+							/>
+						}
+					/>
+					<Route
+						path="/settings"
+						element={
+							<ProtectedRoute
+								element={<Settings />}
+								allowedRoles={["STUDENT", "INSTRUCTOR", "ADMIN"]}
+							/>
+						}
+					/>
+					<Route
+						path="/admin"
+						element={
+							<ProtectedRoute
+								element={<AdminDashboard />}
+								allowedRoles={["ADMIN"]}
+							/>
+						}
+					/>
+					<Route
+						path="/test-user"
+						element={
+							<ProtectedRoute
+								element={<TestUserContext />}
+								allowedRoles={["ADMIN"]}
+							/>
+						}
+					/>
+					<Route
+						path="*"
+						element={
+							<ProtectedRoute
+								element={<NotFound />}
+								allowedRoles={["STUDENT", "INSTRUCTOR", "ADMIN"]}
+							/>
+						}
+					/>
 				</Routes>
 			</div>
 			<Toaster />

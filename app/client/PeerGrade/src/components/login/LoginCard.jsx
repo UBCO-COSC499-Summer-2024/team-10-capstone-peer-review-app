@@ -23,6 +23,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Toaster } from "@/components/ui/toaster";
 
 import { loginUser, confirmEmail } from "@/api/authApi";
+import { useUser } from "@/contexts/contextHooks/useUser";
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search);
@@ -40,6 +41,8 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 	const verifyEmailToken = query.get("verifyEmailToken") || "";
 
 	const navigate = useNavigate();
+
+	const { setUserContext } = useUser();
 
 	// Use Effect to check if the email verification JWT send in the url
 	// TODO: Look into why toasts pop up twice, and how to remove token after it renders once
@@ -65,12 +68,17 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 	// Login
 	const handleLogin = async (e) => {
 		e.preventDefault();
-
-		const response = await loginUser(email, password);
-		if (response.status === "Success") {
-			navigate(response.userRole === "ADMIN" ? "/admin" : "/dashboard");
-		} else if (response.status === "Error") {
-			setError(response.message);
+		try {
+			const response = await loginUser(email, password);
+			if (response.status === "Success") {
+				console.log("Login successful, setting user context");
+				await setUserContext();
+			} else if (response.status === "Error") {
+				setError(response.message);
+			}
+		} catch (error) {
+			setError("Error logging in, please try again");
+			console.error("Error logging in", error);
 		}
 	};
 

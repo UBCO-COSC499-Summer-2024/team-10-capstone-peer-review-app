@@ -198,16 +198,22 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* My cycle started off by focusing on the assignment upload and file storage implementation. Most of Friday night  was spent figuring out the bugs and linking all the APIs properly (from fresh because the last version had some annoying bugs).
+* The next major task was to set up our rubric uploads for each assignment. The UI needed work so the next day or so, I updated the UI and successfully enabled rubric upload and linked new rubrics with selected assignments. 
+* For the latter half of Sunday and most of Monday I spent working on making more changes to the class assignment/rubric features so that there would be refreshed assignment views and rubric views whenever you upload a new one (to see changes immediately) and a few more design tweaks to help facilitate other processes (a files tab was generated to view all assignment uploads).
+* I had read the comments of our design feedback and our presentation feedback and realized we really need to update our design to be more "canvas" like. I worked on a UI refactor branch to update the views of the navbar and a fix a few ui bugs that were persisting and was able to bring it a little closer to the the preferred design. 
+* I revisited the file storage architecture and spent a good while researching how to facilitate a cloud storage environment to save us from putting a heavy load on our database. Then, I figured it was best to set up a Nginx docker container for file uploads and after a few attempts, I was successful in creating this container and facilitating file uploads to the localhost:8080 port. 
 
 ## Goals for next cycle
-* 
-* 
-* 
-  
-  
+* Using localhost:8080 to retrieve the stored assignment files and link to the current view assignment page
+* Create a separate submission page consisting of rubric details so that students can submit assignments 
+* Setting up assignment submissions with the API's and rubric submissions for peer review with the APi links as well
+* Adding tooltips and hints throughout the app for a better user experience. 
+
+Reflection over the last week: 
+* I feel like I have picked up the pace recently for my development toward the project and also feeling like I am on a roll with a few things. I hope this streak keeps going for me till the end because we do still have quite a bit left to do and I worry that we may fall behind if we are not on top of things as we go. I have a lot more ideas and features I wanted to get to but given our current status, it may be difficult to achieve any reach goals.
+* I think a good idea for us as a team may be to do more in-person group meetups where all 4 of us can work on things together for a good while. Josh Abdul and I frequently meet on call to have work sessions together and I noticed that although we may not always work on the same thing together, having a different perspective around always helps me out in the development.
+
 
 # Mahir's Log for Cycle 10
 

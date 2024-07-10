@@ -160,15 +160,7 @@ function MainLayout() {
 							/>
 						}
 					/>
-					<Route
-						path="*"
-						element={
-							<ProtectedRoute
-								element={<NotFound />}
-								allowedRoles={["STUDENT", "INSTRUCTOR", "ADMIN"]}
-							/>
-						}
-					/>
+					<Route path="*" element={<NotFound />} />
 				</Routes>
 			</div>
 			<Toaster />

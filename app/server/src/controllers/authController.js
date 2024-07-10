@@ -118,12 +118,13 @@ export const currentUser = asyncErrorHandler(async (req, res) => {
 			message: "Current user fetched successfully!"
 		});
 		// If there isnt a valid session, return an error
-	} else {
-		return res.status(401).json({
-			userInfo: null,
-			status: "Error",
-			message: "Invalid session, are you logged in?"
-		});
+		// } else {
+		// 	return res.status(401).json({
+		// 		userInfo: null,
+		// 		status: "Error",
+		// 		message: "Invalid session, are you logged in?"
+		// 	});
+		// }
 	}
 });
 

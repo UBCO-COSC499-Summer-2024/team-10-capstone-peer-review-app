@@ -1,10 +1,10 @@
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useNavigate, useLocation } from "react-router-dom";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { useToast } from "@/components/ui/use-toast";
 
 const ProtectedRoute = ({ element, allowedRoles }) => {
 	const { user, userLoading } = useUser();
-	const location = useLocation();
+	const navigate = useNavigate();
 	const { toast } = useToast();
 
 	if (userLoading) {
@@ -13,22 +13,21 @@ const ProtectedRoute = ({ element, allowedRoles }) => {
 
 	if (!user) {
 		// Redirect to login page if not authenticated
-		return <Navigate to="/" state={{ from: location }} replace />;
+		navigate("/", { replace: true });
 	}
 
-	if (allowedRoles && !allowedRoles.includes(user.role)) {
-		// Show a toast notification for unauthorized access
-		// Redirect to dashboard or another appropriate page
+	if (user && (!allowedRoles || allowedRoles.includes(user.role))) {
+		return element;
+	} else if (user && allowedRoles && !allowedRoles.includes(user.role)) {
+		navigate("/dashboard", {
+			replace: true
+		});
 		toast({
 			title: "Unauthorized",
 			description: "You are not authorized to access this page",
 			variant: "destructive"
 		});
-		return <Navigate to="/dashboard" replace />;
 	}
-
-	// If authenticated and authorized, render the protected element
-	return element;
 };
 
 export default ProtectedRoute;

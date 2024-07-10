@@ -30,13 +30,6 @@ const AuthHandler = () => {
 						replace: true
 					});
 				}
-			} else if (
-				location.pathname !== "/" &&
-				location.pathname !== "/register" &&
-				// Add this to the list of pages that should not redirect since userContext is reset in settings page.
-				location.pathname !== "/settings"
-			) {
-				navigate("/", { replace: true });
 			}
 		}
 	}, [user, userLoading, navigate, location]);

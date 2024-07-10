@@ -35,6 +35,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 	const [passwordVisible, setPasswordVisible] = useState(false);
 	const [tokenReceived, setTokenReceived] = useState(false);
 	const [verificationSuccessful, setVerificationSuccessful] = useState(false);
+	const [isAlreadyLoggedIn, setIsAlreadyLoggedIn] = useState(false);
 	const [error, setError] = useState("");
 
 	const query = useQuery();
@@ -42,7 +43,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 
 	const navigate = useNavigate();
 
-	const { setUserContext } = useUser();
+	const { user, setUserContext } = useUser();
 
 	// Use Effect to check if the email verification JWT send in the url
 	// TODO: Look into why toasts pop up twice, and how to remove token after it renders once
@@ -71,10 +72,14 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 		try {
 			const response = await loginUser(email, password);
 			if (response.status === "Success") {
-				console.log("Login successful, setting user context");
 				await setUserContext();
 			} else if (response.status === "Error") {
-				setError(response.message);
+				if (response.message === "You are already logged in") {
+					console.log("does user exist?", user);
+					await setUserContext(); // TODO ADD LOADING SPINNER
+				} else {
+					setError(response.message);
+				}
 			}
 		} catch (error) {
 			setError("Error logging in, please try again");

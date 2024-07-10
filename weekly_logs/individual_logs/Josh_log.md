@@ -5,18 +5,10 @@
 ## Thursday, July 04, 2024, 05:22 PM - Tuesday, July 09, 2024, 05:22 PM
 
 
-## Tasks worked on this cycle:
-&nbsp; &nbsp; :large_blue_circle: **Issue-[207](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/207)**: Integrate back-end testing env into drone  
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: testing, type: CI/CD 
-  
+## Tasks worked on this cycle:  
 &nbsp; &nbsp; :large_blue_circle: **Issue-[201](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/201)**: Add a wrapper route component to the routes for role-based access and not logged in   
   
 &nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
-  
-&nbsp; &nbsp; :large_blue_circle: **Issue-[200](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/200)**: Apply for new Role Request Card  
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api, type: UI 
   
 &nbsp; &nbsp; :large_blue_circle: **Issue-[199](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/199)**: Create Classes Context, integrate into all components that require it.   
   
@@ -26,13 +18,6 @@
   
 &nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: testing, type: CI/CD 
   
-&nbsp; &nbsp; :large_blue_circle: **Issue-[183](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/183)**: Link enroll requests back-end to front-end ui for admins   
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api, type: UI 
-  
-&nbsp; &nbsp; :large_blue_circle: **Issue-[181](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/181)**: Major userContext Refactor, also need to refactor all API calls on the front-end  
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
   
 &nbsp; &nbsp; :large_blue_circle: **Issue-[176](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/176)**: Refactor forgot password to work with UI  
   
@@ -40,59 +25,7 @@
   
 &nbsp; &nbsp; :large_blue_circle: **Issue-[169](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/169)**: Refactor envConfig to accomodate commonJS   
   
-&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
-  
-&nbsp; &nbsp; :large_blue_circle: **Issue-[168](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/168)**: Requests Model / Api Endpoints for Signups, Backend Tests, and some front-end integrations  
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: testing, type: database, type: api, type: UI 
-  
-&nbsp; &nbsp; :large_blue_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
-  
-&nbsp; &nbsp; :large_blue_circle: **Issue-[150](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/150)**: Integrate Api calls with UI, Create Redux Slices for api calls (For this week: User Info, Auth, Class info, Assignment? Maybe)  
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
-  
-&nbsp; &nbsp; :large_blue_circle: **Issue-[149](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/149)**: implement JOI for api-data validation  
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api 
-  
-&nbsp; &nbsp; :large_blue_circle: **Issue-[147](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/147)**: File Storage Worker Service: Redis DB, FileSystemUploadQueue, UploadtoService, etc.   
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: database, type: api 
-  
-&nbsp; &nbsp; :large_blue_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
-  
-&nbsp; &nbsp; :large_blue_circle: **Issue-[131](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/131)**: Major Use Case 16-1: Create/Manage Assignment  
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
-  
-&nbsp; &nbsp; :large_blue_circle: **Issue-[130](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/130)**: Major Use Case 15: Manage Class  
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
-  
-&nbsp; &nbsp; :large_blue_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
-  
-&nbsp; &nbsp; :large_blue_circle: **Issue-[125](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/125)**: Major Use Case 10: Requests to Become Instructor / Admin  
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
-  
-&nbsp; &nbsp; :large_blue_circle: **Issue-[118](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/118)**: Major Use Case 3: Forgot Password / Email validation   
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
-  
-&nbsp; &nbsp; :large_blue_circle: **Issue-[117](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/117)**: Major Use Case 2: Login Account  
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
-  
-&nbsp; &nbsp; :large_blue_circle: **Issue-[116](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/116)**: Major Use Case 1: Register Account   
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor
   
 
 ## Time entries from Clockify on this cycle:
@@ -226,33 +159,7 @@
 ## Completed tasks:
 &nbsp; &nbsp; :purple_circle: **Issue-[199](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/199)**: Create Classes Context, integrate into all components that require it.   
   
-&nbsp; &nbsp; :purple_circle: **Issue-[183](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/183)**: Link enroll requests back-end to front-end ui for admins   
-  
-&nbsp; &nbsp; :purple_circle: **Issue-[181](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/181)**: Major userContext Refactor, also need to refactor all API calls on the front-end  
-  
-&nbsp; &nbsp; :purple_circle: **Issue-[176](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/176)**: Refactor forgot password to work with UI  
-  
-&nbsp; &nbsp; :purple_circle: **Issue-[169](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/169)**: Refactor envConfig to accomodate commonJS   
-  
-&nbsp; &nbsp; :purple_circle: **Issue-[168](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/168)**: Requests Model / Api Endpoints for Signups, Backend Tests, and some front-end integrations  
-  
-&nbsp; &nbsp; :purple_circle: **Issue-[151](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/151)**: Admin Dashboard Setup (Most Important page ➡️ Role Requests page)  
-  
-&nbsp; &nbsp; :purple_circle: **Issue-[150](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/150)**: Integrate Api calls with UI, Create Redux Slices for api calls (For this week: User Info, Auth, Class info, Assignment? Maybe)  
-  
-&nbsp; &nbsp; :purple_circle: **Issue-[149](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/149)**: implement JOI for api-data validation  
-  
-&nbsp; &nbsp; :purple_circle: **Issue-[131](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/131)**: Major Use Case 16-1: Create/Manage Assignment  
-  
-&nbsp; &nbsp; :purple_circle: **Issue-[130](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/130)**: Major Use Case 15: Manage Class  
-  
-&nbsp; &nbsp; :purple_circle: **Issue-[125](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/125)**: Major Use Case 10: Requests to Become Instructor / Admin  
-  
-&nbsp; &nbsp; :purple_circle: **Issue-[118](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/118)**: Major Use Case 3: Forgot Password / Email validation   
-  
-&nbsp; &nbsp; :purple_circle: **Issue-[117](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/117)**: Major Use Case 2: Login Account  
-  
-&nbsp; &nbsp; :purple_circle: **Issue-[116](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/116)**: Major Use Case 1: Register Account   
+&nbsp; &nbsp; :purple_circle: **Issue-[169](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/169)**: Refactor envConfig to accomodate commonJS      
   
 
 ## In-progress tasks:
@@ -265,17 +172,6 @@
 &nbsp; &nbsp; :orange_circle: **Issue-[197](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/197)**: Dockerized Testing environment to do integration testing   
   
 &nbsp; &nbsp; :orange_circle: **Issue-[147](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/147)**: File Storage Worker Service: Redis DB, FileSystemUploadQueue, UploadtoService, etc.   
-  
-&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
-  
-&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
-  
-&nbsp; &nbsp; :orange_circle: **Issue-[88](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/88)**: Integrate Enroll Request in Classes  
-  
-
-  * Fix Classes navbar state, since I noticted that wasnt refreshing state when a new class is added.  
-* Fix forgot password to clear the URL when a JWT is found in the URL, also revamp the checkEmail functionality. 
-* Set up a dockerized testing enviroment for integration tests, rather than just doing our isolated unit tests for the backend. 
 
 ## Recap on goals from last cycle
 * Based on goals from last cycle, I was able to fix classes navbar state changes by creating a new class context, and adding a hook to the class context to update the navbar state when a new class is added, mahir and abdul helped by also adding in the hooks in the other components that needed to usethe context.

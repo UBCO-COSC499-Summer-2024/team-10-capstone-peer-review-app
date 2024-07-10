@@ -134,7 +134,7 @@ const Rubrics = () => {
   };
 
   return (
-    <div className="p-4 bg-slate-50 rounded-lg">
+    <div className="  p-4 bg-slate-50 rounded-lg">
       <h1 className="text-2xl font-semibold mb-4">Rubrics</h1>
       <Button onClick={() => setIsCreateDrawerOpen(true)} className="mb-4">Add a Rubric</Button>
       <div className="grid grid-cols-1 gap-4">
@@ -156,7 +156,7 @@ const Rubrics = () => {
             <DrawerTitle>{selectedRubric?.title}</DrawerTitle>
             <DrawerDescription>{selectedRubric?.description}</DrawerDescription>
           </DrawerHeader>
-          <div className="p-4">
+          <div className="p-4 overflow-y-scroll">
             {selectedRubric && selectedRubric.criteria && selectedRubric.criteria.map((criterion, index) => (
               <div key={index} className="mb-4">
                 <h3 className="text-lg font-semibold">{criterion.title}</h3>

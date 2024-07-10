@@ -126,15 +126,15 @@ const Class = () => {
 		<div className="w-full px-6">
 			<div className="flex flex-col gap-1 mt-5 mb-6 rounded-lg">
 				<h1 className="text-3xl font-bold">{classItem.classname}</h1>
-				<span className="ml-1 text-sm text-gray-500 mb-2 ">
-					{" "}
-					{classItem.description}{" "}
+				<span className="ml-1 text-sm text-gray-500 mb-2">
+					{classItem.description}
 				</span>
-				
-				<Menubar className="flex gap-2 ">
+
+				<Menubar className="flex gap-2">
 					<MenubarMenu>
 						<MenubarTrigger
-							className="border border-gray-600 rounded-lg hover:bg-white cursor-pointer"
+							isActive={currentView === "home"}
+							className="cursor-pointer"
 							onClick={() => handleViewChange("home")}
 						>
 							HOME
@@ -142,7 +142,8 @@ const Class = () => {
 					</MenubarMenu>
 					<MenubarMenu>
 						<MenubarTrigger
-							className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
+							isActive={currentView === "grades"}
+							className="cursor-pointer"
 							onClick={() => handleViewChange("grades")}
 						>
 							GRADES
@@ -150,7 +151,8 @@ const Class = () => {
 					</MenubarMenu>
 					<MenubarMenu>
 						<MenubarTrigger
-							className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
+							isActive={currentView === "people"}
+							className="cursor-pointer"
 							onClick={() => handleViewChange("people")}
 						>
 							PEOPLE
@@ -158,7 +160,8 @@ const Class = () => {
 					</MenubarMenu>
 					<MenubarMenu>
 						<MenubarTrigger
-							className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
+							isActive={currentView === "groups"}
+							className="cursor-pointer"
 							onClick={() => handleViewChange("groups")}
 						>
 							GROUPS
@@ -166,7 +169,8 @@ const Class = () => {
 					</MenubarMenu>
 					<MenubarMenu>
 						<MenubarTrigger
-							className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
+							isActive={currentView === "files"}
+							className="cursor-pointer"
 							onClick={() => handleViewChange("files")}
 						>
 							FILES
@@ -175,7 +179,8 @@ const Class = () => {
 					{(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (
 						<MenubarMenu>
 							<MenubarTrigger
-								className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
+								isActive={currentView === "edit"}
+								className="cursor-pointer"
 								onClick={() => handleViewChange("edit")}
 							>
 								EDIT
@@ -185,7 +190,8 @@ const Class = () => {
 					{(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (
 						<MenubarMenu>
 							<MenubarTrigger
-								className="border border-gray-600 rounded-lg hover:bg-gray-300 cursor-pointer"
+								isActive={currentView === "rubrics"}
+								className="cursor-pointer"
 								onClick={() => handleViewChange("rubrics")}
 							>
 								RUBRICS
@@ -193,7 +199,6 @@ const Class = () => {
 						</MenubarMenu>
 					)}
 				</Menubar>
-					
 			</div>
 			<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 				<div className="lg:col-span-2">{renderContent()}</div>

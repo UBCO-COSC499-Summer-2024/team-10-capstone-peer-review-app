@@ -45,7 +45,7 @@ model User {
   isEmailVerified   Boolean         @default(false)
   isRoleActivated   Boolean         @default(false)
   createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
+  //updatedAt         DateTime        @updatedAt
   role              UserRole        @default(STUDENT)
   classes           UserInClass[]
   submissions       Submission[]
@@ -122,13 +122,16 @@ model Assignment {
   maxSubmissions     Int                   @default(1)
   isGroup            Boolean               @default(false)
   isPeerReview       Boolean               @default(false)
+  dueDateReview      DateTime?
+  maxReviews         Int?                  @default(1)
   assignmentType     SubmissionType        @default(URL)
   assignmentFilePath String?
   classes            Class                 @relation(fields: [classId], references: [classId], onDelete: Cascade)
   categoryId         String? // Add this line
   category           Category?             @relation(fields: [categoryId], references: [categoryId]) // Add this line
-  rubric             Rubric[]
+  rubric             Rubric[]             
   submissions        Submission[]
+  reviews            Review[]
   // Switch to the enum later
   reviewOption       String?
 }
@@ -215,16 +218,17 @@ model Submission {
 
 model Review {
   reviewId        String           @id @default(uuid())
+  assignmentId    String
   submissionId    String
   reviewerId      String
   revieweeId      String
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
   isGroup         Boolean          @default(false)
-  isPeerReview    Boolean          @default(false)
-  dueDate         DateTime
-  minReviews      Int              @default(1)
+  //isPeerReview    Boolean          @default(false)
+  reviewType      ReviewTypeEnum   @default(INSTRUCTOR)
   reviewGrade     Int // Total grade of the review = sum of reviewerCriteronGrades
+  assignment      Assignment       @relation(fields: [assignmentId], references: [assignmentId], onDelete: Cascade)
   submission      Submission       @relation(fields: [submissionId], references: [submissionId], onDelete: Cascade)
   reviewer        User?            @relation("Reviewer", fields: [reviewerId], references: [userId])
   reviewee        User             @relation("Reviewee", fields: [revieweeId], references: [userId])
@@ -403,4 +407,9 @@ enum SubmissionType {
 enum ReviewType {
   MANUAL
   AUTO
+}
+
+enum ReviewTypeEnum {
+  INSTRUCTOR
+  PEER
 }

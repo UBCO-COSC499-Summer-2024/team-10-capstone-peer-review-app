@@ -6,10 +6,20 @@ import e from "express";
 
 // Controller methods for review operations
 
-// get the reviews done on a submission
-export const getReview = asyncErrorHandler(async (req, res) => {
+export const getSubmissionCriteria = asyncErrorHandler(async (req, res) => {
     const submissionId = req.body.submissionId;
-    const review = await reviewService.getReview(submissionId);
+    const submissionCriteria = await reviewService.getSubmissionCriteria(submissionId);
+    return res.status(200).json({
+        status: "Success",
+        data: submissionCriteria
+    });
+});
+
+
+// get the reviews done on a submission
+export const getReviews = asyncErrorHandler(async (req, res) => {
+    const submissionId = req.body.submissionId;
+    const review = await reviewService.getAllReviews(submissionId);
     return res.status(200).json({
         status: "Success",
         data: review
@@ -138,19 +148,11 @@ export const getInstructorReview = asyncErrorHandler(async (req, res) => {
     });
 });
 
-export const getAllReviews = asyncErrorHandler(async (req, res) => {
-    const submissionId = req.body.submissionId;
-    const reviews = await reviewService.getAllReviews(submissionId);
-    return res.status(200).json({
-        status: "Success",
-        data: reviews
-    });
-});
 
 export const createReview = asyncErrorHandler(async (req, res) => {
-    const userId = req.user.id;
-    const review = req.body;
-    const newReview = await reviewService.createReview(userId, review);
+    const userId = req.user.userId;
+    const { submissionId, criterionGrades } = req.body;
+    const newReview = await reviewService.createReviewForSubmission(userId, submissionId, criterionGrades);
     return res.status(200).json({
         status: "Success",
         data: newReview
@@ -158,8 +160,9 @@ export const createReview = asyncErrorHandler(async (req, res) => {
 });
 
 export const updateReview = asyncErrorHandler(async (req, res) => {
-    const {review, reviewId} = req.body;
-    const updatedReview = await reviewService.updateReview(reviewId, review);
+    const userId = req.user.userId;
+    const {reviewId, criterionGrades} = req.body;
+    const updatedReview = await reviewService.updateReview(userId, reviewId, criterionGrades);
     return res.status(200).json({
         status: "Success",
         data: updatedReview
@@ -167,8 +170,9 @@ export const updateReview = asyncErrorHandler(async (req, res) => {
 });
 
 export const deleteReview = asyncErrorHandler(async (req, res) => {
+    const userId = req.user.userId;
     const reviewId = req.body.reviewId;
-    const deletedReview = await reviewService.deleteReview(reviewId);
+    const deletedReview = await reviewService.deleteReview(userId, reviewId);
     return res.status(200).json({
         status: "Success",
         data: deletedReview
@@ -177,7 +181,8 @@ export const deleteReview = asyncErrorHandler(async (req, res) => {
 
 // Export all controller methods
 export default {
-    getReview,
+    getSubmissionCriteria,
+    getReviews,
     getOpenReviewsAssignment,
     getClosedReviewsAssignment,
     getOpenReviewsClass,
@@ -190,7 +195,6 @@ export default {
     deleteGroupReview,
     getPeerReviews,
     getInstructorReview,
-    getAllReviews,
     createReview,
     updateReview,
     deleteReview

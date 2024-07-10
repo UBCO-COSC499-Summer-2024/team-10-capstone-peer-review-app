@@ -1,6 +1,7 @@
 import express from "express";
 import {  
-    getReview,
+    getSubmissionCriteria,
+    getReviews,
     getStudentReviews,
     getStudentAverageGrade,
     getGroupReviews,
@@ -8,7 +9,6 @@ import {
     updateGroupReview,
     deleteGroupReview,
     getInstructorReview,
-    getAllReviews,
     createReview,
     updateReview,
     deleteReview,
@@ -40,15 +40,10 @@ router.get("/", (req, res) => {
 // get all reviews for a student
 // update the peer review
 // create a group review to review individual contributions
+// submit accoriding to the max Submissions allowed and delete previous attempts
 
-// get all reviews by students for an assignment
-router.post("/studentReview", getPeerReviews);
-
-// get all reviews by an instructor for an assignment
-router.post("/instructorReview", getInstructorReview);
-
-// get the review done on an submission
-router.post("/review", getReview);
+// get a submission criteria
+router.post("/submissionCriteria", getSubmissionCriteria);
 
 // get all open reviews for an assignment
 router.post("/openReviewsAsg", getOpenReviewsAssignment);
@@ -79,14 +74,21 @@ router.put("/updateGroupReview", updateGroupReview);
 // delete a group review on a submission
 router.delete("/deleteGroupReview", deleteGroupReview);
 
-// get all reviews for a submission
-router.post("/allReviews", getAllReviews);
+
+// get all reviews by students for an assignment
+router.post("/studentReview", getPeerReviews);
+
+// get all reviews by an instructor for an assignment
+router.post("/instructorReview", getInstructorReview);
+
+// get the review done on an submission
+router.post("/review", getReviews);
 
 // create a review on a submission by a student (peer or instructor check)
 router.post("/createReview", createReview); 
 
 // update a review on a submission
-router.put("/updateReview", updateReview);
+router.post("/updateReview", updateReview);
 
 // delete a review on a submission
 router.delete("/deleteReview", deleteReview);

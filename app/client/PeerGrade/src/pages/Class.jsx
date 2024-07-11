@@ -141,8 +141,8 @@ const Class = () => {
 					</Accordion>
 					</>
 				);
-		}
-	  };
+			}
+		};
 	
 	  return (
 		<div className="w-full px-6">
@@ -159,7 +159,7 @@ const Class = () => {
 							className="cursor-pointer"
 							onClick={() => handleViewChange("home")}
 						>
-							HOME
+							Home
 						</MenubarTrigger>
 					</MenubarMenu>
 					<MenubarMenu>
@@ -168,7 +168,7 @@ const Class = () => {
 							className="cursor-pointer"
 							onClick={() => handleViewChange("grades")}
 						>
-							GRADES
+							Grades
 						</MenubarTrigger>
 					</MenubarMenu>
 					<MenubarMenu>
@@ -177,7 +177,7 @@ const Class = () => {
 							className="cursor-pointer"
 							onClick={() => handleViewChange("people")}
 						>
-							PEOPLE
+							People
 						</MenubarTrigger>
 					</MenubarMenu>
 					<MenubarMenu>
@@ -186,7 +186,7 @@ const Class = () => {
 							className="cursor-pointer"
 							onClick={() => handleViewChange("groups")}
 						>
-							GROUPS
+							Groups
 						</MenubarTrigger>
 					</MenubarMenu>
 					<MenubarMenu>
@@ -195,7 +195,7 @@ const Class = () => {
 							className="cursor-pointer"
 							onClick={() => handleViewChange("files")}
 						>
-							FILES
+							Files
 						</MenubarTrigger>
 					</MenubarMenu>
 					{(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (
@@ -205,7 +205,7 @@ const Class = () => {
 								className="cursor-pointer"
 								onClick={() => handleViewChange("edit")}
 							>
-								EDIT
+								Edit
 							</MenubarTrigger>
 						</MenubarMenu>
 					)}
@@ -216,7 +216,7 @@ const Class = () => {
 								className="cursor-pointer"
 								onClick={() => handleViewChange("rubrics")}
 							>
-								RUBRICS
+								Rubrics
 							</MenubarTrigger>
 						</MenubarMenu>
 					)}

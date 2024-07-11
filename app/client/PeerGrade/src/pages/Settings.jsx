@@ -301,7 +301,7 @@ const Settings = () => {
           {['profile', 'account', 'appearance', 'notifications', 'display'].map((section) => (
             <MenubarMenu key={section}>
               <MenubarTrigger 
-                className={`w-full text-left px-4 py-2 rounded-md ${activeSection === section ? 'bg-accent text-accent-foreground' : ''}`} 
+                className={`w-full text-left px-4 py-2 rounded-md ${activeSection === section ? 'bg-accent text-accent-foreground mx-1' : ''}`} 
                 onClick={() => setActiveSection(section)}
               >
                 {section.charAt(0).toUpperCase() + section.slice(1)}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import ClassCard from "@/components/class/ClassCard";
+import ClassCard from "@/components/class/GradeCard";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Plus, Calendar as CalendarIcon } from "lucide-react";

@@ -306,11 +306,12 @@ const Groups = () => {
 					placeholder="Search groups"
 					value={searchTerm}
 					onChange={(e) => setSearchTerm(e.target.value)}
-					className="mr-4"
 				/>
-				<Button variant="outline" onClick={handleAddGroupClick}>
+				{(user.role === "INSTRUCTOR" || user.role === "ADMIN") && 
+				<Button variant="outline" onClick={handleAddGroupClick} className='ml-4'>
 					Add Group <Plus className='w-4 h-4 ml-2'/>
 				</Button>
+				}
 			</div>
 			{groups.length === 0 && <div className="text-center text-sm text-gray-500">No groups found.</div>}
 			{filteredGroups.map((group) => (

@@ -42,6 +42,13 @@ export default function AppNavbar() {
 	const [isClassesSheetOpen, setIsClassesSheetOpen] = useState(false);
 
 	useEffect(() => {
+		const fetchUser = async () => {
+			await setUserContext();
+		};
+		fetchUser();
+	}, []);
+
+	useEffect(() => {
 		const fetchData = async () => {
 			if (user && !userLoading) {
 				try {

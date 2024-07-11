@@ -24,6 +24,7 @@ import { Toaster } from "@/components/ui/toaster";
 
 import { loginUser, confirmEmail } from "@/api/authApi";
 import { useUser } from "@/contexts/contextHooks/useUser";
+import { toast } from "../ui/use-toast";
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search);
@@ -70,13 +71,10 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 		e.preventDefault();
 		try {
 			const response = await loginUser(email, password);
-			if (
-				response.status === "Success" ||
-				response.message === "You are already logged in"
-			) {
-				await setUserContext();
-			} else {
-				setError(response.message);
+			if (response.status === "Success") {
+				navigate(response.userRole === "ADMIN" ? "/admin" : "/dashboard", {
+					replace: true
+				});
 			}
 		} catch (error) {
 			setError("Error logging in, please try again");

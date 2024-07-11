@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useUser } from "@/contexts/contextHooks/useUser";
 
 const AuthHandler = () => {
-	const { user, userLoading, setUserContext } = useUser();
+	const { user, userLoading } = useUser();
 	const navigate = useNavigate();
 	const location = useLocation();
 

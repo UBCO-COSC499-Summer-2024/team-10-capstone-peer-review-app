@@ -59,10 +59,13 @@ const Files = () => {
                             </>
                             )}
                             {user.role === 'STUDENT' && (
+                            <Link to={`/class/${classId}/submit/${assignment.assignmentId}`}>
+
                                 <Button variant="outline" size="sm" className="text-green-600 hover:text-green-800">
                                     <FileCheck className="h-4 w-4 mr-1" />
                                     Submit
                                 </Button>
+                            </Link>
                             )}
                         </div>
                     </Alert>

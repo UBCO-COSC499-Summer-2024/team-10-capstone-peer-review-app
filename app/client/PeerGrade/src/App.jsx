@@ -19,6 +19,7 @@ import Settings from "./pages/Settings";
 import AppNavbar from "./components/login/global/Navbar";
 import ManageClass from "./pages/ManageClass";
 import Search from "./pages/Search";
+import Submission from "./pages/Submission";
 import AdminDashboard from "./pages/AdminDashboard";
 import TestUserContext from "./pages/TestUserContext";
 
@@ -63,6 +64,10 @@ function MainLayout() {
 					<Route
 						path="/class/:classId/assignment/:assignmentId"
 						element={<Assignment />}
+					/>
+					<Route
+						path="/class/:classId/submit/:assignmentId"
+						element={<Submission />}
 					/>
 					<Route path="/assignedPR/:assignmentId" element={<AssignedPR />} />
 					<Route path="/peer-review" element={<PeerReview />} />

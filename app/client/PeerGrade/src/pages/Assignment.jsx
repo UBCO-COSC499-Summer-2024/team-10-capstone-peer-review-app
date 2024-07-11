@@ -16,7 +16,7 @@ const Assignment = () => {
   const { user, userLoading } = useUser();
   const { classId, assignmentId } = useParams();
   const [assignment, setAssignment] = useState(null);
-  const [isSubmitCardVisible, setSubmitCardVisible] = useState(false);
+  // const [isSubmitCardVisible, setSubmitCardVisible] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -78,8 +78,7 @@ const Assignment = () => {
                       <p>Due: {new Date(assignment.dueDate).toLocaleDateString()}</p>
                       <p>Required File Type: NA</p>
                     </div>
-                    <Button onClick={() => setSubmitCardVisible(true)} className="bg-red-200">Submit</Button>
-                  </div>
+                   </div>
                   <p className="mb-2">{assignment.description}</p>
                 </CardContent>
               </Card>
@@ -108,7 +107,7 @@ const Assignment = () => {
           </TabsContent>
         )}
       </Tabs>
-      {isSubmitCardVisible && (
+      {/* {isSubmitCardVisible && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <Card className="bg-white p-4 shadow-md rounded-lg">
             <CardHeader>
@@ -122,7 +121,7 @@ const Assignment = () => {
             </CardContent>
           </Card>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

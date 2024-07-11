@@ -3,6 +3,11 @@ import showStatusToast from "@/utils/showToastStatus";
 
 const BASE_URL = "/api"; // Use environment variable if available
 
+export const getRubricsForAssignment = async (assignmentId) => {
+  const response = await axios.post(`${BASE_URL}/rubric/get-rubrics`, { assignmentId }); // Adjust the endpoint as necessary
+  return response.data;
+}
+
 export const getAllRubrics = async () => {
   return await axios.post(`${BASE_URL}/rubric/get-all-rubrics`); // Adjust the endpoint as necessary
 };

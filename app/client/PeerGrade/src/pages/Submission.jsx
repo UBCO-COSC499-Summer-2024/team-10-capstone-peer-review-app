@@ -1,12 +1,11 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerTrigger, DrawerContent, DrawerClose } from "@/components/ui/drawer";
-import { File, FileUp } from "lucide-react";
+import { FileUp } from "lucide-react";
 import { getAssignmentInClass } from '@/api/assignmentApi';
-import { getRubricById } from '@/api/rubricApi';
+import { getRubricsForAssignment } from '@/api/rubricApi'; // Ensure this function is correctly defined
 import { useUser } from "@/contexts/contextHooks/useUser";
 
 const Submission = () => {
@@ -22,14 +21,12 @@ const Submission = () => {
                 const assignmentData = await getAssignmentInClass(classId, assignmentId);
                 setAssignment(assignmentData.data);
 
-                // Fetch rubrics if linked to the assignment
-                if (assignmentData.RubricForAssignment) {
-                    console.log("hello");
+                console.log("assign", assignmentData.data.assignmentId);
+                
+                const rubricData = await getRubricsForAssignment(assignmentData.data.assignmentId);
+                setRubrics(rubricData.data);
+                console.log("rubric", rubricData.data);
 
-                    const rubricId = assignmentData.data.rubric[0].rubricId; // Adjust this based on your actual data structure
-                    const rubricData = await getRubricById(rubricId);
-                    setRubrics(rubricData.data);
-                }
             } catch (error) {
                 console.error("Error fetching assignment details:", error);
             }
@@ -57,7 +54,26 @@ const Submission = () => {
                                     <h3 className="text-lg font-semibold">Rubrics</h3>
                                     <ul className="list-disc pl-4">
                                         {rubrics.map((rubric, index) => (
-                                            <li key={index} className="text-gray-600">{rubric.description}</li>
+                                            <li key={index} className="text-gray-600">
+                                                {rubric.title}
+                                                {rubric.description && (
+                                                    <p className="text-sm">{rubric.description}</p>
+                                                )}
+                                                <ul className="list-disc pl-4">
+                                                    {rubric.criteria.map((criterion, idx) => (
+                                                        <li key={idx} className="text-gray-600">
+                                                            {criterion.title} - Max Marks: {criterion.maxMark}
+                                                            <ul className="list-disc pl-4">
+                                                                {criterion.criterionRatings.map((rating, id) => (
+                                                                    <li key={id} className="text-gray-600">
+                                                                        {rating.description}: {rating.points} points
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </li>
                                         ))}
                                     </ul>
                                 </div>

@@ -298,11 +298,6 @@ const People = ({ classId }) => {
 									<MinusCircle className="w-5 h-5 mr-2" /> Delete
 								</Button>
 							)}
-							{myGroups.length > 0 && (
-								<Button variant="outline" className="bg-gray-100">
-									Add to Group
-								</Button>
-							)}
 						</div>
 					</Card>
 				))}

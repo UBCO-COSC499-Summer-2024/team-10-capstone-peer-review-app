@@ -172,6 +172,18 @@ export const deleteGroupMember = async (groupId, userId) => {
 	}
 };
 
+export const getUsersNotInGroups = async (classId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/classes/users-not-in-groups`, {
+			classId
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
 
 export const getAllAssignments = async (userId) => {
 	try {

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { getAllGroupsByClass, createGroup, deleteGroup, updateGroup, joinGroup, leaveGroup, addGroupMember, deleteGroupMember, getStudentsByClassId } from "@/api/classApi";
+import { getAllGroupsByClass, createGroup, deleteGroup, updateGroup, joinGroup, leaveGroup, addGroupMember, deleteGroupMember, getUsersNotInGroups, getStudentsByClassId } from "@/api/classApi";
 import { getGroups } from "@/api/userApi";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { ChevronDown, ChevronUp, Plus, Trash2, Pencil, MinusCircle, UserPlus, CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
@@ -69,39 +69,28 @@ const Groups = () => {
 					});
 				}
 			};
-			const fetchMyGroups = async () => {
-				try {
-					const groups = await getGroups(user.userId);
-					console.log("my groups", groups.data);
-					setMyGroups(Array.isArray(groups.data) ? groups.data.filter(group => group.classId === classId) : []);
-				} catch (error) {
-					toast({
-						title: "Error",
-						description: "Failed to fetch user's groups",
-						variant: "destructive"
-					});
-				}
-			};
-			if (user.role === "INSTRUCTOR" || user.role === "ADMIN") {
-				const fetchStudents = async () => {
-					const students = await getStudentsByClassId(classId);
-					console.log("students", students);
-					if (students.status === "Success") {
-						const transformedStudents = students.data
-							.map((student) => ({
-								studentId: student.userId,
-								label: student.firstname + " " + student.lastname
-							}));
-						setStudentOptions(transformedStudents);
-					}
-				};
-				fetchStudents();
-			}
 			
-			fetchMyGroups();
 			fetchAllGroups();
 		}
 	}, [user, userLoading, classId, refresh]);
+
+	useEffect(() => {
+		if (user && (user.role === "INSTRUCTOR" || user.role === "ADMIN")) {
+			const fetchUsersNotInGroups = async () => {
+				const students = await getUsersNotInGroups(classId);
+				console.log("students", students);
+				if (students.status === "Success") {
+					const transformedStudents = students.data
+						.map((student) => ({
+							studentId: student.userId,
+							label: student.firstname + " " + student.lastname
+						}));
+					setStudentOptions(transformedStudents);
+				}
+			};
+			fetchUsersNotInGroups();
+		}
+	}, [addGroupDialogOpen, editDialogOpen]);
 
 	const filteredGroups = groups.filter((group) =>
 		group.groupName.toLowerCase().includes(searchTerm.toLowerCase())
@@ -109,6 +98,21 @@ const Groups = () => {
 
 	const toggleGroup = (groupId) => {
 		setExpandedGroup(expandedGroup === groupId ? null : groupId);
+	};
+
+	const handleAddStudents = (groupId) => {
+		if (selectedStudents.length > 0) {
+			const groupMemberAdd = async (studentId) => {
+				const groupData = await addGroupMember(groupId, studentId);
+				if (groupData.status === "Success") {
+					setRefresh(!refresh);
+					console.log("in add select student",groupData);
+				} else {
+					console.error('An error occurred while adding a group member.', groupData.message);
+				}
+			};
+			selectedStudents.forEach((studentId) => groupMemberAdd(studentId));
+		}
 	};
 
 	const handleAddSubmit = (e) => {
@@ -120,18 +124,20 @@ const Groups = () => {
 		};
 	
 		const groupCreate = async () => {
-		  const groupData = await createGroup(classId, newGroup);
-		  if (groupData.status === "Success") {
-			console.log("group data from create", groupData);
-			setGroups([...groups, groupData.data]);
-			console.log("groups after create", groups);
-			setAddGroupDialogOpen(false);
-			if (user.role === "STUDENT") {
-				handleJoinGroup(groupData.data.groupId);
+			const groupData = await createGroup(classId, newGroup);
+			if (groupData.status === "Success") {
+				console.log("group data from create", groupData);
+				setGroups([...groups, groupData.data]);
+				console.log("groups after create", groups);
+				setAddGroupDialogOpen(false);
+				if (user.role === "STUDENT") {
+					handleJoinGroup(groupData.data.groupId);
+				} else {
+					handleAddStudents(groupData.data.groupId);
+				}
+			} else {
+				console.error('An error occurred while creating the group.', groupData.message);
 			}
-		  } else {
-			console.error('An error occurred while creating the group.', groupData.message);
-		  }
 		};
 		groupCreate();
 	};
@@ -145,21 +151,7 @@ const Groups = () => {
 		};
 
 		const groupEdit = async () => {
-			if (selectedStudents.length > 0) {
-				const groupMemberAdd = async (studentId) => {
-					const groupData = await addGroupMember(selectedGroup.groupId, studentId);
-					if (groupData.status === "Success") {
-						// setGroups(groups.map((group) => 
-						// 	group.groupId === selectedGroup.groupId ? groupData.data : group
-						// ));
-						setRefresh(!refresh);
-						console.log("in add select student",groupData);
-					} else {
-						console.error('An error occurred while adding a group member.', groupData.message);
-					}
-				};
-				selectedStudents.forEach((studentId) => groupMemberAdd(studentId));
-			}
+			handleAddStudents(selectedGroup.groupId);
 
 			const groupData = await updateGroup(selectedGroup.groupId, updatedData);
 			if (groupData.status === "Success") {
@@ -228,6 +220,11 @@ const Groups = () => {
 		}
 	};
 
+	const handleAddGroupClick = () => {
+		setSelectedStudents([]);
+		setAddGroupDialogOpen(true);
+	};
+
 	const handleDeleteGroupClick = (group) => {
 		setSelectedGroup(group);
 		setDeleteTarget('group');
@@ -271,6 +268,20 @@ const Groups = () => {
 		);
 	};
 
+	const fetchUserGroups = async () => {
+		try {
+			const groups = await getGroups(user.userId);
+			console.log("my groups", groups.data);
+			setMyGroups(Array.isArray(groups.data) ? groups.data.filter(group => group.classId === classId) : []);
+		} catch (error) {
+			toast({
+				title: "Error",
+				description: "Failed to fetch user's groups",
+				variant: "destructive"
+			});
+		}
+	};
+
 	return (
 		<div className="w-full p-6">
 			<div className="flex items-center mb-6">
@@ -281,7 +292,7 @@ const Groups = () => {
 					onChange={(e) => setSearchTerm(e.target.value)}
 					className="mr-4"
 				/>
-				<Button variant="outline" onClick={() => setAddGroupDialogOpen(true)}>
+				<Button variant="outline" onClick={handleAddGroupClick}>
 					Add Group <Plus className='w-4 h-4 ml-2'/>
 				</Button>
 			</div>
@@ -406,6 +417,56 @@ const Groups = () => {
 								className="w-full px-3 py-2 border rounded-md"
 							/>
 						</div>
+						{(user.role === "INSTRUCTOR" || user.role === "ADMIN") && 
+						<div className="mb-4 space-y-1">
+							<label htmlFor="size" className="block text-sm font-medium text-gray-700">
+								Group Members
+							</label>
+							<Popover open={open} onOpenChange={setOpen} id="selectStudents">
+								<PopoverTrigger asChild>
+									<Button
+										variant="outline"
+										role="combobox"
+										aria-expanded={open}
+										className={`w-full justify-between bg-white mt-1 border`}
+									>
+										{selectedStudents.length > 0
+											? `${selectedStudents.length} student(s) selected`
+											: "Select students..."}
+										{open ? (
+											<ChevronUpIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+										) : (
+											<ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+										)}
+									</Button>
+								</PopoverTrigger>
+								<PopoverContent className="p-5 rounded-md">
+									<Command>
+										<CommandInput placeholder="Search students..." />
+										<CommandList>
+											<CommandEmpty>No available students found.</CommandEmpty>
+											<CommandGroup>
+												{studentOptions.map((student) => (
+													<CommandItem
+														key={student.studentId}
+														value={student.label}
+														onSelect={() =>
+															handleStudentSelection(student.studentId)
+														}
+													>
+														{student.label}
+														<CheckIcon
+															className={`ml-auto h-4 w-4 ${selectedStudents.includes(student.studentId) ? "opacity-100" : "opacity-0"}`}
+														/>
+													</CommandItem>
+												))}
+											</CommandGroup>
+										</CommandList>
+									</Command>
+								</PopoverContent>
+							</Popover>
+						</div>
+						}
 						<DialogFooter>
 							<Button type="button" onClick={() => setAddGroupDialogOpen(false)}>Cancel</Button>
 							<Button variant="destructive" type="submit">Submit</Button>
@@ -499,7 +560,7 @@ const Groups = () => {
 						</div>
 						<div className="mb-4 space-y-1">
 							<label htmlFor="size" className="block text-sm font-medium text-gray-700">
-								Add Group Members
+								Group Members
 							</label>
 							<Popover open={open} onOpenChange={setOpen} id="selectStudents">
 								<PopoverTrigger asChild>
@@ -523,9 +584,9 @@ const Groups = () => {
 									<Command>
 										<CommandInput placeholder="Search students..." />
 										<CommandList>
-											<CommandEmpty>No students found.</CommandEmpty>
+											<CommandEmpty>No available students found.</CommandEmpty>
 											<CommandGroup>
-												{selectedGroup.students && filterStudentOptions(selectedGroup).map((student) => (
+												{studentOptions.map((student) => (
 													<CommandItem
 														key={student.studentId}
 														value={student.label}

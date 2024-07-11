@@ -368,6 +368,24 @@ export const leaveGroup = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+export const isUserInGroup = asyncErrorHandler(async (req, res) => {
+	const { classId, userId } = req.body;
+	const isUsrInGrp = await classService.isUserInGroup(classId, userId);
+	return res.status(200).json({
+		status: "Success",
+		data: isUsrInGrp
+	});
+});
+
+export const getStudentsNotInAnyGroup = asyncErrorHandler(async (req, res) => {
+	const { classId } = req.body;
+	const usrsNotInGrps = await classService.getStudentsNotInAnyGroup(classId);
+	return res.status(200).json({
+		status: "Success",
+		data: usrsNotInGrps
+	});
+});
+
 export const getCategoriesByClassId = asyncErrorHandler(async (req, res) => {
 	const { classId } = req.params;
 	const categories = await classService.getCategoriesByClassId(classId);
@@ -410,6 +428,8 @@ export default {
 	getGroupMembers,
 	addGroupMember,
 	removeGroupMember,
+	isUserInGroup,
+	getStudentsNotInAnyGroup,
 
 	getCategoriesByClassId
 };

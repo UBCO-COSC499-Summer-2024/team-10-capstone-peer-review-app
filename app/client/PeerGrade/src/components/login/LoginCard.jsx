@@ -35,7 +35,6 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 	const [passwordVisible, setPasswordVisible] = useState(false);
 	const [tokenReceived, setTokenReceived] = useState(false);
 	const [verificationSuccessful, setVerificationSuccessful] = useState(false);
-	const [isAlreadyLoggedIn, setIsAlreadyLoggedIn] = useState(false);
 	const [error, setError] = useState("");
 
 	const query = useQuery();
@@ -71,15 +70,13 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 		e.preventDefault();
 		try {
 			const response = await loginUser(email, password);
-			if (response.status === "Success") {
+			if (
+				response.status === "Success" ||
+				response.message === "You are already logged in"
+			) {
 				await setUserContext();
-			} else if (response.status === "Error") {
-				if (response.message === "You are already logged in") {
-					console.log("does user exist?", user);
-					await setUserContext(); // TODO ADD LOADING SPINNER
-				} else {
-					setError(response.message);
-				}
+			} else {
+				setError(response.message);
 			}
 		} catch (error) {
 			setError("Error logging in, please try again");

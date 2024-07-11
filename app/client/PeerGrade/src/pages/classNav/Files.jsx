@@ -25,7 +25,7 @@ const Files = () => {
 
     return (
         <Card className="w-full">
-            <CardHeader className="flex justify-between items-center bg-gray-200 p-4 rounded-t-lg">
+            <CardHeader className="flex justify-between items-center bg-muted p-4 rounded-t-lg">
                 <CardTitle className="text-xl font-bold">Class Assignments</CardTitle>
             </CardHeader>
             <CardContent className="p-4 space-y-4">

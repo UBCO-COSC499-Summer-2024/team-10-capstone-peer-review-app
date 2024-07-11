@@ -77,8 +77,8 @@ const AddClassModal = ({ show, onClose }) => {
 	}
 
 	return (
-		<div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-			<div className="bg-white p-6 rounded-lg shadow-lg w-1/2">
+		<div className="fixed px-6 inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+			<div className="bg-white p-6rounded-lg shadow-lg w-1/2">
 				<h2 className="text-xl font-bold mb-4">Add a New Class</h2>
 				<form onSubmit={handleSubmit}>
 					<div className="mb-4">
@@ -304,7 +304,7 @@ const ManageClass = () => {
 	}
 
 	return (
-		<div className="max-w-7xl mx-auto p-6">
+		<div className="max-w-7xl mx-auto px-6">
 			<div className="flex justify-between items-center mb-4">
 				<h1 className="text-3xl font-bold mr-3">My Classrooms</h1>
 				<Button

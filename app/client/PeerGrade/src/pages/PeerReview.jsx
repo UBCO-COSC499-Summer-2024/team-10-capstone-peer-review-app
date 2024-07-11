@@ -1,108 +1,129 @@
 import { useState } from 'react';
 import { assignment as assignmentsData, iClass as classesData } from '@/utils/dbData';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-	DropdownMenu,
-	DropdownMenuTrigger,
-	DropdownMenuContent,
-	DropdownMenuItem
-} from "@/components/ui/dropdown-menu";
-import { Search } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Search, Calendar, Clock, BookOpen, ChevronRight } from "lucide-react";
 import { Link } from 'react-router-dom';
 
 const PeerReview = () => {
-	const [view, setView] = useState("doc_view");
-	const [searchTerm, setSearchTerm] = useState("");
-	const [filterClass, setFilterClass] = useState("");
+  const [view, setView] = useState("grid");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const filteredAssignments = assignmentsData
     .filter(assignment => assignment.evaluation_type === 'peer')
     .filter(assignment =>
-      (!filterClass || classesData.find(classItem => classItem.class_id === assignment.class_id)?.classname === filterClass) &&
-      (!searchTerm ||
-        assignment.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        classesData.find(classItem => classItem.class_id === assignment.class_id)?.classname.toLowerCase().includes(searchTerm.toLowerCase())
-      )
+      !searchTerm ||
+      assignment.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      classesData.find(classItem => classItem.class_id === assignment.class_id)?.classname.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+  const renderGridView = () => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      {filteredAssignments.map(assignment => {
+        const className = classesData.find(classItem => classItem.class_id === assignment.class_id)?.classname || 'Unknown Class';
+        return (
+          <Card key={assignment.assignment_id} className="w-full bg-white shadow-md hover:shadow-lg transition-shadow duration-300">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg font-semibold text-primary">{assignment.title}</CardTitle>
+              <CardDescription className="text-sm text-slate-500">{className}</CardDescription>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <p className="text-sm text-slate-600 mb-4">{assignment.description}</p>
+              <div className="flex items-center space-x-2 text-sm text-slate-500 mb-2">
+                <Calendar className="h-4 w-4" />
+                <span>Due: {assignment.due_date.toLocaleDateString()}</span>
+              </div>
+              <div className="flex items-center space-x-2 text-sm text-slate-500">
+                <Clock className="h-4 w-4" />
+                <span>Peer Review Due: {assignment.due_date.toLocaleDateString()}</span>
+              </div>
+            </CardContent>
+            <CardFooter className="pt-4">
+              <Link to={`/assignedPR/${assignment.assignment_id}`} className="w-full">
+                <Button variant="default" className="w-full">
+                  <BookOpen className="mr-2 h-4 w-4" /> Open Review
+                </Button>
+              </Link>
+            </CardFooter>
+          </Card>
+        );
+      })}
+    </div>
+  );
+
+  const renderListView = () => (
+    <div className="space-y-4">
+      {filteredAssignments.map(assignment => {
+        const className = classesData.find(classItem => classItem.class_id === assignment.class_id)?.classname || 'Unknown Class';
+        return (
+          <Alert key={assignment.assignment_id} variant="default" className="hover:bg-accent cursor-pointer transition-colors">
+            <div className="flex justify-between items-center">
+              <div>
+                <div className="flex gap-2">
+                  <AlertTitle className="text-lg font-semibold text-primary">{assignment.title}</AlertTitle>
+                  <Badge variant="default" className="mb-2">{className}</Badge>
+                </div>
+                <AlertDescription>
+                  <p className="text-sm text-slate-600 mb-2">{assignment.description}</p>
+                  <div className="flex items-center space-x-4 text-sm text-slate-500">
+                    <span className="flex items-center">
+                      <Calendar className="h-4 w-4 mr-1" />
+                      Due: {assignment.due_date.toLocaleDateString()}
+                    </span>
+                    <span className="flex items-center">
+                      <Clock className="h-4 w-4 mr-1" />
+                      Peer Review Due: {assignment.due_date.toLocaleDateString()}
+                    </span>
+                  </div>
+                </AlertDescription>
+              </div>
+              <Link to={`/assignedPR/${assignment.assignment_id}`}>
+                <Button variant="ghost" size="sm">
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </Alert>
+        );
+      })}
+    </div>
+  );
 
   return (
     <div className="w-full px-6">
-      <h1 className="text-2xl font-bold mb-4">Peer Reviews</h1>
+      <h1 className="text-3xl font-bold mb-6 text-primary">Peer Reviews</h1>
 
-      <div className="flex justify-end items-center mb-6">
-        <div className="flex items-center space-x-4 ">
-          <div className="flex gap-2 rounded">
-            <Button
-              className={view === 'doc_view' ? 'bg-green-300 text-black shadow-md' : 'bg-gray-300 text-white-400 shadow-none'}
-              variant={view === 'doc_view' ? 'default' : 'outline'}
-              onClick={() => setView('doc_view')}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-              </svg>
-            </Button>
-            <Button
-              className={view === 'list_view' ? 'bg-green-300 text-black shadow-md' : 'bg-gray-300 text-white-400 shadow-none'}
-              variant={view === 'list_view' ? 'default' : 'outline'}
-              onClick={() => setView('list_view')}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-              </svg>
-            </Button>
-          </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="border bg-white shadow-md">
-                {filterClass || 'Filter by class'}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-white">
-              {Array.from(new Set(classesData.map(classItem => classItem.classname))).map((className, index) => (
-                <DropdownMenuItem key={index} onSelect={() => setFilterClass(className)} className="hover:bg-gray-200">
-                  {className}
-                </DropdownMenuItem>
-              ))}
-              <DropdownMenuItem onSelect={() => setFilterClass('')}>
-                All Classes
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <div className="relative">
-            <Input 
-              type="text" 
-              placeholder="Search..." 
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-            <Search className="absolute top-2 left-2 h-6 w-6 text-gray-500"/>
-          </div>
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 space-y-4 md:space-y-0 md:space-x-4">
+        <div className="relative w-full md:w-1/3">
+          <Input 
+            type="text" 
+            placeholder="Search assignments..." 
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 bg-white border-slate-200"
+          />
+          <Search className="absolute top-2.5 left-3 h-5 w-5 text-slate-400"/>
         </div>
+        
+        <Tabs defaultValue={view} className="w-full md:w-auto" onValueChange={setView}>
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="grid">Grid View</TabsTrigger>
+            <TabsTrigger value="list">List View</TabsTrigger>
+          </TabsList>
+        </Tabs>
       </div>
 
-      <div className={`grid ${view === 'doc_view' ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4' : 'grid-cols-1'} gap-6`}>
-        {filteredAssignments.map(assignment => {
-          const className = classesData.find(classItem => classItem.class_id === assignment.class_id)?.classname || 'Unknown Class';
-          return (
-            <Card key={assignment.assignment_id} className={`w-full ${view === 'doc_view'? "": "flex justify-between"} bg-white shadow-md rounded-lg`}>
-              <CardHeader>
-                <CardTitle>{assignment.title}</CardTitle>
-                <CardDescription className="text-gray-500">{assignment.description}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-col space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-700">Due Date: {assignment.due_date.toLocaleDateString()}</span>
-                  <Link to={`/assignedPR/${assignment.assignment_id}`} className="text-blue-500">Open</Link>
-                </div>
-                <div className="text-gray-500">Peer Review Due: {assignment.due_date.toLocaleDateString()}</div>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
+      {view === 'grid' ? renderGridView() : renderListView()}
+
+      {filteredAssignments.length === 0 && (
+        <div className="text-center text-slate-500 mt-8">
+          No peer review assignments found.
+        </div>
+      )}
     </div>
   );
 };

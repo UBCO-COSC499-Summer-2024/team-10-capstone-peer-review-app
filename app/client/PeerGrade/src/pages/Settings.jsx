@@ -293,15 +293,13 @@ const Settings = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold mb-2">Settings</h1>
-      <p className="text-gray-600 mb-6">Manage your account settings and preferences.</p>
-      
+      <h1 className="text-3xl font-bold mb-3 ml-3">Settings</h1>      
       <div className="flex">
         <Menubar className="w-48 flex-shrink-0 space-y-1" orientation="vertical">
           {['profile', 'account', 'appearance', 'notifications', 'display'].map((section) => (
             <MenubarMenu key={section}>
               <MenubarTrigger 
-                className={`w-full text-left px-4 py-2 rounded-md ${activeSection === section ? 'bg-accent text-accent-foreground mx-1' : ''}`} 
+                className={`w-full text-left px-4 py-2 rounded-full ${activeSection === section ? 'bg-muted text-accent-foreground mx-1' : ''}`} 
                 onClick={() => setActiveSection(section)}
               >
                 {section.charAt(0).toUpperCase() + section.slice(1)}
@@ -310,7 +308,7 @@ const Settings = () => {
           ))}
         </Menubar>
       </div>
-      <div className="flex-grow mt-5">
+      <div className="flex-grow mt-3">
           {renderContent()}
         </div>
     </div>

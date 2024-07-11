@@ -69,8 +69,22 @@ const Groups = () => {
 					});
 				}
 			};
+			const fetchMyGroups = async () => {
+				try {
+					const groups = await getGroups(user.userId);
+					console.log("my groups", groups.data);
+					setMyGroups(Array.isArray(groups.data) ? groups.data.filter(group => group.classId === classId) : []);
+				} catch (error) {
+					toast({
+						title: "Error",
+						description: "Failed to fetch user's groups",
+						variant: "destructive"
+					});
+				}
+			};
 			
 			fetchAllGroups();
+			fetchMyGroups();
 		}
 	}, [user, userLoading, classId, refresh]);
 
@@ -90,7 +104,7 @@ const Groups = () => {
 			};
 			fetchUsersNotInGroups();
 		}
-	}, [addGroupDialogOpen, editDialogOpen]);
+	}, [user, userLoading, classId, refresh, addGroupDialogOpen, editDialogOpen]);
 
 	const filteredGroups = groups.filter((group) =>
 		group.groupName.toLowerCase().includes(searchTerm.toLowerCase())
@@ -131,7 +145,9 @@ const Groups = () => {
 				console.log("groups after create", groups);
 				setAddGroupDialogOpen(false);
 				if (user.role === "STUDENT") {
-					handleJoinGroup(groupData.data.groupId);
+					if (myGroups?.length < 1) {
+						handleJoinGroup(groupData.data.groupId);
+					}
 				} else {
 					handleAddStudents(groupData.data.groupId);
 				}

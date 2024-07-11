@@ -2,18 +2,18 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Drawer, DrawerTrigger, DrawerContent, DrawerClose } from "@/components/ui/drawer";
 import { FileUp } from "lucide-react";
 import { getAssignmentInClass } from '@/api/assignmentApi';
-import { getRubricsForAssignment } from '@/api/rubricApi'; // Ensure this function is correctly defined
+import { getRubricsForAssignment } from '@/api/rubricApi';
 import { useUser } from "@/contexts/contextHooks/useUser";
 import DataTable from '@/components/ui/data-table'; // Adjust the import path as necessary
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import { toast } from '@/components/ui/use-toast';
 
 const Submission = () => {
     const { classId, assignmentId } = useParams();
     const [assignment, setAssignment] = useState(null);
     const [rubrics, setRubrics] = useState([]);
-    const [isDrawerOpen, setDrawerOpen] = useState(false);
     const { user } = useUser();
 
     useEffect(() => {
@@ -28,7 +28,12 @@ const Submission = () => {
                 setRubrics(rubricData.data);
                 console.log("rubric", rubricData.data);
 
+                if (rubricData.data.length === 0) {
+                    toast({ title: "No rubrics Assigned", description: "No rubric found for this assignment", variant: "destructive" });
+                    console.log("No rubric found for this assignment");
+                }
             } catch (error) {
+                
                 console.error("Error fetching assignment details:", error);
             }
         };
@@ -75,6 +80,27 @@ const Submission = () => {
                                 <p className="text-gray-600">{assignment.description}</p>
                                 <p className="text-sm text-gray-600">Due: {new Date(assignment.dueDate).toLocaleDateString()}</p>
                             </div>
+                            <Accordion type="single" collapsible className=" bg-green-100 rounded-lg px-6">
+                                <AccordionItem value="submit-assignment">
+                                    <AccordionTrigger className="text-green-600 hover:text-green-800 flex items-center">
+                                        <div className='flex justify-between items-center w-full mr-3'>
+                                        <FileUp className="h-4 w-4 mr-2" />
+                                        <span>Submit Assignment</span>
+                                        </div>
+                                    </AccordionTrigger>
+                                    <AccordionContent>
+                                        <div className="p-4 w-full bg-white border border-gray-300 rounded-md">
+                                            <h2 className="text-xl font-bold mb-4">Submit Your Assignment</h2>
+                                            <input
+                                                type="file"
+                                                accept="application/pdf"
+                                                className="w-full border border-gray-300 p-2 rounded-md"
+                                            />
+                                            <Button variant="default" className="mt-4 w-full">Submit</Button>
+                                        </div>
+                                    </AccordionContent>
+                                </AccordionItem>
+                            </Accordion>
                             {rubrics.length > 0 && (
                                 <div className="mb-4">
                                     <h3 className="text-lg font-semibold underline mb-3">Rubrics</h3>
@@ -100,27 +126,7 @@ const Submission = () => {
                 </CardContent>
             </Card>
 
-            <Button variant="outline" size="lg" onClick={() => setDrawerOpen(true)} className="text-green-600 hover:text-green-800">
-                <FileUp className="h-4 w-4 mr-2" />
-                Submit Assignment
-            </Button>
-
-            <Drawer open={isDrawerOpen} onClose={() => setDrawerOpen(false)} position="right">
-                <DrawerTrigger asChild>
-                    <DrawerContent className="p-4 w-full md:w-1/3 bg-white">
-                        <DrawerClose onClick={() => setDrawerOpen(false)} className="absolute top-2 right-2">
-                            <Button variant="outline">Close</Button>
-                        </DrawerClose>
-                        <h2 className="text-xl font-bold mb-4">Submit Your Assignment</h2>
-                        <input
-                            type="file"
-                            accept="application/pdf"
-                            className="w-full border border-gray-300 p-2 rounded-md"
-                        />
-                        <Button variant="solid" className="mt-4 w-full">Submit</Button>
-                    </DrawerContent>
-                </DrawerTrigger>
-            </Drawer>
+            
         </div>
     );
 };

@@ -184,7 +184,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 				<CardFooter className="text-center flex flex-col gap-2 bg-indigo-100">
 					<div className="flex w-full justify-between mt-6">
 						<p className="text-sm text-gray-600">
-							Don&apos;t have an account? 
+							Don&apos;t have an account?
 							<button
 								onClick={onSwitchToRegister}
 								className="text-green-600 hover:text-green-500 pl-2"

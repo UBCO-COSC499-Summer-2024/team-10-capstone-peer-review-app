@@ -3,12 +3,14 @@ import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Eye, Edit, Trash2 } from "lucide-react";
+import { Eye, Edit, Trash2, FileCheck } from "lucide-react";
 import { getAllAssignmentsByClassId } from '@/api/assignmentApi';
+import { useUser } from "@/contexts/contextHooks/useUser";
 
 const Files = () => {
     const { classId } = useParams();
     const [assignments, setAssignments] = useState([]);
+    const { user } = useUser(); // Assume user has a role property
 
     useEffect(() => {
         const fetchAssignments = async () => {
@@ -42,14 +44,24 @@ const Files = () => {
                                 <Eye className="h-4 w-4 mr-1" />
                                 View
                             </Button>
-                            <Button variant="outline" size="sm">
-                                <Edit className="h-4 w-4 mr-1" />
-                                Edit
-                            </Button>
-                            <Button variant="outline" size="sm" className="text-red-600 hover:text-red-800">
-                                <Trash2 className="h-4 w-4 mr-1" />
-                                Delete
-                            </Button>
+                            {user.role != 'STUDENT' && (
+                                <Button variant="outline" size="sm">
+                                    <Edit className="h-4 w-4 mr-1" />
+                                    Edit
+                                </Button>
+                                )}
+                            {user.role != 'STUDENT' && (
+                                <Button variant="outline" size="sm" className="text-red-600 hover:text-red-800">
+                                    <Trash2 className="h-4 w-4 mr-1" />
+                                    Delete
+                                </Button>
+                             )}
+                            {user.role === 'STUDENT' && (
+                                <Button variant="outline" size="sm" className="text-green-600 hover:text-green-800">
+                                    <FileCheck className="h-4 w-4 mr-1" />
+                                    Submit
+                                </Button>
+                            )}
                         </div>
                     </Alert>
                 ))}

@@ -180,7 +180,7 @@ const Rubrics = () => {
           <DrawerHeader>
             <DrawerTitle>Create a Rubric</DrawerTitle>
           </DrawerHeader>
-          <div className="p-4 max-h-[85vh] overflow-y-auto">
+          <div className="p-4 max-h-[85vh] z-[70] overflow-y-auto">
             <div>
               <h3 className="text-lg font-semibold mb-2">Select Assignments</h3>
               <MultiSelect

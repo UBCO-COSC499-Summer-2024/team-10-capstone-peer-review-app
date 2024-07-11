@@ -23,7 +23,7 @@ const MenubarTrigger = React.forwardRef(({ className, isActive, ...props }, ref)
 		ref={ref}
 		className={cn(
 			"flex cursor-default select-none items-center rounded-full px-3 py-1.5 text-sm font-medium outline-none transition-colors duration-300",
-			isActive ? "bg-white" : "hover:bg-gray-300",
+			isActive ? "bg-muted" : "hover:bg-gray-300",
 			className
 		)}
 		{...props}

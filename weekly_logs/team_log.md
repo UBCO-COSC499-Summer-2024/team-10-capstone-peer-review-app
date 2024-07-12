@@ -32,7 +32,12 @@
   
 
 #### Back-end Testing for c-12
-![Back end Tests for c-12](./team_log_images/back_end_tests/back_end_tests_c12.png)  
+#### Unit Tests 
+![Back end Unit Tests for c-11](./team_log_images/back_end_tests/back_end_unit_tests_c11.png) 
+
+
+#### Integration Tests
+![Back end Integration Tests for c-11](./team_log_images/back_end_tests/back_end_integration_tests_c11.png) 
   
   
   

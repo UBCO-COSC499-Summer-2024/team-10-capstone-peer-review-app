@@ -72,14 +72,13 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Based on my goals from last cycle I was really only able to complete the PR-215 for route wrapper components, It works with based on the user Context but it isnt working with session expiration, so I am going to ask kevin for some help with it, I've spent way too much time on this and need to get other things done 
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Assist with Merging PR's and conflicts
+* Set up some more integration tests for the backend
+* Complete CSV group uploads / student enroll uploads 
+* Assis with setting functionalities of PeerReviews
   
   
 

@@ -31,6 +31,7 @@ services:
     volumes:
       - ./server:/usr/server
       - server_node_modules:/usr/server/node_modules
+      - uploads:/usr/server/uploads  
     depends_on:
       - db 
 
@@ -52,7 +53,16 @@ services:
       - server
       - db
 
+  file_storage:
+    image: nginx:alpine
+    volumes:
+      - uploads:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8080:80"
+
 volumes:
   db-data: 
   server_node_modules:
   client_node_modules:
+  uploads:  

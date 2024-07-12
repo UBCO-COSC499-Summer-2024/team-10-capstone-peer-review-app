@@ -107,195 +107,37 @@ export const removeStudentFromClass = asyncErrorHandler(async (req, res) => {
 	});
 });
 
-// Controller methods for rubrics operations
-
-export const addRubricsToAssignment = asyncErrorHandler(async (req, res) => {
-	const creatorId = req.user.userId;
-	const { assignmentId, rubricData } = req.body;
-	const updatedClass = await classService.createRubricsForAssignment(
-		creatorId,
-		assignmentId,
-		rubricData
-	);
-	return res.status(200).json({
-		status: "Success",
-		message: "Rubric successfully added to assignment",
-		data: updatedClass
-	});
-});
-
-export const removeRubricsFromAssignment = asyncErrorHandler(
-	async (req, res) => {
-		const { rubricId } = req.body;
-		const updatedClass =
-			await classService.deleteRubricsForAssignment(rubricId);
-		return res.status(200).json({
-			status: "Success",
-			message: "Rubric successfully removed from assignment",
-			data: updatedClass
-		});
-	}
-);
-
-export const updateRubricsInAssignment = asyncErrorHandler(async (req, res) => {
-	const { rubricId, updateData } = req.body;
-	const updatedClass = await classService.updateRubricsForAssignment(
-		rubricId,
-		updateData
-	);
-	return res.status(200).json({
-		status: "Success",
-		message: "Rubric successfully updated in assignment",
-		data: updatedClass
-	});
-});
-
-export const getRubricsInAssignment = asyncErrorHandler(async (req, res) => {
-	const { assignmentId } = req.body;
-	const rubricData = await classService.getRubricsForAssignment(assignmentId);
-	return res.status(200).json({
-		status: "Success",
-		data: rubricData
-	});
-});
-
-// Controller methods for criterion operations
-export const addCriterionToRubric = asyncErrorHandler(async (req, res) => {
-	const { rubricId, criterionData } = req.body;
-	const updatedClass = await classService.createCriterionForRubric(
-		rubricId,
-		criterionData
-	);
-	return res.status(200).json({
-		status: "Success",
-		message: "Criterion successfully added to rubric",
-		data: updatedClass
-	});
-});
-
-export const removeCriterionFromRubric = asyncErrorHandler(async (req, res) => {
-	const { criterionId } = req.body;
-	const updatedClass = await classService.deleteCriterionForRubric(criterionId);
-	return res.status(200).json({
-		status: "Success",
-		message: "Criterion successfully removed from rubric",
-		data: updatedClass
-	});
-});
-
-export const updateCriterionInRubric = asyncErrorHandler(async (req, res) => {
-	const { criterionId, updateData } = req.body;
-	const updatedClass = await classService.updateCriterionForRubric(
-		criterionId,
-		updateData
-	);
-	return res.status(200).json({
-		status: "Success",
-		message: "Criterion successfully updated in rubric",
-		data: updatedClass
-	});
-});
-
-export const getCriterionInRubric = asyncErrorHandler(async (req, res) => {
-	const { rubricId } = req.body;
-	const criterionData = await classService.getCriterionForRubric(rubricId);
-	return res.status(200).json({
-		status: "Success",
-		data: criterionData
-	});
-});
-
-export const addCriterionRating = asyncErrorHandler(async (req, res) => {
-	const { criterionId, ratingData } = req.body;
-	const newRating = await classService.createCriterionRating(
-		criterionId,
-		ratingData
-	);
-	return res.status(201).json({
-		status: "Success",
-		message: "Criterion rating successfully added",
-		data: newRating
-	});
-});
-
-//add update and delete here
-
-// Controller methods for criterion Grade operations
-export const addCriterionGrade = asyncErrorHandler(async (req, res) => {
-	const { rubricId, criterionData } = req.body;
-	const updatedClass = await classService.createCriterionForRubric(
-		rubricId,
-		criterionData
-	);
-	return res.status(200).json({
-		status: "Success",
-		message: "Criterion successfully added to rubric",
-		data: updatedClass
-	});
-});
-
-export const removeCriterionGrade = asyncErrorHandler(async (req, res) => {
-	const { criterionId } = req.body;
-	const updatedClass = await classService.deleteCriterionForRubric(criterionId);
-	return res.status(200).json({
-		status: "Success",
-		message: "Criterion successfully removed from rubric",
-		data: updatedClass
-	});
-});
-
-export const updateCriterionGrade = asyncErrorHandler(async (req, res) => {
-	const { criterionId, updateData } = req.body;
-	const updatedClass = await classService.updateCriterionForRubric(
-		criterionId,
-		updateData
-	);
-	return res.status(200).json({
-		status: "Success",
-		message: "Criterion successfully updated in rubric",
-		data: updatedClass
-	});
-});
-
-export const getCriterionGrade = asyncErrorHandler(async (req, res) => {
-	const { rubricId } = req.body;
-	const criterionData = await classService.getCriterionForRubric(rubricId);
-	return res.status(200).json({
-		status: "Success",
-		data: criterionData
-	});
-});
 
 export const addGroupToClass = asyncErrorHandler(async (req, res) => {
 	const { classId, groupData } = req.body;
-	const updatedClass = await classService.addGroupToClass(classId, groupData);
+	const updatedGroup = await classService.addGroupToClass(classId, groupData);
 	return res.status(200).json({
 		status: "Success",
 		message: "Group successfully added to class",
-		data: updatedClass
+		data: updatedGroup
 	});
 });
 
 export const removeGroupFromClass = asyncErrorHandler(async (req, res) => {
 	const { groupId } = req.body;
-	const updatedClass = await classService.removeGroupFromClass(groupId);
+	const updatedGroup = await classService.removeGroupFromClass(groupId);
 	return res.status(200).json({
 		status: "Success",
 		message: "Group successfully removed from class",
-		data: updatedClass
+		data: updatedGroup
 	});
 });
 
 export const updateGroupInClass = asyncErrorHandler(async (req, res) => {
 	const { groupId, updateData } = req.body;
-	const updatedClass = await classService.updateGroupInClass(
+	const updatedGroup = await classService.updateGroupInClass(
 		groupId,
 		updateData
 	);
 	return res.status(200).json({
 		status: "Success",
 		message: "Group successfully updated in class",
-		data: updatedClass
+		data: updatedGroup
 	});
 });
 
@@ -368,6 +210,24 @@ export const leaveGroup = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+export const isUserInGroup = asyncErrorHandler(async (req, res) => {
+	const { classId, userId } = req.body;
+	const isUsrInGrp = await classService.isUserInGroup(classId, userId);
+	return res.status(200).json({
+		status: "Success",
+		data: isUsrInGrp
+	});
+});
+
+export const getStudentsNotInAnyGroup = asyncErrorHandler(async (req, res) => {
+	const { classId } = req.body;
+	const usrsNotInGrps = await classService.getStudentsNotInAnyGroup(classId);
+	return res.status(200).json({
+		status: "Success",
+		data: usrsNotInGrps
+	});
+});
+
 export const getCategoriesByClassId = asyncErrorHandler(async (req, res) => {
 	const { classId } = req.params;
 	const categories = await classService.getCategoriesByClassId(classId);
@@ -386,22 +246,6 @@ export default {
 	addStudentToClass,
 	removeStudentFromClass,
 
-	addRubricsToAssignment,
-	removeRubricsFromAssignment,
-	updateRubricsInAssignment,
-	getRubricsInAssignment,
-
-	addCriterionToRubric,
-	removeCriterionFromRubric,
-	updateCriterionInRubric,
-	getCriterionInRubric,
-
-	addCriterionGrade,
-	removeCriterionGrade,
-	updateCriterionGrade,
-	getCriterionGrade,
-	addCriterionRating,
-
 	addGroupToClass,
 	removeGroupFromClass,
 	updateGroupInClass,
@@ -410,6 +254,8 @@ export default {
 	getGroupMembers,
 	addGroupMember,
 	removeGroupMember,
+	isUserInGroup,
+	getStudentsNotInAnyGroup,
 
 	getCategoriesByClassId
 };

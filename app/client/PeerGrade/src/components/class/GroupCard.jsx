@@ -7,6 +7,13 @@ import {
 	CardDescription,
 	CardContent
 } from "@/components/ui/card";
+import {
+	Carousel,
+	CarouselContent,
+	CarouselItem,
+	CarouselNext,
+	CarouselPrevious,
+  } from "@/components/ui/carousel"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
 	Popover,
@@ -14,82 +21,63 @@ import {
 	PopoverContent
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
-const GroupCard = ({ classes, groups, classNames, users }) => {
-	const [selectedClass, setSelectedClass] = useState(null);
-	const [filteredGroups, setFilteredGroups] = useState([]);
-
-	useEffect(() => {
-		if (classes && classes.length > 0) setSelectedClass(classes[0]);
-	}, [classes]);
-
-	useEffect(() => {
-		if (selectedClass) {
-			setFilteredGroups(groups.filter((group) => group.classId === selectedClass.classId));
-		}
-	}, [selectedClass, groups]);
+const GroupCard = ({ groups }) => {
 
 	const getGroupMembers = (groupId) => {
-		return filteredGroups.filter((group) => group.groupId === groupId);
+		return groups.filter((group) => group.groupId === groupId);
 	};
 
 	return (
-		<div>
+		<div className="w-full">
 			<Card className="w-full max-w-lg p-8 bg-white shadow-md rounded-lg">
 				<CardHeader>
-					<CardTitle>Group Members</CardTitle>
-					<CardDescription>
-						Invite your group members to collaborate.
-					</CardDescription>
+					<CardTitle className='text-center'>Groups</CardTitle>
 				</CardHeader>
-				<CardContent>
-					<Popover>
-						<PopoverTrigger asChild className="w-full">
-							<Button variant="outline" className="mb-4">
-								{selectedClass ? selectedClass.classname : "Select a class"}
-							</Button>
-						</PopoverTrigger>
-						<PopoverContent>
-							{classNames.map((classItem) => (
-								<div
-									key={classItem.classId}
-									className="cursor-pointer p-2 hover:bg-gray-100"
-									onClick={() => setSelectedClass(classItem)}
-								>
-									{classItem.classname}
-								</div>
-							))}
-						</PopoverContent>
-					</Popover>
-					{filteredGroups.map((group) =>
-						getGroupMembers(group.groupId).map((member) => {
-							const user = users.find((u) => u.user_id === member.student_id);
-							return (
-								<div
-									key={member.groupId}
-									className="flex items-center justify-between mb-4"
-								>
-									<div className="flex items-center">
-										<Avatar className="w-10 h-10 mr-4">
-											<AvatarImage
-												src={user.avatarUrl}
-												alt={`${user.firstname} ${user.lastname}`}
-											/>
-											<AvatarFallback>
-												{user.firstname[0]}
-												{user.lastname[0]}
-											</AvatarFallback>
-										</Avatar>
-										<div>
-											<div className="font-semibold">{`${user.firstname} ${user.lastname}`}</div>
-											<div className="text-gray-500">{user.email}</div>
-										</div>
-									</div>
-									<Button variant="outline">{user.type}</Button>
-								</div>
-							);
-						})
-					)}
+				<CardContent className='flex items-center justify-center'>
+					{groups.length === 0 && <div className="text-sm text-gray-500 text-center px-6">No groups found.<p className="mt-2">Join or create a group in any class to see it here!</p></div>}
+					{groups.length > 0 &&
+						<Carousel className="w-full max-w-xs">
+							<CarouselContent>
+								{Array.from({ length: groups.length }).map((_, index) => (
+									<CarouselItem key={index}>
+										<Card className='h-full'>
+											<CardHeader>
+												<Link to="">
+													<CardTitle className='text-center text-xl shadow-sm rounded-lg hover:shadow-lg transition-all break-words border p-1'>{groups[index].groupName}</CardTitle>
+												</Link>
+												<CardDescription className='text-center break-words'>
+													{groups[index].groupDescription}
+												</CardDescription>
+											</CardHeader>
+											<CardContent className="flex flex-col items-center">
+												<div className="flex flex-col justify-center items-center w-full">
+												{groups[index].students.map((student) => (
+													<div className="flex items-center mb-2 w-full" key={student.id}>
+													<Avatar className="w-8 h-8 mr-4">
+														<AvatarImage
+														src={student.avatarUrl}
+														alt={`${student.firstname} ${student.lastname}`}
+														/>
+														<AvatarFallback>
+														{student.firstname[0]}
+														{student.lastname[0]}
+														</AvatarFallback>
+													</Avatar>
+													<div className="font-semibold">{`${student.firstname} ${student.lastname}`}</div>
+													</div>
+												))}
+												</div>
+											</CardContent>
+										</Card>
+									</CarouselItem>
+								))}
+							</CarouselContent>
+							<CarouselPrevious />
+							<CarouselNext />
+						</Carousel>
+					}
 				</CardContent>
 			</Card>
 		</div>

@@ -23,10 +23,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { toast } from '@/components/ui/use-toast';
-import RubricDrawer from '@/components/assign/RubricDrawer';
 import { getCategoriesByClassId } from '@/api/classApi';
 import { addAssignmentToClass } from '@/api/assignmentApi';
-// import { addExtensiveRubric } from '@/api/rubricApi';
 
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -37,27 +35,19 @@ const FormSchema = z.object({
   dueDate: z.date({
     required_error: "Due date is required",
   }),
-  // rubric: z.array(z.object({
-  //   criteria: z.string().min(1, "Criteria is required"),
-  //   ratings: z.string().min(1, "Ratings is required"),
-  //   points: z.string().min(1, "Points is required").regex(/^\d+$/, "Points must be a numeric value"),
-  // })).min(1, "At least one rubric row is required."),
-  // file: z.any().optional(),
+  file: z.any().optional(),
 });
 
-const AssignmentCreation = () => {
+const AssignmentCreation = ({ onAssignmentCreated }) => {
   const { classId } = useParams();
   const [open, setOpen] = useState(false);
   const [openCat, setOpenCat] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const [value, setValue] = useState("");
   const fileInputRef = useRef(null);
   const [selectedFileName, setSelectedFileName] = useState('');
-  // const [rubricData, setRubricData] = useState([{ criteria: "", ratings: [""], points: "" }]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
-
-
+  
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -67,8 +57,7 @@ const AssignmentCreation = () => {
       categoryId: "",
       reviewOption: "",
       dueDate: null,
-      // rubric: [],
-      // file: null,
+      file: null,
     }
   });
 
@@ -94,7 +83,6 @@ const AssignmentCreation = () => {
     form.setValue("file", selectedFile);
   };
 
-
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -108,29 +96,54 @@ const AssignmentCreation = () => {
     fetchCategories();
   }, [classId]);
 
-  const onSubmit = (data) => {
-    const simplifiedData = {
-      ...data,
-      maxSubmissions: parseInt(data.maxSubmissions, 10),
-      // file: selectedFileName,
-    };
+  const onSubmit = async (data) => {
+    console.log('Form submitted:', data);  // Add logging to check form data
+    console.log('selectedCategory:', selectedCategory);
+   
+    const formData = new FormData();
+    formData.append('classId', classId);
+    formData.append('categoryId', selectedCategory);
+    formData.append('assignmentData', JSON.stringify({
+      title: data.title,
+      description: data.description,
+      dueDate: data.dueDate,
+      reviewOption: data.reviewOption,
+      maxSubmissions: data.maxSubmissions,
+    }));
+    if (fileInputRef.current.files[0]) {
+      formData.append('file', fileInputRef.current.files[0]);
+    }
 
     try {
-      console.log('simple data:', simplifiedData)
-      addAssignmentToClass(classId, simplifiedData)
+      const response = await addAssignmentToClass(formData);
 
-    } catch(error) {
+      if (response.status === 'Success') {
+        toast({
+          title: "Assignment Created",
+          description: "The assignment has been successfully created.",
+          status: "success"
+        });
+        form.reset();
+        setSelectedFileName('');
+        setSelectedCategory('');
+        
+        // Call the callback function to refresh assignments
+        onAssignmentCreated();
+      } else {
+        toast({
+          title: "Error",
+          description: response.message,
+          status: "error"
+        });
+      }
+    } catch (error) {
       console.error('Error submitting assignment:', error);
       toast({
-      title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(simplifiedData, null, 2)}</code>
-          </pre>
-        ),
+        title: "Error",
+        description: "There was an error creating the assignment.",
+        status: "error"
       });
     }
-    console.log('Updated assignment data:', simplifiedData);
   };
 
   return (
@@ -167,7 +180,7 @@ const AssignmentCreation = () => {
                 </FormItem>
               )}
             />
-             <FormField
+            <FormField
               control={form.control}
               name="maxSubmissions"
               render={({ field }) => (
@@ -332,71 +345,7 @@ const AssignmentCreation = () => {
                 </FormItem>
               )}
             />
-            {/* <div>
-              <FormLabel>Rubric</FormLabel>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Criteria</TableHead>
-                    <TableHead>Ratings</TableHead>
-                    <TableHead>Points</TableHead>
-                    <TableHead></TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {fields.map((item, index) => (
-                    <TableRow key={item.id}>
-                      <TableCell>
-                        <FormField
-                          control={form.control}
-                          name={`rubric.${index}.criteria`}
-                          render={({ field }) => (
-                            <FormControl>
-                              <Input {...field} placeholder="Criteria" />
-                            </FormControl>
-                          )}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <FormField
-                          control={form.control}
-                          name={`rubric.${index}.ratings`}
-                          render={({ field }) => (
-                            <FormControl>
-                              <Input {...field} placeholder="Ratings" />
-                            </FormControl>
-                          )}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <FormField
-                          control={form.control}
-                          name={`rubric.${index}.points`}
-                          render={({ field }) => (
-                            <FormControl>
-                              <Input {...field} placeholder="Points" type="number" className="hide-arrows"/>
-                            </FormControl>
-                          )}
-                        />
-                      </TableCell>
-                      <TableCell className='flex flex-row space-x-2'>
-                        {fields.length > 1 && (
-                          <Button type="button" variant="outline" onClick={() => removeRow(index)}>
-                            <MinusCircle className="h-4 w-4" />
-                          </Button>
-                        )}
-                        {index === fields.length - 1 && (
-                          <Button type="button" variant="outline" onClick={addRow}>
-                            <Plus className="h-4 w-4" />
-                          </Button>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div> */}
-            {/* <FormItem>
+            <FormItem>
               <FormLabel htmlFor="file-upload">Upload File</FormLabel>
               <input
                 type="file"
@@ -415,8 +364,8 @@ const AssignmentCreation = () => {
               </div>
               <FormDescription>Attach any PDF files related to the assignment.</FormDescription>
               <FormMessage />
-            </FormItem> */}
-            <Button type="submit" className='bg-primary text-white'>Submit</Button>
+            </FormItem>
+            <Button type="submit" className='bg-primary text-white ' onSubmit={form.reset}>Submit</Button>
           </form>
         </Form>
       </div>

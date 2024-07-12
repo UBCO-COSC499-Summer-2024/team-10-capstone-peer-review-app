@@ -47,11 +47,11 @@ function Dashboard() {
 				}
 			};
 
-			const fetchGroups = async () => {
+			const fetchMyGroups = async () => {
 				try {
 					const groups = await getGroups(user.userId);
-					console.log("groups", groups);
-					setGroups(Array.isArray(groups) ? groups : []);
+					console.log("groups", groups.data);
+					setGroups(Array.isArray(groups.data) ? groups.data : []);
 				} catch (error) {
 					toast({
 						title: "Error",
@@ -76,7 +76,7 @@ function Dashboard() {
 			// };
 
 			fetchAssignments();
-			fetchGroups();
+			fetchMyGroups();
 			// fetchReviews();
 		}
 	}, [user]);
@@ -194,19 +194,16 @@ function Dashboard() {
 						})}
 			</div>
 			<div className="flex justify-between items-start gap-5 pt-5">
-				<div className="flex w-1/2">
+				{user.role === "STUDENT" && <div className="flex w-1/2 overflow-hidden">
 					{userLoading ? (
 						// Skeleton for GroupCard
 						<Skeleton className="h-96 w-full rounded-lg" />
 					) : (
 						<GroupCard
-							classes={classes}
 							groups={groups}
-							classNames={classNames}
-							users={user}
 						/>
 					)}
-				</div>
+				</div>}
 				<div className="flex w-3/4">
 					<Tabs defaultValue="assignments" className="flex-1">
 						{userLoading ? (

@@ -10,19 +10,7 @@ import {
 	addStudentToClass,
 	removeStudentFromClass,
 	getStudentsByClass,
-	addCriterionToRubric,
-	removeCriterionFromRubric,
-	updateCriterionInRubric,
-	getCriterionInRubric,
-	addRubricsToAssignment,
-	removeRubricsFromAssignment,
-	updateRubricsInAssignment,
-	getRubricsInAssignment,
-	addCriterionGrade,
-	removeCriterionGrade,
-	updateCriterionGrade,
-	getCriterionGrade,
-	addCriterionRating,
+	
 	addGroupToClass,
 	removeGroupFromClass,
 	updateGroupInClass,
@@ -33,7 +21,9 @@ import {
 	removeGroupMember,
 	getCategoriesByClassId,
 	joinGroup,
-	leaveGroup
+	leaveGroup,
+	isUserInGroup,
+	getStudentsNotInAnyGroup
 } from "../controllers/classController.js";
 
 import {
@@ -72,64 +62,6 @@ router
 	.route("/remove-student")
 	.post(ensureUser, ensureInstructorOrAdmin, removeStudentFromClass);
 
-// Rubric Routes
-
-router
-	.route("/add-rubrics")
-	.post(ensureUser, ensureInstructor, addRubricsToAssignment);
-
-router
-	.route("/remove-rubrics")
-	.post(ensureUser, ensureInstructor, removeRubricsFromAssignment);
-
-router
-	.route("/update-rubrics")
-	.post(ensureUser, ensureInstructor, updateRubricsInAssignment);
-
-router
-	.route("/get-rubrics")
-	.post(ensureUser, ensureInstructor, getRubricsInAssignment);
-
-// Criterion Routes
-router
-	.route("/add-criterion")
-	.post(ensureUser, ensureInstructor, addCriterionToRubric);
-
-router
-	.route("/remove-criterion")
-	.post(ensureUser, ensureInstructor, removeCriterionFromRubric);
-
-router
-	.route("/update-criterion")
-	.post(ensureUser, ensureInstructor, updateCriterionInRubric);
-
-router
-	.route("/get-criterion")
-	.post(ensureUser, ensureInstructor, getCriterionInRubric);
-
-router
-	.route("/add-criterion-rating")
-	.post(ensureUser, ensureInstructor, addCriterionRating);
-  
-  //add update and delete here for rating
-
-// Criterion Grade Routes
-router
-	.route("/give-criterion-grade")
-	.post(ensureUser, ensureInstructor, addCriterionGrade);
-
-router
-	.route("/remove-criterion-grade")
-	.post(ensureUser, ensureInstructor, removeCriterionGrade);
-
-router
-	.route("/update-criterion-grade")
-	.post(ensureUser, ensureInstructor, updateCriterionGrade);
-
-router
-	.route("/get-criterion-grade")
-	.post(ensureUser, ensureInstructor, getCriterionGrade);
-
 router
 	.route("/add-group")
 	.post(ensureUser, addGroupToClass);
@@ -165,6 +97,9 @@ router
 router
 	.route("/remove-group-member")
 	.post(ensureUser, ensureInstructor, removeGroupMember);
+
+router.route("/is-user-in-group").post(ensureUser, ensureInstructorOrAdmin, isUserInGroup);
+router.route("/users-not-in-groups").post(ensureUser, ensureInstructorOrAdmin, getStudentsNotInAnyGroup);
 
 router.route("/:classId/categories").get(ensureUser, getCategoriesByClassId);
 

@@ -29,15 +29,29 @@ export const addAssignmentToClass = async (formData) => {
 };
 
 
-export const updateAssignmentInClass = async (classId, assignmentId, updateData) => {
+export const updateAssignmentInClass = async (formData) => {
     try {
-        const response = await axios.put(`${BASE_URL}/assignment/${classId}/assignments/${assignmentId}`, updateData);
-        return response.data;
+      const response = await axios.post('/api/assignment/update-assignment', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+  
+      if (response.data.status === 'Success') {
+        toast({
+          title: "Assignment Updated",
+          description: "The assignment has been successfully updated.",
+          status: "success"
+        });
+      }
+      console.log('Updated assignment data:', response.data);
+  
+      return response.data;
     } catch (error) {
-        handleError(error);
-        return error.response.data;
+      handleError(error);
+      return error.response.data;
     }
-};
+  };
 
 export const removeAssignmentFromClass = async (classId, assignmentId) => {
     try {

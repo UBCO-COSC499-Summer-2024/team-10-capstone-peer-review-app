@@ -110,6 +110,7 @@ const EditAssignment = () => {
   const onSubmit = async (data) => {
     const formData = new FormData();
     formData.append('classId', classId);
+    formData.append('assignmentId', assignmentId);
     formData.append('categoryId', selectedCategory);
     formData.append('assignmentData', JSON.stringify({
       title: data.title,
@@ -121,10 +122,10 @@ const EditAssignment = () => {
     if (fileInputRef.current.files[0]) {
       formData.append('file', fileInputRef.current.files[0]);
     }
-
+  
     try {
-      const response = await updateAssignmentInClass(classId, assignmentId, formData);
-
+      const response = await updateAssignmentInClass(formData);
+  
       if (response.status === 'Success') {
         toast({
           title: "Assignment Updated",

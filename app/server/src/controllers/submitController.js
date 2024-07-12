@@ -1,9 +1,14 @@
-// submitController.js
-import submitService from "../services/submitService.js";
-import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
+import { v4 as uuidv4 } from 'uuid';
+import asyncErrorHandler from "../utils/asyncErrorHandler.js";
+import submitService from "../services/submitService.js";
 
-const upload = multer({ dest: "uploads/submissions/" });
+const BASE_URL = "http://localhost:8080/"; // nginx storage (replace with cloud storage once developed)
+const UPLOAD_PATH = '/usr/server/uploads/submissions';
+
+const upload = multer({ storage: multer.memoryStorage() });
 
 export const createSubmission = [
     upload.single('file'),
@@ -11,33 +16,49 @@ export const createSubmission = [
         console.log('Request headers:', req.headers);
         console.log('Request body:', req.body);
         console.log('Request file:', req.file);
-  
+
         const studentId = req.body.studentId;
         const assignmentId = req.body.assignmentId;
-        const submissionFilePath = req.file ? req.file.path : null;
-  
-        if (!submissionFilePath) {
-          return res.status(400).json({
-            status: "Error",
-            message: "No file uploaded"
-          });
+
+        let fileUrl = null;
+        if (req.file) {
+            const uniqueFilename = `${uuidv4()}${path.extname(req.file.originalname)}`;
+            console.log("uniqueFilename", uniqueFilename);
+            const filePath = path.join(UPLOAD_PATH, uniqueFilename);
+
+            // Ensure the upload directory exists
+            fs.mkdirSync(UPLOAD_PATH, { recursive: true });
+
+            // Write the file to the shared volume
+            fs.writeFileSync(filePath, req.file.buffer);
+
+            // Construct the URL that Nginx will serve
+            fileUrl = `${BASE_URL}/${uniqueFilename}`;
         }
-  
-        const newSubmission = await submitService.createSubmission(studentId, assignmentId, submissionFilePath);
-        return res.status(200).json({
-          status: "Success",
-          data: newSubmission
-        });
+
+        if (!fileUrl) {
+            return res.status(400).json({
+                status: "Error",
+                message: "No file uploaded"
+            });
+        }
+
+        const newSubmission = await submitService.createSubmission(studentId, assignmentId, fileUrl);
         
-      // } catch (error) {
-      //   console.error('Submission error:', error);
-      //   return res.status(500).json({
-      //     status: "Error",
-      //     message: error.message || "An error occurred during submission"
-      //   });
-      // }
+        if (newSubmission) {
+            return res.status(200).json({
+                status: "Success",
+                message: "Submission successfully created",
+                data: newSubmission
+            });
+        } else {
+            return res.status(500).json({
+                status: "Error",
+                message: "Failed to create submission"
+            });
+        }
     })
-  ]; 
+];
 
 
 export const getStudentSubmission = asyncErrorHandler(async (req, res) => {

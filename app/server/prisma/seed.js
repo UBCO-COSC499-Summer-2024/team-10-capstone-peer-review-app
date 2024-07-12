@@ -211,7 +211,7 @@ async function main() {
 		data: {
 			assignmentId: assignment1.assignmentId,
 			submitterId: student.userId,
-			sumbissionFilePath: faker.internet.url(),
+			submissionFilePath: faker.internet.url(),
 			finalGrade: null
 		}
 	});
@@ -220,7 +220,7 @@ async function main() {
 		data: {
 			assignmentId: assignment2.assignmentId,
 			submitterId: student.userId,
-			sumbissionFilePath: faker.internet.url(),
+			submissionFilePath: faker.internet.url(),
 			finalGrade: null
 		}
 	});
@@ -229,7 +229,7 @@ async function main() {
 		data: {
 			assignmentId: assignment3.assignmentId,
 			submitterId: student.userId,
-			sumbissionFilePath: faker.internet.url(),
+			submissionFilePath: faker.internet.url(),
 			finalGrade: null
 		}
 	});
@@ -238,7 +238,7 @@ async function main() {
 		data: {
 			assignmentId: assignment4.assignmentId,
 			submitterId: student.userId,
-			sumbissionFilePath: faker.internet.url(),
+			submissionFilePath: faker.internet.url(),
 			finalGrade: null
 		}
 	});

@@ -56,9 +56,6 @@ const getSubmissionsForAssignment = async (assignmentId) => {
 }
 
 const createSubmission = async (studentId, assignmentId, submissionFilePath) => {
-    console.log("studentId", studentId);
-    console.log("assignmentId", assignmentId);
-    console.log("submissionFilePath", submissionFilePath);
     try {
         let submitterGroupId, submitterId;
         const assignment = await prisma.assignment.findFirst({
@@ -154,7 +151,7 @@ const createSubmission = async (studentId, assignmentId, submissionFilePath) => 
 
         return newSubmission;
     } catch (error) {
-        throw new apiError("Failed to create submission", 500);
+        throw new apiError("Failed to create submission" + error, 500);
     }
 };
 

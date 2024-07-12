@@ -2,41 +2,42 @@
 import submitService from "../services/submitService.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 import multer from 'multer';
-import path from 'path';
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/submissions/')
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname))
-  }
-});
-
-const upload = multer({ storage: storage });
+const upload = multer({ dest: "uploads/submissions/" });
 
 export const createSubmission = [
-  upload.single('file'),
-  asyncErrorHandler(async (req, res) => {
-    console.log(req.user, req.body, req.file);
-    const studentId = req.body.studentId;
-    const assignmentId = req.body.assignmentId;
-    const submissionFilePath = req.file ? req.file.path : null;
-
-    if (!submissionFilePath) {
-      return res.status(400).json({
-        status: "Error",
-        message: "No file uploaded"
-      });
-    }
-
-    const newSubmission = await submitService.createSubmission(studentId, assignmentId, submissionFilePath);
-    return res.status(200).json({
-      status: "Success",
-      data: newSubmission
-    });
-  })
-];
+    upload.single('file'),
+    asyncErrorHandler(async (req, res) => {
+        console.log('Request headers:', req.headers);
+        console.log('Request body:', req.body);
+        console.log('Request file:', req.file);
+  
+        const studentId = req.body.studentId;
+        const assignmentId = req.body.assignmentId;
+        const submissionFilePath = req.file ? req.file.path : null;
+  
+        if (!submissionFilePath) {
+          return res.status(400).json({
+            status: "Error",
+            message: "No file uploaded"
+          });
+        }
+  
+        const newSubmission = await submitService.createSubmission(studentId, assignmentId, submissionFilePath);
+        return res.status(200).json({
+          status: "Success",
+          data: newSubmission
+        });
+        
+      // } catch (error) {
+      //   console.error('Submission error:', error);
+      //   return res.status(500).json({
+      //     status: "Error",
+      //     message: error.message || "An error occurred during submission"
+      //   });
+      // }
+    })
+  ]; 
 
 
 export const getStudentSubmission = asyncErrorHandler(async (req, res) => {

@@ -14,11 +14,20 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import PDFViewer from '@/components/assign/PDFViewer';
 
 const Submissions = ({ assignmentId }) => {
   const { classId } = useParams();
   const [studentsWithSubmissions, setStudentsWithSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedSubmission, setSelectedSubmission] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,6 +67,15 @@ const Submissions = ({ assignmentId }) => {
     fetchData();
   }, [assignmentId, classId]);
 
+  const handleDownload = (submission) => {
+    const link = document.createElement('a');
+    link.href = submission.submissionFilePath;
+    link.download = `submission_${submission.submissionId}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   if (loading) {
     return <div>Loading submissions...</div>;
   }
@@ -96,11 +114,27 @@ const Submissions = ({ assignmentId }) => {
                           <TableCell>Attempt {subIndex + 1}</TableCell>
                           <TableCell>{new Date(submission.createdAt).toLocaleString()}</TableCell>
                           <TableCell>
-                            <Button variant="outline" size="sm" className="mr-2">
-                              <Eye className="h-4 w-4 mr-1" />
-                              View
-                            </Button>
-                            <Button variant="outline" size="sm">
+                            <Dialog>
+                              <DialogTrigger asChild>
+                                <Button variant="outline" size="sm" className="mr-2" onClick={() => setSelectedSubmission(submission)}>
+                                  <Eye className="h-4 w-4 mr-1" />
+                                  View
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="max-w-4xl h-[80vh]">
+                                <DialogHeader>
+                                  <DialogTitle>Submission View</DialogTitle>
+                                </DialogHeader>
+                                <div className="flex-1 overflow-auto">
+                                  <PDFViewer url={submission.submissionFilePath} scale="1" />
+                                </div>
+                                <Button onClick={() => handleDownload(submission)}>
+                                  <Download className="h-4 w-4 mr-1" />
+                                  Download
+                                </Button>
+                              </DialogContent>
+                            </Dialog>
+                            <Button variant="outline" size="sm" onClick={() => handleDownload(submission)}>
                               <Download className="h-4 w-4 mr-1" />
                               Download
                             </Button>

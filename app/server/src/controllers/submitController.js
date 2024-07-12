@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 import submitService from "../services/submitService.js";
 
-const BASE_URL = "http://localhost:8080/"; // nginx storage (replace with cloud storage once developed)
+const BASE_URL = "http://localhost:8080/submissions/"; // nginx storage (replace with cloud storage once developed)
 const UPLOAD_PATH = '/usr/server/uploads/submissions';
 
 const upload = multer({ storage: multer.memoryStorage() });
@@ -33,7 +33,7 @@ export const createSubmission = [
             fs.writeFileSync(filePath, req.file.buffer);
 
             // Construct the URL that Nginx will serve
-            fileUrl = `${BASE_URL}/${uniqueFilename}`;
+            fileUrl = `${BASE_URL}${uniqueFilename}`;
         }
 
         if (!fileUrl) {

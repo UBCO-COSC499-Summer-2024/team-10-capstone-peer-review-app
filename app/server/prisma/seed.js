@@ -217,7 +217,7 @@ async function main() {
 			assignmentId: assignment1.assignmentId,
 			submitterId: student.userId,
 			submissionFilePath: faker.internet.url(),
-			finalGrade: null
+			finalGrade: 92
 		}
 	});
 
@@ -226,7 +226,7 @@ async function main() {
 			assignmentId: assignment2.assignmentId,
 			submitterId: student.userId,
 			submissionFilePath: faker.internet.url(),
-			finalGrade: null
+			finalGrade: 80
 		}
 	});
 

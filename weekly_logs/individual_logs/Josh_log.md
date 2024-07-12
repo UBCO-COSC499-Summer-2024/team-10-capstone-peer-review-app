@@ -1,4 +1,88 @@
 
+# Josh's Log for Cycle 12
+
+
+## Tuesday, July 09, 2024, 05:21 PM - Thursday, July 11, 2024, 05:21 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[199](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/199)**: Create Classes Context, integrate into all components that require it.   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[198](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/198)**: Writing new back-end tests for dockerized test enviroment. Start with services, then controllers  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: testing, type: database, type: api 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Re-doing wrapper components on a new branch, pulling off of mahir's new changes** *(Total duration: 1.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 11, 2024, 04:21 PM - Thursday, July 11, 2024, 04:54 PM *(0.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 11, 2024, 02:00 PM - Thursday, July 11, 2024, 03:11 PM *(1.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **Helping with mahir with bug on submissions** *(Total duration: 0.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 11, 2024, 01:35 PM - Thursday, July 11, 2024, 01:55 PM *(0.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **Debugging slow login for wrapper context for react router dom** *(Total duration: 0.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 11, 2024, 01:01 PM - Thursday, July 11, 2024, 01:32 PM *(0.5 hours)*  
+  
+&nbsp; &nbsp; :watch: **Creating a wrapper component for react router dom elements for role-based-access and 404 not found pages** *(Total duration: 1.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 10, 2024, 07:37 AM - Wednesday, July 10, 2024, 09:05 AM *(1.5 hours)*  
+  
+&nbsp; &nbsp; :watch: **team logs and individual logs** *(Total duration: 0.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 09, 2024, 07:30 PM - Tuesday, July 09, 2024, 08:16 PM *(0.8 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[215](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/215)**: Logs Review for cycle 11  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[215](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/215)**: Logs Review for cycle 11  
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[199](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/199)**: Create Classes Context, integrate into all components that require it.   
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[207](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/207)**: Integrate back-end testing env into drone  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[201](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/201)**: Add a wrapper route component to the routes for role-based access and not logged in   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[200](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/200)**: Apply for new Role Request Card  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[198](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/198)**: Writing new back-end tests for dockerized test enviroment. Start with services, then controllers  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[197](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/197)**: Dockerized Testing environment to do integration testing   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[147](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/147)**: File Storage Worker Service: Redis DB, FileSystemUploadQueue, UploadtoService, etc.   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[88](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/88)**: Integrate Enroll Request in Classes  
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Josh's Log for Cycle 11
 
 

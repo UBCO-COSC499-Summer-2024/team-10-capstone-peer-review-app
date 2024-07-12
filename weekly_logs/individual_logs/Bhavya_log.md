@@ -1,4 +1,50 @@
 
+# Bhavya's Log for Cycle 12
+
+
+## Tuesday, July 09, 2024, 05:21 PM - Thursday, July 11, 2024, 05:21 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[198](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/198)**: Writing new back-end tests for dockerized test enviroment. Start with services, then controllers  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: testing, type: database, type: api 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Review Route refactoring** *(Total duration: 7.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 09, 2024, 08:08 PM - Wednesday, July 10, 2024, 03:21 AM *(7.2 hours)*  
+  
+
+## All Features worked on this cycle:
+
+## Features completed on this cycle:
+
+## Completed tasks:
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[198](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/198)**: Writing new back-end tests for dockerized test enviroment. Start with services, then controllers  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[88](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/88)**: Integrate Enroll Request in Classes  
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Bhavya's Log for Cycle 11
 
 

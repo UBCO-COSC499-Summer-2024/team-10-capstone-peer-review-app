@@ -1,4 +1,78 @@
 
+# Abdul's Log for Cycle 12
+
+
+## Tuesday, July 09, 2024, 05:21 PM - Thursday, July 11, 2024, 05:21 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[213](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/213)**: updating settings page to work as intended  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[199](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/199)**: Create Classes Context, integrate into all components that require it.   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[193](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/193)**: Delete groups for instructor, add / remove students from groups   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[192](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/192)**: Set up profile to actually be able to update user info I.E. email, firstname lastname   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api, type: UI 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Working on Manage Groups** *(Total duration: 1.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 11, 2024, 02:10 AM - Thursday, July 11, 2024, 03:41 AM *(1.5 hours)*  
+  
+&nbsp; &nbsp; :watch: **Debugging and working on others' PR's** *(Total duration: 0.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 10, 2024, 02:04 AM - Wednesday, July 10, 2024, 02:36 AM *(0.5 hours)*  
+  
+
+## All Features worked on this cycle:
+
+## Features completed on this cycle:
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[213](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/213)**: updating settings page to work as intended  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[199](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/199)**: Create Classes Context, integrate into all components that require it.   
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[193](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/193)**: Delete groups for instructor, add / remove students from groups   
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[192](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/192)**: Set up profile to actually be able to update user info I.E. email, firstname lastname   
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[202](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/202)**: Separate Delete Class dialog from Search.jsx & ManageClass.jsx  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[190](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/190)**: Refactor Profile icon to be clickable, add a color or shadow when hovering to indicate pressable  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[172](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/172)**: Refactor front-end test  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[140](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/140)**: Major Use Case 24: View User Reports   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[127](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/127)**: Major Use Case 12: Manage Group   
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Abdul's Log for Cycle 11
 
 

@@ -45,18 +45,18 @@ function Dashboard() {
 				setIsLoading(false);
 			};
 
-			const fetchGroups = async () => {
-				try {
-					const groups = await getGroups(user.userId);
-					setGroups(Array.isArray(groups) ? groups : []);
-				} catch (error) {
-					toast({
-						title: "Error",
-						description: "Failed to fetch groups",
-						variant: "destructive"
-					});
-				}
-			};
+      const fetchGroups = async () => {
+        try {
+          const groups = await getGroups(user.userId);
+          setGroups(Array.isArray(groups.data) ? groups.data : []);
+        } catch (error) {
+          toast({
+            title: "Error",
+            description: "Failed to fetch groups",
+            variant: "destructive"
+          });
+        }
+      };
 
 			fetchAssignments();
 			fetchGroups();
@@ -142,98 +142,76 @@ function Dashboard() {
 		</Alert>
 	);
 
-	return (
-		<div className="mx-auto px-4">
-			<h1 className="text-3xl font-bold mb-8 text-primary">Dashboard</h1>
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-				<Card className="bg-muted rounded-lg shadow-md">
-					<CardHeader>
-						<CardTitle className="flex items-center">
-							<Bell className="mr-2" /> Recent Announcements
-						</CardTitle>
-					</CardHeader>
-					<CardContent>
-						{/* <p className="text-muted-foreground">No recent announcements.</p> */}
-					</CardContent>
-				</Card>
-				<Card className="bg-muted rounded-lg shadow-md">
-					<CardHeader>
-						<CardTitle className="flex items-center">
-							<Users className="mr-2" /> My Groups
-						</CardTitle>
-					</CardHeader>
-					<CardContent>
-						{userLoading ? (
-							<Skeleton className="h-48 w-full" />
-						) : (
-							<GroupCard
-								classes={classes}
-								groups={groups}
-								classNames={classes.map((c) => c.classname)}
-								users={user}
-							/>
-						)}
-					</CardContent>
-				</Card>
-			</div>
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-				<Card className="bg-muted rounded-lg shadow-md">
-					<CardContent>
-						<Tabs defaultValue="assignments">
-							<TabsList className="grid w-full grid-cols-2 mb-4">
-								<TabsTrigger value="assignments">Assignments</TabsTrigger>
-								<TabsTrigger value="reviews">Reviews</TabsTrigger>
-							</TabsList>
-							<TabsContent value="assignments">
-								<ScrollArea className="h-[400px] w-full ">
-									{assignmentData.length > 0 ? (
-										assignmentData.map(renderAssignmentAlert)
-									) : (
-										<p className="text-muted-foreground">
-											No upcoming assignments.
-										</p>
-									)}
-								</ScrollArea>
-							</TabsContent>
-							<TabsContent value="reviews">
-								<ScrollArea className="h-[400px] w-full ">
-									{reviewData.length > 0 ? (
-										reviewData.map(renderReviewAlert)
-									) : (
-										<p className="text-muted-foreground">
-											No upcoming reviews.
-										</p>
-									)}
-								</ScrollArea>
-							</TabsContent>
-						</Tabs>
-					</CardContent>
-				</Card>
-				<Card className="bg-muted rounded-lg shadow-md">
-					<CardContent>
-						<Tabs defaultValue="grades">
-							<TabsList className="grid w-full grid-cols-1 mb-4">
-								<TabsTrigger value="grades">Recent Grades</TabsTrigger>
-							</TabsList>
-							<TabsContent value="grades">
-								<ScrollArea className="h-[400px] w-full ">
-									{gradeData.length > 0 ? (
-										gradeData.map((grade) => (
-											<GradeCard key={grade.assignmentId} {...grade} />
-										))
-									) : (
-										<p className="text-muted-foreground">
-											No recent grades available.
-										</p>
-									)}
-								</ScrollArea>
-							</TabsContent>
-						</Tabs>
-					</CardContent>
-				</Card>
-			</div>
-		</div>
-	);
+  return (
+    <div className="mx-auto px-4">
+      <h1 className="text-3xl font-bold mb-8 text-primary">Dashboard</h1>
+      <div className={user.role === "STUDENT" ? "grid grid-cols-1 md:grid-cols-2 gap-8 mb-8" : "grid grid-cols-1 gap-8 mb-8"}>
+        <Card className="bg-muted rounded-lg shadow-md">
+          <CardHeader>
+            <CardTitle className="flex items-center"><Bell className="mr-2" />Recent Announcements</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {/* <p className="text-muted-foreground">No recent announcements.</p> */}
+          </CardContent>
+        </Card>
+        {user.role === "STUDENT" && 
+        <Card className="bg-muted rounded-lg shadow-md">
+          <CardHeader>
+            <CardTitle className="flex items-center"><Users className="mr-2" />My Groups</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {userLoading ? (
+              <Skeleton className="h-48 w-full" />
+            ) : (
+              <GroupCard groups={groups} />
+            )}
+          </CardContent>
+        </Card>
+        }
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <Card className="bg-muted rounded-lg shadow-md">
+          <CardContent>
+            <Tabs defaultValue="assignments">
+              <TabsList className="grid w-full grid-cols-2 mb-4">
+                <TabsTrigger value="assignments">Assignments</TabsTrigger>
+                <TabsTrigger value="reviews">Reviews</TabsTrigger>
+              </TabsList>
+              <TabsContent value="assignments">
+                <ScrollArea className="h-[400px] w-full ">
+                  {assignmentData.length > 0 ? assignmentData.map(renderAssignmentAlert) : 
+                    <p className="text-muted-foreground">No upcoming assignments.</p>}
+                </ScrollArea>
+              </TabsContent>
+              <TabsContent value="reviews">
+                <ScrollArea className="h-[400px] w-full ">
+                  {reviewData.length > 0 ? reviewData.map(renderReviewAlert) : 
+                    <p className="text-muted-foreground">No upcoming reviews.</p>}
+                </ScrollArea>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
+        <Card className="bg-muted rounded-lg shadow-md">
+          <CardContent>
+            <Tabs defaultValue="grades">
+              <TabsList className="grid w-full grid-cols-1 mb-4">
+                <TabsTrigger value="grades">Recent Grades</TabsTrigger>
+              </TabsList>
+              <TabsContent value="grades">
+                <ScrollArea className="h-[400px] w-full ">
+                  {gradeData.length > 0 ? gradeData.map((grade) => (
+                    <GradeCard key={grade.assignmentId} {...grade} />
+                  )) : 
+                    <p className="text-muted-foreground">No recent grades available.</p>}
+                </ScrollArea>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
 }
 
 export default Dashboard;

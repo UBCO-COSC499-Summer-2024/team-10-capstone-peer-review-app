@@ -1,6 +1,7 @@
 version: '3'
 services:
-  peergrade-db-test:
+
+  db:
     container_name: peergrade-db-test
     image: postgres:latest
     environment:
@@ -8,31 +9,62 @@ services:
       POSTGRES_PASSWORD: ${TEST_DB_PASSWORD}
       POSTGRES_DB: ${TEST_DB_NAME}
     ports:
-      - ${TEST_DB_PORT}:5433
+      - ${TEST_DB_PORT}:5432
     volumes:
       - db-test-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${TEST_DB_USER} -d ${TEST_DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
 
-  peergrade-server-test:
+  server:
     container_name: peergrade-server-test
+    env_file:
+      - ./server/envs/.env.test 
     build:
       context: ./server
       dockerfile: Dockerfile.test
       args:
-      - TEST_BACKEND_PORT=${BACKEND_PORT} 
-      - TEST_DB_NAME=${DB_NAME} 
-      - TEST_DB_PORT=${DB_PORT} 
+        - TEST_BACKEND_PORT=${TEST_BACKEND_PORT}
+        - TEST_DB_NAME=${TEST_DB_NAME}
+        - TEST_DB_PORT=${TEST_DB_PORT}
     env_file:
-      - ./server/.env.test 
+      - ./server/envs/.env.test 
     ports:
-      - ${BACKEND_PORT}:5002 
+      - ${TEST_BACKEND_PORT}:5001
     volumes:
       - ./server:/usr/server
-      - server_test_node_modules:/usr/server/node_modules
+      - server-test-node-modules:/usr/server/node_modules
     depends_on:
-      - peergrade-db-test 
-    command: npm run test
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost ${TEST_BACKEND_PORT} || exit 1"]
+      interval: 5s
+      timeout: 2s
+      retries: 3
+      start_period: 5s
+    command: ["npm", "run", "start:test"]
+
+  server-test-runner:
+    container_name: peergrade-server-test-runner
+    env_file:
+      - ./server/envs/.env.test
+    build:
+      context: ./server
+      dockerfile: Dockerfile.test
+    volumes:
+      - ./server:/usr/server
+      - server-test-node-modules:/usr/server/node_modules
+    depends_on:
+      server:
+        condition: service_healthy
+    command: ["npm", "run", "test:integration"]
 
 volumes:
-  db-test-data: 
-  server_test_node_modules:
+  server-test-node-modules:
+  db-test-data:
+  

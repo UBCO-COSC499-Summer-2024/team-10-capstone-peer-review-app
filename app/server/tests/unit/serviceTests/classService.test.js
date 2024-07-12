@@ -1,11 +1,11 @@
 // classService.test.js
 import { mockDeep, mockReset } from "jest-mock-extended";
-import prisma from "../../prisma/prismaClient.js";
-import apiError from "../../src/utils/apiError.js";
-import classService from "../../src/services/classService.js";
+import prisma from "../../../prisma/prismaClient.js";
+import apiError from "../../../src/utils/apiError.js";
+import classService from "../../../src/services/classService.js";
 
 // Mock prisma
-jest.mock("../../prisma/prismaClient.js", () => ({
+jest.mock("../../../prisma/prismaClient.js", () => ({
 	class: mockDeep(),
 	user: mockDeep(),
 	userInClass: mockDeep(),

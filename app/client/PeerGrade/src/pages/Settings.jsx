@@ -12,51 +12,57 @@ import { Menubar, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Switch } from '@/components/ui/switch';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { updateProfile } from '@/api/userApi';
 
 const Settings = () => {
   const { toast } = useToast();
-  const { user, userLoading, setCurrentUser } = useUser();
+	const { user, userLoading, setUserContext } = useUser();
+  const [selectedTab, setSelectedTab] = useState('profile');
   const [activeSection, setActiveSection] = useState('profile');
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');
-  const [bio, setBio] = useState('');
-  const [url, setUrl] = useState('');
 
   useEffect(() => {
     if (!userLoading && user) {
         setFirstname(user.firstname || '');
         setLastname(user.lastname || '');
         setEmail(user.email || '');
-        setBio(user.bio || '');
-        setUrl(user.url || '');
     }
   }, [user, userLoading]);
 
-  const handleSaveProfile = async () => {
-    try {
-      const response = await axios.post('/api/users/update-profile', {
-        username, email, bio, url
-      }, { withCredentials: true });
+  const handleSaveProfile = (e) => {
+    e.preventDefault();
+    
+    const updatedData = {
+			firstname,
+      lastname,
+      email
+		};
 
-      console.log('response', response);
-      setCurrentUser(response.data.user);
-      toast({
-        title: "Profile Updated",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify({ firstname, lastname, email, bio, url }, null, 2)}</code>
-          </pre>
-        ),
-        variant: "positive"
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "An error occurred while updating the profile.",
-        variant: "destructive"
-      });
-    }
+    // NEED TO IMPLEMENT A CHECK MAYBE FOR VERIFYING IF ITS A VALID EMAIL
+    
+		const updateUserProfile = async () => {
+      const updatedProfile = await updateProfile(user.userId, updatedData);
+      // setUser(updatedProfile.data);
+      if (updatedProfile.status === "Success") {
+        toast({
+          title: "Profile Updated",
+          description: (
+            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+              <code className="text-white">{JSON.stringify({ firstname, lastname, email }, null, 2)}</code>
+            </pre>
+          ),
+          variant: "positive"
+        });
+        await setUserContext();
+      } else {
+        console.error("Failed to update profile");
+			}
+		};
+
+		updateUserProfile();
   };
 
   const renderContent = () => {
@@ -68,70 +74,55 @@ const Settings = () => {
               <CardTitle>Profile</CardTitle>
               <CardDescription>Manage your personal information</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="flex items-center space-x-4">
-                <Avatar className="w-20 h-20">
-                  <AvatarImage src="/placeholder-avatar.jpg" alt="User avatar" />
-                  <AvatarFallback>{firstname.charAt(0)}{lastname.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <h3 className="text-lg font-medium">{firstname} {lastname}</h3>
-                  <p className="text-sm text-muted-foreground">{email}</p>
-                </div>
-              </div>
-              <Separator />
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="firstname">First name</Label>
-                    <Input 
-                      id="firstname"
-                      value={firstname} 
-                      onChange={(e) => setFirstname(e.target.value)} 
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="lastname">Last name</Label>
-                    <Input 
-                      id="lastname"
-                      value={lastname} 
-                      onChange={(e) => setLastname(e.target.value)} 
-                    />
+            <form onSubmit={handleSaveProfile}>
+              <CardContent className="space-y-6">
+                <div className="flex items-center space-x-4">
+                  <Avatar className="w-20 h-20">
+                    <AvatarImage src="/placeholder-avatar.jpg" alt="User avatar" />
+                    <AvatarFallback className='text-4xl'>{firstname.charAt(0)}{lastname.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <h3 className="text-lg font-medium">{firstname} {lastname}</h3>
+                    <p className="text-sm text-muted-foreground">{email}</p>
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input 
-                    id="email"
-                    type="email" 
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)} 
-                  />
+                <Separator />
+                <div className='space-y-4'>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="firstname">First name</Label>
+                      <Input 
+                        id="firstname"
+                        value={firstname} 
+                        onChange={(e) => setFirstname(e.target.value)} 
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="lastname">Last name</Label>
+                      <Input 
+                        id="lastname"
+                        value={lastname} 
+                        onChange={(e) => setLastname(e.target.value)} 
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input 
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={email} 
+                      onChange={(e) => setEmail(e.target.value)} 
+                    />
+                    <p className='text-sm text-gray-500'>Note: This ideally would require e-mail verification for the user to be able to change their e-mail address.</p>
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="bio">Bio</Label>
-                  <Textarea 
-                    id="bio"
-                    value={bio} 
-                    onChange={(e) => setBio(e.target.value)} 
-                    placeholder="Tell us a little about yourself" 
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="url">URL</Label>
-                  <Input
-                    id="url"
-                    type="url"
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
-                    placeholder="https://example.com"
-                  />
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button onClick={handleSaveProfile}>Save changes</Button>
-            </CardFooter>
+              </CardContent>
+              <CardFooter>
+                <Button type="submit">Save changes</Button>
+              </CardFooter>
+            </form>
           </Card>
         );
       case 'account':
@@ -194,18 +185,18 @@ const Settings = () => {
               <div>
                 <Label>Theme</Label>
                 <div className="flex space-x-4 mt-2">
-                  <div className="text-center">
-                    <div className="w-20 h-20 rounded border border-gray-200 flex items-center justify-center mb-2">Light</div>
-                    <RadioGroup defaultValue="light">
-                      <RadioGroupItem value="light" id="light" />
-                    </RadioGroup>
-                  </div>
-                  <div className="text-center">
-                    <div className="w-20 h-20 rounded border border-gray-200 bg-gray-900 text-white flex items-center justify-center mb-2">Dark</div>
-                    <RadioGroup defaultValue="dark">
-                      <RadioGroupItem value="dark" id="dark" />
-                    </RadioGroup>
-                  </div>
+                  <RadioGroup defaultValue="light" orientation="horizontal">
+                    <div className='flex flex-row space-x-2'>
+                      <div className="flex flex-col items-center text-center">
+                        <div className="w-20 h-20 rounded border border-gray-200 flex items-center justify-center mb-2">Light</div>
+                        <RadioGroupItem value="light" id="light" />
+                      </div>
+                      <div className="flex flex-col items-center text-center">
+                        <div className="w-20 h-20 rounded border border-gray-200 bg-gray-900 text-white flex items-center justify-center mb-2">Dark</div>
+                        <RadioGroupItem value="dark" id="dark" />
+                      </div>
+                    </div>
+                  </RadioGroup>
                 </div>
                 <p className="text-sm text-muted-foreground mt-1">Select the theme for the dashboard.</p>
               </div>
@@ -246,28 +237,28 @@ const Settings = () => {
                       <Label htmlFor="communication">Communication emails</Label>
                       <p className="text-sm text-muted-foreground">Receive emails about your account activity.</p>
                     </div>
-                    <Switch id="communication" />
+                    <Switch id="communication" className='bg-gray-300' />
                   </div>
                   <div className="flex justify-between items-center">
                     <div>
                       <Label htmlFor="marketing">Marketing emails</Label>
                       <p className="text-sm text-muted-foreground">Receive emails about new products, features, and more.</p>
                     </div>
-                    <Switch id="marketing" />
+                    <Switch id="marketing" className='bg-gray-300' />
                   </div>
                   <div className="flex justify-between items-center">
                     <div>
                       <Label htmlFor="social">Social emails</Label>
                       <p className="text-sm text-muted-foreground">Receive emails for friend requests, follows, and more.</p>
                     </div>
-                    <Switch id="social" />
+                    <Switch id="social" className='bg-gray-300' />
                   </div>
                   <div className="flex justify-between items-center">
                     <div>
                       <Label htmlFor="security">Security emails</Label>
                       <p className="text-sm text-muted-foreground">Receive emails about your account security.</p>
                     </div>
-                    <Switch id="security" defaultChecked />
+                    <Switch id="security" defaultChecked className='bg-gray-300' />
                   </div>
                 </div>
               </div>
@@ -295,7 +286,7 @@ const Settings = () => {
     <div className="px-6">
       <h1 className="text-3xl font-bold mb-3 ml-3">Settings</h1>      
       <div className="flex">
-        <Menubar className="w-48 flex-shrink-0 space-y-1" orientation="vertical">
+        <Menubar className="w-48" orientation="vertical">
           {['profile', 'account', 'appearance', 'notifications', 'display'].map((section) => (
             <MenubarMenu key={section}>
               <MenubarTrigger 

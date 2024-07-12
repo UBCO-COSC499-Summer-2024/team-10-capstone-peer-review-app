@@ -69,6 +69,7 @@ export const getCategoriesByClassId = async (classId) => {
 	}
 };
 
+// Groups
 export const getAllGroupsByClass = async (classId) => {
 	try {
 		const response = await axios.post(`${BASE_URL}/classes/get-groups`, {
@@ -93,6 +94,94 @@ export const createGroup = async (classId, groupData) => {
 		return error.response.data;
 	}
 };
+
+export const deleteGroup = async (groupId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/classes/remove-group`, {
+			groupId
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const updateGroup = async (groupId, updateData) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/classes/update-group`, {
+			groupId,
+			updateData
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const joinGroup = async (groupId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/classes/join-group`, {
+			groupId
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const leaveGroup = async (groupId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/classes/leave-group`, {
+			groupId
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const addGroupMember = async (groupId, userId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/classes/add-group-member`, {
+			groupId,
+			userId
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const deleteGroupMember = async (groupId, userId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/classes/remove-group-member`, {
+			groupId,
+			userId
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const getUsersNotInGroups = async (classId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/classes/users-not-in-groups`, {
+			classId
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
 
 export const getAllAssignments = async (userId) => {
 	try {
@@ -161,30 +250,6 @@ export const removeStudentFromClass = async (classId, studentId) => {
 		const response = await axios.post(`${BASE_URL}/classes/remove-student`, {
 			classId,
 			studentId
-		});
-		return response.data;
-	} catch (error) {
-		handleError(error);
-		return error.response.data;
-	}
-};
-
-export const joinGroup = async (groupId) => {
-	try {
-		const response = await axios.post(`${BASE_URL}/classes/join-group`, {
-			groupId
-		});
-		return response.data;
-	} catch (error) {
-		handleError(error);
-		return error.response.data;
-	}
-};
-
-export const leaveGroup = async (groupId) => {
-	try {
-		const response = await axios.post(`${BASE_URL}/classes/leave-group`, {
-			groupId
 		});
 		return response.data;
 	} catch (error) {

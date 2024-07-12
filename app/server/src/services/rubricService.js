@@ -67,7 +67,7 @@ const getRubricsForAssignment = async (assignmentId) => {
 			},
 			include: {
 				rubric: true,
-			},
+			}
 		});
 
 		if (!assignment) {
@@ -83,7 +83,15 @@ const getRubricsForAssignment = async (assignmentId) => {
 				assignmentId: assignmentId,
 			},
 			include: {
-				rubric: true, // Include the related rubric details
+				rubric:{
+					include: {
+						criteria: {
+							include: {
+								criterionRatings: true
+							}
+						}
+					}
+				}
 			},
 		});
 

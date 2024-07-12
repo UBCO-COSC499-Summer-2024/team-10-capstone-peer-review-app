@@ -24,69 +24,72 @@ import {
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
 import { getAssignmentInClass, updateAssignmentInClass } from '@/api/assignmentApi';
-import RubricDrawer from '@/components/assign/RubricDrawer';  // Import the new drawer component
+import { getCategoriesByClassId } from '@/api/classApi';
 
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
+  maxSubmissions: z.number().min(1, "Max submissions is required"),
+  categoryId: z.string().min(1, "Category is required"),
   reviewOption: z.string().min(1, "Review option is required"),
   dueDate: z.date({
     required_error: "Due date is required",
   }),
-  rubric: z.array(z.object({
-    criteria: z.string().min(1, "Criteria is required"),
-    ratings: z.array(z.string().min(1, "Rating is required")),
-    points: z.string().min(1, "Points is required").regex(/^\d+$/, "Points must be a numeric value"),
-  })).min(1, "At least one rubric row is required."),
   file: z.any().optional(),
 });
 
 const EditAssignment = () => {
   const { classId, assignmentId } = useParams();
-  const [openDrawer, setOpenDrawer] = useState(false);  // State to handle drawer open/close
   const [open, setOpen] = useState(false);
+  const [openCat, setOpenCat] = useState(false);
+  const [value, setValue] = useState("");
+  const fileInputRef = useRef(null);
   const [selectedFileName, setSelectedFileName] = useState('');
-  const [rubricData, setRubricData] = useState([]);  // State to hold rubric data
-  const [assignmentData, setAssignmentData] = useState(null);
-  const fileInputRef = useRef(null);  // Define the ref here
-
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       title: "",
       description: "",
-      maxSubmissions: "",
+      maxSubmissions: 1,
+      categoryId: "",
       reviewOption: "",
       dueDate: null,
-      rubric: [],
       file: null,
     }
   });
 
   const dropdown_options = [
-    {
-      value: "manual",
-      label: "Manual",
-    },
-    {
-      value: "auto",
-      label: "Auto",
-    }
-  ]; 
+    { value: "manual", label: "Manual" },
+    { value: "auto", label: "Auto" }
+  ];
 
-  useEffect(() => { 
-    const fetchAssignment = async  () => {
+  useEffect(() => {
+    const fetchAssignmentAndCategories = async () => {
       try {
-        const fetchedAssignment = await getAssignmentInClass(classId, assignmentId);
-        setAssignmentData(fetchedAssignment.data);
-        form.setValue("title", assignmentData.title);
-        form.setValue("description", assignmentData.description);
-        form.setValue("maxSubmissions", assignmentData.maxSubmissions );
-        form.setValue("reviewOption", assignmentData.reviewOption || "manual");
-        form.setValue("dueDate", new Date(assignmentData.dueDate));
-        setRubricData([{ criteria: "", ratings: [""], points: "" }]);
-        setSelectedFileName(`Assignment.${assignmentData.assignmentType}`);
-      } catch (error) { 
+        const assignmentResponse = await getAssignmentInClass(classId, assignmentId);
+        const categoriesResponse = await getCategoriesByClassId(classId);
+
+        if (assignmentResponse.status === 'Success' && categoriesResponse.status === 'Success') {
+          const assignmentData = assignmentResponse.data;
+          setCategories(categoriesResponse.data);
+
+          form.reset({
+            title: assignmentData.title,
+            description: assignmentData.description,
+            maxSubmissions: assignmentData.maxSubmissions,
+            categoryId: assignmentData.categoryId,
+            reviewOption: assignmentData.reviewOption,
+            dueDate: new Date(assignmentData.dueDate),
+          });
+
+          setSelectedCategory(assignmentData.categoryId);
+          setSelectedFileName(assignmentData.assignmentFilePath ? assignmentData.assignmentFilePath.split('/').pop() : '');
+        }
+      } catch (error) {
+        console.error("Error fetching assignment or categories:", error);
         toast({
           title: "Error",
           description: "Failed to fetch assignment data",
@@ -94,58 +97,64 @@ const EditAssignment = () => {
         });
       }
     };
-    fetchAssignment();
-  }, [classId, assignmentId, form, toast]);
 
-   const handleFileChange = (event) => {
+    fetchAssignmentAndCategories();
+  }, [classId, assignmentId, form]);
+
+  const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     setSelectedFileName(selectedFile.name);
     form.setValue("file", selectedFile);
   };
 
   const onSubmit = async (data) => {
-    const simplifiedData = {
-      ...data,
-      file: selectedFileName,
-      rubric: rubricData,
-    };
+    const formData = new FormData();
+    formData.append('classId', classId);
+    formData.append('categoryId', selectedCategory);
+    formData.append('assignmentData', JSON.stringify({
+      title: data.title,
+      description: data.description,
+      dueDate: data.dueDate,
+      reviewOption: data.reviewOption,
+      maxSubmissions: data.maxSubmissions,
+    }));
+    if (fileInputRef.current.files[0]) {
+      formData.append('file', fileInputRef.current.files[0]);
+    }
 
     try {
-      await updateAssignmentInClass(classId, assignmentId, simplifiedData);
-      toast({
-        title: "Assignment updated successfully",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(simplifiedData, null, 2)}</code>
-          </pre>
-        ),
-      });
+      const response = await updateAssignmentInClass(classId, assignmentId, formData);
+
+      if (response.status === 'Success') {
+        toast({
+          title: "Assignment Updated",
+          description: "The assignment has been successfully updated.",
+          status: "success"
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: response.message,
+          status: "error"
+        });
+      }
     } catch (error) {
+      console.error('Error updating assignment:', error);
       toast({
         title: "Error",
-        description: "Failed to update assignment",
-        variant: "destructive",
+        description: "There was an error updating the assignment.",
+        status: "error"
       });
     }
   };
 
-  const handleReviewSelect = (value) => {
-    form.setValue("reviewOption", value);
-    setOpen(false);
-  };
-
-  const handleRubricSubmit = (rubric) => {
-    setRubricData(rubric);
-    setOpenDrawer(false);
-  };
-
   return (
-    <div className='bg-white flex justify-left flex-row p-4'>
-      <div className="lg:w-2/3">
+    <div className='flex bg-white justify-left flex-row p-4'>
+      <div>
         <h2 className="text-xl font-semibold mb-4">Edit Assignment</h2>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
+          <FormField
               control={form.control}
               name="title"
               render={({ field }) => (
@@ -171,7 +180,7 @@ const EditAssignment = () => {
                   <FormDescription>This is the text that will show as the assignment's description.</FormDescription>
                   <FormMessage />
                 </FormItem>
-              )} 
+              )}
             />
             <FormField
               control={form.control}
@@ -180,7 +189,7 @@ const EditAssignment = () => {
                 <FormItem>
                   <FormLabel>Attempts</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g. 5" {...field} />
+                    <Input  {...field} type="number" onBlur={(e) => field.onChange(Number(e.target.value))}/>
                   </FormControl>
                   <FormDescription>Max number of submissions.</FormDescription>
                   <FormMessage />
@@ -195,15 +204,15 @@ const EditAssignment = () => {
                   <FormLabel>Manual/Auto Review</FormLabel>
                   <Popover open={open} onOpenChange={setOpen}>
                     <PopoverTrigger asChild>
-                      <FormControl  >
+                      <FormControl>
                         <Button
                           variant="outline"
                           role="combobox"
                           aria-expanded={open}
                           className="w-[200px] justify-between bg-white"
                         >
-                          {field.value
-                            ? dropdown_options.find((option) => option.value === field.value)?.label
+                          {value
+                            ? dropdown_options.find((option) => option.value === value)?.label
                             : "Select option..."}
                           {open
                             ? <ChevronUpIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -221,15 +230,16 @@ const EditAssignment = () => {
                                 key={option.value}
                                 value={option.value}
                                 onSelect={(currentValue) => {
-                                  field.onChange(currentValue === field.value ? "" : currentValue);
+                                  setValue(currentValue === value ? "" : currentValue);
                                   setOpen(false);
+                                  field.onChange(currentValue);
                                 }}
                               >
                                 {option.label}
                                 <CheckIcon
                                   className={cn(
                                     "ml-auto h-4 w-4",
-                                    field.value === option.value ? "opacity-100" : "opacity-0"
+                                    value === option.value ? "opacity-100" : "opacity-0"
                                   )}
                                 />
                               </CommandItem>
@@ -274,18 +284,70 @@ const EditAssignment = () => {
                       />
                     </PopoverContent>
                   </Popover>
-                  <FormDescription>The assignment will be due at 11:59 PM on the selected date.</FormDescription>
+                  <FormDescription>The assignment will be due at 11:59 PM on the selected date. The assignment will then be open for peer review right after the due date.</FormDescription>
                   <FormMessage />
                 </FormItem>
-              )}  
+              )}
             />
-            <div className='flex gap-2 flex-col w-1/3'>
-              <FormLabel>Rubric</FormLabel>
-              <Button variant="outline" onClick={() => setOpenDrawer(true)}>
-                Edit Rubric
-              </Button> 
-              <RubricDrawer isOpen={openDrawer} onClose={() => setOpenDrawer(false)} onSubmit={handleRubricSubmit} />
-            </div>
+            <FormField
+              control={form.control}
+              name="categoryId"
+              render={({ field }) => (
+                <FormItem style={{ display: 'flex', flexDirection: 'column' }}>
+                  <FormLabel>Category</FormLabel>
+                  <Popover open={openCat} onOpenChange={setOpenCat}>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={open}
+                          className="w-[200px] justify-between bg-white"
+                        >
+                          {selectedCategory
+                            ? categories.find((category) => category.categoryId === selectedCategory)?.name
+                            : "Select category..."}
+                          {open
+                            ? <ChevronUpIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            : <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          }
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0 rounded-md">
+                      <Command>
+                        <CommandList>
+                          <CommandGroup>
+                            {categories.map((category) => (
+                              <CommandItem
+                                key={category.categoryId}
+                                value={category.categoryId}
+                                onSelect={(currentValue) => {
+                                  setSelectedCategory(currentValue === selectedCategory ? "" : currentValue);
+                                  setOpenCat(false);
+                                  field.onChange(currentValue);
+                                }}
+                              >
+                                {category.name}
+                                <CheckIcon
+                                  className={cn(
+                                    "ml-auto h-4 w-4",
+                                    selectedCategory === category.categoryId ? "opacity-100" : "opacity-0"
+                                  )}
+                                />
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  <FormDescription>Select a category for this assignment.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
             <FormItem>
               <FormLabel htmlFor="file-upload">Upload File</FormLabel>
               <input
@@ -306,7 +368,7 @@ const EditAssignment = () => {
               <FormDescription>Attach any PDF files related to the assignment.</FormDescription>
               <FormMessage />
             </FormItem>
-            <Button type="submit">Submit</Button>
+            <Button type="submit" className='bg-primary text-white'>Update Assignment</Button>
           </form>
         </Form>
       </div>

@@ -1,4 +1,100 @@
 
+# Mahir's Log for Cycle 12
+
+
+## Tuesday, July 09, 2024, 05:21 PM - Thursday, July 11, 2024, 05:21 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[216](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/216)**: Assignment Submission and Grades  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: database, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[206](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/206)**: Redesign Platform based on Design feedback  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[199](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/199)**: Create Classes Context, integrate into all components that require it.   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: UI 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **216/Assignment Submission** *(Total duration: 4.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 11, 2024, 02:41 PM - Thursday, July 11, 2024, 04:50 PM *(2.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 11, 2024, 02:54 AM - Thursday, July 11, 2024, 05:15 AM *(2.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **206/updates** *(Total duration: 5.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 11, 2024, 01:10 AM - Thursday, July 11, 2024, 01:30 AM *(0.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 10, 2024, 11:57 PM - Thursday, July 11, 2024, 01:05 AM *(1.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 10, 2024, 11:07 PM - Wednesday, July 10, 2024, 11:30 PM *(0.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 10, 2024, 10:14 PM - Wednesday, July 10, 2024, 10:19 PM *(0.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 10, 2024, 07:29 PM - Wednesday, July 10, 2024, 09:09 PM *(1.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 10, 2024, 02:58 PM - Wednesday, July 10, 2024, 05:08 PM *(2.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **206/user null bug** *(Total duration: 1.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 09, 2024, 10:51 PM - Wednesday, July 10, 2024, 12:08 AM *(1.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **206/Bug fixes** *(Total duration: 1.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 09, 2024, 08:48 PM - Tuesday, July 09, 2024, 10:19 PM *(1.5 hours)*  
+  
+
+## All Features worked on this cycle:
+
+## Features completed on this cycle:
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[199](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/199)**: Create Classes Context, integrate into all components that require it.   
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[216](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/216)**: Assignment Submission and Grades  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[211](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/211)**: Dockerize file storage: Creating a file storage Volume  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[206](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/206)**: Redesign Platform based on Design feedback  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[190](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/190)**: Refactor Profile icon to be clickable, add a color or shadow when hovering to indicate pressable  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[147](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/147)**: File Storage Worker Service: Redis DB, FileSystemUploadQueue, UploadtoService, etc.   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[122](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/122)**: Major Use Case 7: View Submission Feedback (from instructor)   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[121](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/121)**: Major Use Case 6: Submit (User Submission) Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[120](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/120)**: Major Use Case 5: Send Reports to Admin   
+  
+
+## Recap on goals from last cycle
+* I was able to get the Assignment submission for students done and also the instructor view for assignment submission. All that is left is to merge the new changes into dev!
+* I had a big rework design which was most of my day on Wednesday and Wednesday night as well.
+* There is a slight problem with the db that only allows for a single student to be in a class. We definitely need to get on top of that if we want the application to be flowing properly.
+* Overall, the pace is still good I would say. 
+
+## Goals for next cycle
+* Merge remaining approved pull requests and get the design update integrated
+* Work on assignment submission view/download feature
+* Start implementing instructor grading submission and a peer review grade submission
+  
+  
+  
+
 # Mahir's Log for Cycle 11
 
 

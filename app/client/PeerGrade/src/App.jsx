@@ -11,7 +11,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Class from "./pages/Class";
 import EditClass from "./pages/classNav/EditClass";
-import AssignmentCreation from "./pages/classNav/AssignmentCreation";
+import AssignmentCreation from "./pages/classNav/assignment/AssignmentCreation";
 import Assignment from "./pages/Assignment";
 import AssignedPR from "./pages/AssignedPR";
 import PeerReview from "./pages/PeerReview";
@@ -19,6 +19,7 @@ import Settings from "./pages/Settings";
 import AppNavbar from "./components/global/Navbar";
 import ManageClass from "./pages/ManageClass";
 import Search from "./pages/Search";
+import Submission from "./pages/Submission";
 import AdminDashboard from "./pages/AdminDashboard";
 import TestUserContext from "./pages/TestUserContext";
 
@@ -63,6 +64,10 @@ function MainLayout() {
 					<Route
 						path="/class/:classId/assignment/:assignmentId"
 						element={<Assignment />}
+					/>
+					<Route
+						path="/class/:classId/submit/:assignmentId"
+						element={<Submission />}
 					/>
 					<Route path="/assignedPR/:assignmentId" element={<AssignedPR />} />
 					<Route path="/peer-review" element={<PeerReview />} />

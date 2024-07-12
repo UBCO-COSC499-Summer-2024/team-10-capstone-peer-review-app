@@ -43,7 +43,7 @@ router
 
 router
 	.route("/get-rubrics")
-	.post(ensureUser, ensureInstructor, getRubricsInAssignment);
+	.post(ensureUser, getRubricsInAssignment);
 
 router
 	.route("/get-all-rubrics")

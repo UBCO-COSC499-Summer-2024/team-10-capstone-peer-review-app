@@ -185,18 +185,18 @@ const Settings = () => {
               <div>
                 <Label>Theme</Label>
                 <div className="flex space-x-4 mt-2">
-                  <div className="text-center">
-                    <div className="w-20 h-20 rounded border border-gray-200 flex items-center justify-center mb-2">Light</div>
-                    <RadioGroup defaultValue="light">
-                      <RadioGroupItem value="light" id="light" />
-                    </RadioGroup>
-                  </div>
-                  <div className="text-center">
-                    <div className="w-20 h-20 rounded border border-gray-200 bg-gray-900 text-white flex items-center justify-center mb-2">Dark</div>
-                    <RadioGroup defaultValue="dark">
-                      <RadioGroupItem value="dark" id="dark" />
-                    </RadioGroup>
-                  </div>
+                  <RadioGroup defaultValue="light" orientation="horizontal">
+                    <div className='flex flex-row space-x-2'>
+                      <div className="flex flex-col items-center text-center">
+                        <div className="w-20 h-20 rounded border border-gray-200 flex items-center justify-center mb-2">Light</div>
+                        <RadioGroupItem value="light" id="light" />
+                      </div>
+                      <div className="flex flex-col items-center text-center">
+                        <div className="w-20 h-20 rounded border border-gray-200 bg-gray-900 text-white flex items-center justify-center mb-2">Dark</div>
+                        <RadioGroupItem value="dark" id="dark" />
+                      </div>
+                    </div>
+                  </RadioGroup>
                 </div>
                 <p className="text-sm text-muted-foreground mt-1">Select the theme for the dashboard.</p>
               </div>

@@ -28,17 +28,19 @@ const ClassCard = ({
 				<CardContent className="flex flex-col space-y-2 pl-0 border-collapse">
 					{numStudents !== undefined && <div className="flex items-center space-x-2">
 						<User className="w-4 h-4 text-gray-700" />
-						<span className="text-gray-700">{numStudents} Students</span>
+						<span className="text-gray-700 whitespace-nowrap">
+							{numStudents} Students
+						</span>
 					</div>}
 					{numAssignments !== undefined && <div className="flex items-center space-x-2">
 						<FileText className="w-4 h-4 text-gray-700" />
-						<span className="text-gray-700">
+						<span className="text-gray-700 whitespace-nowrap">
 							{numAssignments} Assignments Due
 						</span>
 					</div>}
 					{numPeerReviews !== undefined && <div className="flex items-center space-x-2">
 						<CheckSquare className="w-4 h-4 text-gray-700" />
-						<span className="text-gray-700">
+						<span className="text-gray-700 whitespace-nowrap">
 							{numPeerReviews} Peer Reviews Left
 						</span>
 					</div>}

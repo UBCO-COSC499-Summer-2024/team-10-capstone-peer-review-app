@@ -111,10 +111,6 @@ export default function AppNavbar() {
 		}
 	};
 
-	if (userLoading) {
-		return <div>Loading...</div>;
-	}
-
 	if (!user) {
 		return null;
 	}

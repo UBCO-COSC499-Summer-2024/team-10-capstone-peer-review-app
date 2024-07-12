@@ -176,6 +176,7 @@ model Submission {
   submitter          User?      @relation(fields: [submitterId], references: [userId])
   submitterGroup     Group?     @relation(fields: [submitterGroupId], references: [groupId])
   reviews            Review[]
+  submissionComment  String?
 }
 
 // model GroupSubmission {

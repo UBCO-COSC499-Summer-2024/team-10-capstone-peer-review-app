@@ -17,6 +17,7 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
+
 function Dashboard() {
   const { user, userLoading } = useUser();
   const { classes, isClassLoading } = useClass();

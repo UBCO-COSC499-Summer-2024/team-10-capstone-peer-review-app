@@ -21,7 +21,9 @@ import {
 	removeGroupMember,
 	getCategoriesByClassId,
 	joinGroup,
-	leaveGroup
+	leaveGroup,
+	isUserInGroup,
+	getStudentsNotInAnyGroup
 } from "../controllers/classController.js";
 
 import {
@@ -95,6 +97,9 @@ router
 router
 	.route("/remove-group-member")
 	.post(ensureUser, ensureInstructor, removeGroupMember);
+
+router.route("/is-user-in-group").post(ensureUser, ensureInstructorOrAdmin, isUserInGroup);
+router.route("/users-not-in-groups").post(ensureUser, ensureInstructorOrAdmin, getStudentsNotInAnyGroup);
 
 router.route("/:classId/categories").get(ensureUser, getCategoriesByClassId);
 

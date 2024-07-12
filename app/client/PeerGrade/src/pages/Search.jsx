@@ -359,7 +359,7 @@ function ClassTable() {
 				<TableBody>
 					{currentClasses.map((classItem, index) => (
 						<TableRow key={index}>
-							<TableCell className="p-2">
+							<TableCell className="p-2" data-testid="class-name">
 								<Link to={`/class/${classItem.classId}`}>
 									{classItem.classname}
 								</Link>

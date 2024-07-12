@@ -110,34 +110,34 @@ export const removeStudentFromClass = asyncErrorHandler(async (req, res) => {
 
 export const addGroupToClass = asyncErrorHandler(async (req, res) => {
 	const { classId, groupData } = req.body;
-	const updatedClass = await classService.addGroupToClass(classId, groupData);
+	const updatedGroup = await classService.addGroupToClass(classId, groupData);
 	return res.status(200).json({
 		status: "Success",
 		message: "Group successfully added to class",
-		data: updatedClass
+		data: updatedGroup
 	});
 });
 
 export const removeGroupFromClass = asyncErrorHandler(async (req, res) => {
 	const { groupId } = req.body;
-	const updatedClass = await classService.removeGroupFromClass(groupId);
+	const updatedGroup = await classService.removeGroupFromClass(groupId);
 	return res.status(200).json({
 		status: "Success",
 		message: "Group successfully removed from class",
-		data: updatedClass
+		data: updatedGroup
 	});
 });
 
 export const updateGroupInClass = asyncErrorHandler(async (req, res) => {
 	const { groupId, updateData } = req.body;
-	const updatedClass = await classService.updateGroupInClass(
+	const updatedGroup = await classService.updateGroupInClass(
 		groupId,
 		updateData
 	);
 	return res.status(200).json({
 		status: "Success",
 		message: "Group successfully updated in class",
-		data: updatedClass
+		data: updatedGroup
 	});
 });
 
@@ -210,6 +210,24 @@ export const leaveGroup = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+export const isUserInGroup = asyncErrorHandler(async (req, res) => {
+	const { classId, userId } = req.body;
+	const isUsrInGrp = await classService.isUserInGroup(classId, userId);
+	return res.status(200).json({
+		status: "Success",
+		data: isUsrInGrp
+	});
+});
+
+export const getStudentsNotInAnyGroup = asyncErrorHandler(async (req, res) => {
+	const { classId } = req.body;
+	const usrsNotInGrps = await classService.getStudentsNotInAnyGroup(classId);
+	return res.status(200).json({
+		status: "Success",
+		data: usrsNotInGrps
+	});
+});
+
 export const getCategoriesByClassId = asyncErrorHandler(async (req, res) => {
 	const { classId } = req.params;
 	const categories = await classService.getCategoriesByClassId(classId);
@@ -236,6 +254,8 @@ export default {
 	getGroupMembers,
 	addGroupMember,
 	removeGroupMember,
+	isUserInGroup,
+	getStudentsNotInAnyGroup,
 
 	getCategoriesByClassId
 };

@@ -1,5 +1,8 @@
 import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
+import pkg from '@prisma/client';
+
+const { PrismaClientKnownRequestError } = pkg;
 
 const getAllUsers = async () => {
 	try {
@@ -138,10 +141,38 @@ export async function getGroups(userId) {
 	}
 }
 
+export async function updateProfile (userId, updateData) {
+	try {
+		const updatedProfile = await prisma.user.update({
+			where: {
+				userId: userId
+			},
+			data: {
+			  ...updateData,
+			  updatedAt: new Date(),
+			},
+		});
+		return updatedProfile;
+	} catch (error) {
+		if (error instanceof PrismaClientKnownRequestError) {
+			if (error.code === 'P2002' && error.meta && error.meta.target && error.meta.target.includes('email')) {
+			  	throw new apiError('Email already exists', 400);
+			} else {
+				throw error;
+			}
+		} else if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to update profile", 500);
+		}
+	}
+};
+
 export default {
 	getUsersByRole,
 	getAllUsers,
 	getUserClasses,
 	getUserAssignments,
-	getGroups
+	getGroups,
+	updateProfile
 };

@@ -6,35 +6,41 @@
 
 
 ### Major features worked on in c-12
-*  
-  
-*  
-  
-*  
+*  Wrapper component for React Router dom elements (role-based access tweaks and 404 not found pages created)
+
+*  Student assignment submissions and submission file upload
+
+*  Instructor submissions view and download
+
+*  Major UI Refactor and Design update
+
+*  Grading logic for assignment submissions
   
 
 ### Major features completed in c-12
-*  
+*  UI refactor merged onto dev. The application now hosts a new design that is more in tune with design feedback we got from our client
   
-*  
+*  Assignment Submission and file upload
   
-*  
+*  Instructor view of submissions made by students.
   
 
 ### Major features to work on for c-13
-*  
+*  Instructor Grading for an assignment
   
-*  
+*  Peer Review Grading for an assignment
   
-*  
+*  Grades tab on classNav implemented with posted grades and calculating grade averages to post on the home page of each classroom
+
   
 
 ### Team Issues and Hurdles for c-12
-*  
+* API links that remain (Grade related api links, Peer review Api links)
+
+* Updating the UI for grades and peer reviews to flow properly
   
-*  
+* Keeping on pace so that we have an 80% estimated completion on all major requirements
   
-*  
   
 
 ### Clockify Dashboard for this Week

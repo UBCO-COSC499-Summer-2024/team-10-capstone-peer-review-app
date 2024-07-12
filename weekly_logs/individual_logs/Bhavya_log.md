@@ -34,14 +34,13 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
-
+* Completed additional routes for the review table so that the frontend can have more features such as review histoty, submission criteria and individual + peer grades
+* Started looking into testing older api routes created and jot down the tests required
+* Submit routes are good for now, might add new routes later
 ## Goals for next cycle
-* 
-* 
-* 
+* Complete all routes for reviews and submit and test them with with a mock setup of local data of classes, students and instructors
+* write tests for the routes
+* write new functionalities if needed for the routes, especially review ones as it is a vast field
   
   
 

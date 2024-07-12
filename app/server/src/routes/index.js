@@ -32,7 +32,7 @@ router.use("/rubric", rubricRouter);
 router.use("/users", usersRoutes);
 router.use("/students", ensureUser, studentsRouter);
 
-router.use("/submit", ensureUser, submitRouter);
+router.use("/submit", submitRouter);
 router.use("/review", ensureUser, reviewRouter);
 router.use("/grade", ensureUser, gradesRouter);
 

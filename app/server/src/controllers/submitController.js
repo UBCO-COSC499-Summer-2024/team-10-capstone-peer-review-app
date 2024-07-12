@@ -1,9 +1,43 @@
-// Import necessary modules and services
-import express from "express";
+// submitController.js
 import submitService from "../services/submitService.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
+import multer from 'multer';
+import path from 'path';
 
-// Controller methods for submit operations
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/submissions/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname))
+  }
+});
+
+const upload = multer({ storage: storage });
+
+export const createSubmission = [
+  upload.single('file'),
+  asyncErrorHandler(async (req, res) => {
+    console.log(req.user, req.body, req.file);
+    const studentId = req.body.studentId;
+    const assignmentId = req.body.assignmentId;
+    const submissionFilePath = req.file ? req.file.path : null;
+
+    if (!submissionFilePath) {
+      return res.status(400).json({
+        status: "Error",
+        message: "No file uploaded"
+      });
+    }
+
+    const newSubmission = await submitService.createSubmission(studentId, assignmentId, submissionFilePath);
+    return res.status(200).json({
+      status: "Success",
+      data: newSubmission
+    });
+  })
+];
+
 
 export const getStudentSubmission = asyncErrorHandler(async (req, res) => {
     const studentId = req.user.userId;
@@ -23,15 +57,6 @@ export const getSubmissionsForAssignment = asyncErrorHandler(async (req, res) =>
     });
 });
 
-export const createSubmission = asyncErrorHandler(async (req, res) => {
-    const studentId = req.user.userId;
-    const { assignmentId, submissionFilePath } = req.body;
-    const newSubmission = await submitService.createSubmission(studentId, assignmentId, submissionFilePath);
-    return res.status(200).json({
-        status: "Success",
-        data: newSubmission
-    });
-});
 
 export const updateSubmission = asyncErrorHandler(async (req, res) => {
     const {submissionId, submission} = req.body;

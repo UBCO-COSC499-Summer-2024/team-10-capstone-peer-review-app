@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { FileUp } from "lucide-react";
 import { getAssignmentInClass } from '@/api/assignmentApi';
 import { getRubricsForAssignment } from '@/api/rubricApi';
+import { createSubmission } from '@/api/submitApi';
 import { useUser } from "@/contexts/contextHooks/useUser";
-import DataTable from '@/components/ui/data-table'; // Adjust the import path as necessary
+import DataTable from '@/components/ui/data-table';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { toast } from '@/components/ui/use-toast';
 
@@ -14,6 +15,7 @@ const Submission = () => {
     const { classId, assignmentId } = useParams();
     const [assignment, setAssignment] = useState(null);
     const [rubrics, setRubrics] = useState([]);
+    const [file, setFile] = useState(null);
     const { user } = useUser();
 
     useEffect(() => {
@@ -33,13 +35,37 @@ const Submission = () => {
                     console.log("No rubric found for this assignment");
                 }
             } catch (error) {
-                
                 console.error("Error fetching assignment details:", error);
             }
         };
 
         fetchAssignmentDetails();
     }, [classId, assignmentId]);
+
+    const handleFileChange = (event) => {
+        setFile(event.target.files[0]);
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if (!file) {
+            toast({ title: "Error", description: "Please select a file to upload", variant: "destructive" });
+            return;
+        }
+    
+        try {
+            const result = await createSubmission(user.userId, assignment.assignmentId, file);
+            toast({ title: "Success", description: "Assignment submitted successfully" });
+            // Optionally, you can update the UI or redirect the user after successful submission
+        } catch (error) {
+            console.error("Submission error:", error);
+            toast({ 
+                title: "Error", 
+                description: error.message || "Failed to submit assignment. Please try again.", 
+                variant: "destructive" 
+            });
+        }
+    };
 
     const columns = [
         {
@@ -91,12 +117,15 @@ const Submission = () => {
                                     <AccordionContent>
                                         <div className="p-4 w-full bg-white border border-gray-300 rounded-md">
                                             <h2 className="text-xl font-bold mb-4">Submit Your Assignment</h2>
-                                            <input
-                                                type="file"
-                                                accept="application/pdf"
-                                                className="w-full border border-gray-300 p-2 rounded-md"
-                                            />
-                                            <Button variant="default" className="mt-4 w-full">Submit</Button>
+                                            <form onSubmit={handleSubmit}>
+                                                <input
+                                                    type="file"
+                                                    accept="application/pdf"
+                                                    onChange={handleFileChange}
+                                                    className="w-full border border-gray-300 p-2 rounded-md"
+                                                />
+                                                <Button type="submit" variant="default" className="mt-4 w-full">Submit</Button>
+                                            </form>
                                         </div>
                                     </AccordionContent>
                                 </AccordionItem>
@@ -125,8 +154,6 @@ const Submission = () => {
                     )}
                 </CardContent>
             </Card>
-
-            
         </div>
     );
 };

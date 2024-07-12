@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon, ChevronDown as ChevronDownIcon, ChevronUp as ChevronUpIcon, Check as CheckIcon, Upload } from "lucide-react";
-
+import { useNavigate } from 'react-router-dom';
 import { cn } from "@/utils/utils";
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -39,6 +39,7 @@ const FormSchema = z.object({
 });
 
 const EditAssignment = () => {
+  const navigate = useNavigate();
   const { classId, assignmentId } = useParams();
   const [open, setOpen] = useState(false);
   const [openCat, setOpenCat] = useState(false);
@@ -132,6 +133,24 @@ const EditAssignment = () => {
           description: "The assignment has been successfully updated.",
           status: "success"
         });
+        
+        // Clear the form and reset fields
+        form.reset({
+          title: "",
+          description: "",
+          maxSubmissions: 1,
+          categoryId: "",
+          reviewOption: "",
+          dueDate: null,
+          file: null,
+        });
+        
+        setSelectedCategory("");
+        setSelectedFileName("");
+        setValue("");
+        
+        // Redirect to the assignment page
+        navigate(`/class/${classId}/assignment/${assignmentId}`);
       } else {
         toast({
           title: "Error",

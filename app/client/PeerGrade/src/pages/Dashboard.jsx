@@ -43,7 +43,7 @@ function Dashboard() {
       const fetchGroups = async () => {
         try {
           const groups = await getGroups(user.userId);
-          setGroups(Array.isArray(groups) ? groups : []);
+          setGroups(Array.isArray(groups.data) ? groups.data : []);
         } catch (error) {
           toast({
             title: "Error",

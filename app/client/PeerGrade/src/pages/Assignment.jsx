@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Pencil, ArrowLeft } from 'lucide-react';
 import { Textarea } from "@/components/ui/textarea";
 import PDFViewer from '@/components/assign/PDFViewer';
-import EditAssignment from './EditAssignment';
+import EditAssignment from './classNav/assignment/EditAssignment';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { getAssignmentInClass } from '@/api/assignmentApi';  // Import the API function
 import { toast } from "@/components/ui/use-toast";

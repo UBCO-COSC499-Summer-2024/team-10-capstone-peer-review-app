@@ -7,7 +7,7 @@ import Groups from "./classNav/Groups";
 import Files from "./classNav/Files";
 import People from "./classNav/People";
 import Rubrics from "./classNav/Rubrics";
-import AssignmentCreation from "./classNav/AssignmentCreation";
+import AssignmentCreation from "./classNav/assignment/AssignmentCreation";
 import EditClass from "./classNav/EditClass";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/contexts/contextHooks/useUser";

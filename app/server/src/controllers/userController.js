@@ -73,12 +73,23 @@ export const getGroups = asyncErrorHandler(async (req, res) => {
 //   });
 // });
 
+export const updateProfile = asyncErrorHandler(async (req, res) => {
+	const {userId, updateData} = req.body;
+	const profileData = await userService.updateProfile(userId, updateData);
+	res.status(200).json({
+		status: "Success",
+		message: "User profile updated",
+		data: profileData
+	});
+});
+
 export default {
 	getAllUsers,
 	getUsersByRole,
 	getUserClasses,
 	getUserAssignments,
-	getGroups
+	getGroups,
 	// getUserPeerReviews,
 	// getUserInfo,
+	updateProfile
 };

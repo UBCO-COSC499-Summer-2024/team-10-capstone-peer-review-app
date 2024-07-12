@@ -117,7 +117,7 @@ function Dashboard() {
   return (
     <div className="mx-auto px-4">
       <h1 className="text-3xl font-bold mb-8 text-primary">Dashboard</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+      <div className={user.role === "STUDENT" ? "grid grid-cols-1 md:grid-cols-2 gap-8 mb-8" : "grid grid-cols-1 gap-8 mb-8"}>
         <Card className="bg-muted rounded-lg shadow-md">
           <CardHeader>
             <CardTitle className="flex items-center"><Bell className="mr-2" />Recent Announcements</CardTitle>

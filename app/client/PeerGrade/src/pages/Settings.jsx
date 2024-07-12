@@ -286,7 +286,7 @@ const Settings = () => {
     <div className="px-6">
       <h1 className="text-3xl font-bold mb-3 ml-3">Settings</h1>      
       <div className="flex">
-        <Menubar className="w-48 flex-shrink-0 space-y-1" orientation="vertical">
+        <Menubar className="w-48" orientation="vertical">
           {['profile', 'account', 'appearance', 'notifications', 'display'].map((section) => (
             <MenubarMenu key={section}>
               <MenubarTrigger 

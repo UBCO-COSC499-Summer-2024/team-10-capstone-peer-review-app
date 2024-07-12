@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -213,7 +212,7 @@ const Submissions = ({ assignmentId }) => {
                                                   max={rating.points}
                                                   name={`rating-${criterion.criterionId}-${rating.ratingId}`}
                                                   defaultValue="0"
-                                                  className="w-[80px] ml-2"
+                                                  className="w-[90px] ml-2"
                                                 />
                                                 <span className="text-sm ml-2">/ {rating.points}</span>
                                               </div>

@@ -4,7 +4,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LoginCard from "@/components/login/LoginCard";
 import ForgotPasswordCard from "@/components/login/ForgotPasswordCard";
 import RegisterCard from "@/components/login/RegisterCard";
-import { useUser } from "@/contexts/contextHooks/useUser";
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search);
@@ -18,14 +17,13 @@ const Login = () => {
 
 	const forgotPasswordToken = query.get("forgotPasswordToken") || "";
 
-	const { user } = useUser();
-
 	// If the user has been authenticated, state has been set, and the user tries to access the login page, redirect them to the dashboard
-	useEffect(() => {
-		if (user) {
-			navigate(user.role === "ADMIN" ? "/admin" : "/dashboard");
-		}
-	}, []);
+	// useEffect(() => {
+	// 	if (user) {
+	// 		navigate(user.role === "ADMIN" ? "/admin" : "/dashboard");
+	// 	}
+	// 	console.log("user from login useeffect", user);
+	// }, [user]);
 
 	// If forgot token in found in the url, set the current tab to forgotPassword
 	useEffect(() => {

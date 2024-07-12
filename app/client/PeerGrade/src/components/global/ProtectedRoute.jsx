@@ -27,10 +27,8 @@ const ProtectedRoute = ({ element, allowedRoles }) => {
 	// If the user is authenticated and has the required role, render the element
 	if (user && allowedRoles.includes(user.role)) {
 		return element;
-	} else if (user && allowedRoles && !allowedRoles.includes(user.role)) {
-		navigate("/dashboard", {
-			replace: true
-		});
+	} else if (user && !allowedRoles.includes(user.role)) {
+		navigate("/dashboard", {});
 		toast({
 			title: "Unauthorized",
 			description: "You are not authorized to access this page",

@@ -8,7 +8,6 @@ export const getAllClasses = async () => {
 		const response = await axios.get(`${BASE_URL}/classes/all`);
 		return response.data;
 	} catch (error) {
-		handleError(error);
 		return error.response.data;
 	}
 };
@@ -42,7 +41,6 @@ export const getClassesByUserId = async (userId) => {
 		});
 		return response.data;
 	} catch (error) {
-		handleError(error);
 		return error.response.data;
 	}
 };

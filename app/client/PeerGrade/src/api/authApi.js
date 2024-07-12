@@ -10,7 +10,6 @@ export const getCurrentUser = async () => {
 		});
 		return response.data.userInfo;
 	} catch (error) {
-		handleError(error);
 		return error.response.data;
 	}
 };

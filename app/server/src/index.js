@@ -6,10 +6,12 @@ import apiError from "./utils/apiError.js";
 import globalErrorHandler from "./middleware/globalErrorHandler.js";
 import shutdown from "./utils/shutdown.js";
 // Dynamically set up environment variables based on NODE_ENV
-import "./utils/envConfig.js";
+import { setupEnv } from "./utils/envConfig.js";
+setupEnv();
+
+const BACKEND_PORT = process.env.BACKEND_PORT;
 
 const app = express();
-const BACKEND_PORT = process.env.BACKEND_PORT;
 
 app.use(express.json());
 

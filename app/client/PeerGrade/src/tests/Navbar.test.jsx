@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
-import AppNavbar from "@/components/login/global/Navbar";
+import AppNavbar from "@/components/global/Navbar";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { useClass } from "@/contexts/contextHooks/useClass";
 import { logoutUser } from "@/api/authApi";

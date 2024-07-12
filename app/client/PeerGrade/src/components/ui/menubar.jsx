@@ -1,36 +1,29 @@
 import * as React from "react";
 import * as MenubarPrimitive from "@radix-ui/react-menubar";
 import { Check, ChevronRight, Circle } from "lucide-react";
-
 import { cn } from "@/utils/utils";
 
 const MenubarMenu = MenubarPrimitive.Menu;
-
 const MenubarGroup = MenubarPrimitive.Group;
-
 const MenubarPortal = MenubarPrimitive.Portal;
-
 const MenubarSub = MenubarPrimitive.Sub;
-
 const MenubarRadioGroup = MenubarPrimitive.RadioGroup;
 
 const Menubar = React.forwardRef(({ className, ...props }, ref) => (
 	<MenubarPrimitive.Root
 		ref={ref}
-		className={cn(
-			"flex h-10 items-center space-x-1 rounded-md border bg-background p-1",
-			className
-		)}
+		className={cn("flex h-10 items-center p-1", className)}
 		{...props}
 	/>
 ));
 Menubar.displayName = MenubarPrimitive.Root.displayName;
 
-const MenubarTrigger = React.forwardRef(({ className, ...props }, ref) => (
+const MenubarTrigger = React.forwardRef(({ className, isActive, ...props }, ref) => (
 	<MenubarPrimitive.Trigger
 		ref={ref}
 		className={cn(
-			"flex cursor-default select-none items-center rounded-sm px-3 py-1.5 text-sm font-medium outline-none focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground",
+			"flex cursor-default select-none items-center rounded-full px-3 py-1.5 text-sm font-medium outline-none transition-colors duration-300",
+			isActive ? "bg-muted" : "hover:bg-gray-300",
 			className
 		)}
 		{...props}
@@ -43,7 +36,7 @@ const MenubarSubTrigger = React.forwardRef(
 		<MenubarPrimitive.SubTrigger
 			ref={ref}
 			className={cn(
-				"flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground",
+				"flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none focus:text-accent-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground",
 				inset && "pl-8",
 				className
 			)}
@@ -149,11 +142,7 @@ MenubarRadioItem.displayName = MenubarPrimitive.RadioItem.displayName;
 const MenubarLabel = React.forwardRef(({ className, inset, ...props }, ref) => (
 	<MenubarPrimitive.Label
 		ref={ref}
-		className={cn(
-			"px-2 py-1.5 text-sm font-semibold",
-			inset && "pl-8",
-			className
-		)}
+		className={cn("px-2 py-1.5 text-sm font-semibold", inset && "pl-8", className)}
 		{...props}
 	/>
 ));
@@ -171,10 +160,7 @@ MenubarSeparator.displayName = MenubarPrimitive.Separator.displayName;
 const MenubarShortcut = ({ className, ...props }) => {
 	return (
 		<span
-			className={cn(
-				"ml-auto text-xs tracking-widest text-muted-foreground",
-				className
-			)}
+			className={cn("ml-auto text-xs tracking-widest text-muted-foreground", className)}
 			{...props}
 		/>
 	);
@@ -197,5 +183,5 @@ export {
 	MenubarSubTrigger,
 	MenubarGroup,
 	MenubarSub,
-	MenubarShortcut
+	MenubarShortcut,
 };

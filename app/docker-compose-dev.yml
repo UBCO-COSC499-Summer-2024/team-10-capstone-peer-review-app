@@ -13,6 +13,14 @@ services:
       - ${DB_PORT}:5432
     volumes:
       - db-data:/var/lib/postgresql/data
+    networks:
+      - peergrade-dev-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_NAME} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   server:
     container_name: peergrade-server-dev
@@ -32,8 +40,18 @@ services:
       - ./server:/usr/server
       - server_node_modules:/usr/server/node_modules
       - uploads:/usr/server/uploads  
+    networks:
+      - peergrade-dev-network
     depends_on:
-      - db 
+      db: 
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost ${BACKEND_PORT} || exit 1"]
+      interval: 5s
+      timeout: 2s
+      retries: 3
+      start_period: 5s
+
 
   client:
     container_name: peergrade-client-dev
@@ -49,9 +67,11 @@ services:
     volumes:
       - ./client/PeerGrade:/usr/client 
       - client_node_modules:/usr/client/node_modules
+    networks:
+      - peergrade-dev-network
     depends_on:
-      - server
-      - db
+      server: 
+        condition: service_healthy 
 
   file_storage:
     image: nginx:alpine
@@ -66,3 +86,7 @@ volumes:
   server_node_modules:
   client_node_modules:
   uploads:  
+
+networks:
+  peergrade-dev-network:
+    name: peergrade-dev-network 

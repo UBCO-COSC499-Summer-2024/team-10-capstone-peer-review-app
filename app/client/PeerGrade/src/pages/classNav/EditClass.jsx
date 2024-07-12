@@ -94,14 +94,15 @@ const EditClass = ({ classItem }) => {
 		location.pathname === `/class/${classItem.classId}/edit`;
 
 	return (
-		<div className="flex bg-white justify-left flex-row p-4 main-container mx-5 w-full">
+		<div className="flex bg-white justify-left flex-row p-4  w-full">
 			<div className={wasDirectlyAccessed ? "w-2/3" : "w-full"}>
-				<div className="flex flex-row items-center mb-4 space-x-2">
+				<div className="flex flex-row items-center mb-4 space-x-2"> 
 					{wasDirectlyAccessed && (
 						<Button
 							onClick={handleBackClick}
 							variant="ghost"
 							className="h-8 w-8"
+							data-testid="back-button"
 						>
 							<ArrowLeft className="h-5 w-5" />
 						</Button>

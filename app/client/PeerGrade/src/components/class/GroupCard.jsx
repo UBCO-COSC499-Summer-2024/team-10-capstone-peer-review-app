@@ -31,21 +31,17 @@ const GroupCard = ({ groups }) => {
 
 	return (
 		<div className="w-full">
-			<Card className="w-full max-w-lg p-8 bg-white shadow-md rounded-lg">
-				<CardHeader>
-					<CardTitle className='text-center'>Groups</CardTitle>
-				</CardHeader>
-				<CardContent className='flex items-center justify-center'>
-					{groups.length === 0 && <div className="text-sm text-gray-500 text-center px-6">No groups found.<p className="mt-2">Join or create a group in any class to see it here!</p></div>}
-					{groups.length > 0 &&
-						<Carousel className="w-full max-w-xs">
+			{groups.length === 0 && <div className="text-sm text-black text-center px-6 pb-6">No groups found.<p className="mt-2">Join or create a group in any class to see it here!</p></div>}
+			{groups.length > 0 && 
+				<div className='flex items-center justify-center px-14 pb-6'>
+						<Carousel className="w-full max-w-xs shadow-md">
 							<CarouselContent>
 								{Array.from({ length: groups.length }).map((_, index) => (
 									<CarouselItem key={index}>
 										<Card className='h-full'>
 											<CardHeader>
 												<Link to="">
-													<CardTitle className='text-center text-xl shadow-sm rounded-lg hover:shadow-lg transition-all break-words border p-1'>{groups[index].groupName}</CardTitle>
+													<CardTitle className='text-center text-xl shadow-sm rounded-lg hover:shadow-lg hover:shadow transition-all break-words border p-1'>{groups[index].groupName}</CardTitle>
 												</Link>
 												<CardDescription className='text-center break-words'>
 													{groups[index].groupDescription}
@@ -74,12 +70,11 @@ const GroupCard = ({ groups }) => {
 									</CarouselItem>
 								))}
 							</CarouselContent>
-							<CarouselPrevious />
-							<CarouselNext />
+							<CarouselPrevious className="shadow-md" />
+							<CarouselNext className="shadow-md" />
 						</Carousel>
-					}
-				</CardContent>
-			</Card>
+				</div>
+			}
 		</div>
 	);
 };

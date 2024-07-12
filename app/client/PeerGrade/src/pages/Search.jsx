@@ -34,13 +34,8 @@ import { Input } from "@/components/ui/input";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { cn } from "@/utils/utils";
 import { getClassesByUserId, deleteClass, getAllClasses } from "@/api/classApi";
-import {
-	Dialog,
-	DialogContent,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle
-} from "@/components/ui/dialog";
+import { useClass } from "@/contexts/contextHooks/useClass";
+import DeleteClassDialog from "@/components/class/DeleteClassDialog";
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search);
@@ -60,7 +55,6 @@ function ClassTable() {
 	});
 	const [openTerm, setOpenTerm] = useState(false);
 	const [dialogOpen, setDialogOpen] = useState(false);
-	const [userClasses, setUserClasses] = useState([]);
 	const [selectedClass, setSelectedClass] = useState({});
 	const [confirmDelete, setConfirmDelete] = useState(false);
 	const itemsPerPage = 5;
@@ -69,25 +63,11 @@ function ClassTable() {
 	const { user, userLoading } = useUser();
 	const navigate = useNavigate();
 
+	const { classes, isClassLoading, removeClass } = useClass();
+
 	if (!userLoading && (!user || user.role !== "ADMIN")) {
 		return <div>You do not have permission to view this page.</div>;
 	}
-
-	useEffect(() => {
-		if (!userLoading && user && user.role === "ADMIN") {
-			const fetchClasses = async () => {
-				const classesData = await getAllClasses();
-				// const classesData = await getAllClasses(); // !!!TODO: CURRENT BEHAVIOUR IS INCORRECT, we need admins/classes to be working in the backend to see all classes in the system.
-				console.log("classes data", classesData);
-				if (classesData.data) {
-					setUserClasses(
-						Array.isArray(classesData.data) ? classesData.data : []
-					);
-				}
-			};
-			fetchClasses();
-		}
-	}, [user, userLoading]);
 
 	useEffect(() => {
 		if (queryClassname) {
@@ -122,28 +102,20 @@ function ClassTable() {
 		if (confirmDelete) {
 			setConfirmDelete(false);
 			if (selectedClass) {
-				const classData = await deleteClass(selectedClass.classId);
-				if (classData.status === "Success") {
-					console.log("deleted class", classData);
-					setDialogOpen(false);
-					setUserClasses((prevClasses) =>
-						prevClasses.filter(
-							(classItem) => classItem.classId !== selectedClass.classId
-						)
-					);
-				} else {
-					console.error(
-						"An error occurred while deleting the class.",
-						classData.message
-					);
-				}
+				removeClass(selectedClass.classId);
+				setDialogOpen(false);
+			} else {
+				console.error(
+					"An error occurred while deleting the class.",
+					classData.message
+				);
 			}
 		} else {
 			setConfirmDelete(true);
 		}
 	};
 
-	const filteredClasses = userClasses
+	const filteredClasses = classes
 		.filter(
 			(classItem) =>
 				(filter.searchQuery
@@ -190,7 +162,7 @@ function ClassTable() {
 			...uniqueTerms.map((term) => ({ value: term, label: term }))
 		];
 	};
-	const dropdownOptionsTerm = getDropdownOptionsTerm(userClasses);
+	const dropdownOptionsTerm = getDropdownOptionsTerm(classes);
 
 	const totalPages =
 		Math.ceil(filteredClasses.length / itemsPerPage) === 0
@@ -417,47 +389,20 @@ function ClassTable() {
 					Next
 				</Button>
 			</div>
-			<Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-				<DialogContent
-					className={
-						confirmDelete ? "border-red-950 bg-red-500 text-white" : ""
-					}
-				>
-					<DialogHeader>
-						<DialogTitle>
-							{confirmDelete ? "Confirm" : ""} Delete Class
-						</DialogTitle>
-					</DialogHeader>
-					Are you {confirmDelete ? "really" : ""} sure you want to delete the
-					class {selectedClass.classname}?
-					<span className="font-extrabold">
-						WARNING: THIS WILL DELETE ALL ASSIGNMENTS, SUBMISSIONS, REVIEWS,
-						CATEGORIES, AND GROUPS ASSOCIATED WITH THIS CLASS.
-					</span>
-					<DialogFooter>
-						<Button
-							onClick={() => setDialogOpen(false)}
-							className={confirmDelete ? "shadow-md shadow-red-900" : ""}
-						>
-							Cancel
-						</Button>
-						<Button
-							variant="destructive"
-							onClick={handleDeleteClass}
-							className={confirmDelete ? "shadow-md shadow-red-900" : ""}
-						>
-							Delete
-						</Button>
-					</DialogFooter>
-				</DialogContent>
-			</Dialog>
+			<DeleteClassDialog
+                open={dialogOpen}
+                onOpenChange={setDialogOpen}
+                confirmDelete={confirmDelete}
+                selectedClass={selectedClass}
+                handleDeleteClass={handleDeleteClass}
+            />
 		</div>
 	);
 }
 
 function Search() {
 	return (
-		<div className="w-full main-container py-6 space-y-6">
+		<div className="w-full py-6 space-y-6">
 			<h1 className="text-2xl font-bold">All Classes</h1>
 			<ClassTable />
 		</div>

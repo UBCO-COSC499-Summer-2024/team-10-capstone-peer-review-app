@@ -223,7 +223,7 @@ const People = ({ classId }) => {
 	};
 
 	return (
-		<div className="w-full p-6 bg-white">
+		<div className="w-full p-6 bg-muted rounded-lg">
 			<Input
 				type="text"
 				placeholder="Search people"

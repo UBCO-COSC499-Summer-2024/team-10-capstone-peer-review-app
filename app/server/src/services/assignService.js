@@ -31,8 +31,6 @@ const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
             }
         });
 
-		console.log('assignmendafdfstData:')
-
 
         // Update the Category table
         await prisma.category.update({

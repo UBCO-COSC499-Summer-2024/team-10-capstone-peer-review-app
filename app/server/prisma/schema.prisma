@@ -123,7 +123,7 @@ model Assignment {
   isGroup            Boolean               @default(false)
   isPeerReview       Boolean               @default(false)
   dueDateReview      DateTime?
-  maxReviews         Int?                  @default(1)
+  numReviewsRequired Int?               @default(1)
   assignmentType     SubmissionType        @default(URL)
   assignmentFilePath String?
   classes            Class                 @relation(fields: [classId], references: [classId], onDelete: Cascade)
@@ -410,4 +410,5 @@ enum ReviewType {
 enum ReviewTypeEnum {
   INSTRUCTOR
   PEER
+  GROUP
 }

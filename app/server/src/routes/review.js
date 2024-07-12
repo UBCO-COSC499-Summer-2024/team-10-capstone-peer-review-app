@@ -30,7 +30,7 @@ router.get("/", (req, res) => {
 
 // create docs and tests
 //check if the add student/ group / assignment and anything if the instructor is even in the class
-// student should be a student of the class to submit a review and before joining a group of class
+// student should be a student of the class before joining a group of class
 // get student average grade for all instructor assignments and peer reviews assigned
 // restrict criterion grading for student if the assignment is not peer review or group review
 // add file type
@@ -41,17 +41,18 @@ router.get("/", (req, res) => {
 // update the peer review
 // create a group review to review individual contributions
 // submit accoriding to the max Submissions allowed and delete previous attempts
+// check for duplicates
 
 // get a submission criteria
 router.post("/submissionCriteria", getSubmissionCriteria);
 
-// get all open reviews for an assignment
+// get all open reviews for an assignment submissions
 router.post("/openReviewsAsg", getOpenReviewsAssignment);
 
-// get all closed reviews for an assignment
+// get all closed reviews for an assignment submissions
 router.post("/closedReviewsAsg", getClosedReviewsAssignment);
 
-// get all open reviews for a class
+// get all open reviews for a class 
 router.post("/openReviewsClass", getOpenReviewsClass);
 
 // get all closed reviews for a class

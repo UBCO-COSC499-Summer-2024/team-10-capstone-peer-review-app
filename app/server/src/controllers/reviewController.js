@@ -2,7 +2,7 @@
 import express from "express";
 import reviewService from "../services/reviewService.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
-import e from "express";
+
 
 // Controller methods for review operations
 
@@ -40,8 +40,9 @@ export const getStudentReviews = asyncErrorHandler(async (req, res) => {
 
 // get all open reviews for an assignment
 export const getOpenReviewsAssignment = asyncErrorHandler(async (req, res) => {
+    const userId = req.user.userId;
     const assignmentId = req.body.assignmentId;
-    const openReviews = await reviewService.getOpenReviewsAsg(assignmentId);
+    const openReviews = await reviewService.getOpenToReviewAssignment(userId, assignmentId);
     return res.status(200).json({
         status: "Success",
         data: openReviews
@@ -51,7 +52,7 @@ export const getOpenReviewsAssignment = asyncErrorHandler(async (req, res) => {
 // get all closed reviews for a submission
 export const getClosedReviewsAssignment = asyncErrorHandler(async (req, res) => {
     const assignmentId = req.body.assignmentId;
-    const closedReviews = await reviewService.getClosedReviewsAsg(assignmentId);
+    const closedReviews = await reviewService.getClosedReviewsAssignment(assignmentId);
     return res.status(200).json({
         status: "Success",
         data: closedReviews

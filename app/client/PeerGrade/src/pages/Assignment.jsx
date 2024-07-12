@@ -1,29 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Button } from '@/components/ui/button';
-import { Pencil, ArrowLeft } from 'lucide-react';
-import { Textarea } from "@/components/ui/textarea";
+import { ArrowLeft } from 'lucide-react';
 import PDFViewer from '@/components/assign/PDFViewer';
 import EditAssignment from './classNav/assignment/EditAssignment';
+import Submissions from './classNav/assignment/Submissions';  // Import the new Submissions component
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { getAssignmentInClass } from '@/api/assignmentApi';  // Import the API function
+import { getAssignmentInClass } from '@/api/assignmentApi';
 import { toast } from "@/components/ui/use-toast";
-import { useUser } from "@/contexts/contextHooks/useUser";  // Import useUser hook
+import { useUser } from "@/contexts/contextHooks/useUser";
 
 const Assignment = () => {
   const { user, userLoading } = useUser();
   const { classId, assignmentId } = useParams();
   const [assignment, setAssignment] = useState(null);
-  // const [isSubmitCardVisible, setSubmitCardVisible] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAssignment = async () => {
       try {
         const fetchedAssignment = await getAssignmentInClass(classId, assignmentId);
-        console.log(fetchedAssignment.data);
         setAssignment(fetchedAssignment.data);
       } catch (error) {
         toast({
@@ -35,7 +32,7 @@ const Assignment = () => {
     };
 
     fetchAssignment();
-  }, [classId, assignmentId, toast]);
+  }, [classId, assignmentId]);
 
   if (userLoading) {
     return <div>Loading...</div>;
@@ -53,9 +50,10 @@ const Assignment = () => {
     <div className="w-screen main-container mx-5 p-6">
       <Tabs defaultValue="view" className="flex-1">
         {(user.role === 'INSTRUCTOR' || user.role === 'ADMIN') && (
-          <TabsList className="grid w-1/3 grid-cols-2 mb-3">
+          <TabsList className="grid w-1/2 grid-cols-3 mb-3">
             <TabsTrigger value="view">View</TabsTrigger>
             <TabsTrigger value="edit">Edit</TabsTrigger>
+            <TabsTrigger value="submissions">Submissions</TabsTrigger>
           </TabsList>
         )}
         <TabsContent value="view">
@@ -100,28 +98,18 @@ const Assignment = () => {
               </Card>
             </div>
           </div>
-        </TabsContent>
-        {(user.role === 'INSTRUCTOR' || user.role === 'ADMIN') && (
-          <TabsContent value="edit">
-            <EditAssignment assignment={assignment} />
           </TabsContent>
+        {(user.role === 'INSTRUCTOR' || user.role === 'ADMIN') && (
+          <>
+            <TabsContent value="edit">
+              <EditAssignment assignment={assignment} />
+            </TabsContent>
+            <TabsContent value="submissions">
+              <Submissions assignmentId={assignmentId} />
+            </TabsContent>
+          </>
         )}
       </Tabs>
-      {/* {isSubmitCardVisible && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <Card className="bg-white p-4 shadow-md rounded-lg">
-            <CardHeader>
-              <CardTitle className="text-lg font-bold">Submit Assignment</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Input type="file" className="mb-2" />
-              <Textarea placeholder="Comments" />
-              <Button className="mt-2">Submit</Button>
-              <Button onClick={() => setSubmitCardVisible(false)} className="mt-2 bg-red-200">Cancel</Button>
-            </CardContent>
-          </Card>
-        </div>
-      )} */}
     </div>
   );
 };

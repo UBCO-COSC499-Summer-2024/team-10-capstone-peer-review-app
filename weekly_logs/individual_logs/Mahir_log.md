@@ -82,14 +82,16 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* I was able to get the Assignment submission for students done and also the instructor view for assignment submission. All that is left is to merge the new changes into dev!
+* I had a big rework design which was most of my day on Wednesday and Wednesday night as well.
+* There is a slight problem with the db that only allows for a single student to be in a class. We definitely need to get on top of that if we want the application to be flowing properly.
+* Overall, the pace is still good I would say. 
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Merge remaining approved pull requests and get the design update integrated
+* Work on assignment submission view/download feature
+* Start implementing instructor grading submission and a peer review grade submission
+  
   
   
 

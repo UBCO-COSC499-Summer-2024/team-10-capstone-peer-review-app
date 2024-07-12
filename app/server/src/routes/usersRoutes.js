@@ -4,7 +4,8 @@ import {
 	getUsersByRole,
 	getUserClasses,
 	getUserAssignments,
-	getGroups
+	getGroups,
+	updateProfile
 } from "../controllers/userController.js";
 
 import {
@@ -30,5 +31,7 @@ router
 router.route("/get-classes").post(getUserClasses);
 router.route("/get-assignments").post(getUserAssignments);
 router.route("/get-groups").post(getGroups);
+
+router.route("/update-profile").post(updateProfile);
 
 export default router;

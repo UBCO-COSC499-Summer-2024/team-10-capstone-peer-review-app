@@ -102,6 +102,7 @@ const EditClass = ({ classItem }) => {
 							onClick={handleBackClick}
 							variant="ghost"
 							className="h-8 w-8"
+							data-testid="back-button"
 						>
 							<ArrowLeft className="h-5 w-5" />
 						</Button>

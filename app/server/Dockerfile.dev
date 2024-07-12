@@ -6,8 +6,13 @@ ARG DB_PORT
 ARG DB_NAME
 ARG BACKEND_PORT
 
+ENV NODE_ENV=dev
+
 # Install dependencies for Prisma
-RUN apt-get update -y && apt-get install -y openssl
+RUN apt-get update -y && \
+    apt-get install -y openssl netcat-openbsd && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
 WORKDIR /usr/server/ 
@@ -26,7 +31,4 @@ COPY . /usr/server/
 EXPOSE ${BACKEND_PORT}
 
 # Run the commands needed to generate Prisma client, push the database schema, run migrations, and seed the database
-CMD npx prisma generate && \
-    npx prisma db push && \
-    npm run seed && \
-    npm run dev
+CMD npm run prisma:push && npm run seed && npm run dev:watch

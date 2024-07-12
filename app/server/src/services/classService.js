@@ -329,7 +329,11 @@ const updateGroupInClass = async (groupId, updateData) => {
 			where: {
 				groupId: groupId
 			},
-			data: updateData
+			data: updateData,
+			include: {
+				students: true,
+				submissions: true // This is to include the students & submissions in the response. Needed for Groups.jsx atm.
+			}
 		});
 
 		return updatedGroup;
@@ -522,6 +526,95 @@ const getGroupMembers = async (groupId) => {
 	}
 };
 
+const isUserInGroup = async (classId, userId) => {
+	try {
+		const classInfo = await prisma.class.findUnique({
+            where: {
+                classId: classId
+            },
+            include: {
+                groups: {
+                    include: {
+                        students: {
+                            where: {
+                                userId: userId
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        if (!classInfo) {
+            throw new apiError("Class not found", 404);
+        }
+
+        // Check if student exists in any group of the class
+        const groups = classInfo.groups;
+        return groups.some(group => group.students.length > 0);
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to check if student exists in any group of the class", 500);
+		}
+	}
+};
+
+const getStudentsNotInAnyGroup = async (classId) => {
+    try {
+        // Fetch all UserInClass rows for the class
+        const usersInClass = await prisma.userInClass.findMany({
+            where: {
+                classId: classId
+            },
+            include: {
+                user: true
+            }
+        });
+
+        // Extract all users (students) in the class
+        const allStudents = usersInClass.map(userInClass => userInClass.user);
+
+        // Fetch class info to get groups and their students
+        const classInfo = await prisma.class.findUnique({
+            where: {
+                classId: classId
+            },
+            include: {
+                groups: {
+                    include: {
+                        students: true
+                    }
+                }
+            }
+        });
+
+        if (!classInfo) {
+            throw new apiError("Class not found", 404);
+        }
+
+        // Extract students who are in groups
+        const studentsInGroups = classInfo.groups.reduce((acc, group) => {
+            return acc.concat(group.students);
+        }, []);
+
+        // Find students not in any group
+        const studentsNotInAnyGroup = allStudents.filter(student => {
+            // Check if the student is not in any group
+            return !studentsInGroups.some(groupStudent => groupStudent.userId === student.userId);
+        });
+		console.log("hey", studentsNotInAnyGroup);
+        return studentsNotInAnyGroup;
+    } catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to get students not in any group", 500);
+		}
+	}
+};
+
 export const getCategoriesByClassId = async (classId) => {
 	return await prisma.category.findMany({
 		where: { classId },
@@ -552,6 +645,8 @@ export default {
 	getGroupMembers,
 	addGroupMember,
 	removeGroupMember,
+	isUserInGroup,
+	getStudentsNotInAnyGroup,
 
 	getCategoriesByClassId
 };

@@ -4,14 +4,13 @@ import react from "@vitejs/plugin-react";
 
 // This dynamically sets the environment variables based on NODE_ENV
 
-import "./src/utils/envConfig.js"
+import "./src/utils/envConfig.js";
 
 // Retrieve ENV vars from the .env file
-const BACKEND_PORT = process.env.BACKEND_PORT; 
+const BACKEND_PORT = process.env.BACKEND_PORT;
 const BACKEND_HOST = process.env.BACKEND_HOST;
 
-
-console.log(`backend port is ${BACKEND_PORT}`); 
+console.log(`backend port is ${BACKEND_PORT}`);
 console.log(`frontend host is ${BACKEND_HOST}`);
 
 // https://vitejs.dev/config/
@@ -32,21 +31,17 @@ export default defineConfig({
 
 	// TODO add env variables for ports and target container names
 	server: {
-		watch: {	
-			// This enables hot module replacement for docker containers
-			// This is cpu intensive and should be disabled in production
-			// If this is causing issues for you in development, you can disable it but to see any changes you will
-			// Need to docker compose down and up again to see changes
-			usePolling: true,
+		watch: {
+			usePolling: true
 		},
-		host: "0.0.0.0", 
+		host: "0.0.0.0",
 		port: 3000,
 		proxy: {
-			"/api": { 
-				// TODO set up https with ssl 
-				target: "http://peergrade-server-dev:5001", 
+			"/api": {
+				// TODO set up https with ssl
+				target: "http://peergrade-server-dev:5001",
 				changeOrigin: true,
-				rewrite: (path) => path.replace(/^\/api/, '')
+				rewrite: (path) => path.replace(/^\/api/, "")
 			}
 		}
 	}

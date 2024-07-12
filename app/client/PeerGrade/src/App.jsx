@@ -11,7 +11,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Class from "./pages/Class";
 import EditClass from "./pages/classNav/EditClass";
-import AssignmentCreation from "./pages/classNav/AssignmentCreation";
+import AssignmentCreation from "./pages/classNav/assignment/AssignmentCreation";
 import Assignment from "./pages/Assignment";
 import AssignedPR from "./pages/AssignedPR";
 import PeerReview from "./pages/PeerReview";
@@ -19,6 +19,7 @@ import Settings from "./pages/Settings";
 import AppNavbar from "./components/global/Navbar";
 import ManageClass from "./pages/ManageClass";
 import Search from "./pages/Search";
+import Submission from "./pages/Submission";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedRoute from "./components/global/ProtectedRoute";
 import NotFound from "./components/global/NotFound";
@@ -44,12 +45,12 @@ function MainLayout() {
 
 	// May need to change this? Idk if this is necessary of the best way to do redirects
 
-	const isLoginPage = location.pathname === "/";
+  const isLoginPage = location.pathname === "/";
 
 	return (
-		<main className="gradient-background  min-h-screen flex">
+    <main className="gradient-background min-h-screen flex">
 			{!isLoginPage && <AppNavbar />}
-			<div className="main-container  flex-grow p-6">
+			<div className="main-container flex-grow p-6">
 				<Routes>
 					<Route path="/" element={<Login />} />
 					<Route
@@ -140,11 +141,11 @@ function MainLayout() {
 						}
 					/>
 					<Route
-						path="/admin"
+						path="/class/:classId/submit/:assignmentId"
 						element={
 							<ProtectedRoute
-								element={<AdminDashboard />}
-								allowedRoles={["ADMIN"]}
+								element={<Submission />}
+								allowedRoles={["STUDENT"]}
 							/>
 						}
 					/>

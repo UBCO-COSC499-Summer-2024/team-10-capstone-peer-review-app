@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Slider } from "@/components/ui/slider";
+import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Eye, Download, X, ChevronDown } from 'lucide-react';
+import { Eye, Download, ChevronDown } from 'lucide-react';
 import { getSubmissionsForAssignment } from '@/api/submitApi';
 import { getStudentsByClassId } from '@/api/classApi';
+import { getRubricsForAssignment } from '@/api/rubricApi';
 import { toast } from "@/components/ui/use-toast";
 import { cn } from "@/utils/utils";
 import {
@@ -13,21 +16,24 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
+} from '@/components/ui/accordion';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import PDFViewer from '@/components/assign/PDFViewer';
+import { Input } from "@/components/ui/input";
 
 const Submissions = ({ assignmentId }) => {
   const { classId } = useParams();
   const [studentsWithSubmissions, setStudentsWithSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedSubmission, setSelectedSubmission] = useState(null);
+  const [rubrics, setRubrics] = useState([]);
+  const [totalPoints, setTotalPoints] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,6 +80,45 @@ const Submissions = ({ assignmentId }) => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  const fetchRubrics = async (assignmentId) => {
+    try {
+      const rubricData = await getRubricsForAssignment(assignmentId);
+      setRubrics(rubricData.data);
+
+      // Calculate the total points for all rubrics
+      const totalPoints = rubricData.data.reduce((acc, rubric) => {
+        return acc + rubric.totalMarks;
+      }, 0);
+      setTotalPoints(totalPoints);
+    } catch (error) {
+      console.error("Error fetching rubrics:", error);
+    }
+  };
+
+  const handleGradeAssignment = async (submission) => {
+    setSelectedSubmission(submission);
+    await fetchRubrics(assignmentId);
+  };
+
+  const handleGradeSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    let totalMark = 0;
+
+    for (let [key, value] of formData.entries()) {
+      totalMark += parseFloat(value) || 0;
+    }
+
+    const finalScore = (totalMark / totalPoints) * 100;
+    
+
+    console.log('Final Mark:', totalMark);
+    console.log('Final Score:', finalScore);
+    
+    // Here you would call your API to submit the grades
+    // Don't implement this part yet as per your request
   };
 
   if (loading) {
@@ -138,6 +183,52 @@ const Submissions = ({ assignmentId }) => {
                               <Download className="h-4 w-4 mr-1" />
                               Download
                             </Button>
+                            <Dialog>
+                              <DialogTrigger asChild>
+                                <Button variant="outline" size="sm" className="ml-2" onClick={() => handleGradeAssignment(submission)}>
+                                  <ChevronDown className="h-4 w-4 mr-1" />
+                                  Grade
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="max-w-4xl h-[80vh]">
+                                <DialogHeader>
+                                  <DialogTitle>Grade Assignment</DialogTitle>
+                                </DialogHeader>
+                                <form onSubmit={handleGradeSubmit} className="flex-1 overflow-auto">
+                                  {rubrics.map((rubric, rubricIndex) => (
+                                    <Card key={rubricIndex} className="mb-6">
+                                      <CardHeader>
+                                        <CardTitle>{rubric.title}</CardTitle>
+                                      </CardHeader>
+                                      <CardContent>
+                                        {rubric.criteria.map((criterion, criterionIndex) => (
+                                          <div key={criterionIndex} className="mb-4">
+                                            <Label className="text-md font-semibold">{criterion.title}</Label>
+                                            {criterion.criterionRatings.map((rating, ratingIndex) => (
+                                              <div key={ratingIndex} className="mt-2 flex items-center justify-between">
+                                                <span className="text-sm flex-grow">{rating.description}</span>
+                                                <Input
+                                                  type="number"
+                                                  min="0"
+                                                  max={rating.points}
+                                                  name={`rating-${criterion.criterionId}-${rating.ratingId}`}
+                                                  defaultValue="0"
+                                                  className="w-[80px] ml-2"
+                                                />
+                                                <span className="text-sm ml-2">/ {rating.points}</span>
+                                              </div>
+                                            ))}
+                                          </div>
+                                        ))}
+                                      </CardContent>
+                                    </Card>
+                                  ))}
+                                  <Button type="submit" className="mt-4">
+                                    Submit Grades
+                                  </Button>
+                                </form>
+                              </DialogContent>
+                            </Dialog>
                           </TableCell>
                         </TableRow>
                       ))

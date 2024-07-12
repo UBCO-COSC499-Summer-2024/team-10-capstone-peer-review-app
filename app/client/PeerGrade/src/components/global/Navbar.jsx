@@ -146,7 +146,7 @@ export default function AppNavbar() {
                   )}
                 >
                   <Home className="w-4 h-4 mr-2 inline-block" />
-                  <span className="hidden md:block">Dashboard</span>
+                  <span className="md:block">Dashboard</span>
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem className="w-full">
@@ -264,7 +264,7 @@ export default function AppNavbar() {
                 src={user.avatarUrl}	
                 alt={`${user.firstname} ${user.lastname}`}
               />
-              <AvatarFallback >
+              <AvatarFallback className='text-2xl'>
                 {getInitials(user.firstname, user.lastname)}
               </AvatarFallback>
             </Avatar>

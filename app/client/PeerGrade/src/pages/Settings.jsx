@@ -74,53 +74,55 @@ const Settings = () => {
               <CardTitle>Profile</CardTitle>
               <CardDescription>Manage your personal information</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="flex items-center space-x-4">
-                <Avatar className="w-20 h-20">
-                  <AvatarImage src="/placeholder-avatar.jpg" alt="User avatar" />
-                  <AvatarFallback>{firstname.charAt(0)}{lastname.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <h3 className="text-lg font-medium">{firstname} {lastname}</h3>
-                  <p className="text-sm text-muted-foreground">{email}</p>
-                </div>
-              </div>
-              <Separator />
-              <form onSubmit={handleSaveProfile} className='space-y-4'>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="firstname">First name</Label>
-                    <Input 
-                      id="firstname"
-                      value={firstname} 
-                      onChange={(e) => setFirstname(e.target.value)} 
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="lastname">Last name</Label>
-                    <Input 
-                      id="lastname"
-                      value={lastname} 
-                      onChange={(e) => setLastname(e.target.value)} 
-                    />
+            <form onSubmit={handleSaveProfile}>
+              <CardContent className="space-y-6">
+                <div className="flex items-center space-x-4">
+                  <Avatar className="w-20 h-20">
+                    <AvatarImage src="/placeholder-avatar.jpg" alt="User avatar" />
+                    <AvatarFallback className='text-4xl'>{firstname.charAt(0)}{lastname.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <h3 className="text-lg font-medium">{firstname} {lastname}</h3>
+                    <p className="text-sm text-muted-foreground">{email}</p>
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input 
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)} 
-                  />
-                  <p className='text-sm text-gray-500'>Note: This ideally would require e-mail verification for the user to be able to change their e-mail address.</p>
+                <Separator />
+                <div className='space-y-4'>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="firstname">First name</Label>
+                      <Input 
+                        id="firstname"
+                        value={firstname} 
+                        onChange={(e) => setFirstname(e.target.value)} 
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="lastname">Last name</Label>
+                      <Input 
+                        id="lastname"
+                        value={lastname} 
+                        onChange={(e) => setLastname(e.target.value)} 
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input 
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={email} 
+                      onChange={(e) => setEmail(e.target.value)} 
+                    />
+                    <p className='text-sm text-gray-500'>Note: This ideally would require e-mail verification for the user to be able to change their e-mail address.</p>
+                  </div>
                 </div>
-              </form>
-            </CardContent>
-            <CardFooter>
-              <Button type="submit" className="bg-[#111827] text-white">Save changes</Button>
-            </CardFooter>
+              </CardContent>
+              <CardFooter>
+                <Button type="submit">Save changes</Button>
+              </CardFooter>
+            </form>
           </Card>
         );
       case 'account':
@@ -235,28 +237,28 @@ const Settings = () => {
                       <Label htmlFor="communication">Communication emails</Label>
                       <p className="text-sm text-muted-foreground">Receive emails about your account activity.</p>
                     </div>
-                    <Switch id="communication" />
+                    <Switch id="communication" className='bg-gray-300' />
                   </div>
                   <div className="flex justify-between items-center">
                     <div>
                       <Label htmlFor="marketing">Marketing emails</Label>
                       <p className="text-sm text-muted-foreground">Receive emails about new products, features, and more.</p>
                     </div>
-                    <Switch id="marketing" />
+                    <Switch id="marketing" className='bg-gray-300' />
                   </div>
                   <div className="flex justify-between items-center">
                     <div>
                       <Label htmlFor="social">Social emails</Label>
                       <p className="text-sm text-muted-foreground">Receive emails for friend requests, follows, and more.</p>
                     </div>
-                    <Switch id="social" />
+                    <Switch id="social" className='bg-gray-300' />
                   </div>
                   <div className="flex justify-between items-center">
                     <div>
                       <Label htmlFor="security">Security emails</Label>
                       <p className="text-sm text-muted-foreground">Receive emails about your account security.</p>
                     </div>
-                    <Switch id="security" defaultChecked />
+                    <Switch id="security" defaultChecked className='bg-gray-300' />
                   </div>
                 </div>
               </div>

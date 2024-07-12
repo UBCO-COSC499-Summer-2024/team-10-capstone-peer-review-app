@@ -50,7 +50,7 @@ const Assignment = () => {
     <div className="w-full px-6">
       <Tabs defaultValue="view" className="flex-1">
         {(user.role === 'INSTRUCTOR' || user.role === 'ADMIN') && (
-          <TabsList className="grid w-1/2 grid-cols-3 mb-3">
+          <TabsList className="grid w-1/2 grid-cols-3 mb-3 bg-muted">
             <TabsTrigger value="view">View</TabsTrigger>
             <TabsTrigger value="edit">Edit</TabsTrigger>
             <TabsTrigger value="submissions">Submissions</TabsTrigger>

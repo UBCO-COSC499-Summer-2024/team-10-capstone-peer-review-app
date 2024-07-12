@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Plus, Minus } from 'lucide-react';
+import { Plus,  } from 'lucide-react';
+import { TrashIcon, PlusIcon, Minus} from 'lucide-react';
+
 
 const RubricDataTable = ({ rubricData, setRubricData, setIsValid }) => {
     const [errors, setErrors] = useState({});
@@ -81,8 +83,8 @@ const RubricDataTable = ({ rubricData, setRubricData, setIsValid }) => {
     };
 
     return (
-        <div className="p-4">
-            <h2 className="text-xl font-semibold mb-4">Edit Rubric</h2>
+        <div className="mt-5">
+            <h2 className="text-lg font-semibold mb-4">Edit Rubric</h2>
             <Input
                 placeholder="Rubric Title"
                 value={rubricData.title}
@@ -90,7 +92,7 @@ const RubricDataTable = ({ rubricData, setRubricData, setIsValid }) => {
                 className="w-full mb-4"
             />
             {rubricData.criteria.map((item, index) => (
-                <div key={index} className="mb-4 border p-4 rounded-lg">
+                <div key={index} className="mb-4 border p-4 rounded-lg overflow-y-scroll">
                     <div className="flex items-center mb-2">
                         <Input
                             placeholder="Criteria"
@@ -99,7 +101,7 @@ const RubricDataTable = ({ rubricData, setRubricData, setIsValid }) => {
                             className="w-full"
                         />
                         <Button variant="destructive" onClick={() => removeCriteria(index)} className="ml-2">
-                            <Minus className="h-4 w-4"/>
+                            <TrashIcon className="h-4 w-4"/>
                         </Button>
                     </div>
                     <div className="flex flex-wrap items-center mb-2">
@@ -145,7 +147,7 @@ const RubricDataTable = ({ rubricData, setRubricData, setIsValid }) => {
                     )}
                 </div>
             ))}
-            <Button variant="outline" onClick={addCriteria} className="h-8 w-8 p-0 flex items-center justify-center">
+            <Button variant="success" onClick={addCriteria} className="h-10 w-10 p-0 flex items-center justify-center">
                 <Plus className="h-4 w-4" />
             </Button>
         </div>

@@ -50,7 +50,7 @@ const Assignment = () => {
   };
 
   return (
-    <div className="w-screen main-container mx-5 p-6">
+    <div className="w-full px-6">
       <Tabs defaultValue="view" className="flex-1">
         {(user.role === 'INSTRUCTOR' || user.role === 'ADMIN') && (
           <TabsList className="grid w-1/3 grid-cols-2 mb-3">

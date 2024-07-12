@@ -16,7 +16,7 @@ import Assignment from "./pages/Assignment";
 import AssignedPR from "./pages/AssignedPR";
 import PeerReview from "./pages/PeerReview";
 import Settings from "./pages/Settings";
-import AppNavbar from "./components/login/global/Navbar";
+import AppNavbar from "./components/global/Navbar";
 import ManageClass from "./pages/ManageClass";
 import Search from "./pages/Search";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -28,9 +28,9 @@ import { Toaster } from "@/components/ui/toaster";
 function App() {
 	return (
 		<Router>
-			<TitleUpdater />
 			<UserProvider>
 				<ClassProvider>
+					<TitleUpdater />
 					<MainLayout />
 				</ClassProvider>
 			</UserProvider>
@@ -43,12 +43,12 @@ function MainLayout() {
 
 	// May need to change this? Idk if this is necessary of the best way to do redirects
 
-	const isLoginPage = location.pathname === "/";
+  	const isLoginPage = location.pathname === "/";
 
 	return (
-		<main className="bg-gray-100 mx-auto">
+    <main className="gradient-background min-h-screen flex">
 			{!isLoginPage && <AppNavbar />}
-			<div className="main-container flex justify-center flex-1">
+			<div className="main-container flex-grow p-6">
 				<Routes>
 					<Route path="/" element={<Login />} />
 					<Route path="/dashboard" element={<Dashboard />} />

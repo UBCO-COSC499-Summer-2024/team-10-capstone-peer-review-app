@@ -299,7 +299,7 @@ const Groups = () => {
 	};
 
 	return (
-		<div className="w-full p-6">
+		<div className="w-full p-6  ">
 			<div className="flex items-center mb-6">
 				<Input
 					type="text"
@@ -317,7 +317,7 @@ const Groups = () => {
 			{filteredGroups.map((group) => (
 				<Card key={group.groupId} className="mb-4">
 					<CardContent
-						className="flex justify-between items-center bg-gray-200 p-4 rounded-t-lg cursor-pointer"
+						className="flex justify-between items-center bg-muted p-4 rounded-t-lg cursor-pointer"
 						onClick={() => toggleGroup(group.groupId)}
 					>
 						<div className='flex flex-col'>

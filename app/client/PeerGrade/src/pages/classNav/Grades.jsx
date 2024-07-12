@@ -21,7 +21,7 @@ const Grades = ({ classAssignments }) => {
 
   return (
     <Card className="w-full">
-      <CardHeader className="flex justify-between items-center bg-gray-200 p-4 rounded-t-lg">
+      <CardHeader className="flex justify-between items-center mb-2 bg-muted p-4 rounded-t-lg">
         <CardTitle className="text-xl font-bold">Class Grades</CardTitle>
       </CardHeader>
       <CardContent className="p-4">

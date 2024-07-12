@@ -1,91 +1,91 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import configureStore from 'redux-mock-store';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import Settings from '@/pages/Settings';
-import { updateUser } from '@/utils/redux/hooks/userSlice';
-import userEvent from '@testing-library/user-event';
-import { waitFor } from '@testing-library/react';
+import { useUser } from '@/contexts/contextHooks/useUser';
+import { useToast } from '@/components/ui/use-toast';
+import { updateProfile } from '@/api/userApi';
 
-// Mock store setup
-const mockStore = configureStore([]);
-const store = mockStore({
-  user: {
-    currentUser: {
-      username: 'testuser',
-      email: 'testuser@example.com',
-      bio: 'This is a bio',
-      url: 'https://example.com',
-      firstname: 'Test',
-      lastname: 'User',
-      description: 'This is a test user'
-    }
-  }
-});
-
-// Mock dispatch
-store.dispatch = jest.fn();
+// Mock the necessary hooks and functions
+jest.mock('@/contexts/contextHooks/useUser');
+jest.mock('@/components/ui/use-toast');
+jest.mock('@/api/userApi');
 
 describe('Settings Component', () => {
+  let user, setUserContext, toast;
+
   beforeEach(() => {
-    render(
-      <Provider store={store}>
-        <Settings />
-      </Provider>
-    );
+    user = {
+      userId: '123',
+      firstname: 'John',
+      lastname: 'Doe',
+      email: 'john.doe@example.com'
+    };
+
+    setUserContext = jest.fn();
+    toast = jest.fn();
+
+    useUser.mockReturnValue({
+      user,
+      userLoading: false,
+      setUserContext,
+    });
+
+    useToast.mockReturnValue({
+      toast,
+    });
+
+    updateProfile.mockResolvedValue({ status: 'Success' });
   });
 
-  test('renders profile tab by default', () => {
-    expect(screen.getByLabelText('Profile')).toBeInTheDocument();
-    expect(screen.getByLabelText('Username')).toBeInTheDocument();
-    expect(screen.getByLabelText('Email')).toBeInTheDocument();
-    expect(screen.getByLabelText('Bio')).toBeInTheDocument();
-    expect(screen.getByLabelText('URL')).toBeInTheDocument();
+  it('renders the Settings component', () => {
+    render(<Settings />);
+
+    // Check for the presence of the Settings title
+    expect(screen.getByText('Settings')).toBeInTheDocument();
+    // Check for the Profile tab being active by default
+    expect(screen.getByText('Manage your personal information')).toBeInTheDocument();
+    expect(screen.getByText('First name')).toBeInTheDocument();
   });
 
-  test('allows switching between tabs', async () => {
-    userEvent.click(screen.getByText('Profile', { selector: 'button' }));
-    await waitFor(() => expect(screen.getByText('Username')).toBeInTheDocument());
+  it('switches between tabs', () => {
+    render(<Settings />);
 
-    userEvent.click(screen.getByText('Account'));
-    await waitFor(() => expect(screen.getByText('Account Settings')).toBeInTheDocument());
-  
-    userEvent.click(screen.getByText('Notifications'));
-    await waitFor(() => expect(screen.getByText('Notification Settings')).toBeInTheDocument());
-  
-    userEvent.click(screen.getByText('Privacy'));
-    await waitFor(() => expect(screen.getByText('Privacy Settings')).toBeInTheDocument());
-  
-    userEvent.click(screen.getByText('Integrations'));
-    await waitFor(() => expect(screen.getByText('Integrations Settings')).toBeInTheDocument());
+    const accountTab = screen.getByText('Account');
+    fireEvent.click(accountTab);
+
+    // Ensure Account section is rendered
+    expect(screen.getByText('Manage your account settings')).toBeInTheDocument();
   });
 
-  test('updates profile information and dispatches updateUser action', () => {
-    const usernameInput = screen.getByLabelText('Username');
-    const emailInput = screen.getByLabelText('Email');
-    const bioInput = screen.getByLabelText('Bio');
-    const urlInput = screen.getByLabelText('URL');
+  it('updates profile information', async () => {
+    render(<Settings />);
 
-    fireEvent.change(usernameInput, { target: { value: 'newusername' } });
-    fireEvent.change(emailInput, { target: { value: 'newemail@example.com' } });
-    fireEvent.change(bioInput, { target: { value: 'New bio' } });
-    fireEvent.change(urlInput, { target: { value: 'https://newurl.com' } });
+    // Fill in the form fields
+    fireEvent.change(screen.getByLabelText(/First name/i), { target: { value: 'Jane' } });
+    fireEvent.change(screen.getByLabelText(/Last name/i), { target: { value: 'Smith' } });
+    fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: 'jane.smith@example.com' } });
 
-    fireEvent.click(screen.getByText('Save'));
+    // Submit the form
+    fireEvent.click(screen.getByText(/Save changes/i));
 
-    expect(store.dispatch).toHaveBeenCalledWith(updateUser({
-      username: 'newusername',
-      email: 'newemail@example.com',
-      bio: 'New bio',
-      url: 'https://newurl.com'
-    }));
-  });
+    await waitFor(() => {
+      // Ensure the toast message is displayed
+      expect(toast).toHaveBeenCalledWith(expect.objectContaining({
+        title: 'Profile Updated',
+      }));
 
-  test('displays the correct username and email', () => {
-    const usernameInput = screen.getByLabelText('Username');
-    const emailInput = screen.getByLabelText('Email');
-  
-    expect(usernameInput.value).toBe('testuser');
-    expect(emailInput.value).toBe('testuser@example.com');
+      // Ensure the updateProfile API was called with the correct arguments
+      expect(updateProfile).toHaveBeenCalledWith('123', {
+        firstname: 'Jane',
+        lastname: 'Smith',
+        email: 'jane.smith@example.com'
+      });
+
+      // Ensure the user context was updated
+      expect(setUserContext).toHaveBeenCalled();
+    });
+
+    expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+    expect(screen.getByText('jane.smith@example.com')).toBeInTheDocument();
   });
 });

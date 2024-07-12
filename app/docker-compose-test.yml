@@ -23,7 +23,7 @@ services:
       - TEST_DB_NAME=${DB_NAME} 
       - TEST_DB_PORT=${DB_PORT} 
     env_file:
-      - ./server/.env.test 
+      - ./server/envs/.env.test 
     ports:
       - ${BACKEND_PORT}:5002 
     volumes:

@@ -43,12 +43,12 @@ function MainLayout() {
 
 	// May need to change this? Idk if this is necessary of the best way to do redirects
 
-  const isLoginPage = location.pathname === "/";
+  	const isLoginPage = location.pathname === "/";
 
 	return (
-    <main className="gradient-background  min-h-screen flex">
+    <main className="gradient-background min-h-screen flex">
 			{!isLoginPage && <AppNavbar />}
-			<div className="main-container  flex-grow p-6">
+			<div className="main-container flex-grow p-6">
 				<Routes>
 					<Route path="/" element={<Login />} />
 					<Route path="/dashboard" element={<Dashboard />} />

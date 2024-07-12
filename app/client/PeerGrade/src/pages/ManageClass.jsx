@@ -2,13 +2,9 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ClassCard from "@/components/class/ClassCard";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Plus, Calendar as CalendarIcon } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { getAllAssignmentsByClassId } from "@/api/assignmentApi";
-import { format, parseISO } from "date-fns";
-import { cn } from "@/utils/utils";
-
 import { useClass } from "@/contexts/contextHooks/useClass";
 import AddClassModal from "@/components/class/AddClassDialog";
 import DeleteClassDialog from "@/components/class/DeleteClassDialog";
@@ -71,6 +67,7 @@ const ManageClass = () => {
 	};
 
 	const handleDeleteClick = (classItem) => {
+		setConfirmDelete(false);
 		setSelectedClass(classItem);
 		setDialogOpen(true);
 	};
@@ -87,7 +84,7 @@ const ManageClass = () => {
 					onClick={() => setModalOpen(true)}
 					className="flex items-center"
 				>
-					<Plus className="mr-2" />
+					<Plus className="mr-2 w-5 h-5" />
 					Add a class
 				</Button>
 			</div>

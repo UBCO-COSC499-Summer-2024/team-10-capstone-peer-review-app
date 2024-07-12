@@ -16,11 +16,19 @@ export const UserProvider = ({ children }) => {
 		setUserContext();
 	}, []);
 
+	useEffect(() => {
+		if (!user) {
+			console.log("User does not exist yet");
+		}
+	}, [user]);
+
 	const setUserContext = async () => {
 		try {
 			setUserLoading(true);
 			const userInfo = await getCurrentUser();
-			setUser(userInfo);
+			if (userInfo.status === "Success") {
+				setUser(userInfo.userInfo);
+			}
 		} catch (error) {
 			console.log(error);
 		} finally {

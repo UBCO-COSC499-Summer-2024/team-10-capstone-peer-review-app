@@ -8,7 +8,7 @@ export const getCurrentUser = async () => {
 		const response = await axios.get(`${BASE_URL}/auth/current-user`, {
 			withCredentials: true
 		});
-		return response.data.userInfo;
+		return response.data;
 	} catch (error) {
 		return error.response.data;
 	}

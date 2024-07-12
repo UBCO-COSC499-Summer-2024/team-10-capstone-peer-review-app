@@ -19,6 +19,10 @@ const ProtectedRoute = ({ element, allowedRoles }) => {
 	// If the user is not authenticated / logged in, redirect them to the login page
 	if (!user) {
 		navigate("/", { replace: true });
+		toast({
+			title: "Session expired",
+			description: "Your session has expired, please login again"
+		});
 	}
 
 	// If the user has been authenticated but is in the login page, redirect them to the dashboard

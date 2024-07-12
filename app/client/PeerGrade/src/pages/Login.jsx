@@ -16,17 +16,17 @@ const Login = () => {
 
 	const navigate = useNavigate();
 	const query = useQuery();
-	const { user, userLoading } = useUser();
+	// const { user, userLoading } = useUser();
 
 	const forgotPasswordToken = query.get("forgotPasswordToken") || "";
 
 	// If the user has been authenticated, state has been set, and the user tries to access the login page, redirect them to the dashboard
-	useEffect(() => {
-		if (user && !userLoading) {
-			navigate(user.role === "ADMIN" ? "/admin" : "/dashboard");
-		}
-		console.log("user from login useeffect", user);
-	}, [user]);
+	// useEffect(() => {
+	// 	if (user && !userLoading) {
+	// 		navigate(user.role === "ADMIN" ? "/admin" : "/dashboard");
+	// 	}
+	// 	console.log("user from login useeffect", user);
+	// }, [user]);
 
 	// If forgot token in found in the url, set the current tab to forgotPassword
 	useEffect(() => {

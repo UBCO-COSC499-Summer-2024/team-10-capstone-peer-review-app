@@ -261,6 +261,7 @@ const People = ({ classId }) => {
 							variant="ghost"
 							className="bg-gray-100 h-7 w-7"
 							onClick={handleAddClick}
+							data-testid="add-student-button"
 						>
 							<Plus className="w-5 h-5" />
 						</Button>
@@ -292,13 +293,9 @@ const People = ({ classId }) => {
 									variant="outline"
 									className="bg-gray-100"
 									onClick={() => handleDeleteClick(student)}
+									data-testid={`remove-student-button-${student.userId}`}
 								>
 									<MinusCircle className="w-5 h-5 mr-2" /> Delete
-								</Button>
-							)}
-							{myGroups.length > 0 && (
-								<Button variant="outline" className="bg-gray-100">
-									Add to Group
 								</Button>
 							)}
 						</div>
@@ -316,7 +313,7 @@ const People = ({ classId }) => {
 							{confirmDelete ? "Confirm" : ""} Remove Student
 						</DialogTitle>
 					</DialogHeader>
-					Are you {confirmDelete ? "really" : ""} sure you want to remove the
+					Are you {confirmDelete ? "really " : ""}sure you want to remove the
 					student {selectedStudent.firstname} {selectedStudent.lastname} from
 					this class?
 					<DialogFooter>
@@ -350,13 +347,15 @@ const People = ({ classId }) => {
 								Select students to add to the class:
 							</label>
 							{/* Label is only present for screen readers, can be removed. */}
-							<Popover open={open} onOpenChange={setOpen} id="selectStudents">
+							<Popover open={open} onOpenChange={setOpen}>
 								<PopoverTrigger asChild>
 									<Button
+										id="selectStudents"
 										variant="outline"
 										role="combobox"
 										aria-expanded={open}
 										className={`w-full justify-between bg-white mt-1 border`}
+										data-testid="add-student-dropdown"
 									>
 										{selectedStudents.length > 0
 											? `${selectedStudents.length} student(s) selected`

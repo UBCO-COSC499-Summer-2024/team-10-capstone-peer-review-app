@@ -1,125 +1,123 @@
-import { render, fireEvent, waitFor } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
-import fetchMock from 'jest-fetch-mock';
+// LoginCard.test.jsx
+import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { MemoryRouter, useLocation } from 'react-router-dom';
 import LoginCard from '@/components/login/LoginCard';
-import store from '@/utils/redux/store';
+import { loginUser, confirmEmail } from '@/api/authApi';
 
-fetchMock.enableMocks();
+// Mock the API calls
+jest.mock('@/api/authApi', () => ({
+  loginUser: jest.fn(),
+  confirmEmail: jest.fn(),
+}));
+
+// Mock the Toaster component
+jest.mock('@/components/ui/toaster', () => ({
+  Toaster: jest.fn(() => null),
+}));
+
+// Mock useLocation hook
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useLocation: jest.fn(),
+}));
 
 describe('LoginCard', () => {
-
-  test('renders without crashing', () => {
-    const { getByText } = render(
-      <Provider store={store}>
-        <Router>
-          <LoginCard />
-        </Router>
-      </Provider>
-    );
-    expect(getByText('Login')).toBeInTheDocument();
+  beforeEach(() => {
+    // Clear all instances and calls to constructor and all methods:
+    jest.clearAllMocks();
   });
 
-  test('shows error message when invalid credentials are entered', async () => {
-    global.fetch = jest.fn((url, options) => {
-      if (JSON.parse(options.body).email === 'valid@example.com' && JSON.parse(options.body).password === 'validpassword@A1') {
-        return Promise.resolve({
-          json: () => Promise.resolve({
-            class_id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            email: 'valid@example.com',
-            firstname: 'Test',
-            lastname: 'User',
-            type: 'admin',
-            user_id: 1,
-            username: 'testUser',
-          })
-        });
-      } else {
-        return Promise.resolve({
-          json: () => Promise.resolve({
-            message: 'Invalid credentials'
-          })
-        });
-      }
+  it('renders correctly', () => {
+    // Mock useLocation to return a URL with no query params
+    useLocation.mockReturnValue({
+      search: '',
     });
 
-    const { getByLabelText, getByText, getByRole } = render(
-      <Provider store={store}>
-        <Router>
-          <LoginCard />
-        </Router>
-      </Provider>
+    render(
+      <MemoryRouter>
+        <LoginCard />
+      </MemoryRouter>
     );
 
-    const emailInput = getByLabelText('Email address');
-    const passwordInput = getByLabelText('Password');
-
-    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-    fireEvent.change(passwordInput, { target: { value: 'password' } });
-
-    await waitFor(() => {
-      expect(emailInput.value).toBe('test@example.com');
-      expect(passwordInput.value).toBe('password');
-    });
+    expect(screen.getByText("Login")).toBeInTheDocument();
+    expect(screen.getByLabelText(/Email address/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Password/i)).toBeInTheDocument();
   });
 
-  test('navigates to dashboard and dispatches action when valid credentials are entered', async () => {
-    global.fetch = jest.fn((url, options) => {
-      if (JSON.parse(options.body).email === 'valid@example.com' && JSON.parse(options.body).password === 'validpassword@A1') {
-        return Promise.resolve({
-          json: () => Promise.resolve({
-            class_id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            email: 'valid@example.com',
-            firstname: 'Test',
-            lastname: 'User',
-            type: 'admin',
-            user_id: 1,
-            username: 'testUser',
-          })
-        });
-      } else {
-        return Promise.resolve({
-          json: () => Promise.resolve({
-            message: 'Invalid credentials'
-          })
-        });
-      }
+  it('handles email verification token', async () => {
+    // Mock useLocation to return a URL with a verifyEmailToken query param
+    useLocation.mockReturnValue({
+      search: '?verifyEmailToken=valid-token',
     });
-    
-    const { getByLabelText, getByRole } = render(
 
-      <Provider store={store}>
-        <Router>
-          <LoginCard />
-        </Router>
-      </Provider>
+    confirmEmail.mockResolvedValueOnce({ status: 'Success' });
+
+    render(
+      <MemoryRouter>
+        <LoginCard />
+      </MemoryRouter>
     );
 
-    const emailInput = getByLabelText('Email address');
-    const passwordInput = getByLabelText('Password');
-    const submitButton = getByText('Sign in');
+    await waitFor(() =>
+      expect(confirmEmail).toHaveBeenCalledWith('valid-token')
+    );
 
-    // Enter invalid email and password
-    fireEvent.change(emailInput, { target: { value: 'nonexistent@example.com' } });
-    fireEvent.change(passwordInput, { target: { value: 'password' } });
-    fireEvent.click(submitButton);
-
-    // Wait for the async validation and error message to appear
-    await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalled(); // Ensure fetch was called
-      expect(global.fetch).toHaveBeenCalledWith('http://localhost:3000/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: 'nonexistent@example.com',
-          password: 'password',
-        }),
-      });
-    });
-    const errorMessage = await findByText('No user with that email');
-    expect(errorMessage).toBeInTheDocument();
+    expect(screen.getByText(/The email verification was successful!/i)).toBeInTheDocument();
   });
-  
+
+  it('handles login', async () => {
+    loginUser.mockResolvedValueOnce({ status: 'Success', userRole: 'USER' });
+
+    confirmEmail.mockResolvedValueOnce({ status: 'Success' });
+
+    render(
+      <MemoryRouter>
+        <LoginCard />
+      </MemoryRouter>
+    );
+
+    fireEvent.change(screen.getByLabelText(/Email address/i), {
+      target: { value: 'user@example.com' },
+    });
+
+    fireEvent.change(screen.getByLabelText(/Password/i), {
+      target: { value: 'password' },
+    });
+
+    fireEvent.click(screen.getByText(/Sign in/i));
+
+    await waitFor(() =>
+      expect(loginUser).toHaveBeenCalledWith('user@example.com', 'password')
+    );
+  });
+
+  it('shows error message on login failure', async () => {
+    loginUser.mockResolvedValueOnce({
+      status: 'Error',
+      message: 'Invalid credentials',
+    });
+
+    confirmEmail.mockResolvedValueOnce({ status: 'Success' });
+
+    render(
+      <MemoryRouter>
+        <LoginCard />
+      </MemoryRouter>
+    );
+
+    fireEvent.change(screen.getByLabelText(/Email address/i), {
+      target: { value: 'user@example.com' },
+    });
+
+    fireEvent.change(screen.getByLabelText(/Password/i), {
+      target: { value: 'wrongpassword' },
+    });
+
+    fireEvent.click(screen.getByText(/Sign in/i));
+
+    await waitFor(() =>
+      expect(screen.getByText(/Invalid credentials/i)).toBeInTheDocument()
+    );
+  });
 });

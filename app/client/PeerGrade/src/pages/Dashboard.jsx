@@ -120,24 +120,26 @@ function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
         <Card className="bg-muted rounded-lg shadow-md">
           <CardHeader>
-            <CardTitle className="flex items-center"><Bell className="mr-2" /> Recent Announcements</CardTitle>
+            <CardTitle className="flex items-center"><Bell className="mr-2" />Recent Announcements</CardTitle>
           </CardHeader>
           <CardContent>
             {/* <p className="text-muted-foreground">No recent announcements.</p> */}
           </CardContent>
         </Card>
+        {user.role === "STUDENT" && 
         <Card className="bg-muted rounded-lg shadow-md">
           <CardHeader>
-            <CardTitle className="flex items-center"><Users className="mr-2" /> My Groups</CardTitle>
+            <CardTitle className="flex items-center"><Users className="mr-2" />My Groups</CardTitle>
           </CardHeader>
           <CardContent>
             {userLoading ? (
               <Skeleton className="h-48 w-full" />
             ) : (
-              <GroupCard classes={classes} groups={groups} classNames={classes.map(c => c.classname)} users={user} />
+              <GroupCard groups={groups} />
             )}
           </CardContent>
         </Card>
+        }
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <Card className="bg-muted rounded-lg shadow-md">

@@ -12,51 +12,57 @@ import { Menubar, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Switch } from '@/components/ui/switch';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { updateProfile } from '@/api/userApi';
 
 const Settings = () => {
   const { toast } = useToast();
-  const { user, userLoading, setCurrentUser } = useUser();
+	const { user, userLoading, setUserContext } = useUser();
+  const [selectedTab, setSelectedTab] = useState('profile');
   const [activeSection, setActiveSection] = useState('profile');
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');
-  const [bio, setBio] = useState('');
-  const [url, setUrl] = useState('');
 
   useEffect(() => {
     if (!userLoading && user) {
         setFirstname(user.firstname || '');
         setLastname(user.lastname || '');
         setEmail(user.email || '');
-        setBio(user.bio || '');
-        setUrl(user.url || '');
     }
   }, [user, userLoading]);
 
-  const handleSaveProfile = async () => {
-    try {
-      const response = await axios.post('/api/users/update-profile', {
-        username, email, bio, url
-      }, { withCredentials: true });
+  const handleSaveProfile = (e) => {
+    e.preventDefault();
+    
+    const updatedData = {
+			firstname,
+      lastname,
+      email
+		};
 
-      console.log('response', response);
-      setCurrentUser(response.data.user);
-      toast({
-        title: "Profile Updated",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify({ firstname, lastname, email, bio, url }, null, 2)}</code>
-          </pre>
-        ),
-        variant: "positive"
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "An error occurred while updating the profile.",
-        variant: "destructive"
-      });
-    }
+    // NEED TO IMPLEMENT A CHECK MAYBE FOR VERIFYING IF ITS A VALID EMAIL
+    
+		const updateUserProfile = async () => {
+      const updatedProfile = await updateProfile(user.userId, updatedData);
+      // setUser(updatedProfile.data);
+      if (updatedProfile.status === "Success") {
+        toast({
+          title: "Profile Updated",
+          description: (
+            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+              <code className="text-white">{JSON.stringify({ firstname, lastname, email }, null, 2)}</code>
+            </pre>
+          ),
+          variant: "positive"
+        });
+        await setUserContext();
+      } else {
+        console.error("Failed to update profile");
+			}
+		};
+
+		updateUserProfile();
   };
 
   const renderContent = () => {
@@ -80,7 +86,7 @@ const Settings = () => {
                 </div>
               </div>
               <Separator />
-              <div className="space-y-4">
+              <form onSubmit={handleSaveProfile} className='space-y-4'>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="firstname">First name</Label>
@@ -103,34 +109,17 @@ const Settings = () => {
                   <Label htmlFor="email">Email</Label>
                   <Input 
                     id="email"
-                    type="email" 
+                    name="email"
+                    type="email"
                     value={email} 
                     onChange={(e) => setEmail(e.target.value)} 
                   />
+                  <p className='text-sm text-gray-500'>Note: This ideally would require e-mail verification for the user to be able to change their e-mail address.</p>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="bio">Bio</Label>
-                  <Textarea 
-                    id="bio"
-                    value={bio} 
-                    onChange={(e) => setBio(e.target.value)} 
-                    placeholder="Tell us a little about yourself" 
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="url">URL</Label>
-                  <Input
-                    id="url"
-                    type="url"
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
-                    placeholder="https://example.com"
-                  />
-                </div>
-              </div>
+              </form>
             </CardContent>
             <CardFooter>
-              <Button onClick={handleSaveProfile}>Save changes</Button>
+              <Button type="submit" className="bg-[#111827] text-white">Save changes</Button>
             </CardFooter>
           </Card>
         );

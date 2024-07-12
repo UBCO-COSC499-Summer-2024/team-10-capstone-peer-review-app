@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileUp } from "lucide-react";
+import { FileUp, CheckCircle } from "lucide-react";
 import { getAssignmentInClass } from '@/api/assignmentApi';
 import { getRubricsForAssignment } from '@/api/rubricApi';
 import { createSubmission } from '@/api/submitApi';
@@ -16,6 +16,7 @@ const Submission = () => {
     const [assignment, setAssignment] = useState(null);
     const [rubrics, setRubrics] = useState([]);
     const [file, setFile] = useState(null);
+    const [submissionMessage, setSubmissionMessage] = useState('');
     const { user } = useUser();
 
     useEffect(() => {
@@ -56,7 +57,17 @@ const Submission = () => {
         try {
             const result = await createSubmission(user.userId, assignment.assignmentId, file);
             toast({ title: "Success", description: "Assignment submitted successfully" });
-            // Optionally, you can update the UI or redirect the user after successful submission
+
+            // Clear the file input
+            setFile(null);
+            event.target.reset();
+
+            // Create the success message with timestamp
+            const timestamp = new Date().toLocaleString();
+            const fileName = file.name;
+            const fileType = file.type.split('/').pop();
+            setSubmissionMessage(`${fileName} successfully submitted at ${timestamp} `);
+
         } catch (error) {
             console.error("Submission error:", error);
             toast({ 
@@ -126,6 +137,12 @@ const Submission = () => {
                                                 />
                                                 <Button type="submit" variant="default" className="mt-4 w-full">Submit</Button>
                                             </form>
+                                            {submissionMessage && (
+                                                <div className="mt-4 p-2 bg-green-100 border border-green-400 rounded-md flex items-center">
+                                                    <CheckCircle className="text-green-600 mr-2" />
+                                                    <span>{submissionMessage}</span>
+                                                </div>
+                                            )}
                                         </div>
                                     </AccordionContent>
                                 </AccordionItem>

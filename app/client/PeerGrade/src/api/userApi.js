@@ -47,6 +47,21 @@ export const getGroups = async (userId) => {
 	}
 };
 
+
+export const updateProfile = async (userId, updateData) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/users/update-profile`, {
+			userId,
+			updateData
+		});
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		handleError(error);
+		return error.response.data;
+	}
+};
+
 function handleError(error) {
 	if (error.response && error.response.data) {
 		showStatusToast({

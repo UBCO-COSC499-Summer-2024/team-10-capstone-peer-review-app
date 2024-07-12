@@ -22,11 +22,16 @@ svg {
 }
 
 .main-container {
-  max-width: 1350px;
-  min-height: 450px;
-  margin: 0 auto;
-  padding: 16px;
+  min-height: 800px;
+  margin-left: 160px;
 }
+
+.gradient-background {
+  background: linear-gradient(135deg, #eceff1, #b0bec5);
+
+}
+
+
 
 main {
   min-height: 100vh;

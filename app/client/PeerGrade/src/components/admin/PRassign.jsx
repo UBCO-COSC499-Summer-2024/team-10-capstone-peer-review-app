@@ -71,7 +71,7 @@ const reviewColumns = [
 
 const PRassign = () => {
   return (
-    <div className="flex gap-4 pt-3 bg-white">
+    <div className="max-w-8xl rounded-lg flex gap-4 pt-3 bg-white">
       <div>
         <p className='text-xl ml-5'>Peer Reviews</p>
         <DataTable title="Peer Reviews" data={peerReviewsData} columns={peerReviewColumns} pageSize={5} enableStatus={true} />

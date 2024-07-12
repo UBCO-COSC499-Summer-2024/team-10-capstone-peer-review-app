@@ -2,7 +2,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import ClassCard from '@/components/class/ClassCard';
+import ClassCard from '@/components/class/GradeCard';
 
 test('renders class card with correct props', () => {
   const classId = '123';

@@ -15,7 +15,7 @@ const AdminDashboard = () => {
 	}
 
 	return (
-		<div className="main-container w-full">
+		<div className="px-6 w-full">
 			<Tabs defaultValue="overview">
 				<TabsList className="w-auto flex mb-5">
 					<TabsTrigger value="overview">Overview</TabsTrigger>

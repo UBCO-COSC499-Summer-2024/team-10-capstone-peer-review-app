@@ -148,7 +148,7 @@ const Users = () => {
 	}));
 
 	return (
-		<div className="flex flex-col gap-6">
+		<div className="max-w-6xl flex flex-col gap-6">
 			<div className="flex flex-col pt-3 bg-white">
 				<p className="text-xl ml-5">Current Users</p>
 				<DataTable

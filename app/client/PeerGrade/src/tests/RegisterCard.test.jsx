@@ -1,114 +1,96 @@
-import React from 'react';
-import { render, fireEvent, waitFor, screen } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import RegisterCard from '@/components/login/RegisterCard';
 import { registerUser } from '@/api/authApi';
 
-// Mock the registerUser API function
-jest.mock('@/api/authApi', () => ({
-    registerUser: jest.fn(),
-}));
+jest.mock('@/api/authApi');
 
-const mockedRegisterUser = registerUser;
+window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
 describe('RegisterCard', () => {
-    const mockOnSwitchToLogin = jest.fn();
+  const onSwitchToLogin = jest.fn();
 
-    beforeEach(() => {
-        mockedRegisterUser.mockClear();
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('renders register card', () => {
+    render(<RegisterCard onSwitchToLogin={onSwitchToLogin} />);
+
+    expect(screen.getByText('Register')).toBeInTheDocument();
+    expect(screen.getByLabelText('First Name:')).toBeInTheDocument();
+    expect(screen.getByLabelText('Last Name:')).toBeInTheDocument();
+    expect(screen.getByLabelText('Email Address:')).toBeInTheDocument();
+    expect(screen.getByLabelText('Password:')).toBeInTheDocument();
+    expect(screen.getByLabelText('Confirm Password:')).toBeInTheDocument();
+  });
+
+  it('handles register success', async () => {
+    registerUser.mockResolvedValueOnce({ status: 'Success' });
+
+    render(<RegisterCard onSwitchToLogin={onSwitchToLogin} />);
+
+    fireEvent.change(screen.getByLabelText('First Name:'), { target: { value: 'John' } });
+    fireEvent.change(screen.getByLabelText('Last Name:'), { target: { value: 'Doe' } });
+    fireEvent.change(screen.getByLabelText('Email Address:'), { target: { value: 'john@example.com' } });
+    fireEvent.change(screen.getByLabelText('Password:'), { target: { value: 'Password1!' } });
+    fireEvent.change(screen.getByLabelText('Confirm Password:'), { target: { value: 'Password1!' } });
+    fireEvent.click(screen.getByText('Select option...'));
+    fireEvent.click(screen.getByText('Student'));
+    fireEvent.click(screen.getByText('Sign up'));
+
+    await waitFor(() => {
+      expect(registerUser).toHaveBeenCalledWith({
+        email: 'john@example.com',
+        password: 'Password1!',
+        firstname: 'John',
+        lastname: 'Doe',
+        role: 'STUDENT'
+      });
     });
 
-    it('renders the RegisterCard component', () => {
-        const { getByText, getByLabelText } = render(<RegisterCard onSwitchToLogin={mockOnSwitchToLogin} />);
+    expect(onSwitchToLogin).toHaveBeenCalled();
+  });
 
-        expect(getByText('Register')).toBeInTheDocument();
-        expect(getByLabelText('First Name:')).toBeInTheDocument();
-        expect(getByLabelText('Last Name:')).toBeInTheDocument();
-        expect(getByLabelText('Email Address:')).toBeInTheDocument();
-        expect(getByLabelText('Password:')).toBeInTheDocument();
-        expect(getByLabelText('Confirm Password:')).toBeInTheDocument();
+  it('handles register error', async () => {
+    registerUser.mockResolvedValueOnce({ status: 'Error', message: 'Registration failed' });
+
+    render(<RegisterCard onSwitchToLogin={onSwitchToLogin} />);
+
+    fireEvent.change(screen.getByLabelText('First Name:'), { target: { value: 'John' } });
+    fireEvent.change(screen.getByLabelText('Last Name:'), { target: { value: 'Doe' } });
+    fireEvent.change(screen.getByLabelText('Email Address:'), { target: { value: 'john@example.com' } });
+    fireEvent.change(screen.getByLabelText('Password:'), { target: { value: 'Password1!' } });
+    fireEvent.change(screen.getByLabelText('Confirm Password:'), { target: { value: 'Password1!' } });
+    fireEvent.click(screen.getByText('Select option...'));
+    fireEvent.click(screen.getByText('Student'));
+    fireEvent.click(screen.getByText('Sign up'));
+    
+    await waitFor(() => {
+      expect(screen.getByText('Registration failed')).toBeInTheDocument();
     });
+  });
 
-    it('validates form fields correctly', async () => {
-        const { getByLabelText, getByText, getByRole } = render(<RegisterCard onSwitchToLogin={mockOnSwitchToLogin} />);
+  it('switches to login on button click', () => {
+    render(<RegisterCard onSwitchToLogin={onSwitchToLogin} />);
 
-        mockedRegisterUser.mockResolvedValue({
-          status: 'Success',
-        });
+    fireEvent.click(screen.getByText('Log in'));
 
-        fireEvent.change(getByLabelText('First Name:'), { target: { value: 'John' } });
-        fireEvent.change(getByLabelText('Last Name:'), { target: { value: 'Doe' } });
-        fireEvent.change(getByLabelText('Email Address:'), { target: { value: 'john.doe@example.com' } });
-        fireEvent.change(getByLabelText('Password:'), { target: { value: 'Password1!' } });
-        fireEvent.change(getByLabelText('Confirm Password:'), { target: { value: 'Password1!' } });
+    expect(onSwitchToLogin).toHaveBeenCalled();
+  });
 
-        fireEvent.click(getByRole('button', { name: "Sign up"}));
+  it('shows validation errors for password mismatch and missing role', async () => {
+    render(<RegisterCard onSwitchToLogin={onSwitchToLogin} />);
 
-        await waitFor(() => {
-            expect(mockedRegisterUser).toHaveBeenCalledWith({
-                email: 'john.doe@example.com',
-                password: 'Password1!',
-                firstname: 'John',
-                lastname: 'Doe',
-                role: 'STUDENT',
-            });
-        });
+    fireEvent.change(screen.getByLabelText('First Name:'), { target: { value: 'John' } });
+    fireEvent.change(screen.getByLabelText('Last Name:'), { target: { value: 'Doe' } });
+    fireEvent.change(screen.getByLabelText('Email Address:'), { target: { value: 'john@example.com' } });
+    fireEvent.change(screen.getByLabelText('Password:'), { target: { value: 'Password1!' } });
+    fireEvent.change(screen.getByLabelText('Confirm Password:'), { target: { value: 'Password2!' } });
+    fireEvent.click(screen.getByText('Sign up'));
+
+    await waitFor(() => {
+      expect(screen.getByText('Passwords do not match')).toBeInTheDocument();
+      expect(screen.getByText('Please select a role')).toBeInTheDocument();
     });
-
-    it('displays client-side validation errors', async () => {
-        const { getByLabelText, getByText, getByRole } = render(<RegisterCard onSwitchToLogin={mockOnSwitchToLogin} />);
-
-        fireEvent.change(getByLabelText('First Name:'), { target: { value: 'John' } });
-        fireEvent.change(getByLabelText('Last Name:'), { target: { value: 'Doe' } });
-        fireEvent.change(getByLabelText('Email Address:'), { target: { value: 'john.doe@example.com' } });
-        fireEvent.change(getByLabelText('Password:'), { target: { value: 'password' } });
-        fireEvent.change(getByLabelText('Confirm Password:'), { target: { value: 'differentPassword' } });
-
-        fireEvent.click(getByRole('button', { name: /sign up/i }));
-
-        await waitFor(() => {
-            expect(screen.getByText(/password must be at least 8 characters long/i)).toBeInTheDocument();
-            expect(screen.getByText(/passwords do not match/i)).toBeInTheDocument();
-        });
-    });
-
-    it('handles API error response', async () => {
-        mockedRegisterUser.mockResolvedValue({
-            status: 'Error',
-            message: 'Email already in use',
-        });
-
-        const { getByLabelText, getByText, getByRole } = render(<RegisterCard onSwitchToLogin={mockOnSwitchToLogin} />);
-
-        fireEvent.change(getByLabelText('First Name:'), { target: { value: 'John' } });
-        fireEvent.change(getByLabelText('Last Name:'), { target: { value: 'Doe' } });
-        fireEvent.change(getByLabelText('Email Address:'), { target: { value: 'john.doe@example.com' } });
-        fireEvent.change(getByLabelText('Password:'), { target: { value: 'Password1!' } });
-        fireEvent.change(getByLabelText('Confirm Password:'), { target: { value: 'Password1!' } });
-
-        fireEvent.click(getByRole('button', { name: /sign up/i }));
-
-        await waitFor(() => {
-            expect(screen.getByText(/email already in use/i)).toBeInTheDocument();
-        });
-    });
-
-    it('switches to login on successful registration', async () => {
-        mockedRegisterUser.mockResolvedValue({
-            status: 'Success',
-        });
-
-        const { getByLabelText, getByRole } = render(<RegisterCard onSwitchToLogin={mockOnSwitchToLogin} />);
-
-        fireEvent.change(getByLabelText('First Name:'), { target: { value: 'John' } });
-        fireEvent.change(getByLabelText('Last Name:'), { target: { value: 'Doe' } });
-        fireEvent.change(getByLabelText('Email Address:'), { target: { value: 'john.doe@example.com' } });
-        fireEvent.change(getByLabelText('Password:'), { target: { value: 'Password1!' } });
-        fireEvent.change(getByLabelText('Confirm Password:'), { target: { value: 'Password1!' } });
-
-        fireEvent.click(getByRole('button', { name: /sign up/i }));
-
-        await waitFor(() => {
-            expect(mockOnSwitchToLogin).toHaveBeenCalled();
-        });
-    });
+  });
 });

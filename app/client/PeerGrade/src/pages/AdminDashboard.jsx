@@ -4,6 +4,7 @@ import Users from "@/components/admin/Users";
 import Search from "./Search";
 import Assignments from "@/components/admin/Assign";
 import Interactions from "@/components/admin/Interactions";
+import Reports from "@/components/admin/Reports";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import PRassign from "@/components/admin/PRassign";
@@ -24,6 +25,7 @@ const AdminDashboard = () => {
 					<TabsTrigger value="assignments">Assignments</TabsTrigger>
 					<TabsTrigger value="peer-reviews">Peer-reviews</TabsTrigger>
 					<TabsTrigger value="interactions">Interactions</TabsTrigger>
+					<TabsTrigger value="reports">Reports</TabsTrigger>
 				</TabsList>
 				<TabsContent value="overview">
 					<Overview />
@@ -42,6 +44,9 @@ const AdminDashboard = () => {
 				</TabsContent>
 				<TabsContent value="interactions">
 					<Interactions />
+				</TabsContent>
+				<TabsContent value="reports">
+					<Reports />
 				</TabsContent>
 			</Tabs>
 		</div>

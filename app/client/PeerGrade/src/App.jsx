@@ -18,6 +18,7 @@ import PeerReview from "./pages/PeerReview";
 import Settings from "./pages/Settings";
 import AppNavbar from "./components/global/Navbar";
 import ManageClass from "./pages/ManageClass";
+import Report from "./pages/Report";
 import Search from "./pages/Search";
 import Submission from "./pages/Submission";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -72,6 +73,7 @@ function MainLayout() {
 					<Route path="/assignedPR/:assignmentId" element={<AssignedPR />} />
 					<Route path="/peer-review" element={<PeerReview />} />
 					<Route path="/settings" element={<Settings />} />
+					<Route path="/report" element={<Report />} />
 					<Route path="/admin" element={<AdminDashboard />} />
 					<Route path="/test-user" element={<TestUserContext />} />
 				</Routes>

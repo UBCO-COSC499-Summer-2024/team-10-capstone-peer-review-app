@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { cn } from "@/utils/utils";
 import { useToast } from "@/components/ui/use-toast";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Home, Users, ClipboardList, Settings, LogOut } from "lucide-react";
+import { Home, Users, ClipboardList, Settings, LogOut, MessageSquareWarning } from "lucide-react";
 import NotifCard from "./NotifCard";
 import {
   NavigationMenu,
@@ -254,6 +254,18 @@ export default function AppNavbar() {
                   Settings
                 </Link>
               </NavigationMenuItem>
+              <NavigationMenuItem className="w-full">
+                {user.role !== "ADMIN" && <Link
+                  to="/report"
+                  className={cn(
+                    navigationMenuTriggerStyle(),
+                    isActive("/report") && "font-bold flex items-center"
+                  )}
+                >
+                  <MessageSquareWarning className="w-4 h-4 mr-2 inline-block" />
+                  Report
+                </Link>}
+              </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
         </div>
@@ -269,9 +281,12 @@ export default function AppNavbar() {
               </AvatarFallback>
             </Avatar>
           </Button>
-          {isCardVisible && (
+        </div>
+      </div>
+
+      {isCardVisible && (
             <Card 
-              className="absolute w-[400px] transform -translate-y-56 translate-x-36 transition-opacity duration-300 ease-in-out notification-card"
+              className="w-[400px] transition-opacity duration-300 ease-in-out notification-card h-auto fixed left-[200px] bottom-3 z-50 shadow-md bg-white"
               style={{ opacity: cardOpacity }}
             >              
             <CardContent className="space-y-4 ">
@@ -285,15 +300,7 @@ export default function AppNavbar() {
                     title="Admin: Heads up!"
                     description="You have received a new message"
                   />
-                  <NotifCard
-                    title="Admin: Heads up!"
-                    description="You have received a new message"
-                  />
-                  <NotifCard
-                    title="Admin: Heads up!"
-                    description="You have received a new message"
-                  />
-                  <Button variant="outline" className="bg-green-100">View All</Button>
+                  <Link to="/reports" className='w-full'><Button variant="outline" className="bg-green-100 w-full">View All</Button></Link>
                 </div>
                 <div className="flex justify-between">
                   <Button variant="destructive" size="sm" onClick={handleLogout}>
@@ -309,8 +316,6 @@ export default function AppNavbar() {
               </CardContent>
             </Card>
           )}
-        </div>
-      </div>
       <div className="flex-1 overflow-auto ml-60">
         {/* This is where your main app content will be rendered */}
       </div>

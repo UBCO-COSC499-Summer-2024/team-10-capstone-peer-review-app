@@ -23,6 +23,8 @@ import {
 	CommandList
 } from "@/components/ui/command";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { addStudentsByEmailDialog } from "@/components/class/addStudentsByEmailDialog";
+
 import {
 	MinusCircle,
 	Plus,
@@ -32,6 +34,7 @@ import {
 } from "lucide-react";
 
 import { useUser } from "@/contexts/contextHooks/useUser";
+
 import {
 	getInstructorByClassId,
 	getStudentsByClassId,
@@ -50,6 +53,7 @@ const People = ({ classId }) => {
 	const [selectedStudent, setSelectedStudent] = useState({});
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [addDialogOpen, setAddDialogOpen] = useState(false);
+	const [addByCSVOpen, setAddByCSVOpen] = useState(false);
 	const [studentOptions, setStudentOptions] = useState([]);
 	const [selectedStudents, setSelectedStudents] = useState([]);
 	const [myGroups, setMyGroups] = useState([]);

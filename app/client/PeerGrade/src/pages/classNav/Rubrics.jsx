@@ -87,6 +87,7 @@ const Rubrics = () => {
         title: newRubricData.title,
         // description: newRubricData.description, // You might want to add a description field as well
         totalMarks: newRubricData.criteria.reduce((total, criterion) => total + parseInt(criterion.maxPoints || 0), 0),
+        classId: classId,
         criterion: newRubricData.criteria.map(criterion => ({
           title: criterion.criteria,
           minPoints: parseInt(criterion.minPoints || 0),

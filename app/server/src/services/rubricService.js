@@ -19,6 +19,7 @@ const createRubricsForAssignment = async (creatorId, assignmentId, rubricData) =
                 title: rubricData.title,
                 description: rubricData.description,
                 totalMarks: rubricData.totalMarks,
+				classId: rubricData.classId,
                 creatorId: creatorId,
                 criteria: {
                     create: criteria.map(criterion => ({
@@ -115,6 +116,20 @@ const getRubricsForAssignment = async (assignmentId) => {
 const getAllRubrics = async () => {
 	try {
 		const rubrics = await prisma.rubric.findMany();
+		return rubrics;
+	} catch (error) {
+		throw new apiError("Failed to get all rubrics", 500);
+	}
+};
+
+
+const getAllRubricsInClass = async (classId) => {
+	try {
+		const rubrics = await prisma.rubric.findMany({
+			where: {
+				classId: classId
+			}
+		});
 		return rubrics;
 	} catch (error) {
 		throw new apiError("Failed to get all rubrics", 500);
@@ -407,6 +422,7 @@ export default {
 	createRubricsForAssignment,
 	getRubricsForAssignment,
 	getAllRubrics,
+	getAllRubricsInClass,
 	getRubricById,
 	updateRubricsForAssignment,
 	deleteRubricsForAssignment,

@@ -6,6 +6,7 @@ import {
 	getCriterionInRubric,
 	addRubricsToAssignment,
 	getAllRubrics,
+	getAllRubricsInClass,
 	getRubricById,
 	removeRubricsFromAssignment,
 	updateRubricsInAssignment,
@@ -48,6 +49,10 @@ router
 router
 	.route("/get-all-rubrics")
 	.post(ensureUser, ensureInstructor, getAllRubrics);
+
+router
+	.route("/get-rubrics-in-class")
+	.post(ensureUser, ensureInstructor, getAllRubricsInClass);
 
 router
 	.route("/get-rubric-by-id")

@@ -77,28 +77,32 @@ const Reports = ({role}) => {
 				<CardContent className="space-y-6">
 					{reports.length > 0 ? (
 						reports.map((report, index) => (
-							<div key={index} className="space-y-2 border-b pb-4">
-								<p><strong>Sender:</strong> {report.sender.firstname}  {report.sender.lastname}</p>
-								<p><strong>Subject:</strong> {report.subject}</p>
-								<p><strong>Content:</strong> {report.reportContent}</p>
-								<Button
-									variant="ghost"
-									size="icon"
-									className="text-red-500 hover:bg-red-100"
-									onClick={() => handleResolveClick(report)}
-									data-testid={`resolve-button-${index}`}
-								>
-									<Check className="h-5 w-5" />
-								</Button>
-								<Button
-									variant="ghost"
-									size="icon"
-									className="text-red-500 hover:bg-red-100"
-									onClick={() => handleTrashClick(report)}
-									data-testid={`delete-button-${index}`}
-								>
-									<Trash2 className="h-5 w-5" />
-								</Button>
+							<div key={index} className="space-y-2 border-b pb-4 flex flex-row items-center justify-between">
+								<div>
+									<p><strong>Sender:</strong> {report.sender.firstname}  {report.sender.lastname}</p>
+									<p><strong>Subject:</strong> {report.subject}</p>
+									<p><strong>Content:</strong> {report.reportContent}</p>
+								</div>
+								<div className='flex flex-row items-center justify-center'>
+									<Button
+										variant="ghost"
+										size="icon"
+										className="text-red-500 hover:bg-red-100"
+										onClick={() => handleResolveClick(report)}
+										data-testid={`resolve-button-${index}`}
+									>
+										<Check className="h-5 w-5" />
+									</Button>
+									<Button
+										variant="ghost"
+										size="icon"
+										className="text-red-500 hover:bg-red-100"
+										onClick={() => handleTrashClick(report)}
+										data-testid={`delete-button-${index}`}
+									>
+										<Trash2 className="h-5 w-5" />
+									</Button>
+								</div>
 							</div>
 						))
 					) : (

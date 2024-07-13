@@ -23,7 +23,7 @@ import {
 	CommandList
 } from "@/components/ui/command";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { addStudentsByEmailDialog } from "@/components/class/addStudentsByEmailDialog";
+import AddStudentsByCSVDialog from "@/components/class/addStudentsByCSVDialog";
 
 import {
 	MinusCircle,
@@ -261,14 +261,24 @@ const People = ({ classId }) => {
 				<div className="flex flex-row items-center justify-between mb-2">
 					<h2 className="text-lg font-bold inline-block">Students</h2>
 					{(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (
-						<Button
-							variant="ghost"
-							className="bg-gray-100 h-7 w-7"
-							onClick={handleAddClick}
-							data-testid="add-student-button"
-						>
-							<Plus className="w-5 h-5" />
-						</Button>
+						<div>
+							<Button
+								variant="ghost"
+								className="bg-gray-100 h-7 w-7 mr-2"
+								onClick={() => setAddByCSVOpen(true)}
+								data-testid="add-student-by-email-button"
+							>
+								<Plus className="w-5 h-5" />
+							</Button>
+							<Button
+								variant="ghost"
+								className="bg-gray-100 h-7 w-7"
+								onClick={handleAddClick}
+								data-testid="add-student-button"
+							>
+								<Plus className="w-5 h-5" />
+							</Button>
+						</div>
 					)}
 				</div>
 				{filteredStudents.map((student) => (
@@ -408,6 +418,11 @@ const People = ({ classId }) => {
 					</form>
 				</DialogContent>
 			</Dialog>
+			<AddStudentsByCSVDialog
+				classId={classId}
+				open={addByCSVOpen}
+				onOpenChange={setAddByCSVOpen}
+			/>
 		</div>
 	);
 };

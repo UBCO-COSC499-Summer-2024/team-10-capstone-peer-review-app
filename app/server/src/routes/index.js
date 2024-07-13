@@ -28,11 +28,11 @@ router.use("/auth", authRouter);
 // Routes that require authentication
 router.use("/classes", classesRouter);
 router.use("/assignment", assignmentRouter);
-router.use("/rubric", rubricRouter);
+router.use("/rubric", ensureUser, rubricRouter);
 router.use("/users", usersRoutes);
 router.use("/students", ensureUser, studentsRouter);
 
-router.use("/submit", ensureUser, submitRouter);
+router.use("/submit", submitRouter);
 router.use("/review", ensureUser, reviewRouter);
 router.use("/grade", ensureUser, gradesRouter);
 

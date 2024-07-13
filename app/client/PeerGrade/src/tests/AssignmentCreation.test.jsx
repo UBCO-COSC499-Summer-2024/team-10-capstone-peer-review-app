@@ -1,6 +1,6 @@
 import { screen, render, fireEvent, waitFor } from '@testing-library/react';
 import { toast } from "@/components/ui/use-toast";
-import AssignmentCreation from '@/pages/classNav/AssignmentCreation';
+import AssignmentCreation from '@/pages/classNav/assignment/AssignmentCreation';
 
 window.HTMLElement.prototype.scrollIntoView = function() {};
 

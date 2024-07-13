@@ -263,7 +263,7 @@ export default function AppNavbar() {
                   )}
                 >
                   <MessageSquareWarning className="w-4 h-4 mr-2 inline-block" />
-                  Report
+                  Report{user.role === "INSTRUCTOR" ? "s" : ""}
                 </Link>}
               </NavigationMenuItem>
             </NavigationMenuList>
@@ -300,7 +300,7 @@ export default function AppNavbar() {
                     title="Admin: Heads up!"
                     description="You have received a new message"
                   />
-                  <Link to="/reports" className='w-full'><Button variant="outline" className="bg-green-100 w-full">View All</Button></Link>
+                  <Link to="/report" className='w-full'><Button variant="outline" className="bg-green-100 w-full">View All</Button></Link>
                 </div>
                 <div className="flex justify-between">
                   <Button variant="destructive" size="sm" onClick={handleLogout}>

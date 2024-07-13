@@ -1,10 +1,10 @@
 // src/pages/AdminDashboard.jsx
 import Overview from "@/components/admin/Overview";
 import Users from "@/components/admin/Users";
-import Search from "./Search";
+import Search from "@/pages/Search";
 import Assignments from "@/components/admin/Assign";
 import Interactions from "@/components/admin/Interactions";
-import Reports from "@/components/admin/Reports";
+import Reports from "@/pages/Reports";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import PRassign from "@/components/admin/PRassign";
@@ -46,7 +46,7 @@ const AdminDashboard = () => {
 					<Interactions />
 				</TabsContent>
 				<TabsContent value="reports">
-					<Reports />
+					<Reports role="ADMIN" />
 				</TabsContent>
 			</Tabs>
 		</div>

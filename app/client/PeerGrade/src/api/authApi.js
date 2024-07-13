@@ -254,11 +254,11 @@ export const updateRoleRequestStatus = async (roleRequestId, status) => {
 	}
 };
 
-export const applyForNewRoleRequest = async (roleRequest) => {
+export const applyForNewRoleRequest = async (requestDetails) => {
 	try {
 		const response = await axios.post(
 			`${BASE_URL}/auth/role-request`,
-			roleRequest,
+			requestDetails,
 			{
 				withCredentials: true
 			}

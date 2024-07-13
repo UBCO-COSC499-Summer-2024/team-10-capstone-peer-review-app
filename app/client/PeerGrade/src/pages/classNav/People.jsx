@@ -30,7 +30,8 @@ import {
 	Plus,
 	CheckIcon,
 	ChevronDownIcon,
-	ChevronUpIcon
+	ChevronUpIcon,
+	FileUp
 } from "lucide-react";
 
 import { useUser } from "@/contexts/contextHooks/useUser";
@@ -100,6 +101,13 @@ const People = ({ classId }) => {
 
 		fetchStudents();
 	}, [user, userLoading, classId]);
+
+	const refreshStudents = async () => {
+		const students = await getStudentsByClassId(classId);
+		if (students.status === "Success") {
+			setStudents(students.data);
+		}
+	};
 
 	useEffect(() => {
 		if (user.role === "INSTRUCTOR" || user.role === "ADMIN") {
@@ -268,7 +276,7 @@ const People = ({ classId }) => {
 								onClick={() => setAddByCSVOpen(true)}
 								data-testid="add-student-by-email-button"
 							>
-								<Plus className="w-5 h-5" />
+								<FileUp className="w-5 h-5" />
 							</Button>
 							<Button
 								variant="ghost"
@@ -422,6 +430,7 @@ const People = ({ classId }) => {
 				classId={classId}
 				open={addByCSVOpen}
 				onOpenChange={setAddByCSVOpen}
+				onStudentsAdded={refreshStudents}
 			/>
 		</div>
 	);

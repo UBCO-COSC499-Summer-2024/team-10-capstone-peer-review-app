@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Calendar, FileText, Users, Edit, Upload } from 'lucide-react';
 import PDFViewer from '@/components/assign/PDFViewer';
 import EditAssignment from './classNav/assignment/EditAssignment';
-import Submissions from './classNav/assignment/Submissions';  // Import the new Submissions component
+import Submissions from './classNav/assignment/Submissions';
+import Submission from './Submission';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { getAssignmentInClass } from '@/api/assignmentApi';
 import { toast } from "@/components/ui/use-toast";
 import { useUser } from "@/contexts/contextHooks/useUser";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 
 const Assignment = () => {
   const { user, userLoading } = useUser();
@@ -34,72 +38,95 @@ const Assignment = () => {
     fetchAssignment();
   }, [classId, assignmentId]);
 
-  if (userLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!assignment) {
-    return <div>Assignment not found</div>;
+  if (userLoading || !assignment) {
+    return <div className="flex justify-center items-center h-screen">Loading...</div>;
   }
 
   const handleBackClick = () => {
     navigate(`/class/${classId}`);
   };
 
+  const isInstructor = user.role === 'INSTRUCTOR';
+
   return (
-    <div className="w-full px-6">
-      <Tabs defaultValue="view" className="flex-1">
-        {(user.role === 'INSTRUCTOR' || user.role === 'ADMIN') && (
-          <TabsList className="grid w-1/2 grid-cols-3 mb-3 bg-muted">
-            <TabsTrigger value="view">View</TabsTrigger>
-            <TabsTrigger value="edit">Edit</TabsTrigger>
-            <TabsTrigger value="submissions">Submissions</TabsTrigger>
-          </TabsList>
-        )}
+    <div className="container mx-auto px-4 py-8">
+    
+      
+      <Card className="mb-8 bg-card">
+        <CardHeader>
+          <div className='flex w-full items-center'>
+            <div className="flex rounded-lg mr-2">
+              <Button onClick={handleBackClick} variant='ghost' className='h-8 w-8'>
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+            </div>
+            <CardTitle className="text-2xl font-bold w-full">{assignment.title}</CardTitle>
+          </div>
+        </CardHeader>
+      </Card>
+
+      <Tabs defaultValue="view" className="space-y-4">
+        <TabsList className="bg-muted">
+          <TabsTrigger value="view">View Assignment</TabsTrigger>
+          {isInstructor && <TabsTrigger value="edit">Edit Assignment</TabsTrigger>}
+          <TabsTrigger value={isInstructor ? "submissions" : "submission"}>
+            {isInstructor ? "View Submissions" : "Submit Assignment"}
+          </TabsTrigger>
+        </TabsList>
+        
         <TabsContent value="view">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            <div className="lg:col-span-3 bg-gray-100 rounded">
-              <Card className="mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <Card className="lg:col-span-2 bg-card">
+              <CardHeader>
+                <CardTitle>Assignment File</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className='bg-accent rounded-md flex justify-center items-center p-4'>
+                  <PDFViewer url={assignment.assignmentFilePath} scale="1"/>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <div className="space-y-6">
+            <Card className="bg-card">
                 <CardHeader>
-                  <div className='flex w-full items-center'>
-                    <div className="flex rounded-lg mr-2">
-                      <Button onClick={handleBackClick} variant='ghost' className='h-8 w-8'>
-                        <ArrowLeft className="h-5 w-5" />
-                      </Button>
-                    </div>
-                    <CardTitle className="text-lg font-bold w-full">{assignment.title}</CardTitle>
-                  </div>
+                  <CardTitle className="text-lg font-semibold">Submission Details:</CardTitle>
+                  <p className="text-foreground ">{assignment.description}</p>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex justify-between mb-4">
-                    <div>
-                      <p>Due: {new Date(assignment.dueDate).toLocaleDateString()}</p>
-                      <p>Required File Type: NA</p>
-                    </div>
-                   </div>
-                  <p className="mb-2">{assignment.description}</p>
+
+                  <div className="flex justify-between items-center">
+                    <span>Status:</span>
+                    <Badge variant="secondary">Not Submitted</Badge>
+                  </div>
+                  <Separator className="my-4" />
+                  <div className="flex justify-between items-center">
+                    <span>Due Date:</span>
+                    <span>{new Date(assignment.dueDate).toLocaleDateString()}</span>
+                  </div>
                 </CardContent>
               </Card>
-              <div className='white rounded-md flex justify-center items-center'>
-                <PDFViewer url={assignment.assignmentFilePath} scale="1"/>
-              </div>
-            </div>
-            <div className="space-y-6">
-              <Card className="bg-white p-4 shadow-md">
-                <CardContent className="bg-gray-100 p-4 rounded">Comment Box</CardContent>
-              </Card>
-              <Card className="bg-white p-4 shadow-md">
+              
+              <Card className="bg-card">
                 <CardHeader>
-                  <CardTitle className="text-xl font-bold mb-2">Submissions</CardTitle>
+                  <CardTitle className="text-lg font-semibold">Comments</CardTitle>
                 </CardHeader>
-                <CardContent className="bg-gray-100 p-4 rounded">
-                  {/* You can display assignment submissions here */}
+                <CardContent>
+                  <ScrollArea className="h-[200px]">
+                    <p className="text-muted-foreground">No comments yet.</p>
+                  </ScrollArea>
                 </CardContent>
+                <CardFooter>
+                  <Button className="w-full">Add Comment</Button>
+                </CardFooter>
               </Card>
+              
+             
             </div>
           </div>
-          </TabsContent>
-        {(user.role === 'INSTRUCTOR' || user.role === 'ADMIN') && (
+        </TabsContent>
+        
+        {isInstructor && (
           <>
             <TabsContent value="edit">
               <EditAssignment assignment={assignment} />
@@ -108,6 +135,12 @@ const Assignment = () => {
               <Submissions assignmentId={assignmentId} />
             </TabsContent>
           </>
+        )}
+        
+        {!isInstructor && (
+          <TabsContent value="submission">
+            <Submission assignmentId={assignmentId} />
+          </TabsContent>
         )}
       </Tabs>
     </div>

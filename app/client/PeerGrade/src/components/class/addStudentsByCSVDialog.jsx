@@ -218,7 +218,7 @@ const AddStudentsByCSVDialog = ({
 								<h4 className="text-green-600 font-semibold">
 									Successfully Added ({results.valid.length}):
 								</h4>
-								<ul className="max-h-60 overflow-y-auto mt-2 border rounded divide-y">
+								<ul className={`max-h-60 overflow-y-auto mt-2 rounded divide-y ${results.valid.length > 0 ? "border" : ""}`}>
 									{results.valid.map((student, index) => (
 										<li key={index} className="py-2 px-3">
 											{student.email}
@@ -230,7 +230,7 @@ const AddStudentsByCSVDialog = ({
 								<h4 className="text-red-600 font-semibold">
 									Failed to Add ({results.invalid.length}):
 								</h4>
-								<ul className="max-h-60 overflow-y-auto mt-2 border rounded divide-y">
+								<ul className={`max-h-60 overflow-y-auto mt-2 rounded divide-y ${results.invalid.length > 0 ? "border" : ""}`}>
 									{results.invalid.map((failed, index) => (
 										<li key={index} className="py-2 px-3">
 											<span className="font-medium">{failed.email}</span>

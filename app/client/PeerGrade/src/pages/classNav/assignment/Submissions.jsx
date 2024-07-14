@@ -1,23 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Eye, Download, ChevronDown, History } from "lucide-react";
+import {  Download } from "lucide-react";
 import { getSubmissionsForAssignment } from "@/api/submitApi";
 import { getStudentsByClassId } from "@/api/classApi";
 import { getRubricsForAssignment } from "@/api/rubricApi";
 import { toast } from "@/components/ui/use-toast";
 import { cn } from "@/utils/utils";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import PDFViewer from "@/components/assign/PDFViewer";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import reviewAPI from "@/api/reviewApi";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import ReviewDetailsDialog from "./submission/ReviewDetailsDialog";
+import ViewSubmissionDialog from "./submission/ViewSubmissionDialog";
+import GradeSubmissionDialog from "./submission/GradeSubmissionDialog";
 
 const Submissions = () => {
     const { user } = useUser();
@@ -27,8 +24,9 @@ const Submissions = () => {
     const [selectedSubmission, setSelectedSubmission] = useState(null);
     const [rubrics, setRubrics] = useState([]);
     const [totalPoints, setTotalPoints] = useState(0);
-    const [showReviewDialog, setShowReviewDialog] = useState(false);
-    const [showReviewHistoryDialog, setShowReviewHistoryDialog] = useState(false);
+    const [viewDialogOpen, setViewDialogOpen] = useState(false);
+    const [gradeDialogOpen, setGradeDialogOpen] = useState(false);
+    const [reviewDialogOpen, setReviewDialogOpen] = useState(false);    
     const [selectedSubmissionId, setSelectedSubmissionId] = useState(null);
 
     useEffect(() => {
@@ -56,7 +54,7 @@ const Submissions = () => {
                         const latestSubmission = submissions[submissions.length - 1];
                         let latestGrade = null;
                         if (latestSubmission) {
-                            const reviews = await reviewAPI.getAllReviews(latestSubmission.submissionId);
+                            const reviews = await reviewAPI.getInstructorReview(latestSubmission.submissionId);
                             if (reviews.length > 0) {
                                 const sortedReviews = reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                                 latestGrade = sortedReviews[0].reviewGrade;
@@ -112,10 +110,7 @@ const Submissions = () => {
         }
     };
 
-    const handleGradeAssignment = async (submission) => {
-        setSelectedSubmission(submission);
-        await fetchRubrics(assignmentId);
-    };
+   
 
     const handleGradeSubmit = async (event) => {
       event.preventDefault();
@@ -137,13 +132,11 @@ const Submissions = () => {
       try {
           // Check if a review already exists for this submission
           console.log('selectedSubmission', selectedSubmission);
-          const existingReviews = await reviewAPI.getAllReviews(selectedSubmission.submissionId);
-          console.log('existingReviews', existingReviews);
-          const existingReview = existingReviews.data.find(review => review.reviewerId === user.userId);
+          const existingReview = await reviewAPI.getInstructorReview(selectedSubmission.submissionId);
   
           let response;
           if (existingReview) {
-
+            
             const review = {
               submissionId: selectedSubmission.submissionId,
               reviewGrade: totalMark,
@@ -157,7 +150,7 @@ const Submissions = () => {
               // Update existing review
               console.log('existingReview', existingReview);  
               console.log('review', review);
-              response = await reviewAPI.updateReview(existingReview.reviewId, review);
+              response = await reviewAPI.updateReview(existingReview.data.reviewId, review);
               toast({
                   title: "Success",
                   description: "Existing review updated successfully",
@@ -210,13 +203,24 @@ const Submissions = () => {
       }
   };
 
-  const handleViewReviewDetails = async (submissionId) => {
-    setSelectedSubmissionId(submissionId);
-    if (rubrics.length === 0) {
+      const handleViewSubmission = (submission) => {
+        setSelectedSubmission(submission);
+        setViewDialogOpen(true);
+    };
+
+    const handleGradeAssignment = async (submission) => {
+        setSelectedSubmission(submission);
         await fetchRubrics(assignmentId);
-    }
-    setShowReviewDialog(true);
-};
+        setGradeDialogOpen(true);
+    };
+
+    const handleViewReviewDetails = async (submissionId) => {
+        setSelectedSubmissionId(submissionId);
+        if (rubrics.length === 0) {
+            await fetchRubrics(assignmentId);
+        }
+        setReviewDialogOpen(true);
+    };
 
     if (loading) {
         return <div>Loading submissions...</div>;
@@ -242,9 +246,9 @@ const Submissions = () => {
                                     <span>
                                         {student.hasSubmitted ? "Submitted" : "No Submission"}
                                     </span>
-                                    <span>
+                                    {/* <span>
                                         {student.latestGrade !== null ? student.latestGrade.toFixed(2) : "N/A"}
-                                    </span>
+                                    </span> */}
                                 </div>
                             </AccordionTrigger>
                             <AccordionContent>
@@ -265,143 +269,37 @@ const Submissions = () => {
                                                         {new Date(submission.createdAt).toLocaleString()}
                                                     </TableCell>
                                                     <TableCell>
-                                                        <Dialog>
-                                                            <DialogTrigger asChild>
-                                                                <Button
-                                                                    variant="outline"
-                                                                    size="sm"
-                                                                    className="mr-2"
-                                                                    onClick={() =>
-                                                                        setSelectedSubmission(submission)
-                                                                    }
-                                                                >
-                                                                    <Eye className="h-4 w-4 mr-1" />
-                                                                    View
-                                                                </Button>
-                                                            </DialogTrigger>
-                                                            <DialogContent className="max-w-4xl h-[80vh]">
-                                                                <DialogHeader>
-                                                                    <DialogTitle>Submission View</DialogTitle>
-                                                                </DialogHeader>
-                                                                <div className="flex-1 overflow-auto">
-                                                                    <PDFViewer
-                                                                        url={submission.submissionFilePath}
-                                                                        scale="1"
-                                                                    />
-                                                                </div>
-                                                                <Button
-                                                                    onClick={() => handleDownload(submission)}
-                                                                >
-                                                                    <Download className="h-4 w-4 mr-1" />
-                                                                    Download
-                                                                </Button>
-                                                            </DialogContent>
-                                                        </Dialog>
-                                                        <Button
-                                                            variant="outline"
-                                                            size="sm"
-                                                            onClick={() => handleDownload(submission)}
-                                                            className="mr-2"
-                                                        >
-                                                            <Download className="h-4 w-4 mr-1" />
-                                                            Download
-                                                        </Button>
-                                                        <Dialog open={!!selectedSubmission} onOpenChange={(open) => !open && setSelectedSubmission(null)}>
-                                                          <DialogTrigger asChild>
-                                                              <Button
-                                                                  variant="outline"
-                                                                  size="sm"
-                                                                  className="mr-2"
-                                                                  onClick={() => handleGradeAssignment(submission)}
-                                                              >
-                                                                  <ChevronDown className="h-4 w-4 mr-1" />
-                                                                  Grade
-                                                              </Button>
-                                                          </DialogTrigger>
-                                                          <DialogContent className="max-w-4xl h-[80vh]">
-                                                              <DialogHeader>
-                                                                  <DialogTitle>Grade Assignment</DialogTitle>
-                                                              </DialogHeader>
-                                                              <form
-                                                                  onSubmit={handleGradeSubmit}
-                                                                  className="flex-1 overflow-auto"
-                                                              >
-                                                                    {rubrics.map((rubric, rubricIndex) => (
-                                                                        <Card key={rubricIndex} className="mb-6">
-                                                                            <CardHeader>
-                                                                                <CardTitle>{rubric.title}</CardTitle>
-                                                                            </CardHeader>
-                                                                            <CardContent>
-                                                                                {rubric.criteria.map(
-                                                                                    (criterion, criterionIndex) => {
-                                                                                        const totalRatingPoints = criterion.criterionRatings.reduce(
-                                                                                            (sum, rating) => sum + rating.points,
-                                                                                            0
-                                                                                        );
-                                                                                        return (
-                                                                                            <div
-                                                                                                key={criterionIndex}
-                                                                                                className="mb-4"
-                                                                                            >
-                                                                                                <Label className="text-md font-semibold">
-                                                                                                    {criterion.title}
-                                                                                                </Label>
-                                                                                                <div className="ml-4">
-                                                                                                    {criterion.criterionRatings.map(
-                                                                                                        (rating, ratingIndex) => (
-                                                                                                            <div
-                                                                                                                key={ratingIndex}
-                                                                                                                className="flex justify-between"
-                                                                                                            >
-                                                                                                                <span className="text-sm">
-                                                                                                                    {rating.description}
-                                                                                                                </span>
-                                                                                                                <span className="text-sm rounded-full p-2 border border-slate-800 w-6 h-6 flex items-center justify-center">
-                                                                                                                    {rating.points}
-                                                                                                                </span>
-                                                                                                            </div>
-                                                                                                        )
-                                                                                                    )}
-                                                                                                </div>
-                                                                                                <div className="flex items-center justify-between mt-2">
-                                                                                                    <Input
-                                                                                                        type="number"
-                                                                                                        min="0"
-                                                                                                        max={totalRatingPoints}
-                                                                                                        name={`grade-${criterion.criterionId}`}
-                                                                                                        defaultValue="0"
-                                                                                                        className="w-[80px] mr-2"
-                                                                                                    />
-                                                                                                    <span className="text-sm ml-2">
-                                                                                                        / {totalRatingPoints}
-                                                                                                    </span>
-                                                                                                </div>
-                                                                                                <Textarea
-                                                                                                    name={`comment-${criterion.criterionId}`}
-                                                                                                    placeholder="Add a comment for this criterion"
-                                                                                                    className="mt-2"
-                                                                                                />
-                                                                                            </div>
-                                                                                        );
-                                                                                    }
-                                                                                )}
-                                                                            </CardContent>
-                                                                        </Card>
-                                                                    ))}
-                                                                    <Button type="submit" className="mt-4">
-                                                                        Submit Grades
-                                                                    </Button>
-                                                                </form>
-                                                            </DialogContent>
-                                                        </Dialog>
-                                                        <Button
-                                                            variant="outline"
-                                                            size="sm"
-                                                            onClick={() => handleViewReviewDetails(submission.submissionId)}
-                                                            className="mr-2"
-                                                        >
-                                                            View Grades
-                                                        </Button>
+                                                        <div className="flex flex-wrap gap-2">
+                                                            <Button
+                                                                variant="outline"
+                                                                size="sm"
+                                                                onClick={() => handleViewSubmission(submission)}
+                                                            >
+                                                                View
+                                                            </Button>
+                                                            <Button
+                                                                variant="outline"
+                                                                size="sm"
+                                                                onClick={() => handleDownload(submission)}
+                                                            >
+                                                                <Download className="h-4 w-4 mr-1" />
+                                                                Download
+                                                            </Button>
+                                                            <Button
+                                                                variant="outline"
+                                                                size="sm"
+                                                                onClick={() => handleGradeAssignment(submission)}
+                                                            >
+                                                                Grade
+                                                            </Button>
+                                                            <Button
+                                                                variant="outline"
+                                                                size="sm"
+                                                                onClick={() => handleViewReviewDetails(submission.submissionId)}
+                                                            >
+                                                                View Grades
+                                                            </Button>
+                                                        </div>
                                                     </TableCell>
                                                 </TableRow>
                                             ))
@@ -419,14 +317,25 @@ const Submissions = () => {
                     ))}
                 </Accordion>
             </CardContent>
-            {rubrics.length > 0 && (
-              <ReviewDetailsDialog
-                  submissionId={selectedSubmissionId}
-                  rubrics={rubrics}
-                  open={showReviewDialog}
-                  onClose={() => setShowReviewDialog(false)}
-              />
-          )}
+            <ViewSubmissionDialog
+                submission={selectedSubmission}
+                open={viewDialogOpen}
+                onClose={() => setViewDialogOpen(false)}
+                onDownload={handleDownload}
+            />
+            <GradeSubmissionDialog
+                submission={selectedSubmission}
+                rubrics={rubrics}
+                open={gradeDialogOpen}
+                onClose={() => setGradeDialogOpen(false)}
+                onGradeSubmit={handleGradeSubmit}
+            />
+            <ReviewDetailsDialog
+                submissionId={selectedSubmissionId}
+                rubrics={rubrics}
+                open={reviewDialogOpen}
+                onClose={() => setReviewDialogOpen(false)}
+            />
         </Card>
     );
 };

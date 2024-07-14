@@ -48,9 +48,7 @@ const ReviewDetailsDialog = ({ submissionId, rubrics = [], open, onClose }) => {
         return totalPoints > 0 ? ((reviewDetails.reviewGrade / totalPoints) * 100).toFixed(2) : 0;
     };
 
-    if (loading) {
-        return <div>Loading review details...</div>;
-    }
+
 
     return (
         <Dialog open={open} onOpenChange={onClose}>

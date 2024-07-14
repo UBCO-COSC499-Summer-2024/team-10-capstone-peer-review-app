@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Plus,  } from 'lucide-react';
-import { TrashIcon, PlusIcon, Minus} from 'lucide-react';
-
+import { Textarea } from '@/components/ui/textarea';
+import { Plus, Minus, Trash } from 'lucide-react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const RubricDataTable = ({ rubricData, setRubricData, setIsValid }) => {
     const [errors, setErrors] = useState({});
@@ -17,11 +17,11 @@ const RubricDataTable = ({ rubricData, setRubricData, setIsValid }) => {
         let isValid = true;
 
         rubricData.criteria.forEach((criterion, index) => {
-            const maxPoints = parseFloat(criterion.maxPoints);
-            const totalRatingPoints = criterion.ratings.reduce((sum, rating) => sum + parseFloat(rating.points || 0), 0);
+            const totalPoints = parseFloat(criterion.points) || 0;
+            const totalRatingPoints = criterion.ratings.reduce((sum, rating) => sum + (parseFloat(rating.points) || 0), 0);
 
-            if (maxPoints !== totalRatingPoints) {
-                newErrors[`criterion_${index}`] = `Total rating points (${totalRatingPoints}) must equal max points (${maxPoints})`;
+            if (totalPoints !== totalRatingPoints) {
+                newErrors[`criterion_${index}`] = `Total rating points (${totalRatingPoints}) must equal total points (${totalPoints})`;
                 isValid = false;
             }
         });
@@ -32,6 +32,10 @@ const RubricDataTable = ({ rubricData, setRubricData, setIsValid }) => {
 
     const handleTitleChange = (value) => {
         setRubricData({ ...rubricData, title: value });
+    };
+
+    const handleDescriptionChange = (value) => {
+        setRubricData({ ...rubricData, description: value });
     };
 
     const handleCriteriaChange = (index, value) => {
@@ -46,15 +50,9 @@ const RubricDataTable = ({ rubricData, setRubricData, setIsValid }) => {
         setRubricData({ ...rubricData, criteria: newCriteria });
     };
 
-    const handleMinPointsChange = (index, value) => {
+    const handlePointsChange = (index, value) => {
         const newCriteria = [...rubricData.criteria];
-        newCriteria[index].minPoints = value;
-        setRubricData({ ...rubricData, criteria: newCriteria });
-    };
-
-    const handleMaxPointsChange = (index, value) => {
-        const newCriteria = [...rubricData.criteria];
-        newCriteria[index].maxPoints = value;
+        newCriteria[index].points = value;
         setRubricData({ ...rubricData, criteria: newCriteria });
     };
 
@@ -73,7 +71,7 @@ const RubricDataTable = ({ rubricData, setRubricData, setIsValid }) => {
     const addCriteria = () => {
         setRubricData({
             ...rubricData,
-            criteria: [...rubricData.criteria, { criteria: "", ratings: [{ text: "", points: "" }], minPoints: "", maxPoints: "" }]
+            criteria: [...rubricData.criteria, { criteria: "", ratings: [{ text: "", points: "" }], points: "" }]
         });
     };
 
@@ -82,74 +80,112 @@ const RubricDataTable = ({ rubricData, setRubricData, setIsValid }) => {
         setRubricData({ ...rubricData, criteria: newCriteria });
     };
 
+    const calculateTotalPoints = () => {
+        return rubricData.criteria.reduce((total, criterion) => total + (parseFloat(criterion.points) || 0), 0);
+    };
+
     return (
-        <div className="mt-5">
-            <h2 className="text-lg font-semibold mb-4">Edit Rubric</h2>
+        <div className="space-y-4">
             <Input
                 placeholder="Rubric Title"
                 value={rubricData.title}
                 onChange={(e) => handleTitleChange(e.target.value)}
-                className="w-full mb-4"
+                className="w-full"
             />
-            {rubricData.criteria.map((item, index) => (
-                <div key={index} className="mb-4 border p-4 rounded-lg overflow-y-scroll">
-                    <div className="flex items-center mb-2">
-                        <Input
-                            placeholder="Criteria"
-                            value={item.criteria}
-                            onChange={(e) => handleCriteriaChange(index, e.target.value)}
-                            className="w-full"
-                        />
-                        <Button variant="destructive" onClick={() => removeCriteria(index)} className="ml-2">
-                            <TrashIcon className="h-4 w-4"/>
-                        </Button>
-                    </div>
-                    <div className="flex flex-wrap items-center mb-2">
-                        {item.ratings.map((rating, ratingIndex) => (
-                            <div key={ratingIndex} className="flex items-center w-full mb-2">
+            <Textarea
+                placeholder="Rubric Description"
+                value={rubricData.description}
+                onChange={(e) => handleDescriptionChange(e.target.value)}
+                className="w-full"
+            />
+            <Table className="border-collapse">
+                <TableHeader>
+                    <TableRow>
+                        <TableHead className="w-1/3 border">Criteria</TableHead>
+                        <TableHead className="w-1/2 border">Ratings</TableHead>
+                        <TableHead className="w-1/6 border">Pts</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody className="bg-accent">
+                    {rubricData.criteria.map((item, index) => (
+                        <TableRow key={index}>
+                            <TableCell className="border relative">
                                 <Input
-                                    placeholder="Rating"
-                                    value={rating.text}
-                                    onChange={(e) => handleRatingsChange(index, ratingIndex, 'text', e.target.value)}
-                                    className="w-1/2 mr-2"
+                                    placeholder="Criteria"
+                                    value={item.criteria}
+                                    onChange={(e) => handleCriteriaChange(index, e.target.value)}
+                                    className="w-full border-none"
                                 />
-                                <Input
-                                    placeholder="Points"
-                                    value={rating.points}
-                                    onChange={(e) => handleRatingsChange(index, ratingIndex, 'points', e.target.value)}
-                                    className={`w-1/4 mr-2 ${errors[`criterion_${index}`] ? 'border-red-500' : ''}`}
-                                />
-                                <Button variant="outline" onClick={() => removeRating(index, ratingIndex)} className="h-8 w-8 p-0 flex items-center justify-center">
-                                    <Minus className="h-4 w-4" />
+                                <Button 
+                                    variant="outline" 
+                                    size="sm" 
+                                    onClick={() => removeCriteria(index)}
+                                    className="mr-4 mb-2 absolute bottom-0 right-0 p-1 text-destructive hover:bg-white hover:text-destructive"
+                                >
+                                    <Trash className="h-4 w-4"/>
                                 </Button>
-                            </div>
-                        ))}
-                        <Button variant="outline" onClick={() => addRating(index)} className="h-8 w-8 p-0 flex items-center justify-center">
-                            <Plus className="h-4 w-4" />
-                        </Button>
-                    </div>
-                    <div className="flex items-center mb-2">
-                        <Input
-                            placeholder="Min Points"
-                            value={item.minPoints}
-                            onChange={(e) => handleMinPointsChange(index, e.target.value)}
-                            className="w-1/2 mr-2"
-                        />
-                        <Input
-                            placeholder="Max Points"
-                            value={item.maxPoints}
-                            onChange={(e) => handleMaxPointsChange(index, e.target.value)}
-                            className={`w-1/2 ${errors[`criterion_${index}`] ? 'border-red-500' : ''}`}
-                        />
-                    </div>
-                    {errors[`criterion_${index}`] && (
-                        <p className="text-red-500 text-xs mt-1">{errors[`criterion_${index}`]}</p>
-                    )}
-                </div>
+                            </TableCell>
+                            <TableCell className="border p-0">
+                                <div className="flex flex-wrap">
+                                    {item.ratings.map((rating, ratingIndex) => (
+                                        <div key={ratingIndex} className="flex gap-2 min-w-[200px] border-r border-b relative p-2">
+                                            <div className="flex gap-2 w-full">
+                                                <Input
+                                                    placeholder="Rating"
+                                                    value={rating.text}
+                                                    onChange={(e) => handleRatingsChange(index, ratingIndex, 'text', e.target.value)}
+                                                    className="border-none mb-2 w-2/3"
+                                                />
+                                                <Input
+                                                    placeholder="Points"
+                                                    value={rating.points}
+                                                    onChange={(e) => handleRatingsChange(index, ratingIndex, 'points', e.target.value)}
+                                                    className="border-none w-1/3"
+                                                    type="number"
+                                                />
+                                            </div>
+                                            <div className='flex gap-1'>
+                                                <Button 
+                                                    onClick={() => removeRating(index, ratingIndex)}
+                                                    className="flex-1 max-w-[10px] text-white bg-destructive hover:bg-destructive-dark"
+                                                    variant="ghost"
+                                                >
+                                                    <Minus className="h-4 w-4" />
+                                                </Button>
+                                                <Button 
+                                                    onClick={() => addRating(index)}
+                                                    variant="ghost"
+                                                    className="flex-1 max-w-[10px] bg-success"
+                                                >
+                                                    <Plus className="h-4 w-4" />
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </TableCell>
+                            <TableCell className="border">
+                                <Input
+                                    placeholder="Total Points"
+                                    value={item.points}
+                                    onChange={(e) => handlePointsChange(index, e.target.value)}
+                                    className="w-full border-none"
+                                    type="number"
+                                />
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+            <div className="flex justify-between items-center">
+                <Button variant="outline" onClick={addCriteria}>
+                    <Plus className="h-4 w-4 mr-2" /> Add Criterion
+                </Button>
+                <div>Total Points: {calculateTotalPoints()}</div>
+            </div>
+            {Object.values(errors).map((error, index) => (
+                <p key={index} className="text-red-500 text-sm">{error}</p>
             ))}
-            <Button variant="success" onClick={addCriteria} className="h-10 w-10 p-0 flex items-center justify-center">
-                <Plus className="h-4 w-4" />
-            </Button>
         </div>
     );
 };

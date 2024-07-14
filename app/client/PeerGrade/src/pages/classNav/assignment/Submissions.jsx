@@ -54,7 +54,7 @@ const Submissions = () => {
                         const latestSubmission = submissions[submissions.length - 1];
                         let latestGrade = null;
                         if (latestSubmission) {
-                            const reviews = await reviewAPI.getInstructorReview(latestSubmission.submissionId);
+                            const reviews = await reviewAPI.getAllReviews(latestSubmission.submissionId);
                             if (reviews.length > 0) {
                                 const sortedReviews = reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                                 latestGrade = sortedReviews[0].reviewGrade;
@@ -129,13 +129,16 @@ const Submissions = () => {
   
       const finalScore = (totalMark / totalPoints) * 100;
   
-      try {
-          // Check if a review already exists for this submission
-          console.log('selectedSubmission', selectedSubmission);
-          const existingReview = await reviewAPI.getInstructorReview(selectedSubmission.submissionId);
-  
-          let response;
-          if (existingReview) {
+   
+          try {
+            // Check if a review already exists for this submission
+            console.log('selectedSubmission', selectedSubmission);
+            const existingReviews = await reviewAPI.getAllReviews(selectedSubmission.submissionId);
+            console.log('existingReviews', existingReviews);
+            const existingReview = existingReviews.data.find(review => review.reviewerId === user.userId);
+    
+            let response;
+            if (existingReview) {
             
             const review = {
               submissionId: selectedSubmission.submissionId,

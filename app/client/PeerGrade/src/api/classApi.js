@@ -161,10 +161,13 @@ export const addGroupMember = async (groupId, userId) => {
 
 export const deleteGroupMember = async (groupId, userId) => {
 	try {
-		const response = await axios.post(`${BASE_URL}/classes/remove-group-member`, {
-			groupId,
-			userId
-		});
+		const response = await axios.post(
+			`${BASE_URL}/classes/remove-group-member`,
+			{
+				groupId,
+				userId
+			}
+		);
 		return response.data;
 	} catch (error) {
 		handleError(error);
@@ -174,16 +177,18 @@ export const deleteGroupMember = async (groupId, userId) => {
 
 export const getUsersNotInGroups = async (classId) => {
 	try {
-		const response = await axios.post(`${BASE_URL}/classes/users-not-in-groups`, {
-			classId
-		});
+		const response = await axios.post(
+			`${BASE_URL}/classes/users-not-in-groups`,
+			{
+				classId
+			}
+		);
 		return response.data;
 	} catch (error) {
 		handleError(error);
 		return error.response.data;
 	}
 };
-
 
 export const getAllAssignments = async (userId) => {
 	try {

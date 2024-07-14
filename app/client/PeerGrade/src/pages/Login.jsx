@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LoginCard from "@/components/login/LoginCard";
 import ForgotPasswordCard from "@/components/login/ForgotPasswordCard";
 import RegisterCard from "@/components/login/RegisterCard";
+import NewRoleRequestCard from "@/components/login/NewRoleRequestCard";
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search);
@@ -36,6 +37,7 @@ const Login = () => {
 					<LoginCard
 						onSwitchToRegister={() => setCurrentTab("register")}
 						onSwitchToForgotPassword={() => setCurrentTab("forgotPassword")}
+						onSwitchToNewRoleRequest={() => setCurrentTab("newRoleRequest")}
 					/>
 				</TabsContent>
 				<TabsContent value="register">
@@ -45,7 +47,7 @@ const Login = () => {
 					<ForgotPasswordCard onSwitchToLogin={() => setCurrentTab("login")} />
 				</TabsContent>
 				<TabsContent value="newRoleRequest">
-					<ForgotPasswordCard onSwitchToLogin={() => setCurrentTab("login")} />
+					<NewRoleRequestCard onSwitchToLogin={() => setCurrentTab("login")} />
 				</TabsContent>
 			</Tabs>
 		</main>

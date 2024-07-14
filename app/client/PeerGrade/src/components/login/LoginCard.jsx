@@ -28,7 +28,11 @@ function useQuery() {
 	return new URLSearchParams(useLocation().search);
 }
 
-const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
+const LoginCard = ({
+	onSwitchToRegister,
+	onSwitchToForgotPassword,
+	onSwitchToNewRoleRequest
+}) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [passwordVisible, setPasswordVisible] = useState(false);
@@ -173,10 +177,10 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 						</p>
 						<p className="text-sm text-gray-600">
 							<button
-								onClick={onSwitchToForgotPassword}
+								onClick={onSwitchToNewRoleRequest}
 								className="text-green-600 hover:text-green-500"
 							>
-								TODO: Apply for another role request?
+								Apply for another role request?
 							</button>
 						</p>
 					</div>
@@ -184,7 +188,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 				<CardFooter className="text-center flex flex-col gap-2 bg-indigo-100">
 					<div className="flex w-full justify-between mt-6">
 						<p className="text-sm text-gray-600">
-							Don&apos;t have an account? 
+							Don&apos;t have an account?
 							<button
 								onClick={onSwitchToRegister}
 								className="text-green-600 hover:text-green-500 pl-2"

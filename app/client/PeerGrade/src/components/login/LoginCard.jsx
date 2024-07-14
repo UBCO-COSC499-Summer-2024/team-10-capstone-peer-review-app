@@ -21,6 +21,7 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Toaster } from "@/components/ui/toaster";
+import { useUser } from "@/contexts/contextHooks/useUser";
 
 import { loginUser, confirmEmail } from "@/api/authApi";
 
@@ -28,13 +29,19 @@ function useQuery() {
 	return new URLSearchParams(useLocation().search);
 }
 
-const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
+const LoginCard = ({
+	onSwitchToRegister,
+	onSwitchToForgotPassword,
+	onSwitchToNewRoleRequest
+}) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [passwordVisible, setPasswordVisible] = useState(false);
 	const [tokenReceived, setTokenReceived] = useState(false);
 	const [verificationSuccessful, setVerificationSuccessful] = useState(false);
 	const [error, setError] = useState("");
+
+	const { setUserContext } = useUser();
 
 	const query = useQuery();
 	const verifyEmailToken = query.get("verifyEmailToken") || "";
@@ -68,6 +75,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 
 		const response = await loginUser(email, password);
 		if (response.status === "Success") {
+			await setUserContext();
 			navigate(response.userRole === "ADMIN" ? "/admin" : "/dashboard");
 		} else if (response.status === "Error") {
 			setError(response.message);
@@ -173,10 +181,10 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 						</p>
 						<p className="text-sm text-gray-600">
 							<button
-								onClick={onSwitchToForgotPassword}
+								onClick={onSwitchToNewRoleRequest}
 								className="text-green-600 hover:text-green-500"
 							>
-								TODO: Apply for another role request?
+								Apply for another role request?
 							</button>
 						</p>
 					</div>
@@ -184,7 +192,7 @@ const LoginCard = ({ onSwitchToRegister, onSwitchToForgotPassword }) => {
 				<CardFooter className="text-center flex flex-col gap-2 bg-indigo-100">
 					<div className="flex w-full justify-between mt-6">
 						<p className="text-sm text-gray-600">
-							Don&apos;t have an account? 
+							Don&apos;t have an account?
 							<button
 								onClick={onSwitchToRegister}
 								className="text-green-600 hover:text-green-500 pl-2"

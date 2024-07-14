@@ -213,6 +213,66 @@ const addStudentToClass = async (classId, studentId) => {
 	}
 };
 
+const addStudentsByEmail = async (classId, emails) => {
+	try {
+		const classInfo = await prisma.class.findUnique({
+			where: { classId },
+			include: { usersInClass: true }
+		});
+
+		if (!classInfo) {
+			throw new apiError("Class not found", 404);
+		}
+
+		const results = { valid: [], invalid: [] };
+		let currentClassSize = classInfo.usersInClass.length;
+
+		for (const email of emails) {
+			const user = await prisma.user.findUnique({
+				where: { email }
+			});
+
+			if (user && user.role === "STUDENT") {
+				// Check if the student is already in the class
+				const alreadyInClass = classInfo.usersInClass.some(
+					(u) => u.userId === user.userId
+				);
+
+				if (!alreadyInClass) {
+					// Check if adding this student would exceed the class size
+					if (currentClassSize < classInfo.classSize) {
+						await prisma.userInClass.create({
+							data: {
+								userId: user.userId,
+								classId: classId
+							}
+						});
+						results.valid.push({ email, userId: user.userId });
+						currentClassSize++;
+					} else {
+						results.invalid.push({ email, reason: "Class is full" });
+					}
+				} else {
+					results.invalid.push({ email, reason: "Already in class" });
+				}
+			} else {
+				results.invalid.push({
+					email,
+					reason: "Non-registered email or not a student"
+				});
+			}
+		}
+
+		return results;
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to add students by email", 500);
+		}
+	}
+};
+
 const removeStudentFromClass = async (classId, studentId) => {
 	try {
 		const userInClass = await prisma.userInClass.findUnique({
@@ -249,7 +309,6 @@ const removeStudentFromClass = async (classId, studentId) => {
 		}
 	}
 };
-
 
 const addGroupToClass = async (classId, groupData) => {
 	try {
@@ -536,84 +595,89 @@ const getGroupMembers = async (groupId) => {
 const isUserInGroup = async (classId, userId) => {
 	try {
 		const classInfo = await prisma.class.findUnique({
-            where: {
-                classId: classId
-            },
-            include: {
-                groups: {
-                    include: {
-                        students: {
-                            where: {
-                                userId: userId
-                            }
-                        }
-                    }
-                }
-            }
-        });
+			where: {
+				classId: classId
+			},
+			include: {
+				groups: {
+					include: {
+						students: {
+							where: {
+								userId: userId
+							}
+						}
+					}
+				}
+			}
+		});
 
-        if (!classInfo) {
-            throw new apiError("Class not found", 404);
-        }
+		if (!classInfo) {
+			throw new apiError("Class not found", 404);
+		}
 
-        // Check if student exists in any group of the class
-        const groups = classInfo.groups;
-        return groups.some(group => group.students.length > 0);
+		// Check if student exists in any group of the class
+		const groups = classInfo.groups;
+		return groups.some((group) => group.students.length > 0);
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
 		} else {
-			throw new apiError("Failed to check if student exists in any group of the class", 500);
+			throw new apiError(
+				"Failed to check if student exists in any group of the class",
+				500
+			);
 		}
 	}
 };
 
 const getStudentsNotInAnyGroup = async (classId) => {
-    try {
-        // Fetch all UserInClass rows for the class
-        const usersInClass = await prisma.userInClass.findMany({
-            where: {
-                classId: classId
-            },
-            include: {
-                user: true
-            }
-        });
+	try {
+		// Fetch all UserInClass rows for the class
+		const usersInClass = await prisma.userInClass.findMany({
+			where: {
+				classId: classId
+			},
+			include: {
+				user: true
+			}
+		});
 
-        // Extract all users (students) in the class
-        const allStudents = usersInClass.map(userInClass => userInClass.user);
+		// Extract all users (students) in the class
+		const allStudents = usersInClass.map((userInClass) => userInClass.user);
 
-        // Fetch class info to get groups and their students
-        const classInfo = await prisma.class.findUnique({
-            where: {
-                classId: classId
-            },
-            include: {
-                groups: {
-                    include: {
-                        students: true
-                    }
-                }
-            }
-        });
+		// Fetch class info to get groups and their students
+		const classInfo = await prisma.class.findUnique({
+			where: {
+				classId: classId
+			},
+			include: {
+				groups: {
+					include: {
+						students: true
+					}
+				}
+			}
+		});
 
-        if (!classInfo) {
-            throw new apiError("Class not found", 404);
-        }
+		if (!classInfo) {
+			throw new apiError("Class not found", 404);
+		}
 
-        // Extract students who are in groups
-        const studentsInGroups = classInfo.groups.reduce((acc, group) => {
-            return acc.concat(group.students);
-        }, []);
+		// Extract students who are in groups
+		const studentsInGroups = classInfo.groups.reduce((acc, group) => {
+			return acc.concat(group.students);
+		}, []);
 
-        // Find students not in any group
-        const studentsNotInAnyGroup = allStudents.filter(student => {
-            // Check if the student is not in any group
-            return !studentsInGroups.some(groupStudent => groupStudent.userId === student.userId);
-        });
+		// Find students not in any group
+		const studentsNotInAnyGroup = allStudents.filter((student) => {
+			// Check if the student is not in any group
+			return !studentsInGroups.some(
+				(groupStudent) => groupStudent.userId === student.userId
+			);
+		});
 		console.log("hey", studentsNotInAnyGroup);
-        return studentsNotInAnyGroup;
-    } catch (error) {
+		return studentsNotInAnyGroup;
+	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
 		} else {
@@ -642,6 +706,7 @@ export default {
 	deleteClass,
 
 	addStudentToClass,
+	addStudentsByEmail,
 	removeStudentFromClass,
 
 	addGroupToClass,

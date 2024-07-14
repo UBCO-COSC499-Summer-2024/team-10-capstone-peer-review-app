@@ -94,6 +94,16 @@ export const addStudentToClass = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+export const addStudentsByEmail = asyncErrorHandler(async (req, res) => {
+	const { classId, emails } = req.body;
+	const results = await classService.addStudentsByEmail(classId, emails);
+	return res.status(200).json({
+		status: "Success",
+		message: "Students processed",
+		data: results
+	});
+});
+
 export const removeStudentFromClass = asyncErrorHandler(async (req, res) => {
 	const { classId, studentId } = req.body;
 	const updatedClass = await classService.removeStudentFromClass(
@@ -106,7 +116,6 @@ export const removeStudentFromClass = asyncErrorHandler(async (req, res) => {
 		data: updatedClass
 	});
 });
-
 
 export const addGroupToClass = asyncErrorHandler(async (req, res) => {
 	const { classId, groupData } = req.body;
@@ -244,6 +253,7 @@ export default {
 	deleteClass,
 
 	addStudentToClass,
+	addStudentsByEmail,
 	removeStudentFromClass,
 
 	addGroupToClass,

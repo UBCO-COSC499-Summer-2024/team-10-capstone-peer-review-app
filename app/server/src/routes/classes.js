@@ -8,9 +8,9 @@ import {
 	updateClass,
 	deleteClass,
 	addStudentToClass,
+	addStudentsByEmail,
 	removeStudentFromClass,
 	getStudentsByClass,
-	
 	addGroupToClass,
 	removeGroupFromClass,
 	updateGroupInClass,
@@ -19,11 +19,11 @@ import {
 	getGroupMembers,
 	addGroupMember,
 	removeGroupMember,
-	getCategoriesByClassId,
 	joinGroup,
 	leaveGroup,
 	isUserInGroup,
-	getStudentsNotInAnyGroup
+	getStudentsNotInAnyGroup,
+	getCategoriesByClassId
 } from "../controllers/classController.js";
 
 import {
@@ -59,30 +59,30 @@ router
 	.post(ensureUser, ensureInstructorOrAdmin, addStudentToClass);
 
 router
+	.route("/add-students-by-email")
+	.post(ensureUser, ensureInstructorOrAdmin, addStudentsByEmail);
+
+router
 	.route("/remove-student")
 	.post(ensureUser, ensureInstructorOrAdmin, removeStudentFromClass);
 
-router
-	.route("/add-group")
-	.post(ensureUser, addGroupToClass);
+router.route("/add-group").post(ensureUser, addGroupToClass);
 
 router
 	.route("/remove-group")
 	.post(ensureUser, ensureInstructorOrAdmin, removeGroupFromClass);
 
-router
-	.route("/join-group")
-	.post(ensureUser, joinGroup);
+router.route("/join-group").post(ensureUser, joinGroup);
 
-router
-	.route("/leave-group")
-	.post(ensureUser, leaveGroup);
+router.route("/leave-group").post(ensureUser, leaveGroup);
 
 router
 	.route("/update-group")
 	.post(ensureUser, ensureInstructorOrAdmin, updateGroupInClass);
 
-router.route("/get-group").post(ensureUser, ensureInstructorOrAdmin, getGroupInClass);
+router
+	.route("/get-group")
+	.post(ensureUser, ensureInstructorOrAdmin, getGroupInClass);
 
 router.route("/get-groups").post(ensureUser, getGroupsInClass);
 
@@ -98,8 +98,12 @@ router
 	.route("/remove-group-member")
 	.post(ensureUser, ensureInstructor, removeGroupMember);
 
-router.route("/is-user-in-group").post(ensureUser, ensureInstructorOrAdmin, isUserInGroup);
-router.route("/users-not-in-groups").post(ensureUser, ensureInstructorOrAdmin, getStudentsNotInAnyGroup);
+router
+	.route("/is-user-in-group")
+	.post(ensureUser, ensureInstructorOrAdmin, isUserInGroup);
+router
+	.route("/users-not-in-groups")
+	.post(ensureUser, ensureInstructorOrAdmin, getStudentsNotInAnyGroup);
 
 router.route("/:classId/categories").get(ensureUser, getCategoriesByClassId);
 

@@ -23,15 +23,19 @@ import {
 	CommandList
 } from "@/components/ui/command";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import AddStudentsByCSVDialog from "@/components/class/addStudentsByCSVDialog";
+
 import {
 	MinusCircle,
 	Plus,
 	CheckIcon,
 	ChevronDownIcon,
-	ChevronUpIcon
+	ChevronUpIcon,
+	FileUp
 } from "lucide-react";
 
 import { useUser } from "@/contexts/contextHooks/useUser";
+
 import {
 	getInstructorByClassId,
 	getStudentsByClassId,
@@ -50,6 +54,7 @@ const People = ({ classId }) => {
 	const [selectedStudent, setSelectedStudent] = useState({});
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [addDialogOpen, setAddDialogOpen] = useState(false);
+	const [addByCSVOpen, setAddByCSVOpen] = useState(false);
 	const [studentOptions, setStudentOptions] = useState([]);
 	const [selectedStudents, setSelectedStudents] = useState([]);
 	const [myGroups, setMyGroups] = useState([]);
@@ -96,6 +101,13 @@ const People = ({ classId }) => {
 
 		fetchStudents();
 	}, [user, userLoading, classId]);
+
+	const refreshStudents = async () => {
+		const students = await getStudentsByClassId(classId);
+		if (students.status === "Success") {
+			setStudents(students.data);
+		}
+	};
 
 	useEffect(() => {
 		if (user.role === "INSTRUCTOR" || user.role === "ADMIN") {
@@ -257,14 +269,24 @@ const People = ({ classId }) => {
 				<div className="flex flex-row items-center justify-between mb-2">
 					<h2 className="text-lg font-bold inline-block">Students</h2>
 					{(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (
-						<Button
-							variant="ghost"
-							className="bg-gray-100 h-7 w-7"
-							onClick={handleAddClick}
-							data-testid="add-student-button"
-						>
-							<Plus className="w-5 h-5" />
-						</Button>
+						<div>
+							<Button
+								variant="ghost"
+								className="bg-gray-100 h-7 w-7 mr-2"
+								onClick={() => setAddByCSVOpen(true)}
+								data-testid="add-student-by-email-button"
+							>
+								<FileUp className="w-5 h-5" />
+							</Button>
+							<Button
+								variant="ghost"
+								className="bg-gray-100 h-7 w-7"
+								onClick={handleAddClick}
+								data-testid="add-student-button"
+							>
+								<Plus className="w-5 h-5" />
+							</Button>
+						</div>
 					)}
 				</div>
 				{filteredStudents.map((student) => (
@@ -404,6 +426,12 @@ const People = ({ classId }) => {
 					</form>
 				</DialogContent>
 			</Dialog>
+			<AddStudentsByCSVDialog
+				classId={classId}
+				open={addByCSVOpen}
+				onOpenChange={setAddByCSVOpen}
+				onStudentsAdded={refreshStudents}
+			/>
 		</div>
 	);
 };

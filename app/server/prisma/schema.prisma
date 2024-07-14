@@ -288,22 +288,22 @@ model RubricForAssignment {
 }
 
 model Criterion {
-  criterionId      String             @id @default(uuid())
+  criterionId      String            @id @default(uuid())
   rubricId         String
   title            String
   maxMark          Int
   minMark          Int
-  rubric           Rubric             @relation(fields: [rubricId], references: [rubricId])
+  rubric           Rubric            @relation(fields: [rubricId], references: [rubricId])
   criterionRatings CriterionRating[]
   criterionGrades  CriterionGrade[]
 }
 
 model CriterionRating {
   criterionRatingId String    @id @default(uuid())
-  criterionId      String
-  description      String
-  points           Int
-  criterion        Criterion @relation(fields: [criterionId], references: [criterionId], onDelete: Cascade)
+  criterionId       String
+  description       String
+  points            Int
+  criterion         Criterion @relation(fields: [criterionId], references: [criterionId], onDelete: Cascade)
 }
 
 // Criterion Grade Models
@@ -358,14 +358,16 @@ model RoleRequest {
 }
 
 model EnrollRequest {
-  enrollRequestId String        @id @default(uuid())
-  userId          String
-  classId         String
-  status          RequestStatus @default(PENDING)
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  user            User          @relation(fields: [userId], references: [userId], onDelete: Cascade)
-  class           Class         @relation(fields: [classId], references: [classId], onDelete: Cascade)
+  enrollRequestId  String        @id @default(uuid())
+  userId           String
+  classId          String
+  status           RequestStatus @default(PENDING)
+  senderMessage    String?
+  recipientMessage String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  user             User          @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  class            Class         @relation(fields: [classId], references: [classId], onDelete: Cascade)
 
   @@unique([userId, classId], name: "UniqueEnrollRequestPerUser")
 }

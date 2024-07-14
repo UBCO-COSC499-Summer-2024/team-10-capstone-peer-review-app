@@ -6,16 +6,22 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Home, Users, ClipboardList, Settings, LogOut } from "lucide-react";
 import NotifCard from "./NotifCard";
 import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle 
+	NavigationMenu,
+	NavigationMenuItem,
+	NavigationMenuLink,
+	NavigationMenuList,
+	navigationMenuTriggerStyle
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import {
+	Sheet,
+	SheetTrigger,
+	SheetContent,
+	SheetHeader,
+	SheetTitle
+} from "@/components/ui/sheet";
 
 import { logoutUser } from "@/api/authApi";
 import { getAllAssignments } from "@/api/classApi";
@@ -23,103 +29,91 @@ import { useUser } from "@/contexts/contextHooks/useUser";
 import { useClass } from "@/contexts/contextHooks/useClass";
 
 export default function AppNavbar() {
-  const { user, userLoading, clearUserContext, setUserContext } = useUser();
-  const { classes, setUserClasses, setAdminClasses } = useClass();
-  const { toast } = useToast();
+	const { user, userLoading, clearUserContext, setUserContext } = useUser();
+	const { classes, setUserClasses, setAdminClasses } = useClass();
+	const { toast } = useToast();
 
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [assignmentsData, setAssignmentsData] = useState([]);
-  const [isCardVisible, setIsCardVisible] = useState(false);
-  const [cardOpacity, setCardOpacity] = useState(0);
-  const [isPeerReviewSheetOpen, setIsPeerReviewSheetOpen] = useState(false);
-  const [isClassesSheetOpen, setIsClassesSheetOpen] = useState(false);
+	const location = useLocation();
+	const navigate = useNavigate();
+	const [assignmentsData, setAssignmentsData] = useState([]);
+	const [isCardVisible, setIsCardVisible] = useState(false);
+	const [cardOpacity, setCardOpacity] = useState(0);
+	const [isPeerReviewSheetOpen, setIsPeerReviewSheetOpen] = useState(false);
+	const [isClassesSheetOpen, setIsClassesSheetOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!user && !userLoading) {
-        console.log("User is null and not loading, calling setUserContext");
-        await setUserContext();
-      }
-      if (user) {
-        try {
-          console.log("Fetching classes and assignments for user:", user);
-          if (user.role === "ADMIN") {
-            await setAdminClasses();
-          } else {
-            await setUserClasses(user.userId);
-          }
+	useEffect(() => {
+		const fetchData = async () => {
+			if (user) {
+				try {
+					const assignments = await getAllAssignments(user.userId);
+					setAssignmentsData(Array.isArray(assignments) ? assignments : []);
+				} catch (error) {
+					console.error("Failed to fetch data", error);
+					toast({
+						title: "Error",
+						description: "Failed to fetch data",
+						variant: "destructive"
+					});
+				}
+			}
+		};
 
-          const assignments = await getAllAssignments(user.userId);
-          setAssignmentsData(Array.isArray(assignments) ? assignments : []);
-        } catch (error) {
-          console.error("Failed to fetch data", error);
-          toast({
-            title: "Error",
-            description: "Failed to fetch data",
-            variant: "destructive",
-          });
-        }
-      }
-    };
+		fetchData();
+	}, [user]);
 
-    fetchData();
-  }, [user, toast]);
+	useEffect(() => {
+		const handleClickOutside = (event) => {
+			if (isCardVisible && !event.target.closest(".notification-card")) {
+				toggleCardVisibility();
+			}
+		};
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (isCardVisible && !event.target.closest(".notification-card")) {
-        toggleCardVisibility();
-      }
-    };
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
+	}, [isCardVisible]);
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isCardVisible]);
+	const handleLogout = async () => {
+		try {
+			await logoutUser();
+			clearUserContext();
+			navigate("/");
+		} catch (error) {
+			toast({
+				title: "Error",
+				description: "Failed to logout",
+				variant: "destructive"
+			});
+		}
+	};
 
-  const handleLogout = async () => {
-    try {
-      await logoutUser();
-      clearUserContext();
-      navigate("/");
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to logout",
-        variant: "destructive",
-      });
-    }
-  };
+	const getInitials = (firstName, lastName) => {
+		const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : "";
+		const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : "";
+		return `${firstInitial}${lastInitial}`;
+	};
 
-  const getInitials = (firstName, lastName) => {
-    const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : "";
-    const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : "";
-    return `${firstInitial}${lastInitial}`;
-  };
+	const isActive = (path) => {
+		return (
+			location.pathname === path ||
+			(path === "/dashboard" && location.pathname === "/")
+		);
+	};
 
-  const isActive = (path) => {
-    return location.pathname === path || (path === "/dashboard" && location.pathname === "/");
-  };
+	const toggleCardVisibility = () => {
+		if (isCardVisible) {
+			setCardOpacity(0);
+			setTimeout(() => setIsCardVisible(false), 300);
+		} else {
+			setIsCardVisible(true);
+			setTimeout(() => setCardOpacity(1), 50);
+		}
+	};
 
-  const toggleCardVisibility = () => {
-    if (isCardVisible) {
-      setCardOpacity(0);
-      setTimeout(() => setIsCardVisible(false), 300);
-    } else {
-      setIsCardVisible(true);
-      setTimeout(() => setCardOpacity(1), 50);
-    }
-  };
-
-  if (userLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!user) {
-    return null;
-  }
+	if (!user) {
+		return null;
+	}
 
   return (
     <div className="flex w-[200px] z-[60] h-screen fixed">
@@ -319,27 +313,27 @@ export default function AppNavbar() {
 }
 
 const ListItem = React.forwardRef(
-  ({ className, title, children, href, onItemClick, ...props }, ref) => {
-    return (
-      <li className="w-[250px] ">
-        <NavigationMenuLink asChild>
-          <Link
-            to={href}
-            className={cn(
-              "block shadow hover:shadow-lg select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-              className
-            )}
-            onClick={onItemClick}
-            {...props}
-          >
-            <div className="text-sm font-medium leading-none">{title}</div>
-            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-              {children}
-            </p>
-          </Link>
-        </NavigationMenuLink>
-      </li>
-    );
-  }
+	({ className, title, children, href, onItemClick, ...props }, ref) => {
+		return (
+			<li className="w-[250px] ">
+				<NavigationMenuLink asChild>
+					<Link
+						to={href}
+						className={cn(
+							"block shadow hover:shadow-lg select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+							className
+						)}
+						onClick={onItemClick}
+						{...props}
+					>
+						<div className="text-sm font-medium leading-none">{title}</div>
+						<p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+							{children}
+						</p>
+					</Link>
+				</NavigationMenuLink>
+			</li>
+		);
+	}
 );
 ListItem.displayName = "ListItem";

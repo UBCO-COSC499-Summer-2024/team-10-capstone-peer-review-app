@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LoginCard from "@/components/login/LoginCard";
 import ForgotPasswordCard from "@/components/login/ForgotPasswordCard";
 import RegisterCard from "@/components/login/RegisterCard";
 import NewRoleRequestCard from "@/components/login/NewRoleRequestCard";
+
+import { useUser } from "@/contexts/contextHooks/useUser";
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search);
@@ -12,8 +14,19 @@ function useQuery() {
 
 const Login = () => {
 	const [currentTab, setCurrentTab] = useState("login");
+
+	const navigate = useNavigate();
 	const query = useQuery();
+	const { user, userLoading } = useUser();
+
 	const forgotPasswordToken = query.get("forgotPasswordToken") || "";
+
+	// If the user has been authenticated, state has been set, and the user tries to access the login page, redirect them to the dashboard
+	useEffect(() => {
+		if (user) {
+			navigate(user.role === "ADMIN" ? "/admin" : "/dashboard");
+		}
+	}, [user]);
 
 	// If forgot token in found in the url, set the current tab to forgotPassword
 	useEffect(() => {

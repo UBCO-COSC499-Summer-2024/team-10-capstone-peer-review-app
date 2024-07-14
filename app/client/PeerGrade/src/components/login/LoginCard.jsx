@@ -21,6 +21,7 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Toaster } from "@/components/ui/toaster";
+import { useUser } from "@/contexts/contextHooks/useUser";
 
 import { loginUser, confirmEmail } from "@/api/authApi";
 
@@ -39,6 +40,8 @@ const LoginCard = ({
 	const [tokenReceived, setTokenReceived] = useState(false);
 	const [verificationSuccessful, setVerificationSuccessful] = useState(false);
 	const [error, setError] = useState("");
+
+	const { setUserContext } = useUser();
 
 	const query = useQuery();
 	const verifyEmailToken = query.get("verifyEmailToken") || "";
@@ -72,6 +75,7 @@ const LoginCard = ({
 
 		const response = await loginUser(email, password);
 		if (response.status === "Success") {
+			await setUserContext();
 			navigate(response.userRole === "ADMIN" ? "/admin" : "/dashboard");
 		} else if (response.status === "Error") {
 			setError(response.message);

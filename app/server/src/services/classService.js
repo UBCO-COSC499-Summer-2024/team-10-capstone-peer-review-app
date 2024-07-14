@@ -225,6 +225,7 @@ const addStudentsByEmail = async (classId, emails) => {
 		}
 
 		const results = { valid: [], invalid: [] };
+		let currentClassSize = classInfo.usersInClass.length;
 
 		for (const email of emails) {
 			const user = await prisma.user.findUnique({
@@ -238,20 +239,26 @@ const addStudentsByEmail = async (classId, emails) => {
 				);
 
 				if (!alreadyInClass) {
-					await prisma.userInClass.create({
-						data: {
-							userId: user.userId,
-							classId: classId
-						}
-					});
-					results.valid.push({ email, userId: user.userId });
+					// Check if adding this student would exceed the class size
+					if (currentClassSize < classInfo.classSize) {
+						await prisma.userInClass.create({
+							data: {
+								userId: user.userId,
+								classId: classId
+							}
+						});
+						results.valid.push({ email, userId: user.userId });
+						currentClassSize++;
+					} else {
+						results.invalid.push({ email, reason: "Class is full" });
+					}
 				} else {
 					results.invalid.push({ email, reason: "Already in class" });
 				}
 			} else {
 				results.invalid.push({
 					email,
-					reason: "Invalid email or not a student"
+					reason: "Non-registered email or not a student"
 				});
 			}
 		}

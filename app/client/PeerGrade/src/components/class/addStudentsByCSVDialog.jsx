@@ -37,6 +37,7 @@ const AddStudentsByCSVDialog = ({
 	const [showResults, setShowResults] = useState(false);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [isClosing, setIsClosing] = useState(false);
+	const [invalidEmail, setInvalidEmail] = useState(false);
 	const { toast } = useToast();
 
 	const resetState = () => {
@@ -46,6 +47,7 @@ const AddStudentsByCSVDialog = ({
 		setFileError("");
 		setShowResults(false);
 		setSearchTerm("");
+		setInvalidEmail(false);
 	};
 
 	useEffect(() => {
@@ -53,32 +55,81 @@ const AddStudentsByCSVDialog = ({
 			const timer = setTimeout(() => {
 				resetState();
 				setIsClosing(false);
-			}, 300); // Adjust this timing to match your dialog's closing animation duration
+			}, 300);
 			return () => clearTimeout(timer);
 		}
 	}, [open, isClosing]);
 
-	const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
-		if (rejectedFiles && rejectedFiles.length > 0) {
-			setFileError("Please upload only CSV files.");
-			return;
-		}
-
-		setFileError("");
-		const file = acceptedFiles[0];
-		Papa.parse(file, {
-			complete: (results) => {
-				const parsedEmails = results.data
-					.flat()
-					.filter(
-						(email) => email.trim() !== "" && emailRegex.test(email.trim())
-					);
-				setEmails((prevEmails) => [
-					...new Set([...prevEmails, ...parsedEmails])
-				]);
+	const onDrop = useCallback(
+		(acceptedFiles, rejectedFiles) => {
+			if (rejectedFiles && rejectedFiles.length > 0) {
+				setFileError("Please upload only CSV files.");
+				return;
 			}
-		});
-	}, []);
+
+			setFileError("");
+			const file = acceptedFiles[0];
+			Papa.parse(file, {
+				complete: (results) => {
+					// Split all data into individual emails and trim whitespace
+					const parsedData = results.data.flatMap((row) =>
+						row.map((item) => item.trim()).filter((item) => item !== "")
+					);
+
+					// Filter valid emails and remove duplicates within CSV
+					const validEmails = [
+						...new Set(parsedData.filter((email) => emailRegex.test(email)))
+					];
+
+					// Check for duplicates with existing list
+					const newUniqueEmails = validEmails.filter(
+						(email) => !emails.includes(email)
+					);
+					const duplicatesWithExisting = validEmails.filter((email) =>
+						emails.includes(email)
+					);
+
+					// Find invalid emails
+					const invalidEmails = parsedData.filter(
+						(email) => !emailRegex.test(email)
+					);
+
+					// Notifications
+					if (duplicatesWithExisting.length > 0) {
+						toast({
+							title: "Emails Already in List",
+							description: `The following emails were already in the list and were not added: ${duplicatesWithExisting.join(", ")}`,
+							variant: "destructive"
+						});
+					}
+
+					if (invalidEmails.length > 0) {
+						toast({
+							title: "Invalid Emails",
+							description: `The following entries were not valid email addresses and were ignored: ${invalidEmails.join(", ")}`,
+							variant: "destructive"
+						});
+					}
+
+					if (newUniqueEmails.length > 0) {
+						setEmails((prevEmails) => [...prevEmails, ...newUniqueEmails]);
+						toast({
+							title: "Emails Added",
+							description: `${newUniqueEmails.length} new email(s) were added to the list.`,
+							variant: "positive"
+						});
+					} else {
+						toast({
+							title: "No New Emails",
+							description: "No new emails were added to the list.",
+							variant: "default"
+						});
+					}
+				}
+			});
+		},
+		[emails, toast]
+	);
 
 	const { getRootProps, getInputProps, isDragActive } = useDropzone({
 		onDrop,
@@ -89,10 +140,21 @@ const AddStudentsByCSVDialog = ({
 	});
 
 	const handleAddEmail = () => {
-		if (newEmail && !emails.includes(newEmail) && emailRegex.test(newEmail)) {
-			setEmails([...emails, newEmail]);
-			setNewEmail("");
+		if (newEmail && emailRegex.test(newEmail)) {
+			if (emails.includes(newEmail)) {
+				setInvalidEmail(true);
+				toast({
+					title: "Duplicate Email",
+					description: `The email ${newEmail} is already in the list.`,
+					variant: "destructive"
+				});
+			} else {
+				setEmails([...emails, newEmail]);
+				setNewEmail("");
+				setInvalidEmail(false);
+			}
 		} else {
+			setInvalidEmail(true);
 			toast({
 				title: "Invalid Email",
 				description: "Please enter a valid email address.",
@@ -117,7 +179,6 @@ const AddStudentsByCSVDialog = ({
 	const handleClose = () => {
 		setIsClosing(true);
 		onOpenChange(false);
-		// May not need it here too?
 		onStudentsAdded();
 	};
 
@@ -154,7 +215,8 @@ const AddStudentsByCSVDialog = ({
 								<div>
 									<FileUp className="mx-auto h-12 w-12 text-muted-foreground" />
 									<p className="text-m">
-										Drag and drop a CSV file here, or click to select one
+										Drag &rsquo;n&rsquo; drop or click to upload a CSV of
+										student emails
 									</p>
 									<p className="text-sm text-muted-foreground">
 										Only .csv files are accepted
@@ -167,9 +229,13 @@ const AddStudentsByCSVDialog = ({
 							<div className="flex space-x-2 mb-4">
 								<Input
 									value={newEmail}
-									onChange={(e) => setNewEmail(e.target.value)}
-									placeholder="Enter email"
+									onChange={(e) => {
+										setNewEmail(e.target.value);
+										setInvalidEmail(false);
+									}}
+									placeholder="Add email to list"
 									onKeyPress={(e) => e.key === "Enter" && handleAddEmail()}
+									className={cn(invalidEmail && "border-red-500")}
 								/>
 								<Button onClick={handleAddEmail}>
 									<Plus className="h-4 w-4" />
@@ -183,26 +249,32 @@ const AddStudentsByCSVDialog = ({
 									onChange={(e) => setSearchTerm(e.target.value)}
 								/>
 							</div>
-							<ul className="mt-2 max-h-40 overflow-y-auto border rounded divide-y">
-								{filteredEmails.map((email, index) => (
-									<li
-										key={index}
-										className="flex justify-between items-center py-2 px-3"
-									>
-										{email}
-										<Button
-											variant="ghost"
-											size="sm"
-											onClick={() => handleRemoveEmail(email)}
+							{emails.length > 0 ? (
+								<ul className="mt-2 max-h-40 bg-slate-100 overflow-y-auto border border-slate-300 rounded divide-y">
+									{filteredEmails.map((email, index) => (
+										<li
+											key={index}
+											className="flex justify-between border-slate-300 items-center py-2 px-3"
 										>
-											<Trash2 className="h-4 w-4" />
-										</Button>
-									</li>
-								))}
-							</ul>
+											{email}
+											<Button
+												variant="ghost"
+												size="sm"
+												onClick={() => handleRemoveEmail(email)}
+											>
+												<Trash2 className="h-4 w-4" />
+											</Button>
+										</li>
+									))}
+								</ul>
+							) : (
+								<p className="text-center text-gray-500 my-4">
+									No emails added yet.
+								</p>
+							)}
 						</div>
 						<DialogFooter>
-							<Button onClick={handleSubmit}>Add Students</Button>
+							<Button onClick={handleSubmit}>Add Students to Class</Button>
 							{results && (
 								<Button onClick={toggleView}>
 									View Results <ArrowRight className="ml-2 h-4 w-4" />
@@ -218,29 +290,47 @@ const AddStudentsByCSVDialog = ({
 								<h4 className="text-green-600 font-semibold">
 									Successfully Added ({results.valid.length}):
 								</h4>
-								<ul className={`max-h-60 overflow-y-auto mt-2 rounded divide-y ${results.valid.length > 0 ? "border" : ""}`}>
-									{results.valid.map((student, index) => (
-										<li key={index} className="py-2 px-3">
-											{student.email}
-										</li>
-									))}
-								</ul>
+								{results.valid.length > 0 ? (
+									<ul className="max-h-60 overflow-y-auto mt-2 bg-slate-100 border border-slate-300 rounded divide-y">
+										{results.valid.map((student, index) => (
+											<li
+												key={index}
+												className=" border-slate-300 items-center py-2 px-3"
+											>
+												{student.email}
+											</li>
+										))}
+									</ul>
+								) : (
+									<p className="text-center text-gray-500 my-4">
+										No emails were successfully added.
+									</p>
+								)}
 							</div>
 							<div className="w-1/2">
 								<h4 className="text-red-600 font-semibold">
 									Failed to Add ({results.invalid.length}):
 								</h4>
-								<ul className={`max-h-60 overflow-y-auto mt-2 rounded divide-y ${results.invalid.length > 0 ? "border" : ""}`}>
-									{results.invalid.map((failed, index) => (
-										<li key={index} className="py-2 px-3">
-											<span className="font-medium">{failed.email}</span>
-											<br />
-											<span className="text-sm text-gray-500">
-												{failed.reason}
-											</span>
-										</li>
-									))}
-								</ul>
+								{results.invalid.length > 0 ? (
+									<ul className="max-h-60 overflow-y-auto mt-2 bg-slate-100 border border-slate-300 rounded divide-y">
+										{results.invalid.map((failed, index) => (
+											<li
+												key={index}
+												className=" border-slate-300 items-center py-2 px-3"
+											>
+												<span className="font-medium">{failed.email}</span>
+												<br />
+												<span className="text-sm text-gray-500">
+													{failed.reason}
+												</span>
+											</li>
+										))}
+									</ul>
+								) : (
+									<p className="text-center text-gray-500 my-4">
+										No emails failed to add.
+									</p>
+								)}
 							</div>
 						</div>
 						<DialogFooter className="mt-4">

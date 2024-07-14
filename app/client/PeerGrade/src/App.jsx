@@ -63,6 +63,15 @@ function MainLayout() {
 						}
 					/>
 					<Route
+						path="/admin"
+						element={
+							<ProtectedRoute
+								element={<AdminDashboard />}
+								allowedRoles={["ADMIN"]}
+							/>
+						}
+					/>
+					<Route
 						path="/class/:classId"
 						element={
 							<ProtectedRoute

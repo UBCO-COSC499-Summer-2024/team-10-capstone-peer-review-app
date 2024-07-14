@@ -32,7 +32,6 @@ export default function AppNavbar() {
 	const { user, userLoading, clearUserContext, setUserContext } = useUser();
 	const { classes, setUserClasses, setAdminClasses } = useClass();
 	const { toast } = useToast();
-
 	const location = useLocation();
 	const navigate = useNavigate();
 	const [assignmentsData, setAssignmentsData] = useState([]);
@@ -43,19 +42,8 @@ export default function AppNavbar() {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			if (!user && !userLoading) {
-				console.log("User is null and not loading, calling setUserContext");
-				await setUserContext();
-			}
 			if (user) {
 				try {
-					console.log("Fetching classes and assignments for user:", user);
-					if (user.role === "ADMIN") {
-						await setAdminClasses();
-					} else {
-						await setUserClasses(user.userId);
-					}
-
 					const assignments = await getAllAssignments(user.userId);
 					setAssignmentsData(Array.isArray(assignments) ? assignments : []);
 				} catch (error) {
@@ -70,7 +58,7 @@ export default function AppNavbar() {
 		};
 
 		fetchData();
-	}, [user, toast]);
+	}, [user]);
 
 	useEffect(() => {
 		const handleClickOutside = (event) => {
@@ -121,10 +109,6 @@ export default function AppNavbar() {
 			setTimeout(() => setCardOpacity(1), 50);
 		}
 	};
-
-	if (userLoading) {
-		return <div>Loading...</div>;
-	}
 
 	if (!user) {
 		return null;

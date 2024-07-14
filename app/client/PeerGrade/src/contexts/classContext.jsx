@@ -1,5 +1,5 @@
 // src/contexts/ClassContext.jsx
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import {
 	getClassesByUserId,
 	getAllClasses,
@@ -15,10 +15,25 @@ export const ClassContext = createContext();
 export const ClassProvider = ({ children }) => {
 	const [classes, setClasses] = useState([]);
 	const [isClassLoading, setIsClassLoading] = useState(false);
-	const { user } = useUser();
+	const { user, userLoading } = useUser();
 
 	// These are the setClass States that retrieve any new data from the backend
 	// setUserClasses = students and instructors
+
+	useEffect(() => {
+		const setClassData = async () => {
+			if (user) {
+				console.log("Fetching user for ClassContext", user);
+				if (user.role === "ADMIN") {
+					await setAdminClasses();
+				} else {
+					await setUserClasses(user.userId);
+				}
+			}
+		};
+		setClassData();
+	}, [user]);
+
 	const setUserClasses = async () => {
 		try {
 			setIsClassLoading(true);

@@ -345,7 +345,10 @@ export async function approveRoleRequest(roleRequestId) {
 	});
 	const user = await prisma.user.update({
 		where: { userId: roleRequest.userId },
-		data: { isRoleActivated: true }
+		data: {
+			isRoleActivated: true,
+			role: roleRequest.roleRequested
+		}
 	});
 	const htmlContent = `
         <html>

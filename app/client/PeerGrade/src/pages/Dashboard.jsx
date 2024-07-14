@@ -19,27 +19,32 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 
 function Dashboard() {
-  const { user, userLoading } = useUser();
-  const { classes, isClassLoading } = useClass();
-  const [assignments, setAssignments] = useState([]);
-  const [groups, setGroups] = useState([]);
-  const { toast } = useToast();
+	const { user, userLoading } = useUser();
+	const { classes, isClassLoading } = useClass();
+	const [isLoading, setIsLoading] = useState(false);
+	const [assignments, setAssignments] = useState([]);
+	const [groups, setGroups] = useState([]);
+	const { toast } = useToast();
 
-  useEffect(() => {
-    if (user) {
-      const fetchAssignments = async () => {
-        try {
-          const assignmentsData = await getAllAssignments(user.userId);
-          setAssignments(Array.isArray(assignmentsData.data) ? assignmentsData.data : []);
-        } catch (error) {
-          console.error("Failed to fetch assignments", error);
-          toast({
-            title: "Error",
-            description: "Failed to fetch assignments",
-            variant: "destructive"
-          });
-        }
-      };
+	useEffect(() => {
+		if (user) {
+			const fetchAssignments = async () => {
+				setIsLoading(true);
+				try {
+					const assignmentsData = await getAllAssignments(user.userId);
+					setAssignments(
+						Array.isArray(assignmentsData.data) ? assignmentsData.data : []
+					);
+				} catch (error) {
+					console.error("Failed to fetch assignments", error);
+					toast({
+						title: "Error",
+						description: "Failed to fetch assignments",
+						variant: "destructive"
+					});
+				}
+				setIsLoading(false);
+			};
 
       const fetchGroups = async () => {
         try {
@@ -54,66 +59,89 @@ function Dashboard() {
         }
       };
 
-      fetchAssignments();
-      fetchGroups();
-    }
-  }, [user]);
+			fetchAssignments();
+			fetchGroups();
+		}
+	}, [user]);
 
-  const assignmentData = assignments.filter((assignment) => assignment.evaluation_type !== "peer");
-  const reviewData = assignments.filter((assignment) => assignment.evaluation_type === "peer");
-  
-  const gradeData = assignments.map((assignment) => ({
-    assignmentId: assignment.assignmentId,
-    classId: assignment.classId,
-    className: assignment.classes.classname,
-    assignmentTitle: assignment.title,
-    grade: assignment.grade, // Assuming grade is part of the assignment data
-    dueDate: format(parseISO(assignment.dueDate), "MMM d, yyyy")
-  }));
+	const assignmentData = assignments.filter(
+		(assignment) => assignment.evaluation_type !== "peer"
+	);
+	const reviewData = assignments.filter(
+		(assignment) => assignment.evaluation_type === "peer"
+	);
 
-  if (userLoading) {
-    return <div className="flex justify-center items-center h-screen"><Skeleton className="h-[600px] w-[800px]" /></div>;
-  }
+	const gradeData = assignments.map((assignment) => ({
+		assignmentId: assignment.assignmentId,
+		classId: assignment.classId,
+		className: assignment.classes.classname,
+		assignmentTitle: assignment.title,
+		grade: assignment.grade, // Assuming grade is part of the assignment data
+		dueDate: format(parseISO(assignment.dueDate), "MMM d, yyyy")
+	}));
 
-  if (!user) {
-    return <Alert variant="destructive"><AlertTitle>Error</AlertTitle><AlertDescription>User is not logged in.</AlertDescription></Alert>;
-  }
+	if (userLoading) {
+		return (
+			<div className="flex justify-center items-center h-screen">
+				<Skeleton className="h-[600px] w-[800px]" />
+			</div>
+		);
+	}
 
-  const renderAssignmentAlert = (assignment) => (
-    <Alert key={assignment.assignmentId} className="mb-4">
-      <AlertTitle className="flex justify-between items-center">
-        <span>{assignment.title}</span>
-        <Badge variant="default">{assignment.classes.classname}</Badge>
-      </AlertTitle>
-      <AlertDescription className="flex justify-between items-center mt-2">
-        <span className="flex items-center">
-          <Calendar className="mr-2 h-4 w-4" />
-          Due: {format(parseISO(assignment.dueDate), "MMM d, yyyy")}
-        </span>
-        <Link to={`/class/${assignment.classId}/assignment/${assignment.assignmentId}`} className="text-primary hover:text-primary-foreground">
-          <Button variant="outline" size="sm">Open</Button>
-        </Link>
-      </AlertDescription>
-    </Alert>
-  );
+	if (!user) {
+		return (
+			<Alert variant="destructive">
+				<AlertTitle>Error</AlertTitle>
+				<AlertDescription>User is not logged in.</AlertDescription>
+			</Alert>
+		);
+	}
 
-  const renderReviewAlert = (review) => (
-    <Alert key={review.assignmentId} className="mb-4">
-      <AlertTitle className="flex justify-between items-center">
-        <span>{review.title}</span>
-        <Badge variant="default">{review.classes.classname}</Badge>
-      </AlertTitle>
-      <AlertDescription className="flex justify-between items-center mt-2">
-        <span className="flex items-center">
-          <Calendar className="mr-2 h-4 w-4" />
-          Review Due: {format(parseISO(review.dueDate), "MMM d, yyyy")}
-        </span>
-        <Link to={review.link} className="text-primary hover:text-primary-foreground">
-          <Button variant="outline" size="sm">Review</Button>
-        </Link>
-      </AlertDescription>
-    </Alert>
-  );
+	const renderAssignmentAlert = (assignment) => (
+		<Alert key={assignment.assignmentId} className="mb-4">
+			<AlertTitle className="flex justify-between items-center">
+				<span>{assignment.title}</span>
+				<Badge variant="default">{assignment.classes.classname}</Badge>
+			</AlertTitle>
+			<AlertDescription className="flex justify-between items-center mt-2">
+				<span className="flex items-center">
+					<Calendar className="mr-2 h-4 w-4" />
+					Due: {format(parseISO(assignment.dueDate), "MMM d, yyyy")}
+				</span>
+				<Link
+					to={`/class/${assignment.classId}/assignment/${assignment.assignmentId}`}
+					className="text-primary hover:text-primary-foreground"
+				>
+					<Button variant="outline" size="sm">
+						Open
+					</Button>
+				</Link>
+			</AlertDescription>
+		</Alert>
+	);
+
+	const renderReviewAlert = (review) => (
+		<Alert key={review.assignmentId} className="mb-4">
+			<AlertTitle className="flex justify-between items-center">
+				<span>{review.title}</span>
+				<Badge variant="default">{review.classes.classname}</Badge>
+			</AlertTitle>
+			<AlertDescription className="flex justify-between items-center mt-2">
+				<span className="flex items-center">
+					<Calendar className="mr-2 h-4 w-4" />
+					Review Due: {format(parseISO(review.dueDate), "MMM d, yyyy")}
+				</span>
+				<Link
+					to={review.link}
+					className="text-primary hover:text-primary-foreground"
+				>
+					<Button variant="outline" size="sm">
+						Review
+					</Button>
+				</Link>
+			</AlertDescription>
+		</Alert>
+	);
 
   return (
     <div className="mx-auto px-4">

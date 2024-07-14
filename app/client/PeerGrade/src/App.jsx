@@ -18,6 +18,7 @@ import PeerReview from "./pages/PeerReview";
 import Settings from "./pages/Settings";
 import AppNavbar from "./components/global/Navbar";
 import ManageClass from "./pages/ManageClass";
+import StudentEnrollmentRequests from "./pages/StudentEnrollmentRequests";
 import Report from "./pages/Report";
 import Search from "./components/admin/Search";
 import Submission from "./pages/Submission";
@@ -111,7 +112,10 @@ function MainLayout() {
 					<Route
 						path="/enrollment"
 						element={
-							<ProtectedRoute element={<Search />} allowedRoles={["ADMIN"]} />
+							<ProtectedRoute
+								element={<StudentEnrollmentRequests />}
+								allowedRoles={["STUDENT", "ADMIN"]}
+							/>
 						}
 					/>
 					<Route

@@ -36,7 +36,7 @@ import {
 const router = express.Router();
 
 // Class Routes
-router.route("/all").get(ensureUser, ensureAdmin, getAllClasses);
+router.route("/all").get(ensureUser, getAllClasses);
 
 router
 	.route("/my-classes")

@@ -8,7 +8,7 @@ import {
 	deleteEnrollRequest
 } from "../controllers/enrollRequestController.js";
 
-import { ensureInstructor } from "src/middleware/ensureUserTypes";
+import { ensureInstructor } from "../middleware/ensureUserTypes.js";
 
 const router = express.Router();
 

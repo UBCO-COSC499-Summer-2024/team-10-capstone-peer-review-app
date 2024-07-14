@@ -1,12 +1,11 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, Edit, Trash2, Users } from "lucide-react";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { useClass } from "@/contexts/contextHooks/useClass";
 import AddClassModal from "@/components/manageClass/AddClassDialog";
-import DeleteClassDialog from "@/components/maangeClass/DeleteClassDialog";
-import EditClassModal from "@/components/manageClass/EditClassModal";
+import DeleteClassDialog from "@/components/manageclass/DeleteClassDialog";
+import EditClassDialog from "@/components/manageClass/EditClassModal";
 import ManageEnrollmentsModal from "@/components/manageClass/ManageEnrollmentsModal";
 import {
 	Table,
@@ -16,6 +15,13 @@ import {
 	TableHeader,
 	TableRow
 } from "@/components/ui/table";
+import { format } from "date-fns";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger
+} from "@/components/ui/tooltip";
 
 const ManageClass = () => {
 	const { user } = useUser();
@@ -39,6 +45,7 @@ const ManageClass = () => {
 		if (selectedClass) {
 			await removeClass(selectedClass.classId);
 			setDeleteDialogOpen(false);
+			setSelectedClass(null);
 		}
 	};
 
@@ -50,6 +57,11 @@ const ManageClass = () => {
 	const handleEnrollmentClick = (classItem) => {
 		setSelectedClass(classItem);
 		setEnrollModalOpen(true);
+	};
+
+	const truncateDescription = (description, maxLength = 50) => {
+		if (description.length <= maxLength) return description;
+		return description.slice(0, maxLength) + "...";
 	};
 
 	return (
@@ -65,80 +77,118 @@ const ManageClass = () => {
 				</Button>
 			</div>
 
-			{classes.length === 0 ? (
-				<div className="text-sm text-gray-500 text-center mt-2 w-full">
-					No classes were found.
-				</div>
-			) : (
-				<Table>
-					<TableHeader>
-						<TableRow>
-							<TableHead>Class Name</TableHead>
-							<TableHead>Description</TableHead>
-							<TableHead>Students</TableHead>
-							<TableHead>Actions</TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						{classes.map((classItem) => (
-							<TableRow key={classItem.classId}>
-								<TableCell>{classItem.classname}</TableCell>
-								<TableCell>{classItem.description}</TableCell>
-								<TableCell>{classItem.classSize}</TableCell>
-								<TableCell>
-									<div className="flex space-x-2">
-										<Button
-											variant="outline"
-											size="sm"
-											onClick={() => handleEditClick(classItem)}
-										>
-											<Edit className="w-4 h-4 mr-1" />
-											Edit
-										</Button>
-										<Button
-											variant="outline"
-											size="sm"
-											onClick={() => handleEnrollmentClick(classItem)}
-										>
-											<Users className="w-4 h-4 mr-1" />
-											Enrollments
-										</Button>
-										<Button
-											variant="destructive"
-											size="sm"
-											onClick={() => handleDeleteClick(classItem)}
-										>
-											<Trash2 className="w-4 h-4 mr-1" />
-											Delete
-										</Button>
-									</div>
-								</TableCell>
+			<div className="flex justify-center">
+				{classes.length === 0 ? (
+					<div className="text-sm text-gray-500 text-center mt-2 w-full">
+						No classes were found.
+					</div>
+				) : (
+					<Table className="border-collapse w-full">
+						<TableHeader>
+							<TableRow className="bg-gray-100">
+								<TableHead className="border px-4 py-2">Class Name</TableHead>
+								<TableHead className="border px-4 py-2">Description</TableHead>
+								<TableHead className="border px-4 py-2">Start Date</TableHead>
+								<TableHead className="border px-4 py-2">End Date</TableHead>
+								<TableHead className="border px-4 py-2">Term</TableHead>
+								<TableHead className="border px-4 py-2">Class Size</TableHead>
+								<TableHead className="border px-4 py-2">Actions</TableHead>
 							</TableRow>
-						))}
-					</TableBody>
-				</Table>
-			)}
+						</TableHeader>
+						<TableBody>
+							{classes.map((classItem, index) => (
+								<TableRow
+									key={classItem.classId}
+									className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
+								>
+									<TableCell className="border px-4 py-2">
+										{classItem.classname}
+									</TableCell>
+									<TableCell className="border px-4 py-2">
+										<TooltipProvider>
+											<Tooltip>
+												<TooltipTrigger>
+													{truncateDescription(classItem.description)}
+												</TooltipTrigger>
+												<TooltipContent>
+													<p>{classItem.description}</p>
+												</TooltipContent>
+											</Tooltip>
+										</TooltipProvider>
+									</TableCell>
+									<TableCell className="border px-4 py-2">
+										{format(new Date(classItem.startDate), "PP")}
+									</TableCell>
+									<TableCell className="border px-4 py-2">
+										{format(new Date(classItem.endDate), "PP")}
+									</TableCell>
+									<TableCell className="border px-4 py-2">
+										{classItem.term || "N/A"}
+									</TableCell>
+									<TableCell className="border px-4 py-2">
+										{classItem.classSize}
+									</TableCell>
+									<TableCell className="border px-4 py-2">
+										<div className="flex space-x-2">
+											<Button
+												variant="outline"
+												size="sm"
+												onClick={() => handleEditClick(classItem)}
+											>
+												<Edit className="w-4 h-4 mr-1" />
+												Edit
+											</Button>
+											<Button
+												variant="outline"
+												size="sm"
+												onClick={() => handleEnrollmentClick(classItem)}
+											>
+												<Users className="w-4 h-4 mr-1" />
+												Enrollments
+											</Button>
+											<Button
+												variant="destructive"
+												size="sm"
+												onClick={() => handleDeleteClick(classItem)}
+											>
+												<Trash2 className="w-4 h-4 mr-1" />
+												Delete
+											</Button>
+										</div>
+									</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+				)}
+			</div>
 
 			<AddClassModal
 				show={addModalOpen}
 				onClose={() => setAddModalOpen(false)}
 			/>
-			<DeleteClassDialog
-				open={deleteDialogOpen}
-				onOpenChange={setDeleteDialogOpen}
-				selectedClass={selectedClass}
-				handleDeleteClass={handleDeleteClass}
-			/>
-			<EditClassModal
-				open={editModalOpen}
-				onOpenChange={setEditModalOpen}
-				classItem={selectedClass}
-			/>
-			<ManageEnrollmentsModal
-				open={enrollModalOpen}
-				onOpenChange={setEnrollModalOpen}
-				classItem={selectedClass}
-			/>
+			{selectedClass && (
+				<DeleteClassDialog
+					open={deleteDialogOpen}
+					onOpenChange={setDeleteDialogOpen}
+					selectedClass={selectedClass}
+					handleDeleteClass={handleDeleteClass}
+				/>
+			)}
+			{selectedClass && (
+				<EditClassDialog
+					open={editModalOpen}
+					onOpenChange={setEditModalOpen}
+					classItem={selectedClass}
+				/>
+			)}
+			{selectedClass && (
+				<ManageEnrollmentsModal
+					open={enrollModalOpen}
+					onOpenChange={setEnrollModalOpen}
+					classItem={selectedClass}
+				/>
+			)}
 		</div>
 	);
 };

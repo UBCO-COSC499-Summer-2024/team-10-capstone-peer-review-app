@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -19,127 +19,141 @@ import { getAllAssignmentsByClassId } from "@/api/assignmentApi";
 import { getCategoriesByClassId } from "@/api/classApi";
 import { useToast } from "@/components/ui/use-toast";
 import { useClass } from "@/contexts/contextHooks/useClass";
+import CreateRubric from "./classNav/CreateRubric";
 
 const Class = () => {
-	const { classId } = useParams();
-	const [currentView, setCurrentView] = useState("home");
-	const [assignments, setAssignments] = useState([]);
-	const [categories, setCategories] = useState([]);
+  const { classId } = useParams();
+  const [currentView, setCurrentView] = useState("home");
+  const [assignments, setAssignments] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [rubricCreated, setRubricCreated] = useState(false);
 
-	const { toast } = useToast();
-	const { user, userLoading } = useUser();
-	const { classes } = useClass();
+  const { toast } = useToast();
+  const { user, userLoading } = useUser();
+  const { classes } = useClass();
 
-	const classItem = classes.find((classItem) => classItem.classId === classId);
+  const classItem = classes.find((classItem) => classItem.classId === classId);
 
-	const fetchClassData = async () => {
-		try {
-			const [fetchedAssignments, fetchedCategories] = await Promise.all([
-				getAllAssignmentsByClassId(classId),
-				getCategoriesByClassId(classId)
-			]);
-			setAssignments(fetchedAssignments.data);
-			setCategories(fetchedCategories.data);
-		} catch (error) {
-			console.error("Failed to fetch class data", error);
-			toast({
-				title: "Error",
-				description: "Failed to fetch class data",
-				variant: "destructive"
-			});
-		}
-	};
+  const fetchClassData = async () => {
+    try {
+      const [fetchedAssignments, fetchedCategories] = await Promise.all([
+        getAllAssignmentsByClassId(classId),
+        getCategoriesByClassId(classId)
+      ]);
+      setAssignments(fetchedAssignments.data);
+      setCategories(fetchedCategories.data);
+    } catch (error) {
+      console.error("Failed to fetch class data", error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch class data",
+        variant: "destructive"
+      });
+    }
+  };
+  
 
-	useEffect(() => {
-		if (!userLoading && user) {
-			fetchClassData();
-		}
-	}, [classId, user, userLoading, currentView]);
+  useEffect(() => {
+    if (!userLoading && user) {
+      fetchClassData();
+    }
+  }, [classId, user, userLoading, currentView]);
 
-	const handleViewChange = (view) => {
-		setCurrentView(view);
-		fetchClassData();
-	};
+  useEffect(() => {
+    if (rubricCreated && currentView === "rubrics") {
+      fetchClassData();
+      setRubricCreated(false);
+    }
+  }, [rubricCreated, currentView]);
 
-	if (!classItem) {
-		return <div>Class not found</div>;
-	}
+  const handleViewChange = (view) => {
+    setCurrentView(view);
+    fetchClassData();
+  };
 
-	const renderContent = () => {
-		switch (currentView) {
-		  case "grades":
-			return <Grades classAssignments={assignments} classId={classId} />;
-		  case "people":
-			return <People classId={classId} />;
-		  case "groups":
-			return <Groups classId={classId} />;
-		  case "files":
-			return <Files classId={classId} />;
-		  case "assignmentCreation":
-			return <AssignmentCreation onAssignmentCreated={() => {
-			  fetchClassData();
-			  handleViewChange("files");
-			}} />;
-		  case "edit":
-			return <EditClass classItem={classItem} />;
-		  case "rubrics":
-			return <Rubrics />;
-			default:
-				return (
-					<>
-					<Alert className="mb-6">
-						<AlertTitle>Recent Announcements</AlertTitle>
-						<AlertDescription>
-						No recent announcements
-						</AlertDescription>
-					</Alert>
-					<Accordion type="single" collapsible className="w-full bg-muted p-4 rounded-lg">
-						{categories.map((category) => (
-						<AccordionItem value={category.categoryId} key={category.categoryId}>
-							<AccordionTrigger className="text-lg font-semibold">
-							{category.name}
-							</AccordionTrigger>
-							<AccordionContent>
-							<div className="space-y-4">
-								{category.assignments.map((assignment) => (
-								<Link
-									key={assignment.assignmentId}
-									to={`/class/${classId}/assignment/${assignment.assignmentId}`}
-									className="block"
+  const handleRubricCreated = () => {
+    setRubricCreated(true);
+  };
+
+  if (!classItem) {
+    return <div>Class not found</div>;
+  }
+
+  const renderContent = () => {
+    switch (currentView) {
+      case "grades":
+        return <Grades classAssignments={assignments} classId={classId} />;
+      case "people":
+        return <People classId={classId} />;
+      case "groups":
+        return <Groups classId={classId} />;
+      case "files":
+        return <Files classId={classId} />;
+      case "assignmentCreation":
+        return <AssignmentCreation onAssignmentCreated={() => {
+          fetchClassData();
+          handleViewChange("files");
+        }} />;
+      case "edit":
+        return <EditClass classItem={classItem} />;
+      case "rubrics":
+        return <Rubrics key={rubricCreated} />;
+      default:
+        return (
+				<>
+				<Alert className="mb-6">
+					<AlertTitle>Recent Announcements</AlertTitle>
+					<AlertDescription>
+					No recent announcements
+					</AlertDescription>
+				</Alert>
+				<Accordion type="single" collapsible className="w-full bg-muted p-4 rounded-lg">
+					{categories.map((category) => (
+					<AccordionItem value={category.categoryId} key={category.categoryId}>
+						<AccordionTrigger className="text-lg font-semibold">
+						{category.name}
+						</AccordionTrigger>
+						<AccordionContent>
+						<div className="space-y-4">
+							{category.assignments.map((assignment) => (
+							<Link
+								key={assignment.assignmentId}
+								to={`/class/${classId}/assignment/${assignment.assignmentId}`}
+								className="block"
+							>
+								<Alert 
+								variant="default" 
+								className="hover:bg-accent cursor-pointer transition-colors"
 								>
-									<Alert 
-									variant="default" 
-									className="hover:bg-accent cursor-pointer transition-colors"
-									>
-									<div className="flex items-center justify-between">
-										<div>
-										<AlertTitle className="text-base font-medium flex items-center gap-2">
-											{assignment.title}
-											{assignment.status === 'Completed' && <CheckCircle className="h-4 w-4 text-green-500" />}
-										</AlertTitle>
-										<AlertDescription className="text-sm text-muted-foreground mt-1">
-											Due: {new Date(assignment.dueDate).toLocaleDateString()}
-										</AlertDescription>
-										</div>
-										<div className="flex items-center gap-2">
-										<Badge variant={assignment.status === 'Completed' ? "secondary" : "default"}>
-											{assignment.status}
-										</Badge>
-										<Button variant="outline" size="sm">
-											<Clock className="h-4 w-4 mr-1" />
-											Start
-										</Button>
-										</div>
+								<div className="flex items-center justify-between">
+									<div>
+									<AlertTitle className="text-base font-medium flex items-center gap-2">
+										{assignment.title}
+										{assignment.status === 'Completed' && <CheckCircle className="h-4 w-4 text-green-500" />}
+									</AlertTitle>
+									<AlertDescription className="text-sm text-muted-foreground mt-1">
+										Due: {new Date(assignment.dueDate).toLocaleDateString()}
+									</AlertDescription>
 									</div>
-									</Alert>
-								</Link>
-								))}
-							</div>
-							</AccordionContent>
-						</AccordionItem>
-						))}
-					</Accordion>
-					</>
+									<div className="flex items-center gap-2">
+									<Badge variant={assignment.status === 'Completed' ? "secondary" : "default"}>
+										{assignment.status}
+									</Badge>
+									<Button variant="outline" size="sm">
+										<Clock className="h-4 w-4 mr-1" />
+										Start
+									</Button>
+									</div>
+								</div>
+								</Alert>
+							</Link>
+							))}
+						</div>
+						</AccordionContent>
+					</AccordionItem>
+					))}
+				</Accordion>
+				</>
 				);
 			}
 		};
@@ -224,9 +238,10 @@ const Class = () => {
 			</div>
 			<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 				<div className="lg:col-span-2">{renderContent()}</div>
-				<div className="space-y-6">
+				<div className="space-y-3">
 				{(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") &&
 					currentView !== "assignmentCreation" && (
+					<>
 					<Button
 						variant="outline"
 						onClick={() => handleViewChange("assignmentCreation")}
@@ -234,6 +249,12 @@ const Class = () => {
 					>
 						Create Assignment
 					</Button>
+					<CreateRubric 
+						classId={classId} 
+						assignments={assignments} 
+						onRubricCreated={handleRubricCreated} 
+						/>					
+					</>
 					)}
 				<Card>
 					<CardContent className="text-center py-6">

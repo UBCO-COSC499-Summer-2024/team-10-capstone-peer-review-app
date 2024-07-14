@@ -109,6 +109,12 @@ function MainLayout() {
 						}
 					/>
 					<Route
+						path="/enrollment"
+						element={
+							<ProtectedRoute element={<Search />} allowedRoles={["ADMIN"]} />
+						}
+					/>
+					<Route
 						path="/search"
 						element={
 							<ProtectedRoute element={<Search />} allowedRoles={["ADMIN"]} />

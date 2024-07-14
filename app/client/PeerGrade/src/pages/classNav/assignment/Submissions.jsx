@@ -18,7 +18,6 @@ import { Textarea } from "@/components/ui/textarea";
 import reviewAPI from "@/api/reviewApi";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import ReviewDetailsDialog from "./submission/ReviewDetailsDialog";
-import ReviewHistoryDialog from "./submission/ReviewHistoryDialog";
 
 const Submissions = () => {
     const { user } = useUser();
@@ -101,6 +100,7 @@ const Submissions = () => {
     const fetchRubrics = async (assignmentId) => {
         try {
             const rubricData = await getRubricsForAssignment(assignmentId);
+            console.log('rubricData', rubricData);
             setRubrics(rubricData.data);
 
             const totalPoints = rubricData.data.reduce((acc, rubric) => {
@@ -118,73 +118,105 @@ const Submissions = () => {
     };
 
     const handleGradeSubmit = async (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-        let totalMark = 0;
-        const criterionGrades = [];
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      let totalMark = 0;
+      const criterionGrades = [];
+  
+      rubrics.forEach(rubric => {
+          rubric.criteria.forEach(criterion => {
+              const grade = parseFloat(formData.get(`grade-${criterion.criterionId}`)) || 0;
+              totalMark += grade;
+              const comment = formData.get(`comment-${criterion.criterionId}`);
+              criterionGrades.push({ criterionId: criterion.criterionId, grade, comment });
+          });
+      });
+  
+      const finalScore = (totalMark / totalPoints) * 100;
+  
+      try {
+          // Check if a review already exists for this submission
+          console.log('selectedSubmission', selectedSubmission);
+          const existingReviews = await reviewAPI.getAllReviews(selectedSubmission.submissionId);
+          console.log('existingReviews', existingReviews);
+          const existingReview = existingReviews.data.find(review => review.reviewerId === user.userId);
+  
+          let response;
+          if (existingReview) {
 
-        rubrics.forEach(rubric => {
-            rubric.criteria.forEach(criterion => {
-                const grade = parseFloat(formData.get(`grade-${criterion.criterionId}`)) || 0;
-                totalMark += grade;
-                const comment = formData.get(`comment-${criterion.criterionId}`);
-                criterionGrades.push({ criterionId: criterion.criterionId, grade, comment });
-            });
-        });
-
-        const finalScore = (totalMark / totalPoints) * 100;
-
-        try {
             const review = {
-                submissionId: selectedSubmission.submissionId,
-                reviewGrade: totalMark,
-                reviewerId: user.userId,
-                revieweeId: selectedSubmission.submitterId,
-                isPeerReview: false,
-                isGroup: false,
-                criterionGrades: criterionGrades,
+              submissionId: selectedSubmission.submissionId,
+              reviewGrade: totalMark,
+              reviewerId: user.userId,
+              revieweeId: selectedSubmission.submitterId,
+              updatedAt: new Date(),
+              isPeerReview: false,
+              isGroup: false,
+              criterionGrades: criterionGrades,
             };
+              // Update existing review
+              console.log('existingReview', existingReview);  
+              console.log('review', review);
+              response = await reviewAPI.updateReview(existingReview.reviewId, review);
+              toast({
+                  title: "Success",
+                  description: "Existing review updated successfully",
+                  variant: "success"
+              });
+          } else {
+              // Create new review
+              const review = {
+                  submissionId: selectedSubmission.submissionId,
+                  reviewGrade: totalMark,
+                  reviewerId: user.userId,
+                  revieweeId: selectedSubmission.submitterId,
+                  isPeerReview: false,
+                  isGroup: false,
+                  criterionGrades: criterionGrades,
+              };
+              response = await reviewAPI.createReview(review, criterionGrades);
+              toast({
+                  title: "Success",
+                  description: "New review submitted successfully",
+                  variant: "success"
+              });
+          }
+  
+          // Update the submission's grade in the UI
+          setStudentsWithSubmissions(prev => 
+              prev.map(student => {
+                  if (student.userId === selectedSubmission.submitterId) {
+                      const updatedSubmissions = student.submissions.map(sub => 
+                          sub.submissionId === selectedSubmission.submissionId 
+                              ? { ...sub, finalGrade: finalScore } 
+                              : sub
+                      );
+                      return { ...student, submissions: updatedSubmissions, latestGrade: finalScore };
+                  }
+                  return student;
+              })
+          );
+  
+          // Close the grade view dialog
+          setSelectedSubmission(null);
+          
+      } catch (error) {
+          console.error("Error submitting/updating grade:", error);
+          toast({
+              title: "Error",
+              description: "Failed to submit/update grade",
+              variant: "destructive"
+          });
+      }
+  };
 
-            await reviewAPI.createReview(review, criterionGrades);
-            toast({
-                title: "Success",
-                description: "Grade submitted successfully",
-                variant: "success"
-            });
-
-            // Update the submission's grade in the UI
-            setStudentsWithSubmissions(prev => 
-                prev.map(student => {
-                    if (student.userId === selectedSubmission.submitterId) {
-                        const updatedSubmissions = student.submissions.map(sub => 
-                            sub.submissionId === selectedSubmission.submissionId 
-                                ? { ...sub, finalGrade: finalScore } 
-                                : sub
-                        );
-                        return { ...student, submissions: updatedSubmissions, latestGrade: finalScore };
-                    }
-                    return student;
-                })
-            );
-            
-        } catch (error) {
-            toast({
-                title: "Error",
-                description: "Failed to submit grade",
-                variant: "destructive"
-            });
-        }
-    };
-
-    const handleViewReviewDetails = (submissionId) => {
-        setSelectedSubmissionId(submissionId);
-        setShowReviewDialog(true);
-    };
-
-    const handleViewReviewHistory = (submissionId) => {
-        setSelectedSubmissionId(submissionId);
-        setShowReviewHistoryDialog(true);
-    };
+  const handleViewReviewDetails = async (submissionId) => {
+    setSelectedSubmissionId(submissionId);
+    if (rubrics.length === 0) {
+        await fetchRubrics(assignmentId);
+    }
+    setShowReviewDialog(true);
+};
 
     if (loading) {
         return <div>Loading submissions...</div>;
@@ -274,28 +306,26 @@ const Submissions = () => {
                                                             <Download className="h-4 w-4 mr-1" />
                                                             Download
                                                         </Button>
-                                                        <Dialog>
-                                                            <DialogTrigger asChild>
-                                                                <Button
-                                                                    variant="outline"
-                                                                    size="sm"
-                                                                    className="mr-2"
-                                                                    onClick={() =>
-                                                                        handleGradeAssignment(submission)
-                                                                    }
-                                                                >
-                                                                    <ChevronDown className="h-4 w-4 mr-1" />
-                                                                    Grade
-                                                                </Button>
-                                                            </DialogTrigger>
-                                                            <DialogContent className="max-w-4xl h-[80vh]">
-                                                                <DialogHeader>
-                                                                    <DialogTitle>Grade Assignment</DialogTitle>
-                                                                </DialogHeader>
-                                                                <form
-                                                                    onSubmit={handleGradeSubmit}
-                                                                    className="flex-1 overflow-auto"
-                                                                >
+                                                        <Dialog open={!!selectedSubmission} onOpenChange={(open) => !open && setSelectedSubmission(null)}>
+                                                          <DialogTrigger asChild>
+                                                              <Button
+                                                                  variant="outline"
+                                                                  size="sm"
+                                                                  className="mr-2"
+                                                                  onClick={() => handleGradeAssignment(submission)}
+                                                              >
+                                                                  <ChevronDown className="h-4 w-4 mr-1" />
+                                                                  Grade
+                                                              </Button>
+                                                          </DialogTrigger>
+                                                          <DialogContent className="max-w-4xl h-[80vh]">
+                                                              <DialogHeader>
+                                                                  <DialogTitle>Grade Assignment</DialogTitle>
+                                                              </DialogHeader>
+                                                              <form
+                                                                  onSubmit={handleGradeSubmit}
+                                                                  className="flex-1 overflow-auto"
+                                                              >
                                                                     {rubrics.map((rubric, rubricIndex) => (
                                                                         <Card key={rubricIndex} className="mb-6">
                                                                             <CardHeader>
@@ -372,13 +402,6 @@ const Submissions = () => {
                                                         >
                                                             View Grades
                                                         </Button>
-                                                        <Button
-                                                            variant="outline"
-                                                            size="sm"
-                                                            onClick={() => handleViewReviewHistory(submission.submissionId)}
-                                                        >
-                                                            History
-                                                        </Button>
                                                     </TableCell>
                                                 </TableRow>
                                             ))
@@ -396,16 +419,14 @@ const Submissions = () => {
                     ))}
                 </Accordion>
             </CardContent>
-            <ReviewDetailsDialog
-                submissionId={selectedSubmissionId}
-                open={showReviewDialog}
-                onClose={() => setShowReviewDialog(false)}
-            />
-            <ReviewHistoryDialog
-                submissionId={selectedSubmissionId}
-                open={showReviewHistoryDialog}
-                onClose={() => setShowReviewHistoryDialog(false)}
-            />
+            {rubrics.length > 0 && (
+              <ReviewDetailsDialog
+                  submissionId={selectedSubmissionId}
+                  rubrics={rubrics}
+                  open={showReviewDialog}
+                  onClose={() => setShowReviewDialog(false)}
+              />
+          )}
         </Card>
     );
 };

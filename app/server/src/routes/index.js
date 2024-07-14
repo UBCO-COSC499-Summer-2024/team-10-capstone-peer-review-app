@@ -33,7 +33,7 @@ router.use("/users", usersRoutes);
 router.use("/students", ensureUser, studentsRouter);
 
 router.use("/submit", submitRouter);
-router.use("/review", ensureUser, reviewRouter);
+router.use("/review", reviewRouter);
 router.use("/grade", ensureUser, gradesRouter);
 
 router.use("/instructors", ensureUser, ensureInstructor, instructorsRouter);

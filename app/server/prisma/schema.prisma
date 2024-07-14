@@ -319,6 +319,8 @@ model CriterionGrade {
   comment          String?   // Add this field for comments
   review           Review    @relation(fields: [reviewId], references: [reviewId])
   criterion        Criterion @relation(fields: [criterionId], references: [criterionId], onDelete: Cascade)
+  @@unique([criterionId, reviewId]) // Ensure unique combination of criterionId and reviewId
+
 }
 
 // model StudentCriterionGrade {

@@ -35,6 +35,7 @@ const reviewAPI = {
           }
         }
       });
+      console.log('response', response);
       return response.data;
     } catch (error) {
       throw error;
@@ -51,8 +52,13 @@ const reviewAPI = {
   },
 
   updateReview: async (reviewId, review) => {
+    console.log('reviewId', reviewId);
+    console.log('review', review);
     try {
-      const response = await axios.put(`${BASE_URL}/review/updateReview`, { reviewId, review });
+      const response = await axios.put(`${BASE_URL}/review/updateReview`, {
+         reviewId, 
+         review 
+        });
       return response.data;
     } catch (error) {
       throw error;

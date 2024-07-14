@@ -26,6 +26,7 @@ export const getInstructorReview = asyncErrorHandler(async (req, res) => {
 export const getAllReviews = asyncErrorHandler(async (req, res) => {
     const submissionId = req.body.submissionId;
     const reviews = await reviewService.getAllReviews(submissionId);
+    console.log('reviews', reviews);
     return res.status(200).json({
         status: "Success",
         data: reviews
@@ -34,13 +35,15 @@ export const getAllReviews = asyncErrorHandler(async (req, res) => {
 
 
 export const updateReview = asyncErrorHandler(async (req, res) => {
-    const {review, reviewId} = req.body;
+    console.log('req.body', req.body);
+    const { review, reviewId } = req.body;
     const updatedReview = await reviewService.updateReview(reviewId, review);
     return res.status(200).json({
         status: "Success",
         data: updatedReview
     });
 });
+
 
 export const deleteReview = asyncErrorHandler(async (req, res) => {
     const reviewId = req.body.reviewId;

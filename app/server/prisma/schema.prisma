@@ -223,13 +223,12 @@ model Review {
   updatedAt       DateTime         @updatedAt
   isGroup         Boolean          @default(false)
   isPeerReview    Boolean          @default(false)
-  reviewGrade     Int // Total grade of the review = sum of reviewerCriteronGrades
+  reviewGrade     Int // Total grade of the review = sum of criterionGrades
   submission      Submission       @relation(fields: [submissionId], references: [submissionId], onDelete: Cascade)
   reviewer        User?            @relation("Reviewer", fields: [reviewerId], references: [userId])
   reviewee        User             @relation("Reviewee", fields: [revieweeId], references: [userId])
   criterionGrades CriterionGrade[]
 }
-
 // Way to check if all students have submitted their group reivew,  
 // and if not, send a reminder to the students who haven't submitted  
 
@@ -317,6 +316,7 @@ model CriterionGrade {
   reviewId         String
   criterionId      String
   grade            Int
+  comment          String?   // Add this field for comments
   review           Review    @relation(fields: [reviewId], references: [reviewId])
   criterion        Criterion @relation(fields: [criterionId], references: [criterionId], onDelete: Cascade)
 }

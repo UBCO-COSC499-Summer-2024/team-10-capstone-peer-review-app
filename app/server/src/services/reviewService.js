@@ -59,18 +59,7 @@ const getAllReviews = async (submissionId) => {
     }
 }
 
-const createReview = async (userId, review) => {
-    try {
-        const newReview = await prisma.review.create({
-            reviewerId: userId,
-            data: review
-        });
 
-        return newReview;
-    } catch (error) {
-        throw new apiError("Failed to create review", 500);
-    }
-}
 
 const updateReview = async (reviewId, review) => {
     try {
@@ -101,11 +90,76 @@ const deleteReview = async (reviewId) => {
     }
 }
 
+const createReview = async (userId, review, criterionGrades) => {
+    try {
+        const newReview = await prisma.review.create({
+            data: {
+                reviewerId: userId,
+                ...review,
+                criterionGrades: {
+                    create: criterionGrades.map(cg => ({
+                        criterionId: cg.criterionId,
+                        grade: cg.grade,
+                        comment: cg.comment
+                    }))
+                }
+            },
+            include: {
+                criterionGrades: true
+            }
+        });
+
+        // Update the submission's final grade
+        await prisma.submission.update({
+            where: { submissionId: review.submissionId },
+            data: { finalGrade: newReview.reviewGrade }
+        });
+
+        return newReview;
+    } catch (error) {
+        throw new apiError("Failed to create review", 500);
+    }
+};
+
+
+const getReviewDetails = async (reviewId) => {
+    try {
+        const review = await prisma.review.findUnique({
+            where: { reviewId },
+            include: {
+                criterionGrades: {
+                    include: {
+                        criterion: true
+                    }
+                },
+                submission: {
+                    include: {
+                        assignment: {
+                            include: {
+                                rubric: true
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        if (!review) {
+            throw new apiError("Review not found", 404);
+        }
+
+        return review;
+    } catch (error) {
+        throw new apiError("Failed to retrieve review details", 500);
+    }
+};
+
 export default {
     getPeerReviews,
     getInstructorReview,
     getAllReviews,
-    createReview,
     updateReview,
-    deleteReview
+    deleteReview,
+    createReview,
+    getReviewDetails
 };

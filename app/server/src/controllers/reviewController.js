@@ -32,15 +32,6 @@ export const getAllReviews = asyncErrorHandler(async (req, res) => {
     });
 });
 
-export const createReview = asyncErrorHandler(async (req, res) => {
-    const userId = req.user.id;
-    const review = req.body;
-    const newReview = await reviewService.createReview(userId, review);
-    return res.status(200).json({
-        status: "Success",
-        data: newReview
-    });
-});
 
 export const updateReview = asyncErrorHandler(async (req, res) => {
     const {review, reviewId} = req.body;
@@ -60,6 +51,26 @@ export const deleteReview = asyncErrorHandler(async (req, res) => {
     });
 });
 
+export const createReview = asyncErrorHandler(async (req, res) => {
+    const userId = req.user.id;
+    const { review, criterionGrades } = req.body;
+    const newReview = await reviewService.createReview(userId, review, criterionGrades);
+    return res.status(200).json({
+        status: "Success",
+        data: newReview
+    });
+});
+
+
+export const getReviewDetails = asyncErrorHandler(async (req, res) => {
+    const { reviewId } = req.params;
+    const reviewDetails = await reviewService.getReviewDetails(reviewId);
+    return res.status(200).json({
+        status: "Success",
+        data: reviewDetails
+    });
+});
+
 // Export all controller methods
 export default {
     getPeerReviews,
@@ -67,5 +78,6 @@ export default {
     getAllReviews,
     createReview,
     updateReview,
-    deleteReview
+    deleteReview,
+    getReviewDetails
 };

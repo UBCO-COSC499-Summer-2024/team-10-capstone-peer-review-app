@@ -71,8 +71,8 @@ const Reports = ({role}) => {
 	};
 
     return (
-        <div className="pt-4">
-            <h1 className="text-2xl font-bold mb-3 ml-3">Reports Received</h1>
+        <div className="">
+            <h1 className="text-2xl font-bold mb-3">Reports Received</h1>
             <Card>
 				<CardContent className="space-y-6">
 					{reports.length > 0 ? (

@@ -109,7 +109,7 @@ const Report = () => {
 				</TabsList>
 				)}
 				<TabsContent value="send">
-                    <h1 className="text-2xl font-bold mb-3 ml-3 pt-4">Send a Report {user.role === "INSTRUCTOR" ? "to Admin" : ""}</h1>
+                    <h1 className="text-2xl font-bold mb-3 pt-4">Send a Report {user.role === "INSTRUCTOR" ? "to Admin" : ""}</h1>
                     <Card>
                         <form onSubmit={handleSubmit}>
                             <CardContent className="space-y-6">
@@ -168,7 +168,7 @@ const Report = () => {
                         </form>
                     </Card>
                     
-                    <h2 className="text-2xl font-bold mt-6 mb-3 ml-3">Previously Sent Reports</h2>
+                    <h2 className="text-2xl font-bold mt-6 mb-3">Previously Sent Reports</h2>
                     <Card>
                         <CardContent className="space-y-6">
                         {reports.length > 0 ? (
@@ -189,7 +189,7 @@ const Report = () => {
 				</TabsContent>
 				{(user.role !== "STUDENT") && (
 				<>
-					<TabsContent value="view">
+					<TabsContent value="view" className='pt-4'>
 						<Reports role={user.role} />
 					</TabsContent>
 				</>

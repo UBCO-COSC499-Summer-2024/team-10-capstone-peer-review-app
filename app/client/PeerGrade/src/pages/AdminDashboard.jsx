@@ -1,7 +1,7 @@
 // src/pages/AdminDashboard.jsx
 import Overview from "@/components/admin/Overview";
 import Users from "@/components/admin/Users";
-import Search from "@/pages/Search";
+import Search from "@/components/admin/Search";
 import Assignments from "@/components/admin/Assign";
 import Interactions from "@/components/admin/Interactions";
 import Reports from "@/pages/Reports";

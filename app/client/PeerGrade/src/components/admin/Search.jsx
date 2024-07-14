@@ -402,7 +402,7 @@ function ClassTable() {
 
 function Search() {
 	return (
-		<div className="w-full py-6 space-y-6">
+		<div className="w-full space-y-6">
 			<h1 className="text-2xl font-bold">All Classes</h1>
 			<ClassTable />
 		</div>

@@ -19,7 +19,7 @@ import Settings from "./pages/Settings";
 import AppNavbar from "./components/global/Navbar";
 import ManageClass from "./pages/ManageClass";
 import Report from "./pages/Report";
-import Search from "./pages/Search";
+import Search from "./components/admin/Search";
 import Submission from "./pages/Submission";
 import AdminDashboard from "./pages/AdminDashboard";
 import TestUserContext from "./pages/TestUserContext";

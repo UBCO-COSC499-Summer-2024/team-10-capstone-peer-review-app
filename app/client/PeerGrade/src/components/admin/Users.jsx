@@ -143,21 +143,23 @@ const Users = () => {
 	}, []);
 
 	const chartData = usersData.map((user) => ({
-		dateCreated: user.dateCreated,
+		dateCreated: user.createdAt,
 		role: user.role
 	}));
 
 	return (
-		<div className="max-w-6xl flex flex-col gap-6">
-			<div className="flex flex-col pt-3 bg-white">
-				<p className="text-xl ml-5">Current Users</p>
-				<DataTable
-					title="Students"
-					data={usersData}
-					columns={userColumns}
-					pageSize={5}
-					enableStatus={true}
-				/>
+		<div className="max-w-4xl flex flex-col gap-6">
+			<div className="w-full space-y-6">
+				<h1 className="text-2xl font-bold">Current Users</h1>
+				<div className="pt-6 bg-white rounded-lg">
+					<DataTable
+						title="Students"
+						data={usersData}
+						columns={userColumns}
+						pageSize={5}
+						enableStatus={true}
+					/>
+				</div>
 			</div>
 			<div className="flex gap-5 pt-3 max-h-taller-than-98">
 				<DataChart
@@ -168,8 +170,9 @@ const Users = () => {
 					filterTypes={["All", "Student", "Instructor"]}
 				/>
 				<div className="flex flex-col md:w-1/3 overflow-y-auto rounded-md">
-					<p className="text-xl ml-5 mb-4">Role Requests</p>
-					<div className="space-y-1">
+					<h1 className="text-2xl font-semibold mb-6">Role Requests</h1>
+					<div className="py-6 bg-white rounded-lg space-y-1">
+						{roleRequests.length === 0 && <div className="text-gray-500 text-sm px-6">No role requests were found.</div>}
 						{roleRequests.map((roleRequest) => {
 							const { color } = getStatusDetails(roleRequest.status);
 							return (

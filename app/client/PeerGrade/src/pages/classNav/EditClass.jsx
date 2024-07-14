@@ -52,9 +52,24 @@ const FormSchema = z
 		}),
 		term: z.string().optional(),
 		classSize: z
-			.number()
-			.min(1, "Class size must be at least 1")
-			.max(1000, "Class size cannot exceed 1000")
+			.union([
+				z
+					.string()
+					.refine((val) => val.trim() !== "", {
+						message: "Please enter a class size"
+					})
+					.transform((val) => {
+						const numberVal = Number(val);
+						return isNaN(numberVal) ? NaN : numberVal;
+					}),
+				z.number()
+			])
+			.refine((val) => val >= 1, {
+				message: "Class size must be at least 1"
+			})
+			.refine((val) => val <= 1000, {
+				message: "Class size cannot exceed 1000"
+			})
 			.optional()
 	})
 	.refine((data) => isAfter(data.endDate, data.startDate), {
@@ -79,7 +94,7 @@ const EditClass = ({ classItem }) => {
 			startDate: null,
 			endDate: null,
 			term: "",
-			classSize: 0
+			classSize: 1
 		}
 	});
 

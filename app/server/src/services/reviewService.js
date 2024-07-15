@@ -406,21 +406,24 @@ const getOpenToReviewAssignment = async (userId, assignmentId) => {
         }
 
         if (user.role === "INSTRUCTOR") {
-            if (assignment.isPeerReview) {
-                if (assignment.dueDateReview < new Date()) {
-                    throw new apiError("Peer Review due date has passed", 403);
-                }
-            }
+            // if (assignment.isPeerReview) {
+            //     if (assignment.dueDateReview < new Date()) {
+            //         throw new apiError("Peer Review due date has passed", 403);
+            //     }
+            // }
             let submissionsLeft = [];
             for (const submission of assignment.submissions) {
                 const review = await prisma.review.findFirst({
                     where: {
                         submissionId: submission.submissionId,
-                        reviewType: "INSTRUCTOR"
                     }
                 });
 
                 if (!review) {
+                    submissionsLeft.push(submission);
+                }
+
+                if (review && review.reviewType !== "INSTRUCTOR") {
                     submissionsLeft.push(submission);
                 }
             }
@@ -452,7 +455,7 @@ const getOpenToReviewAssignment = async (userId, assignmentId) => {
                 });
 
                 if (numReviews >= assignment.numReviewsRequired) {
-                    throw new apiError("User has reached the maximum number of reviews to be given", 403);
+                    throw new apiError("Number of reviews required is fulfilled for this assignment", 403);
                 }
 
                 let submissionsLeft = [];
@@ -460,13 +463,14 @@ const getOpenToReviewAssignment = async (userId, assignmentId) => {
                     const review = await prisma.review.findFirst({
                         where: {
                             submissionId: submission.submissionId,
-                            reviewerId: userId,
-                            reviewType: "PEER"
+                            reviewerId: userId
                         }
                     });
 
                     if (!review) {
-                        submissionsLeft.push(submission);
+                        if (submission.submitterId !== userId) {
+                            submissionsLeft.push(submission);
+                        }
                     }
                 }
 
@@ -478,11 +482,11 @@ const getOpenToReviewAssignment = async (userId, assignmentId) => {
         }
     }
     catch (error) {
-        throw new apiError("Failed to retrieve open reviews", 500);
+        throw new apiError("Failed to retrieve open reviews " + error, 500);
     }
 }
 
-const getClosedReviewsAssignment = async (assignmentId) => {
+const getClosedReviewsAssignment = async (userId, assignmentId) => {
     try {
         const assignment = await prisma.assignment.findUnique({
             where: {
@@ -490,20 +494,106 @@ const getClosedReviewsAssignment = async (assignmentId) => {
             }
         });
 
-        if (!assignment) {
-            throw new apiError("Assignment not found", 404);
-        }
-
-        const reviews = await prisma.review.findMany({
+        const user = await prisma.user.findUnique({
             where: {
-                assignmentId: assignmentId,
-                reviewType: "PEER"
+                userId: userId
+            }, include: {
+                reviewsDone: true
             }
         });
 
-        return reviews;
+        if (!user) {
+            throw new apiError("User not found", 404);
+        }
+
+        if (!assignment) {
+            throw new apiError("Assignment not found", 404);
+        }
+        if (user.role === "INSTRUCTOR") {
+            const isInstructor = await prisma.class.findFirst({
+                where: {
+                    instructorId: userId,
+                    classId: assignment.classId
+                }
+            });
+
+            if (!isInstructor) {
+                throw new apiError("User not in the same class", 403);
+            }
+
+            const reviews = await prisma.review.findMany({
+                where: {
+                    assignmentId: assignmentId,
+                    reviewType: "INSTRUCTOR"
+                }
+            });
+
+            return reviews;
+
+        } else if (user.role === "STUDENT") {
+            const userInClass = await prisma.userInClass.findFirst({
+                where: {
+                    userId: userId,
+                    classId: assignment.classId
+                }
+            });
+
+            if (!userInClass) {
+                throw new apiError("User not in the same class", 403);
+            }
+
+            if (assignment.isPeerReview) {
+                if (assignment.dueDateReview < new Date()) {
+                    throw new apiError("Peer Review due date has passed", 403);
+                }
+
+                const numReviews = await prisma.review.count({
+                    where: {
+                        assignmentId: assignmentId,
+                        reviewerId: userId
+                    }
+                });
+
+                if (numReviews > assignment.numReviewsRequired) {
+                    throw new apiError("Number of reviews required is fulfilled for this assignment", 403);
+                }
+
+                const userInClass = await prisma.userInClass.findFirst({
+                    where: {
+                        userId: userId,
+                        classId: assignment.classId
+                    }
+                });
+
+                if (!userInClass) {
+                    throw new apiError("User not in the same class", 403);
+                }
+
+                const reviews = await prisma.review.findMany({
+                    where: {
+                        assignmentId: assignmentId,
+                        reviewType: "PEER"
+                    }
+                });
+
+                return reviews;
+
+            } else {    
+                throw new apiError("This assignment is not meant for peer review", 403);
+            }
+
+        } else {
+            throw new apiError("User have to be an Instructor or Student to review", 403);
+        }
+
+        // const reviews = await prisma.review.findMany({
+        //     where: {
+        //         assignmentId: assignmentId,
+        //         reviewType: "PEER"
+        //     }
+        // });
     } catch (error) {
-        throw new apiError("Failed to retrieve closed reviews", 500);
+        throw new apiError("Failed to retrieve closed reviews "+ error, 500);
     }
 }
 
@@ -582,11 +672,32 @@ const getStudentReviews = async (submissionId, studentId) => {
     }
 }
 
-const getStudentAverageGrade = async (submissionId, studentId) => {
+const getStudentGradeAsg = async (studentId, assignmentId) => {
     try {
-        const submission = await prisma.submission.findUnique({
+        const assignment = await prisma.assignment.findUnique({
             where: {
-                submissionId: submissionId
+                assignmentId: assignmentId
+            }
+        });
+
+        if (!assignment) {
+            throw new apiError("Submission not found", 404);
+        }
+
+        const user = await prisma.user.findUnique({
+            where: {
+                userId: studentId
+            }
+        });
+
+        if (!user) {
+            throw new apiError("User not found", 404);
+        }
+
+        const submission = await prisma.submission.findFirst({
+            where: {
+                assignmentId: assignmentId,
+                submitterId: studentId
             }
         });
 
@@ -594,20 +705,92 @@ const getStudentAverageGrade = async (submissionId, studentId) => {
             throw new apiError("Submission not found", 404);
         }
 
-        const reviews = await prisma.review.findMany({
+        const instructorReview = await prisma.review.findFirst({
             where: {
-                submissionId: submissionId,
-                revieweeId: studentId
+                submissionId: submission.submissionId,
+                revieweeId: studentId,
+                reviewType: "INSTRUCTOR"
+            }
+        });
+        if (!instructorReview) {
+            throw new apiError("Instructor review not found", 404);
+        }
+
+        let grades = {
+            "Instructor": instructorReview.reviewGrade
+        };
+        if (assignment.isPeerReview) {
+            const peerReviews = await prisma.review.findMany({
+                where: {
+                    submissionId: submission.submissionId,
+                    revieweeId: studentId,
+                    reviewType: "PEER"
+                }
+            });
+
+            if (peerReviews.length === 0) {
+                throw new apiError("Peer reviews not found", 404);
+            }
+
+            const totalPeerGrade = peerReviews.reduce((acc, review) => acc + review.reviewGrade, 0);
+            grades["Peer Average"] = totalPeerGrade / peerReviews.length;
+        }
+
+        //const totalGrade = reviews.reduce((acc, review) => acc + review.reviewGrade, 0);
+
+        return grades;
+    } catch (error) {
+        throw new apiError("Failed to retrieve student average grade " + error, 500);
+    }
+}
+
+const getStudentGradeClass = async (studentId, classId) => {
+    try {
+        const classA = await prisma.class.findUnique({
+            where: {
+                classId: classId
             }
         });
 
-        const totalGrade = reviews.reduce((acc, review) => acc + review.reviewGrade, 0);
+        if (!classA) {
+            throw new apiError("Class not found", 404);
+        }
 
-        return totalGrade / reviews.length;
+        const assignments = await prisma.assignment.findMany({
+            where: {
+                classId: classId
+            }
+        });
+
+        const totalGrade = 0;
+        const numAssignments = 0;
+
+        for (const assignment of assignments) {
+            const submission = await prisma.submission.findFirst({
+                where: {
+                    assignmentId: assignment.assignmentId,
+                    submitterId: studentId
+                }
+            });
+
+            if (submission) {
+                const reviews = await prisma.review.findMany({
+                    where: {
+                        submissionId: submission.submissionId
+                    }
+                });
+
+                totalGrade += reviews.reduce((acc, review) => acc + review.reviewGrade, 0);
+                numAssignments++;
+            }
+        }
+
+        return totalGrade / numAssignments;
     } catch (error) {
         throw new apiError("Failed to retrieve student average grade", 500);
     }
 }
+
 
 const getGroupReviews = async (submissionId) => {
     try {
@@ -681,7 +864,8 @@ export default {
     getOpenReviewsClass,
     getClosedReviewsClass,
     getStudentReviews,
-    getStudentAverageGrade,
+    getStudentGradeAsg,
+    getStudentGradeClass,
     getGroupReviews,
     createGroupReview,
     updateGroupReview,

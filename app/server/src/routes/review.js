@@ -3,7 +3,8 @@ import {
     getSubmissionCriteria,
     getReviews,
     getStudentReviews,
-    getStudentAverageGrade,
+    getStudentGradeAsg,
+    getStudentGradeClass,
     getGroupReviews,
     createGroupReview,
     updateGroupReview,
@@ -46,22 +47,26 @@ router.get("/", (req, res) => {
 // get a submission criteria
 router.post("/submissionCriteria", getSubmissionCriteria);
 
-// get all open reviews for an assignment submissions
+// get all submissions that are open for reviews of an assignment
 router.post("/openReviewsAsg", getOpenReviewsAssignment);
 
-// get all closed reviews for an assignment submissions
+// get all submissions whose reviews are done of an assignment
 router.post("/closedReviewsAsg", getClosedReviewsAssignment);
 
-// get all open reviews for a class 
-router.post("/openReviewsClass", getOpenReviewsClass);
+// // get all submissions of a class open for reviews
+// router.post("/openReviewsClass", getOpenReviewsClass);
 
-// get all closed reviews for a class
-router.post("/closedReviewsClass", getClosedReviewsClass);
+// // get all submissions of a class that are closed or done for reviews
+// router.post("/closedReviewsClass", getClosedReviewsClass);
 
-// get all reviews for a student on a submission (peer or instructor check)
-router.post("/studentReviews", getStudentReviews);
+// // get all reviews for a student on a submission (peer or instructor check)
+// router.post("/studentReviews", getStudentReviews);
 
-router.post("/studentAverageGrade", getStudentAverageGrade);
+// get student grade for an assignment (peer + instructor both)
+router.post("/studentGradeAsg", getStudentGradeAsg);
+
+// get student grade for a class (peer + instructor both)
+router.post("/studentGradeClass", getStudentGradeClass);
 
 // get all group reviews for a submission
 router.post("/groupReviews", getGroupReviews);

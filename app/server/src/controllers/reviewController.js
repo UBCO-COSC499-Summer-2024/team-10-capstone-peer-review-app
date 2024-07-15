@@ -38,7 +38,7 @@ export const getStudentReviews = asyncErrorHandler(async (req, res) => {
 });
 
 
-// get all open reviews for an assignment
+// get all submissions open for reviews of an assignment
 export const getOpenReviewsAssignment = asyncErrorHandler(async (req, res) => {
     const userId = req.user.userId;
     const assignmentId = req.body.assignmentId;
@@ -49,17 +49,18 @@ export const getOpenReviewsAssignment = asyncErrorHandler(async (req, res) => {
     });
 });
 
-// get all closed reviews for a submission
+// get all submissions closed for reviews of an assignment
 export const getClosedReviewsAssignment = asyncErrorHandler(async (req, res) => {
+    const userId = req.user.userId;
     const assignmentId = req.body.assignmentId;
-    const closedReviews = await reviewService.getClosedReviewsAssignment(assignmentId);
+    const closedReviews = await reviewService.getClosedReviewsAssignment(userId, assignmentId);
     return res.status(200).json({
         status: "Success",
         data: closedReviews
     });
 });
 
-// get all open reviews in a class (peer or instructor check)
+// get all submissions open for reviews in a class (peer or instructor check)
 export const getOpenReviewsClass = asyncErrorHandler(async (req, res) => {
     const classId = req.body.classId;
     const openReviews = await reviewService.getOpenReviewsClass(classId);
@@ -80,10 +81,20 @@ export const getClosedReviewsClass = asyncErrorHandler(async (req, res) => {
 });
 
 
-// get student average grade
-export const getStudentAverageGrade = asyncErrorHandler(async (req, res) => {
-    const studentId = req.body.studentId;
-    const averageGrade = await reviewService.getStudentAverageGrade(studentId);
+// get student grade for an assignment
+export const getStudentGradeAsg = asyncErrorHandler(async (req, res) => {
+    const {studentId, assignmentId } = req.body;
+    const averageGrade = await reviewService.getStudentGradeAsg(studentId, assignmentId);
+    return res.status(200).json({
+        status: "Success",
+        data: averageGrade
+    });
+});
+
+// get student grade for a class
+export const getStudentGradeClass = asyncErrorHandler(async (req, res) => {
+    const {studentId, classId } = req.body;
+    const averageGrade = await reviewService.getStudentGradeClass(studentId, classId);
     return res.status(200).json({
         status: "Success",
         data: averageGrade
@@ -189,7 +200,8 @@ export default {
     getOpenReviewsClass,
     getClosedReviewsClass,
     getStudentReviews,
-    getStudentAverageGrade,
+    getStudentGradeAsg,
+    getStudentGradeClass,
     getGroupReviews,
     createGroupReview,
     updateGroupReview,

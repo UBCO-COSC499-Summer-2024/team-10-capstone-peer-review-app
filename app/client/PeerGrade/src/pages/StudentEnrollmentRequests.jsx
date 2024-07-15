@@ -20,11 +20,18 @@ import {
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
+import { Plus, Users } from "lucide-react";
 import { getAllClasses } from "@/api/classApi";
 import {
 	createEnrollRequest,
 	getEnrollRequestsForUser
 } from "@/api/enrollmentApi";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger
+} from "@/components/ui/tooltip";
 
 const StudentEnrollmentRequests = () => {
 	const [searchTerm, setSearchTerm] = useState("");
@@ -77,7 +84,9 @@ const StudentEnrollmentRequests = () => {
 	const fetchEnrollRequests = async () => {
 		try {
 			const requests = await getEnrollRequestsForUser();
-			setEnrollRequests(requests);
+			if (requests.status === "Success") {
+				setEnrollRequests(requests.data);
+			}
 		} catch (error) {
 			toast({
 				title: "Error",
@@ -121,17 +130,23 @@ const StudentEnrollmentRequests = () => {
 
 	const totalPages = Math.ceil(filteredClasses.length / ITEMS_PER_PAGE);
 
+	const truncateDescription = (description, maxLength = 50) => {
+		if (description.length <= maxLength) return description;
+		return description.slice(0, maxLength) + "...";
+	};
+
 	return (
-		<div className="container mx-auto p-6">
-			<h1 className="text-2xl font-bold mb-6">Enroll in Classes</h1>
+		<div className="max-w-7xl mx-auto px-6">
+			<div className="flex justify-between items-center mb-6">
+				<h1 className="text-3xl font-bold">Enroll in Classes</h1>
+			</div>
 
 			<div className="mb-6">
-				<h2 className="text-xl font-semibold mb-2">Search for Classes</h2>
 				<Input
 					placeholder="Search classes..."
 					value={searchTerm}
 					onChange={(e) => setSearchTerm(e.target.value)}
-					className="mb-4"
+					className="max-w-md"
 				/>
 			</div>
 
@@ -140,61 +155,94 @@ const StudentEnrollmentRequests = () => {
 			) : (
 				<>
 					<div className="mb-10">
-						<h2 className="text-xl font-semibold mb-2">Available Classes</h2>
-						<Table>
-							<TableHeader>
-								<TableRow>
-									<TableHead>Class Name</TableHead>
-									<TableHead>Instructor</TableHead>
-									<TableHead>Start Date</TableHead>
-									<TableHead>End Date</TableHead>
-									<TableHead>Action</TableHead>
-								</TableRow>
-							</TableHeader>
-							<TableBody>
-								{paginatedClasses.map((classItem) => (
-									<TableRow key={classItem.classId}>
-										<TableCell>{classItem.classname}</TableCell>
-										<TableCell>{`${classItem.instructor.firstname} ${classItem.instructor.lastname}`}</TableCell>
-										<TableCell>
-											{format(new Date(classItem.startDate), "PP")}
-										</TableCell>
-										<TableCell>
-											{format(new Date(classItem.endDate), "PP")}
-										</TableCell>
-										<TableCell>
-											<Dialog
-												open={isDialogOpen}
-												onOpenChange={setIsDialogOpen}
-											>
-												<DialogTrigger asChild>
-													<Button onClick={() => setSelectedClass(classItem)}>
-														Request Enrollment
-													</Button>
-												</DialogTrigger>
-												<DialogContent>
-													<DialogHeader>
-														<DialogTitle>
-															Enroll in {classItem.classname}
-														</DialogTitle>
-													</DialogHeader>
-													<Textarea
-														placeholder="Enter a message for your enrollment request (optional)"
-														value={enrollMessage}
-														onChange={(e) => setEnrollMessage(e.target.value)}
-													/>
-													<DialogFooter>
-														<Button onClick={handleEnrollRequest}>
-															Send Request
-														</Button>
-													</DialogFooter>
-												</DialogContent>
-											</Dialog>
-										</TableCell>
+						<h2 className="text-2xl font-semibold mb-4">Available Classes</h2>
+						<div className="flex justify-center">
+							<Table className="border-collapse w-full">
+								<TableHeader>
+									<TableRow className="bg-gray-100">
+										<TableHead className="border px-4 py-2">
+											Class Name
+										</TableHead>
+										<TableHead className="border px-4 py-2">
+											Description
+										</TableHead>
+										<TableHead className="border px-4 py-2">
+											Instructor
+										</TableHead>
+										<TableHead className="border px-4 py-2">
+											Start Date
+										</TableHead>
+										<TableHead className="border px-4 py-2">End Date</TableHead>
+										<TableHead className="border px-4 py-2">Action</TableHead>
 									</TableRow>
-								))}
-							</TableBody>
-						</Table>
+								</TableHeader>
+								<TableBody>
+									{paginatedClasses.map((classItem, index) => (
+										<TableRow
+											key={classItem.classId}
+											className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
+										>
+											<TableCell className="border px-4 py-2">
+												{classItem.classname}
+											</TableCell>
+											<TableCell className="border px-4 py-2">
+												<TooltipProvider>
+													<Tooltip>
+														<TooltipTrigger>
+															{truncateDescription(classItem.description)}
+														</TooltipTrigger>
+														<TooltipContent>
+															<p>{classItem.description}</p>
+														</TooltipContent>
+													</Tooltip>
+												</TooltipProvider>
+											</TableCell>
+											<TableCell className="border px-4 py-2">{`${classItem.instructor.firstname} ${classItem.instructor.lastname}`}</TableCell>
+											<TableCell className="border px-4 py-2">
+												{format(new Date(classItem.startDate), "PP")}
+											</TableCell>
+											<TableCell className="border px-4 py-2">
+												{format(new Date(classItem.endDate), "PP")}
+											</TableCell>
+											<TableCell className="border px-4 py-2">
+												<Dialog
+													open={isDialogOpen}
+													onOpenChange={setIsDialogOpen}
+												>
+													<DialogTrigger asChild>
+														<Button
+															variant="outline"
+															size="sm"
+															onClick={() => setSelectedClass(classItem)}
+														>
+															<Plus className="w-4 h-4 mr-1" />
+															Enroll
+														</Button>
+													</DialogTrigger>
+													<DialogContent>
+														<DialogHeader>
+															<DialogTitle>
+																Enroll in {classItem.classname}
+															</DialogTitle>
+														</DialogHeader>
+														<Textarea
+															placeholder="Enter a message for your enrollment request (optional)"
+															value={enrollMessage}
+															onChange={(e) => setEnrollMessage(e.target.value)}
+														/>
+														<DialogFooter>
+															<Button onClick={handleEnrollRequest}>
+																Send Request
+															</Button>
+														</DialogFooter>
+													</DialogContent>
+												</Dialog>
+											</TableCell>
+										</TableRow>
+									))}
+								</TableBody>
+							</Table>
+						</div>
 						<div className="mt-4 flex justify-between">
 							<Button
 								onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
@@ -217,23 +265,32 @@ const StudentEnrollmentRequests = () => {
 					</div>
 
 					<div>
-						<h2 className="text-xl font-semibold mb-2">
+						<h2 className="text-2xl font-semibold mb-4">
 							My Enrollment Requests
 						</h2>
-						<Table>
+						<Table className="border-collapse w-full">
 							<TableHeader>
-								<TableRow>
-									<TableHead>Class Name</TableHead>
-									<TableHead>Status</TableHead>
-									<TableHead>Requested On</TableHead>
+								<TableRow className="bg-gray-100">
+									<TableHead className="border px-4 py-2">Class Name</TableHead>
+									<TableHead className="border px-4 py-2">Status</TableHead>
+									<TableHead className="border px-4 py-2">
+										Requested On
+									</TableHead>
 								</TableRow>
 							</TableHeader>
 							<TableBody>
-								{enrollRequests.map((request) => (
-									<TableRow key={request.enrollRequestId}>
-										<TableCell>{request.class.classname}</TableCell>
-										<TableCell>{request.status}</TableCell>
-										<TableCell>
+								{enrollRequests.map((request, index) => (
+									<TableRow
+										key={request.enrollRequestId}
+										className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
+									>
+										<TableCell className="border px-4 py-2">
+											{request.class.classname}
+										</TableCell>
+										<TableCell className="border px-4 py-2">
+											{request.status}
+										</TableCell>
+										<TableCell className="border px-4 py-2">
 											{format(new Date(request.createdAt), "PP")}
 										</TableCell>
 									</TableRow>

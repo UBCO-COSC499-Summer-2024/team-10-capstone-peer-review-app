@@ -4,7 +4,7 @@ import { Plus, Edit, Trash2, Users } from "lucide-react";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { useClass } from "@/contexts/contextHooks/useClass";
 import AddClassModal from "@/components/manageClass/AddClassDialog";
-import DeleteClassDialog from "@/components/manageclass/DeleteClassDialog";
+import DeleteClassDialog from "@/components/manageClass/DeleteClassDialog";
 import EditClassDialog from "@/components/manageClass/EditClassModal";
 import ManageEnrollmentsModal from "@/components/manageClass/ManageEnrollmentsModal";
 import {
@@ -107,10 +107,10 @@ const ManageClass = () => {
 									<TableCell className="border px-4 py-2">
 										<TooltipProvider>
 											<Tooltip>
-												<TooltipTrigger>
+												<TooltipTrigger className="text-left">
 													{truncateDescription(classItem.description)}
 												</TooltipTrigger>
-												<TooltipContent>
+												<TooltipContent className=" max-w-64 max-h-40 overflow-y-auto bg-white p-4 rounded shadow-lg">
 													<p>{classItem.description}</p>
 												</TooltipContent>
 											</Tooltip>

@@ -253,7 +253,6 @@ export default function AppNavbar() {
 														)}
 														onItemClick={() => setIsClassesSheetOpen(false)}
 													>
-														<PlusCircle className="w-4 h-4 mr-2 inline-block" />
 														Search and enroll in new classes.
 													</ListItem>
 												)}
@@ -322,7 +321,63 @@ export default function AppNavbar() {
 						</NavigationMenuList>
 					</NavigationMenu>
 				</div>
-				{/* Avatar and notification card section remains unchanged */}
+				<div className="flex items-center">
+					<Button
+						className="w-16 h-16 rounded-full shadow-lg"
+						variant="avatar"
+						onClick={toggleCardVisibility}
+						disabled={!user}
+					>
+						<Avatar className="w-14 h-14 rounded-full ">
+							<AvatarImage
+								src={user.avatarUrl}
+								alt={`${user.firstname} ${user.lastname}`}
+							/>
+							<AvatarFallback className="text-2xl">
+								{getInitials(user.firstname, user.lastname)}
+							</AvatarFallback>
+						</Avatar>
+					</Button>
+				</div>
+
+				{isCardVisible && (
+					<Card
+						className="w-[400px] transition-opacity duration-300 ease-in-out notification-card h-auto fixed left-[200px] bottom-3 z-50 shadow-md bg-white"
+						style={{ opacity: cardOpacity }}
+					>
+						<CardContent className="space-y-4 ">
+							<CardTitle className="text-lg font-bold">
+								Hey <span className="text-blue-600">{user.firstname}</span>!
+							</CardTitle>
+							<div className="flex flex-col gap-1">
+								<NotifCard
+									title="Admin: Heads up!"
+									description="You have received a new message"
+								/>
+								<NotifCard
+									title="Admin: Heads up!"
+									description="You have received a new message"
+								/>
+								<Link to="/report" className="w-full">
+									<Button variant="outline" className="bg-green-100 w-full">
+										View All
+									</Button>
+								</Link>
+							</div>
+							<div className="flex justify-between">
+								<Button variant="destructive" size="sm" onClick={handleLogout}>
+									<LogOut className="w-4 h-4 mr-2 inline-block" />
+									Logout
+								</Button>
+								<Link to="/settings">
+									<Button variant="default" size="sm">
+										Visit Profile
+									</Button>
+								</Link>
+							</div>
+						</CardContent>
+					</Card>
+				)}
 			</div>
 		</div>
 	);

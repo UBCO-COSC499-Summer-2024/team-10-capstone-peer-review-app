@@ -6,7 +6,7 @@ const BASE_URL = "/api"; // Use environment variable if available
 // Create a new enrollment request (for students)
 export const createEnrollRequest = async (classId, senderMessage) => {
 	try {
-		const response = await axios.post("/api/enroll-request", {
+		const response = await axios.post("/api/enroll-requests", {
 			classId,
 			senderMessage
 		});
@@ -19,7 +19,7 @@ export const createEnrollRequest = async (classId, senderMessage) => {
 // Get all enrollment requests for a user (for students)
 export const getEnrollRequestsForUser = async () => {
 	try {
-		const response = await axios.get("/api/enroll-request/user");
+		const response = await axios.get("/api/enroll-requests/user");
 		return response.data;
 	} catch (error) {
 		throw error.response.data;
@@ -30,7 +30,7 @@ export const getEnrollRequestsForUser = async () => {
 export const deleteEnrollRequest = async (enrollRequestId) => {
 	try {
 		const response = await axios.delete(
-			`/api/enroll-request/${enrollRequestId}`
+			`/api/enroll-requests/${enrollRequestId}`
 		);
 		return response.data;
 	} catch (error) {
@@ -41,7 +41,7 @@ export const deleteEnrollRequest = async (enrollRequestId) => {
 // Get all enrollment requests for a class (for instructors)
 export const getEnrollRequestsForClass = async (classId) => {
 	try {
-		const response = await axios.get(`/api/enroll-request/class/${classId}`);
+		const response = await axios.get(`/api/enroll-requests/class/${classId}`);
 		return response.data;
 	} catch (error) {
 		throw error.response.data;
@@ -55,10 +55,13 @@ export const updateEnrollRequestStatus = async (
 	receiverMessage
 ) => {
 	try {
-		const response = await axios.put(`/api/enroll-request/${enrollRequestId}`, {
-			status,
-			receiverMessage
-		});
+		const response = await axios.put(
+			`/api/enroll-requests/${enrollRequestId}`,
+			{
+				status,
+				receiverMessage
+			}
+		);
 		return response.data;
 	} catch (error) {
 		throw error.response.data;
@@ -68,7 +71,7 @@ export const updateEnrollRequestStatus = async (
 // Get all enrollment requests (for admins)
 export const getAllEnrollRequests = async () => {
 	try {
-		const response = await axios.get("/api/enroll-request");
+		const response = await axios.get("/api/enroll-requests");
 		return response.data;
 	} catch (error) {
 		throw error.response.data;

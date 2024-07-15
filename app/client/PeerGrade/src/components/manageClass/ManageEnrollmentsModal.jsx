@@ -36,7 +36,8 @@ const ManageEnrollmentsModal = ({ open, onOpenChange, classItem }) => {
 		setIsLoading(true);
 		try {
 			const requests = await getEnrollRequestsForClass(classItem.classId);
-			setEnrollRequests(requests);
+			console.log(requests);
+			setEnrollRequests(requests.data);
 		} catch (error) {
 			toast({
 				title: "Error",

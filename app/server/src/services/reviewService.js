@@ -677,6 +677,8 @@ const getStudentGradeAsg = async (studentId, assignmentId) => {
         const assignment = await prisma.assignment.findUnique({
             where: {
                 assignmentId: assignmentId
+            }, include: {
+                rubric: true
             }
         });
 
@@ -734,8 +736,10 @@ const getStudentGradeAsg = async (studentId, assignmentId) => {
 
             const totalPeerGrade = peerReviews.reduce((acc, review) => acc + review.reviewGrade, 0);
             grades["Peer Average"] = totalPeerGrade / peerReviews.length;
+            grades["Peer Grade Percent"] = (totalPeerGrade / assignment.rubric[0].totalMarks) * 100;
         }
 
+        grades["Instructor Grade Percent"] = (instructorReview.reviewGrade / assignment.rubric[0].totalMarks) * 100;
         //const totalGrade = reviews.reduce((acc, review) => acc + review.reviewGrade, 0);
 
         return grades;
@@ -749,6 +753,8 @@ const getStudentGradeClass = async (studentId, classId) => {
         const classA = await prisma.class.findUnique({
             where: {
                 classId: classId
+            }, include : {
+                Assignments: true
             }
         });
 
@@ -762,30 +768,35 @@ const getStudentGradeClass = async (studentId, classId) => {
             }
         });
 
-        const totalGrade = 0;
-        const numAssignments = 0;
+        let grades = {
+            "Instructor": 0,
+            "Peer Average": 0,
+            "Instructor Grade Percent": 0,
+            "Peer Grade Percent": 0
+        };
 
+        let numAssignments = 0;
+        let peerAssignments = 0;
         for (const assignment of assignments) {
-            const submission = await prisma.submission.findFirst({
-                where: {
-                    assignmentId: assignment.assignmentId,
-                    submitterId: studentId
-                }
-            });
-
-            if (submission) {
-                const reviews = await prisma.review.findMany({
-                    where: {
-                        submissionId: submission.submissionId
-                    }
-                });
-
-                totalGrade += reviews.reduce((acc, review) => acc + review.reviewGrade, 0);
-                numAssignments++;
+            let gradeA = await getStudentGradeAsg(studentId, assignment.assignmentId);
+            let instructorGradeA = gradeA["Instructor"];
+            let peerGradeA = gradeA["Peer Average"];
+            grades["Instructor"] += instructorGradeA;
+            grades["Peer Average"] += peerGradeA;
+            grades["Instructor Grade Percent"] += gradeA["Instructor Grade Percent"];
+            grades["Peer Grade Percent"] += gradeA["Peer Grade Percent"];
+            numAssignments++;
+            if (assignment.isPeerReview) {
+                peerAssignments++;
             }
         }
 
-        return totalGrade / numAssignments;
+        console.log(peerAssignments);
+        grades["Instructor"] = grades["Instructor"] / numAssignments;
+        grades["Instructor Grade Percent"] = grades["Instructor Grade Percent"] / numAssignments;
+        grades["Peer Grade Percent"] = grades["Peer Grade Percent"] / peerAssignments;
+
+        return grades;
     } catch (error) {
         throw new apiError("Failed to retrieve student average grade", 500);
     }

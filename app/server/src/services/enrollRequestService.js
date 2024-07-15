@@ -80,17 +80,56 @@ export async function updateEnrollRequestStatus(
 		});
 
 		if (status === "APPROVED") {
-			await prisma.userInClass.create({
-				data: {
-					userId: updatedRequest.userId,
-					classId: updatedRequest.classId
+			const userInClass = await prisma.userInClass.findUnique({
+				where: {
+					UserInClassId: {
+						userId: updatedRequest.userId,
+						classId: updatedRequest.classId
+					}
 				}
 			});
+
+			if (!userInClass) {
+				await prisma.userInClass.create({
+					data: {
+						userId: updatedRequest.userId,
+						classId: updatedRequest.classId
+					}
+				});
+			} else {
+				throw new apiError("User is already in class", 400);
+			}
+		}
+
+		if (status === "DENIED") {
+			const userInClass = await prisma.userInClass.findUnique({
+				where: {
+					UserInClassId: {
+						userId: updatedRequest.userId,
+						classId: updatedRequest.classId
+					}
+				}
+			});
+
+			if (userInClass) {
+				await prisma.userInClass.delete({
+					where: {
+						UserInClassId: {
+							userId: updatedRequest.userId,
+							classId: updatedRequest.classId
+						}
+					}
+				});
+			}
 		}
 
 		return updatedRequest;
 	} catch (error) {
-		throw new apiError("Error updating enrollment request status", 500);
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw error;
+		}
 	}
 }
 
@@ -99,7 +138,8 @@ export async function deleteEnrollRequest(enrollRequestId, userId) {
 		const request = await prisma.enrollRequest.findUnique({
 			where: { enrollRequestId }
 		});
-
+		console.log(request);
+		console.log(userId);
 		if (!request || request.userId !== userId) {
 			throw new apiError("Enrollment request not found or unauthorized", 404);
 		}
@@ -108,6 +148,7 @@ export async function deleteEnrollRequest(enrollRequestId, userId) {
 			where: { enrollRequestId }
 		});
 	} catch (error) {
+		console.log(error);
 		throw new apiError("Error deleting enrollment request", 500);
 	}
 }

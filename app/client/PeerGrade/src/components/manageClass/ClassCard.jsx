@@ -1,52 +1,58 @@
-import { User, FileText, CheckSquare } from "lucide-react";
-import {
-	Card,
-	CardHeader,
-	CardTitle,
-	CardDescription,
-	CardContent
-} from "@/components/ui/card";
-import { Link } from "react-router-dom";
+// components/ClassCard.jsx
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Users, FileText, Edit, Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-const ClassCard = ({
-	classId,
-	className,
-	instructor,
-	numStudents,
-	numAssignments,
-	numPeerReviews
-}) => {
+const ClassCard = ({ classItem, onEdit, onDelete }) => {
+	const navigate = useNavigate();
+
 	return (
-		<Link to={`/class/${classId}`}>
-			<Card className="w-full p-1 flex items-center justify-between bg-white shadow-md rounded-lg hover:shadow-lg overflow-hidden h-full">
-				<CardHeader className="border-r-3 border-collapse">
-					<CardTitle className="text-xl font-bold">{className}</CardTitle>
-					<CardDescription className="text-gray-500">
-						{instructor}
-					</CardDescription>
-				</CardHeader>
-				<CardContent className="flex flex-col space-y-2 pl-0 border-collapse">
-					{numStudents !== undefined && <div className="flex items-center space-x-2">
-						<User className="w-4 h-4 text-gray-700" />
-						<span className="text-gray-700 whitespace-nowrap">
-							{numStudents} Students
-						</span>
-					</div>}
-					{numAssignments !== undefined && <div className="flex items-center space-x-2">
-						<FileText className="w-4 h-4 text-gray-700" />
-						<span className="text-gray-700 whitespace-nowrap">
-							{numAssignments} Assignments Due
-						</span>
-					</div>}
-					{numPeerReviews !== undefined && <div className="flex items-center space-x-2">
-						<CheckSquare className="w-4 h-4 text-gray-700" />
-						<span className="text-gray-700 whitespace-nowrap">
-							{numPeerReviews} Peer Reviews Left
-						</span>
-					</div>}
-				</CardContent>
-			</Card>
-		</Link>
+		<Card
+			className="w-full cursor-pointer hover:shadow-lg transition-shadow duration-300"
+			onClick={() => navigate(`/manageClass/${classItem.classId}`)}
+		>
+			<CardHeader>
+				<CardTitle>{classItem.classname}</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<p className="text-sm text-gray-500 mb-4">{classItem.description}</p>
+				<div className="flex justify-between items-center">
+					<div className="flex space-x-4">
+						<div className="flex items-center">
+							<Users className="w-4 h-4 mr-1" />
+							<span>{classItem.userCount} students</span>
+						</div>
+						<div className="flex items-center">
+							<FileText className="w-4 h-4 mr-1" />
+							<span>{classItem.assignmentCount} assignments</span>
+						</div>
+					</div>
+					<div className="flex space-x-2">
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={(e) => {
+								e.stopPropagation();
+								onEdit(classItem);
+							}}
+						>
+							<Edit className="w-4 h-4" />
+						</Button>
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={(e) => {
+								e.stopPropagation();
+								onDelete(classItem);
+							}}
+						>
+							<Trash2 className="w-4 h-4" />
+						</Button>
+					</div>
+				</div>
+			</CardContent>
+		</Card>
 	);
 };
 

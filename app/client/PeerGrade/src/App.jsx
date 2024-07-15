@@ -24,6 +24,7 @@ import Search from "./components/admin/Search";
 import Submission from "./pages/Submission";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedRoute from "./components/global/ProtectedRoute";
+import ManageClassDashboard from "./components/manageClass/ManageClassDashboard";
 import NotFound from "./components/global/NotFound";
 
 import TitleUpdater from "@/utils/TitleUpdater";
@@ -101,10 +102,19 @@ function MainLayout() {
 						}
 					/>
 					<Route
-						path="/manageClass"
+						path="/manageclass"
 						element={
 							<ProtectedRoute
 								element={<ManageClass />}
+								allowedRoles={["INSTRUCTOR", "ADMIN"]}
+							/>
+						}
+					/>
+					<Route
+						path="/manageclass/:classId"
+						element={
+							<ProtectedRoute
+								element={<ManageClassDashboard />}
 								allowedRoles={["INSTRUCTOR", "ADMIN"]}
 							/>
 						}

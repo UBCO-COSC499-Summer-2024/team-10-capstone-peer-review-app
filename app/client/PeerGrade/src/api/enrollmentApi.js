@@ -27,10 +27,13 @@ export const getEnrollRequestsForUser = async () => {
 };
 
 // Delete an enrollment request (for students)
-export const deleteEnrollRequest = async (enrollRequestId) => {
+export const deleteEnrollRequest = async (enrollRequestId, userId) => {
 	try {
 		const response = await axios.delete(
-			`/api/enroll-requests/${enrollRequestId}`
+			`/api/enroll-requests/${enrollRequestId}`,
+			data: {
+				userId
+			}
 		);
 		return response.data;
 	} catch (error) {
@@ -64,6 +67,7 @@ export const updateEnrollRequestStatus = async (
 		);
 		return response.data;
 	} catch (error) {
+		handleError(error);
 		throw error.response.data;
 	}
 };
@@ -77,3 +81,18 @@ export const getAllEnrollRequests = async () => {
 		throw error.response.data;
 	}
 };
+
+function handleError(error) {
+	if (error.response && error.response.data) {
+		showStatusToast({
+			status: error.response.data.status,
+			message: error.response.data.message
+		});
+	} else {
+		console.log("Unexpected error from Auth API: ", error);
+		showStatusToast({
+			status: "Error",
+			message: "An unexpected error occurred. Please try again."
+		});
+	}
+}

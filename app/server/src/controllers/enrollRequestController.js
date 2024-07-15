@@ -63,7 +63,7 @@ export const updateEnrollRequestStatus = asyncErrorHandler(async (req, res) => {
 
 export const deleteEnrollRequest = asyncErrorHandler(async (req, res) => {
 	const { enrollRequestId } = req.params;
-	const userId = req.user.userId;
+	const userId = req.body.userId;
 	await enrollRequestService.deleteEnrollRequest(enrollRequestId, userId);
 	return res.status(200).json({
 		status: "Success",

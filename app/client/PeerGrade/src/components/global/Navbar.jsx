@@ -32,16 +32,19 @@ import {
 
 import { logoutUser } from "@/api/authApi";
 import { getAllAssignments } from "@/api/classApi";
+import { deleteNotification, getNotifications } from "@/api/notifsApi";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { useClass } from "@/contexts/contextHooks/useClass";
 
 export default function AppNavbar() {
 	const { user, userLoading, clearUserContext, setUserContext } = useUser();
 	const { classes, setUserClasses, setAdminClasses } = useClass();
+	const maxNotificationCount = 3;
 	const { toast } = useToast();
 
 	const location = useLocation();
 	const navigate = useNavigate();
+	const [notifications, setNotifications] = useState([]);
 	const [assignmentsData, setAssignmentsData] = useState([]);
 	const [isCardVisible, setIsCardVisible] = useState(false);
 	const [cardOpacity, setCardOpacity] = useState(0);
@@ -64,8 +67,24 @@ export default function AppNavbar() {
 				}
 			}
 		};
+		const fetchNotifs = async () => {
+			if (user) {
+				try {
+					const notifs = await getNotifications(user.userId);
+					setNotifications(Array.isArray(notifs.data) ? notifs.data : []);
+				} catch (error) {
+					console.error("Failed to fetch notifications", error);
+					toast({
+						title: "Error",
+						description: "Failed to fetch notifications",
+						variant: "destructive"
+					});
+				}
+			}
+		};
 
 		fetchData();
+		fetchNotifs();
 	}, [user]);
 
 	useEffect(() => {
@@ -92,6 +111,19 @@ export default function AppNavbar() {
 				description: "Failed to logout",
 				variant: "destructive"
 			});
+		}
+	};
+
+	const handleDeleteNotif = async (notificationId) => {
+		const deleteNotif = await deleteNotification(notificationId);
+		if (deleteNotif.status === "Success") {
+			setNotifications((prevNotifs) =>
+				prevNotifs.filter(
+					(notification) => notification.notificationId !== notificationId
+				)
+			);
+		} else {
+			console.error('An error occurred while deleting the notification.', deleteNotif.message);
 		}
 	};
 
@@ -129,7 +161,7 @@ export default function AppNavbar() {
 					<div className="mb-6">
 						<Link to="/dashboard" className="flex items-center justify-center">
 							<img
-								src="../../../public/logo.png"
+								src="/logo.png"
 								className="w-12 h-12"
 								alt="Logo"
 							/>
@@ -310,27 +342,33 @@ export default function AppNavbar() {
 
 			{isCardVisible && (
 				<Card
-					className="w-[400px] transition-opacity duration-300 ease-in-out notification-card h-auto fixed left-[200px] bottom-3 z-50 shadow-md bg-white"
+					className="w-[480px] transition-opacity duration-300 ease-in-out notification-card h-auto fixed left-[200px] bottom-3 z-50 shadow-md bg-white"
 					style={{ opacity: cardOpacity }}
 				>
-					<CardContent className="space-y-4 ">
+					<CardContent className="space-y-4">
 						<CardTitle className="text-lg font-bold">
 							Hey <span className="text-blue-600">{user.firstname}</span>!
 						</CardTitle>
-						<div className="flex flex-col gap-1">
-							<NotifCard
-								title="Admin: Heads up!"
-								description="You have received a new message"
-							/>
-							<NotifCard
-								title="Admin: Heads up!"
-								description="You have received a new message"
-							/>
-							<Link to="/report" className="w-full">
-								<Button variant="outline" className="bg-green-100 w-full">
-									View All
-								</Button>
-							</Link>
+						<div className="flex flex-col gap-2">
+							{notifications.length === 0 && (
+								<div className="text-center px-4 pb-4 text-gray-500 text-sm">
+									You have no notifications!
+								</div>
+							)}
+							{notifications.slice(0, maxNotificationCount).map((notification) => (
+								<NotifCard
+									key={notification.notificationId}
+									notificationData={notification}
+									deleteNotifCall={handleDeleteNotif}
+								/>
+							))}
+							{notifications.length > maxNotificationCount && ( // Show only if too many notifications (> 4)
+								<Link to="/report" className="w-full">
+									<Button variant="outline" className="bg-green-100 w-full">
+										View All
+									</Button>
+								</Link>
+							)}
 						</div>
 						<div className="flex justify-between">
 							<Button variant="destructive" size="sm" onClick={handleLogout}>

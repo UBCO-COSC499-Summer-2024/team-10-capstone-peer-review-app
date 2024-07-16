@@ -1,43 +1,31 @@
 import * as React from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Terminal, Check, Trash } from "lucide-react";
-// import { ApprovalDrawer } from "@/components/admin/users/ApprovalDrawer";
-import { DelDialog } from "@/components/admin/users/DelDialog";
+import { Bell, X } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
 
-const NotifCard = ({ title, description, showDrawer, showAlertDialog }) => {
+const NotifCard = ({ notificationData, deleteNotifCall }) => {
 	return (
 		<Alert>
-			<Terminal className="h-4 w-4" />
-			<div className="flex justify-between w-full">
-				<div>
-					<AlertTitle>{title}</AlertTitle>
-					<AlertDescription>{description}</AlertDescription>
+			<div className="flex justify-between items-center w-full">
+				<div className="flex flex-row items-center justify-center space-x-4">
+					<Bell className="h-4 w-4" />
+					<div>
+						<AlertTitle>{notificationData.title}</AlertTitle>
+						<AlertDescription>{notificationData.content}</AlertDescription>
+						<p className="text-sm text-gray-500">
+							{formatDistanceToNow(new Date(notificationData.createdAt), { addSuffix: true })}
+						</p>
+					</div>
 				</div>
-				<div className="flex ml-2 flex-col items-end">
-					{/* {showDrawer ? (
-            <ApprovalDrawer>
-              <Button variant="ghost" size="icon" className="h-5 w-5 p-0">
-                <Check className="h-4 w-4 text-green-600" />
-              </Button>
-            </ApprovalDrawer>
-          ) : ( */}
-					<Button variant="ghost" size="icon" className="h-5 w-5 p-0">
-						<Check className="h-4 w-4 text-green-600" />
-					</Button>
-					{/* )} */}
-					{showAlertDialog ? (
-						<DelDialog>
-							<Button variant="ghost" size="icon" className="h-5 w-5 p-0 mt-2">
-								<Trash className="h-4 w-4 text-red-600" />
-							</Button>
-						</DelDialog>
-					) : (
-						<Button variant="ghost" size="icon" className="h-5 w-5 p-0 mt-2">
-							<Trash className="h-4 w-4 text-red-600" />
-						</Button>
-					)}
-				</div>
+				<Button
+					variant="ghost"
+					size="icon"
+					className="h-5 w-5 p-0"
+					onClick={() => deleteNotifCall(notificationData.notificationId)}
+				>
+					<X className="h-4 w-4 text-gray-600" />
+				</Button>
 			</div>
 		</Alert>
 	);

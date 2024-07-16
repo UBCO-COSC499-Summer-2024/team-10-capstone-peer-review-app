@@ -6,6 +6,7 @@ import classesRouter from "./classes.js";
 import instructorsRouter from "./instructors.js";
 import studentsRouter from "./students.js";
 import usersRoutes from "./usersRoutes.js";
+import notifsRouter from "./notifs.js";
 import gradesRouter from "./grade.js";
 import reviewRouter from "./review.js";
 import submitRouter from "./submit.js";
@@ -31,6 +32,8 @@ router.use("/assignment", assignmentRouter);
 router.use("/rubric", ensureUser, rubricRouter);
 router.use("/users", usersRoutes);
 router.use("/students", ensureUser, studentsRouter);
+
+router.use("/notifs", ensureUser, notifsRouter);
 
 router.use("/submit", submitRouter);
 router.use("/review", ensureUser, reviewRouter);

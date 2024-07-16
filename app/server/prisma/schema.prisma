@@ -55,6 +55,8 @@ model User {
   groups            Group[]
   RoleRequest       RoleRequest?
   enrollRequests    EnrollRequest[]
+  notifications     Notification[]  @relation("ReceiverNotifications")
+  sentNotifications Notification[]  @relation("SenderNotifications")
 }
 
 // // Need to refactor last references to others tables, depending on what we want instructors to be able to pull up
@@ -355,6 +357,20 @@ model RoleRequest {
   user          User          @relation(fields: [userId], references: [userId], onDelete: Cascade)
 
   @@unique([userId], name: "UniqueRoleRequestPerUser")
+}
+
+// Initial implementation - Abdul
+model Notification {
+  notificationId String   @id @default(uuid())
+  receiverId     String
+  title          String
+  content        String
+  senderId       String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  receiver User @relation("ReceiverNotifications", fields: [receiverId], references: [userId], onDelete: Cascade)
+  sender   User? @relation("SenderNotifications", fields: [senderId], references: [userId], onDelete: Cascade)
 }
 
 model EnrollRequest {

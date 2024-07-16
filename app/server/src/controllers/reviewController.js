@@ -55,8 +55,7 @@ export const deleteReview = asyncErrorHandler(async (req, res) => {
 });
 
 export const createReview = asyncErrorHandler(async (req, res) => {
-    const userId = req.user.id;
-    const { review, criterionGrades } = req.body;
+    const { userId, review, criterionGrades } = req.body;
     const newReview = await reviewService.createReview(userId, review, criterionGrades);
     return res.status(200).json({
         status: "Success",

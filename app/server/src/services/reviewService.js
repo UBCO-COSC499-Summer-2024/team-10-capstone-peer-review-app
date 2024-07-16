@@ -5,28 +5,50 @@ import apiError from "../utils/apiError.js";
 
 const getPeerReviews = async (submissionId) => {
     try {
-        const submission = await prisma.review.findFirst({
+        const peerReviews = await prisma.review.findMany({
             where: {
-                submissionId: submissionId
-            }, include: {
-                reviewer: true
+                submissionId: submissionId,
+                reviewer: {
+                    role: "STUDENT"
+                }
+            },
+            include: {
+                reviewer: { 
+                    select: {
+                        firstname: true, 
+                        lastname: true,
+                    }
+                }, 
+                criterionGrades: {
+                    include: {
+                        criterion: {
+                            include: { 
+                                criterionRatings: true
+                            }
+                        }
+                    }
+                },
+                submission: {
+                    include: {
+                        assignment: {
+                            include: {
+                                rubric: true
+                            }
+                        }
+                    }
+                }
             }
         });
-
-        if (submission.reviewer.role === "STUDENT") {
-            return submission;
-        }
-
-        return;
+        return peerReviews;
     }
     catch (error) {
-        throw new apiError("Failed to retrieve submission", 500);
+        throw new apiError("Failed to retrieve peer reviews", 500);
     }
 }
 
 const getInstructorReview = async (submissionId) => {
     try {
-        const review = await prisma.review.findFirst({
+        const instructorReview = await prisma.review.findFirst({
             where: {
                 submissionId: submissionId,
                 reviewer: {
@@ -34,24 +56,40 @@ const getInstructorReview = async (submissionId) => {
                 }
             },
             include: {
-                reviewer: true,
+                reviewer: { 
+                    select: {
+                        firstname: true, 
+                        lastname: true,
+                    }
+                }, 
                 criterionGrades: {
                     include: {
-                        criterion: true // Include the related criterion for additional details if needed
+                        criterion: {
+                            include: { 
+                                criterionRatings: true
+                            }
+                        }
+                    }
+                },
+                submission: {
+                    include: {
+                        assignment: {
+                            include: {
+                                rubric: true
+                            }
+                        }
                     }
                 }
             }
-        });
+        }); 
 
-        if (!review) {
-            throw new apiError("Instructor review not found", 404);
-        }
-
-        return review;
+        return instructorReview; // This will be null if no review is found
     } catch (error) {
-        throw new apiError("Failed to retrieve submission", 500);
+        console.error("Error in getInstructorReview:", error);
+        throw new apiError("Failed to retrieve instructor review", 500);
     }
 };
+
 
 
 const getAllReviews = async (submissionId) => {
@@ -68,12 +106,11 @@ const getAllReviews = async (submissionId) => {
     }
 }
 
-
-
 const updateReview = async (reviewId, review) => {
     const { criterionGrades, ...reviewData } = review;
 
     try {
+        console.log('Updating review:', reviewId, reviewData);
         // Update the review data
         const updatedReview = await prisma.review.update({
             where: {
@@ -82,36 +119,45 @@ const updateReview = async (reviewId, review) => {
             data: reviewData
         });
 
+        console.log('Review updated:', updatedReview);
+
         // Upsert criterion grades
         if (criterionGrades && criterionGrades.length > 0) {
+            console.log('Updating criterion grades:', criterionGrades);
             for (const criterionGrade of criterionGrades) {
-                await prisma.criterionGrade.upsert({
-                    where: {
-                        criterionId_reviewId: {
+                try {
+                    const updatedGrade = await prisma.criterionGrade.upsert({
+                        where: {
+                            UniqueCriteronGradePerReview: {
+                                criterionId: criterionGrade.criterionId,
+                                reviewId: reviewId
+                            }
+                        },
+                        update: {
+                            grade: criterionGrade.grade,
+                            comment: criterionGrade.comment
+                        },
+                        create: {
+                            reviewId: reviewId,
                             criterionId: criterionGrade.criterionId,
-                            reviewId: reviewId
+                            grade: criterionGrade.grade,
+                            comment: criterionGrade.comment
                         }
-                    },
-                    update: {
-                        grade: criterionGrade.grade,
-                        comment: criterionGrade.comment
-                    },
-                    create: {
-                        reviewId: reviewId,
-                        criterionId: criterionGrade.criterionId,
-                        grade: criterionGrade.grade,
-                        comment: criterionGrade.comment
-                    }
-                });
+                    });
+                    console.log('Updated grade:', updatedGrade);
+                } catch (gradeError) {
+                    console.error('Error updating grade:', gradeError);
+                    throw gradeError;
+                }
             }
         }
 
         return updatedReview;
     } catch (error) {
-        throw new apiError("Failed to update review", 500);
+        console.error('Error in updateReview:', error);
+        throw new apiError(`Failed to update review: ${error.message}`, 500);
     }
 };
-
 
 const deleteReview = async (reviewId) => {
     try {
@@ -127,14 +173,14 @@ const deleteReview = async (reviewId) => {
     }
 }
 
-const createReview = async (userId, review, criterionGrades) => {
+const createReview = async (userId, review) => {
     try {
         const newReview = await prisma.review.create({
             data: {
                 reviewerId: userId,
                 ...review,
                 criterionGrades: {
-                    create: criterionGrades.map(cg => ({
+                    create: review.criterionGrades.map(cg => ({
                         criterionId: cg.criterionId,
                         grade: cg.grade,
                         comment: cg.comment

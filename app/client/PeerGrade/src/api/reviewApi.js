@@ -15,10 +15,16 @@ const reviewAPI = {
   },
 
   getInstructorReview: async (submissionId) => {
+    console.log('submissionId', submissionId);
     try {
       const response = await axios.post(`${BASE_URL}/review/instructorReview`, { submissionId });
       return response.data;
     } catch (error) {
+      if (error.response && error.response.status === 404) {
+        // No instructor review found, return null instead of throwing an error
+        return { data: null };
+      }
+      // For other errors, throw as usual
       throw error;
     }
   },
@@ -42,28 +48,30 @@ const reviewAPI = {
     }
   },
 
-  createReview: async (review) => {
+  createReview: async (userId, review) => {
     try {
-      const response = await axios.post(`${BASE_URL}/review/createReview`, review);
-      return response.data;
+        const response = await axios.post(`${BASE_URL}/review/createReview`, {userId, review});
+        return response.data;
     } catch (error) {
-      throw error;
+        console.error("Error creating review:", error.response?.data || error.message);
+        throw error;
     }
-  },
+},
 
-  updateReview: async (reviewId, review) => {
-    console.log('reviewId', reviewId);
-    console.log('review', review);
-    try {
-      const response = await axios.put(`${BASE_URL}/review/updateReview`, {
-         reviewId, 
-         review 
-        });
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
+updateReview: async (reviewId, review) => {
+  console.log('reviewId', reviewId);
+  console.log('review', review);
+  try {
+    const response = await axios.put(`${BASE_URL}/review/updateReview`, {
+      reviewId, 
+      review 
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating review:", error.response?.data || error.message);
+    throw error;
+  }
+},
 
   deleteReview: async (reviewId) => {
     try {
@@ -93,14 +101,7 @@ const reviewAPI = {
     }
   },
 
-  createReview: async (review, criterionGrades) => {
-    try {
-        const response = await axios.post(`${BASE_URL}/review/createReview`, { review, criterionGrades });
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
-},
+
 
 getReviewDetails: async (reviewId) => {
     try {

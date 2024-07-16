@@ -225,7 +225,7 @@ model Review {
   isPeerReview    Boolean          @default(false)
   reviewGrade     Int // Total grade of the review = sum of criterionGrades
   submission      Submission       @relation(fields: [submissionId], references: [submissionId], onDelete: Cascade)
-  reviewer        User?            @relation("Reviewer", fields: [reviewerId], references: [userId])
+  reviewer        User            @relation("Reviewer", fields: [reviewerId], references: [userId])
   reviewee        User             @relation("Reviewee", fields: [revieweeId], references: [userId])
   criterionGrades CriterionGrade[]
 }
@@ -319,7 +319,7 @@ model CriterionGrade {
   comment          String?   // Add this field for comments
   review           Review    @relation(fields: [reviewId], references: [reviewId])
   criterion        Criterion @relation(fields: [criterionId], references: [criterionId], onDelete: Cascade)
-  @@unique([criterionId, reviewId]) // Ensure unique combination of criterionId and reviewId
+  @@unique([criterionId, reviewId], name: "UniqueCriteronGradePerReview") // Ensure unique combination of criterionId and reviewId
 
 }
 

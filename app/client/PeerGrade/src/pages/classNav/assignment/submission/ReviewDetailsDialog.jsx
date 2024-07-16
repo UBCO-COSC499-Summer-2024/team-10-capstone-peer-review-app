@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import reviewAPI from "@/api/reviewApi";
 import { toast } from "@/components/ui/use-toast";
 
-const ReviewDetailsDialog = ({ submissionId, rubrics = [], open, onClose }) => {
+const ReviewDetailsDialog = ({ submissionId, open, onClose }) => {
     const [reviewDetails, setReviewDetails] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -16,10 +16,10 @@ const ReviewDetailsDialog = ({ submissionId, rubrics = [], open, onClose }) => {
         const fetchReviewDetails = async () => {
             if (!submissionId) return;
             try {
-                const reviews = await reviewAPI.getInstructorReview(submissionId);
-                if (reviews.data) {
-                    console.log('reviews.data', reviews.data);
-                    setReviewDetails(reviews.data);
+                const review = await reviewAPI.getInstructorReview(submissionId);
+                if (review.data) {
+                    console.log('review.data', review.data);
+                    setReviewDetails(review.data);
                 } 
             } catch (error) {
                 console.error("Error fetching review details:", error);
@@ -38,17 +38,17 @@ const ReviewDetailsDialog = ({ submissionId, rubrics = [], open, onClose }) => {
         }
     }, [submissionId, open]);
 
-    const getTotalRubricPoints = () => {
-        return rubrics.reduce((total, rubric) => total + rubric.totalMarks, 0);
+    const getTotalMaxPoints = () => {
+        if (!reviewDetails || !reviewDetails.criterionGrades) return 0;
+        return reviewDetails.criterionGrades.reduce((total, cg) => total + cg.criterion.maxMark, 0);
     };
 
     const getPercentageGrade = () => {
-        if (!reviewDetails || !reviewDetails.reviewGrade) return 0;
-        const totalPoints = getTotalRubricPoints();
-        return totalPoints > 0 ? ((reviewDetails.reviewGrade / totalPoints) * 100).toFixed(2) : 0;
+        if (!reviewDetails || !reviewDetails.criterionGrades) return 0;
+        const totalGrade = reviewDetails.criterionGrades.reduce((total, cg) => total + cg.grade, 0);
+        const totalMaxPoints = reviewDetails.criterionGrades.reduce((total, cg) => total + cg.criterion.maxMark, 0);
+        return totalMaxPoints > 0 ? ((totalGrade / totalMaxPoints) * 100).toFixed(2) : 0;
     };
-
-
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
@@ -72,47 +72,38 @@ const ReviewDetailsDialog = ({ submissionId, rubrics = [], open, onClose }) => {
                                 </div>
                             </CardContent>
                         </Card>
-                        {rubrics.map((rubric, rubricIndex) => (
-                            <Card key={rubricIndex} className="mb-6">
+                        {reviewDetails.criterionGrades.map((criterionGrade, index) => (
+                            <Card key={index} className="mb-6">
                                 <CardContent>
-                                <CardTitle className="text-lg ml-1 mb-3">{rubric.title}</CardTitle>
-
-                                    {rubric.criteria.map((criterion, criterionIndex) => {
-                                        const criterionGrade = reviewDetails.criterionGrades.find(
-                                            (cg) => cg.criterionId === criterion.criterionId
-                                        );
-                                        return (
-                                            <div key={criterionIndex} className="mb-6 bg-slate-200  p-3 rounded-lg last:mb-0">
-                                                <h3 className="text-md font-semibold mb-2">{criterion.title}</h3>
-                                                <div className="mt-2">
-                                                    {criterion.criterionRatings.map((rating, ratingIndex) => (
-                                                        <div key={ratingIndex} className="mb-2 bg-gray-100 p-3 rounded-md last:mb-0">
-                                                            <p className="text-sm flex flex-col">
-                                                                <span className="font-medium underline">{rating.points} points:</span> {rating.description}
-                                                            </p>
-                                                        </div>
-                                                    ))}
+                                    <CardTitle className="text-lg ml-1 mb-3">{criterionGrade.criterion.title}</CardTitle>
+                                    <div className="mb-6 bg-slate-200 p-3 rounded-lg last:mb-0">
+                                        <h3 className="text-md font-semibold mb-2">{criterionGrade.criterion.title}</h3>
+                                        <div className="mt-2">
+                                            {criterionGrade.criterion.criterionRatings.map((rating, ratingIndex) => (
+                                                <div key={ratingIndex} className="mb-2 bg-gray-100 p-3 rounded-md last:mb-0">
+                                                    <p className="text-sm flex flex-col">
+                                                        <span className="font-medium underline">{rating.points} points:</span> {rating.description}
+                                                    </p>
                                                 </div>
-                                                <Separator className="my-2" />
-                                                <div className="flex justify-between items-center mb-2">
-                                                    <span className="text-sm font-medium">Grade:</span>
-                                                    <Badge variant="default">
-                                                        {criterionGrade ? criterionGrade.grade : 0} / {criterion.maxMark}
-                                                    </Badge>
-                                                </div>
-                                                <Progress 
-                                                    value={criterionGrade ? (criterionGrade.grade / criterion.maxMark) * 100 : 0} 
-                                                    className="h-2 mb-2 "
-                                                />
-                                                <Separator className="my-2" />
-
-                                                <p className="text-sm text-wrap bg-gray-50 p-3 rounded-md mt-2">
-                                                    <span className="font-semibold">Comment: </span>
-                                                    {criterionGrade && criterionGrade.comment ? criterionGrade.comment : "No comment provided."}
-                                                </p>
-                                            </div>
-                                        );
-                                    })}
+                                            ))}
+                                        </div>
+                                        <Separator className="my-2" />
+                                        <div className="flex justify-between items-center mb-2">
+                                            <span className="text-sm font-medium">Grade:</span>
+                                            <Badge variant="default">
+                                                {criterionGrade.grade} / {criterionGrade.criterion.maxMark}
+                                            </Badge>
+                                        </div>
+                                        <Progress 
+                                            value={(criterionGrade.grade / criterionGrade.criterion.maxMark) * 100} 
+                                            className="h-2 mb-2"
+                                        />
+                                        <Separator className="my-2" />
+                                        <p className="text-sm text-wrap bg-gray-50 p-3 rounded-md mt-2">
+                                            <span className="font-semibold">Comment: </span>
+                                            {criterionGrade.comment ? criterionGrade.comment : "No comment provided."}
+                                        </p>
+                                    </div>
                                 </CardContent>
                             </Card>
                         ))}

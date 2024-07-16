@@ -113,109 +113,119 @@ const Submissions = () => {
    
 
     const handleGradeSubmit = async (event) => {
-      event.preventDefault();
-      const formData = new FormData(event.target);
-      let totalMark = 0;
-      const criterionGrades = [];
-  
-      rubrics.forEach(rubric => {
-          rubric.criteria.forEach(criterion => {
-              const grade = parseFloat(formData.get(`grade-${criterion.criterionId}`)) || 0;
-              totalMark += grade;
-              const comment = formData.get(`comment-${criterion.criterionId}`);
-              criterionGrades.push({ criterionId: criterion.criterionId, grade, comment });
-          });
-      });
-  
-      const finalScore = (totalMark / totalPoints) * 100;
-  
-   
-          try {
-            // Check if a review already exists for this submission
-            console.log('selectedSubmission', selectedSubmission);
-            const existingReviews = await reviewAPI.getAllReviews(selectedSubmission.submissionId);
-            console.log('existingReviews', existingReviews);
-            const existingReview = existingReviews.data.find(review => review.reviewerId === user.userId);
+        event.preventDefault();
+        
+        if (!selectedSubmission) {
+            console.error("No submission selected");
+            toast({
+                title: "Error",
+                description: "No submission selected. Please try again.",
+                variant: "destructive"
+            });
+            return;
+        }
+    
+        const formData = new FormData(event.target);
+        let totalMark = 0;
+        const criterionGrades = [];
+    
+        rubrics.forEach(rubric => {
+            rubric.criteria.forEach(criterion => {
+                const grade = parseFloat(formData.get(`grade-${criterion.criterionId}`)) || 0;
+                totalMark += grade;
+                const comment = formData.get(`comment-${criterion.criterionId}`);
+                criterionGrades.push({ criterionId: criterion.criterionId, grade, comment });
+            });
+        });
+    
+        const finalScore = (totalMark / totalPoints) * 100;
+    
+        try {
+            const existingReview = await reviewAPI.getInstructorReview(selectedSubmission.submissionId);
     
             let response;
-            if (existingReview) {
-            
-            const review = {
-              submissionId: selectedSubmission.submissionId,
-              reviewGrade: totalMark,
-              reviewerId: user.userId,
-              revieweeId: selectedSubmission.submitterId,
-              updatedAt: new Date(),
-              isPeerReview: false,
-              isGroup: false,
-              criterionGrades: criterionGrades,
-            };
-              // Update existing review
-              console.log('existingReview', existingReview);  
-              console.log('review', review);
-              response = await reviewAPI.updateReview(existingReview.data.reviewId, review);
-              toast({
-                  title: "Success",
-                  description: "Existing review updated successfully",
-                  variant: "success"
-              });
-          } else {
-              // Create new review
-              const review = {
-                  submissionId: selectedSubmission.submissionId,
-                  reviewGrade: totalMark,
-                  reviewerId: user.userId,
-                  revieweeId: selectedSubmission.submitterId,
-                  isPeerReview: false,
-                  isGroup: false,
-                  criterionGrades: criterionGrades,
-              };
-              response = await reviewAPI.createReview(review, criterionGrades);
-              toast({
-                  title: "Success",
-                  description: "New review submitted successfully",
-                  variant: "success"
-              });
-          }
-  
-          // Update the submission's grade in the UI
-          setStudentsWithSubmissions(prev => 
-              prev.map(student => {
-                  if (student.userId === selectedSubmission.submitterId) {
-                      const updatedSubmissions = student.submissions.map(sub => 
-                          sub.submissionId === selectedSubmission.submissionId 
-                              ? { ...sub, finalGrade: finalScore } 
-                              : sub
-                      );
-                      return { ...student, submissions: updatedSubmissions, latestGrade: finalScore };
-                  }
-                  return student;
-              })
-          );
-  
-          // Close the grade view dialog
-          setSelectedSubmission(null);
-          
-      } catch (error) {
-          console.error("Error submitting/updating grade:", error);
-          toast({
-              title: "Error",
-              description: "Failed to submit/update grade",
-              variant: "destructive"
-          });
-      }
-  };
+            if (existingReview && existingReview.data) {
+                const review = {
+                    submissionId: selectedSubmission.submissionId,
+                    reviewGrade: totalMark,
+                    reviewerId: user.userId,
+                    revieweeId: selectedSubmission.submitterId,
+                    updatedAt: new Date(),
+                    isPeerReview: false,
+                    isGroup: false,
+                    criterionGrades: criterionGrades,
+                };
+                response = await reviewAPI.updateReview(existingReview.data.reviewId, review);
+                toast({
+                    title: "Success",
+                    description: "Existing review updated successfully",
+                    variant: "success"
+                });
+            } else {
+                const review = {
+                    submissionId: selectedSubmission.submissionId,
+                    reviewGrade: totalMark,
+                    reviewerId: user.userId,
+                    revieweeId: selectedSubmission.submitterId,
+                    isPeerReview: false,
+                    isGroup: false,
+                    criterionGrades: criterionGrades,
+                };
+                response = await reviewAPI.createReview(user.userId, review);
+                toast({
+                    title: "Success",
+                    description: "New review submitted successfully",
+                    variant: "success"
+                });
+            }
+    
+            setStudentsWithSubmissions(prev => 
+                prev.map(student => {
+                    if (student.userId === selectedSubmission.submitterId) {
+                        const updatedSubmissions = student.submissions.map(sub => 
+                            sub.submissionId === selectedSubmission.submissionId 
+                                ? { ...sub, finalGrade: finalScore } 
+                                : sub
+                        );
+                        return { ...student, submissions: updatedSubmissions, latestGrade: finalScore };
+                    }
+                    return student;
+                })
+            );
+    
+            setGradeDialogOpen(false);
+            setSelectedSubmission(null);
+    
+        } catch (error) {
+            console.error("Error submitting/updating grade:", error);
+            toast({
+                title: "Error",
+                description: "Failed to submit/update grade",
+                variant: "destructive"
+            });
+        }
+    };
+    
 
       const handleViewSubmission = (submission) => {
         setSelectedSubmission(submission);
         setViewDialogOpen(true);
     };
 
-    const handleGradeAssignment = async (submission) => {
-        setSelectedSubmission(submission);
-        await fetchRubrics(assignmentId);
-        setGradeDialogOpen(true);
-    };
+   const handleGradeAssignment = async (submission) => {
+    if (!submission) {
+        console.error("No submission provided to grade");
+        toast({
+            title: "Error",
+            description: "Unable to grade submission. Please try again.",
+            variant: "destructive"
+        });
+        return;
+    }
+    setSelectedSubmission(submission);
+    await fetchRubrics(assignmentId);
+    setGradeDialogOpen(true);
+};
 
     const handleViewReviewDetails = async (submissionId) => {
         setSelectedSubmissionId(submissionId);
@@ -329,8 +339,11 @@ const Submissions = () => {
             <GradeSubmissionDialog
                 submission={selectedSubmission}
                 rubrics={rubrics}
-                open={gradeDialogOpen}
-                onClose={() => setGradeDialogOpen(false)}
+                open={gradeDialogOpen && selectedSubmission !== null}
+                onClose={() => {
+                    setGradeDialogOpen(false);
+                    setSelectedSubmission(null);
+                }}
                 onGradeSubmit={handleGradeSubmit}
             />
             <ReviewDetailsDialog

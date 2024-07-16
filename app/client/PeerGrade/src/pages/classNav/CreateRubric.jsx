@@ -13,7 +13,12 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
   const [newRubricData, setNewRubricData] = useState({
     title: "",
     description: "",
-    criteria: [{ criteria: "", ratings: [{ text: "", points: "" }], points: "" }]
+    criteria: [{
+      criteria: "",
+      minPoints: "",
+      maxPoints: "",
+      ratings: [{ text: "", points: "" }]
+    }]
   });
   const [isValid, setIsValid] = useState(false);
 
@@ -47,22 +52,23 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
       if (selectedAssignments.length === 0) {
         throw new Error("No assignments selected");
       }
-
+  
       const formattedRubricData = {
         title: newRubricData.title,
-        // description: newRubricData.description, // You might want to add a description field as well
-        totalMarks: newRubricData.criteria.reduce((total, criterion) => total + parseInt(criterion.maxPoints || 0), 0),
+        description: newRubricData.description,
+        totalMarks: newRubricData.criteria.reduce((total, criterion) => total + (parseFloat(criterion.points) || 0), 0),
         classId: classId,
         criterion: newRubricData.criteria.map(criterion => ({
           title: criterion.criteria,
-          minPoints: parseInt(criterion.minPoints || 0),
-          maxPoints: parseInt(criterion.maxPoints || 0),
+          minPoints: 0, // Set a default minimum, or add a field for this in your form
+          maxPoints: parseFloat(criterion.points) || 0,
           criterionRatings: criterion.ratings.map(rating => ({
             text: rating.text,
-            points: parseInt(rating.points || 0)
+            points: parseFloat(rating.points) || 0
           }))
         }))
       };
+  
       console.log('formattedRubricData:', formattedRubricData);
       console.log(user);
       const userId = user.userId // Replace with actual user ID or fetch from context/state
@@ -81,7 +87,13 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
         setIsCreateDrawerOpen(false);
         setNewRubricData({
           title: "",
-          criteria: [{ criteria: "", ratings: [{ text: "", points: "" }], minPoints: "", maxPoints: "" }]
+          description: "",
+          criteria: [{
+            criteria: "",
+            minPoints: "",
+            maxPoints: "",
+            ratings: [{ text: "", points: "" }]
+          }]
         });
         setSelectedAssignments([]);
         

@@ -44,15 +44,18 @@ const RubricDataTable = ({ rubricData, setRubricData, setIsValid }) => {
         setRubricData({ ...rubricData, criteria: newCriteria });
     };
 
-    const handleRatingsChange = (criteriaIndex, ratingIndex, field, value) => {
-        const newCriteria = [...rubricData.criteria];
-        newCriteria[criteriaIndex].ratings[ratingIndex][field] = value;
-        setRubricData({ ...rubricData, criteria: newCriteria });
-    };
-
     const handlePointsChange = (index, value) => {
         const newCriteria = [...rubricData.criteria];
-        newCriteria[index].points = value;
+        newCriteria[index].points = parseFloat(value) || 0;
+        setRubricData({ ...rubricData, criteria: newCriteria });
+    };
+    
+    const handleRatingsChange = (criteriaIndex, ratingIndex, field, value) => {
+        const newCriteria = [...rubricData.criteria];
+        if (field === 'points') {
+            value = parseFloat(value) || 0;
+        }
+        newCriteria[criteriaIndex].ratings[ratingIndex][field] = value;
         setRubricData({ ...rubricData, criteria: newCriteria });
     };
 

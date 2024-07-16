@@ -6,7 +6,8 @@ import {
     updateReview,
     deleteReview,
     getPeerReviews,
-    getReviewDetails
+    getReviewDetails,
+    getUserReviews
 } from "../controllers/reviewController.js";
 
 const router = express.Router();
@@ -18,6 +19,8 @@ router.get("/", (req, res) => {
 router.post("/studentReview", getPeerReviews);
 
 router.post("/instructorReview", getInstructorReview);
+
+router.post("/userReviews", getUserReviews);
 
 router.post("/allReviews", getAllReviews);
 

@@ -157,7 +157,7 @@ export default function AppNavbar() {
 											onClick={() => setIsPeerReviewSheetOpen(true)}
 										>
 											<ClipboardList className="w-4 h-4 mr-2 inline-block" />
-											Peer-Review
+											Reviews
 										</Button>
 									</SheetTrigger>
 									<SheetContent

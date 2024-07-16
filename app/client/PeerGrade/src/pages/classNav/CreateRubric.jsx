@@ -70,47 +70,46 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
       };
   
       console.log('formattedRubricData:', formattedRubricData);
-      console.log(user);
-      const userId = user.userId // Replace with actual user ID or fetch from context/state
-
+      const userId = user.userId;
+  
       // Add rubric to each selected assignment
-      const assignmentId = selectedAssignments;
+      for (const assignmentId of selectedAssignments) {
         console.log('Adding rubric to assignment:', assignmentId);
         await addRubricToAssignment({
           userId,
           assignmentId,
           rubricData: formattedRubricData
         });
-      
-
-        console.log('Rubric added to selected assignments');
-        setIsCreateDrawerOpen(false);
-        setNewRubricData({
-          title: "",
-          description: "",
-          criteria: [{
-            criteria: "",
-            minPoints: "",
-            maxPoints: "",
-            ratings: [{ text: "", points: "" }]
-          }]
-        });
-        setSelectedAssignments([]);
-        
-        toast({
-          title: "Success",
-          description: "Rubric created successfully",
-          variant: "success"
-        });
-      } catch (error) {
-        console.error('Error creating rubric:', error);
-        toast({
-          title: "Error",
-          description: "Failed to create rubric",
-          variant: "destructive"
-        });
       }
-    };
+  
+      console.log('Rubric added to all selected assignments');
+      setIsCreateDrawerOpen(false);
+      setNewRubricData({
+        title: "",
+        description: "",
+        criteria: [{
+          criteria: "",
+          minPoints: "",
+          maxPoints: "",
+          ratings: [{ text: "", points: "" }]
+        }]
+      });
+      setSelectedAssignments([]);
+      
+      toast({
+        title: "Success",
+        description: "Rubric created and assigned to selected assignments successfully",
+        variant: "success"
+      });
+    } catch (error) {
+      console.error('Error creating rubric:', error);
+      toast({
+        title: "Error",
+        description: "Failed to create rubric or assign to assignments",
+        variant: "destructive"
+      });
+    }
+  };
 
   const handleAssignmentSelection = (selectedValues) => {
     console.log('Selected assignments:', selectedValues);

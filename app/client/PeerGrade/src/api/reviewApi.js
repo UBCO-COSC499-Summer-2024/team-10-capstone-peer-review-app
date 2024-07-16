@@ -29,6 +29,16 @@ const reviewAPI = {
     }
   },
 
+  getUserReviews: async (userId) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/review/userReviews`, { userId });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching user reviews:", error.response?.data || error.message);
+        throw error;
+    }
+},
+
   getAllReviews: async (submissionId) => {
     try {
       const response = await axios.post(`${BASE_URL}/review/allReviews`, { 

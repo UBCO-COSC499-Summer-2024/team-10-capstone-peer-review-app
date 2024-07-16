@@ -4,12 +4,12 @@ import axios from 'axios';
 
 const BASE = '/api'; // Adjust this URL as needed
 
-export const getStudentSubmission = async () => {
+export const getStudentSubmission = async (studentId) => {
   try {
-    const response = await axios.get(`${BASE}/submit/studentSubmission`);
+    const response = await axios.get(`${BASE}/submit/studentSubmission`, { params: { studentId } });
     return response.data;
   } catch (error) {
-    throw error.response.data;
+    throw error.response?.data || error;
   }
 };
 

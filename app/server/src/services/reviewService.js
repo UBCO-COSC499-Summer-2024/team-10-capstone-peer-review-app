@@ -237,6 +237,40 @@ const getReviewDetails = async (reviewId) => {
     }
 };
 
+const getUserReviews = async (userId) => {
+    try {
+        console.log('Fetching reviews for userId:', userId);
+        const reviews = await prisma.review.findMany({
+            where: {
+                reviewerId: userId
+            },
+            include: {
+                submission: {
+                    include: {
+                        assignment: {
+                            include: {
+                                classes: true, // Changed from 'class' to 'classes'
+                                category: true,
+                                rubric: true
+                            }
+                        }
+                    }
+                },
+                criterionGrades: {
+                    include: {
+                        criterion: true
+                    }
+                }
+            }
+        });
+        console.log('Retrieved reviews:', reviews);
+        return reviews;
+    } catch (error) {
+        console.error('Error in getUserReviews:', error);
+        throw new apiError(`Failed to retrieve user reviews: ${error.message}`, 500);
+    }
+};
+
 export default {
     getPeerReviews,
     getInstructorReview,
@@ -244,5 +278,6 @@ export default {
     updateReview,
     deleteReview,
     createReview,
-    getReviewDetails
+    getReviewDetails,
+    getUserReviews
 };

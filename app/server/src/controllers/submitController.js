@@ -65,7 +65,7 @@ export const createSubmission = [
 ];
 
 export const getStudentSubmission = asyncErrorHandler(async (req, res) => {
-	const studentId = req.user.userId;
+	const studentId = req.body.userId;
 	const studentData = await submitService.getStudentSubmission(studentId);
 	return res.status(200).json({
 		status: "Success",

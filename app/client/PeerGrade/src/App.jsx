@@ -14,7 +14,7 @@ import EditClass from "./pages/classNav/EditClass";
 import AssignmentCreation from "./pages/classNav/assignment/AssignmentCreation";
 import Assignment from "./pages/Assignment";
 import AssignedPR from "./pages/AssignedPR";
-import PeerReview from "./pages/PeerReview";
+import PeerReview from "./pages/Reviews";
 import Settings from "./pages/Settings";
 import AppNavbar from "./components/global/Navbar";
 import ManageClass from "./pages/ManageClass";

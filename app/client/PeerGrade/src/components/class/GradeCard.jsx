@@ -3,6 +3,7 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/utils/utils";
 
 const GradeCard = ({
   assignmentId,
@@ -11,16 +12,17 @@ const GradeCard = ({
   grade,
   totalMarks,
   dueDate,
-  onViewGradeDetails
+  onViewGradeDetails,
+  isGraded
 }) => {
   const percentageGrade = totalMarks > 0 ? ((grade / totalMarks) * 100).toFixed(2) : 0;
   const gradeColor = percentageGrade >= 75 ? "bg-green-100 text-green-800" : percentageGrade >= 50 ? "bg-yellow-100 text-yellow-800" : "bg-red-100 text-red-800";
 
   return (
-    <Alert className="mb-4">
+    <Alert className={cn("mb-4", isGraded && "bg-green-100")}>
       <AlertTitle className="flex justify-between items-center">
         <span>{assignmentTitle}</span>
-        <Badge className={gradeColor}>{percentageGrade}%</Badge>
+        <Badge className={gradeColor}>{isGraded ? `${percentageGrade}%` : "Not Graded"}</Badge>
       </AlertTitle>
       <AlertDescription className="flex justify-between items-center mt-2">
         <span className="flex items-center">

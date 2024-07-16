@@ -15,6 +15,10 @@ import { useUser } from "@/contexts/contextHooks/useUser";
 import ReviewDetailsDialog from "./submission/ReviewDetailsDialog";
 import ViewSubmissionDialog from "./submission/ViewSubmissionDialog";
 import GradeSubmissionDialog from "./submission/GradeSubmissionDialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import MultiSelect from '@/components/ui/MultiSelect'; // Make sure the path is correct
+
+
 
 const Submissions = () => {
     const { user } = useUser();
@@ -28,7 +32,11 @@ const Submissions = () => {
     const [gradeDialogOpen, setGradeDialogOpen] = useState(false);
     const [reviewDialogOpen, setReviewDialogOpen] = useState(false);    
     const [selectedSubmissionId, setSelectedSubmissionId] = useState(null);
-
+    const [assignReviewersDialogOpen, setAssignReviewersDialogOpen] = useState(false);
+    const [selectedReviewers, setSelectedReviewers] = useState([]);
+    const [currentSubmission, setCurrentSubmission] = useState(null);
+    const [allStudents, setAllStudents] = useState([]);
+    const [existingReviewers, setExistingReviewers] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -69,8 +77,9 @@ const Submissions = () => {
                             latestGrade: latestGrade
                         };
                     }
-                ));
 
+                ));
+                setAllStudents(studentsResponse.data);
                 setStudentsWithSubmissions(studentsWithSubmissionStatus);
             } catch (error) {
                 toast({
@@ -86,6 +95,77 @@ const Submissions = () => {
         fetchData();
     }, [assignmentId, classId]);
 
+    const handleAssignReviewers = async (submission) => {
+        setCurrentSubmission(submission);
+        console.log('submission', submission);
+        // Fetch existing reviewers
+        try {
+            const reviews = await reviewAPI.getAllReviews(submission.submissionId);
+            console.log("reiveeees", reviews)
+            const existingReviewerIds = reviews.data
+                .filter(review => review.isPeerReview)
+                .map(review => review.reviewerId);
+                console.log('existingReviewerIds', existingReviewerIds);
+            setExistingReviewers(existingReviewerIds);
+            setSelectedReviewers(existingReviewerIds);
+        } catch (error) {
+            console.error("Error fetching existing reviewers:", error);
+            toast({
+                title: "Error",
+                description: "Failed to fetch existing reviewers",
+                variant: "destructive"
+            });
+        }
+
+        setAssignReviewersDialogOpen(true);
+    };
+
+    const handleAssignReviewersSubmit = async () => {
+        try {
+            // Delete reviews for unchecked existing reviewers
+            for (const reviewerId of existingReviewers) {
+                if (!selectedReviewers.includes(reviewerId)) {
+                    const peerReviewsResponse = await reviewAPI.getPeerReviews(currentSubmission.submissionId);
+                    const peerReviews = peerReviewsResponse.data; // Access the data property
+                    const reviewToDelete = peerReviews.find(review => review.reviewerId === reviewerId);
+                    if (reviewToDelete) {
+                        await reviewAPI.deleteReview(reviewToDelete.reviewId);
+                    }
+                }
+            }
+    
+            // Create new blank reviews for newly selected reviewers
+            for (const reviewerId of selectedReviewers) {
+                if (!existingReviewers.includes(reviewerId)) {
+                    const blankReview = {
+                        submissionId: currentSubmission.submissionId,
+                        reviewGrade: 0,
+                        reviewerId: reviewerId,
+                        revieweeId: currentSubmission.submitterId,
+                        isPeerReview: true,
+                        isGroup: false,
+                        criterionGrades: [],
+                    };
+                    await reviewAPI.createReview(reviewerId, blankReview);
+                }
+            }
+    
+            toast({
+                title: "Success",
+                description: "Peer reviewers updated successfully",
+                variant: "success"
+            });
+            setAssignReviewersDialogOpen(false);
+        } catch (error) {
+            console.error("Error updating reviewers:", error);
+            toast({
+                title: "Error",
+                description: "Failed to update reviewers",
+                variant: "destructive"
+            });
+        }
+    };
+
     const handleDownload = (submission) => {
         const link = document.createElement("a");
         link.href = submission.submissionFilePath;
@@ -94,6 +174,7 @@ const Submissions = () => {
         link.click();
         document.body.removeChild(link);
     };
+
 
     const fetchRubrics = async (assignmentId) => {
         try {
@@ -312,6 +393,13 @@ const Submissions = () => {
                                                             >
                                                                 View Grades
                                                             </Button>
+                                                            <Button
+                                                                variant="outline"
+                                                                size="sm"
+                                                                onClick={() => handleAssignReviewers(submission)}
+                                                            >
+                                                                Assign Reviewers
+                                                            </Button>
                                                         </div>
                                                     </TableCell>
                                                 </TableRow>
@@ -348,10 +436,29 @@ const Submissions = () => {
             />
             <ReviewDetailsDialog
                 submissionId={selectedSubmissionId}
-                rubrics={rubrics}
                 open={reviewDialogOpen}
                 onClose={() => setReviewDialogOpen(false)}
             />
+            <Dialog open={assignReviewersDialogOpen} onOpenChange={setAssignReviewersDialogOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Assign Peer Reviewers</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                        <MultiSelect
+                            options={allStudents.map(student => ({
+                                value: student.userId,
+                                label: `${student.firstname} ${student.lastname}`
+                            }))}
+                            value={selectedReviewers}
+                            onChange={setSelectedReviewers}
+                        />
+                    </div>
+                    <DialogFooter>
+                        <Button onClick={handleAssignReviewersSubmit}>Update Reviewers</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </Card>
     );
 };

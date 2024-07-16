@@ -47,6 +47,42 @@ export const deleteNotification = async (notificationId) => {
 	}
 };
 
+export const sendNotificationToClass = async (userId, title, content, classId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/notifs/send-to-class`, {
+			userId, title, content, classId
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const sendNotificationToGroup = async (userId, title, content, groupId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/notifs/send-to-group`, {
+			userId, title, content, groupId
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const sendNotificationToRole = async (userId, title, content, role) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/notifs/send-to-role`, {
+			userId, title, content, role
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
 function handleError(error) {
 	if (error.response && error.response.data) {
 		showStatusToast({

@@ -1,6 +1,8 @@
 import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
 import pkg from '@prisma/client';
+import getGroupMembers from "./classService.js";
+import classService from "./classService.js";
 
 const { PrismaClientKnownRequestError } = pkg;
 
@@ -75,9 +77,85 @@ export async function deleteNotification(notificationId) {
 	}
 }
 
+export async function sendNotificationToClass(userId, title, content, classId) {
+	try {
+		const usersInClass = await classService.getStudentsByClass(classId);
+		
+		console.log(usersInClass);
+		const notifications = usersInClass.map(user => ({
+			receiverId: user.userId,
+			title: title,
+			content: content,
+			senderId: userId,
+		}));
+
+		await prisma.notification.createMany({ data: notifications });
+
+		return { status: "Success", message: "Notifications sent to class successfully" };
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to send notification to the class", 500);
+		}
+	}
+}
+
+export async function sendNotificationToGroup(userId, title, content, groupId) {
+	try {
+		const usersInGroup = await getGroupMembers(groupId);
+
+		const notifications = usersInGroup.map(user => ({
+			receiverId: user.userId,
+			title: title,
+			content: content,
+			senderId: userId,
+		}));
+
+		await prisma.notification.createMany({ data: notifications });
+
+		return { status: "Success", message: "Notifications sent to group successfully" };
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to send notification to the group", 500);
+		}
+	}
+}
+
+export async function sendNotificationToRole(userId, title, content, role) {
+	try {
+		const usersWithRole = await prisma.user.findMany({
+			where: { role: role }
+		});
+
+		const notifications = usersWithRole.map(user => ({
+			receiverId: user.userId,
+			title: title,
+			content: content,
+			senderId: userId,
+		}));
+
+		await prisma.notification.createMany({ data: notifications });
+
+		return { status: "Success", message: "Notifications sent to role successfully" };
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to send notification to everyone of the role " + role, 500);
+		}
+	}
+}
+
+
 export default {
     getNotifications,
 	getNotification,
 	updateNotification,
-	deleteNotification
+	deleteNotification,
+	sendNotificationToClass,
+	sendNotificationToGroup,
+	sendNotificationToRole
 };

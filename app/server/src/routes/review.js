@@ -6,7 +6,7 @@ import {
     getStudentGradeAsg,
     getStudentGradeClass,
     getGroupReviews,
-    createGroupReview,
+    createGroupReviewRubric,
     updateGroupReview,
     deleteGroupReview,
     getInstructorReview,
@@ -17,7 +17,8 @@ import {
     getOpenReviewsAssignment,
     getClosedReviewsAssignment,
     getOpenReviewsClass,
-    getClosedReviewsClass
+    getClosedReviewsClass,
+    addGroupReview
 } from "../controllers/reviewController.js";
 
 const router = express.Router();
@@ -71,8 +72,11 @@ router.post("/studentGradeClass", getStudentGradeClass);
 // get all group reviews for a submission
 router.post("/groupReviews", getGroupReviews);
 
-// create a group review on a submission
-router.post("/createGroupReview", createGroupReview);
+// set up the group review rubric on an assignment
+router.post("/createGroupReviewRubric", createGroupReviewRubric);
+
+// enter the group review criteria on an assignment
+router.post("/addGroupReview", addGroupReview);
 
 // update a group review on a submission
 router.put("/updateGroupReview", updateGroupReview);

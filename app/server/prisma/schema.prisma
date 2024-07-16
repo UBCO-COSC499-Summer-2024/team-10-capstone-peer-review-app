@@ -121,6 +121,8 @@ model Assignment {
   dueDate            DateTime
   maxSubmissions     Int                   @default(1)
   isGroup            Boolean               @default(false)
+  isGroupReview      Boolean?               @default(false)
+  dueDateGroupReview DateTime?
   isPeerReview       Boolean               @default(false)
   dueDateReview      DateTime?
   numReviewsRequired Int?               @default(1)
@@ -149,6 +151,7 @@ model Group {
   class            Class        @relation(fields: [classId], references: [classId], onDelete: Cascade)
   students         User[] // Students in the group
   submissions      Submission[] // Submissions from the group
+  reviews          Review[] // Reviews from the group
 }
 
 // model StudentInGroup {
@@ -228,6 +231,12 @@ model Review {
   //isPeerReview    Boolean          @default(false)
   reviewType      ReviewTypeEnum   @default(INSTRUCTOR)
   reviewGrade     Int // Total grade of the review = sum of reviewerCriteronGrades
+  //Group-specific fields (if isGroup is true)
+  groupId         String?
+  rubricId        String?
+
+  group           Group?           @relation(fields: [groupId], references: [groupId])
+  rubric          Rubric?          @relation(fields: [rubricId], references: [rubricId])
   assignment      Assignment       @relation(fields: [assignmentId], references: [assignmentId], onDelete: Cascade)
   submission      Submission       @relation(fields: [submissionId], references: [submissionId], onDelete: Cascade)
   reviewer        User?            @relation("Reviewer", fields: [reviewerId], references: [userId])
@@ -257,6 +266,27 @@ model Review {
 // TODO refactor / reimplment GroupReview
 
 // model GroupReview {
+//   groupReviewId        String           @id @default(uuid())
+//   groupId              String
+//   rubricId             String
+//   assignmentId    String
+//   submissionId    String
+//   reviewerId      String
+//   revieweeId      String
+//   createdAt       DateTime         @default(now())
+//   updatedAt       DateTime         @updatedAt
+//   reviewType      ReviewTypeEnum   @default(INSTRUCTOR)
+//   reviewGrade     Int // Total grade of the review = sum of reviewerCriteronGrades
+//   group           Group            @relation(fields: [groupId], references: [groupId], onDelete: Cascade)
+//   rubric          Rubric           @relation(fields: [rubricId], references: [rubricId], onDelete: Cascade)
+//   assignment      Assignment       @relation(fields: [assignmentId], references: [assignmentId], onDelete: Cascade)
+//   submission      Submission       @relation(fields: [submissionId], references: [submissionId], onDelete: Cascade)
+//   reviewer        User?            @relation("Reviewer", fields: [reviewerId], references: [userId])
+//   reviewee        User             @relation("Reviewee", fields: [revieweeId], references: [userId])
+//   criterionGrades CriterionGrade[]
+// }
+
+// model GroupReview {
 //   groupReviewId     String       @id @default(uuid())
 //   groupProjectId    String
 //   rubricId          String
@@ -282,6 +312,7 @@ model Rubric {
   // createdBy   User                  @relation(fields: [creatorId], references: [userId])
   criteria    Criterion[]
   assignments Assignment[]
+  reviews     Review[]
   // GroupSubmission     GroupSubmission[]
 }
 

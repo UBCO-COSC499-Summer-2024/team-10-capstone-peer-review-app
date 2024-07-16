@@ -112,9 +112,21 @@ export const getGroupReviews = asyncErrorHandler(async (req, res) => {
 });
 
 // create a group review on a submission
-export const createGroupReview = asyncErrorHandler(async (req, res) => {
-    const groupReview = req.body;
-    const newGroupReview = await reviewService.createGroupReview(groupReview);
+export const createGroupReviewRubric = asyncErrorHandler(async (req, res) => {
+    const userId = req.user.userId;
+    const {assignmentId } = req.body;
+    const newGroupReview = await reviewService.createGroupReviewRubric(userId, assignmentId);
+    return res.status(200).json({
+        status: "Success",
+        data: newGroupReview
+    });
+});
+
+// create a group review on a submission
+export const addGroupReview = asyncErrorHandler(async (req, res) => {
+    const userId = req.user.userId;
+    const {assignmentId, criterionGrades } = req.body;
+    const newGroupReview = await reviewService.addGroupReview(userId, assignmentId, criterionGrades);
     return res.status(200).json({
         status: "Success",
         data: newGroupReview
@@ -203,12 +215,13 @@ export default {
     getStudentGradeAsg,
     getStudentGradeClass,
     getGroupReviews,
-    createGroupReview,
+    createGroupReviewRubric,
     updateGroupReview,
     deleteGroupReview,
     getPeerReviews,
     getInstructorReview,
     createReview,
     updateReview,
-    deleteReview
+    deleteReview,
+    addGroupReview
 };

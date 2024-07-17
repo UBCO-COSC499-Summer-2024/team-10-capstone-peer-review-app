@@ -46,14 +46,13 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
-
+* Completed most of the routes for reviews and submit and tested them with with a mock setup of local data of classes, students and instructors. Also added new grades and group review functionality (it needs little work still)
+* wrote many integration tests for the routes assignments and classes
+* wrote new functionalities the review routes, including the group review ones which is additional features and required a little bit of refactoring in the database
 ## Goals for next cycle
-* 
-* 
-* 
+* Write more tests on jest for the backend
+* Complete any other functionalities or refactor review routes
+* Add more documentations
   
   
 

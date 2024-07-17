@@ -1,4 +1,42 @@
 
+# Team 10's Team Log for Cycle 13
+
+
+## Thursday, July 11, 2024, 05:22 PM - Tuesday, July 16, 2024, 05:22 PM
+
+
+## Tasks currently in the Backlog for c-13:
+![Tasks in Backlog for c-13](./team_log_images/backlog_issues/backlog_issues_c13.png)  
+  
+
+## Tasks currently in Progress for c-13:
+![Tasks in progress for c-13](./team_log_images/in_progress_issues/in_progress_issues_c13.png)  
+  
+
+## Tasks currently in Review for c-13:
+![Tasks in review for c-13](./team_log_images/in_review_issues/in_review_issues_c13.png)  
+  
+
+## Tasks Done for c-13:
+![Tasks done for c-13](./team_log_images/done_issues/done_issues_c13.png)  
+  
+
+## Overall Burn-up Chart of Tasks
+![Burn-Up Chart for c-13](./team_log_images/burnup_charts/burnup_chart_c13.png)  
+  
+
+## Test Reports for c-13
+
+#### Front-end Testing for c-13
+![Front-end Tests for c-13](./team_log_images/front_end_tests/front_end_tests_c13.png)  
+  
+
+#### Back-end Testing for c-13
+![Back end Tests for c-13](./team_log_images/back_end_tests/back_end_tests_c13.png)  
+  
+  
+  
+
 # Team 10's Team Log for Cycle 12
 
 

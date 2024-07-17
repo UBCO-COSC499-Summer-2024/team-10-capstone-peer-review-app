@@ -865,11 +865,12 @@ const createGroupReviewRubric = async (userId, assignmentId) => {
             where: {
                 userId: userId
             }, include: {
-                groups: {
-                    include: {
-                        students: true
-                },
+                    groups: {
+                        include: {
+                            students: true
+                    },
                 classes: true
+                    }
             }
         });
 
@@ -995,15 +996,33 @@ const addGroupReview = async (userId, assignmentId, criterionGrades) => {
             throw new TypeError('criterionGrades must be an array');
         }
 
+        if (criterionGrades.length === 0) {
+            throw new apiError("Criterion grades not found", 404);
+        }
+
+        for (let i = 0; i < criterionGrades.length; i++) {
+            const criterion = await prisma.criterion.findUnique({
+                where: {
+                    criterionId: criterionGrades[i].criterionId
+                }
+            });
+
+            if (!criterion) {
+                throw new apiError("Criterion not found, please call /createGroupReviewRubric first", 404);
+            }
+        }
+
+
         const user = await prisma.user.findUnique({
             where: {
                 userId: userId
             }, include: {
-                groups: {
-                    include: {
-                        students: true
-                },
+                    groups: {
+                        include: {
+                            students: true
+                    },
                 classes: true
+                    }
             }
         });
 

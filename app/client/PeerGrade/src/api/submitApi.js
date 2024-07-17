@@ -5,8 +5,10 @@ import axios from 'axios';
 const BASE = '/api'; // Adjust this URL as needed
 
 export const getStudentSubmission = async (studentId) => {
+  console.log('studentId:', studentId);
   try {
-    const response = await axios.get(`${BASE}/submit/studentSubmission`, { params: { studentId } });
+    const response = await axios.post(`${BASE}/submit/studentSubmission`, { userId: studentId });
+    console.log('response:', response);
     return response.data;
   } catch (error) {
     throw error.response?.data || error;

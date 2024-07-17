@@ -1,6 +1,6 @@
 import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
-import { sendNotificationToUser } from "./notifsService.js";
+import { sendNotificationToRole, sendNotificationToUser } from "./notifsService.js";
 
 // class operations
 
@@ -130,6 +130,8 @@ const createClass = async (newClass, instructorId) => {
 				classSize
 			}
 		});
+
+		await sendNotificationToRole(null, `A new class '${classname}' has been created`, "", "ADMIN", 'class');
 		return createdClass;
 	} catch (error) {
 		throw new apiError("Failed to create class", 500);
@@ -144,6 +146,14 @@ const updateClass = async (classId, updateData) => {
 			},
 			data: updateData
 		});
+
+		const classInfo = await prisma.class.findUnique({
+			where: {
+				classId: classId
+			}
+		});
+
+		await sendNotificationToRole(null, `The class '${classInfo.classname}' has been updated`, "", "ADMIN", 'class');
 		return updatedClass;
 	} catch (error) {
 		throw new apiError("Failed to update class", 500);
@@ -157,6 +167,14 @@ const deleteClass = async (classId) => {
 				classId: classId
 			}
 		});
+
+		const classInfo = await prisma.class.findUnique({
+			where: {
+				classId: classId
+			}
+		});
+
+		await sendNotificationToRole(null, `The class '${classInfo.classname}' has been deleted`, "", "ADMIN", 'class');
 	} catch (error) {
 		throw new apiError("Failed to delete class", 500);
 	}
@@ -205,7 +223,7 @@ const addStudentToClass = async (classId, studentId) => {
 			}
 		});
 
-		await sendNotificationToUser(null, `You've been added to the class ${classInfo.classname}`, "", studentId);
+		await sendNotificationToUser(null, `You've been added to the class ${classInfo.classname}`, "", studentId, 'class');
 
 		return userInfo;
 	} catch (error) {
@@ -256,7 +274,7 @@ const addStudentsByEmail = async (classId, emails) => {
 						});
 						results.valid.push({ email, userId: user.userId });
 						currentClassSize++;
-						await sendNotificationToUser(null, `You've been added to the class ${classInfo.classname}`, "", user.userId);
+						await sendNotificationToUser(null, `You've been added to the class ${classInfo.classname}`, "", user.userId, 'class');
 					} else {
 						results.invalid.push({ email, reason: "Class is full" });
 					}
@@ -311,7 +329,7 @@ const removeStudentFromClass = async (classId, studentId) => {
 			where: { classId }
 		});
 		
-		await sendNotificationToUser(null, `You've been removed from the class ${classInfo.classname}`, "", studentId);
+		await sendNotificationToUser(null, `You've been removed from the class ${classInfo.classname}`, "", studentId, 'class');
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
@@ -546,7 +564,7 @@ const addGroupMember = async (groupId, userId) => {
 			}
 		});
 
-		await sendNotificationToUser(null, `You've been added to the group ${group.groupName}`, classInfo.classname, userId);
+		await sendNotificationToUser(null, `You've been added to the group ${group.groupName}`, classInfo.classname, userId, 'group');
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
@@ -595,7 +613,7 @@ const removeGroupMember = async (groupId, userId) => {
 			}
 		});
 
-		await sendNotificationToUser(null, `You've been removed from the group ${group.groupName}`, classInfo.classname, userId);
+		await sendNotificationToUser(null, `You've been removed from the group ${group.groupName}`, classInfo.classname, userId, 'group');
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;

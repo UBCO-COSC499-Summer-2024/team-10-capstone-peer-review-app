@@ -46,7 +46,7 @@ const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
             }
         });
 
-		await sendNotificationToClass(null, `Assignment ${newAssignment.title} was just created.`, `Due on ${format(dueDate, 'MMMM do, yyyy')}`, classId);
+		await sendNotificationToClass(null, `Assignment ${newAssignment.title} was just created.`, `Due on ${format(dueDate, 'MMMM do, yyyy')}`, classId, "assignment");
 
         return newAssignment;
     } catch (error) {

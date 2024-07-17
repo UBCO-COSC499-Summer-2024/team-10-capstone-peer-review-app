@@ -7,7 +7,7 @@ import { getAllGroups } from '@/api/classApi';
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { useClass } from "@/contexts/contextHooks/useClass";
 
-const Notifications = () => {
+const NotificationsPanel = () => {
 	const { user, userLoading } = useUser();
 	const [title, setTitle] = useState('');
 	const [content, setContent] = useState('');
@@ -134,4 +134,4 @@ const Notifications = () => {
 	);
 };
 
-export default Notifications;
+export default NotificationsPanel;

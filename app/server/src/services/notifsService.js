@@ -77,7 +77,7 @@ export async function deleteNotification(notificationId) {
 	}
 }
 
-export async function sendNotificationToUser(userId, title, content, receiverId) {
+export async function sendNotificationToUser(userId, title, content, receiverId, type) {
 	try {
 		const usersWithRole = await prisma.user.findUnique({
 			where: { userId: receiverId }
@@ -126,7 +126,7 @@ export async function sendNotificationToClass(userId, title, content, classId) {
 	}
 }
 
-export async function sendNotificationToGroup(userId, title, content, groupId) {
+export async function sendNotificationToGroup(userId, title, content, groupId, type) {
 	try {
 		const usersInGroup = await getGroupMembers(groupId);
 
@@ -149,7 +149,7 @@ export async function sendNotificationToGroup(userId, title, content, groupId) {
 	}
 }
 
-export async function sendNotificationToRole(userId, title, content, role) {
+export async function sendNotificationToRole(userId, title, content, role, type) {
 	try {
 		const usersWithRole = await prisma.user.findMany({
 			where: { role: role }
@@ -174,7 +174,7 @@ export async function sendNotificationToRole(userId, title, content, role) {
 	}
 }
 
-export async function sendNotificationToAll(userId, title, content) {
+export async function sendNotificationToAll(userId, title, content, type) {
 	try {
 		const users = await prisma.user.findMany({
 			where: {

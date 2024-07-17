@@ -156,7 +156,7 @@ export default function AppNavbar() {
 	}
 
 	return (
-		<div className="flex z-[60] h-screen fixed">
+		<div className="flex w-[170px] z-[60] h-screen fixed">
 			<div className="py-6 bg-white shadow-md flex flex-col items-center justify-between h-screen w-full">
 				<div className="flex flex-col items-center w-full flex-grow">
 					<div className="mb-4">

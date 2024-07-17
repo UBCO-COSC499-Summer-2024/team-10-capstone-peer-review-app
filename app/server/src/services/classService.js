@@ -540,7 +540,13 @@ const addGroupMember = async (groupId, userId) => {
 			}
 		});
 
-		await sendNotificationToUser(null, `You've been added to the group ${group.groupName}`, "", userId);
+		const classInfo = await prisma.class.findUnique({
+			where: {
+				classId: group.classId
+			}
+		});
+
+		await sendNotificationToUser(null, `You've been added to the group ${group.groupName}`, classInfo.classname, userId);
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
@@ -583,7 +589,13 @@ const removeGroupMember = async (groupId, userId) => {
 			}
 		});
 
-		await sendNotificationToUser(null, `You've been removed from the group ${group.groupName}`, "", userId);
+		const classInfo = await prisma.class.findUnique({
+			where: {
+				classId: group.classId
+			}
+		});
+
+		await sendNotificationToUser(null, `You've been removed from the group ${group.groupName}`, classInfo.classname, userId);
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;

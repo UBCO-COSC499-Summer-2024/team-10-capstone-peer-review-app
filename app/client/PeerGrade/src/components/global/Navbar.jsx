@@ -9,7 +9,8 @@ import {
 	ClipboardList,
 	Settings,
 	LogOut,
-	MessageSquareWarning
+	MessageSquareWarning,
+	Bell
 } from "lucide-react";
 import NotifCard from "./NotifCard";
 import {
@@ -296,10 +297,10 @@ export default function AppNavbar() {
 									to="/settings"
 									className={cn(
 										navigationMenuTriggerStyle(),
-										isActive("/settings") && "font-bold flex items-center"
+										isActive("/settings") && "font-bold flex flex-col items-center"
 									)}
 								>
-									<Settings className="w-4 h-4 mr-2 inline-block" />
+									<Settings className="w-4 h-4 mr-2" />
 									Settings
 								</Link>
 							</NavigationMenuItem>
@@ -320,7 +321,17 @@ export default function AppNavbar() {
 						</NavigationMenuList>
 					</NavigationMenu>
 				</div>
-				<div className="flex items-center">
+				<div className="flex flex-col items-center space-y-2">
+					<Link to="/notifications" className="enabled:rounded-full">
+						<Button
+							variant="ghost"
+							className="w-16 h-16 enabled:rounded-full"
+							disabled={!user}
+							title="Notifications"
+						>
+							<Bell />
+						</Button>
+					</Link>
 					<Button
 						className="w-16 h-16 rounded-full shadow-lg"
 						variant="avatar"
@@ -363,7 +374,7 @@ export default function AppNavbar() {
 								/>
 							))}
 							{notifications.length > maxNotificationCount && ( // Show only if too many notifications (> 4)
-								<Link to="/report" className="w-full">
+								<Link to="/notifications" className="w-full">
 									<Button variant="outline" className="bg-green-100 w-full">
 										View All
 									</Button>

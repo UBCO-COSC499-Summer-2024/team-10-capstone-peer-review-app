@@ -5,7 +5,7 @@ import Search from "@/components/admin/Search";
 import Assignments from "@/components/admin/Assign";
 import Interactions from "@/components/admin/Interactions";
 import Reports from "@/pages/Reports";
-import Notifications from "@/components/admin/Notifications";
+import Notifications from "@/components/admin/NotificationsPanel";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import PRassign from "@/components/admin/PRassign";

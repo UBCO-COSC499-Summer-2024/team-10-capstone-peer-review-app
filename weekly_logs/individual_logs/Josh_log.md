@@ -144,14 +144,12 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* From last cycle I was able to complete some need up tasks that needed to be done as well as some bigger ones. I was able to get CSV uploads working, set up a reapply for role request card, and I am in the process of setting enrollment requests and re-structuring the instructor manage class dashboard. I also assisted Mahir with some stuff for grades / peer-reviews, we met up a few times to discuss DB relations in such 
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Complete majority of peer-review features, start working on peer-review dashboard / group reviews
+* Continue setting up integration tests for backend
+* Create some documentation for the project
   
   
 

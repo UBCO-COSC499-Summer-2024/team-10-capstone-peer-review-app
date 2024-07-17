@@ -1,4 +1,117 @@
 
+# Abdul's Log for Cycle 13
+
+
+## Thursday, July 11, 2024, 05:22 PM - Tuesday, July 17, 2024, 01:16 AM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[229](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/229)**: UI for Reports  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[172](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/172)**: Refactor front-end test  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug, type: testing, type: refactor 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[140](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/140)**: Major Use Case 24: View User Reports
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+
+&nbsp; &nbsp; :large_blue_circle: **Issue-[225](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/225)**: Notifications for Users
+
+## Time entries from Clockify on this cycle:
+
+&nbsp; &nbsp; :watch: **Working on adding Notifications functionality** *(Total duration: 11.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 16, 2024, 10:41 PM - Tuesday, July 17, 2024, 01:16 AM *(2.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 16, 2024, 04:44 PM - Tuesday, July 16, 2024, 07:23 PM *(2.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 16, 2024, 01:21 AM - Tuesday, July 16, 2024, 04:28 AM *(3.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 15, 2024, 09:14 PM - Monday, July 15, 2024, 11:51 PM *(2.6 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on Refactoring Tests** *(Total duration: 7.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 15, 2024, 07:42 PM - Monday, July 15, 2024, 08:23 PM *(0.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 15, 2024, 05:54 PM - Monday, July 15, 2024, 06:53 PM *(1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 15, 2024, 02:19 AM - Monday, July 15, 2024, 03:05 AM *(0.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 15, 2024, 12:37 AM - Monday, July 15, 2024, 01:39 AM *(1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 14, 2024, 10:17 PM - Sunday, July 14, 2024, 11:37 PM *(1.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 14, 2024, 06:12 PM - Sunday, July 14, 2024, 06:37 PM *(0.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 14, 2024, 04:24 PM - Sunday, July 14, 2024, 05:07 PM *(0.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 14, 2024, 02:40 PM - Sunday, July 14, 2024, 03:43 PM *(1.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 11, 2024, 11:57 PM - Friday, July 12, 2024, 12:49 AM *(0.9 hours)*  
+  
+&nbsp; &nbsp; :watch: **Debugging and working on others' PR's** *(Total duration: 2.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 14, 2024, 01:31 AM - Sunday, July 14, 2024, 02:24 AM *(0.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 13, 2024, 04:04 PM - Saturday, July 13, 2024, 04:31 PM *(0.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 11, 2024, 08:12 PM - Thursday, July 11, 2024, 09:26 PM *(1.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on Refactoring UI** *(Total duration: 1.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 13, 2024, 11:35 PM - Sunday, July 14, 2024, 12:26 AM *(0.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 13, 2024, 09:44 PM - Saturday, July 13, 2024, 10:20 PM *(0.6 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on User Reports UI** *(Total duration: 3.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 13, 2024, 12:09 AM - Saturday, July 13, 2024, 01:51 AM *(1.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 12, 2024, 10:14 PM - Saturday, July 13, 2024, 12:00 AM *(1.8 hours)*  
+  
+&nbsp; &nbsp; :watch: **Refactoring code in branch 206 (UI refactor - Canvas-like UI)** *(Total duration: 2.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 12, 2024, 12:50 AM - Friday, July 12, 2024, 02:49 AM *(2.0 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[227](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/227)**: Early User Reports UI & UI touchup in the Admin Dashboard  
+
+&nbsp; &nbsp; :arrows_clockwise: **PR-[238](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/238)**: Add base notifications implementation (Add/Remove student notifs, etc.)  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[227](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/227)**: Early User Reports UI & UI touchup in the Admin Dashboard  
+
+&nbsp; &nbsp; :arrows_clockwise: **PR-[238](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/238)**: Add base notifications implementation (Add/Remove student notifs, etc.)  [NEEDS TO BE MERGED]
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[229](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/229)**: UI for Reports  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[172](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/172)**: Refactor front-end test  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[140](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/140)**: Major Use Case 24: View User Reports
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[225](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/225)**: Notifications for Users
+  
+
+## Recap on goals from last cycle
+* Did quite a bit! I'm mostly satisfied with the work I did this week although I could've done more.
+* Still a bit behind on tests.
+* Documentation needs work too.
+
+## Goals for next cycle
+* Work on refactoring/adding new tests & documentation as we're nearing the end especially considering the project overall (and not just completion) hold quite a bit of weight.
+* Get started on helping the team w/ Peer Review-related work.
+* Spend more time everyday on the project!
+  
+
 # Abdul's Log for Cycle 12
 
 

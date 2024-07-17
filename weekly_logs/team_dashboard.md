@@ -1,4 +1,75 @@
 
+# Team 10's Team Dashboard for Cycle 13
+
+
+## Thursday, July 11, 2024, 05:22 PM - Tuesday, July 16, 2024, 05:22 PM
+
+
+### Major features worked on in c-13
+* Early User Reports UI & UI touchup in the Admin Dashboard (PR-227)
+
+* Base notifications implementation (Add/Remove student notifications) (PR-238)
+
+* Enrollment Requests, Refactoring ManageClasses / Role Based Access Wrappers (PR-232)
+  
+* CSV upload dialog and API calls, refactored edit class (PR-224)
+ (PR-221)
+
+* Show Submission Grades for Students (PR-220)
+  
+Student Submission Upload, Instructor submission view/download (PR-218)
+
+* Instructor API (PR-233)
+  
+
+### Major features completed in c-13
+* Early User Reports UI & UI touchup in the Admin Dashboard (PR-227)
+
+* Role-requested card (PR-226)
+
+* CSV upload dialog and API calls, refactored edit class (PR-224)
+
+* Role Based Access Wrappers (PR-221)
+
+* Student Submission Upload, Instructor submission view/download (PR-218)
+
+* Show Grades for Student Submission (Issue-219)
+
+* Integration of Instructor View for Grades (Issue-222)
+
+
+### Major features to work on for c-14
+* Refactoring/adding new tests & documentation
+
+* Peer Review-related work (dashboard/group reviews)
+
+* Create/Delete/Edit Categories (Issue-235)
+
+* Manage User Accounts (Issue-136)
+
+* Link Group Assignment to Group (Issue-126)
+
+* Integrate Enroll Request in Classes (Issue-88)
+
+
+### Team Issues and Hurdles for c-13
+* Need to catch up on refactoring front-end tests (Issue-172)
+
+* Writing new back-end tests for dockerized test environment (Issue-198)
+
+* Integrating back-end testing environment into drone (Issue-207)
+
+* Documentation needs to be taken care of soon (don't wait till its too late!)
+
+### Clockify Dashboard for this Week
+
+![Clockify Dashboard for c-13](./team_dashboard_images/clockify_dashboards/clockify_dashboard_c13.png) 
+
+## Burn-up Chart of Tasks
+![Burn-Up Chart for c-13](./team_log_images/burnup_charts/burnup_chart_c13.png)  
+  
+  
+
 # Team 10's Team Dashboard for Cycle 12
 
 

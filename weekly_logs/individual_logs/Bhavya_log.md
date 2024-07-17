@@ -1,4 +1,61 @@
 
+# Bhavya's Log for Cycle 13
+
+
+## Thursday, July 11, 2024, 05:22 PM - Tuesday, July 16, 2024, 05:22 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[235](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/235)**: Create/Delete/Edit Categories  
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **new group review routes** *(Total duration: 2.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 15, 2024, 11:49 PM - Tuesday, July 16, 2024, 02:09 AM *(2.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **Add new review routes** *(Total duration: 10.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 14, 2024, 11:55 AM - Sunday, July 14, 2024, 07:41 PM *(7.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 12, 2024, 08:00 PM - Friday, July 12, 2024, 11:00 PM *(3.0 hours)*  
+  
+&nbsp; &nbsp; :watch: **Review Route refactoring** *(Total duration: 5.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 11, 2024, 09:02 PM - Friday, July 12, 2024, 02:34 AM *(5.5 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[233](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/233)**: 114/instructor api  
+  
+
+## Features completed on this cycle:
+
+## Completed tasks:
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[235](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/235)**: Create/Delete/Edit Categories  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[198](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/198)**: Writing new back-end tests for dockerized test enviroment. Start with services, then controllers  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[88](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/88)**: Integrate Enroll Request in Classes  
+  
+
+## Recap on goals from last cycle
+* Completed most of the routes for reviews and submit and tested them with with a mock setup of local data of classes, students and instructors. Also added new grades and group review functionality (it needs little work still)
+* wrote many integration tests for the routes assignments and classes
+* wrote new functionalities the review routes, including the group review ones which is additional features and required a little bit of refactoring in the database
+## Goals for next cycle
+* Write more tests on jest for the backend
+* Complete any other functionalities or refactor review routes
+* Add more documentations
+  
+  
+
 # Bhavya's Log for Cycle 12
 
 

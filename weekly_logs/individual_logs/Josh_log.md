@@ -1,4 +1,158 @@
 
+# Josh's Log for Cycle 13
+
+
+## Thursday, July 11, 2024, 05:22 PM - Tuesday, July 16, 2024, 05:22 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[225](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/225)**: Notifications For Users  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: database, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[219](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/219)**: Show Grades for Student Submission  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[201](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/201)**: Add a wrapper route component to the routes for role-based access and not logged in   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[200](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/200)**: Apply for new Role Request Card  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[197](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/197)**: Dockerized Testing environment to do integration testing   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: testing, type: CI/CD 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[194](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/194)**: Add students to class via CSV, add by email. Be able to select / delete what students were added?   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[147](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/147)**: File Storage Worker Service: ngix docker container, FileSystemUploadQueue, UploadtoService, etc.   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: database, type: api 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Creating Enrollment requests for Students / Instructors** *(Total duration: 9.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 16, 2024, 01:07 PM - Tuesday, July 16, 2024, 04:22 PM *(3.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 15, 2024, 10:22 AM - Monday, July 15, 2024, 12:32 PM *(2.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 14, 2024, 06:57 PM - Sunday, July 14, 2024, 07:50 PM *(0.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 14, 2024, 01:50 PM - Sunday, July 14, 2024, 03:00 PM *(1.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 14, 2024, 10:40 AM - Sunday, July 14, 2024, 12:20 PM *(1.7 hours)*  
+  
+&nbsp; &nbsp; :watch: **Refactoring Enrollment Request delete routes/controller/service** *(Total duration: 0.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 16, 2024, 08:22 AM - Tuesday, July 16, 2024, 08:51 AM *(0.5 hours)*  
+  
+&nbsp; &nbsp; :watch: **Reviewing PRs** *(Total duration: 0.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 14, 2024, 10:00 AM - Sunday, July 14, 2024, 10:19 AM *(0.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **Refactoring CSV / editClass before merge, adding edge cases** *(Total duration: 2.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 14, 2024, 07:50 AM - Sunday, July 14, 2024, 09:51 AM *(2.0 hours)*  
+  
+&nbsp; &nbsp; :watch: **Starting to draft Notifications and Class invite links** *(Total duration: 0.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 13, 2024, 02:22 PM - Saturday, July 13, 2024, 02:27 PM *(0.1 hours)*  
+  
+&nbsp; &nbsp; :watch: **Setting up a Re apply for Role Request Card** *(Total duration: 1.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 13, 2024, 01:37 PM - Saturday, July 13, 2024, 02:14 PM *(0.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 13, 2024, 12:22 PM - Saturday, July 13, 2024, 01:02 PM *(0.7 hours)*  
+  
+&nbsp; &nbsp; :watch: **Create CSV upload for adding students to a class** *(Total duration: 2.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 13, 2024, 10:38 AM - Saturday, July 13, 2024, 11:34 AM *(0.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 12, 2024, 05:46 PM - Friday, July 12, 2024, 06:51 PM *(1.1 hours)*  
+  
+&nbsp; &nbsp; :watch: **Creating UI components / linking with grades** *(Total duration: 0.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 12, 2024, 03:28 PM - Friday, July 12, 2024, 03:51 PM *(0.4 hours)*  
+  
+&nbsp; &nbsp; :watch: **Starting to draft showing submission grades / how to set final grades for submissions** *(Total duration: 2.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 12, 2024, 01:31 PM - Friday, July 12, 2024, 03:02 PM *(1.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 12, 2024, 12:20 PM - Friday, July 12, 2024, 12:56 PM *(0.6 hours)*  
+  
+&nbsp; &nbsp; :watch: **Fixing unauthorized issues on toasts** *(Total duration: 0.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 12, 2024, 12:57 PM - Friday, July 12, 2024, 01:01 PM *(0.1 hours)*  
+  
+&nbsp; &nbsp; :watch: **Re-doing wrapper components on a new branch, pulling off of mahir's new changes** *(Total duration: 1.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 11, 2024, 05:23 PM - Thursday, July 11, 2024, 07:19 PM *(1.9 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[232](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/232)**: Enrollment Requests, Refactoring ManageClasses  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[226](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/226)**: Created a role-requested card  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[224](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/224)**: Created CSV upload dialog and api calls, refactored edit class  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[221](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/221)**: Role Based Access Wrappers   
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[220](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/220)**: Show Submission Grades for Students  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[226](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/226)**: Created a role-requested card  
+  
+&nbsp; &nbsp; :arrow_heading_up: **PR-[224](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/224)**: Created CSV upload dialog and api calls, refactored edit class  
+  
+&nbsp; &nbsp; :arrow_heading_up: **PR-[221](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/221)**: Role Based Access Wrappers   
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[201](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/201)**: Add a wrapper route component to the routes for role-based access and not logged in   
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[200](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/200)**: Apply for new Role Request Card  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[197](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/197)**: Dockerized Testing environment to do integration testing   
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[194](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/194)**: Add students to class via CSV, add by email. Be able to select / delete what students were added?   
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[147](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/147)**: File Storage Worker Service: ngix docker container, FileSystemUploadQueue, UploadtoService, etc.   
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[225](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/225)**: Notifications For Users  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[219](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/219)**: Show Grades for Student Submission  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[207](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/207)**: Integrate back-end testing env into drone  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[198](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/198)**: Writing new back-end tests for dockerized test enviroment. Start with services, then controllers  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[88](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/88)**: Integrate Enroll Request in Classes  
+  
+
+## Recap on goals from last cycle
+* From last cycle I was able to complete some need up tasks that needed to be done as well as some bigger ones. I was able to get CSV uploads working, set up a reapply for role request card, and I am in the process of setting enrollment requests and re-structuring the instructor manage class dashboard. I also assisted Mahir with some stuff for grades / peer-reviews, we met up a few times to discuss DB relations in such 
+
+## Goals for next cycle
+* Complete majority of peer-review features, start working on peer-review dashboard / group reviews
+* Continue setting up integration tests for backend
+* Create some documentation for the project
+  
+  
+
 # Josh's Log for Cycle 12
 
 

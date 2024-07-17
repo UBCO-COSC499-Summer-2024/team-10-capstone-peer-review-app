@@ -160,7 +160,7 @@ export default function AppNavbar() {
 			<div className="py-6 bg-white shadow-md flex flex-col items-center justify-between h-screen w-full">
 				<div className="flex flex-col items-center w-full flex-grow">
 					<div className="mb-4">
-						<Link to="/dashboard" className="flex items-center justify-center">
+						<Link to={user.role === "ADMIN" ? "/admin" : "/dashboard"} className="flex items-center justify-center">
 							<img src="/logo.png" className="w-12 h-12" alt="Logo" />
 						</Link>
 					</div>

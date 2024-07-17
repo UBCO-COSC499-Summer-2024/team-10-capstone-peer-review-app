@@ -4,6 +4,7 @@ import {
 	getInstructorByClass,
 	getClassById,
 	getAllClasses,
+	getAllClassesUserIsNotIn, 
 	createClass,
 	updateClass,
 	deleteClass,
@@ -41,6 +42,8 @@ router.route("/all").get(ensureUser, getAllClasses);
 router
 	.route("/my-classes")
 	.get(ensureUser, ensureInstructor, getClassesByInstructor);
+
+router.route("/not-enrolled").get(ensureUser, getAllClassesUserIsNotIn);
 
 router.route("/create").post(ensureUser, ensureInstructorOrAdmin, createClass);
 

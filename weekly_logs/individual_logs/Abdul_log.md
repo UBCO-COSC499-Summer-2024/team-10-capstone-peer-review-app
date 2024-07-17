@@ -18,6 +18,8 @@
   
 &nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
 
+&nbsp; &nbsp; :large_blue_circle: **Issue-[225](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/225)**: Notifications for Users
+
 ## Time entries from Clockify on this cycle:
 
 &nbsp; &nbsp; :watch: **Working on adding Notifications functionality** *(Total duration: 11.0 hours)*  

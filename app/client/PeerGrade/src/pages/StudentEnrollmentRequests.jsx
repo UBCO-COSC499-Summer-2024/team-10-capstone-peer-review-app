@@ -115,11 +115,8 @@ const StudentEnrollmentRequests = () => {
 			setEnrollMessage("");
 			fetchEnrollRequests();
 		} catch (error) {
-			toast({
-				title: "Error",
-				description: "Failed to send enrollment request",
-				variant: "destructive"
-			});
+			setIsDialogOpen(false); 
+			setEnrollMessage("");
 		}
 	};
 

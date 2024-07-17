@@ -12,6 +12,7 @@ export const createEnrollRequest = async (classId, senderMessage) => {
 		});
 		return response.data;
 	} catch (error) {
+		handleError(error);
 		throw error.response.data;
 	}
 };
@@ -30,9 +31,10 @@ export const getEnrollRequestsForUser = async () => {
 export const deleteEnrollRequest = async (enrollRequestId, userId) => {
 	try {
 		const response = await axios.delete(
-			`/api/enroll-requests/${enrollRequestId}`,
-			data: {
-				userId
+			`/api/enroll-requests/${enrollRequestId}`, { 
+				data: { 
+					userId
+				}
 			}
 		);
 		return response.data;

@@ -19,6 +19,19 @@ export async function createEnrollRequest(userId, classId, senderMessage) {
 			);
 		}
 
+		const userInClass = await prisma.userInClass.findUnique({
+			where: {
+				UserInClassId: {
+					userId,
+					classId
+				}
+			}
+		});
+
+		if (userInClass) {
+			throw new apiError("User is already in this class!", 400);
+		}
+
 		const enrollRequest = await prisma.enrollRequest.create({
 			data: {
 				userId,

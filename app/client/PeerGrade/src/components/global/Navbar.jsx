@@ -10,7 +10,8 @@ import {
 	Settings,
 	LogOut,
 	MessageSquareWarning,
-	Bell
+	Bell,
+	CircleHelp
 } from "lucide-react";
 import NotifCard from "./NotifCard";
 import {
@@ -317,14 +318,14 @@ export default function AppNavbar() {
 						disabled={!user}
 						title="Notifications"
 					>
-						<Bell className='w-6 h-6'/>
+						<Bell className='w-6 h-6' />
 					</Button>
 					</Link>
 					<Button
-					className="w-16 h-16 rounded-full shadow-lg"
-					variant="avatar"
-					onClick={toggleCardVisibility}
-					disabled={!user}
+						className="w-16 h-16 rounded-full shadow-lg"
+						variant="avatar"
+						onClick={toggleCardVisibility}
+						disabled={!user}
 					>
 					<Avatar className="w-14 h-14 rounded-full ">
 						<AvatarImage
@@ -364,7 +365,7 @@ export default function AppNavbar() {
 							))}
 							{notifications.length > maxNotificationCount && ( // Show only if too many notifications (> 4)
 								<Link to="/notifications" className="w-full">
-									<Button variant="outline" className="bg-green-100 w-full">
+									<Button className="w-full" onClick={toggleCardVisibility}>
 										View All
 									</Button>
 								</Link>
@@ -375,11 +376,18 @@ export default function AppNavbar() {
 								<LogOut className="w-4 h-4 mr-2 inline-block" />
 								Logout
 							</Button>
-							<Link to="/settings">
-								<Button variant="default" size="sm">
-									Visit Profile
-								</Button>
-							</Link>
+							<div className="flex items-center justify-between">
+								<Link to="/help">
+									<Button variant="outline" size="sm" className='w-8 h-8 mr-2'>
+										<CircleHelp className='w-4 h-4' />
+									</Button>
+								</Link>
+								<Link to="/settings">
+									<Button variant="default" size="sm">
+										Visit Profile
+									</Button>
+								</Link>
+							</div>
 						</div>
 					</CardContent>
 				</Card>

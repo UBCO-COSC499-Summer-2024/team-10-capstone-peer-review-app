@@ -156,7 +156,7 @@ const createSubmission = async (studentId, assignmentId, submissionFilePath) => 
             }
         });
 
-		await sendNotificationToUser(null, `You've succesfully submitted the ${assignment.title} assignment`, assignmentClass.classname, studentId);
+		await sendNotificationToUser(null, `You've successfully submitted the ${assignment.title} assignment`, assignmentClass.classname, studentId);
 		await sendNotificationToUser(null, `Student ${student.firstname} ${student.lastname} submitted the ${assignment.title} assignment`, assignmentClass.classname, assignmentClass.instructor.userId);
         return newSubmission;
     } catch (error) {

@@ -6,7 +6,9 @@ import {
     deleteNotification,
 	sendNotificationToClass,
 	sendNotificationToGroup,
-	sendNotificationToRole
+	sendNotificationToRole,
+    sendNotificationToAll,
+    sendNotificationToUser
 } from "../controllers/notifsController.js";
 
 import {
@@ -28,8 +30,10 @@ router
 
 router.route("/get-notifications").post(getNotifications);
 
-router.route("/send-to-class").post(sendNotificationToClass);
+router.route("/send-to-user").post(ensureInstructorOrAdmin, sendNotificationToUser);
+router.route("/send-to-class").post(ensureInstructorOrAdmin, sendNotificationToClass);
 router.route("/send-to-group").post(sendNotificationToGroup);
-router.route("/send-to-role").post(sendNotificationToRole);
+router.route("/send-to-role").post(ensureAdmin, sendNotificationToRole);
+router.route("/send-to-all").post(ensureAdmin, sendNotificationToAll);
 
 export default router;

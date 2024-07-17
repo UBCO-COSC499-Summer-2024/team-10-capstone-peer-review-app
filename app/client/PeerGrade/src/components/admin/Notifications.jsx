@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
-import { sendNotificationToClass, sendNotificationToGroup, sendNotificationToRole } from '@/api/notifsApi';
+import { sendNotificationToClass, sendNotificationToGroup, sendNotificationToRole, sendNotificationToAll } from '@/api/notifsApi';
 import { getAllGroups } from '@/api/classApi';
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { useClass } from "@/contexts/contextHooks/useClass";
@@ -49,6 +49,11 @@ const Notifications = () => {
 		console.log("role",response);
 	};
 
+	const handleSendToAll = async () => {
+		const response = await sendNotificationToAll(user.userId, title, content);
+		console.log("all",response);
+	};
+
 	return (
 		<div className="w-full space-y-6">
 			<h1 className="text-2xl font-bold">Notifications Panel</h1>
@@ -80,7 +85,7 @@ const Notifications = () => {
                         </SelectContent>
                     </Select>
                 </div>
-				<Button onClick={handleSendToClass} className="bg-blue-500 text-white">
+				<Button onClick={handleSendToClass} className="text-white">
 					Send Notification to Class
 				</Button>
 
@@ -98,7 +103,7 @@ const Notifications = () => {
                         </SelectContent>
                     </Select>
                 </div>
-				<Button onClick={handleSendToGroup} className="bg-green-500 text-white">
+				<Button onClick={handleSendToGroup}>
 					Send Notification to Group
 				</Button>
 
@@ -115,9 +120,15 @@ const Notifications = () => {
                         </SelectContent>
                     </Select>
                 </div>
-				<Button onClick={handleSendToRole} className="bg-red-500 text-white">
+				<Button onClick={handleSendToRole}>
 					Send Notification to Role
 				</Button>
+
+				<div>
+                <Button onClick={handleSendToAll} className="mt-4">
+					Send Notification to All Users
+				</Button>
+                </div>
 			</div>
 		</div>
 	);

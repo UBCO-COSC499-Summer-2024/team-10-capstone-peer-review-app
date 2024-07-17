@@ -1,5 +1,6 @@
 import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
+import { sendNotificationToUser } from "./notifsService.js";
 
 // class operations
 
@@ -204,6 +205,8 @@ const addStudentToClass = async (classId, studentId) => {
 			}
 		});
 
+		await sendNotificationToUser(null, `You've been added to the class ${classInfo.classname}`, "", studentId);
+
 		return userInfo;
 	} catch (error) {
 		// Rethrow the error if it's an instance of apiError, else throw general apiError
@@ -252,6 +255,7 @@ const addStudentsByEmail = async (classId, emails) => {
 						});
 						results.valid.push({ email, userId: user.userId });
 						currentClassSize++;
+						await sendNotificationToUser(null, `You've been added to the class ${classInfo.classname}`, "", user.userId);
 					} else {
 						results.invalid.push({ email, reason: "Class is full" });
 					}
@@ -301,9 +305,12 @@ const removeStudentFromClass = async (classId, studentId) => {
 				}
 			}
 		});
-		if (!userInClass) {
-			throw new Error("Student is not enrolled in this class.");
-		}
+
+		const classInfo = await prisma.class.findUnique({
+			where: { classId }
+		});
+		
+		await sendNotificationToUser(null, `You've been removed from the class ${classInfo.classname}`, "", user.userId);
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
@@ -531,6 +538,8 @@ const addGroupMember = async (groupId, userId) => {
 				}
 			}
 		});
+
+		await sendNotificationToUser(null, `You've been added to the group ${group.groupName}`, "", userId);
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
@@ -572,6 +581,8 @@ const removeGroupMember = async (groupId, userId) => {
 				}
 			}
 		});
+
+		await sendNotificationToUser(null, `You've been removed from the group ${group.groupName}`, "", userId);
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;

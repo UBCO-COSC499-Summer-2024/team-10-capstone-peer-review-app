@@ -83,6 +83,18 @@ export const sendNotificationToRole = async (userId, title, content, role) => {
 	}
 };
 
+export const sendNotificationToAll = async (userId, title, content) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/notifs/send-to-all`, {
+			userId, title, content
+		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
 function handleError(error) {
 	if (error.response && error.response.data) {
 		showStatusToast({

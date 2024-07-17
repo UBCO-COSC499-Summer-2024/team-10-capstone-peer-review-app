@@ -41,6 +41,15 @@ export const deleteNotification = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+export const sendNotificationToUser = asyncErrorHandler(async (req, res) => {
+	const { userId, title, content, receiverId } = req.body;
+	const notifData = await notifsService.sendNotificationToUser(userId, title, content, receiverId);
+	res.status(200).json({
+		status: "Success",
+		message: "Notification sent to user"
+	});
+});
+
 export const sendNotificationToClass = asyncErrorHandler(async (req, res) => {
 	const { userId, title, content, classId } = req.body;
 	const notifData = await notifsService.sendNotificationToClass(userId, title, content, classId);
@@ -68,11 +77,21 @@ export const sendNotificationToRole = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+export const sendNotificationToAll = asyncErrorHandler(async (req, res) => {
+	const { userId, title, content } = req.body;
+	const notifData = await notifsService.sendNotificationToAll(userId, title, content);
+	res.status(200).json({
+		status: "Success",
+		message: "Notification sent to all users (excluding current user)"
+	});
+});
+
 export default {
     getNotifications,
 	getNotification,
 	updateNotification,
 	deleteNotification,
+	sendNotificationToUser,
 	sendNotificationToClass,
 	sendNotificationToGroup,
 	sendNotificationToRole

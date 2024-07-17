@@ -10,27 +10,21 @@
   
 &nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
   
-&nbsp; &nbsp; :large_blue_circle: **Issue-[202](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/202)**: Separate Delete Class dialog from Search.jsx & ManageClass.jsx  
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
-  
-&nbsp; &nbsp; :large_blue_circle: **Issue-[190](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/190)**: Refactor Profile icon to be clickable, add a color or shadow when hovering to indicate pressable  
-  
-&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: UI 
-  
 &nbsp; &nbsp; :large_blue_circle: **Issue-[172](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/172)**: Refactor front-end test  
   
 &nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug, type: testing, type: refactor 
   
-&nbsp; &nbsp; :large_blue_circle: **Issue-[127](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/127)**: Major Use Case 12: Manage Group   
+&nbsp; &nbsp; :large_blue_circle: **Issue-[140](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/140)**: Major Use Case 24: View User Reports
   
 &nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
-  
 
 ## Time entries from Clockify on this cycle:
-&nbsp; &nbsp; :watch: **Working on adding Notifications functionality** *(Total duration: 5.8 hours)*  
+
+&nbsp; &nbsp; :watch: **Working on adding Notifications functionality** *(Total duration: 11.0 hours)*  
   
-&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 16, 2024, 04:44 PM - Ongoing *(Ongoing)*  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 16, 2024, 10:41 PM - Tuesday, July 17, 2024, 01:16 AM *(2.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 16, 2024, 04:44 PM - Tuesday, July 16, 2024, 07:23 PM *(2.7 hours)*  
   
 &nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 16, 2024, 01:21 AM - Tuesday, July 16, 2024, 04:28 AM *(3.1 hours)*  
   
@@ -83,40 +77,37 @@
 
 ## All Features worked on this cycle:
 &nbsp; &nbsp; :arrows_clockwise: **PR-[227](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/227)**: Early User Reports UI & UI touchup in the Admin Dashboard  
+
+&nbsp; &nbsp; :arrows_clockwise: **PR-[238](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/238)**: Add base notifications implementation (Add/Remove student notifs, etc.)  
   
 
 ## Features completed on this cycle:
 &nbsp; &nbsp; :arrow_heading_up: **PR-[227](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/227)**: Early User Reports UI & UI touchup in the Admin Dashboard  
+
+&nbsp; &nbsp; :arrows_clockwise: **PR-[238](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/238)**: Add base notifications implementation (Add/Remove student notifs, etc.)  [NEEDS TO BE MERGED]
   
 
 ## Completed tasks:
 &nbsp; &nbsp; :purple_circle: **Issue-[229](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/229)**: UI for Reports  
   
-&nbsp; &nbsp; :purple_circle: **Issue-[202](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/202)**: Separate Delete Class dialog from Search.jsx & ManageClass.jsx  
-  
-&nbsp; &nbsp; :purple_circle: **Issue-[190](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/190)**: Refactor Profile icon to be clickable, add a color or shadow when hovering to indicate pressable  
-  
-&nbsp; &nbsp; :purple_circle: **Issue-[127](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/127)**: Major Use Case 12: Manage Group   
-  
 
 ## In-progress tasks:
 &nbsp; &nbsp; :orange_circle: **Issue-[172](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/172)**: Refactor front-end test  
   
-&nbsp; &nbsp; :orange_circle: **Issue-[140](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/140)**: Major Use Case 24: View User Reports   
+&nbsp; &nbsp; :orange_circle: **Issue-[140](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/140)**: Major Use Case 24: View User Reports
   
-&nbsp; &nbsp; :orange_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+&nbsp; &nbsp; :orange_circle: **Issue-[225](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/225)**: Notifications for Users
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Did quite a bit! I'm mostly satisfied with the work I did this week although I could've done more.
+* Still a bit behind on tests.
+* Documentation needs work too.
 
 ## Goals for next cycle
-* 
-* 
-* 
-  
+* Work on refactoring/adding new tests & documentation as we're nearing the end especially considering the project overall (and not just completion) hold quite a bit of weight.
+* Get started on helping the team w/ Peer Review-related work.
+* Spend more time everyday on the project!
   
 
 # Abdul's Log for Cycle 12

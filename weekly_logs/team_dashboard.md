@@ -63,7 +63,10 @@ Student Submission Upload, Instructor submission view/download (PR-218)
 
 ### Clockify Dashboard for this Week
 
-![Clockify Dashboard for c-13](./team_dashboard_images/clockify_dashboards/clockify_dashboard_c13.png)
+![Clockify Dashboard for c-13](./team_dashboard_images/clockify_dashboards/clockify_dashboard_c13.png) 
+
+## Burn-up Chart of Tasks
+![Burn-Up Chart for c-13](./team_log_images/burnup_charts/burnup_chart_c13.png)  
   
   
 

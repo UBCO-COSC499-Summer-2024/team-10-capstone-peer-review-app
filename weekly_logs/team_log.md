@@ -4,7 +4,6 @@
 
 ## Thursday, July 11, 2024, 05:22 PM - Tuesday, July 16, 2024, 05:22 PM
 
-
 ## Tasks currently in the Backlog for c-13:
 ![Tasks in Backlog for c-13](./team_log_images/backlog_issues/backlog_issues_c13.png)  
   
@@ -21,18 +20,24 @@
 ![Tasks done for c-13](./team_log_images/done_issues/done_issues_c13.png)  
   
 
-## Overall Burn-up Chart of Tasks
+## Burn-up Chart of Tasks
 ![Burn-Up Chart for c-13](./team_log_images/burnup_charts/burnup_chart_c13.png)  
   
 
 ## Test Reports for c-13
-
+New components are being added and some older components are being refactored. Abdul has been working on tests for existing components that will most likely not change in the next week.
 #### Front-end Testing for c-13
-![Front-end Tests for c-13](./team_log_images/front_end_tests/front_end_tests_c13.png)  
+![Front-end Tests for c-12](./team_log_images/front_end_tests/front_end_tests_c12.png)  
   
 
 #### Back-end Testing for c-13
-![Back end Tests for c-13](./team_log_images/back_end_tests/back_end_tests_c13.png)  
+#### Unit Tests 
+Still need to add integration tests for the rest of the services as well as new ones.
+![Back end Unit Tests for c-11](./team_log_images/back_end_tests/back_end_unit_tests_c11.png) 
+
+
+#### Integration Tests
+![Back end Integration Tests for c-11](./team_log_images/back_end_tests/back_end_integration_tests_c11.png) 
   
   
   

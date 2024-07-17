@@ -134,14 +134,15 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* My cycle started off with finishing up little things with the student Assignment submission UI. This was one of the big use cases to deal with so I was happy to finish that faster than I expected. The next big challenge was grading a submission and viewing grades for a submission
+* Grading a submission was a big load to take on which I wasn't quite expecting at first. I had initially got it up and running within a day but that was only for the instructor to grade and be able to view the grades however, I quickly realized how unorganized my logic was so I needed to sit down and think about how API calls should be structured to make my job on the UI side a bit easier. My initial process was making 4 different fetch calls and mashing all the information together however after having a couple of meetings with Josh, we realized if I nest each object within each other from the API calls itself, then it makes the fetch and displaying process on the UI much easier. Nevertheless, this was still quite a handful to do hence the many hours it took to set up and get going. 
+* By the end of Monday night, I was able to get the instructor Submissions.jsx page refactored with the new logic we implemented and got it up and running again and then the next task was to create the ability to assign and de-select reviewers (peer reviewers/students in the class) so that they can grade the student submission as well.
+* After the assignment for reviewers finished up, I started work on the peer review page on our navbar. I refactored the UI so that one tab is for submissions I am waiting to get graded from instructors or students and the other tab is for reviews that I have pending which need to be completed for other students. I was able to get the views of the grades that are received from instructors and other students up and running however, I still have the portion left where I need to create the UI so that the student reviiewer can see and mark the submission their grading.
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Finish up all the logic and UI behind students marking reviews and viewing reviews
+* Go back through all the things I implemented and make sure that all cases of CRUD ops are implemented (in some places I forgot to implement a delete function, for example, if a review is created, you can only update it but you can't delete it at all which isn't ideal-- there are other smaller things similar to this all over the Class.jsx page)
+* The next big task would be to figure out group assignments. I believe after that, we will be super close to the finish line of this project if not for unforeseeable events.
   
   
 

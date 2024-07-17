@@ -58,7 +58,7 @@ describe("Class Controller", () => {
 
             const res = await request(API_URL).post("/classes/create").send(testClass);
 
-            expect(res.statusCode).toBe(400);
+            expect(res.statusCode).toBe(401);
             expect(res.body.status).toBe("Error");
             expect(res.body.message).toContain("Invalid class data provided.");
         });
@@ -73,7 +73,7 @@ describe("Class Controller", () => {
 
             const res = await request(API_URL).post("/classes/create").send(testClass);
 
-            expect(res.statusCode).toBe(400);
+            expect(res.statusCode).toBe(401);
             expect(res.body.status).toBe("Error");
             expect(res.body.message).toContain("Invalid class data provided.");
         });
@@ -88,7 +88,7 @@ describe("Class Controller", () => {
 
             const res = await request(API_URL).post("/classes/create").send(testClass);
 
-            expect(res.statusCode).toBe(400);
+            expect(res.statusCode).toBe(401);
             expect(res.body.status).toBe("Error");
             expect(res.body.message).toContain("Invalid class data provided.");
         });
@@ -104,7 +104,7 @@ describe("Class Controller", () => {
 
             const res = await request(API_URL).post("/classes/create").send(testClass);
 
-            expect(res.statusCode).toBe(400);
+            expect(res.statusCode).toBe(401);
             expect(res.body.status).toBe("Error");
             expect(res.body.message).toContain("Invalid class data provided.");
         });

@@ -113,8 +113,11 @@ const getClassById = async (classId) => {
 
 const createClass = async (newClass, instructorId) => {
 	try {
-		const { classname, description, startDate, endDate, term, classSize } =
-			newClass;
+		const { classname, description, startDate, endDate, term, classSize } = newClass;
+		if (startDate >= endDate) {
+			throw new apiError("Invalid class data provided", 400);
+		}
+
 		const createdClass = await prisma.class.create({
 			data: {
 				instructorId,

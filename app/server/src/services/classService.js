@@ -1,5 +1,6 @@
 import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
+import { sendNotificationToRole, sendNotificationToUser } from "./notifsService.js";
 
 // class operations
 
@@ -68,27 +69,30 @@ const getAllClassesUserIsNotIn = async (userId) => {
   
 
 const getStudentsByClass = async (classId) => {
-	try {
-		const classWithStudents = await prisma.userInClass.findMany({
-			where: {
-				classId: classId
-			},
-			include: {
-				user: {
-					select: {
-						userId: true,
-						email: true,
-						firstname: true,
-						lastname: true
-					}
-				}
-			}
-		});
-		const students = classWithStudents.map((student) => student.user);
-		return students;
-	} catch (error) {
-		throw new apiError("Failed to retrieve students in class", 500);
-	}
+    try {
+        const classWithStudents = await prisma.userInClass.findMany({
+            where: {
+                classId: classId
+            },
+            include: {
+                user: {
+                    select: {
+                        userId: true,
+                        email: true,
+                        firstname: true,
+                        lastname: true
+                    }
+                }
+            }
+        });
+
+        // Extract unique students based on userId since this seems to return as many entries as there are matching in UserInClass
+        const uniqueStudents = Array.from(new Map(classWithStudents.map(student => [student.user.userId, student])).values()).map(entry => entry.user);
+
+        return uniqueStudents;
+    } catch (error) {
+        throw new apiError("Failed to retrieve students in class", 500);
+    }
 };
 
 const getInstructorByClass = async (classId) => {
@@ -165,6 +169,8 @@ const createClass = async (newClass, instructorId) => {
 				classSize
 			}
 		});
+
+		await sendNotificationToRole(null, `A new class '${classname}' has been created`, "", "ADMIN", 'class');
 		return createdClass;
 	} catch (error) {
 		throw new apiError("Failed to create class", 500);
@@ -179,6 +185,14 @@ const updateClass = async (classId, updateData) => {
 			},
 			data: updateData
 		});
+
+		const classInfo = await prisma.class.findUnique({
+			where: {
+				classId: classId
+			}
+		});
+
+		await sendNotificationToRole(null, `The class '${classInfo.classname}' has been updated`, "", "ADMIN", 'class');
 		return updatedClass;
 	} catch (error) {
 		throw new apiError("Failed to update class", 500);
@@ -192,6 +206,14 @@ const deleteClass = async (classId) => {
 				classId: classId
 			}
 		});
+
+		const classInfo = await prisma.class.findUnique({
+			where: {
+				classId: classId
+			}
+		});
+
+		await sendNotificationToRole(null, `The class '${classInfo.classname}' has been deleted`, "", "ADMIN", 'class');
 	} catch (error) {
 		throw new apiError("Failed to delete class", 500);
 	}
@@ -240,13 +262,16 @@ const addStudentToClass = async (classId, studentId) => {
 			}
 		});
 
+		await sendNotificationToUser(null, `You've been added to the class ${classInfo.classname}`, "", studentId, 'class');
+
 		return userInfo;
 	} catch (error) {
 		// Rethrow the error if it's an instance of apiError, else throw general apiError
 		if (error instanceof apiError) {
+			console.log("hey",error);
 			throw error;
 		} else {
-			console.log(error);
+			console.log("hey",error);
 			throw new apiError(`Failed to add student to class: ${error}`, 500);
 		}
 	}
@@ -288,6 +313,7 @@ const addStudentsByEmail = async (classId, emails) => {
 						});
 						results.valid.push({ email, userId: user.userId });
 						currentClassSize++;
+						await sendNotificationToUser(null, `You've been added to the class ${classInfo.classname}`, "", user.userId, 'class');
 					} else {
 						results.invalid.push({ email, reason: "Class is full" });
 					}
@@ -337,9 +363,12 @@ const removeStudentFromClass = async (classId, studentId) => {
 				}
 			}
 		});
-		if (!userInClass) {
-			throw new Error("Student is not enrolled in this class.");
-		}
+
+		const classInfo = await prisma.class.findUnique({
+			where: { classId }
+		});
+		
+		await sendNotificationToUser(null, `You've been removed from the class ${classInfo.classname}`, "", studentId, 'class');
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
@@ -510,6 +539,24 @@ const getGroupsInClass = async (classId) => {
 	}
 };
 
+const getAllGroups = async () => {
+	try {
+		const groupsInfo = await prisma.group.findMany();
+
+		if (!groupsInfo) {
+			throw new apiError("Groups not found", 404);
+		}
+
+		return groupsInfo;
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to get all groups", 500);
+		}
+	}
+};
+
 const addGroupMember = async (groupId, userId) => {
 	try {
 		const group = await prisma.group.findUnique({
@@ -549,6 +596,14 @@ const addGroupMember = async (groupId, userId) => {
 				}
 			}
 		});
+
+		const classInfo = await prisma.class.findUnique({
+			where: {
+				classId: group.classId
+			}
+		});
+
+		await sendNotificationToUser(null, `You've been added to the group ${group.groupName}`, classInfo.classname, userId, 'group');
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
@@ -590,6 +645,14 @@ const removeGroupMember = async (groupId, userId) => {
 				}
 			}
 		});
+
+		const classInfo = await prisma.class.findUnique({
+			where: {
+				classId: group.classId
+			}
+		});
+
+		await sendNotificationToUser(null, `You've been removed from the group ${group.groupName}`, classInfo.classname, userId, 'group');
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
@@ -748,6 +811,7 @@ export default {
 	getGroupInClass,
 	getGroupsInClass,
 	getGroupMembers,
+	getAllGroups,
 	addGroupMember,
 	removeGroupMember,
 	isUserInGroup,

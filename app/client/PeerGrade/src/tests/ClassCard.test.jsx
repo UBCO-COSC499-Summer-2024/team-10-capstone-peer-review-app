@@ -1,33 +1,82 @@
-// ClassCard.test.jsx
 import React from 'react';
-import { render } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import ClassCard from '@/components/class/GradeCard';
+import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import ClassCard from '@/components/class/ClassCard';
 
-test('renders class card with correct props', () => {
-  const classId = '123';
-  const className = 'Mathematics';
-  const instructor = 'John Doe';
-  const numStudents = 20;
-  const numAssignments = 5;
-  const numPeerReviews = 10;
+describe('ClassCard Component', () => {
+  const renderComponent = (props) => {
+    render(
+      <BrowserRouter>
+        <ClassCard {...props} />
+      </BrowserRouter>
+    );
+  };
+  
+  test('renders correctly', () => {
+    const props = {
+      classId: '1',
+      className: 'Math 101',
+      instructor: 'John Doe',
+      numStudents: 25,
+      numAssignments: 5,
+      numPeerReviews: 3,
+    };
 
-  const { getByText } = render(
-    <MemoryRouter>
-      <ClassCard
-        classId={classId}
-        className={className}
-        instructor={instructor}
-        numStudents={numStudents}
-        numAssignments={numAssignments}
-        numPeerReviews={numPeerReviews}
-      />
-    </MemoryRouter>
-  );
+    renderComponent(props);
 
-  expect(getByText(className)).toBeInTheDocument();
-  expect(getByText(instructor)).toBeInTheDocument();
-  expect(getByText(`${numStudents} Students`)).toBeInTheDocument();
-  expect(getByText(`${numAssignments} Assignments Due`)).toBeInTheDocument();
-  expect(getByText(`${numPeerReviews} Peer Reviews Left`)).toBeInTheDocument();
+    expect(screen.getByText('Math 101')).toBeInTheDocument();
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    expect(screen.getByText('25 Students')).toBeInTheDocument();
+    expect(screen.getByText('5 Assignments Due')).toBeInTheDocument();
+    expect(screen.getByText('3 Peer Reviews Left')).toBeInTheDocument();
+  });
+
+  test('renders link to the class', () => {
+    const props = {
+      classId: '1',
+      className: 'Math 101',
+      instructor: 'John Doe',
+    };
+
+    renderComponent(props);
+
+    const link = screen.getByRole('link');
+    expect(link).toHaveAttribute('href', '/class/1');
+  });
+
+  test('does not render numStudents if not provided', () => {
+    const props = {
+      classId: '1',
+      className: 'Math 101',
+      instructor: 'John Doe',
+    };
+
+    renderComponent(props);
+
+    expect(screen.queryByText(/Students/)).not.toBeInTheDocument();
+  });
+
+  test('does not render numAssignments if not provided', () => {
+    const props = {
+      classId: '1',
+      className: 'Math 101',
+      instructor: 'John Doe',
+    };
+
+    renderComponent(props);
+
+    expect(screen.queryByText(/Assignments Due/)).not.toBeInTheDocument();
+  });
+
+  test('does not render numPeerReviews if not provided', () => {
+    const props = {
+      classId: '1',
+      className: 'Math 101',
+      instructor: 'John Doe',
+    };
+
+    renderComponent(props);
+
+    expect(screen.queryByText(/Peer Reviews Left/)).not.toBeInTheDocument();
+  });
 });

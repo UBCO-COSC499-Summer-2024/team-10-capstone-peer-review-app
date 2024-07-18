@@ -22,6 +22,7 @@ import StudentEnrollmentRequests from "./pages/StudentEnrollmentRequests";
 import Report from "./pages/Report";
 import Search from "./components/admin/Search";
 import Submission from "./pages/Submission";
+import Notifications from "./pages/Notifications";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedRoute from "./components/global/ProtectedRoute";
 import ManageClassDashboard from "./components/manageClass/ManageClassDashboard";
@@ -185,6 +186,15 @@ function MainLayout() {
 						element={
 							<ProtectedRoute
 								element={<Report />}
+								allowedRoles={["STUDENT", "INSTRUCTOR", "ADMIN"]}
+							/>
+						}
+					/>
+					<Route
+						path="/notifications"
+						element={
+							<ProtectedRoute
+								element={<Notifications />}
 								allowedRoles={["STUDENT", "INSTRUCTOR", "ADMIN"]}
 							/>
 						}

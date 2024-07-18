@@ -99,19 +99,18 @@ const Rubrics = () => {
       };
       console.log('formattedRubricData:', formattedRubricData);
       console.log(user);
-      const userId = user.userId // Replace with actual user ID or fetch from context/state
+      const userId = user.userId
 
       // Add rubric to each selected assignment
       const assignmentId = selectedAssignments;
-        console.log('Adding rubric to assignment:', assignmentId);
-        await addRubricToAssignment({
-          userId,
-          assignmentId,
-          rubricData: formattedRubricData
-        });
-      
-
+      console.log('Adding rubric to assignment:', assignmentId);
+      await addRubricToAssignment({
+        userId,
+        assignmentId,
+        rubricData: formattedRubricData
+      });
       console.log('Rubric added to selected assignments');
+      
       setIsCreateDrawerOpen(false);
       setNewRubricData({
         title: "",

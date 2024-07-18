@@ -51,9 +51,10 @@ function MainLayout() {
 	const isLoginPage = location.pathname === "/";
 
 	return (
-		<main className="gradient-background min-h-screen flex">
-			{!isLoginPage && <AppNavbar />}
-			<div className="main-container flex-grow p-6">
+		<div className="flex gradient-background min-h-screen">
+		{!isLoginPage && <AppNavbar />}
+		<main className={`flex-grow ${!isLoginPage ? 'ml-[200px]' : ''} flex justify-center`}>
+		  <div className="w-full max-w-7xl px-6 py-8">
 				<Routes>
 					<Route path="/" element={<Login />} />
 					<Route
@@ -102,7 +103,7 @@ function MainLayout() {
 						}
 					/>
 					<Route
-						path="/manageclass"
+						path="/manage-class"
 						element={
 							<ProtectedRoute
 								element={<ManageClass />}
@@ -111,7 +112,7 @@ function MainLayout() {
 						}
 					/>
 					<Route
-						path="/manageclass/:classId"
+						path="/manage-class/:classId"
 						element={
 							<ProtectedRoute
 								element={<ManageClassDashboard />}
@@ -193,6 +194,7 @@ function MainLayout() {
 			</div>
 			<Toaster />
 		</main>
+		</div>
 	);
 }
 

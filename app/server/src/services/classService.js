@@ -44,6 +44,7 @@ const getAllClassesUserIsNotIn = async (userId) => {
 		  }
 		}
 	  });
+	  
   
 	  // Filter out classes the user is in and calculate available seats
 	  const filteredClasses = allClasses.filter(classItem => {

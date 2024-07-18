@@ -20,19 +20,15 @@ export const ClassProvider = ({ children }) => {
 	// These are the setClass States that retrieve any new data from the backend
 	// setUserClasses = students and instructors
 
-	useEffect(() => {
-		const setClassData = async () => {
-			if (user) {
-				console.log("Fetching user for ClassContext", user);
-				if (user.role === "ADMIN") {
-					await setAdminClasses();
-				} else {
-					await setUserClasses(user.userId);
-				}
+	const setClassData = async () => {
+		if (user) {
+			if (user.role === "ADMIN") {
+				await setAdminClasses();
+			} else {
+				await setUserClasses(user.userId);
 			}
-		};
-		setClassData();
-	}, [user]);
+		}
+	};
 
 	const setUserClasses = async () => {
 		try {
@@ -111,6 +107,7 @@ export const ClassProvider = ({ children }) => {
 		<ClassContext.Provider
 			value={{
 				classes,
+				setClasses,
 				isClassLoading,
 				setUserClasses,
 				setAdminClasses,

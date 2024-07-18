@@ -1,4 +1,3 @@
-// components/ClassCard.jsx
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Users, FileText, Edit, Trash2 } from "lucide-react";
@@ -15,28 +14,30 @@ const ClassCard = ({ classItem, onEdit, onDelete }) => {
       overflow: 'hidden',
       textOverflow: 'ellipsis',
       lineHeight: '1.5em',
-      maxHeight: `${1.5 * lines}em`, // Adjust this value if you change the line-height
+      maxHeight: `${1.5 * lines}em`,
     };
   };
 
   return (
     <Card
-      className="w-full max-h-[300px] cursor-pointer hover:shadow-lg transition-shadow duration-300 flex flex-col"
-      onClick={() => navigate(`/manageClass/${classItem.classId}`)}
+      className="w-full h-[300px] cursor-pointer hover:shadow-lg transition-shadow duration-300 flex flex-col"
+      onClick={() => navigate(`/manage-class/${classItem.classId}`)}
     >
       <CardHeader>
         <CardTitle className="text-lg">{classItem.classname}</CardTitle>
       </CardHeader>
-      <CardContent className="flex-grow flex flex-col justify-between">
-        <div>
+      <CardContent className="flex flex-col flex-grow max-h-[200px] justify-between">
+        <div className="overflow-hidden">
           <p 
-            className="text-sm text-gray-500 mb-4" 
+            className="text-sm text-gray-500" 
             style={truncateDescription(classItem.description)}
           >
             {classItem.description}
           </p>
+        </div>
+        <div className="mt-auto">
           <div className="flex justify-between items-center">
-            <div className="flex space-x-4">
+            <div className="flex space-x-2">
               <div className="flex items-center">
                 <Users className="w-4 h-4 mr-1" />
                 <span className="text-sm">{classItem.userCount} students</span>
@@ -47,28 +48,6 @@ const ClassCard = ({ classItem, onEdit, onDelete }) => {
               </div>
             </div>
           </div>
-        </div>
-        <div className="flex justify-end space-x-2 mt-4">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              onEdit(classItem);
-            }}
-          >
-            <Edit className="w-4 h-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              onDelete(classItem);
-            }}
-          >
-            <Trash2 className="w-4 h-4" />
-          </Button>
         </div>
       </CardContent>
     </Card>

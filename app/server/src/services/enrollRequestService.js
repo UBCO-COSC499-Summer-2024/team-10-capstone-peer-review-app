@@ -114,27 +114,30 @@ export async function updateEnrollRequestStatus(
 			}
 		}
 
-		if (status === "DENIED") {
-			const userInClass = await prisma.userInClass.findUnique({
-				where: {
-					UserInClassId: {
-						userId: updatedRequest.userId,
-						classId: updatedRequest.classId
-					}
-				}
-			});
+		// For now, dont need this because instructors can just delete the student if they 
+		// Approve the request, then want to remove the student from the class.
 
-			if (userInClass) {
-				await prisma.userInClass.delete({
-					where: {
-						UserInClassId: {
-							userId: updatedRequest.userId,
-							classId: updatedRequest.classId
-						}
-					}
-				});
-			}
-		}
+		// if (status === "DENIED") {
+		// 	const userInClass = await prisma.userInClass.findUnique({
+		// 		where: {
+		// 			UserInClassId: {
+		// 				userId: updatedRequest.userId,
+		// 				classId: updatedRequest.classId
+		// 			}
+		// 		}
+		// 	});
+
+		// 	if (userInClass) {
+		// 		await prisma.userInClass.delete({
+		// 			where: {
+		// 				UserInClassId: {
+		// 					userId: updatedRequest.userId,
+		// 					classId: updatedRequest.classId
+		// 				}
+		// 			}
+		// 		});
+		// 	}
+		// }
 
 		return updatedRequest;
 	} catch (error) {

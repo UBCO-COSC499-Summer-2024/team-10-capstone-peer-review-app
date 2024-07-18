@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
-import { Plus, Users, FileQuestion } from "lucide-react";
+import { Plus, Users, FileQuestion, ChevronLeft, ChevronRight } from "lucide-react";
 import { getAllClassesUserisNotIn } from "@/api/classApi";
 import {
   createEnrollRequest,
@@ -32,6 +32,7 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from "@/components/ui/tooltip";
+import { Badge } from "@/components/ui/badge";
 
 const StudentEnrollmentRequests = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -40,14 +41,14 @@ const StudentEnrollmentRequests = () => {
   const [enrollRequests, setEnrollRequests] = useState([]);
   const [selectedClass, setSelectedClass] = useState(null);
   const [enrollMessage, setEnrollMessage] = useState("");
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentClassPage, setCurrentClassPage] = useState(1);
+  const [currentRequestPage, setCurrentRequestPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [showClassesTable, setShowClassesTable] = useState(false);
   const [showRequestsTable, setShowRequestsTable] = useState(false);
   const { toast } = useToast();
 
-  const ITEMS_PER_PAGE = 5;
+  const ITEMS_PER_PAGE = 3;
 
   useEffect(() => {
     fetchClasses();
@@ -65,6 +66,8 @@ const StudentEnrollmentRequests = () => {
   useEffect(() => {
     setShowRequestsTable(enrollRequests.length > 0);
   }, [enrollRequests]);
+
+  
 
   const fetchClasses = async () => {
     setIsLoading(true);
@@ -107,48 +110,75 @@ const StudentEnrollmentRequests = () => {
       classItem.classname.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredClasses(filtered);
-    setCurrentPage(1);
+    setCurrentClassPage(1);
+  };
+
+  const handleOpenEnrollDialog = (classItem) => {
+    setSelectedClass(classItem);
+  };
+
+  const handleCloseEnrollDialog = () => {
+    setSelectedClass(null);
+    setEnrollMessage("");
   };
 
   const handleEnrollRequest = async () => {
+    if (!selectedClass) return;
+
     try {
       await createEnrollRequest(selectedClass.classId, enrollMessage);
       toast({
         title: "Success",
         description: "Enrollment request sent"
       });
-      setIsDialogOpen(false);
-      setEnrollMessage("");
+      handleCloseEnrollDialog();
       fetchEnrollRequests();
     } catch (error) {
-      setIsDialogOpen(false); 
-      setEnrollMessage("");
+      handleCloseEnrollDialog(); 
     }
   };
 
   const paginatedClasses = filteredClasses.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+    (currentClassPage - 1) * ITEMS_PER_PAGE,
+    currentClassPage * ITEMS_PER_PAGE
   );
 
-  const totalPages = Math.ceil(filteredClasses.length / ITEMS_PER_PAGE);
+  const paginatedRequests = enrollRequests.slice(
+    (currentRequestPage - 1) * ITEMS_PER_PAGE,
+    currentRequestPage * ITEMS_PER_PAGE
+  );
 
   const truncateDescription = (description, maxLength = 50) => {
     if (description.length <= maxLength) return description;
     return description.slice(0, maxLength) + "...";
   };
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "PENDING":
-        return "text-yellow-500";
-      case "APPROVED":
-        return "text-green-500";
-      case "DENIED":
-        return "text-red-500";
-      default:
-        return "text-gray-500";
+  const renderPagination = (currentPage, setCurrentPage, totalItems) => {
+    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+    
+    if (totalItems === 0) {
+      return null;
     }
+
+    return (
+      <div className="flex justify-between items-center mt-4">
+        <Button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+        >
+          <ChevronLeft className="w-4 h-4 mr-2" /> Previous
+        </Button>
+        <span>
+          Page {currentPage} of {totalPages}
+        </span>
+        <Button
+          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+          disabled={currentPage === totalPages}
+        >
+          Next <ChevronRight className="w-4 h-4 ml-2" />
+        </Button>
+      </div>
+    );
   };
 
   return (
@@ -172,179 +202,139 @@ const StudentEnrollmentRequests = () => {
         <>
           <div className="mb-10">
             <h2 className="text-2xl font-semibold mb-4">Available Classes</h2>
-            <div className="relative min-h-[150px]">
-              <div
-                className={`absolute inset-0 transition-opacity duration-300 ${
-                  showClassesTable ? "opacity-0 pointer-events-none" : "opacity-100"
-                }`}
-              >
-                <div className="text-center py-8 bg-gray-100 rounded-lg">
-                  <FileQuestion className="mx-auto h-12 w-12 text-gray-400" />
-                  <h3 className="mt-2 text-sm font-medium text-gray-900">No classes available</h3>
-                  <p className="mt-1 text-sm text-gray-500">There are currently no classes available for enrollment.</p>
+            <div className="bg-card p-6 rounded-lg shadow">
+              <div className="relative min-h-[150px]">
+                <div
+                  className={`absolute inset-0 transition-opacity duration-300 ${
+                    showClassesTable ? "opacity-0 pointer-events-none" : "opacity-100"
+                  }`}
+                >
+                  <div className="text-center py-8 bg-background rounded-lg">
+                    <FileQuestion className="mx-auto h-12 w-12 text-muted-foreground" />
+                    <h3 className="mt-2 text-sm font-medium text-card-foreground">No classes available</h3>
+                    <p className="mt-1 text-sm text-muted-foreground">There are currently no classes available for enrollment.</p>
+                  </div>
+                </div>
+                <div
+                  className={`transition-opacity duration-300 ${
+                    showClassesTable ? "opacity-100" : "opacity-0 pointer-events-none"
+                  }`}
+                >
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Class Name</TableHead>
+                        <TableHead>Description</TableHead>
+                        <TableHead>Instructor</TableHead>
+                        <TableHead>Start Date</TableHead>
+                        <TableHead>End Date</TableHead>
+                        <TableHead>Seats Available</TableHead>
+                        <TableHead>Action</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {paginatedClasses.map((classItem) => (
+                        <TableRow key={classItem.classId}>
+                          <TableCell>{classItem.classname}</TableCell>
+                          <TableCell>
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger>
+                                  {truncateDescription(classItem.description)}
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>{classItem.description}</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          </TableCell>
+                          <TableCell>{`${classItem.instructor.firstname} ${classItem.instructor.lastname}`}</TableCell>
+                          <TableCell>{format(new Date(classItem.startDate), "PP")}</TableCell>
+                          <TableCell>{format(new Date(classItem.endDate), "PP")}</TableCell>
+                          <TableCell>{classItem.availableSeats}</TableCell>
+                          <TableCell>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleOpenEnrollDialog(classItem)}
+                                >
+                                  <Plus className="w-4 h-4 mr-1" />
+                                  Enroll
+                                </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+
+                  {/* Enroll Dialog */}
+                  <Dialog open={!!selectedClass} onOpenChange={() => selectedClass && handleCloseEnrollDialog()}>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Enroll in {selectedClass?.classname}</DialogTitle>
+                      </DialogHeader>
+                      <Textarea
+                        placeholder="Enter a message for your enrollment request (optional)"
+                        value={enrollMessage}
+                        onChange={(e) => setEnrollMessage(e.target.value)}
+                      />
+                      <DialogFooter>
+                        <Button onClick={handleEnrollRequest}>Send Request</Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+
                 </div>
               </div>
-              <div
-                className={`transition-opacity duration-300 ${
-                  showClassesTable ? "opacity-100" : "opacity-0 pointer-events-none"
-                }`}
-              >
-                <Table className="border-collapse w-full">
-                  <TableHeader>
-                    <TableRow className="bg-gray-100">
-                      <TableHead className="border px-4 py-2">Class Name</TableHead>
-                      <TableHead className="border px-4 py-2">Description</TableHead>
-                      <TableHead className="border px-4 py-2">Instructor</TableHead>
-                      <TableHead className="border px-4 py-2">Start Date</TableHead>
-                      <TableHead className="border px-4 py-2">End Date</TableHead>
-                      <TableHead className="border px-4 py-2">Seats Available</TableHead>
-                      <TableHead className="border px-4 py-2">Action</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {paginatedClasses.map((classItem, index) => (
-                      <TableRow
-                        key={classItem.classId}
-                        className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
-                      >
-                        <TableCell className="border px-4 py-2">{classItem.classname}</TableCell>
-                        <TableCell className="border px-4 py-2">
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger>
-                                {truncateDescription(classItem.description)}
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p>{classItem.description}</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                        </TableCell>
-                        <TableCell className="border px-4 py-2">{`${classItem.instructor.firstname} ${classItem.instructor.lastname}`}</TableCell>
-                        <TableCell className="border px-4 py-2">
-                          {format(new Date(classItem.startDate), "PP")}
-                        </TableCell>
-                        <TableCell className="border px-4 py-2">
-                          {format(new Date(classItem.endDate), "PP")}
-                        </TableCell>
-                        <TableCell className="border px-4 py-2">
-                          {classItem.availableSeats}
-                        </TableCell>
-                        <TableCell className="border px-4 py-2">
-                          <Dialog
-                            open={isDialogOpen}
-                            onOpenChange={setIsDialogOpen}
-                          >
-                            <DialogTrigger asChild>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => setSelectedClass(classItem)}
-                              >
-                                <Plus className="w-4 h-4 mr-1" />
-                                Enroll
-                              </Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                              <DialogHeader>
-                                <DialogTitle>
-                                  Enroll in {classItem.classname}
-                                </DialogTitle>
-                              </DialogHeader>
-                              <Textarea
-                                placeholder="Enter a message for your enrollment request (optional)"
-                                value={enrollMessage}
-                                onChange={(e) => setEnrollMessage(e.target.value)}
-                              />
-                              <DialogFooter>
-                                <Button onClick={handleEnrollRequest}>
-                                  Send Request
-                                </Button>
-                              </DialogFooter>
-                            </DialogContent>
-                          </Dialog>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+              {renderPagination(currentClassPage, setCurrentClassPage, filteredClasses.length)}
             </div>
-
-            {showClassesTable && (
-              <div className="mt-4 flex justify-between">
-                <Button
-                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                  disabled={currentPage === 1}
-                >
-                  Previous
-                </Button>
-                <span>
-                  Page {currentPage} of {totalPages}
-                </span>
-                <Button
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                  }
-                  disabled={currentPage === totalPages}
-                >
-                  Next
-                </Button>
-              </div>
-            )}
           </div>
 
           <div>
-            <h2 className="text-2xl font-semibold mb-4">
-              My Enrollment Requests
-            </h2>
-            <div className="relative min-h-[100px]">
-              <div
-                className={`absolute inset-0 transition-opacity duration-300 ${
-                  showRequestsTable ? "opacity-0 pointer-events-none" : "opacity-100"
-                }`}
-              >
-                <div className="text-center py-8 bg-gray-100 rounded-lg">
-                  <FileQuestion className="mx-auto h-12 w-12 text-gray-400" />
-                  <h3 className="mt-2 text-sm font-medium text-gray-900">No enrollment requests</h3>
-                  <p className="mt-1 text-sm text-gray-500">You haven't made any enrollment requests yet.</p>
+            <h2 className="text-2xl font-semibold mb-4">My Enrollment Requests</h2>
+            <div className="bg-card p-6 rounded-lg shadow">
+              <div className="relative min-h-[85px] bg-background">
+                <div
+                  className={`absolute inset-0 transition-opacity duration-300 ${
+                    showRequestsTable ? "opacity-0 pointer-events-none" : "opacity-100"
+                  }`}
+                >
+                  <div className="text-center bg-background rounded-lg">
+                    <FileQuestion className="mx-auto h-12 w-12 text-muted-foreground" />
+                    <h3 className="mt-1 text-sm font-medium text-card-foreground">No enrollment requests</h3>
+                    <p className="mt-1 text-sm text-muted-foreground">You haven't made any enrollment requests yet.</p>
+                  </div>
+                </div>
+                <div
+                  className={`transition-opacity duration-300 ${
+                    showRequestsTable ? "opacity-100" : "opacity-0 pointer-events-none"
+                  }`}
+                >
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Class Name</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Requested On</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {paginatedRequests.map((request) => (
+                        <TableRow key={request.enrollRequestId}>
+                          <TableCell>{request.class.classname}</TableCell>
+                          <TableCell>
+                            <Badge variant={request.status.toLowerCase()}>
+                              {request.status}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>{format(new Date(request.createdAt), "PP")}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </div>
               </div>
-              <div
-                className={`transition-opacity duration-300 ${
-                  showRequestsTable ? "opacity-100" : "opacity-0 pointer-events-none"
-                }`}
-              >
-                <Table className="border-collapse w-full">
-                  <TableHeader>
-                    <TableRow className="bg-gray-100">
-                      <TableHead className="border px-4 py-2">Class Name</TableHead>
-                      <TableHead className="border px-4 py-2">Status</TableHead>
-                      <TableHead className="border px-4 py-2">
-                        Requested On
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {enrollRequests.map((request, index) => (
-                      <TableRow
-                        key={request.enrollRequestId}
-                        className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
-                      >
-                        <TableCell className="border px-4 py-2">
-                          {request.class.classname}
-                        </TableCell>
-                        <TableCell className={`border px-4 py-2 ${getStatusColor(request.status)} font-semibold`}>
-                          {request.status}
-                        </TableCell>
-                        <TableCell className="border px-4 py-2">
-                          {format(new Date(request.createdAt), "PP")}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+              {renderPagination(currentRequestPage, setCurrentRequestPage, enrollRequests.length)}
             </div>
           </div>
         </>

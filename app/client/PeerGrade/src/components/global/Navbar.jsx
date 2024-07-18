@@ -224,7 +224,7 @@ export default function AppNavbar() {
 											onClick={() => setIsClassesSheetOpen(true)}
 											className={cn(
 												navigationMenuTriggerStyle(),
-												(isActive("/class") || isActive("/manageclass")) &&
+												(isActive("/class") || isActive("/manage-class")) &&
 													"font-bold flex items-center w-full"
 											)}
 										>
@@ -260,10 +260,10 @@ export default function AppNavbar() {
 													user.role === "ADMIN") && (
 													<ListItem
 														title="Manage Classes"
-														href="/manageclass"
+														href="/manage-class"
 														className={cn(
 															"w-full",
-															isActive("/manageclass")
+															isActive("/manage-class")
 																? "bg-accent text-accent-foreground"
 																: "bg-blue-100"
 														)}

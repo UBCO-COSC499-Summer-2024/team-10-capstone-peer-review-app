@@ -141,7 +141,14 @@ const getRubricById = async (rubricId) => {
 	try {
 		const rubric = await prisma.rubric.findUnique({
 			where: { rubricId },
-			include: { criteria: true },
+			include: { 
+				criteria: 
+				{
+					include: {
+						criterionRatings: true
+					}
+				}
+			 },
 		});
 
 		if (!rubric) {

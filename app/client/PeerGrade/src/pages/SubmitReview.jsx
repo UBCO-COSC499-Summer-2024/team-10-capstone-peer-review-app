@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import reviewAPI from '@/api/reviewApi';
+import { getRubricById } from '@/api/rubricApi';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +16,7 @@ import ReviewDetailsDialog from './classNav/assignment/submission/ReviewDetailsD
 const SubmitReview = () => {
     const { reviewId } = useParams();
     const [review, setReview] = useState(null);
+    const [rubrics, setRubrics] = useState([]);
     const [loading, setLoading] = useState(true);
     const [viewGradeDialogOpen, setViewGradeDialogOpen] = useState(false);
 
@@ -25,16 +27,35 @@ const SubmitReview = () => {
                 const response = await reviewAPI.getReviewById(reviewId);
                 console.log('API response:', response.data);
                 setReview(response.data);
+
+                // Fetch rubric data
+                if (response.data.submission.assignment.rubric && response.data.submission.assignment.rubric.length > 0) {
+                    const rubricPromises = response.data.submission.assignment.rubric.map(r => getRubricById(r.rubricId));
+                    console.log('Rubric promises:', rubricPromises);
+                    const rubricResponses = await Promise.all(rubricPromises);
+
+                    const fetchedRubrics = rubricResponses.map(r => r.data);
+                    console.log('Rubric responses:', fetchedRubrics);
+                    setRubrics(fetchedRubrics);
+                }
             } catch (error) {
                 console.error("Error fetching review details:", error);
+                let errorMessage = "Failed to fetch review details. Please try again.";
+                if (error.response) {
+                  if (error.response.status === 403) {
+                    errorMessage = "You don't have permission to access this rubric. Please contact your administrator.";
+                  } else {
+                    errorMessage = `Server error: ${error.response.data.message || error.message}`;
+                  }
+                }
                 toast({
-                    title: "Error",
-                    description: "Failed to fetch review details. Please try again.",
-                    variant: "destructive"
+                  title: "Error",
+                  description: errorMessage,
+                  variant: "destructive"
                 });
-            } finally {
+              } finally {
                 setLoading(false);
-            }
+              }
         };
     
         fetchReviewDetails();
@@ -42,7 +63,8 @@ const SubmitReview = () => {
 
     useEffect(() => {
         console.log('Updated review state:', review);
-    }, [review]);
+        console.log('Updated rubrics state:', rubrics);
+    }, [review, rubrics]);
 
     const handleDownload = () => {
         if (review && review.submission) {
@@ -58,11 +80,11 @@ const SubmitReview = () => {
     const handleGradeSubmit = async (event) => {
         event.preventDefault();
         
-        if (!review) {
-            console.error("No review data available");
+        if (!review || rubrics.length === 0) {
+            console.error("No review or rubric data available");
             toast({
                 title: "Error",
-                description: "No review data available. Please try again.",
+                description: "No review or rubric data available. Please try again.",
                 variant: "destructive"
             });
             return;
@@ -70,16 +92,18 @@ const SubmitReview = () => {
     
         const formData = new FormData(event.target);
         let totalMark = 0;
-        const criterionGrades = review.criterionGrades.map(cg => {
-            const grade = parseFloat(formData.get(`grade-${cg.criterion.criterionId}`)) || 0;
-            const comment = formData.get(`comment-${cg.criterion.criterionId}`);
-            totalMark += grade;
-            return { 
-                criterionId: cg.criterion.criterionId, 
-                grade, 
-                comment 
-            };
-        });
+        const criterionGrades = rubrics.flatMap(rubric => 
+            rubric.criteria.map(criterion => {
+                const grade = parseFloat(formData.get(`grade-${criterion.criterionId}`)) || 0;
+                const comment = formData.get(`comment-${criterion.criterionId}`);
+                totalMark += grade;
+                return { 
+                    criterionId: criterion.criterionId, 
+                    grade, 
+                    comment 
+                };
+            })
+        );
     
         try {
             const updatedReview = {
@@ -118,9 +142,9 @@ const SubmitReview = () => {
         return <div>Loading...</div>;
     }
     
-    // if (!review || !review.submission) {
-    //     return <div>No review data available or incomplete data. Please try again.</div>;
-    // }
+    if (!review || !review.submission || rubrics.length === 0) {
+        return <div>No review or rubric data available. Please try again.</div>;
+    }
     
     return (
         <div className="container mx-auto p-6">
@@ -142,33 +166,38 @@ const SubmitReview = () => {
                     </CardHeader>
                     <CardContent>
                         <form onSubmit={handleGradeSubmit}>
-                            {review.criterionGrades.map((criterionGrade, index) => (
-                                <div key={index} className="mb-6">
-                                    <Label className="text-lg font-semibold">{criterionGrade.criterion.title}</Label>
-                                    <div className="mt-2 bg-gray-100 p-4 rounded-md mb-4">
-                                        {criterionGrade.criterion.criterionRatings.map((rating, ratingIndex) => (
-                                            <div key={ratingIndex} className="mb-2">
-                                                <span className="font-medium">{rating.points} points: </span>
-                                                {rating.description}
+                            {rubrics.map((rubric, rubricIndex) => (
+                                <div key={rubricIndex} className="mb-8">
+                                    <h3 className="text-xl font-bold mb-4">{rubric.title}</h3>
+                                    {rubric.criteria.map((criterion, criterionIndex) => (
+                                        <div key={criterionIndex} className="mb-6">
+                                            <Label className="text-lg font-semibold">{criterion.title}</Label>
+                                            <div className="mt-2 bg-gray-100 p-4 rounded-md mb-4">
+                                                {criterion.criterionRatings.map((rating, ratingIndex) => (
+                                                    <div key={ratingIndex} className="mb-2">
+                                                        <span className="font-medium">{rating.points} points: </span>
+                                                        {rating.description}
+                                                    </div>
+                                                ))}
                                             </div>
-                                        ))}
-                                    </div>
-                                    <div className="mt-2">
-                                        <Input
-                                            type="number"
-                                            min="0"
-                                            max={criterionGrade.criterion.maxMark}
-                                            name={`grade-${criterionGrade.criterion.criterionId}`}
-                                            placeholder={`Grade (max ${criterionGrade.criterion.maxMark})`}
-                                            className="mb-2"
-                                            defaultValue={criterionGrade.grade || 0}
-                                        />
-                                        <Textarea
-                                            name={`comment-${criterionGrade.criterion.criterionId}`}
-                                            placeholder="Add a comment for this criterion"
-                                            defaultValue={criterionGrade.comment || ''}
-                                        />
-                                    </div>
+                                            <div className="mt-2">
+                                                <Input
+                                                    type="number"
+                                                    min="0"
+                                                    max={criterion.maxMark}
+                                                    name={`grade-${criterion.criterionId}`}
+                                                    placeholder={`Grade (max ${criterion.maxMark})`}
+                                                    className="mb-2"
+                                                    defaultValue={review.criterionGrades.find(cg => cg.criterionId === criterion.criterionId)?.grade || 0}
+                                                />
+                                                <Textarea
+                                                    name={`comment-${criterion.criterionId}`}
+                                                    placeholder="Add a comment for this criterion"
+                                                    defaultValue={review.criterionGrades.find(cg => cg.criterionId === criterion.criterionId)?.comment || ''}
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             ))}
                             <Button type="submit" className="mt-4">Submit Grades</Button>

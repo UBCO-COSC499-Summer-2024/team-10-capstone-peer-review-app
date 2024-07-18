@@ -19,8 +19,9 @@ export const getAllRubricsInClass = async (classId) => {
 };
 
 export const getRubricById = async (rubricId) => {
-    console.log(rubricId);
-  return await axios.post(`${BASE_URL}/rubric/get-rubric-by-id`, { rubricId }); // Adjust the endpoint as necessary
+  console.log(rubricId);
+  const response = await axios.post(`${BASE_URL}/rubric/get-rubric-by-id`, { rubricId }); // Adjust the endpoint as necessary
+  return response.data;
 };
 
 export const addRubricToAssignment = async (data) => {

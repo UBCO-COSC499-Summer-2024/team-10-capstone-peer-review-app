@@ -56,7 +56,7 @@ router
 
 router
 	.route("/get-rubric-by-id")
-	.post(ensureUser, ensureInstructor, getRubricById);
+	.post( getRubricById);
 
 // Criterion Routes
 router

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import NotifCard from "@/components/global/NotifCard";
-import { getNotifications } from "@/api/notifsApi";
+import { deleteNotification, getNotifications } from "@/api/notifsApi";
 
 export default function Notifications() {
   const { user, userLoading } = useUser();
@@ -22,6 +22,19 @@ export default function Notifications() {
     fetchNotifs();
   }, [user, userLoading]);
 
+	const handleDeleteNotif = async (notificationId) => {
+		const deleteNotif = await deleteNotification(notificationId);
+		if (deleteNotif.status === "Success") {
+			setNotifications((prevNotifs) =>
+				prevNotifs.filter(
+					(notification) => notification.notificationId !== notificationId
+				)
+			);
+		} else {
+			console.error('An error occurred while deleting the notification.', deleteNotif.message);
+		}
+	};
+
   return (
     <div className="w-full px-6">
       <div className="flex flex-col gap-1 mt-5 mb-6 rounded-lg">
@@ -40,7 +53,7 @@ export default function Notifications() {
           <NotifCard
             key={notification.notificationId}
             notificationData={notification}
-            deleteNotifCall={(id) => setNotifications(notifications.filter(notif => notif.notificationId !== id))}
+            deleteNotifCall={handleDeleteNotif}
           />
         ))}
       </div>

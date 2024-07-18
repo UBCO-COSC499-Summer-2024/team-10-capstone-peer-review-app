@@ -314,11 +314,14 @@ export default function AppNavbar() {
 					<Link to="/notifications" className="enabled:rounded-full">
 					<Button
 						variant="ghost"
-						className="w-16 h-16 enabled:rounded-full"
+						className="w-16 h-16 enabled:rounded-full relative"
 						disabled={!user}
 						title="Notifications"
 					>
 						<Bell className='w-6 h-6' />
+						{notifications.length > 0 && (
+							<span className="absolute top-5 right-5 block h-2 w-2 bg-red-600 rounded-full ring-2 ring-white"></span>
+						)}
 					</Button>
 					</Link>
 					<Button

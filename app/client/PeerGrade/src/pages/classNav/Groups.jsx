@@ -343,10 +343,10 @@ const Groups = () => {
 						}
 						{(user.role === "INSTRUCTOR" || user.role === "ADMIN") && 
 							<div className='flex flex-row items-center justify-center space-x-2'>
-									<Button className='p-4 w-10 h-10' onClick={() => handleEditGroupClick(group)}>
+									<Button className='p-4 w-10 h-10' onClick={() => handleEditGroupClick(group)} data-testid={`edit-group-${group.groupId}`}>
 										<Pencil className='w-4 h-4' />
 									</Button>
-									<Button variant='destructive' className='p-4 w-10 h-10' onClick={() => handleDeleteGroupClick(group)}>
+									<Button variant='destructive' className='p-4 w-10 h-10' onClick={() => handleDeleteGroupClick(group)} data-testid={`delete-group-${group.groupId}`}>
 										<Trash2 className='w-4 h-4' />
 									</Button>
 							</div>
@@ -364,8 +364,8 @@ const Groups = () => {
 													alt={`${student.firstname} ${student.lastname}`}
 												/>
 												<AvatarFallback>
-													{student.firstname[0]}
-													{student.lastname[0]}
+													{student.firstname ? student.firstname[0] : ''}
+													{student.lastname ? student.lastname[0] : ''}
 												</AvatarFallback>
 											</Avatar>
 											<span>{student.firstname} {student.lastname}</span>

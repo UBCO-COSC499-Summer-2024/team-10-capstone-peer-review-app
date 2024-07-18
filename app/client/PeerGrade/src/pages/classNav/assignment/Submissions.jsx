@@ -83,7 +83,7 @@ const Submissions = ({ assignmentId }) => {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Submissions</CardTitle>
+        <CardTitle data-testid="submissions-title">Submissions</CardTitle>
       </CardHeader>
       <CardContent>
         <Accordion type="single" collapsible className="w-full">

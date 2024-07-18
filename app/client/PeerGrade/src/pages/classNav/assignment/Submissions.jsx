@@ -134,17 +134,7 @@ const Submissions = () => {
                 }
             }
 
-            let totalMark = 0;
-            const criterionGrades = [];
-        
-            rubrics.forEach(rubric => {
-                rubric.criteria.forEach(criterion => {
-                    const grade = parseFloat(formData.get(`grade-${criterion.criterionId}`)) || 0;
-                    totalMark += grade;
-                    const comment = formData.get(`comment-${criterion.criterionId}`);
-                    criterionGrades.push({ criterionId: criterion.criterionId, grade, comment });
-                });
-            });
+
     
             // Create new blank reviews for newly selected reviewers
             for (const reviewerId of selectedReviewers) {
@@ -156,7 +146,7 @@ const Submissions = () => {
                         revieweeId: currentSubmission.submitterId,
                         isPeerReview: true,
                         isGroup: false,
-                        criterionGrades: criterionGrades,
+                        criterionGrades: [],
                     };
                     await reviewAPI.createReview(reviewerId, blankReview);
                 }

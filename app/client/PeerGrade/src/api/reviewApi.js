@@ -4,6 +4,18 @@ import showStatusToast from "@/utils/showToastStatus";
 const BASE_URL = '/api';
 
 const reviewAPI = {
+
+  getReviewById: async (reviewId) => {
+    console.log('Sending request for reviewId:', reviewId); // Add this line
+    try {
+        const response = await axios.post(`${BASE_URL}/review/reviewId`, { reviewId });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching review by ID:", error.response?.data || error.message);
+        throw error;
+    }
+},
+
   // Review operations
   getPeerReviews: async (submissionId) => {
     try {

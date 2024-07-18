@@ -2,6 +2,58 @@ import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
 
 // Review operations
+const getReviewById = async (reviewId) => {
+    try {
+        console.log('Fetching review with ID:', reviewId);
+        const review = await prisma.review.findUnique({
+            where: {
+                reviewId: reviewId  // Change this line
+            },
+            include: {
+                reviewer: { 
+                    select: {
+                        firstname: true, 
+                        lastname: true,
+                    }
+                }, 
+                criterionGrades: {
+                    include: {
+                        criterion: {
+                            include: { 
+                                criterionRatings: true
+                            }
+                        }
+                    }
+                },
+                submission: {
+                    include: {
+                        assignment: {
+                            include: {
+                                rubric: true
+                            }
+                        }
+                    }
+                }
+            }
+        }); 
+        
+        if (!review) {
+            console.log('No review found for ID:', reviewId);
+            throw new apiError("Review not found", 404);
+        }
+
+        // Add isPeerReview field
+        const reviewWithPeerFlag = {
+            ...review,
+            isPeerReview: review.reviewer.role === "STUDENT"  // Determine isPeerReview based on reviewer role
+        };
+
+        return reviewWithPeerFlag;
+    } catch (error) {
+        console.error("Error in getReviewById:", error);
+        throw new apiError(`Failed to retrieve single review: ${error.message}`, 500);
+    }
+};
 
 const getPeerReviews = async (submissionId) => {
     try {
@@ -279,5 +331,6 @@ export default {
     deleteReview,
     createReview,
     getReviewDetails,
-    getUserReviews
+    getUserReviews,
+    getReviewById
 };

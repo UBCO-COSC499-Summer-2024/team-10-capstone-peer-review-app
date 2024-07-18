@@ -89,6 +89,27 @@ export const getUserReviews = asyncErrorHandler(async (req, res) => {
     });
 });
 
+export const getReviewById = asyncErrorHandler(async (req, res) => {
+    const { reviewId } = req.body;
+    console.log('Received reviewId:', reviewId);
+    if (!reviewId) {
+        return res.status(400).json({
+            status: "Error",
+            message: "reviewId is required"
+        });
+    }
+    try {
+        const review = await reviewService.getReviewById(reviewId);
+        return res.status(200).json({
+            status: "Success",
+            data: review
+        });
+    } catch (error) {
+        console.error('Error in getReviewById:', error);
+        throw error;
+    }
+});
+
 // Export all controller methods
 export default {
     getPeerReviews,
@@ -98,5 +119,6 @@ export default {
     updateReview,
     deleteReview,
     getReviewDetails,
-    getUserReviews
+    getUserReviews,
+    getReviewById
 };

@@ -23,7 +23,7 @@ import Submission from "./pages/Submission";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedRoute from "./components/global/ProtectedRoute";
 import NotFound from "./components/global/NotFound";
-
+import SubmitReview from "./pages/SubmitReview";
 import TitleUpdater from "@/utils/TitleUpdater";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -158,7 +158,17 @@ function MainLayout() {
 							/>
 						}
 					/>
+					<Route
+						path="/review/:reviewId"
+						element={
+							<ProtectedRoute
+								element={<SubmitReview />}
+								allowedRoles={["STUDENT", "INSTRUCTOR", "ADMIN"]}
+							/>
+						}
+					/>
 					<Route path="*" element={<NotFound />} />
+
 				</Routes>
 			</div>
 			<Toaster />

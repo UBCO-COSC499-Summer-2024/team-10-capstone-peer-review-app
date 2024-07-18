@@ -21,23 +21,6 @@ const ManageClass = () => {
 		return <div>You do not have permission to view this page.</div>;
 	}
 
-	const handleDeleteClick = (classItem) => {
-		setSelectedClass(classItem);
-		setDeleteDialogOpen(true);
-	};
-
-	const handleDeleteClass = async () => {
-		if (selectedClass) {
-			await removeClass(selectedClass.classId);
-			setDeleteDialogOpen(false);
-			setSelectedClass(null);
-		}
-	};
-
-	const handleEditClick = (classItem) => {
-		setSelectedClass(classItem);
-		setEditModalOpen(true);
-	};
 
 	return (
 		<div className="max-w-7xl mx-auto px-6">
@@ -57,8 +40,6 @@ const ManageClass = () => {
 					<ClassCard
 						key={classItem.classId}
 						classItem={classItem}
-						onEdit={handleEditClick}
-						onDelete={handleDeleteClick}
 					/>
 				))}
 			</div>
@@ -67,21 +48,6 @@ const ManageClass = () => {
 				show={addModalOpen}
 				onClose={() => setAddModalOpen(false)}
 			/>
-			{selectedClass && (
-				<DeleteClassDialog
-					open={deleteDialogOpen}
-					onOpenChange={setDeleteDialogOpen}
-					selectedClass={selectedClass}
-					handleDeleteClass={handleDeleteClass}
-				/>
-			)}
-			{selectedClass && (
-				<EditClassDialog
-					open={editModalOpen}
-					onOpenChange={setEditModalOpen}
-					classItem={selectedClass}
-				/>
-			)}
 		</div>
 	);
 };

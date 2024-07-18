@@ -69,7 +69,7 @@ export const ClassProvider = ({ children }) => {
 			}
 			setIsClassLoading(false);
 		} catch (error) {
-			console.error("Failed to add class", error);
+			console.error(error);
 		}
 	};
 

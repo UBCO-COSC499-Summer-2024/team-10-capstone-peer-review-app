@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Users, FileText, Edit, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const ClassCard = ({ classItem, onEdit, onDelete }) => {
+const ClassCard = ({ classItem }) => {
   const navigate = useNavigate();
 
   const truncateDescription = (text, lines = 3) => {

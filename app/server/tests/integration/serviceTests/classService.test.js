@@ -23,10 +23,9 @@ describe("Class Service Integration Tests", () => {
                 description: "This is a test class",
                 startDate: new Date(),
                 endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
-                instructorId: 1
             };
 
-            const newClass = await classService.createClass(testClass);
+            const newClass = await classService.createClass(testClass, 1);
 
             expect(newClass).toBeTruthy();
             expect(newClass.classname).toBe(testClass.classname);

@@ -74,7 +74,7 @@ const PeerReview = () => {
             );
       
             return (
-              <Card key={item.submissionId} className="w-full bg-white shadow-md hover:shadow-lg transition-shadow duration-300">
+              <Card key={item.submissionId} className="w-full shadow-md hover:shadow-lg transition-shadow duration-300">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-lg font-semibold text-primary">{item.assignment.title}</CardTitle>
                   <div className="flex justify-between items-center">

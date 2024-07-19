@@ -108,7 +108,7 @@ const AssignedPR = () => {
   }
 
   return (
-    <div className="w-full mx-5 p-6 bg-background">
+    <div className="w-full mx-5 p-6 ">
       <div className="flex items-center space-x-4 mb-4">
         <Link to="/peer-review" className="text-xl text-primary">
           <ChevronLeft className="h-6 w-6" />

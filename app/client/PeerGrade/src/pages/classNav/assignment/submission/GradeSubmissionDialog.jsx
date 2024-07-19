@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 
 const GradeSubmissionDialog = ({ submission, rubrics, open, onClose, onGradeSubmit }) => (
     <Dialog open={open} onOpenChange={onClose}>
-        <DialogContent className="max-w-4xl h-[80vh]">
+        <DialogContent className="max-w-4xl max-h-[80vh]">
             <DialogHeader>
                 <DialogTitle>Grade Assignment</DialogTitle>
             </DialogHeader>
@@ -17,7 +17,9 @@ const GradeSubmissionDialog = ({ submission, rubrics, open, onClose, onGradeSubm
                 onSubmit={onGradeSubmit}
                 className="flex-1 overflow-auto"
             >
-                {rubrics.map((rubric, rubricIndex) => (
+                {rubrics.length === 0 && <div className='text-center text-gray-500'>No rubrics were found. Please assign a rubric to this assignment before grading it.</div>}
+                {rubrics?.map((rubric, rubricIndex) => (
+                <div>
                     <Card key={rubricIndex} className="mb-6">
                         <CardHeader>
                             <CardTitle>{rubric.title}</CardTitle>
@@ -82,10 +84,11 @@ const GradeSubmissionDialog = ({ submission, rubrics, open, onClose, onGradeSubm
                             )}
                         </CardContent>
                     </Card>
-                ))}
-                <Button type="submit" className="mt-4">
-                    Submit Grades
-                </Button>                                          
+                    <Button type="submit" className="mt-4">
+                        Submit Grades
+                    </Button>
+                </div>
+                ))}                                        
             </form>
         </DialogContent>
     </Dialog>

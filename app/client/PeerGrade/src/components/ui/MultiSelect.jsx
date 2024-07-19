@@ -23,8 +23,8 @@ const MultiSelect = ({ options, value, onChange, placeholder }) => {
             : placeholder || "Select options"}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
-        <ScrollArea className="h-[300px]">
+      <PopoverContent className="min-w-[200px] p-0">
+        <ScrollArea>
           {options.map((option) => (
             <div key={option.value} className="flex items-center space-x-2 p-2">
               <Checkbox

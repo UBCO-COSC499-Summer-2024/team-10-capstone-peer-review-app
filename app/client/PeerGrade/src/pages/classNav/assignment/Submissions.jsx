@@ -293,8 +293,20 @@ const Submissions = () => {
         });
         return;
     }
+
     setSelectedSubmission(submission);
     await fetchRubrics(assignmentId);
+
+    if (rubrics.length === 0) {
+        console.error("No rubrics available to grade with.");
+        toast({
+            title: "Error",
+            description: "Please assign or create a rubric to this assignment to be able to grade it.",
+            variant: "destructive"
+        });
+        return;
+    }
+    
     setGradeDialogOpen(true);
 };
 
@@ -434,7 +446,7 @@ const Submissions = () => {
                     <DialogHeader>
                         <DialogTitle>Assign Peer Reviewers</DialogTitle>
                     </DialogHeader>
-                    <div className="space-y-4">
+                    <div className="space-y-4 min-h-[4vh] flex items-center justify-center">
                         <MultiSelect
                             options={allStudents.map(student => ({
                                 value: student.userId,

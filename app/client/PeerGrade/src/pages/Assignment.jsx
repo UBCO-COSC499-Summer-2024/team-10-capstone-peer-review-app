@@ -50,8 +50,6 @@ const Assignment = () => {
 
   return (
     <div className="container mx-auto px-4 pb-8">
-    
-      
       <Card className="mb-8 bg-card">
         <CardHeader>
           <div className='flex w-full items-center'>
@@ -80,8 +78,8 @@ const Assignment = () => {
               <CardHeader>
                 <CardTitle>Assignment File</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className='bg-accent rounded-md flex justify-center items-center p-4'>
+              <CardContent className='pt-0'>
+                <div className='bg-accent rounded-md flex justify-center items-center p-4 pt-12'>
                   <PDFViewer url={assignment.assignmentFilePath} scale="1"/>
                 </div>
               </CardContent>

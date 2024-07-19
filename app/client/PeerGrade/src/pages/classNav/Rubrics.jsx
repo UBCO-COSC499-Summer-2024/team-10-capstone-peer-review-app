@@ -149,20 +149,21 @@ const Rubrics = () => {
         )}
       </div>
       <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+        {/* <DrawerContent className='w-1/3'> */}
         <DrawerContent>
           <DrawerHeader>
             <DrawerTitle>{selectedRubric?.title}</DrawerTitle>
             <DrawerDescription>{selectedRubric?.description}</DrawerDescription>
           </DrawerHeader>
-          <div className="  max-h-[60vh] overflow-y-auto">
+          <div className="max-h-[60vh] overflow-y-auto">
             {selectedRubric && selectedRubric.criteria && selectedRubric.criteria.map((criterion, index) => (
               <div key={index} className="mb-4 px-4">
-                <p>Max Points: {criterion.maxMark}</p>
+                <p className='mb-8 font-semibold'>Max Points: {criterion.maxMark}</p>
+                <p className='mb-2 font-semibold'>Ratings:</p>
                 <div className="mt-2">
                   {criterion.criterionRatings && criterion.criterionRatings.map((rating, ratingIndex) => (
-                    <div key={ratingIndex} className="flex items-center justify-between">
-                      <p>{rating.description}</p>
-                      <p>{rating.points} Points</p>
+                    <div key={ratingIndex} className="flex items-center">
+                      <p>{rating.description}: {rating.points} Points</p>
                     </div>
                   ))}
                 </div>

@@ -221,6 +221,7 @@ const ManageClassDashboard = () => {
   const confirmDeleteClass = async () => {
     try {
       const result = await deleteClass(classId);
+      console.log(result);
       if (result.status === "Success") {
         toast({
           title: "Success",
@@ -229,10 +230,10 @@ const ManageClassDashboard = () => {
         setClasses(classes.filter(c => c.classId !== classId));
         navigate("/manage-class");  // Redirect to the classes list page
       } else {
-        throw new Error(result.message);
+        throw new Error(result);
       }
     } catch (error) {
-      console.error("An error occurred while deleting the class.", error);
+      console.error(error);
     } finally {
       setDeleteDialogOpen(false);
     }

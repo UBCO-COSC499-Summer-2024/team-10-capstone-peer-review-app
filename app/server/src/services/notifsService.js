@@ -150,28 +150,29 @@ export async function sendNotificationToGroup(userId, title, content, groupId, t
 }
 
 export async function sendNotificationToRole(userId, title, content, role, type) {
-	try {
-		const usersWithRole = await prisma.user.findMany({
-			where: { role: role }
-		});
+    try {
+        const usersWithRole = await prisma.user.findMany({
+            where: { role: role }
+        });
 
-		const notifications = usersWithRole.map(user => ({
-			receiverId: user.userId,
-			title: title,
-			content: content,
-			senderId: userId,
-		}));
+        const notifications = usersWithRole.map(user => ({
+            receiverId: user.userId,
+            title: title,
+            content: content,
+            senderId: userId,
+            type: type
+        }));
 
-		await prisma.notification.createMany({ data: notifications });
+        await prisma.notification.createMany({ data: notifications });
 
-		return { status: "Success", message: "Notifications sent to role successfully" };
-	} catch (error) {
-		if (error instanceof apiError) {
-			throw error;
-		} else {
-			throw new apiError("Failed to send notification to everyone of the role " + role, 500);
-		}
-	}
+        return { status: "Success", message: "Notifications sent to role successfully" };
+    } catch (error) {
+        if (error instanceof apiError) {
+            throw error;
+        } else {
+            throw new apiError("Failed to send notification to everyone of the role " + role, 500);
+        }
+    }
 }
 
 export async function sendNotificationToAll(userId, title, content, type) {

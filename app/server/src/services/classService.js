@@ -201,12 +201,6 @@ const updateClass = async (classId, updateData) => {
 
 const deleteClass = async (classId) => {
 	try {
-		await prisma.class.delete({
-			where: {
-				classId: classId
-			}
-		});
-
 		const classInfo = await prisma.class.findUnique({
 			where: {
 				classId: classId
@@ -214,8 +208,14 @@ const deleteClass = async (classId) => {
 		});
 
 		await sendNotificationToRole(null, `The class '${classInfo.classname}' has been deleted`, "", "ADMIN", 'class');
+		
+		await prisma.class.delete({
+			where: {
+				classId: classId
+			}
+		});
 	} catch (error) {
-		throw new apiError("Failed to delete class", 500);
+		throw new apiError(`Failed to delete class: ${error}`, 500);
 	}
 };
 

@@ -20,6 +20,10 @@ export const ClassProvider = ({ children }) => {
 	// These are the setClass States that retrieve any new data from the backend
 	// setUserClasses = students and instructors
 
+	useEffect(() => {
+		setClassData();
+	}, [user]);
+
 	const setClassData = async () => {
 		if (user) {
 			if (user.role === "ADMIN") {

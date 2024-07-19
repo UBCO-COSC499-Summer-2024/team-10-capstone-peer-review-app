@@ -18,9 +18,15 @@
   
 
 ## Time entries from Clockify on this cycle:
-&nbsp; &nbsp; :watch: **Working on adding Notifications functionality** *(Total duration: 3.5 hours)*  
+
+
+&nbsp; &nbsp; :watch: **Working on the Workflows & Google Form w the team** *(Total duration: 1.1 hours)*  
   
-&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 18, 2024, 06:05 PM - Ongoing *(Ongoing)*  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 18, 2024, 08:19 PM - Thursday, July 18, 2024, 09:29 PM *(1.1 hours)*  
+
+&nbsp; &nbsp; :watch: **Working on adding Notifications functionality** *(Total duration: 5.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 18, 2024, 06:05 PM - Thursday, July 18, 2024, 08:18 PM *(2.2 hours)*  
   
 &nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 17, 2024, 12:03 PM - Wednesday, July 17, 2024, 01:00 PM *(0.9 hours)*  
   
@@ -56,15 +62,15 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* We're doing well (i think?) I feel there's gonna be quite a decent amount of crunching now but we are in okay shape in my opinion.
+* Tests... are hard...
+* What we wrote down for this week's peer-testing should help us w documentation.
 
 ## Goals for next cycle
-* 
-* 
-* 
-  
+* Work on documentation and more tests (integration testing especially)
+* Finally get Peer Reviews done.
+* Ideally start work on Group Peer Reviews.
+
   
 
 # Abdul's Log for Cycle 13

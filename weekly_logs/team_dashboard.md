@@ -6,35 +6,41 @@
 
 
 ### Major features worked on in c-14
-*  
-  
-*  
-  
-*  
-  
+* Refactoring/adding new tests & documentation
+
+* Peer Review-related work (dashboard/group reviews)
+
+* Create/Delete/Edit Categories 
+
+* Manage User Reports
+
+* Notifications
+
+* Integrate Enroll Request in Classes
+
+* Mergin PR's
 
 ### Major features completed in c-14
-*  
+* Integrate Enroll Request in Classes
   
-*  
-  
-*  
-  
+* Notifications
+
+* Mergin PR's and fixing conflicts
 
 ### Major features to work on for c-15
-*  
+* Peer Review-related work (Complete Peer-Reviewing other students)
   
-*  
+* Linking Groups and Group assignments together + Group Reviews
   
-*  
+* Create/Delete/Edit Categories
+
+* Smaller Tasks / Clean up tasks
   
 
 ### Team Issues and Hurdles for c-14
-*  
-  
-*  
-  
-*  
+*  On Thursday we didn't get much development time in since we were trying to resolve a bug that occured randomly. It ended up being a bug in the docker image that was recently pushed to node:22. This took a long time for us to end up figuring out so that cut out alot of our time yesterday. Also with setting up the questionarries in such that cut alot of our development time for this cycle
+
+*  We still need to set up peer reviews, which shouldn't be too hard, we have set it up between instructors and students. Also group stuff with assignments / needs to be set-up by ideally end of next week. 
   
 
 ### Clockify Dashboard for this Week

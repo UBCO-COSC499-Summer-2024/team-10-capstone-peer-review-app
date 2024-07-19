@@ -21,18 +21,18 @@ export const ClassProvider = ({ children }) => {
 	// setUserClasses = students and instructors
 
 	useEffect(() => {
-		const setClassData = async () => {
-			if (user) {
-				console.log("Fetching user for ClassContext", user);
-				if (user.role === "ADMIN") {
-					await setAdminClasses();
-				} else {
-					await setUserClasses(user.userId);
-				}
-			}
-		};
 		setClassData();
 	}, [user]);
+
+	const setClassData = async () => {
+		if (user) {
+			if (user.role === "ADMIN") {
+				await setAdminClasses();
+			} else {
+				await setUserClasses(user.userId);
+			}
+		}
+	};
 
 	const setUserClasses = async () => {
 		try {
@@ -73,7 +73,7 @@ export const ClassProvider = ({ children }) => {
 			}
 			setIsClassLoading(false);
 		} catch (error) {
-			console.error("Failed to add class", error);
+			console.error(error);
 		}
 	};
 
@@ -111,6 +111,7 @@ export const ClassProvider = ({ children }) => {
 		<ClassContext.Provider
 			value={{
 				classes,
+				setClasses,
 				isClassLoading,
 				setUserClasses,
 				setAdminClasses,

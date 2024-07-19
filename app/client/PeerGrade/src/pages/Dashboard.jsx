@@ -19,6 +19,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { getNotifications, deleteNotification } from "@/api/notifsApi";
 import NotifCard from "@/components/global/NotifCard";
 
+
 function Dashboard() {
 	const { user, userLoading } = useUser();
 	const { classes, isClassLoading } = useClass();

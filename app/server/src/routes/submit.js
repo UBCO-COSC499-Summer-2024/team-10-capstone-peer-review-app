@@ -13,7 +13,7 @@ router.get("/", (req, res) => {
   res.status(200).send("Submit route is working!");
 });
 
-router.get("/studentSubmission", getStudentSubmission);
+router.post("/studentSubmission", getStudentSubmission);
 
 router.post("/submissionsForAssignment", getSubmissionsForAssignment);
 

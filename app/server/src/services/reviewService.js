@@ -2,62 +2,148 @@ import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
 
 // Review operations
-const getPeerReviews = async (submissionId) => {
+const getReviewById = async (reviewId) => {
     try {
-        const submission = await prisma.review.findMany({
+        console.log('Fetching review with ID:', reviewId);
+        const review = await prisma.review.findUnique({
             where: {
-                submissionId: submissionId,
-                reviewType: "PEER"
-            }, include: {
-                rubric: {
+                reviewId: reviewId  // Change this line
+            },
+            include: {
+                reviewer: { 
+                    select: {
+                        firstname: true, 
+                        lastname: true,
+                    }
+                }, 
+                criterionGrades: {
                     include: {
-                        criteria: true
+                        criterion: {
+                            include: { 
+                                criterionRatings: true
+                            }
+                        }
                     }
                 },
-                criterionGrades: true
+                submission: {
+                    include: {
+                        assignment: {
+                            include: {
+                                rubric: true
+                            }
+                        }
+                    }
+                }
+            }
+        }); 
+        
+        if (!review) {
+            console.log('No review found for ID:', reviewId);
+            throw new apiError("Review not found", 404);
+        }
+
+        // Add isPeerReview field
+        const reviewWithPeerFlag = {
+            ...review,
+            isPeerReview: review.reviewer.role === "STUDENT"  // Determine isPeerReview based on reviewer role
+        };
+
+        return reviewWithPeerFlag;
+    } catch (error) {
+        console.error("Error in getReviewById:", error);
+        throw new apiError(`Failed to retrieve single review: ${error.message}`, 500);
+    }
+};
+
+const getPeerReviews = async (submissionId) => {
+    try {
+        const peerReviews = await prisma.review.findMany({
+            where: {
+                submissionId: submissionId,
+                reviewer: {
+                    role: "STUDENT"
+                }
+            },
+            include: {
+                reviewer: { 
+                    select: {
+                        firstname: true, 
+                        lastname: true,
+                    }
+                }, 
+                criterionGrades: {
+                    include: {
+                        criterion: {
+                            include: { 
+                                criterionRatings: true
+                            }
+                        }
+                    }
+                },
+                submission: {
+                    include: {
+                        assignment: {
+                            include: {
+                                rubric: true
+                            }
+                        }
+                    }
+                }
             }
         });
-
-        return submission;
+        return peerReviews;
     }
     catch (error) {
-        if (error instanceof apiError) {
-			throw error;
-		}
-        if (error instanceof apiError) {
-            throw error;
-        }
-        throw new apiError("Failed to retrieve submission", 500);
+        throw new apiError("Failed to retrieve peer reviews", 500);
     }
 }
 
 const getInstructorReview = async (submissionId) => {
     try {
-        const submission = await prisma.review.findMany({
+        const instructorReview = await prisma.review.findFirst({
             where: {
                 submissionId: submissionId,
-                reviewType: "INSTRUCTOR"
-            }, include: {
-                rubric: {
+                reviewer: {
+                    role: "INSTRUCTOR"
+                }
+            },
+            include: {
+                reviewer: { 
+                    select: {
+                        firstname: true, 
+                        lastname: true,
+                    }
+                }, 
+                criterionGrades: {
                     include: {
-                        criteria: true
+                        criterion: {
+                            include: { 
+                                criterionRatings: true
+                            }
+                        }
                     }
                 },
-                criterionGrades: true
+                submission: {
+                    include: {
+                        assignment: {
+                            include: {
+                                rubric: true
+                            }
+                        }
+                    }
+                }
             }
-        });
+        }); 
 
-        return submission;
+        return instructorReview; // This will be null if no review is found
     } catch (error) {
-        if (error instanceof apiError) {
-			throw error;
-		}
-        if (error instanceof apiError) {
-            throw error;
-        }
-        throw new apiError("Failed to retrieve submission", 500);
+        console.error("Error in getInstructorReview:", error);
+        throw new apiError("Failed to retrieve instructor review", 500);
     }
-}
+};
+
+
+
 
 const getAllReviews = async (submissionId) => {
     try {
@@ -1313,3 +1399,4 @@ export default {
     deleteReview,
     addGroupReview
 };
+

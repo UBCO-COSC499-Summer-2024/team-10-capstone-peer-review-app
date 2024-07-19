@@ -1,6 +1,6 @@
 
 # IDK why but node-18 does not create the openssl issue
-FROM node:22-slim 
+FROM node:20-slim 
 
 # Arguments for database and backend configurations
 ARG TEST_DB_PORT 

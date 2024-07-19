@@ -83,47 +83,72 @@ const removeAssignmentFromClass = async (assignmentId) => {
 	}
 };
 
-const updateAssignmentInClass = async (classId, assignmentId, updateData) => {
+const updateAssignmentInClass = async (classId, assignmentId, categoryId, updateData) => {
 	try {
-		const classInfo = await prisma.class.findUnique({
-			where: {
-				classId: classId
-			},
-			include: {
-				Assignments: true
-			}
-		});
-
-		if (!classInfo) {
-			throw new apiError("Class not found", 404);
+	  const classInfo = await prisma.class.findUnique({
+		where: { classId },
+		include: { Assignments: true }
+	  });
+  
+	  if (!classInfo) {
+		throw new apiError("Class not found", 404);
+	  }
+  
+	  const assignment = await prisma.assignment.findUnique({
+		where: { assignmentId }
+	  });
+  
+	  if (!assignment) {
+		throw new apiError("Assignment not found", 404);
+	  }
+  
+	  // Check if the assignment due date is within the class duration
+	  let dueDate = new Date(updateData.dueDate);
+	  let startDate = new Date(classInfo.startDate);
+	  let endDate = new Date(classInfo.endDate);
+  
+	  if (dueDate < startDate || dueDate > endDate) {
+		throw new apiError("Assignment due date is outside the class duration", 400);
+	  }
+  
+	  const updatedAssignment = await prisma.assignment.update({
+		where: { assignmentId },
+		data: {
+		  ...updateData,
+		  categoryId // Update the category if it has changed
 		}
-
-		const assignment = await prisma.assignment.findUnique({
-			where: {
-				assignmentId: assignmentId
+	  });
+  
+	  // Update the Category table if the category has changed
+	  if (assignment.categoryId !== categoryId) {
+		await prisma.category.update({
+		  where: { categoryId: assignment.categoryId },
+		  data: {
+			assignments: {
+			  disconnect: { assignmentId }
 			}
+		  }
 		});
-
-		if (!assignment) {
-			throw new apiError("Assignment not found", 404);
-		}
-
-		const updatedAssignment = await prisma.assignment.update({
-			where: {
-				assignmentId: assignmentId
-			},
-			data: updateData
+  
+		await prisma.category.update({
+		  where: { categoryId },
+		  data: {
+			assignments: {
+			  connect: { assignmentId }
+			}
+		  }
 		});
-
-		return updatedAssignment;
+	  }
+  
+	  return updatedAssignment;
 	} catch (error) {
-		if (error instanceof apiError) {
-			throw error;
-		} else {
-			throw new apiError("Failed to update assignment in class", 500);
-		}
+	  if (error instanceof apiError) {
+		throw error;
+	  } else {
+		throw new apiError("Failed to update assignment in class", 500);
+	  }
 	}
-};
+  };
 
 
 const getAssignmentInClass = async (classId, assignmentId) => {

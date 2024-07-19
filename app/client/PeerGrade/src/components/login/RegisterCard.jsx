@@ -274,7 +274,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 								htmlFor="selectUserType"
 								className="block text-sm font-medium text-gray-700"
 							>
-								Select User Type (debug):
+								Select User Type:
 							</label>
 							{/*Popover content box doesnt match width, will fix later!*/}
 							<Popover open={open} onOpenChange={setOpen}>

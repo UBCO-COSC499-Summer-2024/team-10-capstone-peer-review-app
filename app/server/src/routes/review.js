@@ -14,6 +14,9 @@ import {
     updateReview,
     deleteReview,
     getPeerReviews,
+    getReviewDetails,
+    getUserReviews,
+    getReviewById,
     getOpenReviewsAssignment,
     getClosedReviewsAssignment,
     getOpenReviewsClass,
@@ -74,6 +77,8 @@ router.post("/studentReview", getPeerReviews);
 // get all reviews by an instructor for an assignment
 router.post("/instructorReview", getInstructorReview);
 
+router.post("/userReviews", getUserReviews);
+
 // get the review done on an submission
 router.post("/review", getReviews);
 
@@ -92,7 +97,11 @@ router.post("/review", getReviews);
 //     ]
 // }
 
+router.post("/reviewId", getReviewById);
+
 router.post("/createReview", createReview); 
+
+router.get("/reviewDetails/:reviewId", getReviewDetails);
 
 // update a review on a submission
 router.post("/updateReview", updateReview);

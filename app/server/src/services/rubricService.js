@@ -60,59 +60,8 @@ const createRubricsForAssignment = async (creatorId, assignmentId, rubricData) =
     }
 };
 
-		if (!assignment) {
-			throw new apiError("Assignment not found", 404);
-		}
 
-		// Ensure criteria is always an array
-		const criteria = Array.isArray(rubricData.criterion)
-			? rubricData.criterion
-			: [rubricData.criterion];
 
-		const newRubric = await prisma.rubric.create({
-			data: {
-				title: rubricData.title,
-				description: rubricData.description,
-				totalMarks: rubricData.totalMarks,
-				creatorId: creatorId,
-				criteria: {
-					create: criteria.map((criterion) => ({
-						title: criterion.title,
-						minMark: criterion.minPoints,
-						maxMark: criterion.maxPoints,
-						criterionRatings: {
-							create: criterion.criterionRatings.map((rating) => ({
-								description: rating.text,
-								points: rating.points
-							}))
-						}
-					}))
-				},
-				assignments: {
-					create: {
-						assignmentId: assignmentId
-					}
-				}
-			},
-			include: {
-				criteria: {
-					include: {
-						criterionRatings: true
-					}
-				},
-				assignments: true
-			}
-		});
-
-		return newRubric;
-	} catch (error) {
-		console.error("Error in createRubricsForAssignment:", error);
-		throw new apiError(
-			`Failed to create rubrics for assignment: ${error.message}`,
-			500
-		);
-	}
-};
 
 const getRubricsForAssignment = async (assignmentId) => {
 	try {
@@ -179,12 +128,38 @@ const getAllRubrics = async () => {
 	}
 };
 
+
+const getAllRubricsInClass = async (classId) => {
+	try {
+		const rubrics = await prisma.rubric.findMany({
+			where: {
+				classId: classId
+			}
+		});
+		return rubrics;
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		}
+		throw new apiError("Failed to get all rubrics", 500);
+	}
+};
+
+
+
 const getRubricById = async (rubricId) => {
 	console.log(rubricId);
 	try {
 		const rubric = await prisma.rubric.findUnique({
 			where: { rubricId },
-			include: { criteria: true }
+			include: { 
+				criteria: 
+				{
+					include: {
+						criterionRatings: true
+					}
+				}
+			 },
 		});
 
 		if (!rubric) {
@@ -467,6 +442,7 @@ export default {
 	createRubricsForAssignment,
 	getRubricsForAssignment,
 	getAllRubrics,
+	getAllRubricsInClass,
 	getRubricById,
 	updateRubricsForAssignment,
 	deleteRubricsForAssignment,

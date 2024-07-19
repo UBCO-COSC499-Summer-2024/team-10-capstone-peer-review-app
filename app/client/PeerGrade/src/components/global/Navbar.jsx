@@ -147,7 +147,7 @@ export default function AppNavbar() {
   const isActive = (path) => {
     return location.pathname === path || location.pathname.startsWith(path);
   };
-
+  
   const toggleCardVisibility = () => {
     if (isCardVisible) {
       setCardOpacity(0);
@@ -162,227 +162,194 @@ export default function AppNavbar() {
     return null;
   }
 
-  return (
-    <div className="flex w-[170px] z-[60] h-screen fixed">
-      <div className="py-6 bg-white shadow-md flex flex-col items-center justify-between h-screen w-full">
-        <div className="flex flex-col items-center w-full flex-grow">
-          <div className="mb-4">
-            <Link to={user.role === "ADMIN" ? "/admin" : "/dashboard"} className="flex items-center justify-center">
-              <img src="/logo.png" className="w-12 h-12" alt="Logo" />
-            </Link>
-          </div>
-          <NavigationMenu className="px-3 flex items-center justify-center flex-grow w-full">
-            <NavigationMenuList className="w-full flex flex-col space-y-8 items-center justify-center px-3">
-              <NavigationMenuItem className="w-full flex items-center justify-center">
-                <Link
-                  to={user.role === "ADMIN" ? "/admin" : "/dashboard"}
-                  className={cn(
-                    navigationMenuTriggerStyle(),
-                    "flex flex-col items-center justify-center w-full h-full",
-                    isActive(user.role === "ADMIN" ? "/admin" : "/dashboard") && "font-bold"
-                  )}
-                >
-                  <Home className="w-6 h-6 mb-1" />
-                  <span className="md:block">Dashboard</span>
-                </Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem className="w-full flex items-center justify-center">
-                <Sheet open={isPeerReviewSheetOpen} onOpenChange={setIsPeerReviewSheetOpen}>
-                  <SheetTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className={cn(
-                        navigationMenuTriggerStyle(),
-                        "flex flex-col items-center justify-center font-bold w-full h-full"
-                      )}
-                      onClick={() => setIsPeerReviewSheetOpen(true)}
-                    >
-                      <ClipboardList className="w-6 h-6 mb-1" />
-                      Peer-Review
-                    </Button> 
-                  </SheetTrigger>
-                  <SheetContent side="left" className="w-[300px] border-l border-gray-200 ml-[-20px]">
-                    <SheetHeader>
-                      <SheetTitle>My Peer-Reviews</SheetTitle>
-                    </SheetHeader>
-                    <div className="mt-4">
-                      <p className="text-sm leading-snug text-muted-foreground">
-                        {assignmentsData.length} Reviews Assigned
-                      </p>
-                      <ul className="bg-white flex flex-col justify-center items-center gap-3 p-6 w-full mt-2">
-                        {assignmentsData.map((assignment) => (
-                          <ListItem
-                            key={assignment.assignmentId}
-                            title={assignment.title}
-                            href={`/assignedPR/${assignment.assignmentId}`}
-                            className={cn(
-                              "w-full",
-                              isActive(
-                                `/assignedPR/${assignment.assignmentId}`
-                              ) && "bg-accent text-accent-foreground"
-                            )}
-                            onItemClick={() => setIsPeerReviewSheetOpen(false)}
-                          >
-                            {assignment.description}
-                          </ListItem>
-                        ))}
-                        <ListItem
-                          title="All Peer Reviews"
-                          href="/peer-review"
-                          className={cn(
-                            "w-full",
-                            isActive("/peer-review")
-                              ? "bg-accent text-accent-foreground"
-                              : "bg-blue-100"
-                          )}
-                          onItemClick={() => setIsPeerReviewSheetOpen(false)}
-                        >
-                          View all peer reviews.
-                        </ListItem>
-                      </ul>
-                    </div>
-                  </SheetContent>
-                </Sheet>
-              </NavigationMenuItem>
-              <NavigationMenuItem className="w-full flex items-center justify-center">
-                <Sheet open={isClassesSheetOpen} onOpenChange={setIsClassesSheetOpen}>
-                  <SheetTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      onClick={() => setIsClassesSheetOpen(true)}
-                      className={cn(
-                        navigationMenuTriggerStyle(),
-                        "flex flex-col items-center justify-center font-bold w-full h-full",
-                        (isActive("/class") || isActive("/manage-class")) && "font-bold"
-                      )}
-                    >
-                      <Users className="w-6 h-6 mb-1" />
-                      Classes
-                    </Button>
-                  </SheetTrigger>
-                  <SheetContent side="left" className="w-[300px] border-l border-gray-200 ml-[-20px]">
-                    <SheetHeader>
-                      <SheetTitle>My Classes</SheetTitle>
-                    </SheetHeader>
-                    <div className="mt-4">
-                      <p className="text-sm leading-snug text-muted-foreground">
-                        {classes.length} Active Classes
-                      </p>
-                      <ul className="bg-white flex flex-col justify-center items-center gap-3 p-6 w-full">
-                        {user.role === "STUDENT" && (
-                          <ListItem
-                            title="Enroll in Classes"
-                            href="/enrollment"
-                            className={cn(
-                              "w-full",
-                              isActive("/student-enrollment-requests")
-                                ? "bg-accent text-accent-foreground"
-                                : "bg-blue-100"
-                            )}
-                            onItemClick={() => setIsClassesSheetOpen(false)}
-                          >
-                            Search and enroll in new classes.
-                          </ListItem>
-                        )}
-                        {(user.role === "INSTRUCTOR" ||
-                          user.role === "ADMIN") && (
-                          <ListItem
-                            title="Manage Classes"
-                            href="/manage-class"
-                            className={cn(
-                              "w-full",
-                              isActive("/manage-class")
-                                ? "bg-accent text-accent-foreground"
-                                : "bg-blue-100"
-                            )}
-                            onItemClick={() => setIsClassesSheetOpen(false)}
-                          >
-                            Manage classes and enrollments.
-                          </ListItem>
-                        )}
-                        {classes.map((classItem) => (
-                          <ListItem
-                            key={classItem.classId}
-                            title={classItem.classname}
-                            href={`/class/${classItem.classId}`}
-                            className={cn(
-                              "w-full",
-                              isActive(`/class/${classItem.classId}`) &&
-                                "bg-accent text-accent-foreground"
-                            )}
-                            onItemClick={() => setIsClassesSheetOpen(false)}
-                          >
-                            {classItem.description}
-                          </ListItem>
-                        ))}
-                      </ul>
-                    </div>
-                  </SheetContent>
-                </Sheet>
-              </NavigationMenuItem>
-              <NavigationMenuItem className="w-full flex items-center justify-center">
-                <Link
-                  to="/settings"
-                  className={cn(
-                    navigationMenuTriggerStyle(),
-                    "flex flex-col items-center justify-center w-full h-full",
-                    isActive("/settings") && "font-bold"
-                  )}
-                >
-                  <Settings className="w-6 h-6 mb-1" />
-                  Settings
-                </Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem className="w-full flex items-center justify-center">
-                {user.role !== "ADMIN" && (
-                  <Link
-                    to="/report"
-                    className={cn(
-                      navigationMenuTriggerStyle(),
-                      "flex flex-col items-center justify-center w-full h-full",
-                      isActive("/report") && "font-bold"
-                    )}
-                  >
-                    <MessageSquareWarning className="w-6 h-6 mb-1" />
-                    Report{user.role === "INSTRUCTOR" ? "s" : ""}
-                  </Link>
-                )}
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-        </div>
-        <div className="flex flex-col items-center space-y-2">
-          <Link to="/notifications" className="enabled:rounded-full">
-            <Button
-              variant="ghost"
-              className="w-16 h-16 enabled:rounded-full relative"
-              disabled={!user}
-              title="Notifications"
-            >
-              <Bell className='w-6 h-6' />
-              {notifications.length > 0 && (
-                <span className="absolute top-5 right-5 block h-2 w-2 bg-red-600 rounded-full ring-2 ring-white"></span>
-              )}
-            </Button>
-          </Link>
-          <Button
-            className="w-16 h-16 rounded-full shadow-lg"
-            variant="avatar"
-            onClick={toggleCardVisibility}
-            disabled={!user}
-          >
-            <Avatar className="w-14 h-14 rounded-full ">
-              <AvatarImage
-                src={user.avatarUrl}
-                alt={`${user.firstname} ${user.lastname}`}
-              />
-              <AvatarFallback className="text-2xl">
-                {getInitials(user.firstname, user.lastname)}
-              </AvatarFallback>
-            </Avatar>
-          </Button>
-        </div>
-      </div>
+	return (
+		<div className="flex w-[170px] z-[60] h-screen fixed">
+			<div className="py-6 bg-white shadow-md flex flex-col items-center justify-between h-screen w-full">
+				<div className="flex flex-col items-center w-full flex-grow">
+					<div className="mb-4">
+						<Link to={user.role === "ADMIN" ? "/admin" : "/dashboard"} className="flex items-center justify-center">
+							<img src="/logo.png" className="w-12 h-12" alt="Logo" />
+						</Link>
+					</div>
+					<NavigationMenu className="px-3 flex items-center justify-center flex-grow w-full">
+						<NavigationMenuList className="w-full flex flex-col space-y-8 items-center justify-center px-3">
+							<NavigationMenuItem className="w-full flex items-center justify-center">
+								<Link
+									to={user.role === "ADMIN" ? "/admin" : "/dashboard"}
+									className={cn(
+										navigationMenuTriggerStyle(),
+										"flex flex-col items-center justify-center w-full h-full",
+										isActive(user.role === "ADMIN" ? "/admin" : "/dashboard") && "font-bold"
+									)}
+								>
+									<Home className="w-6 h-6 mb-1" />
+									<span className="md:block">Dashboard</span>
+								</Link>
+							</NavigationMenuItem>
+							<NavigationMenuItem className="w-full flex items-center justify-center">
+								<Sheet open={isPeerReviewSheetOpen} onOpenChange={setIsPeerReviewSheetOpen}>
+									<SheetTrigger asChild>
+										<Button
+											variant="ghost"
+											className={cn(
+												navigationMenuTriggerStyle(),
+												"flex flex-col items-center justify-center font-bold w-full h-full"
+											)}
+											onClick={() => setIsPeerReviewSheetOpen(true)}
+										>
+											<ClipboardList className="w-6 h-6 mb-1" />
+											Reviews
+										</Button>
+									</SheetTrigger>
+									<SheetContent side="left" className="w-[300px] border-l border-gray-200 ml-[-20px]">
+										<SheetHeader>
+											<SheetTitle>My Peer-Reviews</SheetTitle>
+										</SheetHeader>
+										<div className="mt-4">
+											<p className="text-sm leading-snug text-muted-foreground">
+												{assignmentsData.length} Reviews Assigned
+											</p>
+											<ul className="bg-white flex flex-col justify-center items-center gap-3 p-6 w-full mt-2">
+												{assignmentsData.map((assignment) => (
+													<ListItem
+
+													key={assignment.assignmentId}
+													title={assignment.title}
+													href={`/assignedPR/${assignment.assignmentId}`}
+													className="w-full"
+													onItemClick={() => setIsPeerReviewSheetOpen(false)}
+													>
+													{assignment.description}
+													</ListItem>
+												))}
+												<ListItem
+													title="All Peer Reviews"
+													href="/peer-review"
+													className="w-full bg-blue-100"
+													onItemClick={() => setIsPeerReviewSheetOpen(false)}
+												>
+													View all peer reviews.
+												</ListItem>
+											</ul>
+										</div>
+									</SheetContent>
+								</Sheet>
+							</NavigationMenuItem>
+							<NavigationMenuItem className="w-full flex items-center justify-center">
+								<Sheet open={isClassesSheetOpen} onOpenChange={setIsClassesSheetOpen}>
+									<SheetTrigger asChild>
+										<Button
+											variant="ghost"
+											onClick={() => setIsClassesSheetOpen(true)}
+											className={cn(
+												navigationMenuTriggerStyle(),
+												"flex flex-col items-center justify-center font-bold w-full h-full",
+												(isActive("/classes") || isActive("/manageclass")) && "font-bold"
+											)}
+										>
+											<Users className="w-6 h-6 mb-1" />
+											Classes
+										</Button>
+									</SheetTrigger>
+									<SheetContent side="left" className="w-[300px] border-l border-gray-200 ml-[-20px]">
+										<SheetHeader>
+											<SheetTitle>My Classes</SheetTitle>
+										</SheetHeader>
+										<div className="mt-4">
+											<p className="text-sm leading-snug text-muted-foreground">
+												{classes.length} Active Classes
+											</p>
+											<ul className="bg-white flex flex-col justify-center items-center gap-3 p-6 w-full">
+												{classes.map((classItem) => (
+													<ListItem
+													key={classItem.classId}
+													title={classItem.classname}
+													href={`/class/${classItem.classId}`}
+													className="w-full"
+													onItemClick={() => setIsClassesSheetOpen(false)}
+													>
+													{classItem.description}
+													</ListItem>
+												))}
+												{(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (
+													<ListItem
+													title="Manage Classes"
+													href="/manageclass"
+													className="w-full bg-blue-100"
+													onItemClick={() => setIsClassesSheetOpen(false)}
+													>
+													Administer classes and assignments.
+													</ListItem>
+												)}
+											</ul>
+										</div>
+									</SheetContent>
+								</Sheet>
+							</NavigationMenuItem>
+							<NavigationMenuItem className="w-full flex items-center justify-center">
+								<Link
+									to="/settings"
+									className={cn(
+										navigationMenuTriggerStyle(),
+										"flex flex-col items-center justify-center w-full h-full",
+										isActive("/settings") && "font-bold"
+									)}
+								>
+									<Settings className="w-6 h-6 mb-1" />
+									Settings
+								</Link>
+								</NavigationMenuItem>
+							<NavigationMenuItem className="w-full flex items-center justify-center">
+								{user.role !== "ADMIN" && (
+									<Link
+									to="/report"
+									className={cn(
+										navigationMenuTriggerStyle(),
+										"flex flex-col items-center justify-center w-full h-full",
+										isActive("/report") && "font-bold"
+									)}
+									>
+									<MessageSquareWarning className="w-6 h-6 mb-1" />
+									Report{user.role === "INSTRUCTOR" ? "s" : ""}
+									</Link>
+								)}
+							</NavigationMenuItem>
+						</NavigationMenuList>
+					</NavigationMenu>
+				</div>
+				<div className="flex flex-col items-center space-y-2">
+					<Link to="/notifications" className="enabled:rounded-full">
+					<Button
+						variant="ghost"
+						className="w-16 h-16 enabled:rounded-full relative"
+						disabled={!user}
+						title="Notifications"
+					>
+						<Bell className='w-6 h-6' />
+						{notifications.length > 0 && (
+							<span className="absolute top-5 right-5 block h-2 w-2 bg-red-600 rounded-full ring-2 ring-white"></span>
+						)}
+					</Button>
+					</Link>
+					<Button
+						className="w-16 h-16 rounded-full shadow-lg"
+						variant="avatar"
+						onClick={toggleCardVisibility}
+						disabled={!user}
+					>
+
+					<Avatar className="w-14 h-14 rounded-full ">
+						<AvatarImage
+						src={user.avatarUrl}
+						alt={`${user.firstname, user.lastname}`}
+						/>
+						<AvatarFallback className="text-2xl">
+						{getInitials(user.firstname, user.lastname)}
+						</AvatarFallback>
+					</Avatar>
+					</Button>
+				</div>
+			</div>
       {isCardVisible && (
         <Card
           className="w-[480px] transition-opacity duration-300 ease-in-out notification-card h-auto fixed left-[180px] bottom-3 z-50 shadow-md bg-white"

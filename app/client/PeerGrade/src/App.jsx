@@ -14,20 +14,20 @@ import EditClass from "./pages/classNav/EditClass";
 import AssignmentCreation from "./pages/classNav/assignment/AssignmentCreation";
 import Assignment from "./pages/Assignment";
 import AssignedPR from "./pages/AssignedPR";
-import PeerReview from "./pages/PeerReview";
+import PeerReview from "./pages/Reviews";
 import Settings from "./pages/Settings";
 import AppNavbar from "./components/global/Navbar";
 import ManageClass from "./pages/ManageClass";
+import Submission from "./pages/classNav/assignment/StudentSubmission";
 import StudentEnrollmentRequests from "./pages/StudentEnrollmentRequests";
 import Report from "./pages/Report";
 import Search from "./components/admin/Search";
-import Submission from "./pages/Submission";
 import Notifications from "./pages/Notifications";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedRoute from "./components/global/ProtectedRoute";
 import ManageClassDashboard from "./components/manageClass/ManageClassDashboard";
 import NotFound from "./components/global/NotFound";
-
+import SubmitReview from "./pages/SubmitReview";
 import TitleUpdater from "@/utils/TitleUpdater";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -178,6 +178,15 @@ function MainLayout() {
 							<ProtectedRoute
 								element={<Submission />}
 								allowedRoles={["STUDENT"]}
+							/>
+						}
+					/>
+					<Route
+						path="/review/:reviewId"
+						element={
+							<ProtectedRoute
+								element={<SubmitReview />}
+								allowedRoles={["STUDENT", "INSTRUCTOR", "ADMIN"]}
 							/>
 						}
 					/>

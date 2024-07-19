@@ -1,62 +1,50 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import 'react-circular-progressbar/dist/styles.css';
 import { Button } from "@/components/ui/button";
 import * as pdfjs from 'pdfjs-dist';
 
 pdfjs.GlobalWorkerOptions.workerSrc = '../../../node_modules/pdfjs-dist/build/pdf.worker.min.mjs';
 
-const PDFViewer = ({ url, scale }) => {
-  if (isNaN(scale)) scale = 1;
+const PDFViewer = ({ url, scale = 1 }) => {
   const canvasRef = useRef(null);
-  const [pageNumber, setPageNumber] = useState(1); // State to keep track of current page number
-  const [numPages, setNumPages] = useState(null); // State to store the total number of pages
-  const [inputPageNumber, setInputPageNumber] = useState(pageNumber); // State to store input page number
+  const [pageNumber, setPageNumber] = useState(1);
+  const [numPages, setNumPages] = useState(null);
+  const [inputPageNumber, setInputPageNumber] = useState(pageNumber);
+
+  const renderPage = useCallback(async (page, viewport, canvas, context) => {
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
+
+    const renderContext = {
+      canvasContext: context,
+      viewport,
+    };
+
+    await page.render(renderContext).promise;
+  }, []);
+
+  const loadPdf = useCallback(async () => {
+    const loadingTask = pdfjs.getDocument(url);
+    const pdf = await loadingTask.promise;
+    setNumPages(pdf.numPages); // Set the number of pages to those of the PDF
+
+    const page = await pdf.getPage(pageNumber);
+    const viewport = page.getViewport({ scale });
+    const canvas = canvasRef.current;
+
+    // Check if canvas and its context are defined
+    if (canvas) {
+      const context = canvas.getContext('2d');
+      if (context) {
+        context.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas before rendering
+        await renderPage(page, viewport, canvas, context);
+      }
+    }
+  }, [url, pageNumber, scale, renderPage]);
 
   useEffect(() => {
-    let renderTask = null;
-  
-    const loadPdf = async () => {
-      const loadingTask = pdfjs.getDocument(url);
-      const pdf = await loadingTask.promise;
-      setNumPages(pdf.numPages); // Set the total number of pages
-      const page = await pdf.getPage(pageNumber);
-      const viewport = page.getViewport({ scale: scale });
-      const canvas = canvasRef.current;
-  
-      // Check if canvas and its context are defined
-      if (canvas) {
-        const context = canvas.getContext('2d');
-        if (context) {
-          canvas.height = viewport.height;
-          canvas.width = viewport.width;
-          const renderContext = {
-            canvasContext: context,
-            viewport: viewport
-          };
-  
-          // Cancel the previous render task if it exists
-          if (renderTask) {
-            renderTask.cancel();
-            await renderTask.promise.catch(() => {}); // Ignore errors from cancellation
-          }
-  
-          // Start a new render task
-          renderTask = page.render(renderContext);
-          await renderTask.promise;
-        }
-      }
-    };
-  
     loadPdf();
-  
-    return () => {
-      // Cancel ongoing render task on cleanup
-      if (renderTask) {
-        renderTask.cancel();
-      }
-    };
-  }, [url, pageNumber, scale, canvasRef.current]); // Reload PDF when URL or pageNumber changes
-  
+  }, [url, pageNumber, scale, loadPdf]);
 
   const goToPreviousPage = () => {
     if (pageNumber > 1) {
@@ -74,25 +62,19 @@ const PDFViewer = ({ url, scale }) => {
 
   const handleInputChange = (e) => {
     let value = parseInt(e.target.value);
-    if (value < 1) {
+    if (isNaN(value) || value < 1) {
       setInputPageNumber(1);
     } else if (value > numPages) {
-      // Doesn't change input box value if input is greater than total number of pages
-    }
-    else {
+      setInputPageNumber(numPages);
+    } else {
       setInputPageNumber(value);
     }
   };
 
   const goToPage = () => {
-    if (isNaN(inputPageNumber)) {
-      setInputPageNumber(pageNumber);
-      return;
-    }
     const pageNum = parseInt(inputPageNumber);
     if (pageNum >= 1 && pageNum <= numPages) {
       setPageNumber(pageNum);
-      setInputPageNumber(pageNum);
     }
   };
 

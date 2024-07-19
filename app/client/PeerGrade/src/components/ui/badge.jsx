@@ -15,6 +15,10 @@ const badgeVariants = cva(
         destructive:
           "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
         outline: "text-foreground",
+        // This is a custom variant for the Badge component meant for use with the StudentEnrollmentRequests.jsx component
+        approved: "border-transparent bg-green-100 text-green-800",
+        denied: "border-transparent bg-red-100 text-red-800",
+        pending: "border-transparent bg-yellow-100 text-yellow-800",
       },
     },
     defaultVariants: {

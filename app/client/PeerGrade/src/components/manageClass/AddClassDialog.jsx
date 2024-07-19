@@ -51,7 +51,8 @@ const AddClassModal = ({ show, onClose }) => {
 		};
 
 		const classCreate = async () => {
-			addClass(newClass);
+
+			await addClass(newClass);
 			onClose();
 		};
 

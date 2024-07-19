@@ -74,7 +74,7 @@ export const getGroups = asyncErrorHandler(async (req, res) => {
 // });
 
 export const updateProfile = asyncErrorHandler(async (req, res) => {
-	const {userId, updateData} = req.body;
+	const { userId, updateData } = req.body;
 	const profileData = await userService.updateProfile(userId, updateData);
 	res.status(200).json({
 		status: "Success",

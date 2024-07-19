@@ -31,7 +31,11 @@ export const addAssignmentToClass = async (formData) => {
 
 export const updateAssignmentInClass = async (classId, assignmentId, updateData) => {
     try {
-        const response = await axios.put(`${BASE_URL}/assignment/${classId}/assignments/${assignmentId}`, updateData);
+        const response = await axios.post(`${BASE_URL}/assignment/update-assignment`, {
+            classId,
+            assignmentId,
+            updateData
+        });
         return response.data;
     } catch (error) {
         handleError(error);
@@ -39,9 +43,11 @@ export const updateAssignmentInClass = async (classId, assignmentId, updateData)
     }
 };
 
-export const removeAssignmentFromClass = async (classId, assignmentId) => {
+export const removeAssignmentFromClass = async (assignmentId) => {
     try {
-        const response = await axios.delete(`${BASE_URL}/assignment/${classId}/assignments/${assignmentId}`);
+        const response = await axios.post(`${BASE_URL}/assignment/remove-assignment`, {
+            assignmentId
+        });
         return response.data;
     } catch (error) {
         handleError(error);

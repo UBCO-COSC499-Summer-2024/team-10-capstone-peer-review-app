@@ -89,6 +89,7 @@ export async function sendNotificationToUser(userId, title, content, receiverId,
 				title: title,
 				content: content,
 				senderId: userId,
+				type: type || null
 			} 
 		});
 
@@ -136,6 +137,7 @@ export async function sendNotificationToGroup(userId, title, content, groupId, t
 			title: title,
 			content: content,
 			senderId: userId,
+			type: type || null
 		}));
 
 		await prisma.notification.createMany({ data: notifications });
@@ -161,6 +163,7 @@ export async function sendNotificationToRole(userId, title, content, role, type)
 			title: title,
 			content: content,
 			senderId: userId,
+			type: type || null
 		}));
 
 		await prisma.notification.createMany({ data: notifications });

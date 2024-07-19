@@ -20,6 +20,14 @@ export default function Notifications() {
     };
 
     fetchNotifs();
+
+    const intervalId = setInterval(() => {
+      fetchNotifs();
+    }, 10000); // Fetch notifications every 30 seconds
+
+    return () => {
+      clearInterval(intervalId); // Clear the interval when the component unmounts
+    };
   }, [user, userLoading]);
 
 	const handleDeleteNotif = async (notificationId) => {

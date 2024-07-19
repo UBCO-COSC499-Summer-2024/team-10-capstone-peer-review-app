@@ -12,7 +12,8 @@ async function main() {
 	await prisma.submission.deleteMany();
 	await prisma.userInClass.deleteMany();
 	await prisma.assignment.deleteMany();
-	await prisma.category.deleteMany(); // Add this line
+	await prisma.category.deleteMany();
+	await prisma.group.deleteMany();
 	await prisma.class.deleteMany();
 	await prisma.user.deleteMany();
 
@@ -23,7 +24,8 @@ async function main() {
 		return await bcrypt.hash(password, SALT_ROUNDS);
 	}
 
-	// Create users
+	// Create students
+
 	const student = await prisma.user.create({
 		data: {
 			email: "student@gmail.com",
@@ -35,7 +37,56 @@ async function main() {
 			role: "STUDENT"
 		}
 	});
+	
+	const student1 = await prisma.user.create({
+		data: {
+			email: "student1@gmail.com",
+			password: await hashedPassword("Student@123"),
+			firstname: faker.person.firstName(),
+			lastname: faker.person.lastName(),
+			isEmailVerified: true,
+			isRoleActivated: true,
+			role: "STUDENT"
+		}
+	});
+	
+	const student2 = await prisma.user.create({
+		data: {
+			email: "student2@gmail.com",
+			password: await hashedPassword("Student@123"),
+			firstname: faker.person.firstName(),
+			lastname: faker.person.lastName(),
+			isEmailVerified: true,
+			isRoleActivated: true,
+			role: "STUDENT"
+		}
+	});
+	
+	const student3 = await prisma.user.create({
+		data: {
+			email: "student3@gmail.com",
+			password: await hashedPassword("Student@123"),
+			firstname: faker.person.firstName(),
+			lastname: faker.person.lastName(),
+			isEmailVerified: true,
+			isRoleActivated: true,
+			role: "STUDENT"
+		}
+	});
+	
+	const student4 = await prisma.user.create({
+		data: {
+			email: "student4@gmail.com",
+			password: await hashedPassword("Student@123"),
+			firstname: faker.person.firstName(),
+			lastname: faker.person.lastName(),
+			isEmailVerified: true,
+			isRoleActivated: true,
+			role: "STUDENT"
+		}
+	});
 
+	// Create instructors & admin
 	const instructor = await prisma.user.create({
 		data: {
 			email: "instructor@gmail.com",
@@ -127,6 +178,36 @@ async function main() {
 	await prisma.userInClass.create({
 		data: {
 			userId: student.userId,
+			classId: class4.classId
+		}
+	});
+
+	// Enroll student1 in classes
+	await prisma.userInClass.create({
+		data: {
+			userId: student1.userId,
+			classId: class1.classId
+		}
+	});
+
+	await prisma.userInClass.create({
+		data: {
+			userId: student1.userId,
+			classId: class2.classId
+		}
+	});
+
+	// Enroll student2 in classes
+	await prisma.userInClass.create({
+		data: {
+			userId: student2.userId,
+			classId: class3.classId
+		}
+	});
+
+	await prisma.userInClass.create({
+		data: {
+			userId: student2.userId,
 			classId: class4.classId
 		}
 	});
@@ -282,6 +363,43 @@ async function main() {
 			reviewerId: admin.userId,
 			revieweeId: student.userId,
 			reviewGrade: 92
+		}
+	});
+
+	// Create groups
+	const group1 = await prisma.group.create({
+		data: {
+			classId: class1.classId,
+			groupName: faker.lorem.word() + " Group",
+			groupDescription: faker.lorem.sentence(),
+			groupSize: 5,
+		}
+	});
+
+	const group2 = await prisma.group.create({
+		data: {
+			classId: class2.classId,
+			groupName: faker.lorem.word() + " Group",
+			groupDescription: faker.lorem.sentence(),
+			groupSize: 5,
+		}
+	});
+
+	const group3 = await prisma.group.create({
+		data: {
+			classId: class3.classId,
+			groupName: faker.lorem.word() + " Group",
+			groupDescription: faker.lorem.sentence(),
+			groupSize: 5,
+		}
+	});
+
+	const group4 = await prisma.group.create({
+		data: {
+			classId: class4.classId,
+			groupName: faker.lorem.word() + " Group",
+			groupDescription: faker.lorem.sentence(),
+			groupSize: 5,
 		}
 	});
 

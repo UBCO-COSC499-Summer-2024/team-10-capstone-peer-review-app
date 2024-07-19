@@ -4,6 +4,7 @@ import {
 	getInstructorByClass,
 	getClassById,
 	getAllClasses,
+	getAllClassesUserIsNotIn, 
 	createClass,
 	updateClass,
 	deleteClass,
@@ -16,6 +17,7 @@ import {
 	updateGroupInClass,
 	getGroupInClass,
 	getGroupsInClass,
+	getAllGroups,
 	getGroupMembers,
 	addGroupMember,
 	removeGroupMember,
@@ -36,11 +38,13 @@ import {
 const router = express.Router();
 
 // Class Routes
-router.route("/all").get(ensureUser, ensureAdmin, getAllClasses);
+router.route("/all").get(ensureUser, getAllClasses);
 
 router
 	.route("/my-classes")
 	.get(ensureUser, ensureInstructor, getClassesByInstructor);
+
+router.route("/not-enrolled").get(ensureUser, getAllClassesUserIsNotIn);
 
 router.route("/create").post(ensureUser, ensureInstructorOrAdmin, createClass);
 
@@ -85,6 +89,8 @@ router
 	.post(ensureUser, ensureInstructorOrAdmin, getGroupInClass);
 
 router.route("/get-groups").post(ensureUser, getGroupsInClass);
+
+router.route("/get-all-groups").post(ensureUser, ensureAdmin, getAllGroups);
 
 router
 	.route("/get-group-members")

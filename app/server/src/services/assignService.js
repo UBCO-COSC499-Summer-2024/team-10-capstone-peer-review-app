@@ -1,5 +1,7 @@
 import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
+import { sendNotificationToClass } from "./notifsService.js";
+import { format } from "date-fns";
 
 // assignment operations
 const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
@@ -32,6 +34,8 @@ const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
         });
 
 
+		console.log('assignmentsData:')
+
         // Update the Category table
         await prisma.category.update({
             where: { categoryId },
@@ -42,12 +46,14 @@ const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
             }
         });
 
+		await sendNotificationToClass(null, `Assignment ${newAssignment.title} was just created.`, `Due on ${format(dueDate, 'MMMM do, yyyy')}`, classId);
+
         return newAssignment;
     } catch (error) {
         if (error instanceof apiError) {
             throw error;
         } else {
-            throw new apiError("Failed to jkjkjkjkadd assignment to class", 500);
+            throw new apiError("Failed to add assignment to class", 500);
         }
     }
 };

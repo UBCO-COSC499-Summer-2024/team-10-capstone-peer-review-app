@@ -13,6 +13,16 @@ export const getAllClasses = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+export const getAllClassesUserIsNotIn = asyncErrorHandler(async (req, res) => {
+	const userId = req.user.userId;
+	const classes = await classService.getAllClassesUserIsNotIn(userId);
+	return res.status(200).json({
+		status: "Success",
+		message: "Classes retrieved",
+		data: classes
+	});
+});
+
 export const getInstructorByClass = asyncErrorHandler(async (req, res) => {
 	const classId = req.params.classId;
 	const instructor = await classService.getInstructorByClass(classId);
@@ -168,6 +178,14 @@ export const getGroupsInClass = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+export const getAllGroups = asyncErrorHandler(async (req, res) => {
+	const groupData = await classService.getAllGroups();
+	return res.status(200).json({
+		status: "Success",
+		data: groupData
+	});
+});
+
 export const getGroupMembers = asyncErrorHandler(async (req, res) => {
 	const { groupId } = req.body;
 	const groupMembers = await classService.getGroupMembers(groupId);
@@ -246,6 +264,8 @@ export const getCategoriesByClassId = asyncErrorHandler(async (req, res) => {
 
 // Export all controller methods
 export default {
+	getAllClasses,
+	getAllClassesUserIsNotIn,
 	getClassesByInstructor,
 	getClassById,
 	createClass,
@@ -261,6 +281,7 @@ export default {
 	updateGroupInClass,
 	getGroupInClass,
 	getGroupsInClass,
+	getAllGroups,
 	getGroupMembers,
 	addGroupMember,
 	removeGroupMember,

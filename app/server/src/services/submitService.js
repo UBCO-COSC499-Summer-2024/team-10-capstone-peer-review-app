@@ -1,8 +1,8 @@
 import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
+import { sendNotificationToUser } from "./notifsService.js";
 
 // Submit operations
-
 const getStudentSubmission = async (studentId) => {
     try {
         let allSubmissions = [];
@@ -153,6 +153,17 @@ const createSubmission = async (studentId, assignmentId, submissionFilePath) => 
             }
         });
 
+        const assignmentClass = await prisma.class.findUnique({
+            where: {
+                classId: assignment.classId
+            },
+            include: {
+                instructor: true
+            }
+        });
+
+		await sendNotificationToUser(null, `You've successfully submitted the '${assignment.title}' assignment`, assignmentClass.classname, studentId, 'submit');
+		await sendNotificationToUser(null, `Student ${student.firstname} ${student.lastname} submitted the '${assignment.title}' assignment`, assignmentClass.classname, assignmentClass.instructor.userId, 'submit');
         return newSubmission;
     } catch (error) {
         if (error instanceof apiError) {

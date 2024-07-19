@@ -28,23 +28,6 @@ router.get("/", (req, res) => {
 });
 
 
-// remove rubricForAssignment from the schema
-
-// create docs and tests
-//check if the add student/ group / assignment and anything if the instructor is even in the class
-// student should be a student of the class before joining a group of class
-// get student average grade for all instructor assignments and peer reviews assigned
-// restrict criterion grading for student if the assignment is not peer review or group review
-// add file type
-// create csv upload feature students
-// get Review Assignments assigned
-// grade peer reviews for students
-// get all reviews for a student
-// update the peer review
-// create a group review to review individual contributions
-// submit accoriding to the max Submissions allowed and delete previous attempts
-// check for duplicates
-
 // get a submission criteria
 router.post("/submissionCriteria", getSubmissionCriteria);
 

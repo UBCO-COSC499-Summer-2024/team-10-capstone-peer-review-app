@@ -31,7 +31,6 @@ const getPeerReviews = async (submissionId) => {
     }
 }
 
-
 const getInstructorReview = async (submissionId) => {
     try {
         const submission = await prisma.review.findMany({
@@ -960,8 +959,8 @@ const createGroupReviewRubric = async (userId, assignmentId) => {
                         include: {
                             students: true
                     },
-                classes: true
-                    }
+                    classes: true
+                }
             }
         });
 
@@ -1017,7 +1016,7 @@ const createGroupReviewRubric = async (userId, assignmentId) => {
                 }
 
                 if (assignment.dueDateGroupReview < new Date()) {
-                    throw new apiError("Peer Review due date has passed", 403);
+                    throw new apiError("Group Review due date has passed", 403);
                 }
 
                 if (user.groups.length === 0) {

@@ -68,7 +68,7 @@
 ## Recap on goals from last cycle
 * i finished up the code for all instructer related grading to be completed and sat with the team regarding PRs. 
 * fixed up a few bugs existing in code
-* fixed tosdts on a few pages 
+* fixed toasts on a few pages 
 * the cycle before this was really hectic for me and I felt quite exhausted at the end of it. i decided to take this cycle a bit more lightly and focused on lighter taaks. 
 
 

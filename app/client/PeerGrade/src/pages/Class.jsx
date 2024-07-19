@@ -136,9 +136,9 @@ const Class = () => {
 									</AlertDescription>
 									</div>
 									<div className="flex items-center gap-2">
-									<Badge variant={assignment.status === 'Completed' ? "secondary" : "default"}>
+									{/* <Badge variant={assignment.status === 'Completed' ? "secondary" : "default"}>
 										{assignment.status}
-									</Badge>
+									</Badge> */}
 									<Button variant="outline" size="sm">
 										<Clock className="h-4 w-4 mr-1" />
 										Start

@@ -12,9 +12,8 @@ const Grades = ({ classId }) => {
         <CardTitle className="text-xl font-bold">Class Grades</CardTitle>
       </CardHeader>
       <CardContent className="p-4">
-      
+        <div className='text-center text-gray-500 text-sm'> No grades were found. You're safe!</div>
       </CardContent>
-   
     </Card>
   );
 };

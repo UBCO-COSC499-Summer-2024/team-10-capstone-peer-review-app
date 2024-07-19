@@ -49,7 +49,7 @@ const Assignment = () => {
   const isInstructor = user.role === 'INSTRUCTOR';
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 pb-8">
     
       
       <Card className="mb-8 bg-card">
@@ -94,12 +94,13 @@ const Assignment = () => {
                   <p className="text-foreground ">{assignment.description}</p>
                 </CardHeader>
                 <CardContent>
-
+                  {user.role === "STUDENT" &&
                   <div className="flex justify-between items-center">
                     <span>Status:</span>
                     <Badge variant="secondary">Not Submitted</Badge>
                   </div>
-                  <Separator className="my-4" />
+                  }
+                  {user.role === "STUDENT" && <Separator className="my-4" />}
                   <div className="flex justify-between items-center">
                     <span>Due Date:</span>
                     <span>{new Date(assignment.dueDate).toLocaleDateString()}</span>

@@ -64,8 +64,8 @@ const Rubrics = () => {
     try {
       const response = await getRubricById(rubricId);
       console.log('Rubric details fetched:', response.data);
-      if (response.data && response.data.data) {
-        setSelectedRubric(response.data.data);
+      if (response.data && response.data) {
+        setSelectedRubric(response.data);
       } else {
         setSelectedRubric(null);
       }
@@ -156,12 +156,10 @@ const Rubrics = () => {
           </DrawerHeader>
           <div className="  max-h-[60vh] overflow-y-auto">
             {selectedRubric && selectedRubric.criteria && selectedRubric.criteria.map((criterion, index) => (
-              <div key={index} className="mb-4">
-                <h3 className="text-lg font-semibold">{criterion.title}</h3>
-                <p>Min Points: {criterion.minMark}</p>
+              <div key={index} className="mb-4 px-4">
                 <p>Max Points: {criterion.maxMark}</p>
                 <div className="mt-2">
-                  {criterion.criteronRatings && criterion.criteronRatings.map((rating, ratingIndex) => (
+                  {criterion.criterionRatings && criterion.criterionRatings.map((rating, ratingIndex) => (
                     <div key={ratingIndex} className="flex items-center justify-between">
                       <p>{rating.description}</p>
                       <p>{rating.points} Points</p>

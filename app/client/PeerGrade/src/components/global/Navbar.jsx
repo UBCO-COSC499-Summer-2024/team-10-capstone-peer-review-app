@@ -191,10 +191,10 @@ export default function AppNavbar() {
 											onClick={() => setIsPeerReviewSheetOpen(true)}
 										>
 											<ClipboardList className="w-6 h-6 mb-1" />
-											Peer Reviews
+											Reviews
 										</Button>
 									</SheetTrigger>
-									<SheetContent side="left" className="w-[300px] border-l border-gray-200 ml-[-20px]">
+									<SheetContent side="left" className="w-[300px] border-l border-gray-200 ml-[-40px]">
 										<SheetHeader>
 											<SheetTitle>My Peer-Reviews</SheetTitle>
 										</SheetHeader>
@@ -244,7 +244,7 @@ export default function AppNavbar() {
 											Classes
 										</Button>
 									</SheetTrigger>
-									<SheetContent side="left" className="w-[300px] border-l border-gray-200 ml-[-20px]">
+									<SheetContent side="left" className="w-[300px] border-l border-gray-200 ml-[-40px]">
 										<SheetHeader>
 											<SheetTitle>My Classes</SheetTitle>
 										</SheetHeader>

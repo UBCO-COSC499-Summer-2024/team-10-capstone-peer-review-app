@@ -1,4 +1,52 @@
 
+# Bhavya's Log for Cycle 14
+
+
+## Tuesday, July 16, 2024, 06:35 PM - Thursday, July 18, 2024, 06:35 PM
+
+
+## Tasks worked on this cycle:
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Review routes** *(Total duration: 0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 18, 2024, 05:00 PM - Ongoing *(Ongoing)*  
+  
+&nbsp; &nbsp; :watch: **testing backend** *(Total duration: 3.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 16, 2024, 10:15 PM - Wednesday, July 17, 2024, 01:29 AM *(3.2 hours)*  
+  
+
+## All Features worked on this cycle:
+
+## Features completed on this cycle:
+
+## Completed tasks:
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[235](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/235)**: Create/Delete/Edit Categories  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[198](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/198)**: Writing new back-end tests for dockerized test enviroment. Start with services, then controllers  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[88](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/88)**: Integrate Enroll Request in Classes  
+  
+
+## Recap on goals from last cycle
+* Completed adding more tests and boundary case functionalities on group review routes
+* Add more clear documentations for certain functions
+* contributed witht the team members in creating the presentations and workflow document
+
+## Goals for next cycle
+* Add more tests for backend
+* Add more documentations
+* Look for any other routes
+  
+  
+
 # Bhavya's Log for Cycle 13
 
 

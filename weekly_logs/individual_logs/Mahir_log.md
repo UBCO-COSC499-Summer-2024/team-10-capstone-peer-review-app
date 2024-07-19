@@ -1,4 +1,85 @@
 
+# Mahir's Log for Cycle 14
+
+
+## Tuesday, July 16, 2024, 06:35 PM - Thursday, July 18, 2024, 06:35 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[245](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/245)**: Add a rubric creation in Assignemnt View tab (for each assignment)  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[242](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/242)**: Implement comments for assignments  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[241](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/241)**: Fix toasts (ones that arent coloring properly)  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[222](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/222)**: Integrate Instructor View for Grades  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[219](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/219)**: Show Grades for Student Submission  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api, type: UI 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **219/ student reviewer UI** *(Total duration: 1.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 17, 2024, 06:50 PM - Wednesday, July 17, 2024, 06:55 PM *(0.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 17, 2024, 06:18 PM - Wednesday, July 17, 2024, 06:31 PM *(0.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 17, 2024, 05:39 PM - Wednesday, July 17, 2024, 06:15 PM *(0.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 17, 2024, 03:38 PM - Wednesday, July 17, 2024, 04:37 PM *(1.0 hours)*  
+  
+&nbsp; &nbsp; :watch: **219/Viewing grades received from Instructor/Peer-reviews** *(Total duration: 0.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 16, 2024, 10:40 PM - Tuesday, July 16, 2024, 11:31 PM *(0.8 hours)*  
+  
+&nbsp; &nbsp; :watch: **219/Setting up Classnav grade views** *(Total duration: 1.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 16, 2024, 08:19 PM - Tuesday, July 16, 2024, 09:30 PM *(1.2 hours)*  
+  
+
+## All Features worked on this cycle:
+
+## Features completed on this cycle:
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[222](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/222)**: Integrate Instructor View for Grades  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[219](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/219)**: Show Grades for Student Submission  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[245](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/245)**: Add a rubric creation in Assignemnt View tab (for each assignment)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[242](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/242)**: Implement comments for assignments  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[241](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/241)**: Fix toasts (ones that arent coloring properly)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[120](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/120)**: Major Use Case 5: Send Reports to Admin   
+  
+
+## Recap on goals from last cycle
+* i finished up the code for all instructer related grading to be completed and sat with the team regarding PRs. 
+* fixed up a few bugs existing in code
+* fixed toasts on a few pages 
+* the cycle before this was really hectic for me and I felt quite exhausted at the end of it. i decided to take this cycle a bit more lightly and focused on lighter taaks. 
+
+
+## Goals for next cycle
+* Finish up the Peer review UI and logic 
+* work on smallee but important tasks
+* Work on group activites and reviews
+
+  
+  
+
 # Mahir's Log for Cycle 13
 
 

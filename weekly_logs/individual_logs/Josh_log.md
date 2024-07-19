@@ -1,4 +1,72 @@
 
+# Josh's Log for Cycle 14
+
+
+## Tuesday, July 16, 2024, 06:35 PM - Thursday, July 18, 2024, 06:35 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[243](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/243)**: Add re-send verification email to login card  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[219](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/219)**: Show Grades for Student Submission  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api, type: UI 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Setting up Questionnaire and workflows** *(Total duration: 0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 18, 2024, 06:07 PM - Ongoing *(Ongoing)*  
+  
+&nbsp; &nbsp; :watch: **Discovering and trying to figure out docker prisma bug** *(Total duration: 1.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 18, 2024, 02:37 PM - Thursday, July 18, 2024, 04:30 PM *(1.9 hours)*  
+  
+&nbsp; &nbsp; :watch: **Changing Class card  UI** *(Total duration: 1.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 18, 2024, 01:49 PM - Thursday, July 18, 2024, 02:37 PM *(0.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 18, 2024, 01:09 PM - Thursday, July 18, 2024, 01:40 PM *(0.5 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[237](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/237)**: Logs Review Cycle 13  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[237](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/237)**: Logs Review Cycle 13  
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[219](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/219)**: Show Grades for Student Submission  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[243](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/243)**: Add re-send verification email to login card  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[207](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/207)**: Integrate back-end testing env into drone  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[198](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/198)**: Writing new back-end tests for dockerized test enviroment. Start with services, then controllers  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[88](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/88)**: Integrate Enroll Request in Classes  
+  
+
+## Recap on goals from last cycle
+* Was able to complete the manage class / enrollments features for students and instructors. Had a scary moment with docker images not working so that took a fair amount of time yesterday. And also setting up for the first peer-testing session
+
+## Goals for next cycle
+* Complete majority of peer-review features, start working on peer-review dashboard / group reviews
+* Complete some smaller tasks
+* Continue setting up integration tests for backend
+* Create some documentation for the project
+  
+
 # Josh's Log for Cycle 13
 
 

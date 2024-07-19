@@ -1,4 +1,81 @@
 
+# Abdul's Log for Cycle 14
+
+
+## Tuesday, July 16, 2024, 06:35 PM - Thursday, July 19, 2024, 02:51 AM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[239](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/239)**: Link Admin Dashboard UI elements to the back-end  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[236](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/236)**: Delete assignments/Link files tab buttons to assignment quick links  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[225](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/225)**: Notifications For Users  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: database, type: api, type: UI 
+  
+
+## Time entries from Clockify on this cycle:
+
+&nbsp; &nbsp; :watch: **Testing and refactoring branch 219 to merge to dev** *(Total duration: 1.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 19, 2024, 01:21 AM - Friday, July 19, 2024, 02:51 AM *(1.5 hours)*  
+
+&nbsp; &nbsp; :watch: **Working on the Workflows & Google Form w the team** *(Total duration: 1.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 18, 2024, 08:19 PM - Thursday, July 18, 2024, 09:29 PM *(1.1 hours)*  
+
+&nbsp; &nbsp; :watch: **Working on adding Notifications functionality** *(Total duration: 5.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 18, 2024, 06:05 PM - Thursday, July 18, 2024, 08:18 PM *(2.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 17, 2024, 12:03 PM - Wednesday, July 17, 2024, 01:00 PM *(0.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 16, 2024, 10:41 PM - Wednesday, July 17, 2024, 01:16 AM *(2.6 hours)*  
+  
+&nbsp; &nbsp; :watch: **Debugging the Docker container w/ Josh** *(Total duration: 1.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 18, 2024, 03:00 PM - Thursday, July 18, 2024, 04:16 PM *(1.3 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[238](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/238)**: Add base notifications implementation (Add/Remove student notifs, etc.)  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[238](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/238)**: Add base notifications implementation (Add/Remove student notifs, etc.)  
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[225](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/225)**: Notifications For Users  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[239](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/239)**: Link Admin Dashboard UI elements to the back-end  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[236](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/236)**: Delete assignments/Link files tab buttons to assignment quick links  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[172](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/172)**: Refactor front-end test  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[140](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/140)**: Major Use Case 24: View User Reports   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+  
+
+## Recap on goals from last cycle
+* We're doing well (i think?) I feel there's gonna be quite a decent amount of crunching now but we are in okay shape in my opinion.
+* Tests... are hard...
+* What we wrote down for this week's peer-testing should help us w documentation.
+
+## Goals for next cycle
+* Work on documentation and more tests (integration testing especially)
+* Finally get Peer Reviews done.
+* Ideally start work on Group Peer Reviews.
+
+  
+
 # Abdul's Log for Cycle 13
 
 

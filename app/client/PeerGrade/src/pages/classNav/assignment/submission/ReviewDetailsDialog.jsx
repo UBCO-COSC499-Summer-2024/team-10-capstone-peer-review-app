@@ -52,7 +52,7 @@ const ReviewDetailsDialog = ({ submissionId, open, onClose }) => {
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
-            <DialogContent className="max-w-7xl max-h-[90vh] overflow-auto">
+            <DialogContent className="max-w-7xl h-[90vh] overflow-auto">
                 {reviewDetails ? (
                     <ScrollArea className="h-full">
                         <Card className="my-6">

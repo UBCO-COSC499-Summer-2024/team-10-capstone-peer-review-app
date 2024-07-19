@@ -274,7 +274,7 @@ export default function AppNavbar() {
 												{(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (
 													<ListItem
 													title="Manage Classes"
-													href="/manageclass"
+													href="/manage-class"
 													className="w-full bg-blue-100"
 													onItemClick={() => setIsClassesSheetOpen(false)}
 													>

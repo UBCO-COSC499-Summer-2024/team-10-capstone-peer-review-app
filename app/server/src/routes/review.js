@@ -78,6 +78,20 @@ router.post("/instructorReview", getInstructorReview);
 router.post("/review", getReviews);
 
 // create a review on a submission by a student (peer or instructor check)
+// sample call
+// {
+//     "submissionId": "3c7e8d5b-6c5c-4f32-a1f7-bc79e2cf5ad5",
+//     "criterionGrades": [
+//         {"criterionId": "4af24078-0fa4-409a-b19f-f3676acc379b"
+//         ,"grade": 2
+//         },
+//         {
+//         "criterionId": "671c6c47-0dd1-40c0-aede-25d8a5e7d5d1",
+//         "grade": 2
+//         }
+//     ]
+// }
+
 router.post("/createReview", createReview); 
 
 // update a review on a submission

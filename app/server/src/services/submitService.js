@@ -6,36 +6,80 @@ import { sendNotificationToUser } from "./notifsService.js";
 const getStudentSubmission = async (studentId) => {
     try {
         let allSubmissions = [];
-        const submission = await prisma.submission.findFirst({
+        const submissions = await prisma.submission.findMany({
             where: {
                 submitterId: studentId
+            },
+            include: {
+                assignment: {
+                    include: {
+                        classes: {
+                            include: {
+                                instructor: {
+                                    select: {
+                                        firstname: true,
+                                        lastname: true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                reviews: {
+                    select: {
+                        isPeerReview: true
+                    }
+                }
             }
         });
 
-        allSubmissions.push(submission);
+        allSubmissions = allSubmissions.concat(submissions);
 
         const student = await prisma.user.findFirst({
             where: {
                 userId: studentId
-            }, include: {
-                classes: true,
+            },
+            include: {
                 groups: true
             }
         });
 
         for (const group of student.groups) {
-            const groupSubmission = await prisma.submission.findMany({
+            const groupSubmissions = await prisma.submission.findMany({
                 where: {
                     submitterGroupId: group.groupId
+                },
+                include: {
+                    assignment: {
+                        include: {
+                            classes: {
+                                include: {
+                                    instructor: {
+                                        select: {
+                                            firstname: true,
+                                            lastname: true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    reviews: {
+                        select: {
+                            reviewerId: true,
+                            isPeerReview: true
+                        }
+                    }
                 }
             });
 
-            allSubmissions = allSubmissions.concat(groupSubmission);
+            allSubmissions = allSubmissions.concat(groupSubmissions);
         }
 
         return allSubmissions;
     } catch (error) {
-        throw new apiError("Failed to retrieve submission", 500);
+        console.error("Error in getStudentSubmission:", error);
+        throw new apiError("Failed to retrieve submissions: " + error.message, 500);
     }
 }
 

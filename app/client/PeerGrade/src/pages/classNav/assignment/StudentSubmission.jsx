@@ -56,7 +56,6 @@ const Submission = () => {
     
         try {
             const result = await createSubmission(user.userId, assignment.assignmentId, file);
-            toast({ title: "Success", description: "Assignment submitted successfully" });
 
             // Clear the file input
             setFile(null);

@@ -12,7 +12,8 @@ async function main() {
 	await prisma.submission.deleteMany();
 	await prisma.userInClass.deleteMany();
 	await prisma.assignment.deleteMany();
-	await prisma.category.deleteMany(); // Add this line
+	await prisma.category.deleteMany();
+	await prisma.group.deleteMany();
 	await prisma.class.deleteMany();
 	await prisma.user.deleteMany();
 
@@ -282,6 +283,43 @@ async function main() {
 			reviewerId: admin.userId,
 			revieweeId: student.userId,
 			reviewGrade: 92
+		}
+	});
+
+	// Create groups
+	const group1 = await prisma.group.create({
+		data: {
+			classId: class1.classId,
+			groupName: faker.lorem.word() + " Group",
+			groupDescription: faker.lorem.sentence(),
+			groupSize: 5,
+		}
+	});
+
+	const group2 = await prisma.group.create({
+		data: {
+			classId: class2.classId,
+			groupName: faker.lorem.word() + " Group",
+			groupDescription: faker.lorem.sentence(),
+			groupSize: 5,
+		}
+	});
+
+	const group3 = await prisma.group.create({
+		data: {
+			classId: class3.classId,
+			groupName: faker.lorem.word() + " Group",
+			groupDescription: faker.lorem.sentence(),
+			groupSize: 5,
+		}
+	});
+
+	const group4 = await prisma.group.create({
+		data: {
+			classId: class4.classId,
+			groupName: faker.lorem.word() + " Group",
+			groupDescription: faker.lorem.sentence(),
+			groupSize: 5,
 		}
 	});
 

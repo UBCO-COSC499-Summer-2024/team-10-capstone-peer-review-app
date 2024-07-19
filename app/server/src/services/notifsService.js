@@ -102,7 +102,7 @@ export async function sendNotificationToUser(userId, title, content, receiverId,
 	}
 }
 
-export async function sendNotificationToClass(userId, title, content, classId) {
+export async function sendNotificationToClass(userId, title, content, classId, type) {
 	try {
 		const usersInClass = await classService.getStudentsByClass(classId);
 		
@@ -112,6 +112,7 @@ export async function sendNotificationToClass(userId, title, content, classId) {
 			title: title,
 			content: content,
 			senderId: userId,
+			type: type || "announcement"
 		}));
 
 		await prisma.notification.createMany({ data: notifications });

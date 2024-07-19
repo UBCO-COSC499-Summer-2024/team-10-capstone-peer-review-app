@@ -87,6 +87,14 @@ export default function AppNavbar() {
 
 		fetchData();
 		fetchNotifs();
+
+		const intervalId = setInterval(() => {
+			fetchNotifs();
+		}, 10000); // Fetch notifications every 30 seconds
+
+		return () => {
+			clearInterval(intervalId); // Clear the interval when the component unmounts
+		};
 	}, [user]);
 
 	useEffect(() => {

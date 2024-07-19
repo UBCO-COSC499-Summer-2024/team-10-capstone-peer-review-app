@@ -35,7 +35,7 @@ import { useUser } from "@/contexts/contextHooks/useUser";
 import { cn } from "@/utils/utils";
 import { getClassesByUserId, deleteClass, getAllClasses } from "@/api/classApi";
 import { useClass } from "@/contexts/contextHooks/useClass";
-import DeleteClassDialog from "@/components/class/DeleteClassDialog";
+import DeleteClassDialog from "@/components/manageClass/DeleteClassDialog";
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search);
@@ -390,12 +390,12 @@ function ClassTable() {
 				</Button>
 			</div>
 			<DeleteClassDialog
-                open={dialogOpen}
-                onOpenChange={setDialogOpen}
-                confirmDelete={confirmDelete}
-                selectedClass={selectedClass}
-                handleDeleteClass={handleDeleteClass}
-            />
+				open={dialogOpen}
+				onOpenChange={setDialogOpen}
+				confirmDelete={confirmDelete}
+				selectedClass={selectedClass}
+				handleDeleteClass={handleDeleteClass}
+			/>
 		</div>
 	);
 }

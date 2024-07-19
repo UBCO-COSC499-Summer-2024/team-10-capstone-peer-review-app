@@ -172,7 +172,7 @@ const Overview = () => {
 							<TabsTrigger value="approvals">Approvals</TabsTrigger>
 						</TabsList>
 						<TabsContent value="students">
-							<div className="mb-6 pt-3 bg-white">
+							<div className="mb-6 pt-6 bg-white rounded-lg">
 								<DataTable
 									title="Students"
 									data={studentsData}
@@ -183,7 +183,7 @@ const Overview = () => {
 							</div>
 						</TabsContent>
 						<TabsContent value="instructors">
-							<div className="mb-6 pt-3 bg-white">
+							<div className="mb-6 pt-6 bg-white rounded-lg">
 								<DataTable
 									title="Instructors"
 									data={instructorsData}
@@ -194,7 +194,7 @@ const Overview = () => {
 							</div>
 						</TabsContent>
 						<TabsContent value="approvals">
-							<div className="mb-6 pt-3 bg-white">
+							<div className="mb-6 pt-6 bg-white rounded-lg">
 								<DataTable
 									title="Instructor Approvals"
 									data={instructorApprovalsData}

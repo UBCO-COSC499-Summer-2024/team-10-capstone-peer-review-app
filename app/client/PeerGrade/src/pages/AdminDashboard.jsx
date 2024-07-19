@@ -1,9 +1,11 @@
 // src/pages/AdminDashboard.jsx
 import Overview from "@/components/admin/Overview";
 import Users from "@/components/admin/Users";
-import Search from "./Search";
+import Search from "@/components/admin/Search";
 import Assignments from "@/components/admin/Assign";
 import Interactions from "@/components/admin/Interactions";
+import Reports from "@/pages/Reports";
+import NotificationsPanel from "@/components/admin/NotificationsPanel";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import PRassign from "@/components/admin/PRassign";
@@ -15,7 +17,7 @@ const AdminDashboard = () => {
 	}
 
 	return (
-		<div className="px-6 w-full">
+		<div className="p-6 w-full">
 			<Tabs defaultValue="overview">
 				<TabsList className="w-auto flex mb-5">
 					<TabsTrigger value="overview">Overview</TabsTrigger>
@@ -24,6 +26,8 @@ const AdminDashboard = () => {
 					<TabsTrigger value="assignments">Assignments</TabsTrigger>
 					<TabsTrigger value="peer-reviews">Peer-reviews</TabsTrigger>
 					<TabsTrigger value="interactions">Interactions</TabsTrigger>
+					<TabsTrigger value="reports">Reports</TabsTrigger>
+					<TabsTrigger value="notifications">Notifications</TabsTrigger>
 				</TabsList>
 				<TabsContent value="overview">
 					<Overview />
@@ -42,6 +46,12 @@ const AdminDashboard = () => {
 				</TabsContent>
 				<TabsContent value="interactions">
 					<Interactions />
+				</TabsContent>
+				<TabsContent value="reports">
+					<Reports role="ADMIN" />
+				</TabsContent>
+				<TabsContent value="notifications">
+					<NotificationsPanel />
 				</TabsContent>
 			</Tabs>
 		</div>

@@ -2,7 +2,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import Search from '@/pages/Search';
+import Search from '@/components/admin/Search';
 import { useUser } from '@/contexts/contextHooks/useUser';
 import { getAllClasses, deleteClass } from '@/api/classApi';
 

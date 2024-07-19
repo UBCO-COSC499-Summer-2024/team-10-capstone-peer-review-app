@@ -36,7 +36,7 @@ const Login = () => {
 	}, [forgotPasswordToken]);
 
 	return (
-		<main className="flex items-center justify-center min-h-screen mr-[160px]">
+		<div className="flex items-center justify-center h-full mr-[160px]">
 			<Tabs
 				value={currentTab}
 				onValueChange={setCurrentTab}
@@ -63,7 +63,7 @@ const Login = () => {
 					<NewRoleRequestCard onSwitchToLogin={() => setCurrentTab("login")} />
 				</TabsContent>
 			</Tabs>
-		</main>
+		</div>
 	);
 };
 

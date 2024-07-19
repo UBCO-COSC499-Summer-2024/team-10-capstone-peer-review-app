@@ -71,16 +71,20 @@ const reviewColumns = [
 
 const PRassign = () => {
   return (
-    <div className="max-w-8xl rounded-lg flex gap-4 pt-3 bg-white">
-      <div>
-        <p className='text-xl ml-5'>Peer Reviews</p>
-        <DataTable title="Peer Reviews" data={peerReviewsData} columns={peerReviewColumns} pageSize={5} enableStatus={true} />
-      </div>
-      <div>
-        <p className='text-xl ml-5 mt-5'>Reviews</p>
-        <DataTable title="Reviews" data={reviewsData} columns={reviewColumns} pageSize={5} enableStatus={true} />
+    <div className="flex flex-col justify-center space-y-8">
+      <div className="w-full space-y-6">
+        <h1 className="text-2xl font-bold">Peer Reviews</h1>
+        <div className="pt-6 bg-white rounded-lg">
+          <DataTable title="Peer Reviews" data={peerReviewsData} columns={peerReviewColumns} pageSize={5} enableStatus={true} />
+        </div>
       </div>
 
+      <div className="w-full space-y-6">
+        <h1 className="text-2xl font-bold">Reviews</h1>
+        <div className="pt-6 bg-white rounded-lg">
+          <DataTable title="Reviews" data={reviewsData} columns={reviewColumns} pageSize={5} enableStatus={true} />
+        </div>
+      </div>
     </div>
   );
 };

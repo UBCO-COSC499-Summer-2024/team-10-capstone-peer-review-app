@@ -82,6 +82,16 @@ export const getAllGroupsByClass = async (classId) => {
 	}
 };
 
+export const getAllGroups = async (classId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/classes/get-all-groups`);
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
 export const createGroup = async (classId, groupData) => {
 	try {
 		const response = await axios.post(`${BASE_URL}/classes/add-group`, {
@@ -243,6 +253,22 @@ export const addStudentToClass = async (classId, studentId) => {
 			classId,
 			studentId
 		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const addStudentsByEmail = async (classId, emails) => {
+	try {
+		const response = await axios.post(
+			`${BASE_URL}/classes/add-students-by-email`,
+			{
+				classId,
+				emails
+			}
+		);
 		return response.data;
 	} catch (error) {
 		handleError(error);

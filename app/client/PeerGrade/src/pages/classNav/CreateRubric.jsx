@@ -48,7 +48,6 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
   };
 
   const handleCreateRubric = async () => {
-    try {
       if (selectedAssignments.length === 0) {
         throw new Error("No assignments selected");
       }
@@ -95,20 +94,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
         }]
       });
       setSelectedAssignments([]);
-      
-      toast({
-        title: "Success",
-        description: "Rubric created and assigned to selected assignments successfully",
-        variant: "success"
-      });
-    } catch (error) {
-      console.error('Error creating rubric:', error);
-      toast({
-        title: "Error",
-        description: "Failed to create rubric or assign to assignments",
-        variant: "destructive"
-      });
-    }
+    
   };
 
   const handleAssignmentSelection = (selectedValues) => {

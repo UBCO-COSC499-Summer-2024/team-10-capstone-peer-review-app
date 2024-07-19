@@ -6,7 +6,7 @@ import { ArrowLeft, Calendar, FileText, Users, Edit, Upload } from 'lucide-react
 import PDFViewer from '@/components/assign/PDFViewer';
 import EditAssignment from './classNav/assignment/EditAssignment';
 import Submissions from './classNav/assignment/Submissions';
-import Submission from './Submission';
+import Submission from './classNav/assignment/StudentSubmission';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { getAssignmentInClass } from '@/api/assignmentApi';
 import { toast } from "@/components/ui/use-toast";

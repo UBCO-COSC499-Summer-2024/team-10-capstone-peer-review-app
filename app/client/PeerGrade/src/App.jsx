@@ -19,7 +19,7 @@ import Settings from "./pages/Settings";
 import AppNavbar from "./components/global/Navbar";
 import ManageClass from "./pages/ManageClass";
 import Search from "./pages/Search";
-import Submission from "./pages/Submission";
+import Submission from "./pages/classNav/assignment/StudentSubmission";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedRoute from "./components/global/ProtectedRoute";
 import NotFound from "./components/global/NotFound";

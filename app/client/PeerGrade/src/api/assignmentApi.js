@@ -1,6 +1,5 @@
 import axios from "axios";
 import showStatusToast from "@/utils/showToastStatus";
-import { toast } from "@/components/ui/use-toast";
 
 const BASE_URL = "/api"; // Use environment variable if available
 
@@ -13,10 +12,9 @@ export const addAssignmentToClass = async (formData) => {
           });
 
           if (response.data.status === 'Success') {
-            toast({
-              title: "Assignment Created",
-              description: "The assignment and its rubric have been successfully created.",
-              status: "success"
+            showStatusToast({
+              status: response.data.status,
+              message: "The assignment and its rubric have been successfully created."
             });
           }
           console.log('Updated assignment data:', response.data);
@@ -28,7 +26,6 @@ export const addAssignmentToClass = async (formData) => {
     }
 };
 
-
 export const updateAssignmentInClass = async (formData) => {
     try {
       const response = await axios.post('/api/assignment/update-assignment', formData, {
@@ -38,10 +35,9 @@ export const updateAssignmentInClass = async (formData) => {
       });
   
       if (response.data.status === 'Success') {
-        toast({
-          title: "Assignment Updated",
-          description: "The assignment has been successfully updated.",
-          status: "success"
+        showStatusToast({
+          status: response.data.status,
+          message: "The assignment has been successfully updated."
         });
       }
       console.log('Updated assignment data:', response.data);
@@ -85,11 +81,6 @@ export const getAllAssignmentsByClassId = async (classId) => {
         });
         return response.data;
     } catch (error) {
-        toast({
-            title: "Error",
-            description: "An error occurred while fetching assignments. Please try again.",
-            status: "error"
-        });
         handleError(error);
         return error.response.data;
     }
@@ -118,5 +109,3 @@ function handleError(error) {
         });
     }
 }
-
-

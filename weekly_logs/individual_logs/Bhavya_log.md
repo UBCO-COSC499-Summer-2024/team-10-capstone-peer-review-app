@@ -36,14 +36,14 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Completed adding more tests and boundary case functionalities on group review routes
+* Add more clear documentations for certain functions
+* contributed witht the team members in creating the presentations and workflow document
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Add more tests for backend
+* Add more documentations
+* Look for any other routes
   
   
 

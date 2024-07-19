@@ -188,7 +188,7 @@ function Dashboard() {
 			<CardHeader>
 				<CardTitle className="flex items-center"><Bell className="mr-2" />Recent Class Notifications</CardTitle>
 			</CardHeader>
-			<CardContent>
+			<CardContent className='space-y-2'>
 				{notifications.filter(notification => notification.type === 'announcement').length === 0 && (
 				<div className="text-center px-4 pb-4 text-sm">
 					You have no notifications!

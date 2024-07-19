@@ -96,6 +96,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
       setSelectedAssignments([]);
     
   };
+  // NEED TO CHECK FOR DECIMAL VALUES, NOT SUPPORTED ATM. ALSO NEED TO CHECK FOR BLANK RATINGS TITLES.
 
   const handleAssignmentSelection = (selectedValues) => {
     console.log('Selected assignments:', selectedValues);
@@ -111,8 +112,8 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
             <DrawerTitle>Create a Rubric</DrawerTitle>
           </DrawerHeader>
           <div className="p-4 max-h-[85vh] z-[70] overflow-y-auto">
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Select Assignments</h3>
+            <div className='mb-8'>
+              <h3 className="text-md mb-2">Select Assignments</h3>
               <MultiSelect
                 options={assignments.map(assignment => ({
                   value: assignment.assignmentId,

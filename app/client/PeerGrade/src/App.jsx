@@ -54,7 +54,7 @@ function MainLayout() {
 	return (
 		<div className="flex gradient-background min-h-screen">
 		{!isLoginPage && <AppNavbar />}
-		<main className={`flex-grow ${!isLoginPage ? 'ml-[200px]' : ''} flex justify-center`}>
+		<main className={`flex-grow ml-[200px] flex justify-center`}>
 		  <div className="w-full max-w-7xl px-6 py-8">
 				<Routes>
 					<Route path="/" element={<Login />} />

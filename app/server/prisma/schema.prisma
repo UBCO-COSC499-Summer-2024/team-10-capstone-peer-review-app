@@ -229,7 +229,6 @@ model Review {
   submission      Submission       @relation(fields: [submissionId], references: [submissionId], onDelete: Cascade)
   reviewer        User            @relation("Reviewer", fields: [reviewerId], references: [userId])
   reviewee        User             @relation("Reviewee", fields: [revieweeId], references: [userId])
-  rubrics         Rubric[]
   criterionGrades CriterionGrade[]
 }
 // Way to check if all students have submitted their group reivew,  

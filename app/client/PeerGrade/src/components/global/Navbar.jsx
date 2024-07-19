@@ -201,7 +201,7 @@ export default function AppNavbar() {
 											Reviews
 										</Button>
 									</SheetTrigger>
-									<SheetContent side="left" className="w-[300px] border-l border-gray-200 ml-[-40px]">
+									<SheetContent side="left" className="w-[300px] border-l border-gray-200 ml-[-20px]">
 										<SheetHeader>
 											<SheetTitle>My Peer-Reviews</SheetTitle>
 										</SheetHeader>
@@ -251,7 +251,7 @@ export default function AppNavbar() {
 											Classes
 										</Button>
 									</SheetTrigger>
-									<SheetContent side="left" className="w-[300px] border-l border-gray-200 ml-[-40px]">
+									<SheetContent side="left" className="w-[300px] border-l border-gray-200 ml-[-20px]">
 										<SheetHeader>
 											<SheetTitle>My Classes</SheetTitle>
 										</SheetHeader>

@@ -21,6 +21,9 @@ const getPeerReviews = async (submissionId) => {
         return submission;
     }
     catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to retrieve submission", 500);
     }
 }
@@ -43,6 +46,9 @@ const getInstructorReview = async (submissionId) => {
 
         return submission;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to retrieve submission", 500);
     }
 }
@@ -64,6 +70,9 @@ const getAllReviews = async (submissionId) => {
 
         return reviews;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to retrieve reviews", 500);
     }
 }
@@ -224,6 +233,9 @@ const createReviewForSubmission = async (userId, submissionId, criterionGrades) 
 
         return newReview;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to create review " + error, 500);
     }
 }
@@ -319,6 +331,9 @@ const updateReview = async (userId, reviewId, criterionGrades) => {
 
         return updatedReview;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to update review " + error, 500);
     }
 }
@@ -365,6 +380,9 @@ const deleteReview = async (userId, reviewId) => {
 
         return;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to delete review " + error, 500);
     }
 }
@@ -409,6 +427,9 @@ const getSubmissionCriteria = async (submissionId) => {
 
         return rubric.criteria;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to retrieve submission criteria", 500);
     }
 }
@@ -514,6 +535,9 @@ const getOpenToReviewAssignment = async (userId, assignmentId) => {
         }
     }
     catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to retrieve open reviews " + error, 500);
     }
 }
@@ -625,6 +649,9 @@ const getClosedReviewsAssignment = async (userId, assignmentId) => {
         //     }
         // });
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to retrieve closed reviews "+ error, 500);
     }
 }
@@ -650,6 +677,9 @@ const getOpenReviewsClass = async (classId) => {
 
         return reviews;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to retrieve open reviews", 500);
     }
 }
@@ -675,6 +705,9 @@ const getClosedReviewsClass = async (classId) => {
 
         return reviews;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to retrieve closed reviews", 500);
     }
 }
@@ -700,6 +733,9 @@ const getStudentReviews = async (submissionId, studentId) => {
 
         return reviews;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to retrieve student reviews", 500);
     }
 }
@@ -776,6 +812,9 @@ const getStudentGradeAsg = async (studentId, assignmentId) => {
 
         return grades;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to retrieve student average grade " + error, 500);
     }
 }
@@ -830,6 +869,9 @@ const getStudentGradeClass = async (studentId, classId) => {
 
         return grades;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to retrieve student average grade", 500);
     }
 }
@@ -855,6 +897,9 @@ const getGroupReviews = async (submissionId) => {
 
         return reviews;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to retrieve group reviews", 500);
     }
 }
@@ -985,6 +1030,9 @@ const createGroupReviewRubric = async (userId, assignmentId) => {
         return newGroupRubric;
 
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to create group review " + error, 500);
     }
 }
@@ -1118,6 +1166,9 @@ const addGroupReview = async (userId, assignmentId, criterionGrades) => {
 
         return newReview;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to create review " + error, 500);
     }
 }
@@ -1133,6 +1184,9 @@ const updateGroupReview = async (groupReview) => {
 
         return updatedGroupReview;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to update group review", 500);
     }
 }
@@ -1147,6 +1201,9 @@ const deleteGroupReview = async (reviewId) => {
 
         return deletedGroupReview;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to delete group review", 500);
     }
 }

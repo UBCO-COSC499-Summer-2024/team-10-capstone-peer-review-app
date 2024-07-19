@@ -23,6 +23,9 @@ const getUsersByRole = async (role) => {
 		});
 		return users;
 	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		}
 		throw new apiError(`Failed to get users with role ${role}`, 500);
 	}
 };

@@ -35,6 +35,9 @@ const getStudentSubmission = async (studentId) => {
 
         return allSubmissions;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to retrieve submission", 500);
     }
 }
@@ -49,6 +52,9 @@ const getSubmissionsForAssignment = async (assignmentId) => {
 
         return assignment;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to retrieve assignment", 500);
     }
 }
@@ -149,6 +155,9 @@ const createSubmission = async (studentId, assignmentId, submissionFilePath) => 
 
         return newSubmission;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to create submission" + error, 500);
     }
 };
@@ -164,6 +173,9 @@ const updateSubmission = async (submissionId, submission) => {
 
         return updatedSubmission;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to update submission " + error, 500);
     }
 }
@@ -178,6 +190,9 @@ const deleteSubmission = async (submissionId) => {
 
         return;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to delete submission", 500);
     }
 }

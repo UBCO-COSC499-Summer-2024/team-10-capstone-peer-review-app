@@ -13,6 +13,9 @@ const getGrades = async (studentId) => {
 
         return grades;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to retrieve grades", 500);
     }
 };
@@ -45,6 +48,9 @@ const getSubmissionGrade = async (submissionId) => {
 
         return grade;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to retrieve grade", 500);
     }
 }
@@ -57,6 +63,9 @@ const createGrade = async (grade) => {
 
         return newGrade;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to create grade", 500);
     }
 };
@@ -72,6 +81,9 @@ const updateGrade = async (gradeId, grade) => {
 
         return updatedGrade;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to update grade", 500);
     }
 }
@@ -86,6 +98,9 @@ const deleteGrade = async (gradeId) => {
 
         return deletedGrade;
     } catch (error) {
+        if (error instanceof apiError) {
+			throw error;
+		}
         throw new apiError("Failed to delete grade", 500);
     }
 }

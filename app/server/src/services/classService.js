@@ -24,6 +24,9 @@ const getAllClasses = async () => {
 		});
 		return classes;
 	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		}
 		throw new apiError("Failed to retrieve classes", 500);
 	}
 };
@@ -48,6 +51,9 @@ const getStudentsByClass = async (classId) => {
 		const students = classWithStudents.map((student) => student.user);
 		return students;
 	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		}
 		throw new apiError("Failed to retrieve students in class", 500);
 	}
 };
@@ -71,6 +77,9 @@ const getInstructorByClass = async (classId) => {
 		});
 		return classWithInstructor.instructor;
 	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		}
 		throw new apiError("Failed to retrieve instructor in class", 500);
 	}
 };
@@ -113,8 +122,11 @@ const getClassById = async (classId) => {
 
 const createClass = async (newClass, instructorId) => {
 	try {
-		const { classname, description, startDate, endDate, term, classSize } =
-			newClass;
+		const { classname, description, startDate, endDate, term, classSize } = newClass;
+		if (startDate >= endDate) {
+			throw new apiError("Invalid class data provided", 400);
+		}
+
 		const createdClass = await prisma.class.create({
 			data: {
 				instructorId,
@@ -128,7 +140,11 @@ const createClass = async (newClass, instructorId) => {
 		});
 		return createdClass;
 	} catch (error) {
-		throw new apiError("Failed to create class", 500);
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to create class", 500);
+		}
 	}
 };
 
@@ -142,6 +158,9 @@ const updateClass = async (classId, updateData) => {
 		});
 		return updatedClass;
 	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		}
 		throw new apiError("Failed to update class", 500);
 	}
 };
@@ -154,6 +173,9 @@ const deleteClass = async (classId) => {
 			}
 		});
 	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		}
 		throw new apiError("Failed to delete class", 500);
 	}
 };

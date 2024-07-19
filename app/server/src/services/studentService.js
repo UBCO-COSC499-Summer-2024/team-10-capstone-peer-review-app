@@ -53,6 +53,9 @@ const getClassesHavingStudent = async (studentId) => {
 
 		return classes;
 	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		}
 		throw new apiError("Failed to retrieve classes", 500);
 	}
 };

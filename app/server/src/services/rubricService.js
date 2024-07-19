@@ -51,6 +51,9 @@ const createRubricsForAssignment = async (creatorId, assignmentId, rubricData) =
 
         return newRubric;
     } catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		}
         console.error("Error in createRubricsForAssignment:", error);
         throw new apiError(`Failed to create rubrics for assignment: ${error.message}`, 500);
     }
@@ -117,6 +120,9 @@ const getAllRubrics = async () => {
 		const rubrics = await prisma.rubric.findMany();
 		return rubrics;
 	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		}
 		throw new apiError("Failed to get all rubrics", 500);
 	}
 };
@@ -135,6 +141,9 @@ const getRubricById = async (rubricId) => {
 
 		return rubric;
 	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		}
 		throw new apiError("Failed to get rubric by ID", 500);
 	}
 };

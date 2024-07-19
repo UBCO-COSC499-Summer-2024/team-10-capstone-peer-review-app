@@ -229,6 +229,7 @@ model Review {
   submission      Submission       @relation(fields: [submissionId], references: [submissionId], onDelete: Cascade)
   reviewer        User            @relation("Reviewer", fields: [reviewerId], references: [userId])
   reviewee        User             @relation("Reviewee", fields: [revieweeId], references: [userId])
+  rubrics         Rubric[]
   criterionGrades CriterionGrade[]
 }
 // Way to check if all students have submitted their group reivew,  
@@ -277,10 +278,11 @@ model Rubric {
   totalMarks  Int // Total marks of the rubric? Not sure if this is needed or not 
   // We may not need this
   // createdBy   User                  @relation(fields: [creatorId], references: [userId])
-  criteria    Criterion[]
-  assignments RubricForAssignment[]
+  criteria       Criterion[]
+  assignments    RubricForAssignment[]
   // GroupSubmission     GroupSubmission[]
   class     Class?              @relation(fields: [classId], references: [classId], onDelete: Cascade)
+
 }
 
 model RubricForAssignment {
@@ -293,22 +295,22 @@ model RubricForAssignment {
 }
 
 model Criterion {
-  criterionId      String             @id @default(uuid())
+  criterionId      String            @id @default(uuid())
   rubricId         String
   title            String
   maxMark          Int
   minMark          Int
-  rubric           Rubric             @relation(fields: [rubricId], references: [rubricId])
+  rubric           Rubric            @relation(fields: [rubricId], references: [rubricId])
   criterionRatings CriterionRating[]
   criterionGrades  CriterionGrade[]
 }
 
 model CriterionRating {
   criterionRatingId String    @id @default(uuid())
-  criterionId      String
-  description      String
-  points           Int
-  criterion        Criterion @relation(fields: [criterionId], references: [criterionId], onDelete: Cascade)
+  criterionId       String
+  description       String
+  points            Int
+  criterion         Criterion @relation(fields: [criterionId], references: [criterionId], onDelete: Cascade)
 }
 
 // Criterion Grade Models
@@ -375,20 +377,22 @@ model Notification {
   type           String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-
-  receiver User @relation("ReceiverNotifications", fields: [receiverId], references: [userId], onDelete: Cascade)
-  sender   User? @relation("SenderNotifications", fields: [senderId], references: [userId], onDelete: Cascade)
+  seen           Boolean? @default(false)
+  receiver       User     @relation("ReceiverNotifications", fields: [receiverId], references: [userId], onDelete: Cascade)
+  sender         User?    @relation("SenderNotifications", fields: [senderId], references: [userId], onDelete: Cascade)
 }
 
 model EnrollRequest {
-  enrollRequestId String        @id @default(uuid())
-  userId          String
-  classId         String
-  status          RequestStatus @default(PENDING)
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  user            User          @relation(fields: [userId], references: [userId], onDelete: Cascade)
-  class           Class         @relation(fields: [classId], references: [classId], onDelete: Cascade)
+  enrollRequestId  String        @id @default(uuid())
+  userId           String
+  classId          String
+  status           RequestStatus @default(PENDING)
+  senderMessage    String?
+  recipientMessage String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  user             User          @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  class            Class         @relation(fields: [classId], references: [classId], onDelete: Cascade)
 
   @@unique([userId, classId], name: "UniqueEnrollRequestPerUser")
 }

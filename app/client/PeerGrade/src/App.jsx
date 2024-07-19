@@ -19,11 +19,13 @@ import Settings from "./pages/Settings";
 import AppNavbar from "./components/global/Navbar";
 import ManageClass from "./pages/ManageClass";
 import Submission from "./pages/classNav/assignment/StudentSubmission";
+import StudentEnrollmentRequests from "./pages/StudentEnrollmentRequests";
 import Report from "./pages/Report";
 import Search from "./components/admin/Search";
 import Notifications from "./pages/Notifications";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedRoute from "./components/global/ProtectedRoute";
+import ManageClassDashboard from "./components/manageClass/ManageClassDashboard";
 import NotFound from "./components/global/NotFound";
 import SubmitReview from "./pages/SubmitReview";
 import TitleUpdater from "@/utils/TitleUpdater";
@@ -50,9 +52,10 @@ function MainLayout() {
 	const isLoginPage = location.pathname === "/";
 
 	return (
-		<main className="gradient-background min-h-screen flex">
-			{!isLoginPage && <AppNavbar />}
-			<div className="main-container flex-grow p-6">
+		<div className="flex gradient-background min-h-screen">
+		{!isLoginPage && <AppNavbar />}
+		<main className={`flex-grow ml-[200px] flex justify-center`}>
+		  <div className="w-full max-w-7xl px-6 py-8">
 				<Routes>
 					<Route path="/" element={<Login />} />
 					<Route
@@ -101,11 +104,29 @@ function MainLayout() {
 						}
 					/>
 					<Route
-						path="/manageClass"
+						path="/manage-class"
 						element={
 							<ProtectedRoute
 								element={<ManageClass />}
 								allowedRoles={["INSTRUCTOR", "ADMIN"]}
+							/>
+						}
+					/>
+					<Route
+						path="/manage-class/:classId"
+						element={
+							<ProtectedRoute
+								element={<ManageClassDashboard />}
+								allowedRoles={["INSTRUCTOR", "ADMIN"]}
+							/>
+						}
+					/>
+					<Route
+						path="/enrollment"
+						element={
+							<ProtectedRoute
+								element={<StudentEnrollmentRequests />}
+								allowedRoles={["STUDENT", "ADMIN"]}
 							/>
 						}
 					/>
@@ -192,6 +213,7 @@ function MainLayout() {
 			</div>
 			<Toaster />
 		</main>
+		</div>
 	);
 }
 

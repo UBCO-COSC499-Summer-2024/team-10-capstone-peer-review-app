@@ -89,6 +89,7 @@ export async function sendNotificationToUser(userId, title, content, receiverId,
 				title: title,
 				content: content,
 				senderId: userId,
+				type: type || null
 			} 
 		});
 
@@ -102,7 +103,7 @@ export async function sendNotificationToUser(userId, title, content, receiverId,
 	}
 }
 
-export async function sendNotificationToClass(userId, title, content, classId) {
+export async function sendNotificationToClass(userId, title, content, classId, type) {
 	try {
 		const usersInClass = await classService.getStudentsByClass(classId);
 		
@@ -112,6 +113,7 @@ export async function sendNotificationToClass(userId, title, content, classId) {
 			title: title,
 			content: content,
 			senderId: userId,
+			type: type || "announcement"
 		}));
 
 		await prisma.notification.createMany({ data: notifications });
@@ -135,6 +137,7 @@ export async function sendNotificationToGroup(userId, title, content, groupId, t
 			title: title,
 			content: content,
 			senderId: userId,
+			type: type || null
 		}));
 
 		await prisma.notification.createMany({ data: notifications });
@@ -160,6 +163,7 @@ export async function sendNotificationToRole(userId, title, content, role, type)
 			title: title,
 			content: content,
 			senderId: userId,
+			type: type || null
 		}));
 
 		await prisma.notification.createMany({ data: notifications });

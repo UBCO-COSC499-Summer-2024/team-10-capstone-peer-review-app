@@ -4,32 +4,33 @@ import { cn } from "@/utils/utils";
 import { useToast } from "@/components/ui/use-toast";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
-	Home,
-	Users,
-	ClipboardList,
-	Settings,
-	LogOut,
-	MessageSquareWarning,
-	Bell,
-	CircleHelp
+  Home,
+  Users,
+  ClipboardList,
+  Settings,
+  LogOut,
+  MessageSquareWarning,
+  PlusCircle,
+  Bell,
+  CircleHelp
 } from "lucide-react";
 import NotifCard from "./NotifCard";
 import {
-	NavigationMenu,
-	NavigationMenuItem,
-	NavigationMenuLink,
-	NavigationMenuList,
-	navigationMenuTriggerStyle
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  navigationMenuTriggerStyle
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import {
-	Sheet,
-	SheetTrigger,
-	SheetContent,
-	SheetHeader,
-	SheetTitle
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle
 } from "@/components/ui/sheet";
 
 import { logoutUser } from "@/api/authApi";
@@ -39,121 +40,127 @@ import { useUser } from "@/contexts/contextHooks/useUser";
 import { useClass } from "@/contexts/contextHooks/useClass";
 
 export default function AppNavbar() {
-	const { user, userLoading, clearUserContext, setUserContext } = useUser();
-	const { classes, setUserClasses, setAdminClasses } = useClass();
-	const maxNotificationCount = 3;
-	const { toast } = useToast();
-	const location = useLocation();
-	const navigate = useNavigate();
-	const [notifications, setNotifications] = useState([]);
-	const [assignmentsData, setAssignmentsData] = useState([]);
-	const [isCardVisible, setIsCardVisible] = useState(false);
-	const [cardOpacity, setCardOpacity] = useState(0);
-	const [isPeerReviewSheetOpen, setIsPeerReviewSheetOpen] = useState(false);
-	const [isClassesSheetOpen, setIsClassesSheetOpen] = useState(false);
+  const { user, userLoading, clearUserContext, setUserContext } = useUser();
+  const { classes, setUserClasses, setAdminClasses } = useClass();
+  const maxNotificationCount = 3;
+  const { toast } = useToast();
 
-	useEffect(() => {
-		const fetchData = async () => {
-			if (user) {
-				try {
-					const assignments = await getAllAssignments(user.userId);
-					setAssignmentsData(Array.isArray(assignments) ? assignments : []);
-				} catch (error) {
-					console.error("Failed to fetch data", error);
-					toast({
-						title: "Error",
-						description: "Failed to fetch data",
-						variant: "destructive"
-					});
-				}
-			}
-		};
-		const fetchNotifs = async () => {
-			if (user) {
-				try {
-					const notifs = await getNotifications(user.userId);
-					setNotifications(Array.isArray(notifs.data) ? notifs.data : []);
-				} catch (error) {
-					console.error("Failed to fetch notifications", error);
-					toast({
-						title: "Error",
-						description: "Failed to fetch notifications",
-						variant: "destructive"
-					});
-				}
-			}
-		};
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [notifications, setNotifications] = useState([]);
+  const [assignmentsData, setAssignmentsData] = useState([]);
+  const [isCardVisible, setIsCardVisible] = useState(false);
+  const [cardOpacity, setCardOpacity] = useState(0);
+  const [isPeerReviewSheetOpen, setIsPeerReviewSheetOpen] = useState(false);
+  const [isClassesSheetOpen, setIsClassesSheetOpen] = useState(false);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (user) {
+        try {
+          const assignments = await getAllAssignments(user.userId);
+          setAssignmentsData(Array.isArray(assignments) ? assignments : []);
+        } catch (error) {
+          console.error("Failed to fetch data", error);
+          toast({
+            title: "Error",
+            description: "Failed to fetch data",
+            variant: "destructive"
+          });
+        }
+      }
+    };
+    const fetchNotifs = async () => {
+      if (user) {
+        try {
+          const notifs = await getNotifications(user.userId);
+          setNotifications(Array.isArray(notifs.data) ? notifs.data : []);
+        } catch (error) {
+          console.error("Failed to fetch notifications", error);
+          toast({
+            title: "Error",
+            description: "Failed to fetch notifications",
+            variant: "destructive"
+          });
+        }
+      }
+    };
+    
 		fetchData();
 		fetchNotifs();
+
+		const intervalId = setInterval(() => {
+			fetchNotifs();
+		}, 10000); // Fetch notifications every 30 seconds
+
+		return () => {
+			clearInterval(intervalId); // Clear the interval when the component unmounts
+		};
 	}, [user]);
 
-	useEffect(() => {
-		const handleClickOutside = (event) => {
-			if (isCardVisible && !event.target.closest(".notification-card")) {
-				toggleCardVisibility();
-			}
-		};
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isCardVisible && !event.target.closest(".notification-card")) {
+        toggleCardVisibility();
+      }
+    };
 
-		document.addEventListener("mousedown", handleClickOutside);
-		return () => {
-			document.removeEventListener("mousedown", handleClickOutside);
-		};
-	}, [isCardVisible]);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isCardVisible]);
 
-	const handleLogout = async () => {
-		try {
-			await logoutUser();
-			clearUserContext();
-			navigate("/");
-		} catch (error) {
-			toast({
-				title: "Error",
-				description: "Failed to logout",
-				variant: "destructive"
-			});
-		}
-	};
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+      clearUserContext();
+      navigate("/");
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to logout",
+        variant: "destructive"
+      });
+    }
+  };
 
-	const handleDeleteNotif = async (notificationId) => {
-		const deleteNotif = await deleteNotification(notificationId);
-		if (deleteNotif.status === "Success") {
-			setNotifications((prevNotifs) =>
-				prevNotifs.filter(
-					(notification) => notification.notificationId !== notificationId
-				)
-			);
-		} else {
-			console.error('An error occurred while deleting the notification.', deleteNotif.message);
-		}
-	};
+  const handleDeleteNotif = async (notificationId) => {
+    const deleteNotif = await deleteNotification(notificationId);
+    if (deleteNotif.status === "Success") {
+      setNotifications((prevNotifs) =>
+        prevNotifs.filter(
+          (notification) => notification.notificationId !== notificationId
+        )
+      );
+    } else {
+      console.error('An error occurred while deleting the notification.', deleteNotif.message);
+    }
+  };
 
-	const getInitials = (firstName, lastName) => {
-		const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : "";
-		const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : "";
-		return `${firstInitial}${lastInitial}`;
-	};
+  const getInitials = (firstName, lastName) => {
+    const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : "";
+    const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : "";
+    return `${firstInitial}${lastInitial}`;
+  };
 
-	const isActive = (path) => {
-		return (
-			location.pathname === path ||
-			(path === "/dashboard" && location.pathname === "/")
-		);
-	};
+  const isActive = (path) => {
+    return location.pathname === path || location.pathname.startsWith(path);
+  };
+  
+  const toggleCardVisibility = () => {
+    if (isCardVisible) {
+      setCardOpacity(0);
+      setTimeout(() => setIsCardVisible(false), 300);
+    } else {
+      setIsCardVisible(true);
+      setTimeout(() => setCardOpacity(1), 50);
+    }
+  };
 
-	const toggleCardVisibility = () => {
-		if (isCardVisible) {
-			setCardOpacity(0);
-			setTimeout(() => setIsCardVisible(false), 300);
-		} else {
-			setIsCardVisible(true);
-			setTimeout(() => setCardOpacity(1), 50);
-		}
-	};
-
-	if (!user) {
-		return null;
-	}
+  if (!user) {
+    return null;
+  }
 
 	return (
 		<div className="flex w-[170px] z-[60] h-screen fixed">
@@ -343,88 +350,88 @@ export default function AppNavbar() {
 					</Button>
 				</div>
 			</div>
-
-
-			{isCardVisible && (
-				<Card
-					className="w-[480px] transition-opacity duration-300 ease-in-out notification-card h-auto fixed left-[180px] bottom-3 z-50 shadow-md bg-white"
-					style={{ opacity: cardOpacity }}
-				>
-					<CardContent className="space-y-4">
-						<CardTitle className="text-lg font-bold">
-							Hey <span className="text-blue-600">{user.firstname}</span>!
-						</CardTitle>
-						<div className="flex flex-col gap-2">
-							{notifications.length === 0 && (
-								<div className="text-center px-4 pb-4 text-gray-500 text-sm">
-									You have no notifications!
-								</div>
-							)}
-							{notifications.slice(0, maxNotificationCount).map((notification) => (
-								<NotifCard
-									key={notification.notificationId}
-									notificationData={notification}
-									deleteNotifCall={handleDeleteNotif}
-								/>
-							))}
-							{notifications.length > maxNotificationCount && ( // Show only if too many notifications (> 4)
-								<Link to="/notifications" className="w-full">
-									<Button className="w-full" onClick={toggleCardVisibility}>
-										View All
-									</Button>
-								</Link>
-							)}
-						</div>
-						<div className="flex justify-between">
-							<Button variant="destructive" size="sm" onClick={handleLogout}>
-								<LogOut className="w-4 h-4 mr-2 inline-block" />
-								Logout
-							</Button>
-							<div className="flex items-center justify-between">
-								<Link to="/help">
-									<Button variant="outline" size="sm" className='w-8 h-8 mr-2'>
-										<CircleHelp className='w-4 h-4' />
-									</Button>
-								</Link>
-								<Link to="/settings">
-									<Button variant="default" size="sm">
-										Visit Profile
-									</Button>
-								</Link>
-							</div>
-						</div>
-					</CardContent>
-				</Card>
-			)}
-			<div className="flex-1 overflow-auto ml-60">
-				{/* This is where your main app content will be rendered */}
-			</div>
-		</div>
-	);
+      {isCardVisible && (
+        <Card
+          className="w-[480px] transition-opacity duration-300 ease-in-out notification-card h-auto fixed left-[180px] bottom-3 z-50 shadow-md bg-white"
+          style={{ opacity: cardOpacity }}
+        >
+          <CardContent className="space-y-4">
+            <CardTitle className="text-lg font-bold">
+              Hey <span className="text-blue-600">{user.firstname}</span>!
+            </CardTitle>
+            <div className="flex flex-col gap-2">
+              {notifications.length === 0 && (
+                <div className="text-center px-4 pb-4 text-gray-500 text-sm">
+                  You have no notifications!
+                </div>
+              )}
+             {notifications.slice(0, maxNotificationCount).map((notification) => (
+                <NotifCard
+                  key={notification.notificationId}
+                  notificationData={notification}
+                  deleteNotifCall={handleDeleteNotif}
+                />
+              ))}
+              {notifications.length > maxNotificationCount && (
+                <Link to="/notifications" className="w-full">
+                  <Button className="w-full" onClick={toggleCardVisibility}>
+                    View All
+                  </Button>
+                </Link>
+              )}
+            </div>
+            <div className="flex justify-between">
+              <Button variant="destructive" size="sm" onClick={handleLogout}>
+                <LogOut className="w-4 h-4 mr-2 inline-block" />
+                Logout
+              </Button>
+              <div className="flex items-center justify-between">
+                <Link to="/help">
+                  <Button variant="outline" size="sm" className='w-8 h-8 mr-2'>
+                    <CircleHelp className='w-4 h-4' />
+                  </Button>
+                </Link>
+                <Link to="/settings">
+                  <Button variant="default" size="sm">
+                    Visit Profile
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
 }
 
 const ListItem = React.forwardRef(
-	({ className, title, children, href, onItemClick, ...props }, ref) => {
-		return (
-			<li className="w-[250px] ">
-				<NavigationMenuLink asChild>
-					<Link
-						to={href}
-						className={cn(
-							"block shadow hover:shadow-lg select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-							className
-						)}
-						onClick={onItemClick}
-						{...props}
-					>
-						<div className="text-sm font-medium leading-none">{title}</div>
-						<p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-							{children}
-						</p>
-					</Link>
-				</NavigationMenuLink>
-			</li>
-		);
-	}
+  ({ className, title, children, href, onItemClick, ...props }, ref) => {
+    const location = useLocation();
+    const isActive =
+      location.pathname === href || location.pathname.startsWith(href);
+
+    return (
+      <li className="w-[250px] ">
+        <NavigationMenuLink asChild>
+          <Link
+            to={href}
+            className={cn(
+              "block shadow hover:shadow-lg select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+              isActive && "bg-accent text-accent-foreground",
+              className
+            )}
+            onClick={onItemClick}
+            {...props}
+          >
+            <div className="text-sm font-medium leading-none">{title}</div>
+            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+              {children}
+            </p>
+          </Link>
+        </NavigationMenuLink>
+      </li>
+    );
+  }
 );
 ListItem.displayName = "ListItem";

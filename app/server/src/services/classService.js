@@ -29,6 +29,45 @@ const getAllClasses = async () => {
 	}
 };
 
+const getAllClassesUserIsNotIn = async (userId) => {
+	try {
+	  // Get all classes
+	  const allClasses = await prisma.class.findMany({
+		include: {
+		  usersInClass: true,
+		  instructor: {
+			select: {
+			  userId: true,
+			  email: true,
+			  firstname: true,
+			  lastname: true
+			}
+		  }
+		}
+	  });
+	  
+  
+	  // Filter out classes the user is in and calculate available seats
+	  const filteredClasses = allClasses.filter(classItem => {
+		const isUserInClass = classItem.usersInClass.some(user => user.userId === userId);
+		const availableSeats = classItem.classSize - classItem.usersInClass.length;
+		
+		// Add availableSeats to the class object
+		classItem.availableSeats = availableSeats;
+  
+		// Remove usersInClass from the response to avoid sending unnecessary data
+		delete classItem.usersInClass;
+  
+		return !isUserInClass;
+	  });
+  
+	  return filteredClasses;
+	} catch (error) {
+	  throw new apiError(`Failed to retrieve classes user is not in ${error}`, 500);
+	}
+  };
+  
+
 const getStudentsByClass = async (classId) => {
     try {
         const classWithStudents = await prisma.userInClass.findMany({
@@ -162,12 +201,6 @@ const updateClass = async (classId, updateData) => {
 
 const deleteClass = async (classId) => {
 	try {
-		await prisma.class.delete({
-			where: {
-				classId: classId
-			}
-		});
-
 		const classInfo = await prisma.class.findUnique({
 			where: {
 				classId: classId
@@ -175,8 +208,14 @@ const deleteClass = async (classId) => {
 		});
 
 		await sendNotificationToRole(null, `The class '${classInfo.classname}' has been deleted`, "", "ADMIN", 'class');
+		
+		await prisma.class.delete({
+			where: {
+				classId: classId
+			}
+		});
 	} catch (error) {
-		throw new apiError("Failed to delete class", 500);
+		throw new apiError(`Failed to delete class: ${error}`, 500);
 	}
 };
 
@@ -756,6 +795,7 @@ export default {
 	getStudentsByClass,
 	getClassesByInstructor,
 	getAllClasses,
+	getAllClassesUserIsNotIn,
 	getClassById,
 	createClass,
 	updateClass,

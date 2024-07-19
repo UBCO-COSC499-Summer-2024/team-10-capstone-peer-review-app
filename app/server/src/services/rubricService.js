@@ -58,16 +58,68 @@ const createRubricsForAssignment = async (creatorId, assignmentId, rubricData) =
 };
 
 
+		if (!assignment) {
+			throw new apiError("Assignment not found", 404);
+		}
 
+		// Ensure criteria is always an array
+		const criteria = Array.isArray(rubricData.criterion)
+			? rubricData.criterion
+			: [rubricData.criterion];
+
+		const newRubric = await prisma.rubric.create({
+			data: {
+				title: rubricData.title,
+				description: rubricData.description,
+				totalMarks: rubricData.totalMarks,
+				creatorId: creatorId,
+				criteria: {
+					create: criteria.map((criterion) => ({
+						title: criterion.title,
+						minMark: criterion.minPoints,
+						maxMark: criterion.maxPoints,
+						criterionRatings: {
+							create: criterion.criterionRatings.map((rating) => ({
+								description: rating.text,
+								points: rating.points
+							}))
+						}
+					}))
+				},
+				assignments: {
+					create: {
+						assignmentId: assignmentId
+					}
+				}
+			},
+			include: {
+				criteria: {
+					include: {
+						criterionRatings: true
+					}
+				},
+				assignments: true
+			}
+		});
+
+		return newRubric;
+	} catch (error) {
+		console.error("Error in createRubricsForAssignment:", error);
+		throw new apiError(
+			`Failed to create rubrics for assignment: ${error.message}`,
+			500
+		);
+	}
+};
 
 const getRubricsForAssignment = async (assignmentId) => {
 	try {
 		const assignment = await prisma.assignment.findUnique({
 			where: {
-				assignmentId: assignmentId,
+				assignmentId: assignmentId
 			},
 			include: {
-				rubric: true,
+				rubric: true
 			}
 		});
 
@@ -81,10 +133,10 @@ const getRubricsForAssignment = async (assignmentId) => {
 
 		const rubricAssignments = await prisma.rubricForAssignment.findMany({
 			where: {
-				assignmentId: assignmentId,
+				assignmentId: assignmentId
 			},
 			include: {
-				rubric:{
+				rubric: {
 					include: {
 						criteria: {
 							include: {
@@ -93,7 +145,7 @@ const getRubricsForAssignment = async (assignmentId) => {
 						}
 					}
 				}
-			},
+			}
 		});
 
 		if (!rubricAssignments.length) {
@@ -424,7 +476,6 @@ const createCriterionRating = async (criterionId, ratingData) => {
 
 // criterion grade operations
 
-
 export default {
 	createRubricsForAssignment,
 	getRubricsForAssignment,
@@ -438,6 +489,5 @@ export default {
 	getCriterionForRubric,
 	updateCriterionForRubric,
 	deleteCriterionForRubric,
-	createCriterionRating,
-
+	createCriterionRating
 };

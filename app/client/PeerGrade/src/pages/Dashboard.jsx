@@ -16,6 +16,8 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { getNotifications, deleteNotification } from "@/api/notifsApi";
+import NotifCard from "@/components/global/NotifCard";
 
 
 function Dashboard() {
@@ -24,6 +26,7 @@ function Dashboard() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [assignments, setAssignments] = useState([]);
 	const [groups, setGroups] = useState([]);
+	const [notifications, setNotifications] = useState([]);
 	const { toast } = useToast();
 
 	useEffect(() => {
@@ -46,23 +49,57 @@ function Dashboard() {
 				setIsLoading(false);
 			};
 
-      const fetchGroups = async () => {
-        try {
-          const groups = await getGroups(user.userId);
-          setGroups(Array.isArray(groups.data) ? groups.data : []);
-        } catch (error) {
-          toast({
-            title: "Error",
-            description: "Failed to fetch groups",
-            variant: "destructive"
-          });
-        }
-      };
+			const fetchGroups = async () => {
+				try {
+				const groups = await getGroups(user.userId);
+				setGroups(Array.isArray(groups.data) ? groups.data : []);
+				} catch (error) {
+				toast({
+					title: "Error",
+					description: "Failed to fetch groups",
+					variant: "destructive"
+				});
+				}
+			};
+
+			// IDEALLY WE WOULD HAVE A SEPARATE ANNOUNCEMENTS MODEL (in prisma) AND USE THAT HERE
+			const fetchNotifs = async () => {
+				if (user && !userLoading) {
+				try {
+					const notifs = await getNotifications(user.userId);
+					setNotifications(Array.isArray(notifs.data) ? notifs.data : []);
+				} catch (error) {
+					console.error("Failed to fetch notifications", error);
+				}
+				}
+			};
 
 			fetchAssignments();
 			fetchGroups();
+			fetchNotifs();
+
+			const intervalId = setInterval(() => {
+				fetchNotifs();
+			}, 10000); // Fetch notifications every 30 seconds
+	
+			return () => {
+				clearInterval(intervalId); // Clear the interval when the component unmounts
+			};
 		}
 	}, [user]);
+
+	const handleDeleteNotif = async (notificationId) => {
+		const deleteNotif = await deleteNotification(notificationId);
+		if (deleteNotif.status === "Success") {
+			setNotifications((prevNotifs) =>
+				prevNotifs.filter(
+					(notification) => notification.notificationId !== notificationId
+				)
+			);
+		} else {
+			console.error('An error occurred while deleting the notification.', deleteNotif.message);
+		}
+	};
 
 	const assignmentData = assignments.filter(
 		(assignment) => assignment.evaluation_type !== "peer"
@@ -148,12 +185,23 @@ function Dashboard() {
       <h1 className="text-3xl font-bold mb-8 text-primary">Dashboard</h1>
       <div className={user.role === "STUDENT" ? "grid grid-cols-1 md:grid-cols-2 gap-8 mb-8" : "grid grid-cols-1 gap-8 mb-8"}>
         <Card className="bg-muted rounded-lg shadow-md">
-          <CardHeader>
-            <CardTitle className="flex items-center"><Bell className="mr-2" />Recent Announcements</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {/* <p className="text-muted-foreground">No recent announcements.</p> */}
-          </CardContent>
+			<CardHeader>
+				<CardTitle className="flex items-center"><Bell className="mr-2" />Recent Class Notifications</CardTitle>
+			</CardHeader>
+			<CardContent>
+				{notifications.filter(notification => notification.type === 'announcement').length === 0 && (
+				<div className="text-center px-4 pb-4 text-sm">
+					You have no notifications!
+				</div>
+				)}
+				{notifications.filter(notification => notification.type === 'announcement').map((notification) => (
+				<NotifCard
+					key={notification.notificationId}
+					notificationData={notification}
+					deleteNotifCall={handleDeleteNotif}
+				/>
+				))}
+			</CardContent>
         </Card>
         {user.role === "STUDENT" && 
         <Card className="bg-muted rounded-lg shadow-md">

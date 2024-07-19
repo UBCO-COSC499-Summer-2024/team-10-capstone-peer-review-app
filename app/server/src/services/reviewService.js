@@ -144,19 +144,20 @@ const getInstructorReview = async (submissionId) => {
 
 
 
-const getAllReviews = async (submissionId) => {
-    try {
-        const reviews = await prisma.review.findMany({
-            where: {
-                submissionId: submissionId
-            }
-        });
 
-        return reviews;
-    } catch (error) {
-        throw new apiError("Failed to retrieve reviews", 500);
-    }
-}
+const getAllReviews = async (submissionId) => {
+	try {
+		const reviews = await prisma.review.findMany({
+			where: {
+				submissionId: submissionId
+			}
+		});
+
+		return reviews;
+	} catch (error) {
+		throw new apiError("Failed to retrieve reviews", 500);
+	}
+};
 
 const updateReview = async (reviewId, review) => {
     const { criterionGrades, ...reviewData } = review;
@@ -209,21 +210,22 @@ const updateReview = async (reviewId, review) => {
         console.error('Error in updateReview:', error);
         throw new apiError(`Failed to update review: ${error.message}`, 500);
     }
+
 };
 
 const deleteReview = async (reviewId) => {
-    try {
-        await prisma.review.delete({
-            where: {
-                reviewId: reviewId
-            }
-        });
+	try {
+		await prisma.review.delete({
+			where: {
+				reviewId: reviewId
+			}
+		});
 
-        return;
-    } catch (error) {
-        throw new apiError("Failed to delete review", 500);
-    }
-}
+		return;
+	} catch (error) {
+		throw new apiError("Failed to delete review", 500);
+	}
+};
 
 const createReview = async (userId, review) => {
     try {
@@ -334,3 +336,4 @@ export default {
     getUserReviews,
     getReviewById
 };
+

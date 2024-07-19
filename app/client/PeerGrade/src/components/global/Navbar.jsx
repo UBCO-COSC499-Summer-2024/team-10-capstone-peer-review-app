@@ -185,13 +185,13 @@ export default function AppNavbar() {
                       variant="ghost"
                       className={cn(
                         navigationMenuTriggerStyle(),
-                        isActive("/assignedPR") && "flex flex-col items-center justify-center font-bold w-full h-full"
+                        "flex flex-col items-center justify-center font-bold w-full h-full"
                       )}
                       onClick={() => setIsPeerReviewSheetOpen(true)}
                     >
                       <ClipboardList className="w-6 h-6 mb-1" />
                       Peer-Review
-                    </Button>
+                    </Button> 
                   </SheetTrigger>
                   <SheetContent side="left" className="w-[300px] border-l border-gray-200 ml-[-20px]">
                     <SheetHeader>

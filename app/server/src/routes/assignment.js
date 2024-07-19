@@ -8,19 +8,19 @@ import {
 
 } from "../controllers/assignController.js";
 
-import { ensureUser, ensureInstructor, ensureAdmin } from "../middleware/ensureUserTypes.js";
+import { ensureUser, ensureInstructor, ensureAdmin, ensureInstructorOrAdmin } from "../middleware/ensureUserTypes.js";
 
 const router = express.Router();
 
 //Assignment Routes
 router.route("/add-assignment")
-  .post( ensureUser, ensureInstructor, addAssignmentToClass);
+  .post( ensureUser, ensureInstructorOrAdmin, addAssignmentToClass);
 
 router.route("/remove-assignment")
-  .post(ensureUser, ensureInstructor, removeAssignmentFromClass);
+  .post(ensureUser, ensureInstructorOrAdmin, removeAssignmentFromClass);
 
 router.route("/update-assignment")
-  .post(ensureUser, ensureInstructor, updateAssignmentInClass);
+  .post(ensureUser, ensureInstructorOrAdmin, updateAssignmentInClass);
 
 router.route("/get-assignment")
   .post(ensureUser, getAssignmentInClass);

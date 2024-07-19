@@ -40,7 +40,7 @@ const DataChart = ({ data, title, xAxisLabel, yAxisLabel, filterTypes }) => {
 
   return (
     <div className="w-full">
-      <h2 className="text-xl font-semibold mb-4">{title}</h2>
+      <h2 className="text-2xl font-semibold mb-6">{title}</h2>
       <div className="flex items-center justify-between mb-4">
         <Select value={userType} onValueChange={setUserType}>
           <SelectTrigger>

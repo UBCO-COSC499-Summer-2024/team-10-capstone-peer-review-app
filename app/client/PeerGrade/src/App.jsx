@@ -18,8 +18,10 @@ import PeerReview from "./pages/Reviews";
 import Settings from "./pages/Settings";
 import AppNavbar from "./components/global/Navbar";
 import ManageClass from "./pages/ManageClass";
-import Search from "./pages/Search";
 import Submission from "./pages/classNav/assignment/StudentSubmission";
+import Report from "./pages/Report";
+import Search from "./components/admin/Search";
+import Notifications from "./pages/Notifications";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedRoute from "./components/global/ProtectedRoute";
 import NotFound from "./components/global/NotFound";
@@ -45,10 +47,10 @@ function MainLayout() {
 
 	// May need to change this? Idk if this is necessary of the best way to do redirects
 
-  const isLoginPage = location.pathname === "/";
+	const isLoginPage = location.pathname === "/";
 
 	return (
-    <main className="gradient-background min-h-screen flex">
+		<main className="gradient-background min-h-screen flex">
 			{!isLoginPage && <AppNavbar />}
 			<div className="main-container flex-grow p-6">
 				<Routes>
@@ -167,8 +169,25 @@ function MainLayout() {
 							/>
 						}
 					/>
+					<Route
+						path="/report"
+						element={
+							<ProtectedRoute
+								element={<Report />}
+								allowedRoles={["STUDENT", "INSTRUCTOR", "ADMIN"]}
+							/>
+						}
+					/>
+					<Route
+						path="/notifications"
+						element={
+							<ProtectedRoute
+								element={<Notifications />}
+								allowedRoles={["STUDENT", "INSTRUCTOR", "ADMIN"]}
+							/>
+						}
+					/>
 					<Route path="*" element={<NotFound />} />
-
 				</Routes>
 			</div>
 			<Toaster />

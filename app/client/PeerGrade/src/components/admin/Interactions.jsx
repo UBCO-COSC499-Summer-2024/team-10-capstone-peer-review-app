@@ -15,10 +15,13 @@ const interactionColumns = [
 
 const Interactions = () => {
   return (
-    <div className="wider-table pt-3 bg-white">
-      <p className='text-xl ml-5'>Interactions</p>
-      <DataTable title="Interactions" data={interactionsData} columns={interactionColumns} pageSize={5} enableStatus={true} />
-    </div>
+		<div className="w-full space-y-6">
+			<h1 className="text-2xl font-bold">Interactions</h1>
+      
+      <div className="pt-6 bg-white rounded-lg">
+        <DataTable title="Interactions" data={interactionsData} columns={interactionColumns} pageSize={5} enableStatus={true} />
+      </div>
+		</div>
   );
 };
 

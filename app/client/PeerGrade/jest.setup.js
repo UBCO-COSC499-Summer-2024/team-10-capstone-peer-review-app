@@ -1,6 +1,17 @@
 // jest.setup.js
 import '@testing-library/jest-dom/';
-// setupTests.js or a similar setup file
+
+// Mocking window.matchMedia
+window.matchMedia = window.matchMedia || function() {
+  return {
+    matches: false,
+    addListener: function() {},
+    removeListener: function() {}
+  };
+};
+
+window.scrollTo = jest.fn();
+
 global.ResizeObserver = class {
     observe() {}
     unobserve() {}

@@ -76,7 +76,61 @@ const Rubrics = () => {
     }
   };
 
-  
+
+  const handleCreateRubric = async () => {
+    try {
+      if (selectedAssignments.length === 0) {
+        throw new Error("No assignments selected");
+      }
+
+      const formattedRubricData = {
+        title: newRubricData.title,
+        // description: newRubricData.description, // You might want to add a description field as well
+        totalMarks: newRubricData.criteria.reduce((total, criterion) => total + parseInt(criterion.maxPoints || 0), 0),
+        criterion: newRubricData.criteria.map(criterion => ({
+          title: criterion.criteria,
+          minPoints: parseInt(criterion.minPoints || 0),
+          maxPoints: parseInt(criterion.maxPoints || 0),
+          criterionRatings: criterion.ratings.map(rating => ({
+            text: rating.text,
+            points: parseInt(rating.points || 0)
+          }))
+        }))
+      };
+      console.log('formattedRubricData:', formattedRubricData);
+      console.log(user);
+      const userId = user.userId
+
+      // Add rubric to each selected assignment
+      const assignmentId = selectedAssignments;
+      console.log('Adding rubric to assignment:', assignmentId);
+      await addRubricToAssignment({
+        userId,
+        assignmentId,
+        rubricData: formattedRubricData
+      });
+      console.log('Rubric added to selected assignments');
+      
+      setIsCreateDrawerOpen(false);
+      setNewRubricData({
+        title: "",
+        criteria: [{ criteria: "", ratings: [{ text: "", points: "" }], minPoints: "", maxPoints: "" }]
+      });
+      setSelectedAssignments([]);
+
+      // Refresh the rubrics list
+      const updatedRubrics = await getAllRubrics();
+      setRubrics(updatedRubrics.data.data);
+    } catch (error) {
+      console.error('Error creating rubric:', error);
+      // Show an error message to the user here
+    }
+  };
+
+  const handleAssignmentSelection = (selectedValues) => {
+    console.log('Selected assignments:', selectedValues);
+    setSelectedAssignments(selectedValues);
+  };
 
   return (
     <div className="p-4 bg-slate-50 rounded-lg">

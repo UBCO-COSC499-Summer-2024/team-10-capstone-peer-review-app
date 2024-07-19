@@ -152,11 +152,7 @@ const Submissions = () => {
                 }
             }
     
-            toast({
-                title: "Success",
-                description: "Peer reviewers updated successfully",
-                variant: "success"
-            });
+       
             setAssignReviewersDialogOpen(false);
         } catch (error) {
             console.error("Error updating reviewers:", error);
@@ -239,11 +235,7 @@ const Submissions = () => {
                     criterionGrades: criterionGrades,
                 };
                 response = await reviewAPI.updateReview(existingReview.data.reviewId, review);
-                toast({
-                    title: "Success",
-                    description: "Existing review updated successfully",
-                    variant: "success"
-                });
+
             } else {
                 const review = {
                     submissionId: selectedSubmission.submissionId,
@@ -255,11 +247,7 @@ const Submissions = () => {
                     criterionGrades: criterionGrades,
                 };
                 response = await reviewAPI.createReview(user.userId, review);
-                toast({
-                    title: "Success",
-                    description: "New review submitted successfully",
-                    variant: "success"
-                });
+     
             }
     
             setStudentsWithSubmissions(prev => 

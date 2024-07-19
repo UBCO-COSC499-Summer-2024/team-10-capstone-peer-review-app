@@ -93,7 +93,7 @@ const DataTable = ({
 
     return (
         <div className="w-full bg-white px-5 rounded-lg">
-            <div className="rounded-md border bg-white">
+            <div className="rounded-md bg-white">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (

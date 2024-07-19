@@ -6,15 +6,15 @@ const BASE_URL = '/api';
 const reviewAPI = {
 
   getReviewById: async (reviewId) => {
-    console.log('Sending request for reviewId:', reviewId); // Add this line
+    console.log('Sending request for reviewId:', reviewId);
     try {
-        const response = await axios.post(`${BASE_URL}/review/reviewId`, { reviewId });
-        return response.data;
+      const response = await axios.post(`${BASE_URL}/review/reviewId`, { reviewId });
+      return response.data;
     } catch (error) {
-        console.error("Error fetching review by ID:", error.response?.data || error.message);
-        throw error;
+      handleError(error);
+      throw error;
     }
-},
+  },
 
   // Review operations
   getPeerReviews: async (submissionId) => {
@@ -22,6 +22,7 @@ const reviewAPI = {
       const response = await axios.post(`${BASE_URL}/review/studentReview`, { submissionId });
       return response.data;
     } catch (error) {
+      handleError(error);
       throw error;
     }
   },
@@ -36,20 +37,20 @@ const reviewAPI = {
         // No instructor review found, return null instead of throwing an error
         return { data: null };
       }
-      // For other errors, throw as usual
+      handleError(error);
       throw error;
     }
   },
 
   getUserReviews: async (userId) => {
     try {
-        const response = await axios.post(`${BASE_URL}/review/userReviews`, { userId });
-        return response.data;
+      const response = await axios.post(`${BASE_URL}/review/userReviews`, { userId });
+      return response.data;
     } catch (error) {
-        console.error("Error fetching user reviews:", error.response?.data || error.message);
-        throw error;
+      handleError(error);
+      throw error;
     }
-},
+  },
 
   getAllReviews: async (submissionId) => {
     try {
@@ -66,40 +67,54 @@ const reviewAPI = {
       console.log('response', response);
       return response.data;
     } catch (error) {
+      handleError(error);
       throw error;
     }
   },
 
   createReview: async (userId, review) => {
     try {
-        const response = await axios.post(`${BASE_URL}/review/createReview`, {userId, review});
-        return response.data;
+      const response = await axios.post(`${BASE_URL}/review/createReview`, {userId, review});
+      showStatusToast({
+        status: 'Success',
+        message: 'Review created successfully.'
+      });
+      return response.data;
     } catch (error) {
-        console.error("Error creating review:", error.response?.data || error.message);
-        throw error;
+      handleError(error);
+      throw error;
     }
-},
+  },
 
-updateReview: async (reviewId, review) => {
-  console.log('reviewId', reviewId);
-  console.log('review', review);
-  try {
-    const response = await axios.put(`${BASE_URL}/review/updateReview`, {
-      reviewId, 
-      review 
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error updating review:", error.response?.data || error.message);
-    throw error;
-  }
-},
+  updateReview: async (reviewId, review) => {
+    console.log('reviewId', reviewId);
+    console.log('review', review);
+    try {
+      const response = await axios.put(`${BASE_URL}/review/updateReview`, {
+        reviewId, 
+        review 
+      });
+      showStatusToast({
+        status: 'Success',
+        message: 'Review updated successfully.'
+      });
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      throw error;
+    }
+  },
 
   deleteReview: async (reviewId) => {
     try {
       const response = await axios.delete(`${BASE_URL}/review/deleteReview`, { data: { reviewId } });
+      showStatusToast({
+        status: 'Success',
+        message: 'Review deleted successfully.'
+      });
       return response.data;
     } catch (error) {
+      handleError(error);
       throw error;
     }
   },
@@ -110,6 +125,7 @@ updateReview: async (reviewId, review) => {
       const response = await axios.get(`${BASE_URL}/grade/grades`);
       return response.data;
     } catch (error) {
+      handleError(error);
       throw error;
     }
   },
@@ -119,26 +135,31 @@ updateReview: async (reviewId, review) => {
       const response = await axios.get(`${BASE_URL}/grade/submissionGrade`, { params: { submissionId } });
       return response.data;
     } catch (error) {
+      handleError(error);
       throw error;
     }
   },
 
-
-
-getReviewDetails: async (reviewId) => {
+  getReviewDetails: async (reviewId) => {
     try {
-        const response = await axios.get(`${BASE_URL}/review/reviewDetails/${reviewId}`);
-        return response.data;
+      const response = await axios.get(`${BASE_URL}/review/reviewDetails/${reviewId}`);
+      return response.data;
     } catch (error) {
-        throw error;
+      handleError(error);
+      throw error;
     }
-},
+  },
 
   updateGrade: async (gradeId, grade) => {
     try {
       const response = await axios.put(`${BASE_URL}/grade/updateGrade`, { gradeId, grade });
+      showStatusToast({
+        status: 'Success',
+        message: 'Grade updated successfully.'
+      });
       return response.data;
     } catch (error) {
+      handleError(error);
       throw error;
     }
   },
@@ -146,26 +167,30 @@ getReviewDetails: async (reviewId) => {
   deleteGrade: async (gradeId) => {
     try {
       const response = await axios.delete(`${BASE_URL}/grade/deleteGrade`, { data: { gradeId } });
+      showStatusToast({
+        status: 'Success',
+        message: 'Grade deleted successfully.'
+      });
       return response.data;
     } catch (error) {
+      handleError(error);
       throw error;
     }
   },
 };
 
-
 const handleError = (error) => {    
-    if (error.response && error.response.data) {
-        showStatusToast({
-            status: error.response.data.status,
-            message: error.response.data.message
-        });
-    } else {
-        showStatusToast({
-            status: "Error",
-            message: "An unexpected error occurred. Please try again."
-        });
-    }
-}
+  if (error.response && error.response.data) {
+    showStatusToast({
+      status: error.response.data.status,
+      message: error.response.data.message
+    });
+  } else {
+    showStatusToast({
+      status: "Error",
+      message: "An unexpected error occurred. Please try again."
+    });
+  }
+};
 
 export default reviewAPI;

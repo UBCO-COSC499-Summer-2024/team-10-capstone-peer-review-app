@@ -8,10 +8,6 @@ export const getStudentSubmission = async (studentId) => {
   try {
     const response = await axios.post(`${BASE}/submit/studentSubmission`, { userId: studentId });
     console.log('response:', response);
-    showStatusToast({
-      status: 'Success',
-      message: 'Student submission fetched successfully.'
-    });
     return response.data;
   } catch (error) {
     handleError(error);
@@ -22,10 +18,6 @@ export const getStudentSubmission = async (studentId) => {
 export const getSubmissionsForAssignment = async (assignmentId) => {
   try {
     const response = await axios.post(`${BASE}/submit/submissionsForAssignment`, { assignmentId });
-    showStatusToast({
-      status: 'Success',
-      message: 'Submissions for assignment fetched successfully.'
-    });
     return response.data;
   } catch (error) {
     handleError(error);

@@ -58,15 +58,13 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Was able to complete the manage class / enrollments features for students and instructors. Had a scary moment with docker images not working so that took a fair amount of time yesterday. And also setting up for the first peer-testing session
 
 ## Goals for next cycle
-* 
-* 
-* 
-  
+* Complete majority of peer-review features, start working on peer-review dashboard / group reviews
+* Complete some smaller tasks
+* Continue setting up integration tests for backend
+* Create some documentation for the project
   
 
 # Josh's Log for Cycle 13

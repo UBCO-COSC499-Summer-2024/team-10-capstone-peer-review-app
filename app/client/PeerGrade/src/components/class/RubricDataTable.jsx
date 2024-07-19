@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Plus, Minus, Trash } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const RubricDataTable = ({ rubricData, setRubricData, setIsValid }) => {
@@ -119,19 +120,18 @@ const RubricDataTable = ({ rubricData, setRubricData, setIsValid }) => {
                                     onChange={(e) => handleCriteriaChange(index, e.target.value)}
                                     className="w-full border-none"
                                 />
-                                <Button 
-                                    variant="outline" 
-                                    size="sm" 
+                                <Badge
                                     onClick={() => removeCriteria(index)}
-                                    className="mr-4 mb-2 absolute bottom-0 right-0 p-1 text-destructive hover:bg-white hover:text-destructive"
+                                    variant={"destructive"}
+                                    className={"absolute bottom-0 right-0 bg-destructive text-destructive hover:bg-white hover:text-destructive hover:cursor-pointer w-8 h-8 flex justify-center items-center"}
                                 >
                                     <Trash className="h-4 w-4"/>
-                                </Button>
+                                </Badge>
                             </TableCell>
                             <TableCell className="border p-0">
                                 <div className="flex flex-wrap">
                                     {item.ratings.map((rating, ratingIndex) => (
-                                        <div key={ratingIndex} className="flex gap-2 min-w-[200px] border-r border-b relative p-2">
+                                        <div key={ratingIndex} className="flex gap-2 min-w-[200px] relative p-2">
                                             <div className="flex gap-2 w-full">
                                                 <Input
                                                     placeholder="Rating"

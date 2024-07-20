@@ -118,7 +118,8 @@ async function main() {
 			description: "This is a test class",
 			startDate: new Date(),
 			endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
-			instructorId: instructor.userId
+			instructorId: instructor.userId,
+			classSize: 5
 		}
 	});
 
@@ -128,7 +129,8 @@ async function main() {
 			description: "This is another test class",
 			startDate: new Date(),
 			endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
-			instructorId: admin.userId
+			instructorId: admin.userId,
+			classSize: 5
 		}
 	});
 
@@ -149,7 +151,8 @@ async function main() {
 			description: "This is a basic test class",
 			startDate: new Date(),
 			endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
-			instructorId: admin.userId
+			instructorId: admin.userId,
+			classSize: 5
 		}
 	});
 

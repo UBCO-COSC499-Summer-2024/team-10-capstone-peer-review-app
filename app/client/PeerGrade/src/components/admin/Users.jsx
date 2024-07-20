@@ -148,7 +148,7 @@ const Users = () => {
 	}));
 
 	return (
-		<div className="max-w-4xl flex flex-col gap-6">
+		<div className="flex flex-col gap-6">
 			<div className="w-full space-y-6">
 				<h1 className="text-2xl font-bold">Current Users</h1>
 				<div className="pt-6 bg-white rounded-lg">
@@ -169,9 +169,9 @@ const Users = () => {
 					yAxisLabel="Number of Users"
 					filterTypes={["All", "Student", "Instructor"]}
 				/>
-				<div className="flex flex-col md:w-1/3 overflow-y-auto rounded-md">
+				<div className="flex flex-col w-1/2 overflow-y-auto rounded-md">
 					<h1 className="text-2xl font-semibold mb-6">Role Requests</h1>
-					<div className="py-6 bg-white rounded-lg space-y-1">
+					<div className="p-5 bg-white rounded-lg space-y-1">
 						{roleRequests.length === 0 && <div className="text-gray-500 text-sm px-6">No role requests were found.</div>}
 						{roleRequests.map((roleRequest) => {
 							const { color } = getStatusDetails(roleRequest.status);

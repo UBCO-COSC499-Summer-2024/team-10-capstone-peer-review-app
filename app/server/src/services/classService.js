@@ -23,7 +23,16 @@ const getAllClasses = async () => {
 				EnrollRequest: true
 			}
 		});
-		return classes;
+
+		// Map the classes to include the assignment & user counts directly in the class object
+		const classesWithCounts = classes.map((classItem) => ({
+			...classItem,
+			assignmentCount: classItem._count.Assignments,
+			userCount: classItem._count.usersInClass,
+			_count: undefined // Remove the _count property
+		}));
+
+		return classesWithCounts;
 	} catch (error) {
 		throw new apiError("Failed to retrieve classes", 500);
 	}

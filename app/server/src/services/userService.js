@@ -73,7 +73,7 @@ export async function getUserClasses(userId) {
 			}
 		});
 
-		// Map the classes to include the counts directly in the class object
+		// Map the classes to include the assignment & user counts directly in the class object
 		const classesWithCounts = classes.map((classItem) => ({
 			...classItem,
 			assignmentCount: classItem._count.Assignments,

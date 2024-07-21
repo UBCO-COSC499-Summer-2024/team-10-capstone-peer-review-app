@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import DataTable from '@/components/ui/data-table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { useClass } from "@/contexts/contextHooks/useClass";
@@ -48,11 +49,24 @@ const Assign = () => {
         <h1 className="text-2xl font-bold">Assignments</h1>
         {classes && classes.length !== 0 &&
           <Tabs defaultValue={classes[0].classname}>
-            <TabsList className="w-auto flex mb-5">
-              {classes && classes.map((classItem) => (
-                <TabsTrigger value={classItem.classname}>{classItem.classname}</TabsTrigger>
-              ))}
+            <TabsList
+              className="w-auto flex mb-5 whitespace-nowrap ml-11"
+            >
+              <Carousel className='max-w-sm'>
+                <CarouselContent>
+                  {classes && classes.map((classItem) => (
+                    <CarouselItem key={classItem.classname} className="basis-auto">
+                      <TabsTrigger key={classItem.classname} value={classItem.classname} className='w-full'>
+                        {classItem.classname}
+                      </TabsTrigger>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
             </TabsList>
+
             {classes && classes.map((classItem) => (
               <div>
                 <TabsContent value={classItem.classname}>

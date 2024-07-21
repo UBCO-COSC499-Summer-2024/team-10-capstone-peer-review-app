@@ -1372,44 +1372,134 @@ const addGroupReview = async (userId, assignmentId, criterionGrades) => {
     }
 }
 
-const updateGroupReview = async (groupReview) => {
+const updateGroupReview = async (userId, reviewId, criterionGrades) => {
     try {
-        const updatedGroupReview = await prisma.review.update({
+        if (!userId) {
+            throw new apiError("User not found", 404);
+        }
+
+        if (!reviewId) {
+            throw new apiError("Review not found", 404);
+        }
+
+        if (!criterionGrades) {
+            throw new apiError("Criterion grades not found", 404);
+        }
+
+        // console.log("CriterionGrades: ", criterionGrades.length);
+
+        // if (criterionGrades === undefined || criterionGrades.length === 0) {
+        //     throw new apiError("Criterion grades not found", 404);
+        // }
+
+        const review = await prisma.review.findUnique({
             where: {
-                reviewId: groupReview.reviewId
-            },
-            data: groupReview
+                reviewId: reviewId
+            }, 
+            include: {
+                criterionGrades: true
+            }
         });
 
-        return updatedGroupReview;
+        //console.log("Review: ", review);
+
+        if (criterionGrades.length !== review.criterionGrades.length) {
+            throw new apiError("Invalid number of criterion grades", 400);
+        }
+
+        if (userId !== review.reviewerId) {
+            throw new apiError("User not authorized to update review", 403);
+        }
+
+
+        if (!Array.isArray(criterionGrades)) {
+            throw new TypeError('criterionGrades must be an array');
+        }
+
+        const reviewGrade = criterionGrades.reduce((acc, criterion) => acc + criterion.grade, 0);
+
+        if (reviewGrade !== 100) {
+            throw new apiError("Review grade exceeds total grade", 400);
+        }
+
+        const updatedReview = await prisma.review.update({
+            where: {
+                reviewId: reviewId
+            },
+            data: {
+                criterionGrades: {
+                    deleteMany: {
+                        reviewId: reviewId
+                    },
+                    create: criterionGrades
+                },
+                reviewGrade: reviewGrade,
+            }, 
+            include: {
+                rubric: {
+                    include: {
+                        criteria: true
+                    }
+                },
+                criterionGrades: true
+            }
+        });
+
+        return updatedReview;
     } catch (error) {
-        if (error instanceof apiError) {
-			throw error;
-		}
         if (error instanceof apiError) {
             throw error;
         }
-        throw new apiError("Failed to update group review", 500);
+        throw new apiError("Failed to update review " + error, 500);
     }
 }
 
-const deleteGroupReview = async (reviewId) => {
+const deleteGroupReview = async (userId, reviewId) => {
     try {
-        const deletedGroupReview = await prisma.review.delete({
+        const user = await prisma.user.findUnique({
+            where: {
+                userId: userId
+            }
+        }); 
+        
+        if (!user) {
+            throw new apiError("User not found", 404);
+        }
+
+        const review = await prisma.review.findUnique({
+            where: {
+                reviewId: reviewId
+            } 
+        });
+
+        if (!review) {
+            throw new apiError("Review not found", 404);
+        }
+
+        if (user.role !== "INSTRUCTOR") {
+            if (userId !== review.reviewerId) {
+                throw new apiError("User not authorized to delete review", 403);
+            }
+        }
+
+        await prisma.criterionGrade.deleteMany({
             where: {
                 reviewId: reviewId
             }
         });
 
-        return deletedGroupReview;
+        await prisma.review.delete({
+            where: {
+                reviewId: reviewId
+            }
+        });
+
+        return;
     } catch (error) {
         if (error instanceof apiError) {
 			throw error;
 		}
-        if (error instanceof apiError) {
-            throw error;
-        }
-        throw new apiError("Failed to delete group review", 500);
+        throw new apiError("Failed to delete review " + error, 500);
     }
 }
 

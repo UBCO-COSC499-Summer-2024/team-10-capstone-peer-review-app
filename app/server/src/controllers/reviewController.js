@@ -2,6 +2,7 @@
 import express from "express";
 import reviewService from "../services/reviewService.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
+import { user } from "../../../../../../../node_modules/pg/lib/defaults.js";
 
 
 // Controller methods for review operations
@@ -135,8 +136,9 @@ export const addGroupReview = asyncErrorHandler(async (req, res) => {
 
 // update a group review on a submission
 export const updateGroupReview = asyncErrorHandler(async (req, res) => {
-    const groupReview = req.body;
-    const updatedGroupReview = await reviewService.updateGroupReview(groupReview);
+    const userId = req.user.userId;
+    const {reviewId, criterionGrades } = req.body;
+    const updatedGroupReview = await reviewService.updateGroupReview(userId, reviewId, criterionGrades);
     return res.status(200).json({
         status: "Success",
         data: updatedGroupReview
@@ -145,8 +147,9 @@ export const updateGroupReview = asyncErrorHandler(async (req, res) => {
 
 // delete a group review on a submission
 export const deleteGroupReview = asyncErrorHandler(async (req, res) => {
-    const groupReviewId = req.body.reviewId;
-    const deletedGroupReview = await reviewService.deleteGroupReview(groupReviewId);
+    const userId = req.user.userId;
+    const reviewId = req.body.reviewId;
+    const deletedGroupReview = await reviewService.deleteGroupReview(userId, reviewId);
     return res.status(200).json({
         status: "Success",
         data: deletedGroupReview

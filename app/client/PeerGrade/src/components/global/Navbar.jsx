@@ -274,12 +274,22 @@ export default function AppNavbar() {
 												{(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (
 													<ListItem
 													title="Manage Classes"
-													href="/manageclass"
+													href="/manage-class"
 													className="w-full bg-blue-100"
 													onItemClick={() => setIsClassesSheetOpen(false)}
 													>
 													Administer classes and assignments.
 													</ListItem>
+												)}
+												{user.role === "STUDENT" && (
+													<ListItem
+													title="Enroll"
+													href="/enrollment"
+													className="w-full bg-blue-100"
+													onItemClick={() => setIsClassesSheetOpen(false)}
+													>
+													Enroll into a class!
+                          </ListItem>
 												)}
 											</ul>
 										</div>

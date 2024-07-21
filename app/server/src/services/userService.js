@@ -7,7 +7,13 @@ const { PrismaClientKnownRequestError } = pkg;
 const getAllUsers = async () => {
 	try {
 		// May eventually change to return specific fields
-		const users = await prisma.user.findMany();
+		const users = await prisma.user.findMany({
+			include: {
+				classes: true,
+				classesInstructed: true,
+				groups: true
+			}
+		});
 		return users;
 	} catch (error) {
 		throw new apiError("Failed to get all users", 500);

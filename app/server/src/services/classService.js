@@ -198,8 +198,19 @@ const updateClass = async (classId, updateData) => {
 		const classInfo = await prisma.class.findUnique({
 			where: {
 				classId: classId
+			},
+			include: {
+				usersInClass: true
 			}
 		});
+
+		// Check if new class size (if given) is less than the current number of students in the class
+		if (
+			updateData.classSize &&
+			updateData.classSize < classInfo.usersInClass.length
+		) {
+			throw new apiError("The new class size given is less than the number of students in the class", 400);
+		}
 
 		await sendNotificationToRole(null, `The class '${classInfo.classname}' has been updated`, "", "ADMIN", 'class');
 		return updatedClass;

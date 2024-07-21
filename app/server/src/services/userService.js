@@ -162,6 +162,24 @@ export async function getGroups(userId) {
 	}
 }
 
+export async function getAllGroups() {
+	try {
+		const groupsInfo = await prisma.group.findMany();
+
+		if (!groupsInfo) {
+			throw new apiError("Groups not found", 404);
+		}
+
+		return groupsInfo;
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to get all groups", 500);
+		}
+	}
+};
+
 export async function updateProfile(userId, updateData) {
 	try {
 		const updatedProfile = await prisma.user.update({
@@ -200,5 +218,6 @@ export default {
 	getUserClasses,
 	getUserAssignments,
 	getGroups,
+	getAllGroups,
 	updateProfile
 };

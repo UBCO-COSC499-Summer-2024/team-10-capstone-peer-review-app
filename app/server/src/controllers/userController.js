@@ -53,6 +53,15 @@ export const getGroups = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+export const getAllGroups = asyncErrorHandler(async (req, res) => {
+	const groupsData = await userService.getAllGroups();
+	return res.status(200).json({
+		status: "Success",
+		message: "All groups fetched",
+		data: groupsData
+	});
+});
+
 // // Get user peer reviews
 // export const getUserPeerReviews = asyncErrorHandler(async (req, res) => {
 //   const { id: userId } = req.user;
@@ -88,6 +97,7 @@ export default {
 	getUsersByRole,
 	getUserClasses,
 	getUserAssignments,
+	getAllGroups,
 	getGroups,
 	// getUserPeerReviews,
 	// getUserInfo,

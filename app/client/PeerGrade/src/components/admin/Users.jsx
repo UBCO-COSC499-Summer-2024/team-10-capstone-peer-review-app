@@ -54,7 +54,7 @@ const userColumns = [
 	{ accessorKey: "firstname", header: "First Name" },
 	{ accessorKey: "lastname", header: "Last Name" },
 	{ accessorKey: "email", header: "Email" },
-	{ accessorKey: "password", header: "Password" },
+	// { accessorKey: "password", header: "Password" },
 	{ accessorKey: "role", header: "Role" },
 	{ accessorKey: "isEmailVerified", header: "Email Verified" },
 	{ accessorKey: "isRoleActivated", header: "Role Activated" },
@@ -68,49 +68,6 @@ const userColumns = [
 	// { accessorKey: "Rubric", header: "Rubric" },
 	// { accessorKey: "learningInstitution", header: "Learning Institution" },
 	// { accessorKey: "description", header: "Description" }
-];
-
-const instructorApprovals = [
-	{
-		id: 1,
-		title: "Prof. Pending Approval 1",
-		description: "Request to approve Prof. 1"
-	},
-	{
-		id: 2,
-		title: "Prof. Pending Approval 2",
-		description: "Request to approve Prof. 2"
-	},
-	{
-		id: 3,
-		title: "Prof. Pending Approval 3",
-		description: "Request to approve Prof. 3"
-	},
-	{
-		id: 4,
-		title: "Prof. Pending Approval 4",
-		description: "Request to approve Prof. 4"
-	},
-	{
-		id: 5,
-		title: "Prof. Pending Approval 5",
-		description: "Request to approve Prof. 5"
-	},
-	{
-		id: 6,
-		title: "Prof. Pending Approval 6",
-		description: "Request to approve Prof. 6"
-	},
-	{
-		id: 7,
-		title: "Prof. Pending Approval 7",
-		description: "Request to approve Prof. 7"
-	},
-	{
-		id: 8,
-		title: "Prof. Pending Approval 8",
-		description: "Request to approve Prof. 8"
-	}
 ];
 
 const Users = () => {

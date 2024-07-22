@@ -10,7 +10,8 @@ export const getCurrentUser = async () => {
 		});
 		return response.data;
 	} catch (error) {
-		handleError(error);
+		// Find a way to handle the error of the session not existing but only when a user is redirected to the login page
+		// Its useless to show an error toast when the user refreshes to the login page
 		return error.response.data;
 	}
 };

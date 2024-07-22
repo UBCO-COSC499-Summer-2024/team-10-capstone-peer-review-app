@@ -107,13 +107,9 @@ const Assignment = () => {
         
         <TabsContent value="view">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <Card className="lg:col-span-2 bg-card">
-              <CardContent>
-                <div className='bg-accent rounded-md flex justify-center items-center p-4 pt-12'>
-                  <PDFViewer url={assignment.assignmentFilePath} scale="1"/>
+                <div className='rounded-md flex justify-center lg:col-span-2'>
+                  <PDFViewer url={assignment.assignmentFilePath} scale='1'/>
                 </div>
-              </CardContent>
-            </Card>
             
             <div className="space-y-6">
               {user.role === "STUDENT" && 

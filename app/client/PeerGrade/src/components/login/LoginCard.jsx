@@ -32,7 +32,8 @@ function useQuery() {
 const LoginCard = ({
 	onSwitchToRegister,
 	onSwitchToForgotPassword,
-	onSwitchToNewRoleRequest
+	onSwitchToNewRoleRequest, 
+	onSwitchToNewVerificationEmail
 }) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -185,6 +186,14 @@ const LoginCard = ({
 								className="text-green-600 hover:text-green-500"
 							>
 								Apply for another role request?
+							</button>
+						</p>
+						<p className="text-sm text-gray-600">
+							<button
+								onClick={onSwitchToNewVerificationEmail}
+								className="text-green-600 hover:text-green-500"
+							>
+								Need to send another verification email?
 							</button>
 						</p>
 					</div>

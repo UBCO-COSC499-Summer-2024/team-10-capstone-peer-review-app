@@ -108,15 +108,28 @@ export const isEmailVerifiedJWT = asyncErrorHandler(async (req, res) => {
 	}
 });
 
-export const checkSession = asyncErrorHandler(async (req, res, next) => {});
 
 export const currentUser = asyncErrorHandler(async (req, res) => {
-	const userInfo = await authService.getCurrentUser(req.user.email);
-	return res.status(200).json({
-		userInfo: userInfo,
-		status: "Success",
-		message: "Current user fetched successfully!"
-	});
+	if (req.isAuthenticated()) {
+		const userInfo = await authService.getCurrentUser(req.user.email);
+		return res.status(200).json({
+			userInfo: userInfo,
+			status: "Success",
+			message: "Current user fetched successfully!"
+		}); 
+	} else { 
+		req.session.destroy((err) => { 
+			if (err) { 
+				return next(err); 
+			} 
+
+		
+		}) 
+		return res.status(401).json({
+			status: "Error",
+			message: "User Session is invalid or expired"
+		});
+	}
 });
 
 export const getAllRoleRequests = asyncErrorHandler(async (req, res) => {

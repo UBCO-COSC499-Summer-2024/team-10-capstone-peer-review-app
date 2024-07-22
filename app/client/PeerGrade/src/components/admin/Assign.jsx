@@ -52,7 +52,7 @@ const Assign = () => {
             <TabsList
               className="w-auto flex mb-5 whitespace-nowrap ml-11"
             >
-              <Carousel className='max-w-sm'>
+              <Carousel className='max-w-lg'>
                 <CarouselContent>
                   {classes && classes.map((classItem) => (
                     <CarouselItem key={classItem.classname} className="basis-auto">

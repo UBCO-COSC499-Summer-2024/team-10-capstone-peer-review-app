@@ -35,7 +35,7 @@ const PDFViewer = ({ url, scale = 1 }) => {
 
   return (
     <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>
-      <div style={{ height: height, width: '100%' }}>
+      <div style={{ height: height }} className='w-full'>
         <Viewer
           fileUrl={url}
           plugins={[defaultLayoutPluginInstance]} // Enables the cool new view for the PDF

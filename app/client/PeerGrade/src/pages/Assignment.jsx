@@ -77,7 +77,7 @@ const Assignment = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 pb-8">
+    <div className="container mx-auto px-4">
       <Card className="mb-8 bg-card">
         <CardHeader>
           <div className='flex w-full items-center justify-between'>

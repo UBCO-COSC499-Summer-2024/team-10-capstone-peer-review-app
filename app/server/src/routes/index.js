@@ -12,6 +12,7 @@ import reviewRouter from "./review.js";
 import submitRouter from "./submit.js";
 import assignmentRouter from "./assignment.js";
 import rubricRouter from "./rubric.js";
+import categoryRouter from "./category.js";
 import enrollRequestsRouter from "./enroll-requests.js";
 
 // Middlewares
@@ -29,6 +30,7 @@ localStrategy(passport);
 router.use("/auth", authRouter);
 // Routes that require authentication
 router.use("/classes", classesRouter);
+router.use("/category", categoryRouter);
 router.use("/assignment", assignmentRouter);
 router.use("/rubric", rubricRouter);
 router.use("/users", usersRoutes);

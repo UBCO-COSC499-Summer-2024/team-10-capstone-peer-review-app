@@ -254,7 +254,7 @@ async function main() {
 			dueDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
 			classId: class1.classId,
 			assignmentFilePath:
-				"https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK", // dummy file
+				"https://raw.githubusercontent.com/py-pdf/sample-files/8c405ece5eff12396a34a1fae3276132002e1753/004-pdflatex-4-pages/pdflatex-4-pages.pdf", // dummy file
 			categoryId: category1.categoryId // Link to category
 		}
 	});
@@ -266,7 +266,7 @@ async function main() {
 			dueDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
 			classId: class2.classId,
 			assignmentFilePath:
-				"https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK", // dummy file
+				"https://raw.githubusercontent.com/py-pdf/sample-files/8c405ece5eff12396a34a1fae3276132002e1753/004-pdflatex-4-pages/pdflatex-4-pages.pdf", // dummy file
 			categoryId: category2.categoryId // Link to category
 		}
 	});
@@ -278,7 +278,7 @@ async function main() {
 			dueDate: new Date(new Date().setMonth(new Date().getMonth() + 2)),
 			classId: class3.classId,
 			assignmentFilePath:
-				"https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK", // dummy file
+				"https://raw.githubusercontent.com/py-pdf/sample-files/8c405ece5eff12396a34a1fae3276132002e1753/004-pdflatex-4-pages/pdflatex-4-pages.pdf", // dummy file
 			categoryId: category3.categoryId // Link to category
 		}
 	});
@@ -290,7 +290,7 @@ async function main() {
 			dueDate: new Date(new Date().setMonth(new Date().getMonth() + 3)),
 			classId: class4.classId,
 			assignmentFilePath:
-				"https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK", // dummy file
+				"https://raw.githubusercontent.com/py-pdf/sample-files/8c405ece5eff12396a34a1fae3276132002e1753/004-pdflatex-4-pages/pdflatex-4-pages.pdf", // dummy file
 			categoryId: category4.categoryId // Link to category
 		}
 	});

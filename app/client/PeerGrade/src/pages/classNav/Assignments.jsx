@@ -14,7 +14,7 @@ import {
 import { getAllAssignmentsByClassId, removeAssignmentFromClass } from '@/api/assignmentApi';
 import { useUser } from "@/contexts/contextHooks/useUser";
 
-const Files = () => {
+const Assignments = () => {
     const { classId } = useParams();
     const [assignments, setAssignments] = useState([]);
     const { user } = useUser();
@@ -145,4 +145,4 @@ const Files = () => {
     );
 };
 
-export default Files;
+export default Assignments;

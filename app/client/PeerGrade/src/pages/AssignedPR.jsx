@@ -9,23 +9,57 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronLeft } from 'lucide-react';
 import reviewAPI from '@/api/reviewApi';
+import { getSubmissionsForAssignment } from "@/api/submitApi"; 
 import { toast } from "@/components/ui/use-toast";
 
+
+
 const AssignedPR = () => {
-  const { submissionId } = useParams();
+  const { assignmentId } = useParams();
   const [instructorReview, setInstructorReview] = useState(null);
   const [peerReviews, setPeerReviews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [submissionId, setSubmissionId] = useState(null); // State for submission ID
+
 
   useEffect(() => {
+      const fetchSubmissionId = async () => {
+          try {
+              const submissionsResponse = await getSubmissionsForAssignment(assignmentId);
+              if (submissionsResponse.data.length > 0) {
+                  setSubmissionId(submissionsResponse.data.submissionId); // Assuming you want the first submission
+              } else {
+                  throw new Error("No submissions found for this assignment");
+              }
+          } catch (error) {
+              console.error("Error fetching submissions:", error);
+              toast({
+                  title: "Error",
+                  description: "Failed to fetch submissions",
+                  variant: "destructive"
+              });
+              setLoading(false);
+          }
+      };
+
+      if (assignmentId) {
+          fetchSubmissionId();
+      }
+  }, [assignmentId]);
+
+  useEffect(() => {
+
     const fetchReviews = async () => {
       try {
+        console.log('submissionId', submissionId);
         const [instructorReviewRes, peerReviewsRes] = await Promise.all([
           reviewAPI.getInstructorReview(submissionId),
           reviewAPI.getPeerReviews(submissionId)
         ]);
         setInstructorReview(instructorReviewRes.data);
         setPeerReviews(peerReviewsRes.data);
+        console.log('instructorReviewRes', instructorReviewRes.data);
+        console.log('peerReviewsRes', peerReviewsRes.data);
       } catch (error) {
         console.error("Error fetching reviews:", error);
         toast({

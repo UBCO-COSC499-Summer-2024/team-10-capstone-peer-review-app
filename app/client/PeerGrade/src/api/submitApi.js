@@ -18,6 +18,7 @@ export const getStudentSubmission = async (studentId) => {
 export const getSubmissionsForAssignment = async (assignmentId) => {
   try {
     const response = await axios.post(`${BASE}/submit/submissionsForAssignment`, { assignmentId });
+    console.log('response', response);
     return response.data;
   } catch (error) {
     handleError(error);

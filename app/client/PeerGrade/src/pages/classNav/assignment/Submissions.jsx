@@ -189,7 +189,6 @@ const Submissions = () => {
         }
     };
 
-   
 
     const handleGradeSubmit = async (event) => {
         event.preventDefault();
@@ -297,15 +296,15 @@ const Submissions = () => {
     setSelectedSubmission(submission);
     await fetchRubrics(assignmentId);
 
-    if (rubrics.length === 0) {
-        console.error("No rubrics available to grade with.");
-        toast({
-            title: "Error",
-            description: "Please assign or create a rubric to this assignment to be able to grade it.",
-            variant: "destructive"
-        });
-        return;
-    }
+    // if (rubrics.length === 0) {
+    //     console.error("No rubrics available to grade with.");
+    //     toast({
+    //         title: "Error",
+    //         description: "Please assign or create a rubric to this assignment to be able to grade it.",
+    //         variant: "destructive"
+    //     });
+    //     return;
+    // }
     
     setGradeDialogOpen(true);
 };

@@ -1,7 +1,7 @@
 import express from "express";
 import categoryService from "../services/categoryServices.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
-import { user } from "../../../../../../../node_modules/pg/lib/defaults.js";
+//import { user } from "../../../../../../../node_modules/pg/lib/defaults.js";
 
 
 // Controller methods for category operations
@@ -38,10 +38,9 @@ export const updateCategory = asyncErrorHandler(async (req, res) => {
 export const deleteCategory = asyncErrorHandler(async (req, res) => {
     const categoryId = req.body.categoryId;
     await categoryService.deleteCategory(categoryId);
-    return res.status(204).json({
+    return res.status(200).json({
         status: "Success",
-        message: "Category deleted",
-        data: null
+        message: "Category deleted"
     });
 });
 

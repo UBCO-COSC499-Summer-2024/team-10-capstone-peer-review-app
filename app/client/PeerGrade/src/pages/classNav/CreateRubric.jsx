@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
+import { Badge } from '@/components/ui/badge';
 import MultiSelect from '@/components/ui/MultiSelect';
 import { addRubricToAssignment, getAllRubrics } from '@/api/rubricApi';
 import { useUser } from "@/contexts/contextHooks/useUser";
@@ -196,6 +197,25 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
                 value={selectedAssignments}
                 onChange={handleAssignmentSelection}
               />
+            </div>
+            <div className="p-4 bg-gray-100 rounded-t-md">
+              <h4 className="font-semibold mb-2">How to use this table:</h4>
+              <ul className="text-sm space-y-2">
+                <li className="flex items-center">
+                  <Pencil className="h-4 w-4 mr-2" /> Click to edit text
+                </li>
+                <li className="flex items-center">
+                  <Plus className="h-4 w-4 mr-2 text-green-500" /> Add a new rating or criterion
+                </li>
+                <li className="flex items-center">
+                  <Minus className="h-4 w-4 mr-2 text-destructive" /> Remove a rating
+                </li>
+                <li className="flex items-center">
+                  <Trash2 className="h-4 w-4 mr-2 text-destructive" /> Remove a criterion
+                </li>
+                <li><Badge variant="outline" className="bg-warning text-white">Important</Badge> You must fill out all the fields in order to submit the rubric! </li>
+                <li>Points are automatically calculated based on rating points</li>
+              </ul>
             </div>            
             <Table className="border-2">
               <TableHeader>
@@ -297,7 +317,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 h-6 w-6 rounded-full bg-red-100 border border-dashed" // Made button smaller
+                                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 h-6 w-6 rounded-full bg-red-100 border border-destructive border-dashed" // Made button smaller
                                 onClick={() => {
                                   const newRatings = criterion.ratings.filter((_, i) => i !== index);
                                   handleEdit(criterion.id, 'ratings', newRatings);
@@ -310,7 +330,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full h-6 w-6 rounded-full bg-green-100 border border-dashed" // Made button smaller
+                                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full h-6 w-6 rounded-full  bg-green-100 border border-success border-dashed" // Made button smaller
                                 onClick={() => addRating(criterion.id, index)}
                               >
                                 <Plus className="h-3 w-3 text-green-500" /> {/* Made icon smaller */}
@@ -341,7 +361,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
                   <TableCell colSpan={4} className="p-0">
                     <Button
                       variant="ghost"
-                      className="w-full h-12 border-2 border-dashed bg-green-50"
+                      className="w-full h-12 border border-success border-dashed bg-green-50"
                       onClick={addCriterion}
                     >
                       <Plus className="h-4 w-4 text-green-500" />

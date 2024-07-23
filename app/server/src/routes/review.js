@@ -7,7 +7,8 @@ import {
     deleteReview,
     getPeerReviews,
     getReviewDetails,
-    getUserReviews,
+    getReviewsAssigned, 
+    getReviewsReceived, 
     getReviewById
 } from "../controllers/reviewController.js";
 
@@ -21,7 +22,9 @@ router.post("/studentReview", getPeerReviews);
 
 router.post("/instructorReview", getInstructorReview);
 
-router.post("/userReviews", getUserReviews);
+router.get("/received", getReviewsReceived);  
+
+router.get("/assigned", getReviewsAssigned);
 
 router.post("/allReviews", getAllReviews);
 

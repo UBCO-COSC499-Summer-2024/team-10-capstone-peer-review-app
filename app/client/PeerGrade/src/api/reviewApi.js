@@ -1,5 +1,6 @@
 import axios from "axios";
 import showStatusToast from "@/utils/showToastStatus";
+import { get } from "http";
 
 const BASE_URL = '/api';
 
@@ -42,9 +43,19 @@ const reviewAPI = {
     }
   },
 
-  getUserReviews: async (userId) => {
+  getReviewsAssigned: async () => { 
     try {
-      const response = await axios.post(`${BASE_URL}/review/userReviews`, { userId });
+      const response = await axios.post(`${BASE_URL}/review/assigned`);
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      throw error;
+    }
+  }, 
+
+  getReviewsReceived: async () => {
+    try {
+      const response = await axios.post(`${BASE_URL}/review/received`);
       return response.data;
     } catch (error) {
       handleError(error);

@@ -14,16 +14,16 @@ import { useUser } from "@/contexts/contextHooks/useUser";
 const PeerReview = () => {
   const [view, setView] = useState("mySubmissions");
   const [searchTerm, setSearchTerm] = useState("");
-  const [submissions, setSubmissions] = useState([]);
-  const [pendingReviews, setPendingReviews] = useState([]);
+  const [reviewsRecieved, setReviewsRecieved] = useState([]); 
+  const [reviewsSent, setReviewsSent] = useState([]);
   const { user } = useUser();
+
 
   useEffect(() => {
     const fetchData = async () => {
       if (!user) return;
     
       try {
-        console.log('user', user);
         const submissionsResponse = await getStudentSubmission(user.userId);
         console.log('submissionsRespyyyyyyyyyonse', submissionsResponse);
         setSubmissions(submissionsResponse.data || []);
@@ -46,6 +46,17 @@ const PeerReview = () => {
   
     fetchData();
   }, [user]);
+
+
+  const fetchReviewsRecieved = async () => {
+    const reviewsRecievedData = await getReviewsRecieved(user.userId);
+    setReviewsRecieved(reviewsRecievedResponse.data || []);
+  };
+
+  const fetchReviewsSent = async () => {
+    const reviewsSentData = await getReviewsSent(user.userId);
+    setReviewsSent(reviewsSentResponse.data || []);
+  };
 
   const filteredItems = view === "mySubmissions" 
     ? (submissions || []).filter(submission =>

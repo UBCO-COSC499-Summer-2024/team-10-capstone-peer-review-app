@@ -291,10 +291,9 @@ const getReviewDetails = async (reviewId) => {
     }
 };
 
-const getUserReviews = async (userId) => {
+const getReviewsAssigned = async (userId) => {
     try {
-        console.log('Fetching reviews for userId:', userId);
-        const reviews = await prisma.review.findMany({
+        const reviewsAssigned = await prisma.review.findMany({
             where: {
                 reviewerId: userId
             },
@@ -303,7 +302,7 @@ const getUserReviews = async (userId) => {
                     include: {
                         assignment: {
                             include: {
-                                classes: true, // Changed from 'class' to 'classes'
+                                classes: true,  
                                 category: true,
                                 rubric: true
                             }
@@ -317,12 +316,43 @@ const getUserReviews = async (userId) => {
                 }
             }
         });
-        console.log('Retrieved reviews:', reviews);
-        return reviews;
-    } catch (error) {
-        console.error('Error in getUserReviews:', error);
+        return reviewsAssigned;
+    } catch (error) { 
         throw new apiError(`Failed to retrieve user reviews: ${error.message}`, 500);
     }
+}; 
+
+const getReviewsReceived = async (userId) => {
+    try {
+        const reviewsReceived = await prisma.review.findMany({
+            where: {
+                revieweeId: userId
+            },
+            include: {
+                submission: {
+                    include: {
+                        assignment: {
+                            include: {
+                                classes: true, 
+                                category: true,
+                                rubric: true
+                            }
+                        }
+                    }
+                },
+                criterionGrades: {
+                    include: {
+                        criterion: true
+                    }
+                }
+            }
+        });
+        return reviewsReceived;
+    } catch (error) {
+        throw new apiError(`Failed to retrieve user reviews: ${error.message}`, 500);
+    }
+
+
 };
 
 export default {
@@ -333,7 +363,8 @@ export default {
     deleteReview,
     createReview,
     getReviewDetails,
-    getUserReviews,
+    getReviewsAssigned, 
+    getReviewsReceived,
     getReviewById
 };
 

@@ -73,19 +73,21 @@ export const getReviewDetails = asyncErrorHandler(async (req, res) => {
     });
 });
 
-export const getUserReviews = asyncErrorHandler(async (req, res) => {
-    const { userId } = req.body;
-    console.log('Received userId:', userId);
-    if (!userId) {
-        return res.status(400).json({
-            status: "Error",
-            message: "userId is required"
-        });
-    }
-    const userReviews = await reviewService.getUserReviews(userId);
+export const getReviewsAssigned = asyncErrorHandler(async (req, res) => {
+    const userId = req.user.userId;
+    const reviewsAssigned = await reviewService.getReviewsAssigned(userId);
     return res.status(200).json({
         status: "Success",
-        data: userReviews
+        data: reviewsAssigned
+    });
+});     
+
+export const getReviewsReceived = asyncErrorHandler(async (req, res) => {
+    const userId = req.user.userId;
+    const reviewsReceived = await reviewService.getReviewsReceived(userId);
+    return res.status(200).json({
+        status: "Success",
+        data: reviewsReceived
     });
 });
 
@@ -97,7 +99,7 @@ export const getReviewById = asyncErrorHandler(async (req, res) => {
             status: "Error",
             message: "reviewId is required"
         });
-    }
+    }    
     try {
         const review = await reviewService.getReviewById(reviewId);
         return res.status(200).json({
@@ -119,6 +121,7 @@ export default {
     updateReview,
     deleteReview,
     getReviewDetails,
-    getUserReviews,
+    getReviewsAssigned, 
+    getReviewsReceived, 
     getReviewById
 };

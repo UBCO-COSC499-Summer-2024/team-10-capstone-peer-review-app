@@ -100,7 +100,7 @@ const PeerReview = () => {
                   </div>
                 </CardContent>
                 <CardFooter className="pt-4">
-                  <Link to={`/assignedPR/${item.assignment.assignmentId}`} className="w-full">
+                  <Link to={`/viewSubmission/${item.assignment.assignmentId}`} className="w-full">
                     <Button variant="default" className="w-full">
                       <BookOpen className="mr-2 h-4 w-4" /> View Submission
                     </Button>

@@ -11,7 +11,7 @@ import DataTable from '@/components/ui/data-table';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { toast } from '@/components/ui/use-toast';
 
-const Submission = () => {
+const Submission = ({refresh}) => {
     const { classId, assignmentId } = useParams();
     const [assignment, setAssignment] = useState(null);
     const [rubrics, setRubrics] = useState([]);
@@ -66,7 +66,7 @@ const Submission = () => {
             const fileName = file.name;
             const fileType = file.type.split('/').pop();
             setSubmissionMessage(`${fileName} successfully submitted at ${timestamp} `);
-
+            refresh();
         } catch (error) {
             console.error("Submission error:", error);
             toast({ 

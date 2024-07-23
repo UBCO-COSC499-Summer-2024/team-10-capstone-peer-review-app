@@ -24,6 +24,7 @@ const Assignment = () => {
   const [submissions, setSubmissions] = useState([]);
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
   const [selectedSubmission, setSelectedSubmission] = useState(null);
+  const [refresh, setRefresh] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -57,7 +58,7 @@ const Assignment = () => {
     if (user.role === 'STUDENT') {
       fetchSubmissions();
     }
-  }, [user, userLoading, classId, assignmentId]);
+  }, [user, userLoading, classId, assignmentId, refresh]);
 
   if (userLoading || !assignment) {
     return <div className="flex justify-center items-center h-screen">Loading...</div>;
@@ -74,6 +75,10 @@ const Assignment = () => {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+  };
+
+  const refreshToggle = () => {
+    setRefresh(!refresh);
   };
 
   return (
@@ -188,7 +193,7 @@ const Assignment = () => {
         
         {!(user.role === 'INSTRUCTOR') && (
           <TabsContent value="submission">
-            <Submission assignmentId={assignmentId} />
+            <Submission assignmentId={assignmentId} refresh={refreshToggle} />
           </TabsContent>
         )}
       </Tabs>

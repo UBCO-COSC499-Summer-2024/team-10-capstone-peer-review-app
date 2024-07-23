@@ -146,7 +146,7 @@ function MainLayout() {
 						}
 					/>
 					<Route
-						path="/assignedPR/:submissionId"
+						path="/assignedPR/:assignmentId"
 						element={
 							<ProtectedRoute
 								element={<AssignedPR />}

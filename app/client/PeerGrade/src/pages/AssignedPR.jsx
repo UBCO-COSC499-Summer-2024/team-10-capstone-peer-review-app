@@ -11,69 +11,77 @@ import { ChevronLeft } from 'lucide-react';
 import reviewAPI from '@/api/reviewApi';
 import { getSubmissionsForAssignment } from "@/api/submitApi"; 
 import { toast } from "@/components/ui/use-toast";
-
-
+import { useUser } from "@/contexts/contextHooks/useUser";
 
 const AssignedPR = () => {
+  const { user } = useUser();
   const { assignmentId } = useParams();
   const [instructorReview, setInstructorReview] = useState(null);
   const [peerReviews, setPeerReviews] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [submissionId, setSubmissionId] = useState(null); // State for submission ID
-
-
-  useEffect(() => {
-      const fetchSubmissionId = async () => {
-          try {
-              const submissionsResponse = await getSubmissionsForAssignment(assignmentId);
-              if (submissionsResponse.data.length > 0) {
-                  setSubmissionId(submissionsResponse.data.submissionId); // Assuming you want the first submission
-              } else {
-                  throw new Error("No submissions found for this assignment");
-              }
-          } catch (error) {
-              console.error("Error fetching submissions:", error);
-              toast({
-                  title: "Error",
-                  description: "Failed to fetch submissions",
-                  variant: "destructive"
-              });
-              setLoading(false);
-          }
-      };
-
-      if (assignmentId) {
-          fetchSubmissionId();
-      }
-  }, [assignmentId]);
+  const [submissionId, setSubmissionId] = useState(null);
 
   useEffect(() => {
+    if (!assignmentId) {
+      console.error("Assignment ID is undefined");
+      toast({
+        title: "Error",
+        description: "No assignment ID provided",
+        variant: "destructive"
+      });
+      setLoading(false);
+      return;
+    }
 
-    const fetchReviews = async () => {
+    if (!user || !user.userId) {
+      console.error("User ID is undefined");
+      toast({
+        title: "Error",
+        description: "User information is not available",
+        variant: "destructive"
+      });
+      setLoading(false);
+      return;
+    }
+
+    const fetchData = async () => {
       try {
-        console.log('submissionId', submissionId);
-        const [instructorReviewRes, peerReviewsRes] = await Promise.all([
-          reviewAPI.getInstructorReview(submissionId),
-          reviewAPI.getPeerReviews(submissionId)
-        ]);
-        setInstructorReview(instructorReviewRes.data);
-        setPeerReviews(peerReviewsRes.data);
-        console.log('instructorReviewRes', instructorReviewRes.data);
-        console.log('peerReviewsRes', peerReviewsRes.data);
+        // Fetch all submissions for the assignment
+        const submissionsResponse = await getSubmissionsForAssignment(assignmentId);
+        console.log('submissionsResponse', submissionsResponse);
+        // Filter submissions to find the one matching the current user
+        const userSubmission = submissionsResponse.data.find(
+          submission => submission.submitterId === user.userId
+        );
+
+        if (userSubmission) {
+          const newSubmissionId = userSubmission.submissionId;
+          setSubmissionId(newSubmissionId);
+          
+          // Fetch reviews using the found submission ID
+          const [instructorReviewRes, peerReviewsRes] = await Promise.all([
+            reviewAPI.getInstructorReview(newSubmissionId),
+            reviewAPI.getPeerReviews(newSubmissionId)
+          ]);
+          setInstructorReview(instructorReviewRes.data);
+          setPeerReviews(peerReviewsRes.data);
+        } else {
+          throw new Error("No submission found for the current user in this assignment");
+        }
       } catch (error) {
-        console.error("Error fetching reviews:", error);
+        console.error("Error fetching data:", error);
         toast({
           title: "Error",
-          description: "Failed to fetch review details",
+          description: error.message || "Failed to fetch submission and review details",
           variant: "destructive"
         });
       } finally {
         setLoading(false);
       }
     };
-
-    fetchReviews();
-  }, [submissionId]);
+  
+    fetchData();
+  }, [assignmentId, user]);
 
   const calculateGradePercentage = (review) => {
     if (!review || !review.criterionGrades) return 0;

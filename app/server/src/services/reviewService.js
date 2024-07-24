@@ -310,7 +310,11 @@ const getReviewsAssigned = async (userId) => {
 				reviewee: true,
 				criterionGrades: {
 					include: {
-						criterion: true
+						criterion: {
+							include: {
+								criterionRatings: true
+							}
+						}
 					}
 				}
 			}
@@ -346,7 +350,11 @@ const getReviewsReceived = async (userId) => {
 				reviewee: true,
 				criterionGrades: {
 					include: {
-						criterion: true
+						criterion: {
+							include: {
+								criterionRatings: true
+							}
+						}
 					}
 				}
 			}

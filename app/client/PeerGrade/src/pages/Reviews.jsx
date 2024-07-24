@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import reviewAPI from "@/api/reviewApi";
 import { useUser } from "@/contexts/contextHooks/useUser";
-import ReviewDetailsDialog from "@/pages/classNav/assignment/submission/ReviewDetailsDialog";
+import ViewReviewGradeDialog from "@/components/review/ViewReviewGradeDialog";
 import ReceivedReviews from "@/components/review/ReceivedReviews";
 import AssignedReviews from "@/components/review/AssignedReviews";
 import { useNavigate } from "react-router-dom";
@@ -37,12 +37,12 @@ const Reviews = () => {
 		fetchData();
 	}, [user]);
 
-	const handleViewDetails = (review, inDialog = true) => {
+	const handleViewReviews = (review, inDialog = true) => {
 		if (inDialog) {
 			setSelectedReview(review);
 			setIsDialogOpen(true);
 		} else {
-			navigate(`/review/${review.reviewId}`);
+			navigate(`/viewSubmission/${review.submission.submissionId}`);
 		}
 	};
 
@@ -59,19 +59,19 @@ const Reviews = () => {
 				<TabsContent value="received">
 					<ReceivedReviews
 						receivedReviews={receivedReviews}
-						onViewDetails={handleViewDetails}
+						onViewDetails={handleViewReviews}
 					/>
 				</TabsContent>
 				<TabsContent value="assigned">
 					<AssignedReviews
 						assignedReviews={assignedReviews}
-						onViewDetails={handleViewDetails}
+						onViewDetails={handleViewReviews}
 					/>
 				</TabsContent>
 			</Tabs>
 
-			<ReviewDetailsDialog
-				submissionId={selectedReview?.submissionId}
+			<ViewReviewGradeDialog
+				review={selectedReview}
 				open={isDialogOpen}
 				onClose={() => setIsDialogOpen(false)}
 			/>

@@ -56,7 +56,9 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 	};
 
 	const calculatePercentageGrade = (review) => {
-		if (!review.criterionGrades) return "N/A";
+		if (!review.criterionGrades || review.criterionGrades.length === 0) {
+			return "Not graded";
+		}
 		const totalGrade = review.criterionGrades.reduce(
 			(total, cg) => total + cg.grade,
 			0
@@ -66,8 +68,8 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 			0
 		);
 		return totalMaxPoints > 0
-			? ((totalGrade / totalMaxPoints) * 100).toFixed(2)
-			: 0;
+			? `${((totalGrade / totalMaxPoints) * 100).toFixed(2)}%`
+			: "0%";
 	};
 
 	const renderAssignmentCard = (group) => {
@@ -172,27 +174,30 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 											: "Instructor Review"}
 									</p>
 									<Badge variant="secondary" className="ml-2">
-										{calculatePercentageGrade(review)}%
+										{calculatePercentageGrade(review)}
 									</Badge>
 								</div>
-								<div className="mt-2">
-									<Button
-										variant="link"
-										size="sm"
-										className="p-0 h-auto mr-4"
-										onClick={() => onViewDetails(review, true)}
-									>
-										View in Dialog
-									</Button>
-									<Button
-										variant="link"
-										size="sm"
-										className="p-0 h-auto"
-										onClick={() => onViewDetails(review, false)}
-									>
-										View in New Page
-									</Button>
-								</div>
+								{review.criterionGrades &&
+									review.criterionGrades.length > 0 && (
+										<div className="mt-2">
+											<Button
+												variant="link"
+												size="sm"
+												className="p-0 h-auto mr-4"
+												onClick={() => onViewDetails(review, true)}
+											>
+												View in Dialog
+											</Button>
+											<Button
+												variant="link"
+												size="sm"
+												className="p-0 h-auto"
+												onClick={() => onViewDetails(review, false)}
+											>
+												View in New Page
+											</Button>
+										</div>
+									)}
 							</div>
 						))}
 					</CardContent>

@@ -353,7 +353,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-full w-full"
+                        className="h-full w-full bg-red-100 p-2"
                         onClick={() => removeCriterion(criterion.id)}
                       >
                         <Trash2 className="h-4 w-4 text-destructive" />

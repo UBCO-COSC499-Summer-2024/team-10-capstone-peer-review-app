@@ -12,7 +12,8 @@ import {
   MessageSquareWarning,
   PlusCircle,
   Bell,
-  CircleHelp
+  CircleHelp,
+  NotebookPen
 } from "lucide-react";
 import NotifCard from "./NotifCard";
 import {
@@ -235,6 +236,21 @@ export default function AppNavbar() {
 									</SheetContent>
 								</Sheet>
 							</NavigationMenuItem>
+							{(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (
+								<NavigationMenuItem className="w-full flex items-center justify-center">
+									<Link
+									to="/manage-class"
+									className={cn(
+										navigationMenuTriggerStyle(),
+										"flex flex-col items-center justify-center w-full h-full",
+										isActive("/manage-class") && "font-bold"
+									)}
+									>
+									<NotebookPen className="w-6 h-6 mb-1" />
+									<span className="md:block">Manage Classes</span>
+									</Link>
+								</NavigationMenuItem>
+							)}
 							<NavigationMenuItem className="w-full flex items-center justify-center">
 								<Sheet open={isClassesSheetOpen} onOpenChange={setIsClassesSheetOpen}>
 									<SheetTrigger asChild>

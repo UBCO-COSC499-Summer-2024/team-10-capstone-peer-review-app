@@ -59,26 +59,28 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
     if (selectedAssignments.length === 0) {
       throw new Error("No assignments selected");
     }
-
+  
     const formattedRubricData = {
       title: newRubricData.title,
       description: newRubricData.description,
-      totalMarks: newRubricData.criteria.reduce((total, criterion) => total + (parseFloat(criterion.points) || 0), 0),
+      totalMarks: newRubricData.criteria.reduce((total, criterion) => 
+        total + criterion.ratings.reduce((sum, rating) => sum + (parseFloat(rating.points) || 0), 0), 
+      0),
       classId: classId,
       criterion: newRubricData.criteria.map(criterion => ({
         title: criterion.criteria,
         minPoints: 0,
-        maxPoints: parseFloat(criterion.points) || 0,
+        maxPoints: criterion.ratings.reduce((sum, rating) => sum + (parseFloat(rating.points) || 0), 0),
         criterionRatings: criterion.ratings.map(rating => ({
           text: rating.text,
           points: parseFloat(rating.points) || 0
         }))
       }))
     };
-
+  
     console.log('formattedRubricData:', formattedRubricData);
     const userId = user.userId;
-
+  
     for (const assignmentId of selectedAssignments) {
       console.log('Adding rubric to assignment:', assignmentId);
       await addRubricToAssignment({
@@ -87,7 +89,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
         rubricData: formattedRubricData
       });
     }
-
+  
     console.log('Rubric added to all selected assignments');
     setIsCreateDrawerOpen(false);
     setNewRubricData({
@@ -140,13 +142,15 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
   };
 
   const validateRubric = () => {
-    const isValid = newRubricData.criteria.every(criterion => 
-      criterion.criteria.trim() !== "" && 
-      !isNaN(parseFloat(criterion.points)) &&
-      criterion.ratings.every(rating => 
-        rating.text.trim() !== "" && !isNaN(parseFloat(rating.points))
-      )
-    );
+    const isValid = newRubricData.title.trim() !== "" &&
+      newRubricData.criteria.length > 0 &&
+      newRubricData.criteria.every(criterion => 
+        criterion.criteria.trim() !== "" && 
+        criterion.ratings.length > 0 &&
+        criterion.ratings.every(rating => 
+          rating.text.trim() !== "" && !isNaN(parseFloat(rating.points)) && parseFloat(rating.points) >= 0
+        )
+      );
     setIsValid(isValid);
   };
 

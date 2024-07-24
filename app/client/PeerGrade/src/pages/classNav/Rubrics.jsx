@@ -1,35 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription } from '@/components/ui/drawer';
-import { getAllRubrics, getRubricById, addRubricToAssignment } from '@/api/rubricApi';
-import { getAllAssignmentsByClassId } from '@/api/assignmentApi';
-import RubricDataTable from '@/components/class/RubricDataTable';
 import { useParams } from 'react-router-dom';
-import MultiSelect from '@/components/ui/MultiSelect';
+import { Button } from '@/components/ui/button';
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, DrawerFooter } from '@/components/ui/drawer';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Info, ChevronDown } from 'lucide-react';
 import { useUser } from "@/contexts/contextHooks/useUser";
+import { getAllRubricsInClass, getRubricById } from '@/api/rubricApi';
 
 const Rubrics = () => {
   const { classId } = useParams();
-  const { user, userLoading } = useUser();
+  const { user } = useUser();
   const [rubrics, setRubrics] = useState([]);
   const [selectedRubric, setSelectedRubric] = useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [assignments, setAssignments] = useState([]);
-  const [selectedAssignments, setSelectedAssignments] = useState([]);
-  const [newRubricData, setNewRubricData] = useState({
-    title: "",
-    criteria: [{ criteria: "", ratings: [{ text: "", points: "" }], minPoints: "", maxPoints: "" }]
-  });
-  const [isValid, setIsValid] = useState(false);
-
 
   useEffect(() => {
     const fetchRubrics = async () => {
       try {
-        const response = await getAllRubrics();
-        console.log('Rubrics fetched:', response.data);
-        if (response.data && Array.isArray(response.data.data)) {
-          setRubrics(response.data.data);
+        const response = await getAllRubricsInClass(classId);
+        if (response && response.status === 'Success' && Array.isArray(response.data)) {
+          setRubrics(response.data);
         } else {
           setRubrics([]);
         }
@@ -38,32 +29,13 @@ const Rubrics = () => {
         setRubrics([]);
       }
     };
-
+  
     fetchRubrics();
-  }, []);
-
-  useEffect(() => {
-    const fetchAssignments = async () => {
-      try {
-        const response = await getAllAssignmentsByClassId(classId);
-        if (response.data && Array.isArray(response.data)) {
-          setAssignments(response.data);
-        } else {
-          setAssignments([]);
-        }
-      } catch (error) {
-        console.error('Error fetching assignments:', error);
-        setAssignments([]);
-      }
-    };
-
-    fetchAssignments();
   }, [classId]);
 
   const handleRubricClick = async (rubricId) => {
     try {
       const response = await getRubricById(rubricId);
-      console.log('Rubric details fetched:', response.data);
       if (response.data && response.data) {
         setSelectedRubric(response.data);
       } else {
@@ -76,100 +48,76 @@ const Rubrics = () => {
     }
   };
 
-
-  const handleCreateRubric = async () => {
-    try {
-      if (selectedAssignments.length === 0) {
-        throw new Error("No assignments selected");
-      }
-
-      const formattedRubricData = {
-        title: newRubricData.title,
-        // description: newRubricData.description, // You might want to add a description field as well
-        totalMarks: newRubricData.criteria.reduce((total, criterion) => total + parseInt(criterion.maxPoints || 0), 0),
-        criterion: newRubricData.criteria.map(criterion => ({
-          title: criterion.criteria,
-          minPoints: parseInt(criterion.minPoints || 0),
-          maxPoints: parseInt(criterion.maxPoints || 0),
-          criterionRatings: criterion.ratings.map(rating => ({
-            text: rating.text,
-            points: parseInt(rating.points || 0)
-          }))
-        }))
-      };
-      console.log('formattedRubricData:', formattedRubricData);
-      console.log(user);
-      const userId = user.userId
-
-      // Add rubric to each selected assignment
-      const assignmentId = selectedAssignments;
-      console.log('Adding rubric to assignment:', assignmentId);
-      await addRubricToAssignment({
-        userId,
-        assignmentId,
-        rubricData: formattedRubricData
-      });
-      console.log('Rubric added to selected assignments');
-      
-      setIsCreateDrawerOpen(false);
-      setNewRubricData({
-        title: "",
-        criteria: [{ criteria: "", ratings: [{ text: "", points: "" }], minPoints: "", maxPoints: "" }]
-      });
-      setSelectedAssignments([]);
-
-      // Refresh the rubrics list
-      const updatedRubrics = await getAllRubrics();
-      setRubrics(updatedRubrics.data.data);
-    } catch (error) {
-      console.error('Error creating rubric:', error);
-      // Show an error message to the user here
-    }
-  };
-
-  const handleAssignmentSelection = (selectedValues) => {
-    console.log('Selected assignments:', selectedValues);
-    setSelectedAssignments(selectedValues);
-  };
-
   return (
     <div className="p-4 bg-slate-50 rounded-lg">
       <h1 className="text-2xl font-semibold mb-4">Rubrics</h1>
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {rubrics.length === 0 ? (
-          <div>No rubrics found</div>
+          <div className="col-span-full text-center text-gray-500">No rubrics found</div>
         ) : (
           rubrics.map((rubric) => (
-            <div key={rubric.rubricId} className="border p-4 rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold">{rubric.title}</h2>
-              <p>{rubric.description}</p>
-              <Button onClick={() => handleRubricClick(rubric.rubricId)} className="mt-2">View Details</Button>
+            <div key={rubric.rubricId} className="border p-4 rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow">
+              <h2 className="text-xl font-semibold mb-2">{rubric.title}</h2>
+              <p className="text-gray-600 mb-4">{rubric.description}</p>
+              <Button onClick={() => handleRubricClick(rubric.rubricId)} className="w-full">View Details</Button>
             </div>
           ))
         )}
       </div>
       <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-        {/* <DrawerContent className='w-1/3'> */}
         <DrawerContent>
           <DrawerHeader>
-            <DrawerTitle>{selectedRubric?.title}</DrawerTitle>
+            <DrawerTitle className="text-2xl">{selectedRubric?.title}</DrawerTitle>
             <DrawerDescription>{selectedRubric?.description}</DrawerDescription>
           </DrawerHeader>
-          <div className="max-h-[60vh] overflow-y-auto">
-            {selectedRubric && selectedRubric.criteria && selectedRubric.criteria.map((criterion, index) => (
-              <div key={index} className="mb-4 px-4">
-                <p className='mb-8 font-semibold'>Max Points: {criterion.maxMark}</p>
-                <p className='mb-2 font-semibold'>Ratings:</p>
-                <div className="mt-2">
-                  {criterion.criterionRatings && criterion.criterionRatings.map((rating, ratingIndex) => (
-                    <div key={ratingIndex} className="flex items-center">
-                      <p>{rating.description}: {rating.points} Points</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
+          <div className="p-4 bg-gray-100 rounded-md mb-4">
+            <h4 className="font-semibold mb-2 flex items-center">
+              <Info className="w-4 h-4 mr-2" />
+              How to read this rubric:
+            </h4>
+            <ul className="text-sm space-y-1">
+              <li><Badge variant="outline" className="mr-2 bg-accent text-slate-900">Criteria</Badge> Specific aspects of the assignment being evaluated</li>
+              <li><Badge variant="outline" className="mr-2 bg-accent text-slate-900">Ratings</Badge> Descriptions of performance levels for each criterion</li>
+              <li><Badge variant="outline" className="mr-2 bg-accent text-slate-900">Points</Badge> Score associated with each rating level</li>
+            </ul>
           </div>
+          <div className="px-4 pb-4 max-h-[60vh] overflow-y-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[200px]">Criteria</TableHead>
+                  <TableHead>Ratings</TableHead>
+                  <TableHead className="w-[100px] text-right">Points</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {selectedRubric && selectedRubric.criteria && selectedRubric.criteria.map((criterion, index) => (
+                  <TableRow key={index}>
+                    <TableCell className="font-medium">{criterion.title}</TableCell>
+                    <TableCell>
+                      <div className="flex flex-wrap gap-2">
+                        {criterion.criterionRatings && criterion.criterionRatings.map((rating, ratingIndex) => (
+                          <div key={ratingIndex} className="flex items-center bg-gray-100 rounded p-2">
+                            <p className="text-sm mr-2">{rating.description}</p>
+                            <Badge variant="secondary">{rating.points}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Badge variant="outline" className="bg-accent text-slate-900">
+                        {criterion.criterionRatings.reduce((sum, rating) => sum + (parseFloat(rating.points) || 0), 0)}
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+          <DrawerFooter>
+            <p className="text-sm text-gray-500">Total Points: {selectedRubric?.totalMarks}</p>
+            <Button variant="ghost" onClick={() => setIsDrawerOpen(false)}><ChevronDown className='w-6 h-6'/></Button>
+          </DrawerFooter>
         </DrawerContent>
       </Drawer>
     </div>

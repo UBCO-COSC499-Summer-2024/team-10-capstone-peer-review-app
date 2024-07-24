@@ -8,8 +8,8 @@ import {
 	getAllRubrics,
 	getAllRubricsInClass,
 	getRubricById,
-	removeRubricsFromAssignment,
-	updateRubricsInAssignment,
+	deleteRubricsFromAssignment,
+	updateRubricsForAssignment,
 	getRubricsInAssignment,
 	addCriterionGrade,
 	removeCriterionGrade,
@@ -35,12 +35,12 @@ router
 	.post(ensureUser, ensureInstructor, addRubricsToAssignment);
 
 router
-	.route("/remove-rubrics")
-	.post(ensureUser, ensureInstructor, removeRubricsFromAssignment);
+	.route("/remove-rubric")
+	.post( deleteRubricsFromAssignment);
 
 router
 	.route("/update-rubrics")
-	.post(ensureUser, ensureInstructor, updateRubricsInAssignment);
+	.post(ensureUser, ensureInstructor, updateRubricsForAssignment);
 
 router
 	.route("/get-rubrics")

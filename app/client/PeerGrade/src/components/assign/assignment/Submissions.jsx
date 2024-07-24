@@ -47,7 +47,7 @@ const Submissions = () => {
     const [currentSubmission, setCurrentSubmission] = useState(null);
     const [allStudents, setAllStudents] = useState([]);
     const [existingReviewers, setExistingReviewers] = useState([]);
-    const [alertDialogOpen, setAlertDialogOpen] = useState(false);
+    const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
     const [reviewersToDelete, setReviewersToDelete] = useState([]);
 
     useEffect(() => {
@@ -141,14 +141,27 @@ const Submissions = () => {
         setAssignReviewersDialogOpen(true);
     };
 
+
     const handleAssignReviewersSubmit = () => {
         const reviewersToRemove = existingReviewers.filter(id => !selectedReviewers.includes(id));
         if (reviewersToRemove.length > 0) {
             setReviewersToDelete(reviewersToRemove);
-            setAlertDialogOpen(true);
+            setAssignReviewersDialogOpen(false);
+            setConfirmDialogOpen(true);
         } else {
             updateReviewers();
         }
+    };
+    
+    const handleConfirmDelete = () => {
+        updateReviewers();
+        setConfirmDialogOpen(false);
+    };
+    
+    const handleCancelDelete = () => {
+        setConfirmDialogOpen(false);
+        setAssignReviewersDialogOpen(true);
+        setSelectedReviewers(existingReviewers);
     };
 
 
@@ -182,17 +195,24 @@ const Submissions = () => {
                 }
             }
     
-            setAssignReviewersDialogOpen(false);
-            setAlertDialogOpen(false);
-        } catch (error) {
-            console.error("Error updating reviewers:", error);
-            toast({
-                title: "Error",
-                description: "Failed to update reviewers",
-                variant: "destructive"
-            });
-        }
-    };
+            setConfirmDialogOpen(false);
+        setAssignReviewersDialogOpen(false);
+
+        // Reset states
+        setCurrentSubmission(null);
+        setSelectedReviewers([]);
+        setExistingReviewers([]);
+        setReviewersToDelete([]);
+
+    } catch (error) {
+        console.error("Error updating reviewers:", error);
+        toast({
+            title: "Error",
+            description: "Failed to update reviewers",
+            variant: "destructive"
+        });
+    }
+};
 
 
 
@@ -496,6 +516,31 @@ const Submissions = () => {
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
+
+            <Dialog open={confirmDialogOpen} onOpenChange={setConfirmDialogOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Confirm Reviewer Removal</DialogTitle>
+                    </DialogHeader>
+                    <div>
+                        Are you sure you want to remove the following reviewers? Their reviews will be deleted:
+                        <ul className="list-disc pl-5 mt-2">
+                            {reviewersToDelete.map(reviewerId => {
+                                const reviewer = allStudents.find(student => student.userId === reviewerId);
+                                return (
+                                    <li key={reviewerId}>
+                                        {reviewer ? `${reviewer.firstname} ${reviewer.lastname}` : reviewerId}
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
+                    <DialogFooter>
+                        <Button variant="outline" onClick={handleCancelDelete}>Cancel</Button>
+                        <Button onClick={handleConfirmDelete}>Confirm</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </Card>
         <Card className="mt-4">
             {rubrics.length > 0 && (
@@ -536,33 +581,12 @@ const Submissions = () => {
                         </Table>
                     </div>
                 ))}
+
+                
             </CardContent>
             )}
             </Card>
-            <AlertDialog open={alertDialogOpen} onOpenChange={setAlertDialogOpen}>
-                <AlertDialogContent>
-                    <AlertDialogHeader>
-                        <AlertDialogTitle>Confirm Reviewer Removal</AlertDialogTitle>
-                        <AlertDialogDescription>
-                            Are you sure you want to remove the following reviewers? Their reviews will be deleted:
-                            <ul className="list-disc pl-5 mt-2">
-                                {reviewersToDelete.map(reviewerId => {
-                                    const reviewer = allStudents.find(student => student.userId === reviewerId);
-                                    return (
-                                        <li key={reviewerId}>
-                                            {reviewer ? `${reviewer.firstname} ${reviewer.lastname}` : reviewerId}
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={updateReviewers}>Confirm</AlertDialogAction>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
+            
         </>
     );
 };

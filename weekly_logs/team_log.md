@@ -32,8 +32,10 @@
   
 
 #### Back-end Testing for c-15
-![Back end Tests for c-15](./team_log_images/back_end_tests/back_end_tests_c15.png)  
+![Back end Tests for c-14](./team_log_images/back_end_tests/back_end_unit_tests_c15.png)  
+![Back end Tests for c-14](./team_log_images/back_end_tests/back_end_integration_tests_c15.png)  
   
+    
   
   
 

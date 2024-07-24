@@ -1,4 +1,136 @@
 
+# Abdul's Log for Cycle 15
+
+
+## Thursday, July 18, 2024, 05:23 PM - Tuesday, July 23, 2024, 05:23 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[259](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/259)**: Fix Manage Class being able to add students to a class of size 0  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[258](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/258)**: Make the Add Student buttons larger/more apparent & add checkmarks to Add Student dropdown in Manage Class  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[257](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/257)**: Refactor Role Requests Card to include an Approve (check) button  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[255](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/255)**: Have students able to view their submission  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+
+&nbsp; &nbsp; :large_blue_circle: **Issue-[239](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/239)**: Link Admin Dashboard UI elements to the back-end  
+
+&nbsp; &nbsp; :large_blue_circle: **Issue-[249](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/249)**: Make a list of items for testers to go through on Friday  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[248](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/248)**: Making a Questionnaire for Friday  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[236](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/236)**: Delete assignments/Link files tab buttons to assignment quick links  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[140](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/140)**: Major Use Case 24: View User Reports  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[120](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/120)**: Major Use Case 5: Send Reports to Admin  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: Major Feature 
+
+  
+
+## Time entries from Clockify on this cycle:
+
+&nbsp; &nbsp; :watch: **Working on Reports implementation** *(Total duration: 4.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 23, 2024, 05:30 PM - Tuesday, July 23, 2024, 09:30 PM *(4.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 23, 2024, 04:44 PM - Tuesday, July 23, 2024, 05:04 PM *(0.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on Submit Review** *(Total duration: 0.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 22, 2024, 08:49 PM - Monday, July 22, 2024, 09:13 PM *(0.4 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on Student View Submission** *(Total duration: 3.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 21, 2024, 09:17 PM - Monday, July 22, 2024, 12:40 AM *(3.4 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on Admin Dashboard linking w the back-end** *(Total duration: 3.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 20, 2024, 09:21 PM - Saturday, July 20, 2024, 11:31 PM *(2.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 20, 2024, 07:09 PM - Saturday, July 20, 2024, 08:51 PM *(1.7 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on Testing Session feedback** *(Total duration: 2.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 20, 2024, 03:19 PM - Saturday, July 20, 2024, 05:18 PM *(2.0 hours)*  
+  
+&nbsp; &nbsp; :watch: **Testing and refactoring branch 219 to merge to dev** *(Total duration: 1.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 19, 2024, 01:21 AM - Friday, July 19, 2024, 02:51 AM *(1.5 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on the Workflows & Google Form w the team** *(Total duration: 1.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 18, 2024, 08:19 PM - Thursday, July 18, 2024, 09:29 PM *(1.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on adding Notifications functionality** *(Total duration: 2.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 18, 2024, 06:05 PM - Thursday, July 18, 2024, 08:18 PM *(2.2 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[261](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/261)**: New PDFViewer, Student Submissions View, Linking the Admin Dashboard, and applying some Testing Session feedback  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[254](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/254)**: Now seeding groups, small changes to notifications  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[267](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/267)**: Full Reports implementation (more UI & back-end)
+  
+
+## Features completed on this cycle:
+
+&nbsp; &nbsp; :arrow_heading_up: **PR-[254](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/254)**: Now seeding groups, small changes to notifications  
+
+&nbsp; &nbsp; :arrow_heading_up: **PR-[261](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/261)**: New PDFViewer, Student Submissions View, Linking the Admin Dashboard, and applying some Testing Session [NEEDS TO BE MERGED]
+
+&nbsp; &nbsp; :arrow_heading_up: **PR-[267](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/267)**: Full Reports implementation (more UI & back-end) feedback [NEEDS TO BE MERGED]
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[249](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/249)**: Make a list of items for testers to go through on Friday  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[248](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/248)**: Making a Questionnaire for Friday  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[236](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/236)**: Delete assignments/Link files tab buttons to assignment quick links  
+
+&nbsp; &nbsp; :purple_circle: **Issue-[140](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/140)**: Major Use Case 24: View User Reports  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[120](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/120)**: Major Use Case 5: Send Reports to Admin  
+
+&nbsp; &nbsp; :purple_circle: **Issue-[239](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/239)**: Link Admin Dashboard UI elements to the back-end  
+
+&nbsp; &nbsp; :purple_circle: **Issue-[257](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/257)**: Refactor Role Requests Card to include an Approve (check) button 
+
+&nbsp; &nbsp; :purple_circle: **Issue-[255](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/255)**: Have students able to view their submission  
+
+&nbsp; &nbsp; :purple_circle: **Issue-[258](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/258)**: Make the Add Student buttons larger/more apparent & add checkmarks to Add Student dropdown in Manage Class  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[259](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/259)**: Fix Manage Class being able to add students to a class of size 0  
+
+## In-progress tasks:
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[172](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/172)**: Refactor front-end test  
+
+  
+
+## Recap on goals from last cycle
+* Did quite a bit of work, again! Would like to do more but I think we're doing *okay*, not excellent but *okay.*
+* Some collaboration issues, should be relatively minor.
+* We did get Peer Reviews done (for the most part if not entirely)!
+
+## Goals for next cycle
+* Finish & and touch up Peer Reviews.
+* Start work on Group Peer Reviews.
+* Need more tests & documentation.
+  
+  
+
 # Abdul's Log for Cycle 14
 
 

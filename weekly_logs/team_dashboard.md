@@ -1,4 +1,64 @@
 
+# Team 10's Team Dashboard for Cycle 15
+
+
+## Thursday, July 18, 2024, 05:23 PM - Tuesday, July 23, 2024, 05:23 PM
+
+
+### Major features worked on in c-15
+*  Creating submit peer review page
+  
+*  Graceful Logouts (checking valid session before setting userContext)
+  
+*  Student View Submission
+  
+*  Admin Dashboard linking with the back-end
+  
+*  Reports implementation
+
+*  Enroll Request in Classes integration
+
+*  Refactor front-end tests
+
+*  Review routes
+
+*  Edit/Delete Rubrics
+
+
+### Major features completed in c-15
+*  Integrate Enroll Request in Classes
+  
+*  Admin Dashboard linking with the back-end
+  
+*  Student View Submission
+
+* Notifications functionality
+
+* Reports implementation
+
+### Major features to work on for c-16
+*  Major Use Case 16-2: Manage Rubric for Assignment (Issue-133)
+
+*  Major Use Case 20: Manage User Account(s) (Issue-136)
+
+*  Major Use Case 20: Manage User Account(s) (Issue-136)
+  
+*  Implement comments for assignments (Issue-242 - Reach goal)
+
+* Major Use Case 11: Link Group Assignment (with isGroup var) to Group (Issue-126)
+
+### Team Issues and Hurdles for c-15
+*  We've ran into some conflicts/duplicate work for review-related API routes. We have to discuss as a team whether we want to refactor things or keep them the same. 
+  
+*  The pressure to finish all our tasks is increasing as we get closer to the finish line. We need to properly manage our time so everything goes to plan
+  
+
+### Clockify Dashboard for this Week
+
+![Clockify Dashboard for c-15](./team_dashboard_images/clockify_dashboards/clockify_dashboard_c15.png)
+  
+  
+
 # Team 10's Team Dashboard for Cycle 14
 
 

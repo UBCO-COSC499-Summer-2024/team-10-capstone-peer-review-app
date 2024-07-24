@@ -1,4 +1,76 @@
 
+# Mahir's Log for Cycle 15
+
+
+## Thursday, July 18, 2024, 05:23 PM - Tuesday, July 23, 2024, 05:23 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[249](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/249)**: Make a list of items for testers to go through on Friday  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[248](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/248)**: Making a Questionnaire for Friday  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[241](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/241)**: Fix toasts (ones that arent coloring properly)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Group call to discuss team tasks to do** *(Total duration: 0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 23, 2024, 03:45 PM - Ongoing *(Ongoing)*  
+  
+&nbsp; &nbsp; :watch: **Editing Create Rubric UI** *(Total duration: 1.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 23, 2024, 02:06 PM - Tuesday, July 23, 2024, 03:20 PM *(1.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **Fixing up bugs from testing/SubmitReview.jsx** *(Total duration: 2.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 23, 2024, 11:58 AM - Tuesday, July 23, 2024, 01:47 PM *(1.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 23, 2024, 11:02 AM - Tuesday, July 23, 2024, 11:58 AM *(0.9 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[264](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/264)**: 219/fixing review bugs  
+  
+
+## Features completed on this cycle:
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[249](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/249)**: Make a list of items for testers to go through on Friday  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[248](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/248)**: Making a Questionnaire for Friday  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[241](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/241)**: Fix toasts (ones that arent coloring properly)  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[245](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/245)**: Add a rubric creation in Assignemnt View tab (for each assignment)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[242](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/242)**: Implement comments for assignments  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[120](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/120)**: Major Use Case 5: Send Reports to Admin   
+  
+
+## Recap on goals from last cycle
+* Josh and I spent today figuring out the bugs on Peer Review UI and the student grading UI
+* Group review will need to wait because we want to make sure student peer review is working properly
+* Besides group reviews, I spent time fixing bugs and issues that arose from our testing workshop last Friday.
+* I had a super slow week in terms of work. I took many days off to get a break from the project but struggled to return to my previous pace. In the last 2 days of the cycle, I started to get back on pace and am now looking forward to a consistent 2 weeks to finish this project off.
+
+## Goals for next cycle
+* Josh Abdul and I have made a game plan to finish up all the review UI and logic which I am hoping to finish up with them
+* Once group reviews are complete, our main features for the app will be completed 
+* The end of the cycle will be focused on fixing bugs and potentially implementing any reach goals if there is enough time to implement them.
+  
+
 # Mahir's Log for Cycle 14
 
 
@@ -74,8 +146,8 @@
 
 ## Goals for next cycle
 * Finish up the Peer review UI and logic 
-* work on smallee but important tasks
-* Work on group activites and reviews
+* work on smaller but important tasks
+* Work on group activities and reviews
 
   
   

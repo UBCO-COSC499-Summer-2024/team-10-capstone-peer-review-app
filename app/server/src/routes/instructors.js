@@ -30,6 +30,12 @@ const instructorsRouter = () => {
 			const classes = await prisma.class.findMany({
 				where: {
 					instructorId: instructorId
+				},
+				include: {
+					groups: true,
+					usersInClass: true,
+					Assignments: true,
+					EnrollRequest: true
 				}
 			});
 

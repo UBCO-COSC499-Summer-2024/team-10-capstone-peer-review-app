@@ -6,6 +6,7 @@ import {
 	getCriterionInRubric,
 	addRubricsToAssignment,
 	getAllRubrics,
+	getAllRubricsInClass,
 	getRubricById,
 	removeRubricsFromAssignment,
 	updateRubricsInAssignment,
@@ -50,8 +51,12 @@ router
 	.post(ensureUser, ensureInstructor, getAllRubrics);
 
 router
+	.route("/get-rubrics-in-class")
+	.post(ensureUser, ensureInstructor, getAllRubricsInClass);
+
+router
 	.route("/get-rubric-by-id")
-	.post(ensureUser, ensureInstructor, getRubricById);
+	.post( getRubricById);
 
 // Criterion Routes
 router

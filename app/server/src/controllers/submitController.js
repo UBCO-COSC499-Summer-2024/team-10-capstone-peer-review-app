@@ -65,13 +65,20 @@ export const createSubmission = [
 ];
 
 export const getStudentSubmission = asyncErrorHandler(async (req, res) => {
-	const studentId = req.user.userId;
+	const studentId = req.body.userId;
+	console.log("studentId in controller:", studentId);
+	if (!studentId) {
+	  return res.status(400).json({
+		status: "Error",
+		message: "userId is required"
+	  });
+	}
 	const studentData = await submitService.getStudentSubmission(studentId);
 	return res.status(200).json({
-		status: "Success",
-		data: studentData
+	  status: "Success",
+	  data: studentData
 	});
-});
+  });
 
 export const getSubmissionsForAssignment = asyncErrorHandler(
 	async (req, res) => {

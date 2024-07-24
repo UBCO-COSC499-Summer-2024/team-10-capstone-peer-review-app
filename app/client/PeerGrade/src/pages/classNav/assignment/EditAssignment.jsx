@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon, ChevronDown as ChevronDownIcon, ChevronUp as ChevronUpIcon, Check as CheckIcon, Upload } from "lucide-react";
-
+import { useNavigate } from 'react-router-dom';
 import { cn } from "@/utils/utils";
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -25,6 +25,7 @@ import {
 import { toast } from "@/components/ui/use-toast";
 import { getAssignmentInClass, updateAssignmentInClass } from '@/api/assignmentApi';
 import { getCategoriesByClassId } from '@/api/classApi';
+import { getAllRubricsInClass } from '@/api/rubricApi';
 
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -39,6 +40,7 @@ const FormSchema = z.object({
 });
 
 const EditAssignment = () => {
+  const navigate = useNavigate();
   const { classId, assignmentId } = useParams();
   const [open, setOpen] = useState(false);
   const [openCat, setOpenCat] = useState(false);
@@ -47,6 +49,8 @@ const EditAssignment = () => {
   const [selectedFileName, setSelectedFileName] = useState('');
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [rubrics, setRubrics] = useState([]);
+  const [selectedRubrics, setSelectedRubrics] = useState([]);
   
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -66,16 +70,24 @@ const EditAssignment = () => {
     { value: "auto", label: "Auto" }
   ];
 
+
   useEffect(() => {
     const fetchAssignmentAndCategories = async () => {
       try {
-        const assignmentResponse = await getAssignmentInClass(classId, assignmentId);
-        const categoriesResponse = await getCategoriesByClassId(classId);
-
-        if (assignmentResponse.status === 'Success' && categoriesResponse.status === 'Success') {
+        const [assignmentResponse, categoriesResponse, rubricsResponse] = await Promise.all([
+          getAssignmentInClass(classId, assignmentId),
+          getCategoriesByClassId(classId),
+          getAllRubricsInClass(classId)
+        ]);
+    
+        if (assignmentResponse.status === 'Success' && 
+            categoriesResponse.status === 'Success' &&
+            rubricsResponse.status === 'Success') {
           const assignmentData = assignmentResponse.data;
           setCategories(categoriesResponse.data);
-
+          console.log('rubrics', rubricsResponse.data);
+          setRubrics(rubricsResponse.data);
+    
           form.reset({
             title: assignmentData.title,
             description: assignmentData.description,
@@ -84,15 +96,22 @@ const EditAssignment = () => {
             reviewOption: assignmentData.reviewOption,
             dueDate: new Date(assignmentData.dueDate),
           });
-
+    
           setSelectedCategory(assignmentData.categoryId);
           setSelectedFileName(assignmentData.assignmentFilePath ? assignmentData.assignmentFilePath.split('/').pop() : '');
+          
+          // Check if assignmentData.rubrics exists before mapping
+          if (assignmentData.rubrics && Array.isArray(assignmentData.rubrics)) {
+            setSelectedRubrics(assignmentData.rubrics.map(rubric => rubric.rubricId));
+          } else {
+            setSelectedRubrics([]);
+          }
         }
       } catch (error) {
-        console.error("Error fetching assignment or categories:", error);
+        console.error("Error fetching data:", error);
         toast({
           title: "Error",
-          description: "Failed to fetch assignment data",
+          description: "Failed to fetch data",
           variant: "destructive",
         });
       }
@@ -100,6 +119,7 @@ const EditAssignment = () => {
 
     fetchAssignmentAndCategories();
   }, [classId, assignmentId, form]);
+
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -110,6 +130,7 @@ const EditAssignment = () => {
   const onSubmit = async (data) => {
     const formData = new FormData();
     formData.append('classId', classId);
+    formData.append('assignmentId', assignmentId);
     formData.append('categoryId', selectedCategory);
     formData.append('assignmentData', JSON.stringify({
       title: data.title,
@@ -118,19 +139,39 @@ const EditAssignment = () => {
       reviewOption: data.reviewOption,
       maxSubmissions: data.maxSubmissions,
     }));
+    formData.append('rubrics', JSON.stringify(selectedRubrics));
+
     if (fileInputRef.current.files[0]) {
       formData.append('file', fileInputRef.current.files[0]);
     }
-
+  
     try {
-      const response = await updateAssignmentInClass(classId, assignmentId, formData);
-
+      const response = await updateAssignmentInClass(formData);
+  
       if (response.status === 'Success') {
         toast({
           title: "Assignment Updated",
           description: "The assignment has been successfully updated.",
           status: "success"
         });
+        
+        // Clear the form and reset fields
+        form.reset({
+          title: "",
+          description: "",
+          maxSubmissions: 1,
+          categoryId: "",
+          reviewOption: "",
+          dueDate: null,
+          file: null,
+        });
+        
+        setSelectedCategory("");
+        setSelectedFileName("");
+        setValue("");
+        
+        // Redirect to the assignment page
+        navigate(`/class/${classId}/assignment/${assignmentId}`);
       } else {
         toast({
           title: "Error",
@@ -343,6 +384,62 @@ const EditAssignment = () => {
                     </PopoverContent>
                   </Popover>
                   <FormDescription>Select a category for this assignment.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="rubrics"
+              render={({ field }) => (
+                <FormItem style={{ display: 'flex', flexDirection: 'column' }}>
+                  <FormLabel>Rubrics</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={open}
+                          className="w-[200px] justify-between bg-white"
+                        >
+                          Select Rubrics
+                          <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0 rounded-md">
+                      <Command>
+                        <CommandList>
+                          <CommandGroup>
+                            {rubrics.map((rubric) => (
+                              <CommandItem
+                                key={rubric.rubricId}
+                                value={rubric.rubricId}
+                                onSelect={(currentValue) => {
+                                  setSelectedRubrics(prev => 
+                                    prev.includes(currentValue)
+                                      ? prev.filter(id => id !== currentValue)
+                                      : [...prev, currentValue]
+                                  );
+                                  field.onChange(selectedRubrics);
+                                }}
+                              >
+                                {rubric.title || 'Untitled Rubric'}
+                                <CheckIcon
+                                  className={cn(
+                                    "ml-auto h-4 w-4",
+                                    selectedRubrics.includes(rubric.rubricId) ? "opacity-100" : "opacity-0"
+                                  )}
+                                />
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  <FormDescription>Select rubrics for this assignment.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

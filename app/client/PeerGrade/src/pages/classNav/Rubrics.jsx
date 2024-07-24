@@ -14,7 +14,6 @@ const Rubrics = () => {
   const [rubrics, setRubrics] = useState([]);
   const [selectedRubric, setSelectedRubric] = useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isCreateDrawerOpen, setIsCreateDrawerOpen] = useState(false);
   const [assignments, setAssignments] = useState([]);
   const [selectedAssignments, setSelectedAssignments] = useState([]);
   const [newRubricData, setNewRubricData] = useState({
@@ -65,8 +64,8 @@ const Rubrics = () => {
     try {
       const response = await getRubricById(rubricId);
       console.log('Rubric details fetched:', response.data);
-      if (response.data && response.data.data) {
-        setSelectedRubric(response.data.data);
+      if (response.data && response.data) {
+        setSelectedRubric(response.data);
       } else {
         setSelectedRubric(null);
       }
@@ -76,6 +75,7 @@ const Rubrics = () => {
       setSelectedRubric(null);
     }
   };
+
 
   const handleCreateRubric = async () => {
     try {
@@ -99,19 +99,18 @@ const Rubrics = () => {
       };
       console.log('formattedRubricData:', formattedRubricData);
       console.log(user);
-      const userId = user.userId // Replace with actual user ID or fetch from context/state
+      const userId = user.userId
 
       // Add rubric to each selected assignment
       const assignmentId = selectedAssignments;
-        console.log('Adding rubric to assignment:', assignmentId);
-        await addRubricToAssignment({
-          userId,
-          assignmentId,
-          rubricData: formattedRubricData
-        });
-      
-
+      console.log('Adding rubric to assignment:', assignmentId);
+      await addRubricToAssignment({
+        userId,
+        assignmentId,
+        rubricData: formattedRubricData
+      });
       console.log('Rubric added to selected assignments');
+      
       setIsCreateDrawerOpen(false);
       setNewRubricData({
         title: "",
@@ -136,7 +135,6 @@ const Rubrics = () => {
   return (
     <div className="p-4 bg-slate-50 rounded-lg">
       <h1 className="text-2xl font-semibold mb-4">Rubrics</h1>
-      <Button onClick={() => setIsCreateDrawerOpen(true)} className="mb-4">Add a Rubric</Button>
       <div className="grid grid-cols-1 gap-4">
         {rubrics.length === 0 ? (
           <div>No rubrics found</div>
@@ -151,49 +149,26 @@ const Rubrics = () => {
         )}
       </div>
       <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+        {/* <DrawerContent className='w-1/3'> */}
         <DrawerContent>
           <DrawerHeader>
             <DrawerTitle>{selectedRubric?.title}</DrawerTitle>
             <DrawerDescription>{selectedRubric?.description}</DrawerDescription>
           </DrawerHeader>
-          <div className="  max-h-[60vh] overflow-y-auto">
+          <div className="max-h-[60vh] overflow-y-auto">
             {selectedRubric && selectedRubric.criteria && selectedRubric.criteria.map((criterion, index) => (
-              <div key={index} className="mb-4">
-                <h3 className="text-lg font-semibold">{criterion.title}</h3>
-                <p>Min Points: {criterion.minMark}</p>
-                <p>Max Points: {criterion.maxMark}</p>
+              <div key={index} className="mb-4 px-4">
+                <p className='mb-8 font-semibold'>Max Points: {criterion.maxMark}</p>
+                <p className='mb-2 font-semibold'>Ratings:</p>
                 <div className="mt-2">
-                  {criterion.criteronRatings && criterion.criteronRatings.map((rating, ratingIndex) => (
-                    <div key={ratingIndex} className="flex items-center justify-between">
-                      <p>{rating.description}</p>
-                      <p>{rating.points} Points</p>
+                  {criterion.criterionRatings && criterion.criterionRatings.map((rating, ratingIndex) => (
+                    <div key={ratingIndex} className="flex items-center">
+                      <p>{rating.description}: {rating.points} Points</p>
                     </div>
                   ))}
                 </div>
               </div>
             ))}
-          </div>
-        </DrawerContent>
-      </Drawer>
-      <Drawer open={isCreateDrawerOpen} onOpenChange={setIsCreateDrawerOpen}>
-        <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>Create a Rubric</DrawerTitle>
-          </DrawerHeader>
-          <div className="p-4 max-h-[85vh] z-[70] overflow-y-auto">
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Select Assignments</h3>
-              <MultiSelect
-                options={assignments.map(assignment => ({
-                  value: assignment.assignmentId,
-                  label: assignment.title
-                }))}
-                value={selectedAssignments}
-                onChange={handleAssignmentSelection}
-              />
-            </div>
-            <RubricDataTable rubricData={newRubricData} setRubricData={setNewRubricData} setIsValid={setIsValid} />
-            <Button onClick={handleCreateRubric}  disabled={!isValid} className="mt-4">Save Rubric</Button>
           </div>
         </DrawerContent>
       </Drawer>

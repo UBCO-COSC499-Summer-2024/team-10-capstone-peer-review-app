@@ -1,6 +1,5 @@
 import axios from "axios";
 import showStatusToast from "@/utils/showToastStatus";
-import { toast } from "@/components/ui/use-toast";
 
 const BASE_URL = "/api"; // Use environment variable if available
 
@@ -13,10 +12,9 @@ export const addAssignmentToClass = async (formData) => {
           });
 
           if (response.data.status === 'Success') {
-            toast({
-              title: "Assignment Created",
-              description: "The assignment and its rubric have been successfully created.",
-              status: "success"
+            showStatusToast({
+              status: response.data.status,
+              message: "The assignment and its rubric have been successfully created."
             });
           }
           console.log('Updated assignment data:', response.data);
@@ -28,20 +26,34 @@ export const addAssignmentToClass = async (formData) => {
     }
 };
 
-
-export const updateAssignmentInClass = async (classId, assignmentId, updateData) => {
+export const updateAssignmentInClass = async (formData) => {
     try {
-        const response = await axios.put(`${BASE_URL}/assignment/${classId}/assignments/${assignmentId}`, updateData);
-        return response.data;
+      const response = await axios.post('/api/assignment/update-assignment', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+  
+      if (response.data.status === 'Success') {
+        showStatusToast({
+          status: response.data.status,
+          message: "The assignment has been successfully updated."
+        });
+      }
+      console.log('Updated assignment data:', response.data);
+      return response.data;
+
     } catch (error) {
-        handleError(error);
-        return error.response.data;
+      handleError(error);
+      return error.response.data;
     }
-};
+  };
 
-export const removeAssignmentFromClass = async (classId, assignmentId) => {
+export const removeAssignmentFromClass = async (assignmentId) => {
     try {
-        const response = await axios.delete(`${BASE_URL}/assignment/${classId}/assignments/${assignmentId}`);
+        const response = await axios.post(`${BASE_URL}/assignment/remove-assignment`, {
+            assignmentId
+        });
         return response.data;
     } catch (error) {
         handleError(error);
@@ -71,11 +83,6 @@ export const getAllAssignmentsByClassId = async (classId) => {
         });
         return response.data;
     } catch (error) {
-        toast({
-            title: "Error",
-            description: "An error occurred while fetching assignments. Please try again.",
-            status: "error"
-        });
         handleError(error);
         return error.response.data;
     }
@@ -104,5 +111,3 @@ function handleError(error) {
         });
     }
 }
-
-

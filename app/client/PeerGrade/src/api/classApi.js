@@ -12,6 +12,16 @@ export const getAllClasses = async () => {
 	}
 };
 
+export const getAllClassesUserisNotIn = async (userId) => {
+	try {
+		const response = await axios.get(`${BASE_URL}/classes/not-enrolled`); 
+		
+		return response.data;
+	} catch (error) {
+		return error.response.data;
+	}
+};
+
 export const getInstructorByClassId = async (classId) => {
 	try {
 		const response = await axios.get(
@@ -75,6 +85,16 @@ export const getAllGroupsByClass = async (classId) => {
 		const response = await axios.post(`${BASE_URL}/classes/get-groups`, {
 			classId
 		});
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const getAllGroups = async (classId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/classes/get-all-groups`);
 		return response.data;
 	} catch (error) {
 		handleError(error);

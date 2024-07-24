@@ -26,6 +26,10 @@ export default {
           DEFAULT: '#FBBF24',
           foreground: '#000000',
         },
+        pending: {
+          DEFAULT: '#F5E66B',
+          foreground: '#000000',
+        },
         background: {
           DEFAULT: "#FFFFFF", // Slate color
           foreground: "#1C232E"

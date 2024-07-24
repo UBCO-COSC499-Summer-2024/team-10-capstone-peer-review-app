@@ -19,6 +19,7 @@ const createRubricsForAssignment = async (creatorId, assignmentId, rubricData) =
                 title: rubricData.title,
                 description: rubricData.description,
                 totalMarks: rubricData.totalMarks,
+				classId: rubricData.classId,
                 creatorId: creatorId,
                 criteria: {
                     create: criteria.map(criterion => ({
@@ -57,16 +58,14 @@ const createRubricsForAssignment = async (creatorId, assignmentId, rubricData) =
 };
 
 
-
-
 const getRubricsForAssignment = async (assignmentId) => {
 	try {
 		const assignment = await prisma.assignment.findUnique({
 			where: {
-				assignmentId: assignmentId,
+				assignmentId: assignmentId
 			},
 			include: {
-				rubric: true,
+				rubric: true
 			}
 		});
 
@@ -80,10 +79,10 @@ const getRubricsForAssignment = async (assignmentId) => {
 
 		const rubricAssignments = await prisma.rubricForAssignment.findMany({
 			where: {
-				assignmentId: assignmentId,
+				assignmentId: assignmentId
 			},
 			include: {
-				rubric:{
+				rubric: {
 					include: {
 						criteria: {
 							include: {
@@ -92,7 +91,7 @@ const getRubricsForAssignment = async (assignmentId) => {
 						}
 					}
 				}
-			},
+			}
 		});
 
 		if (!rubricAssignments.length) {
@@ -121,12 +120,33 @@ const getAllRubrics = async () => {
 	}
 };
 
+
+const getAllRubricsInClass = async (classId) => {
+	try {
+		const rubrics = await prisma.rubric.findMany({
+			where: {
+				classId: classId
+			}
+		});
+		return rubrics;
+	} catch (error) {
+		throw new apiError("Failed to get all rubrics", 500);
+	}
+};
+
 const getRubricById = async (rubricId) => {
 	console.log(rubricId);
 	try {
 		const rubric = await prisma.rubric.findUnique({
 			where: { rubricId },
-			include: { criteria: true },
+			include: { 
+				criteria: 
+				{
+					include: {
+						criterionRatings: true
+					}
+				}
+			 },
 		});
 
 		if (!rubric) {
@@ -402,11 +422,11 @@ const createCriterionRating = async (criterionId, ratingData) => {
 
 // criterion grade operations
 
-
 export default {
 	createRubricsForAssignment,
 	getRubricsForAssignment,
 	getAllRubrics,
+	getAllRubricsInClass,
 	getRubricById,
 	updateRubricsForAssignment,
 	deleteRubricsForAssignment,
@@ -415,6 +435,5 @@ export default {
 	getCriterionForRubric,
 	updateCriterionForRubric,
 	deleteCriterionForRubric,
-	createCriterionRating,
-
+	createCriterionRating
 };

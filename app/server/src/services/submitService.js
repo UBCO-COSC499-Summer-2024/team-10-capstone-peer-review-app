@@ -1,43 +1,85 @@
 import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
+import { sendNotificationToUser } from "./notifsService.js";
 
 // Submit operations
-
 const getStudentSubmission = async (studentId) => {
     try {
         let allSubmissions = [];
-        const submission = await prisma.submission.findFirst({
+        const submissions = await prisma.submission.findMany({
             where: {
                 submitterId: studentId
+            },
+            include: {
+                assignment: {
+                    include: {
+                        classes: {
+                            include: {
+                                instructor: {
+                                    select: {
+                                        firstname: true,
+                                        lastname: true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                reviews: {
+                    select: {
+                        isPeerReview: true
+                    }
+                }
             }
         });
 
-        allSubmissions.push(submission);
+        allSubmissions = allSubmissions.concat(submissions);
 
         const student = await prisma.user.findFirst({
             where: {
                 userId: studentId
-            }, include: {
-                classes: true,
+            },
+            include: {
                 groups: true
             }
         });
 
         for (const group of student.groups) {
-            const groupSubmission = await prisma.submission.findMany({
+            const groupSubmissions = await prisma.submission.findMany({
                 where: {
                     submitterGroupId: group.groupId
+                },
+                include: {
+                    assignment: {
+                        include: {
+                            classes: {
+                                include: {
+                                    instructor: {
+                                        select: {
+                                            firstname: true,
+                                            lastname: true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    reviews: {
+                        select: {
+                            reviewerId: true,
+                            isPeerReview: true
+                        }
+                    }
                 }
             });
 
-            allSubmissions = allSubmissions.concat(groupSubmission);
+            allSubmissions = allSubmissions.concat(groupSubmissions);
         }
-
-
 
         return allSubmissions;
     } catch (error) {
-        throw new apiError("Failed to retrieve submission", 500);
+        console.error("Error in getStudentSubmission:", error);
+        throw new apiError("Failed to retrieve submissions: " + error.message, 500);
     }
 }
 
@@ -149,6 +191,17 @@ const createSubmission = async (studentId, assignmentId, submissionFilePath) => 
             }
         });
 
+        const assignmentClass = await prisma.class.findUnique({
+            where: {
+                classId: assignment.classId
+            },
+            include: {
+                instructor: true
+            }
+        });
+
+		await sendNotificationToUser(null, `You've successfully submitted the '${assignment.title}' assignment`, assignmentClass.classname, studentId, 'submit');
+		await sendNotificationToUser(null, `Student ${student.firstname} ${student.lastname} submitted the '${assignment.title}' assignment`, assignmentClass.classname, assignmentClass.instructor.userId, 'submit');
         return newSubmission;
     } catch (error) {
         throw new apiError("Failed to create submission" + error, 500);

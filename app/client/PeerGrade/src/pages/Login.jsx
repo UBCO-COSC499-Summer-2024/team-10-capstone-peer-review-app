@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LoginCard from "@/components/login/LoginCard";
 import ForgotPasswordCard from "@/components/login/ForgotPasswordCard";
 import RegisterCard from "@/components/login/RegisterCard";
 import NewRoleRequestCard from "@/components/login/NewRoleRequestCard";
+import ResendVerifEmailCard from "@/components/login/ResendVerifEmailCard";
 
 import { useUser } from "@/contexts/contextHooks/useUser";
 
@@ -36,7 +38,7 @@ const Login = () => {
 	}, [forgotPasswordToken]);
 
 	return (
-		<main className="flex items-center justify-center min-h-screen mr-[160px]">
+		<div className="flex items-center justify-center h-full mr-[160px]">
 			<Tabs
 				value={currentTab}
 				onValueChange={setCurrentTab}
@@ -50,7 +52,8 @@ const Login = () => {
 					<LoginCard
 						onSwitchToRegister={() => setCurrentTab("register")}
 						onSwitchToForgotPassword={() => setCurrentTab("forgotPassword")}
-						onSwitchToNewRoleRequest={() => setCurrentTab("newRoleRequest")}
+						onSwitchToNewRoleRequest={() => setCurrentTab("newRoleRequest")} 
+						onSwitchToNewVerificationEmail={() => setCurrentTab("newVerificationEmail")}
 					/>
 				</TabsContent>
 				<TabsContent value="register">
@@ -61,9 +64,12 @@ const Login = () => {
 				</TabsContent>
 				<TabsContent value="newRoleRequest">
 					<NewRoleRequestCard onSwitchToLogin={() => setCurrentTab("login")} />
+				</TabsContent> 
+				<TabsContent value="newVerificationEmail">
+					<ResendVerifEmailCard onSwitchToLogin={() => setCurrentTab("login")} />
 				</TabsContent>
 			</Tabs>
-		</main>
+		</div>
 	);
 };
 

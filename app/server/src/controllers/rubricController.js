@@ -49,6 +49,15 @@ export const getAllRubrics = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+export const getAllRubricsInClass = asyncErrorHandler(async (req, res) => {
+	const { classId } = req.body;
+	const rubrics = await rubricService.getAllRubricsInClass(classId);
+	return res.status(200).json({
+		status: "Success",
+		data: rubrics,
+	});
+});
+
 export const getRubricById = asyncErrorHandler(async (req, res) => {
 	const { rubricId } = req.body;
 	console.log(rubricId);
@@ -174,6 +183,7 @@ export default {
 	updateRubricsInAssignment,
 	getRubricsInAssignment,
 	getAllRubrics,
+	getAllRubricsInClass,
 	getRubricById,
 
 	addCriterionToRubric,

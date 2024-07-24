@@ -1,6 +1,6 @@
 import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
-import pkg from '@prisma/client';
+import pkg from "@prisma/client";
 
 const { PrismaClientKnownRequestError } = pkg;
 
@@ -63,15 +63,30 @@ export async function getUserClasses(userId) {
 						lastname: true,
 						classesInstructed: true
 					}
+				},
+				_count: {
+					select: {
+						Assignments: true,
+						usersInClass: true
+					}
 				}
 			}
 		});
 
-		return classes;
+		// Map the classes to include the counts directly in the class object
+		const classesWithCounts = classes.map((classItem) => ({
+			...classItem,
+			assignmentCount: classItem._count.Assignments,
+			userCount: classItem._count.usersInClass,
+			_count: undefined // Remove the _count property
+		}));
+
+		return classesWithCounts;
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
 		} else {
+			console.log(error);
 			throw error;
 		}
 	}
@@ -141,22 +156,27 @@ export async function getGroups(userId) {
 	}
 }
 
-export async function updateProfile (userId, updateData) {
+export async function updateProfile(userId, updateData) {
 	try {
 		const updatedProfile = await prisma.user.update({
 			where: {
 				userId: userId
 			},
 			data: {
-			  ...updateData,
-			  updatedAt: new Date(),
-			},
+				...updateData,
+				updatedAt: new Date()
+			}
 		});
 		return updatedProfile;
 	} catch (error) {
 		if (error instanceof PrismaClientKnownRequestError) {
-			if (error.code === 'P2002' && error.meta && error.meta.target && error.meta.target.includes('email')) {
-			  	throw new apiError('Email already exists', 400);
+			if (
+				error.code === "P2002" &&
+				error.meta &&
+				error.meta.target &&
+				error.meta.target.includes("email")
+			) {
+				throw new apiError("Email already exists", 400);
 			} else {
 				throw error;
 			}
@@ -166,7 +186,7 @@ export async function updateProfile (userId, updateData) {
 			throw new apiError("Failed to update profile", 500);
 		}
 	}
-};
+}
 
 export default {
 	getUsersByRole,

@@ -68,30 +68,41 @@ const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
 };
 
 const removeAssignmentFromClass = async (assignmentId) => {
-	try {
-		const assignment = await prisma.assignment.findUnique({
-			where: {
-				assignmentId: assignmentId
-			}
-		});
+    try {
+        const deletedAssignment = await prisma.$transaction(async (prisma) => {
+            // Delete all related RubricForAssignment records
+            await prisma.rubricForAssignment.deleteMany({
+                where: {
+                    assignmentId: assignmentId
+                }
+            });
 
-		if (!assignment) {
-			throw new apiError("Assignment not found", 404);
-		}
+            // Delete all related Submission records
+            await prisma.submission.deleteMany({
+                where: {
+                    assignmentId: assignmentId
+                }
+            });
 
-		await prisma.assignment.delete({
-			where: {
-				assignmentId: assignmentId
-			}
-		});
-	} catch (error) {
-		if (error instanceof apiError) {
-			throw error;
-		} else {
-			throw new apiError("Failed to remove assignment from class", 500);
-		}
-	}
+            // Delete the assignment
+            return prisma.assignment.delete({
+                where: {
+                    assignmentId: assignmentId
+                }
+            });
+        });
+
+        return deletedAssignment;
+    } catch (error) {
+        console.error("Error in removeAssignmentFromClass:", error);
+        if (error instanceof apiError) {
+            throw error;
+        } else {
+            throw new apiError(`Failed to remove assignment from class: ${error.message}`, 500);
+        }
+    }
 };
+
 
 const updateAssignmentInClass = async (classId, assignmentId, categoryId, updateData) => {
 	try {

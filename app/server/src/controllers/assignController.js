@@ -61,14 +61,21 @@ export const addAssignmentToClass = [
 
 
 export const removeAssignmentFromClass = asyncErrorHandler(async (req, res) => {
-	const { assignmentId } = req.body;
-	const updatedClass =
-		await assignService.removeAssignmentFromClass(assignmentId);
-	return res.status(200).json({
-		status: "Success",
-		message: "Assignment successfully removed from class",
-		data: updatedClass
-	});
+    const { assignmentId } = req.body;
+    try {
+        const deletedAssignment = await assignService.removeAssignmentFromClass(assignmentId);
+        return res.status(200).json({
+            status: "Success",
+            message: "Assignment successfully removed from class",
+            data: deletedAssignment
+        });
+    } catch (error) {
+        console.error("Error in removeAssignmentFromClass controller:", error);
+        return res.status(error.statusCode || 500).json({
+            status: "Error",
+            message: error.message || "An unexpected error occurred"
+        });
+    }
 });
 
 export const updateAssignmentInClass = [

@@ -60,15 +60,15 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Josh and I spent today figuring out the bugs on Peer Review UI and the student grading UI
+* Group review will need to wait because we want to make sure student peer review is working properly
+* Besides group reviews, I spent time fixing bugs and issues that arose from our testing workshop last Friday.
+* I had a super slow week in terms of work. I took many days off to get a break from the project but struggled to return to my previous pace. In the last 2 days of the cycle, I started to get back on pace and am now looking forward to a consistent 2 weeks to finish this project off.
 
 ## Goals for next cycle
-* 
-* 
-* 
-  
+* Josh Abdul and I have made a game plan to finish up all the review UI and logic which I am hoping to finish up with them
+* Once group reviews are complete, our main features for the app will be completed 
+* The end of the cycle will be focused on fixing bugs and potentially implementing any reach goals if there is enough time to implement them.
   
 
 # Mahir's Log for Cycle 14
@@ -146,8 +146,8 @@
 
 ## Goals for next cycle
 * Finish up the Peer review UI and logic 
-* work on smallee but important tasks
-* Work on group activites and reviews
+* work on smaller but important tasks
+* Work on group activities and reviews
 
   
   

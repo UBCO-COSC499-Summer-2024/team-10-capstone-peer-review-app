@@ -8,6 +8,7 @@ import {
 	CardHeader,
 	CardTitle
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 
@@ -163,42 +164,45 @@ const LoginCard = ({
 						</div>
 						{error && <p className="text-red-500 text-sm">{error}</p>}
 						<div>
-							<button
+							<Button
 								type="submit"
 								className="w-full px-4 py-2 text-sm font-medium text-white bg-[#111827] border border-transparent rounded-md shadow-sm hover:bg-[#374151] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
 							>
 								Sign in
-							</button>
+							</Button>
 						</div>
 					</form>
-					<div className="flex flex-col justify-center text-center space-x-1 space-y-1">
+					<div className="flex flex-col justify-center text-center space-y-1">
 						<p className="text-sm text-gray-600">
 							<button
 								onClick={onSwitchToForgotPassword}
-								className="text-green-600 hover:text-green-500"
+								className="text-green-600 hover:text-green-500 rounded-md "
 							>
 								Forgot your password?
 							</button>
 						</p>
-						<p className="text-sm text-gray-600">
-							<button
+						
+					</div>
+
+				</CardContent>
+				<div className="flex flex-col gap-1">
+							<Button
+							variant="text"
 								onClick={onSwitchToNewRoleRequest}
-								className="text-green-600 hover:text-green-500"
+								className="text-green-600 hover:text-green-500 px-3 py-2 rounded-md hover:bg-green-50"
 							>
-								Apply for another role request?
-							</button>
-						</p>
-						<p className="text-sm text-gray-600">
-							<button
+								Apply for new role request
+							</Button>
+							<Button
+								variant="text"
 								onClick={onSwitchToNewVerificationEmail}
-								className="text-green-600 hover:text-green-500"
+								className="text-green-600 hover:text-green-500 px-3 py-2 rounded-md hover:bg-green-50"
 							>
 								Need to send another verification email?
-							</button>
-						</p>
-					</div>
-				</CardContent>
-				<CardFooter className="text-center flex flex-col gap-2 bg-indigo-100">
+							</Button>
+						</div>
+				<CardFooter className="text-center flex flex-col gap-2 bg-slate-200">
+				
 					<div className="flex w-full justify-between mt-6">
 						<p className="text-sm text-gray-600">
 							Don&apos;t have an account?

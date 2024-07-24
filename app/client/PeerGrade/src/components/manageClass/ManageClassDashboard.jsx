@@ -292,7 +292,17 @@ const ManageClassDashboard = () => {
   return (
     <div className="w-full rounded-lg">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">{classData.classname}</h1>
+        <div className="flex items-center">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate(-1)}
+            className="mr-2"
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </Button>
+          <h1 className="text-3xl font-bold">{classData.classname}</h1>
+        </div>
         <div>
           <Button
             variant="outline"

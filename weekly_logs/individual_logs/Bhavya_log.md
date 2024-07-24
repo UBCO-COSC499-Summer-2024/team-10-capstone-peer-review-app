@@ -1,4 +1,68 @@
 
+# Bhavya's Log for Cycle 15
+
+
+## Thursday, July 18, 2024, 05:23 PM - Tuesday, July 23, 2024, 05:23 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[249](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/249)**: Make a list of items for testers to go through on Friday  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[248](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/248)**: Making a Questionnaire for Friday  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[88](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/88)**: Integrate Enroll Request in Classes  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **finishing category routes** *(Total duration: 4.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 23, 2024, 01:00 AM - Tuesday, July 23, 2024, 02:11 AM *(1.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 22, 2024, 12:30 PM - Monday, July 22, 2024, 03:56 PM *(3.4 hours)*  
+  
+&nbsp; &nbsp; :watch: **Review routes** *(Total duration: 4.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 20, 2024, 11:48 PM - Sunday, July 21, 2024, 02:38 AM *(2.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 18, 2024, 11:10 PM - Friday, July 19, 2024, 12:36 AM *(1.4 hours)*  
+  
+
+## All Features worked on this cycle:
+
+## Features completed on this cycle:
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[249](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/249)**: Make a list of items for testers to go through on Friday  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[248](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/248)**: Making a Questionnaire for Friday  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[88](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/88)**: Integrate Enroll Request in Classes  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[235](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/235)**: Create/Delete/Edit Categories  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[198](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/198)**: Writing new back-end tests for dockerized test enviroment. Start with services, then controllers  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Bhavya's Log for Cycle 14
 
 

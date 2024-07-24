@@ -1,4 +1,96 @@
 
+# Josh's Log for Cycle 15
+
+
+## Thursday, July 18, 2024, 05:23 PM - Tuesday, July 23, 2024, 05:23 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[249](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/249)**: Make a list of items for testers to go through on Friday  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[248](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/248)**: Making a Questionnaire for Friday  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[247](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/247)**: Graceful Logouts (Checking valid session before setting userContext)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[88](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/88)**: Integrate Enroll Request in Classes  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **244 - Creating a submit peer review page** *(Total duration: 1.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 23, 2024, 04:23 PM - Ongoing *(Ongoing)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 23, 2024, 03:18 PM - Tuesday, July 23, 2024, 03:50 PM *(0.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 23, 2024, 11:59 AM - Tuesday, July 23, 2024, 12:52 PM *(0.9 hours)*  
+  
+&nbsp; &nbsp; :watch: **243,247 - Graceful logouts and resend verif email card** *(Total duration: 1.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 22, 2024, 11:17 AM - Monday, July 22, 2024, 11:29 AM *(0.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 22, 2024, 09:21 AM - Monday, July 22, 2024, 10:30 AM *(1.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 22, 2024, 08:51 AM - Monday, July 22, 2024, 08:54 AM *(0.1 hours)*  
+  
+&nbsp; &nbsp; :watch: **Writing down issues from Peer Testing** *(Total duration: 0.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 22, 2024, 10:36 AM - Monday, July 22, 2024, 11:17 AM *(0.7 hours)*  
+  
+&nbsp; &nbsp; :watch: **Setting up Questionnaire and workflows** *(Total duration: 3.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 19, 2024, 07:39 AM - Friday, July 19, 2024, 08:05 AM *(0.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 18, 2024, 06:07 PM - Thursday, July 18, 2024, 09:31 PM *(3.4 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[262](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/262)**: Grace Logouts / Session Checks and Resend Email Verify Card  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[256](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/256)**: Logs review c14  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[256](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/256)**: Logs review c14  
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[249](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/249)**: Make a list of items for testers to go through on Friday  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[248](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/248)**: Making a Questionnaire for Friday  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[88](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/88)**: Integrate Enroll Request in Classes  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[247](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/247)**: Graceful Logouts (Checking valid session before setting userContext)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[243](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/243)**: Add re-send verification email to login card  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[207](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/207)**: Integrate back-end testing env into drone  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[198](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/198)**: Writing new back-end tests for dockerized test enviroment. Start with services, then controllers  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Josh's Log for Cycle 14
 
 

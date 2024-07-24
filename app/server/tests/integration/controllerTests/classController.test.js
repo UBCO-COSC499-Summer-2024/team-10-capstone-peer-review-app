@@ -16,7 +16,7 @@ describe("Class Controller", () => {
         await prisma.class.deleteMany();
     });
 
-    describe("POST /api/class/createClass", () => {
+    describe("POST /classes/class/createClass", () => {
         it("should create a new class", async () => {
             const testClass = {
                 classname: "Test Class",

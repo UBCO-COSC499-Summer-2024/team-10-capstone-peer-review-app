@@ -71,33 +71,37 @@ export default function AppNavbar() {
         }
       }
     };
-    const fetchNotifs = async () => {
-      if (user) {
-        try {
-          const notifs = await getNotifications(user.userId);
-          setNotifications(Array.isArray(notifs.data) ? notifs.data : []);
-        } catch (error) {
-          console.error("Failed to fetch notifications", error);
-          toast({
-            title: "Error",
-            description: "Failed to fetch notifications",
-            variant: "destructive"
-          });
-        }
-      }
-    };
-    
-		fetchData();
-		fetchNotifs();
-
-		const intervalId = setInterval(() => {
-			fetchNotifs();
-		}, 10000); // Fetch notifications every 30 seconds
-
-		return () => {
-			clearInterval(intervalId); // Clear the interval when the component unmounts
-		};
+   		fetchData();
 	}, [user]);
+
+	const fetchNotifications = async () => {
+		if (user) {
+		  try {
+			const notifs = await getNotifications(user.userId);
+			setNotifications(Array.isArray(notifs.data) ? notifs.data : []);
+		  } catch (error) {
+			console.error("Failed to fetch notifications", error);
+			toast({
+			  title: "Error",
+			  description: "Failed to fetch notifications",
+			  variant: "destructive"
+			});
+		  }
+		}
+	  };
+	  
+	  useEffect(() => {
+		fetchNotifications();
+	  }, [user]);
+	  
+	  const handleDeleteNotif = async (notificationId) => {
+		const deleteNotif = await deleteNotification(notificationId);
+		if (deleteNotif.status === "Success") {
+		  await fetchNotifications(); // Refetch notifications after successful deletion
+		} else {
+		  console.error('An error occurred while deleting the notification.', deleteNotif.message);
+		}
+	  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -126,18 +130,6 @@ export default function AppNavbar() {
     }
   };
 
-  const handleDeleteNotif = async (notificationId) => {
-    const deleteNotif = await deleteNotification(notificationId);
-    if (deleteNotif.status === "Success") {
-      setNotifications((prevNotifs) =>
-        prevNotifs.filter(
-          (notification) => notification.notificationId !== notificationId
-        )
-      );
-    } else {
-      console.error('An error occurred while deleting the notification.', deleteNotif.message);
-    }
-  };
 
   const getInitials = (firstName, lastName) => {
     const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : "";
@@ -344,89 +336,83 @@ export default function AppNavbar() {
 					</NavigationMenu>
 				</div>
 				<div className="flex flex-col items-center space-y-2">
-					<Link to="/notifications" className="enabled:rounded-full">
 					<Button
-						variant="ghost"
-						className="w-16 h-16 enabled:rounded-full relative"
-						disabled={!user}
-						title="Notifications"
-					>
-						<Bell className='w-6 h-6' />
-						{notifications.length > 0 && (
-							<span className="absolute top-5 right-5 block h-2 w-2 bg-red-600 rounded-full ring-2 ring-white"></span>
-						)}
-					</Button>
-					</Link>
-					<Button
-						className="w-16 h-16 rounded-full shadow-lg"
+						className="w-16 h-16 rounded-full shadow-lg relative"
 						variant="avatar"
 						onClick={toggleCardVisibility}
 						disabled={!user}
-					>
-
-					<Avatar className="w-14 h-14 rounded-full ">
-						<AvatarImage
-						src={user.avatarUrl}
-						alt={`${user.firstname, user.lastname}`}
-						/>
-						<AvatarFallback className="text-2xl">
-						{getInitials(user.firstname, user.lastname)}
-						</AvatarFallback>
-					</Avatar>
-					</Button>
+						>
+						<Avatar className="w-14 h-14 rounded-full">
+							<AvatarImage
+							src={user.avatarUrl}
+							alt={`${user.firstname}, ${user.lastname}`}
+							/>
+							<AvatarFallback className="text-2xl">
+							{getInitials(user.firstname, user.lastname)}
+							</AvatarFallback>
+						</Avatar>
+						{notifications.length > 0 && (
+							<div className="absolute top-0 right-0 transform translate-x-1/4 -translate-y-1/4 bg-red-600 rounded-full text-white text-xs font-bold flex items-center justify-center">
+							<span className="block h-5 w-5 rounded-full ring-2 ring-white flex items-center justify-center">
+								{notifications.length}
+							</span>
+							</div>
+						)}
+						</Button>
 				</div>
 			</div>
-      {isCardVisible && (
-        <Card
-          className="w-[480px] transition-opacity duration-300 ease-in-out notification-card h-auto fixed left-[180px] bottom-3 z-50 shadow-md bg-white"
-          style={{ opacity: cardOpacity }}
-        >
-          <CardContent className="space-y-4">
-            <CardTitle className="text-lg font-bold">
-              Hey <span className="text-blue-600">{user.firstname}</span>!
-            </CardTitle>
-            <div className="flex flex-col gap-2">
-              {notifications.length === 0 && (
-                <div className="text-center px-4 pb-4 text-gray-500 text-sm">
-                  You have no notifications!
-                </div>
-              )}
-             {notifications.slice(0, maxNotificationCount).map((notification) => (
-                <NotifCard
-                  key={notification.notificationId}
-                  notificationData={notification}
-                  deleteNotifCall={handleDeleteNotif}
-                />
-              ))}
-              {notifications.length > maxNotificationCount && (
-                <Link to="/notifications" className="w-full">
-                  <Button className="w-full" onClick={toggleCardVisibility}>
-                    View All
-                  </Button>
-                </Link>
-              )}
-            </div>
-            <div className="flex justify-between">
-              <Button variant="destructive" size="sm" onClick={handleLogout}>
-                <LogOut className="w-4 h-4 mr-2 inline-block" />
-                Logout
-              </Button>
-              <div className="flex items-center justify-between">
-                <Link to="/help">
-                  <Button variant="outline" size="sm" className='w-8 h-8 mr-2'>
-                    <CircleHelp className='w-4 h-4' />
-                  </Button>
-                </Link>
-                <Link to="/settings">
-                  <Button variant="default" size="sm">
-                    Visit Profile
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+			{isCardVisible && (
+				<Card
+					className="w-[480px] transition-opacity duration-300 ease-in-out notification-card h-auto fixed left-[180px] bottom-3 z-50 shadow-md bg-white"
+					style={{ opacity: cardOpacity }}
+				>
+					<CardContent className="space-y-4">
+					<CardTitle className="text-lg font-bold">
+						Hey <span className="text-blue-600">{user.firstname}</span>!
+					</CardTitle>
+					<div className="flex flex-col gap-2">
+						{notifications.length === 0 && (
+						<div className="text-center px-4 pb-4 text-gray-500 text-sm">
+							You have no notifications!
+						</div>
+						)}
+						{notifications.slice(0, 5).map((notification) => (
+						<NotifCard
+							key={notification.notificationId}
+							notificationData={notification}
+							deleteNotifCall={handleDeleteNotif}
+						/>
+						))}
+						
+						<Link to="/notifications" className="w-full">
+							<Button variant="outline" className="w-full" onClick={toggleCardVisibility}>
+							<Bell className="w-4 h-4 mr-2" />
+							View all notifications
+							</Button>
+						</Link>
+						
+					</div>
+					<div className="flex justify-between">
+						<Button variant="destructive" size="sm" onClick={handleLogout}>
+						<LogOut className="w-4 h-4 mr-2 inline-block" />
+						Logout
+						</Button>
+						<div className="flex items-center justify-between">
+						<Link to="/help">
+							<Button variant="outline" size="sm" className='w-8 h-8 mr-2'>
+							<CircleHelp className='w-4 h-4' />
+							</Button>
+						</Link>
+						<Link to="/settings">
+							<Button variant="default" size="sm">
+							Visit Profile
+							</Button>
+						</Link>
+						</div>
+					</div>
+					</CardContent>
+				</Card>
+			)}
     </div>
   );
 }

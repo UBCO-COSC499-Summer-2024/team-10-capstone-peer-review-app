@@ -7,41 +7,29 @@ export default function Notifications() {
   const { user, userLoading } = useUser();
   const [notifications, setNotifications] = useState([]);
 
-  useEffect(() => {
-    const fetchNotifs = async () => {
-      if (user && !userLoading) {
-        try {
-          const notifs = await getNotifications(user.userId);
-          setNotifications(Array.isArray(notifs.data) ? notifs.data : []);
-        } catch (error) {
-          console.error("Failed to fetch notifications", error);
-        }
+  const fetchNotifications = async () => {
+    if (user && !userLoading) {
+      try {
+        const notifs = await getNotifications(user.userId);
+        setNotifications(Array.isArray(notifs.data) ? notifs.data : []);
+      } catch (error) {
+        console.error("Failed to fetch notifications", error);
       }
-    };
+    }
+  };
 
-    fetchNotifs();
-
-    const intervalId = setInterval(() => {
-      fetchNotifs();
-    }, 10000); // Fetch notifications every 30 seconds
-
-    return () => {
-      clearInterval(intervalId); // Clear the interval when the component unmounts
-    };
+  useEffect(() => {
+    fetchNotifications();
   }, [user, userLoading]);
 
-	const handleDeleteNotif = async (notificationId) => {
-		const deleteNotif = await deleteNotification(notificationId);
-		if (deleteNotif.status === "Success") {
-			setNotifications((prevNotifs) =>
-				prevNotifs.filter(
-					(notification) => notification.notificationId !== notificationId
-				)
-			);
-		} else {
-			console.error('An error occurred while deleting the notification.', deleteNotif.message);
-		}
-	};
+  const handleDeleteNotif = async (notificationId) => {
+    const deleteNotif = await deleteNotification(notificationId);
+    if (deleteNotif.status === "Success") {
+      await fetchNotifications(); // Refetch notifications after successful deletion
+    } else {
+      console.error('An error occurred while deleting the notification.', deleteNotif.message);
+    }
+  };
 
   return (
     <div className="w-full px-6">

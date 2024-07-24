@@ -1,11 +1,13 @@
 import { createContext, useState, useEffect } from "react";
 import { getCurrentUser, logoutUser } from "@/api/authApi";
+import { useNavigate } from "react-router-dom";
 
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
 	const [userLoading, setUserLoading] = useState(false);
+	const navigate = useNavigate();
 
 	// If the user state changes, update the local storage with the new user object or remove the user from local storage
 
@@ -28,6 +30,10 @@ export const UserProvider = ({ children }) => {
 			const userInfo = await getCurrentUser();
 			if (userInfo.status === "Success") {
 				setUser(userInfo.userInfo);
+			}
+			else if (userInfo.status === "Error") {
+				setUser(null);
+				navigate("/");
 			}
 		} catch (error) {
 			console.log(error);

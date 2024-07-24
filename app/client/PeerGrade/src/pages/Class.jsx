@@ -4,8 +4,9 @@ import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
-import { CheckCircle, Clock } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { CheckCircle, Clock, Trash2 } from "lucide-react";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import Grades from "./classNav/Grades";
 import Groups from "./classNav/Groups";
 import Files from "./classNav/Files";
@@ -13,7 +14,6 @@ import People from "./classNav/People";
 import Rubrics from "./classNav/Rubrics";
 import AssignmentCreation from "../components/assign/assignment/AssignmentCreation";
 import EditClass from "../components/class/EditClass";
-import { Button } from "@/components/ui/button";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { getAllAssignmentsByClassId } from "@/api/assignmentApi";
 import { getCategoriesByClassId } from "@/api/classApi";
@@ -27,6 +27,7 @@ const Class = () => {
   const [assignments, setAssignments] = useState([]);
   const [categories, setCategories] = useState([]);
   const [rubricCreated, setRubricCreated] = useState(false);
+  const [openAccordion, setOpenAccordion] = useState(null);
 
   const { toast } = useToast();
   const { user, userLoading } = useUser();
@@ -51,7 +52,6 @@ const Class = () => {
       });
     }
   };
-  
 
   useEffect(() => {
     if (!userLoading && user) {
@@ -66,6 +66,12 @@ const Class = () => {
     }
   }, [rubricCreated, currentView]);
 
+  useEffect(() => {
+	if (categories.length > 0 && openAccordion === null) {
+	  setOpenAccordion(categories[0].categoryId);
+	}
+  }, [categories]);
+
   const handleViewChange = (view) => {
     setCurrentView(view);
     fetchClassData();
@@ -73,6 +79,11 @@ const Class = () => {
 
   const handleRubricCreated = () => {
     setRubricCreated(true);
+  };
+
+  const handleDeleteCategory = (categoryId) => {
+    console.log(`Deleting category with ID: ${categoryId}`);
+    // Implement the actual deletion logic here
   };
 
   if (!classItem) {
@@ -100,63 +111,91 @@ const Class = () => {
         return <Rubrics key={rubricCreated} />;
       default:
         return (
-				<>
-				<Alert className="mb-6">
-					<AlertTitle>Recent Announcements</AlertTitle>
-					<AlertDescription>
-					No recent announcements
-					</AlertDescription>
-				</Alert>
-				<Accordion type="single" collapsible className="w-full bg-muted p-4 rounded-lg">
-					{categories.map((category) => (
-					<AccordionItem value={category.categoryId} key={category.categoryId}>
-						<AccordionTrigger className="text-lg font-semibold">
-						{category.name}
-						</AccordionTrigger>
-						<AccordionContent>
-						<div className="space-y-4">
-							{category.assignments.map((assignment) => (
-							<Link
-								key={assignment.assignmentId}
-								to={`/class/${classId}/assignment/${assignment.assignmentId}`}
-								className="block"
-							>
-								<Alert 
-								variant="default" 
-								className="hover:bg-accent cursor-pointer transition-colors"
-								>
-								<div className="flex items-center justify-between">
-									<div>
-									<AlertTitle className="text-base font-medium flex items-center gap-2">
-										{assignment.title}
-										{assignment.status === 'Completed' && <CheckCircle className="h-4 w-4 text-green-500" />}
-									</AlertTitle>
-									<AlertDescription className="text-sm text-muted-foreground mt-1">
-										Due: {new Date(assignment.dueDate).toLocaleDateString()}
-									</AlertDescription>
-									</div>
-									<div className="flex items-center gap-2">
-									{/* <Badge variant={assignment.status === 'Completed' ? "secondary" : "default"}>
-										{assignment.status}
-									</Badge> */}
-									<Button variant="outline" size="sm">
-										<Clock className="h-4 w-4 mr-1" />
-										Start
-									</Button>
-									</div>
-								</div>
-								</Alert>
-							</Link>
-							))}
-						</div>
-						</AccordionContent>
-					</AccordionItem>
-					))}
-				</Accordion>
-				</>
-				);
-			}
-		};
+          <>
+            <Alert className="mb-6">
+              <AlertTitle>Recent Announcements</AlertTitle>
+              <AlertDescription>
+                No recent announcements
+              </AlertDescription>
+            </Alert>
+           <Accordion 
+			type="single" 
+			collapsible
+			className="w-full bg-muted p-4 rounded-lg"
+			value={openAccordion}
+			onValueChange={(value) => setOpenAccordion(value)}
+			>
+			{categories.map((category) => (
+				<AccordionItem value={category.categoryId} key={category.categoryId}>
+                  <AccordionTrigger className="text-lg font-semibold">
+                    <div className="flex justify-between w-full">
+                      <span>{category.name}</span>
+                      {(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="ghost" size="sm" className="mx-2 bg-destructive/60">
+                              <Trash2 className="h-4 w-4 text-priamry" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Are you sure you want to delete this category?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This action cannot be undone. This will permanently delete the category and all its contents.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction onClick={() => handleDeleteCategory(category.categoryId)}>
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      )}
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="space-y-4">
+                      {category.assignments.map((assignment) => (
+                        <Link
+                          key={assignment.assignmentId}
+                          to={`/class/${classId}/assignment/${assignment.assignmentId}`}
+                          className="block"
+                        >
+                          <Alert 
+                            variant="default" 
+                            className="hover:bg-accent cursor-pointer transition-colors"
+                          >
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <AlertTitle className="text-base font-medium flex items-center gap-2">
+                                  {assignment.title}
+                                  {assignment.status === 'Completed' && <CheckCircle className="h-4 w-4 text-green-500" />}
+                                </AlertTitle>
+                                <AlertDescription className="text-sm text-muted-foreground mt-1">
+                                  Due: {new Date(assignment.dueDate).toLocaleDateString()}
+                                </AlertDescription>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Button variant="outline" size="sm">
+                                  <Clock className="h-4 w-4 mr-1" />
+                                  Start
+                                </Button>
+                              </div>
+                            </div>
+                          </Alert>
+                        </Link>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </>
+        );
+    }
+  };
 	
 	  return (
 		<div className="w-full px-6">
@@ -248,6 +287,13 @@ const Class = () => {
 						className="w-full bg-white"
 					>
 						Create Assignment
+					</Button>
+					<Button
+						variant="outline"
+						onClick={() => {/* Implement add category logic */}}
+						className="w-full bg-muted "
+					>
+						Add Category
 					</Button>
 					<CreateRubric 
 						classId={classId} 

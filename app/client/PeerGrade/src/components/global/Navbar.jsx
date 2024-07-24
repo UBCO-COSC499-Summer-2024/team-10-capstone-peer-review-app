@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { cn } from "@/utils/utils";
 import { useToast } from "@/components/ui/use-toast";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -48,12 +48,55 @@ export default function AppNavbar() {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const [notifications, setNotifications] = useState([]);
   const [assignmentsData, setAssignmentsData] = useState([]);
   const [isCardVisible, setIsCardVisible] = useState(false);
   const [cardOpacity, setCardOpacity] = useState(0);
   const [isPeerReviewSheetOpen, setIsPeerReviewSheetOpen] = useState(false);
   const [isClassesSheetOpen, setIsClassesSheetOpen] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [notificationCount, setNotificationCount] = useState(0);
+
+  const fetchNotifications = useCallback(async () => {
+    if (user) {
+      try {
+        const notifs = await getNotifications(user.userId);
+        const newNotifications = Array.isArray(notifs.data) ? notifs.data : [];
+        setNotifications(newNotifications);
+        setNotificationCount(newNotifications.length);
+      } catch (error) {
+        console.error("Failed to fetch notifications", error);
+        toast({
+          title: "Error",
+          description: "Failed to fetch notifications",
+          variant: "destructive"
+        });
+      }
+    }
+  }, [user, toast]);
+
+  useEffect(() => {
+    fetchNotifications();
+    const intervalId = setInterval(fetchNotifications, 10000); // Poll every 10 seconds
+
+    return () => clearInterval(intervalId);
+  }, [fetchNotifications]);
+	  
+  const handleDeleteNotif = async (notificationId) => {
+	const deleteNotif = await deleteNotification(notificationId);
+	if (deleteNotif.status === "Success") {
+	  await fetchNotifications(); // Refetch notifications after successful deletion
+	} else {
+	  console.error('An error occurred while deleting the notification.', deleteNotif.message);
+	}
+  };
+
+  useEffect(() => {
+    fetchNotifications();
+    const intervalId = setInterval(fetchNotifications, 10000); // Poll every 10 seconds
+
+    return () => clearInterval(intervalId);
+  }, [fetchNotifications]);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,41 +117,13 @@ export default function AppNavbar() {
    		fetchData();
 	}, [user]);
 
-	const fetchNotifications = async () => {
-		if (user) {
-		  try {
-			const notifs = await getNotifications(user.userId);
-			setNotifications(Array.isArray(notifs.data) ? notifs.data : []);
-		  } catch (error) {
-			console.error("Failed to fetch notifications", error);
-			toast({
-			  title: "Error",
-			  description: "Failed to fetch notifications",
-			  variant: "destructive"
-			});
-		  }
-		}
-	  };
-	  
-	  useEffect(() => {
-		fetchNotifications();
-	  }, [user]);
-	  
-	  const handleDeleteNotif = async (notificationId) => {
-		const deleteNotif = await deleteNotification(notificationId);
-		if (deleteNotif.status === "Success") {
-		  await fetchNotifications(); // Refetch notifications after successful deletion
-		} else {
-		  console.error('An error occurred while deleting the notification.', deleteNotif.message);
-		}
-	  };
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (isCardVisible && !event.target.closest(".notification-card")) {
         toggleCardVisibility();
       }
     };
+	
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -351,11 +366,11 @@ export default function AppNavbar() {
 							{getInitials(user.firstname, user.lastname)}
 							</AvatarFallback>
 						</Avatar>
-						{notifications.length > 0 && (
+						{notificationCount > 0 && (
 							<div className="absolute top-0 right-0 transform translate-x-1/4 -translate-y-1/4 bg-red-600 rounded-full text-white text-xs font-bold flex items-center justify-center">
-							<span className="block h-5 w-5 rounded-full ring-2 ring-white flex items-center justify-center">
-								{notifications.length}
-							</span>
+								<span className="block h-5 w-5 rounded-full ring-2 ring-white flex items-center justify-center">
+								{notificationCount}
+								</span>
 							</div>
 						)}
 						</Button>

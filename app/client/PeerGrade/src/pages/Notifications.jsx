@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import NotifCard from "@/components/global/NotifCard";
 import { deleteNotification, getNotifications } from "@/api/notifsApi";
@@ -7,7 +7,7 @@ export default function Notifications() {
   const { user, userLoading } = useUser();
   const [notifications, setNotifications] = useState([]);
 
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     if (user && !userLoading) {
       try {
         const notifs = await getNotifications(user.userId);
@@ -16,16 +16,19 @@ export default function Notifications() {
         console.error("Failed to fetch notifications", error);
       }
     }
-  };
+  }, [user, userLoading]);
 
   useEffect(() => {
     fetchNotifications();
-  }, [user, userLoading]);
+    const intervalId = setInterval(fetchNotifications, 10000); // Poll every 10 seconds
+
+    return () => clearInterval(intervalId);
+  }, [fetchNotifications]);
 
   const handleDeleteNotif = async (notificationId) => {
     const deleteNotif = await deleteNotification(notificationId);
     if (deleteNotif.status === "Success") {
-      await fetchNotifications(); // Refetch notifications after successful deletion
+      await fetchNotifications();
     } else {
       console.error('An error occurred while deleting the notification.', deleteNotif.message);
     }

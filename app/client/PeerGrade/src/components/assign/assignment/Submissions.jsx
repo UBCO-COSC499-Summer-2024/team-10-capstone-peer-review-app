@@ -16,7 +16,17 @@ import ReviewDetailsDialog from "./submission/ReviewDetailsDialog";
 import ViewSubmissionDialog from "./submission/ViewSubmissionDialog";
 import GradeSubmissionDialog from "./submission/GradeSubmissionDialog";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import MultiSelect from '@/components/ui/MultiSelect'; // Make sure the path is correct
+import MultiSelect from '@/components/ui/MultiSelect'; 
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 
 
@@ -37,6 +47,9 @@ const Submissions = () => {
     const [currentSubmission, setCurrentSubmission] = useState(null);
     const [allStudents, setAllStudents] = useState([]);
     const [existingReviewers, setExistingReviewers] = useState([]);
+    const [alertDialogOpen, setAlertDialogOpen] = useState(false);
+    const [reviewersToDelete, setReviewersToDelete] = useState([]);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -113,7 +126,7 @@ const Submissions = () => {
             const existingReviewerIds = reviews.data
                 .filter(review => review.isPeerReview)
                 .map(review => review.reviewerId);
-                console.log('existingReviewerIds', existingReviewerIds);
+            console.log('existingReviewerIds', existingReviewerIds);
             setExistingReviewers(existingReviewerIds);
             setSelectedReviewers(existingReviewerIds);
         } catch (error) {
@@ -124,25 +137,34 @@ const Submissions = () => {
                 variant: "destructive"
             });
         }
-
+    
         setAssignReviewersDialogOpen(true);
     };
 
-    const handleAssignReviewersSubmit = async () => {
+    const handleAssignReviewersSubmit = () => {
+        const reviewersToRemove = existingReviewers.filter(id => !selectedReviewers.includes(id));
+        if (reviewersToRemove.length > 0) {
+            setReviewersToDelete(reviewersToRemove);
+            setAlertDialogOpen(true);
+        } else {
+            updateReviewers();
+        }
+    };
+
+
+    const updateReviewers = async () => {
         try {
             // Delete reviews for unchecked existing reviewers
             for (const reviewerId of existingReviewers) {
                 if (!selectedReviewers.includes(reviewerId)) {
                     const peerReviewsResponse = await reviewAPI.getPeerReviews(currentSubmission.submissionId);
-                    const peerReviews = peerReviewsResponse.data; // Access the data property
+                    const peerReviews = peerReviewsResponse.data;
                     const reviewToDelete = peerReviews.find(review => review.reviewerId === reviewerId);
                     if (reviewToDelete) {
                         await reviewAPI.deleteReview(reviewToDelete.reviewId);
                     }
                 }
             }
-
-
     
             // Create new blank reviews for newly selected reviewers
             for (const reviewerId of selectedReviewers) {
@@ -160,8 +182,8 @@ const Submissions = () => {
                 }
             }
     
-       
             setAssignReviewersDialogOpen(false);
+            setAlertDialogOpen(false);
         } catch (error) {
             console.error("Error updating reviewers:", error);
             toast({
@@ -171,6 +193,8 @@ const Submissions = () => {
             });
         }
     };
+
+
 
     const handleDownload = (submission) => {
         const link = document.createElement("a");
@@ -450,17 +474,19 @@ const Submissions = () => {
                 open={reviewDialogOpen}
                 onClose={() => setReviewDialogOpen(false)}
             />
-            <Dialog open={assignReviewersDialogOpen} onOpenChange={setAssignReviewersDialogOpen}>
+           <Dialog open={assignReviewersDialogOpen} onOpenChange={setAssignReviewersDialogOpen}>
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>Assign Peer Reviewers</DialogTitle>
                     </DialogHeader>
                     <div className="space-y-4 min-h-[4vh] flex items-center justify-center">
                         <MultiSelect
-                            options={allStudents.map(student => ({
-                                value: student.userId,
-                                label: `${student.firstname} ${student.lastname}`
-                            }))}
+                            options={allStudents
+                                .filter(student => student.userId !== currentSubmission?.submitterId)
+                                .map(student => ({
+                                    value: student.userId,
+                                    label: `${student.firstname} ${student.lastname}`
+                                }))}
                             value={selectedReviewers}
                             onChange={setSelectedReviewers}
                         />
@@ -513,6 +539,30 @@ const Submissions = () => {
             </CardContent>
             )}
             </Card>
+            <AlertDialog open={alertDialogOpen} onOpenChange={setAlertDialogOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Confirm Reviewer Removal</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Are you sure you want to remove the following reviewers? Their reviews will be deleted:
+                            <ul className="list-disc pl-5 mt-2">
+                                {reviewersToDelete.map(reviewerId => {
+                                    const reviewer = allStudents.find(student => student.userId === reviewerId);
+                                    return (
+                                        <li key={reviewerId}>
+                                            {reviewer ? `${reviewer.firstname} ${reviewer.lastname}` : reviewerId}
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={updateReviewers}>Confirm</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </>
     );
 };

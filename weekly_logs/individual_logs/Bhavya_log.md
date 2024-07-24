@@ -52,14 +52,13 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Modified tests for backend to make them more suitable as well as added checks in the main files per the testing results
+* Started adding more documentations to all the routes so that they would become more clear and manageable
+* Completed Group routes and categgory routes CRUD operations as well as tested them.
 
 ## Goals for next cycle
-* 
-* 
-* 
+* I have 2 midterms on Thursday 25th July, 2024 so going to spend most of my time on wednesday and thursday preparing for them, but also try to do more backend tests
+* Add documentation wherever necessary
   
   
 

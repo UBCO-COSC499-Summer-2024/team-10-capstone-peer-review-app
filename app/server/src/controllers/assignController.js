@@ -39,7 +39,8 @@ export const addAssignmentToClass = [
 			categoryId,
 			{
 				...assignmentData,
-				assignmentFilePath: fileUrl // Add file URL to assignment data
+				assignmentFilePath: fileUrl, // Add file URL to assignment data
+				rubrics: JSON.parse(req.body.rubrics) // Parse the rubrics from the request body
 			}
 		);
 
@@ -57,6 +58,7 @@ export const addAssignmentToClass = [
 		}
 	})
 ];
+
 
 export const removeAssignmentFromClass = asyncErrorHandler(async (req, res) => {
 	const { assignmentId } = req.body;

@@ -19,7 +19,7 @@ import { getAllAssignmentsByClassId } from "@/api/assignmentApi";
 import { getCategoriesByClassId } from "@/api/classApi";
 import { useToast } from "@/components/ui/use-toast";
 import { useClass } from "@/contexts/contextHooks/useClass";
-import CreateRubric from "../components/assign/rubrics/CreateRubric";
+import CreateRubric from "../components/rubrics/CreateRubric";
 
 const Class = () => {
   const { classId } = useParams();

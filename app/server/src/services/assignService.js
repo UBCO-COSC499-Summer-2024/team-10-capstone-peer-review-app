@@ -3,7 +3,6 @@ import apiError from "../utils/apiError.js";
 import { sendNotificationToClass } from "./notifsService.js";
 import { format } from "date-fns";
 
-// assignment operations
 const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
     console.log('assignmentFilePath:', assignmentData.assignmentFilePath);
     try {
@@ -25,31 +24,41 @@ const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
             throw new apiError("Assignment due date is outside the class duration", 400);
         }
 
+        // Create the new assignment
         const newAssignment = await prisma.assignment.create({
             data: {
-                ...assignmentData,
+                title: assignmentData.title,
+                description: assignmentData.description,
+                dueDate: assignmentData.dueDate,
+                maxSubmissions: assignmentData.maxSubmissions,
+                reviewOption: assignmentData.reviewOption,
+                assignmentFilePath: assignmentData.assignmentFilePath,
                 classId,
-                categoryId // Ensure the assignment is associated with the category
+                categoryId,
             }
         });
 
-		console.log('assignmentsData:')
+        // Connect rubrics to the new assignment
+        if (assignmentData.rubrics && assignmentData.rubrics.length > 0) {
+            await prisma.rubricForAssignment.createMany({
+                data: assignmentData.rubrics.map(rubric => ({
+                    assignmentId: newAssignment.assignmentId,
+                    rubricId: rubric.rubricId
+                }))
+            });
+        }
 
+        await sendNotificationToClass(null, `Assignment ${newAssignment.title} was just created.`, `Due on ${format(dueDate, 'MMMM do, yyyy')}`, classId);
 
-        // Update the Category table
-        await prisma.category.update({
-            where: { categoryId },
-            data: {
-                assignments: {
-                    connect: { assignmentId: newAssignment.assignmentId }
-                }
-            }
+        // Fetch the assignment with related rubrics
+        const assignmentWithRubrics = await prisma.assignment.findUnique({
+            where: { assignmentId: newAssignment.assignmentId },
+            include: { rubric: true }
         });
 
-		await sendNotificationToClass(null, `Assignment ${newAssignment.title} was just created.`, `Due on ${format(dueDate, 'MMMM do, yyyy')}`, classId);
-
-        return newAssignment;
+        return assignmentWithRubrics;
     } catch (error) {
+        console.error('Error adding assignment:', error);
         if (error instanceof apiError) {
             throw error;
         } else {
@@ -57,6 +66,7 @@ const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
         }
     }
 };
+
 const removeAssignmentFromClass = async (assignmentId) => {
 	try {
 		const assignment = await prisma.assignment.findUnique({

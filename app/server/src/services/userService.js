@@ -339,6 +339,8 @@ export async function resolveReport(reportId) {
 				isResolved: true,
 			},
 		});
+
+		await sendNotificationToUser(null, 'Report - Resolved', `Your report '${updatedReport.title}' has been marked as resolved.`, updatedReport.senderId, "report");
 		return updatedReport;
 	} catch (error) {
 		throw new apiError('Failed to mark report as resolved', 500);
@@ -355,6 +357,8 @@ export async function unResolveReport(reportId) {
 				isResolved: false,
 			},
 		});
+
+		await sendNotificationToUser(null, 'Report - Not Resolved', `Your report '${updatedReport.title}' has been marked as not resolved.`, updatedReport.senderId, "report");
 		return updatedReport;
 	} catch (error) {
 		throw new apiError('Failed to mark report as not resolved', 500);
@@ -368,6 +372,8 @@ export async function deleteReport(reportId) {
 				reportId: reportId,
 			},
 		});
+
+		// await sendNotificationToUser(null, 'Report - Deleted', `Your report '${updatedReport.title}' has been deleted.`, updatedReport.senderId, "report");
 		return deletedReport;
 	} catch (error) {
 		console.log(error);

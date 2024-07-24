@@ -80,14 +80,13 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Completed smaller tasks I.E. verify email card and graceful logouts
+* Starting working on peer-rwview dashboard
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Need to finsih peer review dashbarod for students / instructors, have peer-reviewing set up
+* Set up more testing
+* Complete smaller tasks
   
   
 

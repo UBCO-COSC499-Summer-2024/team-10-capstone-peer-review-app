@@ -108,15 +108,50 @@ export const isEmailVerifiedJWT = asyncErrorHandler(async (req, res) => {
 	}
 });
 
-export const checkSession = asyncErrorHandler(async (req, res, next) => {});
 
-export const currentUser = asyncErrorHandler(async (req, res) => {
-	const userInfo = await authService.getCurrentUser(req.user.email);
-	return res.status(200).json({
-		userInfo: userInfo,
-		status: "Success",
-		message: "Current user fetched successfully!"
-	});
+export const currentUser = asyncErrorHandler(async (req, res, next) => {
+    // Check if session exists
+    if (!req.session) {
+        return res.status(401).json({
+            status: "Error",
+            message: "No User session exists"
+        });
+    }
+
+    // Check if user is authenticated
+    if (!req.isAuthenticated()) {
+        // Session exists but user is not authenticated, so destroy the session
+        await new Promise((resolve) => {
+            req.session.destroy((err) => {
+                if (err) {
+                    console.error("Error destroying session:", err);
+                }
+                res.clearCookie('connect.sid'); // Clear the session cookie
+                resolve();
+            });
+        });
+
+        return res.status(401).json({
+            status: "Error",
+            message: "User session is invalid or expired"
+        });
+    }
+
+    // User is authenticated, fetch and return user info
+    try {
+        const userInfo = await authService.getCurrentUser(req.user.email);
+        return res.status(200).json({
+            userInfo: userInfo,
+            status: "Success",
+            message: "Current user fetched successfully!"
+        });
+    } catch (error) {
+        // Handle errors from getCurrentUser
+        return res.status(500).json({
+            status: "Error",
+            message: "Failed to fetch user information"
+        });
+    }
 });
 
 export const getAllRoleRequests = asyncErrorHandler(async (req, res) => {

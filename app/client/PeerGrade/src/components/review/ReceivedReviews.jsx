@@ -22,6 +22,10 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [expandedAssignments, setExpandedAssignments] = useState({});
 
+	const isReviewGraded = (review) => {
+		return review.criterionGrades && review.criterionGrades.length > 0;
+	};
+
 	const groupedReviews = useMemo(() => {
 		return receivedReviews.reduce((acc, review) => {
 			const assignmentId = review.submission.assignment.assignmentId;
@@ -56,7 +60,7 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 	};
 
 	const calculatePercentageGrade = (review) => {
-		if (!review.criterionGrades || review.criterionGrades.length === 0) {
+		if (!isReviewGraded(review)) {
 			return "Not graded";
 		}
 		const totalGrade = review.criterionGrades.reduce(
@@ -76,7 +80,10 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 		const { assignment, reviews } = group;
 		const isExpanded = expandedAssignments[assignment.assignmentId];
 		const instructorReview = reviews.find((r) => !r.isPeerReview);
-		const peerReviews = reviews.filter((r) => r.isPeerReview);
+		const gradedPeerReviews = reviews.filter(
+			(r) => r.isPeerReview && isReviewGraded(r)
+		);
+		const gradedReviews = reviews.filter(isReviewGraded);
 
 		return (
 			<Card
@@ -88,17 +95,19 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 						<CardTitle className="text-lg font-semibold text-primary">
 							Reviews for {assignment.title}
 						</CardTitle>
-						<Button
-							variant="ghost"
-							size="sm"
-							onClick={() => toggleExpanded(assignment.assignmentId)}
-						>
-							{isExpanded ? (
-								<ChevronUp className="h-4 w-4" />
-							) : (
-								<ChevronDown className="h-4 w-4" />
-							)}
-						</Button>
+						{gradedReviews.length > 0 && (
+							<Button
+								variant="ghost"
+								size="sm"
+								onClick={() => toggleExpanded(assignment.assignmentId)}
+							>
+								{isExpanded ? (
+									<ChevronUp className="h-4 w-4" />
+								) : (
+									<ChevronDown className="h-4 w-4" />
+								)}
+							</Button>
+						)}
 					</div>
 					<CardDescription className="text-sm text-slate-500">
 						{assignment.classes.classname}
@@ -115,12 +124,12 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 						<Badge
 							variant="outline"
 							className={
-								instructorReview
+								instructorReview && isReviewGraded(instructorReview)
 									? "bg-green-100 text-green-800"
 									: "bg-yellow-100 text-yellow-800"
 							}
 						>
-							{instructorReview ? (
+							{instructorReview && isReviewGraded(instructorReview) ? (
 								<>
 									<Check className="h-3 w-3 mr-1" />
 									Instructor Reviewed
@@ -136,16 +145,16 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 						<Badge
 							variant="outline"
 							className={
-								peerReviews.length > 0
+								gradedPeerReviews.length > 0
 									? "bg-blue-100 text-blue-800"
 									: "bg-yellow-100 text-yellow-800"
 							}
 						>
-							{peerReviews.length > 0 ? (
+							{gradedPeerReviews.length > 0 ? (
 								<>
 									<Check className="h-3 w-3 mr-1" />
-									{peerReviews.length} Peer Review
-									{peerReviews.length !== 1 ? "s" : ""}
+									{gradedPeerReviews.length} Peer Review
+									{gradedPeerReviews.length !== 1 ? "s" : ""}
 								</>
 							) : (
 								<>
@@ -156,52 +165,51 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 						</Badge>
 					</div>
 				</CardContent>
-				<div
-					className={`overflow-hidden transition-all duration-300 ease-in-out ${
-						isExpanded ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
-					}`}
-				>
-					<CardContent className="bg-slate-50 rounded-xl mt-2">
-						{reviews.map((review, index) => (
-							<div
-								key={review.reviewId}
-								className="mb-2 p-3 bg-white rounded-lg shadow-sm"
-							>
-								<div className="flex justify-between items-center">
-									<p className="font-semibold">
-										{review.isPeerReview
-											? `Peer Review ${index + 1}`
-											: "Instructor Review"}
-									</p>
-									<Badge variant="secondary" className="ml-2">
-										{calculatePercentageGrade(review)}
-									</Badge>
+				{gradedReviews.length > 0 && (
+					<div
+						className={`overflow-hidden transition-all duration-300 ease-in-out ${
+							isExpanded ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+						}`}
+					>
+						<CardContent className="bg-slate-50 rounded-xl mt-2">
+							{gradedReviews.map((review, index) => (
+								<div
+									key={review.reviewId}
+									className="mb-2 p-3 bg-white rounded-lg shadow-sm"
+								>
+									<div className="flex justify-between items-center">
+										<p className="font-semibold">
+											{review.isPeerReview
+												? `Peer Review ${index + 1}`
+												: "Instructor Review"}
+										</p>
+										<Badge variant="secondary" className="ml-2">
+											{calculatePercentageGrade(review)}
+										</Badge>
+									</div>
+									<div className="mt-2">
+										<Button
+											variant="link"
+											size="sm"
+											className="p-0 h-auto mr-4"
+											onClick={() => onViewDetails(review, true)}
+										>
+											View in Dialog
+										</Button>
+										<Button
+											variant="link"
+											size="sm"
+											className="p-0 h-auto"
+											onClick={() => onViewDetails(review, false)}
+										>
+											View in New Page
+										</Button>
+									</div>
 								</div>
-								{review.criterionGrades &&
-									review.criterionGrades.length > 0 && (
-										<div className="mt-2">
-											<Button
-												variant="link"
-												size="sm"
-												className="p-0 h-auto mr-4"
-												onClick={() => onViewDetails(review, true)}
-											>
-												View in Dialog
-											</Button>
-											<Button
-												variant="link"
-												size="sm"
-												className="p-0 h-auto"
-												onClick={() => onViewDetails(review, false)}
-											>
-												View in New Page
-											</Button>
-										</div>
-									)}
-							</div>
-						))}
-					</CardContent>
-				</div>
+							))}
+						</CardContent>
+					</div>
+				)}
 			</Card>
 		);
 	};

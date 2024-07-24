@@ -5,34 +5,74 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, Dr
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { Info, ChevronDown, Eye, FileText, Ruler } from 'lucide-react';
 import { useUser } from "@/contexts/contextHooks/useUser";
-import { getAllRubricsInClass, getRubricById } from '@/api/rubricApi';
+import { Pencil, Trash2, Eye, FileText, Info, ChevronDown } from 'lucide-react';
+import { deleteRubricsFromAssignment, getAllRubricsInClass, getRubricById } from '@/api/rubricApi';
+import { getAllAssignmentsByClassId } from '@/api/assignmentApi';
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogPortal,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel
+} from '@/components/ui/alert-dialog';
 
 const Rubrics = () => {
   const { classId } = useParams();
   const { user } = useUser();
   const [rubrics, setRubrics] = useState([]);
+  const [assignments, setAssignments] = useState([]);
   const [selectedRubric, setSelectedRubric] = useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isCreateDrawerOpen, setIsCreateDrawerOpen] = useState(false);
+  const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
+  const [rubricToDelete, setRubricToDelete] = useState(null);
 
   useEffect(() => {
-    const fetchRubrics = async () => {
+    const fetchData = async () => {
       try {
-        const response = await getAllRubricsInClass(classId);
-        if (response && response.status === 'Success' && Array.isArray(response.data)) {
-          setRubrics(response.data);
+        const [rubricsResponse, assignmentsResponse] = await Promise.all([
+          getAllRubricsInClass(classId),
+          getAllAssignmentsByClassId(classId)
+        ]);
+
+        if (rubricsResponse && rubricsResponse.status === 'Success' && Array.isArray(rubricsResponse.data)) {
+          setRubrics(rubricsResponse.data);
         } else {
           setRubrics([]);
         }
+
+        if (assignmentsResponse && assignmentsResponse.data) {
+          setAssignments(assignmentsResponse.data);
+        } else {
+          setAssignments([]);
+        }
       } catch (error) {
-        console.error('Error fetching rubrics:', error);
+        console.error('Error fetching data:', error);
         setRubrics([]);
+        setAssignments([]);
       }
     };
   
-    fetchRubrics();
+    fetchData();
   }, [classId]);
+
+  const handleDeleteRubric = async () => {
+    try {
+      await deleteRubricsFromAssignment(rubricToDelete.rubricId);
+      setIsDrawerOpen(false);
+      setIsAlertDialogOpen(false);
+      fetchRubrics();
+    } catch (error) {
+      console.error('Error deleting rubric:', error);
+    }
+  };
 
   const handleRubricClick = async (rubricId) => {
     try {
@@ -46,6 +86,24 @@ const Rubrics = () => {
     } catch (error) {
       console.error('Error fetching rubric details:', error);
       setSelectedRubric(null);
+    }
+  };
+
+  const handleRubricCreated = () => {
+    fetchRubrics();
+  };
+
+  const fetchRubrics = async () => {
+    try {
+      const response = await getAllRubricsInClass(classId);
+      if (response && response.status === 'Success' && Array.isArray(response.data)) {
+        setRubrics(response.data);
+      } else {
+        setRubrics([]);
+      }
+    } catch (error) {
+      console.error('Error fetching rubrics:', error);
+      setRubrics([]);
     }
   };
 
@@ -91,6 +149,9 @@ const Rubrics = () => {
           <DrawerHeader>
             <DrawerTitle className="text-2xl">{selectedRubric?.title}</DrawerTitle>
             <DrawerDescription>{selectedRubric?.description}</DrawerDescription>
+            <div className="flex justify-end space-x-2 mt-4">
+              
+            </div>
           </DrawerHeader>
           <div className="p-4 bg-gray-100 rounded-md mb-4">
             <h4 className="font-semibold mb-2 flex items-center">
@@ -135,6 +196,35 @@ const Rubrics = () => {
                 ))}
               </TableBody>
             </Table>
+            <AlertDialog open={isAlertDialogOpen} onOpenChange={setIsAlertDialogOpen}>
+              <AlertDialogTrigger asChild>
+                <Button 
+                  onClick={() => {
+                    setRubricToDelete(selectedRubric);
+                    setIsAlertDialogOpen(true);
+                  }} 
+                  variant="destructive"
+                >
+                  <Trash2 className="mr-2 h-4 w-4" /> Delete
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Confirm Delete</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Are you sure you want to delete this rubric? This action cannot be undone.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel asChild>
+                    <Button variant="outline">Cancel</Button>
+                  </AlertDialogCancel>
+                  <AlertDialogAction asChild>
+                    <Button variant="destructive" onClick={handleDeleteRubric}>Delete</Button>
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
           <DrawerFooter>
             <p className="text-sm text-gray-500">Total Points: {selectedRubric?.totalMarks}</p>
@@ -142,6 +232,8 @@ const Rubrics = () => {
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
+
+    
     </div>
   );
 };

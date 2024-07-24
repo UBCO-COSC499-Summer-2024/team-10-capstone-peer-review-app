@@ -40,11 +40,12 @@ const Submissions = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [submissionsResponse, studentsResponse] = await Promise.all([
+                const [submissionsResponse, studentsResponse, rubricData] = await Promise.all([
                     getSubmissionsForAssignment(assignmentId),
-                    getStudentsByClassId(classId)
+                    getStudentsByClassId(classId),
+                    getRubricsForAssignment(assignmentId)
                 ]);
-
+    
                 const submissionsMap = submissionsResponse.data.reduce(
                     (acc, submission) => {
                         if (!acc[submission.submitterId]) {
@@ -81,17 +82,24 @@ const Submissions = () => {
                 ));
                 setAllStudents(studentsResponse.data);
                 setStudentsWithSubmissions(studentsWithSubmissionStatus);
+    
+                setRubrics(rubricData.data);
+                const totalPoints = rubricData.data.reduce((acc, rubric) => {
+                    return acc + rubric.totalMarks;
+                }, 0);
+                setTotalPoints(totalPoints);
+    
             } catch (error) {
                 toast({
                     title: "Error",
-                    description: "Failed to fetch submissions or student data",
+                    description: "Failed to fetch data",
                     variant: "destructive"
                 });
             } finally {
                 setLoading(false);
             }
         };
-
+    
         fetchData();
     }, [assignmentId, classId]);
 
@@ -322,6 +330,8 @@ const Submissions = () => {
     }
 
     return (
+        <>
+
         <Card className="w-full">
             <CardHeader>
                 <CardTitle>Submissions</CardTitle>
@@ -461,6 +471,49 @@ const Submissions = () => {
                 </DialogContent>
             </Dialog>
         </Card>
+        <Card className="mt-4">
+            {rubrics.length > 0 && (
+            <CardContent>
+                <h3 className="text-lg font-semibold underline mb-3">Rubrics</h3>
+                {rubrics.map((rubric, index) => (
+                    <div key={index} className="mb-4">
+                        <h4 className="text-md font-semibold mb-3 text-center">{rubric.title}</h4>
+                        {rubric.description && (
+                            <p className="text-sm">{rubric.description}</p>
+                        )}
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Criterion Title</TableHead>
+                                    <TableHead>Ratings</TableHead>
+                                    <TableHead>Max Marks</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {rubric.criteria.map((criterion, idx) => (
+                                    <TableRow key={idx}>
+                                        <TableCell>{criterion.title}</TableCell>
+                                        <TableCell>
+                                            <ul className="list-disc pl-4">
+                                                {criterion.criterionRatings.map((rating, rIdx) => (
+                                                    <li key={rIdx} className='flex mb-5 bg-gray-200 rounded-lg p-2 justify-between items-start '>
+                                                        <span>{rating.description}</span>
+                                                        <span className='font-bold border border-black rounded-full p-1 w-6 h-6 flex justify-center items-center'>{rating.points}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </TableCell>
+                                        <TableCell>{criterion.maxMark}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </div>
+                ))}
+            </CardContent>
+            )}
+            </Card>
+        </>
     );
 };
 

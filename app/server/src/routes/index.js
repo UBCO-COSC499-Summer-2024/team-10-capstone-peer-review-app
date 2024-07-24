@@ -31,7 +31,7 @@ router.use("/auth", authRouter);
 router.use("/classes", classesRouter);
 router.use("/assignment", assignmentRouter);
 router.use("/rubric", rubricRouter);
-router.use("/users", usersRoutes);
+router.use("/users", ensureUser, usersRoutes);
 router.use("/students", ensureUser, studentsRouter);
 router.use("/enroll-requests", ensureUser, enrollRequestsRouter);
 router.use("/notifs", ensureUser, notifsRouter);

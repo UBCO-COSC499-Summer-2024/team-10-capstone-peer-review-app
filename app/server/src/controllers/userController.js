@@ -92,6 +92,87 @@ export const updateProfile = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+export const getAdminReports = asyncErrorHandler(async (req, res) => {
+	const reports = await userService.getAdminReports();
+	res.status(200).json({
+		status: "Success",
+		message: "Admin reports fetched",
+		data: reports
+	});
+});
+
+export const getInstructorReports = asyncErrorHandler(async (req, res) => {
+	const instructorId = req.user.userId;
+	const reports = await userService.getInstructorReports(instructorId);
+	res.status(200).json({
+		status: "Success",
+		message: "Instructor reports fetched",
+		data: reports
+	});
+});
+
+export const getSentReports = asyncErrorHandler(async (req, res) => {
+	const userId = req.user.userId;
+	const reports = await userService.getSentReports(userId);
+	res.status(200).json({
+		status: "Success",
+		message: "Sent reports fetched",
+		data: reports
+	});
+});
+
+export const sendReportToInstructor = asyncErrorHandler(async (req, res) => {
+	const userId = req.user.userId;
+	const { title, content, instructorId } = req.body;
+	const report = await userService.sendReportToInstructor(userId, title, content, instructorId);
+	res.status(200).json({
+		status: "Success",
+		message: "Report sent to instructor",
+		data: report
+	});
+});
+
+export const sendReportToAdmin = asyncErrorHandler(async (req, res) => {
+	const senderId = req.user.userId;
+	const { title, content } = req.body;
+	const report = await userService.sendReportToAdmin(senderId, title, content);
+	res.status(200).json({
+		status: "Success",
+		message: "Report sent to admin",
+		data: report
+	});
+});
+
+export const resolveReport = asyncErrorHandler(async (req, res) => {
+	const { reportId } = req.body;
+	const report = await userService.resolveReport(reportId);
+	res.status(200).json({
+		status: "Success",
+		message: "Report marked as resolved",
+		data: report
+	});
+});
+
+export const unResolveReport = asyncErrorHandler(async (req, res) => {
+	const { reportId } = req.body;
+	const report = await userService.unResolveReport(reportId);
+	res.status(200).json({
+		status: "Success",
+		message: "Report marked as not resolved",
+		data: report
+	});
+});
+
+export const deleteReport = asyncErrorHandler(async (req, res) => {
+	const { reportId } = req.body;
+	const report = await userService.deleteReport(reportId);
+	res.status(200).json({
+		status: "Success",
+		message: "Report deleted",
+		data: report
+	});
+});
+
 export default {
 	getAllUsers,
 	getUsersByRole,
@@ -101,5 +182,13 @@ export default {
 	getGroups,
 	// getUserPeerReviews,
 	// getUserInfo,
-	updateProfile
+	updateProfile,
+	getAdminReports,
+	getInstructorReports,
+	getSentReports,
+	sendReportToInstructor,
+	sendReportToAdmin,
+	resolveReport,
+	unResolveReport,
+	deleteReport
 };

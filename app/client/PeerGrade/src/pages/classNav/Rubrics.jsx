@@ -116,20 +116,17 @@ const Rubrics = () => {
         ) : (
           rubrics.map((rubric) => (
             <Card key={rubric.rubricId} className="hover:shadow-md transition-shadow bg-white">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-xl font-semibold text-gray-800">{rubric.title}</CardTitle>
-                <CardDescription className="text-sm text-gray-600 line-clamp-2">{rubric.description}</CardDescription>
+              <CardHeader className="pb-2 flex justify-between">
+                <div>
+                  <CardTitle className="text-xl font-semibold text-gray-800">{rubric.title}</CardTitle>
+                  <CardDescription className="text-sm text-gray-600 line-clamp-2">{rubric.description}</CardDescription>
+                </div>
+                <Badge variant="outline" className="text-xs w-1/2 flex justify-center items-center bg-success/30">
+                    {rubric.totalMarks} Points
+                </Badge>
               </CardHeader>
               <CardContent className="pt-2">
-                <div className="flex items-center justify-between text-sm text-gray-600">
-                  <div className="flex items-center">
-                    <FileText className="h-4 w-4 mr-1" />
-                    {rubric.criteria?.length || 0} Criteria
-                  </div>
-                  <Badge variant="secondary" className="text-xs bg-blue-100 text-blue-800">
-                    {rubric.totalMarks} Points
-                  </Badge>
-                </div>
+              
               </CardContent>
               <CardFooter>
                 <Button 
@@ -205,7 +202,7 @@ const Rubrics = () => {
                   }} 
                   variant="destructive"
                 >
-                  <Trash2 className="mr-2 h-4 w-4" /> Delete
+                  <Trash2 className="mr-2 h-4 w-4" /> Delete Rubric
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>

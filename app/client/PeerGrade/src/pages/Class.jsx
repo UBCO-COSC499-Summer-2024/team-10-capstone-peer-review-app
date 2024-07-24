@@ -11,15 +11,15 @@ import Groups from "./classNav/Groups";
 import Files from "./classNav/Files";
 import People from "./classNav/People";
 import Rubrics from "./classNav/Rubrics";
-import AssignmentCreation from "./classNav/assignment/AssignmentCreation";
-import EditClass from "./classNav/EditClass";
+import AssignmentCreation from "../components/assign/assignment/AssignmentCreation";
+import EditClass from "../components/class/EditClass";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { getAllAssignmentsByClassId } from "@/api/assignmentApi";
 import { getCategoriesByClassId } from "@/api/classApi";
 import { useToast } from "@/components/ui/use-toast";
 import { useClass } from "@/contexts/contextHooks/useClass";
-import CreateRubric from "./classNav/CreateRubric";
+import CreateRubric from "../components/assign/rubrics/CreateRubric";
 
 const Class = () => {
   const { classId } = useParams();

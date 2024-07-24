@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import EditClass from "@/pages/classNav/EditClass";
+import EditClass from "@/components/class/EditClass";
 import { useClass } from "@/contexts/contextHooks/useClass";
 import { format, parseISO } from "date-fns";
 

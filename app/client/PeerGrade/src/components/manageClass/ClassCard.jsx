@@ -43,7 +43,7 @@ const ClassCard = ({ classItem, pendingApprovals }) => {
         <Button
           variant="outline"
           size="sm"
-          className="flex-1 mr-2 hover:bg-primary hover:text-primary-foreground"
+          className="flex-1 mr-2 hover:bg-primary/80 hover:text-primary-foreground bg-primary text-primary-foreground"
           onClick={() => navigate(`/class/${classItem.classId}`)}
         >
           <Eye className="w-4 h-4 mr-2" /> View Class
@@ -51,7 +51,7 @@ const ClassCard = ({ classItem, pendingApprovals }) => {
         <Button
           variant="outline"
           size="sm"
-          className="flex-1 ml-2 hover:bg-primary hover:text-primary-foreground"
+          className="flex-1 ml-2 hover:bg-primary/50 bg-slate-200 hover:text-primary-foreground"
           onClick={() => navigate(`/manage-class/${classItem.classId}`)}
         >
           <Settings className="w-4 h-4 mr-2" /> Manage Class

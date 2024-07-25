@@ -1,6 +1,6 @@
 // Import necessary modules and services
 import express from "express";
-import reviewService from "../services/reviewService.js";
+import reviewService from "../services/review2Service.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 //import { user } from "../../../../../../../node_modules/pg/lib/defaults.js";
 
@@ -101,61 +101,6 @@ export const getStudentGradeClass = asyncErrorHandler(async (req, res) => {
         data: averageGrade
     });
 });
-
-// get all group reviews for a submission
-export const getGroupReviews = asyncErrorHandler(async (req, res) => {
-    const submissionId = req.body.submissionId;
-    const groupReviews = await reviewService.getGroupReviews(submissionId);
-    return res.status(200).json({
-        status: "Success",
-        data: groupReviews
-    });
-});
-
-// create a group review on a submission
-export const createGroupReviewRubric = asyncErrorHandler(async (req, res) => {
-    const userId = req.user.userId;
-    const {assignmentId } = req.body;
-    const newGroupReview = await reviewService.createGroupReviewRubric(userId, assignmentId);
-    return res.status(200).json({
-        status: "Success",
-        data: newGroupReview
-    });
-});
-
-// create a group review on a submission
-export const addGroupReview = asyncErrorHandler(async (req, res) => {
-    const userId = req.user.userId;
-    const {assignmentId, criterionGrades } = req.body;
-    const newGroupReview = await reviewService.addGroupReview(userId, assignmentId, criterionGrades);
-    return res.status(200).json({
-        status: "Success",
-        data: newGroupReview
-    });
-});
-
-// update a group review on a submission
-export const updateGroupReview = asyncErrorHandler(async (req, res) => {
-    const userId = req.user.userId;
-    const {reviewId, criterionGrades } = req.body;
-    const updatedGroupReview = await reviewService.updateGroupReview(userId, reviewId, criterionGrades);
-    return res.status(200).json({
-        status: "Success",
-        data: updatedGroupReview
-    });
-});
-
-// delete a group review on a submission
-export const deleteGroupReview = asyncErrorHandler(async (req, res) => {
-    const userId = req.user.userId;
-    const reviewId = req.body.reviewId;
-    const deletedGroupReview = await reviewService.deleteGroupReview(userId, reviewId);
-    return res.status(200).json({
-        status: "Success",
-        data: deletedGroupReview
-    });
-});
-
 
 export const getPeerReviews = asyncErrorHandler(async (req, res) => {
     const submissionId = req.body.submissionId;
@@ -275,16 +220,11 @@ export default {
     getStudentReviews,
     getStudentGradeAsg,
     getStudentGradeClass,
-    getGroupReviews,
-    createGroupReviewRubric,
-    updateGroupReview,
-    deleteGroupReview,
     getPeerReviews,
     getInstructorReview,
     createReview,
     updateReview,
     deleteReview,
-    addGroupReview,
     getReviewDetails,
     getUserReviews,
     getReviewById

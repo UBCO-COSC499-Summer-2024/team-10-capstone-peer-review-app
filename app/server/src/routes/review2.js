@@ -5,10 +5,6 @@ import {
     getStudentReviews,
     getStudentGradeAsg,
     getStudentGradeClass,
-    getGroupReviews,
-    createGroupReviewRubric,
-    updateGroupReview,
-    deleteGroupReview,
     getInstructorReview,
     createReview,
     updateReview,
@@ -21,8 +17,7 @@ import {
     getClosedReviewsAssignment,
     getOpenReviewsClass,
     getClosedReviewsClass,
-    addGroupReview
-} from "../controllers/reviewController.js";
+} from "../controllers/review2Controller.js";
 
 const router = express.Router();
 
@@ -55,22 +50,6 @@ router.post("/studentGradeAsg", getStudentGradeAsg);
 // get student grade for a class (peer + instructor both)
 router.post("/studentGradeClass", getStudentGradeClass);
 
-// get all group reviews for a submission
-router.post("/groupReviews", getGroupReviews);
-
-// set up the group review rubric on an assignment
-router.post("/createGroupReviewRubric", createGroupReviewRubric);
-
-// enter the group review criteria on an assignment
-router.post("/addGroupReview", addGroupReview);
-
-// update a group review on a submission
-router.put("/updateGroupReview", updateGroupReview);
-
-// delete a group review on a submission
-router.delete("/deleteGroupReview", deleteGroupReview);
-
-
 // get all reviews by students for an assignment
 router.post("/studentReview", getPeerReviews);
 
@@ -81,21 +60,6 @@ router.post("/userReviews", getUserReviews);
 
 // get the review done on an submission
 router.post("/review", getReviews);
-
-// create a review on a submission by a student (peer or instructor check)
-// sample call
-// {
-//     "submissionId": "3c7e8d5b-6c5c-4f32-a1f7-bc79e2cf5ad5",
-//     "criterionGrades": [
-//         {"criterionId": "4af24078-0fa4-409a-b19f-f3676acc379b"
-//         ,"grade": 2
-//         },
-//         {
-//         "criterionId": "671c6c47-0dd1-40c0-aede-25d8a5e7d5d1",
-//         "grade": 2
-//         }
-//     ]
-// }
 
 router.post("/reviewId", getReviewById);
 

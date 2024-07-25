@@ -125,7 +125,7 @@ const NotificationsPanel = () => {
 				<div className='flex flex-col space-y-2'>
 					<Label htmlFor="groups">Group</Label>
 					<div className='w-full flex items-center space-x-4'>
-						<Select value={selectedGroup} onValueChange={setSelectedRole}>
+						<Select value={selectedGroup} onValueChange={setSelectedGroup}>
 							<SelectTrigger id="groups">
 								<SelectValue placeholder="Select group" />
 							</SelectTrigger>

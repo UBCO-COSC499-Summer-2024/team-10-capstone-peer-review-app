@@ -57,6 +57,8 @@ model User {
   enrollRequests    EnrollRequest[]
   notifications     Notification[]  @relation("ReceiverNotifications")
   sentNotifications Notification[]  @relation("SenderNotifications")
+  reports           Report[]        @relation("ReportReceiver")
+  sentReports       Report[]        @relation("ReportSender")
 }
 
 // // Need to refactor last references to others tables, depending on what we want instructors to be able to pull up
@@ -85,7 +87,7 @@ model Class {
   startDate     DateTime
   endDate       DateTime
   term          String?
-  classSize     Int?            @default(0)
+  classSize     Int?            @default(5)
   groups        Group[]
   usersInClass  UserInClass[]
   Assignments   Assignment[]
@@ -402,6 +404,23 @@ model Category {
   name        String
   class       Class        @relation(fields: [classId], references: [classId], onDelete: Cascade)
   assignments Assignment[]
+}
+
+// Initial implementation - Abdul
+// Only instructors have specific receiverId's as all admins receive admin reports.
+model Report {
+  reportId       String   @id @default(uuid())
+  senderId       String
+  receiverRole   String
+  receiverId     String?
+  title          String   @default("No title")
+  content        String   @default("No report contents")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  isResolved     Boolean  @default(false)
+  
+  receiver       User?    @relation("ReportReceiver", fields: [receiverId], references: [userId], onDelete: Cascade)
+  sender         User     @relation("ReportSender", fields: [senderId], references: [userId], onDelete: Cascade)
 }
 
 enum UserRole {

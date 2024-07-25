@@ -26,7 +26,7 @@ import reviewAPI from "@/api/reviewApi";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import ReviewDetailsDialog from "./submission/ReviewDetailsDialog";
 import ViewSubmissionDialog from "./submission/ViewSubmissionDialog";
-import GradeSubmissionDialog from "./submission/GradeSubmissionDialog";
+import GradeSubmissionDialog from "./submission/GradeSubmissionDialog";;
 import {
 	Dialog,
 	DialogContent,

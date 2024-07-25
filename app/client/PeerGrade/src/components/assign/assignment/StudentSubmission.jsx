@@ -11,7 +11,7 @@ import DataTable from '@/components/ui/data-table';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { toast } from '@/components/ui/use-toast';
 
-const Submission = () => {
+const Submission = ({refresh}) => {
     const { classId, assignmentId } = useParams();
     const [assignment, setAssignment] = useState(null);
     const [rubrics, setRubrics] = useState([]);
@@ -66,7 +66,7 @@ const Submission = () => {
             const fileName = file.name;
             const fileType = file.type.split('/').pop();
             setSubmissionMessage(`${fileName} successfully submitted at ${timestamp} `);
-
+            refresh();
         } catch (error) {
             console.error("Submission error:", error);
             toast({ 
@@ -116,9 +116,9 @@ const Submission = () => {
                                 <p className="text-gray-600">{assignment.description}</p>
                                 <p className="text-sm text-gray-600">Due: {new Date(assignment.dueDate).toLocaleDateString()}</p>
                             </div>
-                            <Accordion type="single" collapsible className=" bg-green-100 rounded-lg px-6">
+                            <Accordion type="single" collapsible className="bg-gray-100 rounded-lg px-6">
                                 <AccordionItem value="submit-assignment">
-                                    <AccordionTrigger className="text-green-600 hover:text-green-800 flex items-center">
+                                    <AccordionTrigger className="text-gray-600 hover:text-gray-800 flex items-center">
                                         <div className='flex justify-between items-center w-full mr-3'>
                                         <FileUp className="h-4 w-4 mr-2" />
                                         <span>Submit Assignment</span>
@@ -147,20 +147,20 @@ const Submission = () => {
                                 </AccordionItem>
                             </Accordion>
                             {rubrics.length > 0 && (
-                                <div className="mb-4">
-                                    <h3 className="text-lg font-semibold underline mb-3">Rubrics</h3>
+                                <div className="mb-4 rounded-lg">
+                                    <h3 className="text-lg font-bold mb-3 text-center">Rubrics</h3>
                                     {rubrics.map((rubric, index) => (
                                         <div key={index} className="mb-4">
-                                            <h4 className="text-md font-semibold mb-3 text-center">{rubric.title}</h4>
+                                            <h4 className="text-md font-semibold text-center">{rubric.title}</h4>
                                             {rubric.description && (
-                                                <p className="text-sm">{rubric.description}</p>
+                                                <p className="text-sm text-center mb-3">{rubric.description}</p>
                                             )}
                                             <DataTable
                                                 title="Criterion"
                                                 data={rubric.criteria}
                                                 columns={columns}
                                                 pageSize={5}
-                                                className="border border-gray-300"
+                                                className="border border-gray-300 bg-gray-100"
                                             />
                                         </div>
                                     ))}

@@ -343,9 +343,9 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 						{renderClientErrors()}
 						<div className="flex justify-center">
 							<Button
-								variant="outline"
+								variant="success"
 								type="submit"
-								className="w-full bg-green-200"
+								className="w-full"
 								disabled={isLoading}
 							>
 								{isLoading ? (
@@ -357,12 +357,12 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 						</div>
 					</form>
 				</CardContent>
-				<CardFooter className="mt-auto flex justify-center items-center text-center bg-indigo-100">
+				<CardFooter className="mt-auto flex items-center text-center bg-slate-200">
 					<p className="text-sm mt-5 text-gray-600">
 						Already have an account?{" "}
 						<button
 							onClick={onSwitchToLogin}
-							className="text-green-600 hover:text-gray-900"
+							className="text-green-600 hover:text-green-500"
 						>
 							Log in
 						</button>

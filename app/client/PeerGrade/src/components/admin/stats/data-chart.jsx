@@ -59,7 +59,7 @@ const DataChart = ({ data, title, xAxisLabel, yAxisLabel, filterTypes }) => {
           <TabsTrigger value="bar">Bar Chart</TabsTrigger>
         </TabsList>
         <TabsContent value="line">
-          <ResponsiveContainer width="100%" height={400}>
+          <ResponsiveContainer width="100%" height={400} className='bg-white rounded-md p-2'>
             <LineChart data={filteredData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" label={{ value: xAxisLabel, position: 'insideBottomRight', offset: 0 }} />
@@ -70,7 +70,7 @@ const DataChart = ({ data, title, xAxisLabel, yAxisLabel, filterTypes }) => {
           </ResponsiveContainer>
         </TabsContent>
         <TabsContent value="bar">
-          <ResponsiveContainer width="100%" height={400}>
+          <ResponsiveContainer width="100%" height={400} className='bg-white rounded-md p-2'>
             <BarChart data={filteredData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" label={{ value: xAxisLabel, position: 'insideBottomRight', offset: 0 }} />

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useClass } from "@/contexts/contextHooks/useClass";
 import EditClassDialog from "@/components/manageClass/EditClassModal";
-import { Users, FileText, Edit, Plus, MinusCircle, FileUp, ChevronLeft, ChevronRight, FileQuestion, Trash2 } from "lucide-react";
+import { Users, FileText, Edit, Plus, MinusCircle, FileUp, ChevronLeft, ChevronRight, FileQuestion, Trash2, Check } from "lucide-react";
 import StudentsTable from "@/components/manageClass/StudentsTable";
 import EnrollTable from "@/components/manageClass/EnrollTable";
 import AssignmentsTable from "@/components/manageClass/AssignmentsTable";
@@ -464,6 +464,9 @@ const ManageClassDashboard = () => {
                             }}
                           >
                             {student.label}
+														<Check
+															className={`ml-auto h-4 w-4 ${selectedStudents.includes(student.studentId) ? "opacity-100" : "opacity-0"}`}
+														/>
                           </CommandItem>
                         ))}
                       </CommandGroup>

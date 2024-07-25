@@ -17,7 +17,6 @@ import {
 	updateGroupInClass,
 	getGroupInClass,
 	getGroupsInClass,
-	getAllGroups,
 	getGroupMembers,
 	addGroupMember,
 	removeGroupMember,
@@ -89,8 +88,6 @@ router
 	.post(ensureUser, ensureInstructorOrAdmin, getGroupInClass);
 
 router.route("/get-groups").post(ensureUser, getGroupsInClass);
-
-router.route("/get-all-groups").post(ensureUser, ensureAdmin, getAllGroups);
 
 router
 	.route("/get-group-members")

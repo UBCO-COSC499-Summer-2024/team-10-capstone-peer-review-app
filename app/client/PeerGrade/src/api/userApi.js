@@ -47,6 +47,15 @@ export const getGroups = async (userId) => {
 	}
 };
 
+export const getAllGroups = async () => {
+	try {
+		const response = await axios.post(`${BASE_URL}/users/get-all-groups`);
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
 
 export const updateProfile = async (userId, updateData) => {
 	try {
@@ -54,6 +63,118 @@ export const updateProfile = async (userId, updateData) => {
 			userId,
 			updateData
 		});
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const sendReportToInstructor = async (userId, title, content, instructorId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/users/send-report-to-instructor`, {
+			title,
+			content,
+			instructorId
+		});
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const sendReportToAdmin = async (userId, title, content) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/users/send-report-to-admin`, {
+			title,
+			content
+		});
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const getSentReports = async () => {
+	try {
+		const response = await axios.post(`${BASE_URL}/users/get-sent-reports`);
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const getInstructorReports = async () => {
+	try {
+		const response = await axios.post(`${BASE_URL}/users/get-instructor-reports`);
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const getAdminReports = async () => {
+	try {
+		const response = await axios.post(`${BASE_URL}/users/get-admin-reports`);
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const unResolveReport = async (reportId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/users/unresolve-report`, {
+			reportId
+		});
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const resolveReport = async (reportId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/users/resolve-report`, {
+			reportId
+		});
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const deleteReport = async (reportId) => {
+	try {
+		const response = await axios.post(`${BASE_URL}/users/delete-report`, {
+			reportId
+		});
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		handleError(error);
+		return error.response.data;
+	}
+};
+
+export const getMyGrades = async () => {
+	try {
+		const response = await axios.get(`${BASE_URL}/grade/grades`);
 		return response.data;
 	} catch (error) {
 		console.log(error);

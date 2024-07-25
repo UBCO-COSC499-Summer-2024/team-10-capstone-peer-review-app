@@ -6,9 +6,9 @@ import MultiSelect from '@/components/ui/MultiSelect';
 import { addRubricToAssignment, getAllRubrics } from '@/api/rubricApi';
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { useToast } from "@/components/ui/use-toast";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Input } from "@/components/ui/input"
-import { Pencil, Trash2, Plus, Minus } from 'lucide-react'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
+import { Pencil, Trash2, Plus, Minus } from 'lucide-react';
 
 const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
   const [isCreateDrawerOpen, setIsCreateDrawerOpen] = useState(false);
@@ -25,6 +25,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
   });
   const [isValid, setIsValid] = useState(false);
   const [editing, setEditing] = useState(null);
+  const [hasNegativePoints, setHasNegativePoints] = useState(false);
 
   const { user } = useUser();
   const { toast } = useToast();
@@ -37,7 +38,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
 
   useEffect(() => {
     validateRubric();
-  }, [newRubricData]);
+  }, [newRubricData, selectedAssignments]);
 
   const fetchRubrics = async () => {
     try {
@@ -59,12 +60,12 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
     if (selectedAssignments.length === 0) {
       throw new Error("No assignments selected");
     }
-  
+
     const formattedRubricData = {
       title: newRubricData.title,
       description: newRubricData.description,
-      totalMarks: newRubricData.criteria.reduce((total, criterion) => 
-        total + criterion.ratings.reduce((sum, rating) => sum + (parseFloat(rating.points) || 0), 0), 
+      totalMarks: newRubricData.criteria.reduce((total, criterion) =>
+        total + criterion.ratings.reduce((sum, rating) => sum + (parseFloat(rating.points) || 0), 0),
       0),
       classId: classId,
       criterion: newRubricData.criteria.map(criterion => ({
@@ -77,10 +78,10 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
         }))
       }))
     };
-  
+
     console.log('formattedRubricData:', formattedRubricData);
     const userId = user.userId;
-  
+
     for (const assignmentId of selectedAssignments) {
       console.log('Adding rubric to assignment:', assignmentId);
       await addRubricToAssignment({
@@ -89,7 +90,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
         rubricData: formattedRubricData
       });
     }
-  
+
     console.log('Rubric added to all selected assignments');
     setIsCreateDrawerOpen(false);
     setNewRubricData({
@@ -113,7 +114,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
   const handleEdit = (id, field, value) => {
     setNewRubricData(prevData => ({
       ...prevData,
-      criteria: prevData.criteria.map(c => 
+      criteria: prevData.criteria.map(c =>
         c.id === id ? { ...c, [field]: value } : c
       )
     }));
@@ -144,26 +145,34 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
   const validateRubric = () => {
     const isValid = newRubricData.title.trim() !== "" &&
       newRubricData.criteria.length > 0 &&
-      newRubricData.criteria.every(criterion => 
-        criterion.criteria.trim() !== "" && 
+      newRubricData.criteria.every(criterion =>
+        criterion.criteria.trim() !== "" &&
         criterion.ratings.length > 0 &&
-        criterion.ratings.every(rating => 
+        criterion.ratings.every(rating =>
           rating.text.trim() !== "" && !isNaN(parseFloat(rating.points)) && parseFloat(rating.points) >= 0
         )
-      );
+      ) &&
+      selectedAssignments.length > 0;
     setIsValid(isValid);
+
+    const hasNegative = newRubricData.criteria.some(criterion =>
+      criterion.ratings.some(rating => parseFloat(rating.points) < 0)
+    );
+    setHasNegativePoints(hasNegative);
   };
 
   const addRating = (criterionId, index) => {
     setNewRubricData(prevData => ({
       ...prevData,
-      criteria: prevData.criteria.map(c => 
-        c.id === criterionId 
-          ? { ...c, ratings: [
-              ...c.ratings.slice(0, index + 1), 
+      criteria: prevData.criteria.map(c =>
+        c.id === criterionId
+          ? {
+            ...c, ratings: [
+              ...c.ratings.slice(0, index + 1),
               { text: "", points: "" },
               ...c.ratings.slice(index + 1)
-            ]} 
+            ]
+          }
           : c
       )
     }));
@@ -217,10 +226,10 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
                 <li className="flex items-center">
                   <Trash2 className="h-4 w-4 mr-2 text-destructive" /> Remove a criterion
                 </li>
-                <li><Badge variant="outline" className="bg-warning text-white">Important</Badge> You must fill out all the fields in order to submit the rubric! </li>
-                <li>Points are automatically calculated based on rating points</li>
+                <li><Badge variant="outline" className="bg-warning ">Important</Badge> You must fill out all the fields in order to submit the rubric! </li>
+                <li className="flex items-center"><Badge variant="outline" className="bg-red-200 text-destructive mr-1">Negative</Badge> Points are not allowed</li>
               </ul>
-            </div>            
+            </div>
             <Table className="border-2">
               <TableHeader>
                 <TableRow className="border-b">
@@ -257,7 +266,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
                         )}
                       </div>
                     </TableCell>
-                     <TableCell className="border-r p-0">
+                    <TableCell className="border-r p-0">
                       <div className="flex">
                         {criterion.ratings.map((rating, index) => (
                           <div key={index} className="flex-1 border-r last:border-r-0 relative px-6">
@@ -265,6 +274,8 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
                               <div className="flex items-center justify-between mb-2">
                                 {editing === `${criterion.id}-rating-points-${index}` ? (
                                   <Input
+                                    type="number"
+                                    min="0"
                                     className="w-12 text-sm"
                                     value={rating.points}
                                     onChange={(e) => {
@@ -278,7 +289,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
                                   />
                                 ) : (
                                   <div className="flex items-center">
-                                    <span className="text-sm mr-1">{rating.points || "Pts"}</span>
+                                    <span className={`text-sm mr-1 ${parseFloat(rating.points) < 0 ? 'text-red-500' : ''}`}>{rating.points || "Pts"}</span>
                                     <Button
                                       variant="ghost"
                                       size="icon"
@@ -321,23 +332,23 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 h-6 w-6 rounded-full bg-red-100 border border-destructive border-dashed" // Made button smaller
+                                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 h-6 w-6 rounded-full bg-red-100 border border-destructive border-dashed"
                                 onClick={() => {
                                   const newRatings = criterion.ratings.filter((_, i) => i !== index);
                                   handleEdit(criterion.id, 'ratings', newRatings);
                                 }}
                               >
-                                <Minus className="h-3 w-3 text-destructive" /> {/* Made icon smaller */}
+                                <Minus className="h-3 w-3 text-destructive" />
                               </Button>
                             )}
                             {index === criterion.ratings.length - 1 && (
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full h-6 w-6 rounded-full  bg-green-100 border border-success border-dashed" // Made button smaller
+                                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full h-6 w-6 rounded-full  bg-green-100 border border-success border-dashed"
                                 onClick={() => addRating(criterion.id, index)}
                               >
-                                <Plus className="h-3 w-3 text-green-500" /> {/* Made icon smaller */}
+                                <Plus className="h-3 w-3 text-green-500" />
                               </Button>
                             )}
                           </div>
@@ -374,7 +385,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
                 </TableRow>
               </TableBody>
             </Table>
-            <Button onClick={handleCreateRubric} disabled={!isValid} className="mt-4">Save Rubric</Button>
+            <Button onClick={handleCreateRubric} disabled={!isValid || hasNegativePoints} className="mt-4">Save Rubric</Button>
           </div>
         </DrawerContent>
       </Drawer>

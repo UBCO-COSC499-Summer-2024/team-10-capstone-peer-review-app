@@ -34,7 +34,7 @@ import {
 	DialogTitle,
 	DialogFooter
 } from "@/components/ui/dialog";
-import MultiSelect from "@/components/ui/MultiSelect"; // Make sure the path is correct
+import MultiSelect from "@/components/ui/MultiSelect";
 
 const Submissions = () => {
 	const { user } = useUser();
@@ -54,13 +54,18 @@ const Submissions = () => {
 	const [currentSubmission, setCurrentSubmission] = useState(null);
 	const [allStudents, setAllStudents] = useState([]);
 	const [existingReviewers, setExistingReviewers] = useState([]);
+	const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+	const [reviewersToDelete, setReviewersToDelete] = useState([]);
+
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const [submissionsResponse, studentsResponse] = await Promise.all([
-					getSubmissionsForAssignment(assignmentId),
-					getStudentsByClassId(classId)
-				]);
+				const [submissionsResponse, studentsResponse, rubricData] =
+					await Promise.all([
+						getSubmissionsForAssignment(assignmentId),
+						getStudentsByClassId(classId),
+						getRubricsForAssignment(assignmentId)
+					]);
 
 				const submissionsMap = submissionsResponse.data.reduce(
 					(acc, submission) => {
@@ -101,10 +106,16 @@ const Submissions = () => {
 				);
 				setAllStudents(studentsResponse.data);
 				setStudentsWithSubmissions(studentsWithSubmissionStatus);
+
+				setRubrics(rubricData.data);
+				const totalPoints = rubricData.data.reduce((acc, rubric) => {
+					return acc + rubric.totalMarks;
+				}, 0);
+				setTotalPoints(totalPoints);
 			} catch (error) {
 				toast({
 					title: "Error",
-					description: "Failed to fetch submissions or student data",
+					description: "Failed to fetch data",
 					variant: "destructive"
 				});
 			} finally {
@@ -140,7 +151,31 @@ const Submissions = () => {
 		setAssignReviewersDialogOpen(true);
 	};
 
-	const handleAssignReviewersSubmit = async () => {
+	const handleAssignReviewersSubmit = () => {
+		const reviewersToRemove = existingReviewers.filter(
+			(id) => !selectedReviewers.includes(id)
+		);
+		if (reviewersToRemove.length > 0) {
+			setReviewersToDelete(reviewersToRemove);
+			setAssignReviewersDialogOpen(false);
+			setConfirmDialogOpen(true);
+		} else {
+			updateReviewers();
+		}
+	};
+
+	const handleConfirmDelete = () => {
+		updateReviewers();
+		setConfirmDialogOpen(false);
+	};
+
+	const handleCancelDelete = () => {
+		setConfirmDialogOpen(false);
+		setAssignReviewersDialogOpen(true);
+		setSelectedReviewers(existingReviewers);
+	};
+
+	const updateReviewers = async () => {
 		try {
 			// Delete reviews for unchecked existing reviewers
 			for (const reviewerId of existingReviewers) {
@@ -148,7 +183,7 @@ const Submissions = () => {
 					const peerReviewsResponse = await reviewAPI.getPeerReviews(
 						currentSubmission.submissionId
 					);
-					const peerReviews = peerReviewsResponse.data; // Access the data property
+					const peerReviews = peerReviewsResponse.data;
 					const reviewToDelete = peerReviews.find(
 						(review) => review.reviewerId === reviewerId
 					);
@@ -174,7 +209,14 @@ const Submissions = () => {
 				}
 			}
 
+			setConfirmDialogOpen(false);
 			setAssignReviewersDialogOpen(false);
+
+			// Reset states
+			setCurrentSubmission(null);
+			setSelectedReviewers([]);
+			setExistingReviewers([]);
+			setReviewersToDelete([]);
 		} catch (error) {
 			console.error("Error updating reviewers:", error);
 			toast({
@@ -351,158 +393,248 @@ const Submissions = () => {
 	}
 
 	return (
-		<Card className="w-full">
-			<CardHeader>
-				<CardTitle>Submissions</CardTitle>
-			</CardHeader>
-			<CardContent>
-				<Accordion type="single" collapsible className="w-full">
-					{studentsWithSubmissions.map((student, index) => (
-						<AccordionItem value={`item-${index}`} key={student.userId}>
-							<AccordionTrigger
-								className={cn(
-									student.hasSubmitted ? "bg-green-50" : "bg-red-50",
-									"hover:bg-opacity-80 px-4"
-								)}
-							>
-								<div className="flex justify-between w-full">
-									<span>{student.name}</span>
-									<span>
-										{student.hasSubmitted ? "Submitted" : "No Submission"}
-									</span>
-									{/* <span>
+		<>
+			<Card className="w-full">
+				<CardHeader>
+					<CardTitle>Submissions</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<Accordion type="single" collapsible className="w-full">
+						{studentsWithSubmissions.map((student, index) => (
+							<AccordionItem value={`item-${index}`} key={student.userId}>
+								<AccordionTrigger
+									className={cn(
+										student.hasSubmitted ? "bg-green-50" : "bg-red-50",
+										"hover:bg-opacity-80 px-4"
+									)}
+								>
+									<div className="flex justify-between w-full">
+										<span>{student.name}</span>
+										<span>
+											{student.hasSubmitted ? "Submitted" : "No Submission"}
+										</span>
+										{/* <span>
                                         {student.latestGrade !== null ? student.latestGrade.toFixed(2) : "N/A"}
                                     </span> */}
-								</div>
-							</AccordionTrigger>
-							<AccordionContent>
+									</div>
+								</AccordionTrigger>
+								<AccordionContent>
+									<Table>
+										<TableHeader>
+											<TableRow>
+												<TableHead>Attempt</TableHead>
+												<TableHead>Submitted At</TableHead>
+												<TableHead>Actions</TableHead>
+											</TableRow>
+										</TableHeader>
+										<TableBody>
+											{student.submissions.length > 0 ? (
+												student.submissions.map((submission, subIndex) => (
+													<TableRow key={submission.submissionId}>
+														<TableCell>Attempt {subIndex + 1}</TableCell>
+														<TableCell>
+															{new Date(submission.createdAt).toLocaleString()}
+														</TableCell>
+														<TableCell>
+															<div className="flex flex-wrap gap-2">
+																<Button
+																	variant="outline"
+																	size="sm"
+																	onClick={() =>
+																		handleViewSubmission(submission)
+																	}
+																>
+																	View
+																</Button>
+																<Button
+																	variant="outline"
+																	size="sm"
+																	onClick={() => handleDownload(submission)}
+																>
+																	<Download className="h-4 w-4 mr-1" />
+																	Download
+																</Button>
+																<Button
+																	variant="outline"
+																	size="sm"
+																	onClick={() =>
+																		handleGradeAssignment(submission)
+																	}
+																>
+																	Grade
+																</Button>
+																<Button
+																	variant="outline"
+																	size="sm"
+																	onClick={() =>
+																		handleViewReviewDetails(
+																			submission.submissionId
+																		)
+																	}
+																>
+																	View Grades
+																</Button>
+																<Button
+																	variant="outline"
+																	size="sm"
+																	onClick={() =>
+																		handleAssignReviewers(submission)
+																	}
+																>
+																	Assign Reviewers
+																</Button>
+															</div>
+														</TableCell>
+													</TableRow>
+												))
+											) : (
+												<TableRow>
+													<TableCell colSpan={3} className="text-center">
+														No submissions
+													</TableCell>
+												</TableRow>
+											)}
+										</TableBody>
+									</Table>
+								</AccordionContent>
+							</AccordionItem>
+						))}
+					</Accordion>
+				</CardContent>
+				<ViewSubmissionDialog
+					submission={selectedSubmission}
+					open={viewDialogOpen}
+					onClose={() => setViewDialogOpen(false)}
+					onDownload={handleDownload}
+				/>
+				<GradeSubmissionDialog
+					submission={selectedSubmission}
+					rubrics={rubrics}
+					open={gradeDialogOpen && selectedSubmission !== null}
+					onClose={() => {
+						setGradeDialogOpen(false);
+						setSelectedSubmission(null);
+					}}
+					onGradeSubmit={handleGradeSubmit}
+				/>
+				<ReviewDetailsDialog
+					submissionId={selectedSubmissionId}
+					open={reviewDialogOpen}
+					onClose={() => setReviewDialogOpen(false)}
+				/>
+				<Dialog
+					open={assignReviewersDialogOpen}
+					onOpenChange={setAssignReviewersDialogOpen}
+				>
+					<DialogContent>
+						<DialogHeader>
+							<DialogTitle>Assign Peer Reviewers</DialogTitle>
+						</DialogHeader>
+						<div className="space-y-4 min-h-[4vh] flex items-center justify-center">
+							<MultiSelect
+								options={allStudents
+									.filter(
+										(student) =>
+											student.userId !== currentSubmission?.submitterId
+									)
+									.map((student) => ({
+										value: student.userId,
+										label: `${student.firstname} ${student.lastname}`
+									}))}
+								value={selectedReviewers}
+								onChange={setSelectedReviewers}
+							/>
+						</div>
+						<DialogFooter>
+							<Button onClick={handleAssignReviewersSubmit}>
+								Update Reviewers
+							</Button>
+						</DialogFooter>
+					</DialogContent>
+				</Dialog>
+
+				<Dialog open={confirmDialogOpen} onOpenChange={setConfirmDialogOpen}>
+					<DialogContent>
+						<DialogHeader>
+							<DialogTitle>Confirm Reviewer Removal</DialogTitle>
+						</DialogHeader>
+						<div>
+							Are you sure you want to remove the following reviewers? Their
+							reviews will be deleted:
+							<ul className="list-disc pl-5 mt-2">
+								{reviewersToDelete.map((reviewerId) => {
+									const reviewer = allStudents.find(
+										(student) => student.userId === reviewerId
+									);
+									return (
+										<li key={reviewerId}>
+											{reviewer
+												? `${reviewer.firstname} ${reviewer.lastname}`
+												: reviewerId}
+										</li>
+									);
+								})}
+							</ul>
+						</div>
+						<DialogFooter>
+							<Button variant="outline" onClick={handleCancelDelete}>
+								Cancel
+							</Button>
+							<Button onClick={handleConfirmDelete}>Confirm</Button>
+						</DialogFooter>
+					</DialogContent>
+				</Dialog>
+			</Card>
+			<Card className="mt-4">
+				{rubrics.length > 0 && (
+					<CardContent>
+						<h3 className="text-lg font-semibold underline mb-3">Rubrics</h3>
+						{rubrics.map((rubric, index) => (
+							<div key={index} className="mb-4">
+								<h4 className="text-md font-semibold mb-3 text-center">
+									{rubric.title}
+								</h4>
+								{rubric.description && (
+									<p className="text-sm">{rubric.description}</p>
+								)}
 								<Table>
 									<TableHeader>
 										<TableRow>
-											<TableHead>Attempt</TableHead>
-											<TableHead>Submitted At</TableHead>
-											<TableHead>Actions</TableHead>
+											<TableHead>Criterion Title</TableHead>
+											<TableHead>Ratings</TableHead>
+											<TableHead>Max Marks</TableHead>
 										</TableRow>
 									</TableHeader>
 									<TableBody>
-										{student.submissions.length > 0 ? (
-											student.submissions.map((submission, subIndex) => (
-												<TableRow key={submission.submissionId}>
-													<TableCell>Attempt {subIndex + 1}</TableCell>
-													<TableCell>
-														{new Date(submission.createdAt).toLocaleString()}
-													</TableCell>
-													<TableCell>
-														<div className="flex flex-wrap gap-2">
-															<Button
-																variant="outline"
-																size="sm"
-																onClick={() => handleViewSubmission(submission)}
+										{rubric.criteria.map((criterion, idx) => (
+											<TableRow key={idx}>
+												<TableCell>{criterion.title}</TableCell>
+												<TableCell>
+													<ul className="list-disc pl-4">
+														{criterion.criterionRatings.map((rating, rIdx) => (
+															<li
+																key={rIdx}
+																className="flex mb-5 bg-gray-200 rounded-lg p-2 justify-between items-start "
 															>
-																View
-															</Button>
-															<Button
-																variant="outline"
-																size="sm"
-																onClick={() => handleDownload(submission)}
-															>
-																<Download className="h-4 w-4 mr-1" />
-																Download
-															</Button>
-															<Button
-																variant="outline"
-																size="sm"
-																onClick={() =>
-																	handleGradeAssignment(submission)
-																}
-															>
-																Grade
-															</Button>
-															<Button
-																variant="outline"
-																size="sm"
-																onClick={() =>
-																	handleViewReviewDetails(
-																		submission.submissionId
-																	)
-																}
-															>
-																View Grades
-															</Button>
-															<Button
-																variant="outline"
-																size="sm"
-																onClick={() =>
-																	handleAssignReviewers(submission)
-																}
-															>
-																Assign Reviewers
-															</Button>
-														</div>
-													</TableCell>
-												</TableRow>
-											))
-										) : (
-											<TableRow>
-												<TableCell colSpan={3} className="text-center">
-													No submissions
+																<span>{rating.description}</span>
+																<span className="font-bold border border-black rounded-full p-1 w-6 h-6 flex justify-center items-center">
+																	{rating.points}
+																</span>
+															</li>
+														))}
+													</ul>
 												</TableCell>
+												<TableCell>{criterion.maxMark}</TableCell>
 											</TableRow>
-										)}
+										))}
 									</TableBody>
 								</Table>
-							</AccordionContent>
-						</AccordionItem>
-					))}
-				</Accordion>
-			</CardContent>
-			<ViewSubmissionDialog
-				submission={selectedSubmission}
-				open={viewDialogOpen}
-				onClose={() => setViewDialogOpen(false)}
-				onDownload={handleDownload}
-			/>
-			<GradeSubmissionDialog
-				submission={selectedSubmission}
-				rubrics={rubrics}
-				open={gradeDialogOpen && selectedSubmission !== null}
-				onClose={() => {
-					setGradeDialogOpen(false);
-					setSelectedSubmission(null);
-				}}
-				onGradeSubmit={handleGradeSubmit}
-			/>
-			<ReviewDetailsDialog
-				submissionId={selectedSubmissionId}
-				open={reviewDialogOpen}
-				onClose={() => setReviewDialogOpen(false)}
-			/>
-			<Dialog
-				open={assignReviewersDialogOpen}
-				onOpenChange={setAssignReviewersDialogOpen}
-			>
-				<DialogContent>
-					<DialogHeader>
-						<DialogTitle>Assign Peer Reviewers</DialogTitle>
-					</DialogHeader>
-					<div className="space-y-4 min-h-[4vh] flex items-center justify-center">
-						<MultiSelect
-							options={allStudents.map((student) => ({
-								value: student.userId,
-								label: `${student.firstname} ${student.lastname}`
-							}))}
-							value={selectedReviewers}
-							onChange={setSelectedReviewers}
-						/>
-					</div>
-					<DialogFooter>
-						<Button onClick={handleAssignReviewersSubmit}>
-							Update Reviewers
-						</Button>
-					</DialogFooter>
-				</DialogContent>
-			</Dialog>
-		</Card>
+							</div>
+						))}
+					</CardContent>
+				)}
+			</Card>
+		</>
 	);
 };
 

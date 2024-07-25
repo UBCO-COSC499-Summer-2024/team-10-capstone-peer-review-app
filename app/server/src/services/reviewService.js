@@ -301,22 +301,27 @@ const getReviewsAssigned = async (userId) => {
 							include: {
 								classes: true,
 								category: true,
-								rubric: true
+								// The rubrics for assignment is called rubric, bit confusing..
+								rubric: {
+									include: {
+										rubric: {
+											include: {
+												criteria: {
+													include: {
+														criterionRatings: true
+													}
+												}
+											}
+										}
+									}
+								}
 							}
 						}
 					}
 				},
 				reviewer: true,
 				reviewee: true,
-				criterionGrades: {
-					include: {
-						criterion: {
-							include: {
-								criterionRatings: true
-							}
-						}
-					}
-				}
+				criterionGrades: true
 			}
 		});
 		return reviewsAssigned;
@@ -341,22 +346,26 @@ const getReviewsReceived = async (userId) => {
 							include: {
 								classes: true,
 								category: true,
-								rubric: true
+								rubric: {
+									include: {
+										rubric: {
+											include: {
+												criteria: {
+													include: {
+														criterionRatings: true
+													}
+												}
+											}
+										}
+									}
+								}
 							}
 						}
 					}
 				},
 				reviewer: true,
 				reviewee: true,
-				criterionGrades: {
-					include: {
-						criterion: {
-							include: {
-								criterionRatings: true
-							}
-						}
-					}
-				}
+				criterionGrades: true
 			}
 		});
 		return reviewsReceived;

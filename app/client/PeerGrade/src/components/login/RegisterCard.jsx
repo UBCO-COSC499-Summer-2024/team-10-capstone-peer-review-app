@@ -56,37 +56,45 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 		// Reset apiError when clent-side errorState changes
 		setApiError("");
 	}, [errorState]);
-
-	const validateFields = () => {
-		let errors = { ...errorState };
-
-		const passwordRegex =
-			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
-		if (!passwordRegex.test(password)) {
-			errors.password =
-				"Password must be at least 8 characters long, with at least one uppercase letter, one lowercase letter, one number, and one special character.";
-		} else {
-			errors.password = "";
+	const validateField = (fieldName, value) => {
+		let error = '';
+		const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+	  
+		switch (fieldName) {
+		  case 'password':
+			if (!passwordRegex.test(value)) {
+			  error = 'Password must be at least 8 characters long, with at least one uppercase letter, one lowercase letter, one number, and one special character.';
+			}
+			break;
+		  case 'confirmPassword':
+			if (value !== password) {
+			  error = 'Passwords do not match';
+			}
+			break;
+		  case 'role':
+			if (value === '') {
+			  error = 'Please select a role';
+			}
+			break;
+		  default:
+			break;
 		}
+	  
+		setErrorState(prevState => ({
+		  ...prevState,
+		  [fieldName]: error
+		}));
+	  };
 
-		if (password !== confirmPassword) {
-			errors.confirmPassword = "Passwords do not match";
-		} else {
-			errors.confirmPassword = "";
-		}
+	  const validateFields = () => {
+		validateField('password', password);
+		validateField('confirmPassword', confirmPassword);
+		validateField('role', role);
+	  
+		return Object.values(errorState).every((error) => error === "");
+	  };
 
-		if (role === "") {
-			errors.role = "Please select a role";
-		} else {
-			errors.role = "";
-		}
-
-		setErrorState(errors);
-
-		return Object.values(errors).every((error) => error === "");
-	};
-
+	  
 	const renderClientErrors = () => {
 		return Object.keys(errorState).map((key) => {
 			if (errorState[key]) {
@@ -220,11 +228,12 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 								type={passwordVisible ? "text" : "password"}
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
+								onBlur={(e) => validateField('password', e.target.value)}
 								required
-								// TODO: Find out how to highlght specific fields based on an error and setError
-								// ${errorState.password ? "border-red-500" : "border-gray-300"}
-								className={`block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-100 border ${errorState.password ? "border-red-500" : "border-gray-300"} rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
-							/>
+								className={`block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-100 border ${
+									errorState.password ? "border-red-500" : "border-gray-300"
+								} rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+								/>
 							<div className="absolute inset-y-0 mt-6 right-0 pr-3 flex items-center">
 								<button
 									type="button"
@@ -251,9 +260,12 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 								type={confirmPasswordVisible ? "text" : "password"}
 								value={confirmPassword}
 								onChange={(e) => setConfirmPassword(e.target.value)}
+								onBlur={(e) => validateField('confirmPassword', e.target.value)}
 								required
-								className={`block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-100 border ${errorState.confirmPassword ? "border-red-500" : "border-gray-300"} rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
-							/>
+								className={`block w-full px-3 py-2 mt-1 text-gray-900 bg-gray-100 border ${
+									errorState.confirmPassword ? "border-red-500" : "border-gray-300"
+								} rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+								/>
 							<div className="absolute inset-y-0 mt-6 right-0 pr-3 flex items-center">
 								<button
 									type="button"
@@ -306,22 +318,20 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 														key={option.role}
 														value={option.role}
 														onSelect={(currentValue) => {
-															setRole(
-																currentValue === role ? "" : currentValue
-															);
-															setOpen(false);
+														const newRole = currentValue === role ? "" : currentValue;
+														setRole(newRole);
+														validateField('role', newRole);
+														setOpen(false);
 														}}
 													>
 														{option.label}
 														<CheckIcon
-															className={cn(
-																"ml-auto h-4 w-4",
-																role === option.role
-																	? "opacity-100"
-																	: "opacity-0"
-															)}
+														className={cn(
+															"ml-auto h-4 w-4",
+															role === option.role ? "opacity-100" : "opacity-0"
+														)}
 														/>
-													</CommandItem>
+												  </CommandItem>
 												))}
 											</CommandGroup>
 										</CommandList>

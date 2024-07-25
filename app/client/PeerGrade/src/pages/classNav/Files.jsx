@@ -43,30 +43,33 @@ const Files = () => {
 	};
 
 	const handleDeleteAssignment = async () => {
-		// handles the deletion of an assignment via the backend
-		if (confirmDelete) {
-			setConfirmDelete(false);
-			if (selectedAssignment) {
-				const assignmentData = await removeAssignmentFromClass(selectedAssignment.assignmentId);
-				if (assignmentData.status === "Success") {
-					console.log("deleted assignment", assignmentData);
-					setDialogOpen(false);
-					setAssignments((prevAssignments) =>
-						prevAssignments.filter(
-							(assignment) => assignment.assignmentId !== selectedAssignment.assignmentId
-						)
-					);
-				} else {
-					console.error(
-						"An error occurred while deleting the assignment.",
-						assignmentData.message
-					);
-				}
-			}
-		} else {
-			setConfirmDelete(true);
-		}
-	};
+        if (confirmDelete) {
+            setConfirmDelete(false);
+            if (selectedAssignment) {
+                try {
+                    const response = await removeAssignmentFromClass(selectedAssignment.assignmentId);
+                    if (response.status === "Success") {
+                        console.log("deleted assignment", response.data);
+                        setDialogOpen(false);
+                        setAssignments((prevAssignments) =>
+                            prevAssignments.filter(
+                                (assignment) => assignment.assignmentId !== selectedAssignment.assignmentId
+                            )
+                        );
+                    } else {
+                        console.error(
+                            "An error occurred while deleting the assignment.",
+                            response.message
+                        );
+                    }
+                } catch (error) {
+                    console.error("Error deleting assignment:", error.response?.data || error.message);
+                }
+            }
+        } else {
+            setConfirmDelete(true);
+        }
+    };
 
     return (
         <div>

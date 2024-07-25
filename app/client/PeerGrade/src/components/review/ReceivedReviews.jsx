@@ -67,10 +67,12 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 			(total, cg) => total + cg.grade,
 			0
 		);
-		const totalMaxPoints = review.criterionGrades.reduce(
-			(total, cg) => total + cg.criterion.maxMark,
-			0
-		);
+		console.log("review", review);
+		const totalMaxPoints =
+			review.submission.assignment.rubric.rubric.criteria.reduce(
+				(total, c) => total + c.maxMark,
+				0
+			);
 		return totalMaxPoints > 0
 			? `${((totalGrade / totalMaxPoints) * 100).toFixed(2)}%`
 			: "0%";
@@ -79,9 +81,11 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 	const renderAssignmentCard = (group) => {
 		const { assignment, reviews } = group;
 		const isExpanded = expandedAssignments[assignment.assignmentId];
-		const instructorReview = reviews.find((r) => !r.isPeerReview);
+		const instructorReview = reviews.find(
+			(r) => r.reviewer.role === "INSTRUCTOR"
+		);
 		const gradedPeerReviews = reviews.filter(
-			(r) => r.isPeerReview && isReviewGraded(r)
+			(r) => r.reviewer.role === "STUDENT" && isReviewGraded(r)
 		);
 		const gradedReviews = reviews.filter(isReviewGraded);
 
@@ -179,7 +183,7 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 								>
 									<div className="flex justify-between items-center">
 										<p className="font-semibold">
-											{review.isPeerReview
+											{review.reviewer.role === "STUDENT"
 												? `Peer Review ${index + 1}`
 												: "Instructor Review"}
 										</p>

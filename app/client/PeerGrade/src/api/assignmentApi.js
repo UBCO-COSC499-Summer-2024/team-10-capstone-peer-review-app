@@ -49,15 +49,16 @@ export const updateAssignmentInClass = async (formData) => {
     }
   };
 
-export const removeAssignmentFromClass = async (assignmentId) => {
+  export const removeAssignmentFromClass = async (assignmentId) => {
     try {
         const response = await axios.post(`${BASE_URL}/assignment/remove-assignment`, {
             assignmentId
         });
         return response.data;
     } catch (error) {
+        console.error("Error in removeAssignmentFromClass API call:", error.response?.data || error.message);
         handleError(error);
-        return error.response.data;
+        throw error;
     }
 };
 

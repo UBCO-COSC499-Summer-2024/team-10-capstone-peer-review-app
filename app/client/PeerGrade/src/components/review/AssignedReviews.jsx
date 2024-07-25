@@ -9,18 +9,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-	Search,
-	Calendar,
-	ChevronDown,
-	ChevronUp,
-	Clock,
-	Check
-} from "lucide-react";
+import { Search, Calendar, ChevronDown, ChevronUp, Check } from "lucide-react";
+import GradeReviewDialog from "./GradeReviewDialog";
+import reviewAPI from "@/api/reviewApi";
+import { toast } from "@/components/ui/use-toast";
 
 const AssignedReviews = ({ assignedReviews, onViewDetails }) => {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [expandedAssignments, setExpandedAssignments] = useState({});
+	const [selectedReview, setSelectedReview] = useState(null);
+	const [gradeDialogOpen, setGradeDialogOpen] = useState(false);
 
 	const groupedReviews = useMemo(() => {
 		return assignedReviews.reduce((acc, review) => {
@@ -56,20 +54,96 @@ const AssignedReviews = ({ assignedReviews, onViewDetails }) => {
 	};
 
 	const calculatePercentageGrade = (review) => {
+		console.log("Review object:", JSON.stringify(review, null, 2));
 		if (!review.criterionGrades || review.criterionGrades.length === 0) {
 			return "Not graded";
 		}
 		const totalGrade = review.criterionGrades.reduce(
-			(total, cg) => total + cg.grade,
+			(total, cg) => total + (cg.grade || 0),
 			0
 		);
 		const totalMaxPoints = review.criterionGrades.reduce(
-			(total, cg) => total + cg.criterion.maxMark,
+			(total, cg) => total + (cg.criterion?.maxMark || 0),
 			0
 		);
 		return totalMaxPoints > 0
 			? `${((totalGrade / totalMaxPoints) * 100).toFixed(2)}%`
 			: "0%";
+	};
+
+	const handleGradeReview = (review) => {
+		setSelectedReview(review);
+		setGradeDialogOpen(true);
+	};
+
+	const handleGradeSubmit = async (event) => {
+		event.preventDefault();
+
+		if (!selectedReview) {
+			console.error("No review selected");
+			toast({
+				title: "Error",
+				description: "No review selected. Please try again.",
+				variant: "destructive"
+			});
+			return;
+		}
+
+		const formData = new FormData(event.target);
+		let totalMark = 0;
+		const criterionGrades = [];
+
+		selectedReview.submission.assignment.rubric.forEach(
+			(rubricForAssignment) => {
+				rubricForAssignment.rubric.criteria.forEach((criterion) => {
+					const grade =
+						parseFloat(formData.get(`grade-${criterion.criterionId}`)) || 0;
+					totalMark += grade;
+					const comment = formData.get(`comment-${criterion.criterionId}`);
+					criterionGrades.push({
+						criterionId: criterion.criterionId,
+						grade,
+						comment
+					});
+				});
+			}
+		);
+
+		try {
+			const updatedReviewData = {
+				reviewGrade: totalMark,
+				criterionGrades: criterionGrades
+			};
+
+			const response = await reviewAPI.updateReview(
+				selectedReview.reviewId,
+				updatedReviewData
+			);
+
+			// Update the review in the local state
+			const updatedAssignedReviews = assignedReviews.map((review) =>
+				review.reviewId === selectedReview.reviewId ? response.data : review
+			);
+
+			// You might want to call a function to update the parent component's state here
+			// For example: onReviewsUpdate(updatedAssignedReviews);
+
+			setGradeDialogOpen(false);
+			setSelectedReview(null);
+
+			toast({
+				title: "Success",
+				description: "Review graded successfully",
+				variant: "default"
+			});
+		} catch (error) {
+			console.error("Error submitting/updating grade:", error);
+			toast({
+				title: "Error",
+				description: "Failed to submit/update grade",
+				variant: "destructive"
+			});
+		}
 	};
 
 	const renderAssignmentCard = (group) => {
@@ -133,27 +207,34 @@ const AssignedReviews = ({ assignedReviews, onViewDetails }) => {
 										{calculatePercentageGrade(review)}
 									</Badge>
 								</div>
-								{review.criterionGrades &&
-									review.criterionGrades.length > 0 && (
-										<div className="mt-2">
-											<Button
-												variant="link"
-												size="sm"
-												className="p-0 h-auto mr-4"
-												onClick={() => onViewDetails(review, true)}
-											>
-												View in Dialog
-											</Button>
-											<Button
-												variant="link"
-												size="sm"
-												className="p-0 h-auto"
-												onClick={() => onViewDetails(review, false)}
-											>
-												View in New Page
-											</Button>
-										</div>
-									)}
+								<div className="mt-2">
+									<Button
+										variant="outline"
+										size="sm"
+										className="mr-2"
+										onClick={() => handleGradeReview(review)}
+									>
+										{review.criterionGrades && review.criterionGrades.length > 0
+											? "Re-grade"
+											: "Grade"}
+									</Button>
+									<Button
+										variant="link"
+										size="sm"
+										className="p-0 h-auto mr-4"
+										onClick={() => onViewDetails(review, true)}
+									>
+										View in Dialog
+									</Button>
+									<Button
+										variant="link"
+										size="sm"
+										className="p-0 h-auto"
+										onClick={() => onViewDetails(review, false)}
+									>
+										View in New Page
+									</Button>
+								</div>
 							</div>
 						))}
 					</CardContent>
@@ -182,6 +263,13 @@ const AssignedReviews = ({ assignedReviews, onViewDetails }) => {
 					No assigned reviews found.
 				</div>
 			)}
+
+			<GradeReviewDialog
+				review={selectedReview}
+				open={gradeDialogOpen}
+				onClose={() => setGradeDialogOpen(false)}
+				onGradeSubmit={handleGradeSubmit}
+			/>
 		</div>
 	);
 };

@@ -163,46 +163,50 @@ const updateReview = async (reviewId, review) => {
 
 	try {
 		console.log("Updating review:", reviewId, reviewData);
-		// Update the review data
-		const updatedReview = await prisma.review.update({
-			where: {
-				reviewId: reviewId
-			},
-			data: reviewData
-		});
 
-		console.log("Review updated:", updatedReview);
+		// Start a transaction
+		const updatedReview = await prisma.$transaction(async (prisma) => {
+			// Update the review data
+			const updatedReview = await prisma.review.update({
+				where: {
+					reviewId: reviewId
+				},
+				data: reviewData
+			});
 
-		// Upsert criterion grades
-		if (criterionGrades && criterionGrades.length > 0) {
-			console.log("Updating criterion grades:", criterionGrades);
-			for (const criterionGrade of criterionGrades) {
-				try {
-					const updatedGrade = await prisma.criterionGrade.upsert({
-						where: {
-							UniqueCriteronGradePerReview: {
-								criterionId: criterionGrade.criterionId,
-								reviewId: reviewId
-							}
-						},
-						update: {
-							grade: criterionGrade.grade,
-							comment: criterionGrade.comment
-						},
-						create: {
-							reviewId: reviewId,
-							criterionId: criterionGrade.criterionId,
-							grade: criterionGrade.grade,
-							comment: criterionGrade.comment
-						}
-					});
-					console.log("Updated grade:", updatedGrade);
-				} catch (gradeError) {
-					console.error("Error updating grade:", gradeError);
-					throw gradeError;
+			console.log("Review updated:", updatedReview);
+
+			// Delete existing criterion grades
+			await prisma.criterionGrade.deleteMany({
+				where: {
+					reviewId: reviewId
 				}
+			});
+
+			// Create new criterion grades
+			if (criterionGrades && criterionGrades.length > 0) {
+				console.log("Creating new criterion grades:", criterionGrades);
+				await prisma.criterionGrade.createMany({
+					data: criterionGrades.map((cg) => ({
+						reviewId: reviewId,
+						criterionId: cg.criterionId,
+						grade: cg.grade,
+						comment: cg.comment
+					}))
+				});
 			}
-		}
+
+			// Fetch the updated review with new criterion grades
+			return prisma.review.findUnique({
+				where: {
+					reviewId: reviewId
+				},
+				include: {
+					criterionGrades: true
+					// Include other relations as needed
+				}
+			});
+		});
 
 		return updatedReview;
 	} catch (error) {
@@ -321,7 +325,11 @@ const getReviewsAssigned = async (userId) => {
 				},
 				reviewer: true,
 				reviewee: true,
-				criterionGrades: true
+				criterionGrades: {
+					include: {
+						criterion: true
+					}
+				}
 			}
 		});
 		return reviewsAssigned;
@@ -365,7 +373,11 @@ const getReviewsReceived = async (userId) => {
 				},
 				reviewer: true,
 				reviewee: true,
-				criterionGrades: true
+				criterionGrades: {
+					include: {
+						criterion: true
+					}
+				}
 			}
 		});
 		return reviewsReceived;

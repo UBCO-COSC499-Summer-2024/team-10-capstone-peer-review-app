@@ -15,7 +15,8 @@ import {
 	ChevronDown,
 	ChevronUp,
 	Clock,
-	Check
+	Check,
+	Clipboard
 } from "lucide-react";
 
 const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
@@ -59,7 +60,7 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 		}));
 	};
 
-	const calculatePercentageGrade = (review) => {
+	const calculatePercentageGrade = (review, assignment) => {
 		if (!isReviewGraded(review)) {
 			return "Not graded";
 		}
@@ -67,12 +68,18 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 			(total, cg) => total + cg.grade,
 			0
 		);
-		console.log("review", review);
-		const totalMaxPoints =
-			review.submission.assignment.rubric.rubric.criteria.reduce(
-				(total, c) => total + c.maxMark,
-				0
-			);
+		const totalMaxPoints = assignment.rubric.reduce(
+			(total, rubricForAssignment) => {
+				return (
+					total +
+					rubricForAssignment.rubric.criteria.reduce(
+						(rubricTotal, criterion) => rubricTotal + criterion.maxMark,
+						0
+					)
+				);
+			},
+			0
+		);
 		return totalMaxPoints > 0
 			? `${((totalGrade / totalMaxPoints) * 100).toFixed(2)}%`
 			: "0%";
@@ -167,6 +174,12 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 								</>
 							)}
 						</Badge>
+
+						<Badge variant="outline" className="bg-purple-100 text-purple-800">
+							<Clipboard className="h-3 w-3 mr-1" />
+							{assignment.rubric.length} Rubric
+							{assignment.rubric.length !== 1 ? "s" : ""}
+						</Badge>
 					</div>
 				</CardContent>
 				{gradedReviews.length > 0 && (
@@ -188,7 +201,7 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 												: "Instructor Review"}
 										</p>
 										<Badge variant="secondary" className="ml-2">
-											{calculatePercentageGrade(review)}
+											{calculatePercentageGrade(review, assignment)}
 										</Badge>
 									</div>
 									<div className="mt-2">

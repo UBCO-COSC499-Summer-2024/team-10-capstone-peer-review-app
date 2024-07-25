@@ -210,11 +210,13 @@ const reviewAPI = {
 
 const handleError = (error) => {
 	if (error.response && error.response.data) {
+		console.log("error.response.data", error.response.data);
 		showStatusToast({
 			status: error.response.data.status,
 			message: error.response.data.message
 		});
 	} else {
+		console.log("error", error);
 		showStatusToast({
 			status: "Error",
 			message: "An unexpected error occurred. Please try again."

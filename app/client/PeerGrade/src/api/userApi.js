@@ -47,6 +47,15 @@ export const getGroups = async (userId) => {
 	}
 };
 
+export const getAllGroups = async () => {
+	try {
+		const response = await axios.post(`${BASE_URL}/users/get-all-groups`);
+		return response.data;
+	} catch (error) {
+		handleError(error);
+		return error.response.data;
+	}
+};
 
 export const updateProfile = async (userId, updateData) => {
 	try {

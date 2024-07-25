@@ -289,7 +289,7 @@ export default function AppNavbar() {
 													onItemClick={() => setIsClassesSheetOpen(false)}
 													>
 													Enroll into a class!
-                          </ListItem>
+                          							</ListItem>
 												)}
 											</ul>
 										</div>

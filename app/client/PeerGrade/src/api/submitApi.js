@@ -4,10 +4,18 @@ import showStatusToast from '@/utils/showToastStatus';
 const BASE = '/api'; // Adjust this URL as needed
 
 export const getStudentSubmission = async (studentId) => {
-  console.log('studentId:', studentId);
   try {
-    const response = await axios.post(`${BASE}/submit/studentSubmission`, { userId: studentId });
-    console.log('response:', response);
+    const response = await axios.post(`${BASE}/submit/studentSubmissions`, { userId: studentId });
+    return response.data;
+  } catch (error) {
+    handleError(error);
+    throw error.response?.data || error;
+  }
+};
+
+export const getStudentSubmissionForAssignment = async (studentId, assignmentId) => {
+  try {
+    const response = await axios.post(`${BASE}/submit/studentSubmissionsForAssignment`, { userId: studentId, assignmentId });
     return response.data;
   } catch (error) {
     handleError(error);

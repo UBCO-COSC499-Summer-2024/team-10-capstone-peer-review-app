@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useClass } from "@/contexts/contextHooks/useClass";
 import EditClassDialog from "@/components/manageClass/EditClassModal";
-import { Users, FileText, Edit, Plus, MinusCircle, FileUp, ChevronLeft, ChevronRight, FileQuestion, Trash2 } from "lucide-react";
+import { Users, FileText, Edit, Plus, MinusCircle, FileUp, ChevronLeft, ChevronRight, FileQuestion, Trash2, Check } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { 
   Table, 
@@ -316,21 +316,23 @@ const ManageClassDashboard = () => {
       <div className="bg-card p-6 rounded-lg shadow mb-6">
         <div className="flex flex-row items-center justify-between mb-4">
           <h2 className="text-xl font-semibold">Students</h2>
-          {(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (
+          {(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (classData.classSize - currentStudents.length) > 0 && (
             <div>
               <Button
                 variant="ghost"
-                className="bg-accent h-7 w-7 mr-2"
+                className="bg-accent h-10 mr-2"
                 onClick={() => setAddByCSVOpen(true)}
               >
-                <FileUp className="w-5 h-5" />
+                <FileUp className="w-5 h-5 mr-2" />
+                Add Students via CSV
               </Button>
               <Button
                 variant="ghost"
-                className="bg-accent h-7 w-7"
+                className="bg-accent h-10"
                 onClick={() => setAddDialogOpen(true)}
               >
-                <Plus className="w-5 h-5" />
+                <Plus className="w-5 h-5 mr-2" />
+                Add Students Manually
               </Button>
             </div>
           )}
@@ -499,6 +501,9 @@ const ManageClassDashboard = () => {
                             }}
                           >
                             {student.label}
+														<Check
+															className={`ml-auto h-4 w-4 ${selectedStudents.includes(student.studentId) ? "opacity-100" : "opacity-0"}`}
+														/>
                           </CommandItem>
                         ))}
                       </CommandGroup>

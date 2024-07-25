@@ -4,6 +4,7 @@ import {
   removeAssignmentFromClass,
   updateAssignmentInClass,
   getAssignmentInClass,
+  getAllAssignments,
   getAllAssignmentsByClassId,
 
 } from "../controllers/assignController.js";
@@ -24,6 +25,9 @@ router.route("/update-assignment")
 
 router.route("/get-assignment")
   .post(ensureUser, getAssignmentInClass);
+
+  router.route("/get-all-assignments")
+    .post(ensureUser, ensureAdmin, getAllAssignments);
 
 router.route("/get-class-assignments")
   .post(ensureUser, getAllAssignmentsByClassId);

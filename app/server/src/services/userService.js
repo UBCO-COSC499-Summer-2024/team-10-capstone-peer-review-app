@@ -7,7 +7,13 @@ const { PrismaClientKnownRequestError } = pkg;
 const getAllUsers = async () => {
 	try {
 		// May eventually change to return specific fields
-		const users = await prisma.user.findMany();
+		const users = await prisma.user.findMany({
+			include: {
+				classes: true,
+				classesInstructed: true,
+				groups: true
+			}
+		});
 		return users;
 	} catch (error) {
 		throw new apiError("Failed to get all users", 500);
@@ -73,7 +79,7 @@ export async function getUserClasses(userId) {
 			}
 		});
 
-		// Map the classes to include the counts directly in the class object
+		// Map the classes to include the assignment & user counts directly in the class object
 		const classesWithCounts = classes.map((classItem) => ({
 			...classItem,
 			assignmentCount: classItem._count.Assignments,
@@ -156,6 +162,24 @@ export async function getGroups(userId) {
 	}
 }
 
+export async function getAllGroups() {
+	try {
+		const groupsInfo = await prisma.group.findMany();
+
+		if (!groupsInfo) {
+			throw new apiError("Groups not found", 404);
+		}
+
+		return groupsInfo;
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to get all groups", 500);
+		}
+	}
+};
+
 export async function updateProfile(userId, updateData) {
 	try {
 		const updatedProfile = await prisma.user.update({
@@ -194,5 +218,6 @@ export default {
 	getUserClasses,
 	getUserAssignments,
 	getGroups,
+	getAllGroups,
 	updateProfile
 };

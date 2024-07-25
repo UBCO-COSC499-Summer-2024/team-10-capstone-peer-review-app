@@ -4,6 +4,7 @@ import {
 	getUsersByRole,
 	getUserClasses,
 	getUserAssignments,
+	getAllGroups,
 	getGroups,
 	updateProfile
 } from "../controllers/userController.js";
@@ -31,6 +32,7 @@ router
 router.route("/get-classes").post(ensureUser, getUserClasses);
 router.route("/get-assignments").post(getUserAssignments);
 router.route("/get-groups").post(getGroups);
+router.route("/get-all-groups").post(ensureUser, ensureAdmin, getAllGroups);
 
 router.route("/update-profile").post(updateProfile);
 

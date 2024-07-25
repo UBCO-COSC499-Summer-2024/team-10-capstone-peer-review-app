@@ -188,6 +188,27 @@ const getAssignmentInClass = async (classId, assignmentId) => {
 
 
 
+const getAllAssignments = async () => {
+	try {
+	  const assignments = await prisma.assignment.findMany({
+		include: {
+			classes: true,
+			category: true,
+			rubric: true,
+			submissions: true
+		}
+	  });
+  
+	  return assignments;
+	} catch (error) {
+		if (error instanceof apiError) {
+		  	throw error;
+		} else {
+		  	throw new apiError("Failed to get all assignments", 500);
+		}
+	}
+};
+
 const getAllAssignmentsByClassId = async (classId) => {
 	try {
 	  const classInfo = await prisma.class.findUnique({
@@ -211,13 +232,13 @@ const getAllAssignmentsByClassId = async (classId) => {
 		throw new apiError("Failed to get all the assignments for the specific class", 500);
 	  }
 	}
-  };
+};
   
 export default {
 	updateAssignmentInClass,
 	addAssignmentToClass,
 	removeAssignmentFromClass,
 	getAssignmentInClass,
+	getAllAssignments,
 	getAllAssignmentsByClassId,
-
 };

@@ -40,11 +40,11 @@ const ClassCard = ({ classItem }) => {
             <div className="flex space-x-2">
               <div className="flex items-center">
                 <Users className="w-4 h-4 mr-1" />
-                <span className="text-sm">{classItem.userCount} students</span>
+                <span className="text-sm">{classItem.userCount} Student{classItem.userCount === 1 ? "" : "s"}</span>
               </div>
               <div className="flex items-center">
                 <FileText className="w-4 h-4 mr-1" />
-                <span className="text-sm">{classItem.assignmentCount} assignments</span>
+                <span className="text-sm">{classItem.assignmentCount} Assignment{classItem.assignmentCount === 1 ? "" : "s"}</span>
               </div>
             </div>
           </div>

@@ -37,63 +37,98 @@ const NotificationsPanel = () => {
 		fetchGroups();
 	}, [user, userLoading]);
 
-	const handleSendToClass = async () => {
-		const response = await sendNotificationToClass(user.userId, title, content, selectedClass.classId);
-		toast({
-			title: "Success",
-			description: "Notification sent to the selected class",
-			variant: "positive"
-		});
+	const formCheck = (selectedItem, itemName) => {
+		if (!title || !content) {
+			toast({
+				title: "Error",
+				description: "Please fill in all fields",
+				variant: "destructive"
+			});
+			return false;
+		} else if (itemName && (!selectedItem || Object.keys(selectedItem).length === 0)) {
+			toast({
+				title: "Error",
+				description: "Please select a " + itemName,
+				variant: "destructive"
+			});
+			return false;
+		}
+		return true;
+	};
+
+	const formClear = () => {
 		setTitle('');
 		setContent('');
 		setSelectedRole('');
 		setSelectedGroup({});
 		setSelectedClass({});
+	};
+
+	const handleSendToClass = async () => {
+		if (!formCheck(selectedClass, "class")) {
+			return;
+		}
+
+		const response = await sendNotificationToClass(user.userId, title, content, selectedClass);
+		if (response.status === "Success") {
+			toast({
+				title: "Success",
+				description: "Notification sent to the selected class",
+				variant: "positive"
+			});
+			formClear();
+		}
 		console.log("class",response);
 	};
 
 	const handleSendToGroup = async () => {
-		const response = await sendNotificationToGroup(user.userId, title, content, selectedGroup.groupId);
-		toast({
-			title: "Success",
-			description: "Notification sent to the selected group",
-			variant: "positive"
-		});
-		setTitle('');
-		setContent('');
-		setSelectedRole('');
-		setSelectedGroup({});
-		setSelectedClass({});
+		if (!formCheck(selectedGroup, "group")) {
+			return;
+		}
+
+		const response = await sendNotificationToGroup(user.userId, title, content, selectedGroup);
+		if (response.status === "Success") {
+			toast({
+				title: "Success",
+				description: "Notification sent to the selected group",
+				variant: "positive"
+			});
+			formClear();
+		}
 		console.log("group",response);
 	};
 
 	const handleSendToRole = async () => {
+		if (!formCheck(selectedRole, "role")) {
+			return;
+		}
+
 		const response = await sendNotificationToRole(user.userId, title, content, selectedRole);
-		toast({
-			title: "Success",
-			description: "Notification sent to the selected role",
-			variant: "positive"
-		});
-		setTitle('');
-		setContent('');
-		setSelectedRole('');
-		setSelectedGroup({});
-		setSelectedClass({});
+		if (response.status === "Success") {
+			toast({
+				title: "Success",
+				description: "Notification sent to the selected role",
+				variant: "positive"
+			});
+			formClear();
+		}
 		console.log("role",response);
 	};
 
 	const handleSendToAll = async () => {
+		if (!formCheck()) {
+			return;
+		}
+
 		const response = await sendNotificationToAll(user.userId, title, content);
-		toast({
-			title: "Success",
-			description: "Notification sent to all users",
-			variant: "positive"
-		});
-		setTitle('');
-		setContent('');
-		setSelectedRole('');
-		setSelectedGroup({});
-		setSelectedClass({});
+		if (response.status === "Success") {
+			toast({
+				title: "Success",
+				description: "Notification sent to all users",
+				variant: "positive"
+			});
+			formClear();
+		}
 		console.log("all",response);
 	};
 

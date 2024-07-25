@@ -49,7 +49,7 @@ model Class {
   groups        Group[]
   usersInClass  UserInClass[]
   Assignments   Assignment[]
-  categories    Category[] // Add this line
+  categories    Category[]
   instructor    User            @relation("InstructorClasses", fields: [instructorId], references: [userId]) // Only one instructor per class 
   EnrollRequest EnrollRequest[]
   rubrics       Rubric[]
@@ -78,7 +78,7 @@ model Assignment {
   classes            Class          @relation(fields: [classId], references: [classId], onDelete: Cascade)
   categoryId         String? // Add this line
   category           Category?      @relation(fields: [categoryId], references: [categoryId]) // Add this line
-  rubric             Rubric         @relation(fields: [rubricId], references: [rubricId])
+  rubric             Rubric?        @relation(fields: [rubricId], references: [rubricId])
   submissions        Submission[]
   reviewOption       String?
 }
@@ -90,6 +90,7 @@ model Group {
   classId          String
   groupName        String
   groupDescription String?
+  // 
   groupSize        Int          @default(0)
   class            Class        @relation(fields: [classId], references: [classId], onDelete: Cascade)
   students         User[] // Students in the group
@@ -131,7 +132,6 @@ model Review {
   revieweeId      String
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
-  isGroup         Boolean          @default(false)
   isPeerReview    Boolean          @default(false)
   reviewGrade     Int // Total grade of the review = sum of criterionGrades
   submission      Submission       @relation(fields: [submissionId], references: [submissionId], onDelete: Cascade)

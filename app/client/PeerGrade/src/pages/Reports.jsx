@@ -18,27 +18,35 @@ const Reports = ({ role }) => {
 	const [confirmDelete, setConfirmDelete] = useState(false);
 	const [selectedReport, setSelectedReport] = useState({});
 
-    useEffect(() => {
+	useEffect(() => {
         const fetchReports = async () => {
-			if (role === "ADMIN") {
-				const response = await getAdminReports();
-				if (response.status === "Success") {
-					console.log("admin", response.data);
-					setReports(response.data);
-				}
-			} else if (role === "INSTRUCTOR") {
-				const response = await getInstructorReports();
-				if (response.status === "Success") {
-					console.log("instructor", response.data);
-					setReports(response.data);
-				}
-			}
+            let allReports = [];
+
+            if (role === "ADMIN") {
+                const response1 = await getAdminReports();
+                if (response1.status === "Success") {
+                    allReports = [...response1.data];
+                }
+
+                const response2 = await getInstructorReports();
+                if (response2.status === "Success") {
+                    allReports = [...allReports, ...response2.data];
+                }
+
+            } else if (role === "INSTRUCTOR") {
+                const response = await getInstructorReports();
+                if (response.status === "Success") {
+                    allReports = [...response.data];
+                }
+            }
+
+            setReports(allReports);
         };
 
         if (!userLoading && user) {
             fetchReports();
         }
-    }, [user, userLoading, role, toast, refresh]);
+    }, [user, userLoading, role, refresh]);
 
 	const handleDeleteReport = async () => {
 		if (confirmDelete) {
@@ -76,7 +84,7 @@ const Reports = ({ role }) => {
         <div>
             <h1 className="text-2xl font-bold mb-3">Reports Received</h1>
             <Card>
-				<CardContent className="space-y-6">
+				<CardContent className="space-y-6 bg-transparent">
 					{reports.length > 0 ? (
 						reports.map((report, index) => (
 							<div key={index} className="flex flex-row items-center justify-between">

@@ -44,6 +44,11 @@ const NotificationsPanel = () => {
 			description: "Notification sent to the selected class",
 			variant: "positive"
 		});
+		setTitle('');
+		setContent('');
+		setSelectedRole('');
+		setSelectedGroup({});
+		setSelectedClass({});
 		console.log("class",response);
 	};
 
@@ -54,6 +59,11 @@ const NotificationsPanel = () => {
 			description: "Notification sent to the selected group",
 			variant: "positive"
 		});
+		setTitle('');
+		setContent('');
+		setSelectedRole('');
+		setSelectedGroup({});
+		setSelectedClass({});
 		console.log("group",response);
 	};
 
@@ -64,6 +74,11 @@ const NotificationsPanel = () => {
 			description: "Notification sent to the selected role",
 			variant: "positive"
 		});
+		setTitle('');
+		setContent('');
+		setSelectedRole('');
+		setSelectedGroup({});
+		setSelectedClass({});
 		console.log("role",response);
 	};
 
@@ -74,6 +89,11 @@ const NotificationsPanel = () => {
 			description: "Notification sent to all users",
 			variant: "positive"
 		});
+		setTitle('');
+		setContent('');
+		setSelectedRole('');
+		setSelectedGroup({});
+		setSelectedClass({});
 		console.log("all",response);
 	};
 

@@ -32,22 +32,27 @@ const Report = () => {
         if (!userLoading && user && user.role !== "ADMIN") {
             if (role === "INSTRUCTOR" && !isClassLoading && instructors.length === 0) {
                 const fetchInstructors = async () => {
+                    let fetchedInstructors = []; // Temporary array to hold instructors
                     for (const classItem of classes) {
                         const response = await getInstructorByClassId(classItem.classId);
                         if (response.status === "Success") {
-                            setInstructors([...instructors, response.data]);
+                            if (!fetchedInstructors.find(instructor => instructor.userId === response.data.userId)) {
+                                fetchedInstructors.push(response.data);
+                            }
                         }
                     }
+                    setInstructors(fetchedInstructors); // Set state once with the final list
                 };
-        
+    
                 setInstructors([]);
                 fetchInstructors();
             }
+    
             const fetchSentReports = async () => {
                 const response = await getSentReports();
                 if (response.status === "Success") {
                     setReports(response.data);
-                    console.log("reports", reports);
+                    console.log("reports", response.data);
                 } else {
                     toast({
                         title: "Error",
@@ -55,11 +60,12 @@ const Report = () => {
                         variant: "destructive"
                     });
                 }
-            }
+            };
             
             fetchSentReports();
         }
-    }, [user, userLoading, role, classes, isClassLoading, refresh]);    
+    }, [user, userLoading, role, classes, isClassLoading, refresh]);
+        
 
     const handleSubmit = (e) => {
         e.preventDefault();

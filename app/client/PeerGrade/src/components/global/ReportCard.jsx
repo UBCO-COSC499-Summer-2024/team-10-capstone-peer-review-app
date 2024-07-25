@@ -15,8 +15,8 @@ const ReportCard = ({ report, isViewedByReceiver }) => {
                 <CardDescription>{report.content}</CardDescription>
             </CardHeader>
             <CardContent className='space-y-2'>
-                {isViewedByReceiver && <p><strong>Sender:</strong> {`${report.sender.firstname} ${report.sender.lastname}`} ({toProperCase(report.sender.role)})</p>}
-                {!isViewedByReceiver && <p><strong>Recipient:</strong> {report.receiverRole === "ADMIN" ? "Admin" : `${report.receiver.firstname} ${report.receiver.lastname}`}</p>}
+                {isViewedByReceiver && report.sender && <p><strong>Sender:</strong> {`${report.sender.firstname} ${report.sender.lastname}`} ({toProperCase(report.sender.role)})</p>}
+                {!isViewedByReceiver && report.receiver && <p><strong>Recipient:</strong> {report.receiverRole === "ADMIN" ? "Admin" : `${report.receiver.firstname} ${report.receiver.lastname}`}</p>}
                 <p><strong>Sent: </strong> {formatDistanceToNow(new Date(report.createdAt), { addSuffix: true })}</p>
             </CardContent>
             <CardFooter>

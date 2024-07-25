@@ -29,7 +29,22 @@ const getReviewById = async (reviewId) => {
 					include: {
 						assignment: {
 							include: {
-								rubric: true
+								classes: true,
+								category: true,
+								// The rubrics for assignment is called rubric, bit confusing..
+								rubric: {
+									include: {
+										rubric: {
+											include: {
+												criteria: {
+													include: {
+														criterionRatings: true
+													}
+												}
+											}
+										}
+									}
+								}
 							}
 						}
 					}

@@ -14,7 +14,7 @@ import GradeReviewDialog from "./GradeReviewDialog";
 import reviewAPI from "@/api/reviewApi";
 import { toast } from "@/components/ui/use-toast";
 
-const AssignedReviews = ({ assignedReviews, onViewDetails }) => {
+const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [expandedAssignments, setExpandedAssignments] = useState({});
 	const [selectedReview, setSelectedReview] = useState(null);
@@ -130,11 +130,14 @@ const AssignedReviews = ({ assignedReviews, onViewDetails }) => {
 
 			setGradeDialogOpen(false);
 			setSelectedReview(null);
-
+			
+			// Call onUpdate to refresh the data
+			await onUpdate();
+	  
 			toast({
-				title: "Success",
-				description: "Review graded successfully",
-				variant: "default"
+			  title: "Success",
+			  description: "Review graded successfully",
+			  variant: "default"
 			});
 		} catch (error) {
 			console.error("Error submitting/updating grade:", error);

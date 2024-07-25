@@ -11,42 +11,47 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-const ViewReviewGradeDialog = ({ review, open, onClose }) => {
+const ViewReviewGradeDialog = ({ review, open, onClose, onUpdate }) => {
 	const getTotalMaxPoints = () => {
 		if (
-			!review ||
-			!review.submission ||
-			!review.submission.assignment ||
-			!review.submission.assignment.rubric
+		  !review ||
+		  !review.submission ||
+		  !review.submission.assignment ||
+		  !review.submission.assignment.rubric
 		)
-			return 0;
+		  return 0;
 		return review.submission.assignment.rubric.reduce(
-			(total, rubricForAssignment) => {
-				return (
-					total +
-					rubricForAssignment.rubric.criteria.reduce(
-						(rubricTotal, criterion) => rubricTotal + criterion.maxMark,
-						0
-					)
-				);
-			},
-			0
+		  (total, rubricForAssignment) => {
+			return (
+			  total +
+			  rubricForAssignment.rubric.criteria.reduce(
+				(rubricTotal, criterion) => rubricTotal + criterion.maxMark,
+				0
+			  )
+			);
+		  },
+		  0
 		);
-	};
-
-	const getPercentageGrade = () => {
+	  };
+	
+	  const getPercentageGrade = () => {
 		if (!review || !review.criterionGrades) return 0;
 		const totalGrade = review.criterionGrades.reduce(
-			(total, cg) => total + cg.grade,
-			0
+		  (total, cg) => total + cg.grade,
+		  0
 		);
 		const totalMaxPoints = getTotalMaxPoints();
 		return totalMaxPoints > 0
-			? ((totalGrade / totalMaxPoints) * 100).toFixed(2)
-			: 0;
-	};
-
-	console.log("review", review);
+		  ? ((totalGrade / totalMaxPoints) * 100).toFixed(2)
+		  : 0;
+	  };
+	
+	  const handleClose = async () => {
+		onClose();
+		if (onUpdate) {
+		  await onUpdate();
+		}
+	  };
 
 	return (
 		<Dialog open={open} onOpenChange={onClose}>

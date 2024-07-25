@@ -46,6 +46,11 @@ const Reviews = () => {
 		}
 	};
 
+	const handleAssignedReviewsUpdate = (updatedReviews) => {
+		setAssignedReviews(updatedReviews);
+		console.log("Updated assigned reviews:", updatedReviews);
+	};
+
 	return (
 		<div className="w-full px-6">
 			<h1 className="text-3xl font-bold mb-6 text-primary">Reviews</h1>
@@ -66,6 +71,7 @@ const Reviews = () => {
 					<AssignedReviews
 						assignedReviews={assignedReviews}
 						onViewDetails={handleViewReviews}
+						onReviewsUpdate={handleAssignedReviewsUpdate}
 					/>
 				</TabsContent>
 			</Tabs>

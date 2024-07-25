@@ -196,19 +196,40 @@ const updateReview = async (reviewId, review) => {
 				});
 			}
 
-			// Fetch the updated review with new criterion grades
 			return prisma.review.findUnique({
-				where: {
-					reviewId: reviewId
-				},
+				where: { reviewId: reviewId },
 				include: {
-					criterionGrades: true
-					// Include other relations as needed
+					criterionGrades: {
+						include: {
+							criterion: {
+								include: { criterionRatings: true }
+							}
+						}
+					},
+					submission: {
+						include: {
+							assignment: {
+								include: {
+									rubric: {
+										include: {
+											rubric: {
+												include: {
+													criteria: {
+														include: { criterionRatings: true }
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					reviewer: true,
+					reviewee: true
 				}
 			});
 		});
-
-		return updatedReview;
 	} catch (error) {
 		console.error("Error in updateReview:", error);
 		throw new apiError(`Failed to update review: ${error.message}`, 500);

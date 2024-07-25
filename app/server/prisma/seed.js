@@ -8,6 +8,11 @@ setupEnv();
 
 async function main() {
 	// Clean up existing data
+	await prisma.criterionGrade.deleteMany();
+	await prisma.criterionRating.deleteMany();
+	await prisma.criterion.deleteMany();
+	await prisma.rubricForAssignment.deleteMany();
+	await prisma.rubric.deleteMany();
 	await prisma.review.deleteMany();
 	await prisma.submission.deleteMany();
 	await prisma.userInClass.deleteMany();
@@ -37,7 +42,7 @@ async function main() {
 			role: "STUDENT"
 		}
 	});
-	
+
 	const student1 = await prisma.user.create({
 		data: {
 			email: "student1@gmail.com",
@@ -49,7 +54,7 @@ async function main() {
 			role: "STUDENT"
 		}
 	});
-	
+
 	const student2 = await prisma.user.create({
 		data: {
 			email: "student2@gmail.com",
@@ -61,7 +66,7 @@ async function main() {
 			role: "STUDENT"
 		}
 	});
-	
+
 	const student3 = await prisma.user.create({
 		data: {
 			email: "student3@gmail.com",
@@ -73,7 +78,7 @@ async function main() {
 			role: "STUDENT"
 		}
 	});
-	
+
 	const student4 = await prisma.user.create({
 		data: {
 			email: "student4@gmail.com",
@@ -292,14 +297,13 @@ async function main() {
 		}
 	});
 
-
 	// Create groups
 	const group1 = await prisma.group.create({
 		data: {
 			classId: class1.classId,
 			groupName: faker.lorem.word() + " Group",
 			groupDescription: faker.lorem.sentence(),
-			groupSize: 5,
+			groupSize: 5
 		}
 	});
 
@@ -308,7 +312,7 @@ async function main() {
 			classId: class2.classId,
 			groupName: faker.lorem.word() + " Group",
 			groupDescription: faker.lorem.sentence(),
-			groupSize: 5,
+			groupSize: 5
 		}
 	});
 
@@ -317,7 +321,7 @@ async function main() {
 			classId: class3.classId,
 			groupName: faker.lorem.word() + " Group",
 			groupDescription: faker.lorem.sentence(),
-			groupSize: 5,
+			groupSize: 5
 		}
 	});
 
@@ -326,7 +330,7 @@ async function main() {
 			classId: class4.classId,
 			groupName: faker.lorem.word() + " Group",
 			groupDescription: faker.lorem.sentence(),
-			groupSize: 5,
+			groupSize: 5
 		}
 	});
 

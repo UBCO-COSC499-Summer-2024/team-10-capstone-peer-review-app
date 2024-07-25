@@ -147,20 +147,20 @@ const Submission = ({refresh}) => {
                                 </AccordionItem>
                             </Accordion>
                             {rubrics.length > 0 && (
-                                <div className="mb-4">
-                                    <h3 className="text-lg font-semibold underline mb-3">Rubrics</h3>
+                                <div className="mb-4 rounded-lg">
+                                    <h3 className="text-lg font-bold mb-3 text-center">Rubrics</h3>
                                     {rubrics.map((rubric, index) => (
                                         <div key={index} className="mb-4">
-                                            <h4 className="text-md font-semibold mb-3 text-center">{rubric.title}</h4>
+                                            <h4 className="text-md font-semibold text-center">{rubric.title}</h4>
                                             {rubric.description && (
-                                                <p className="text-sm">{rubric.description}</p>
+                                                <p className="text-sm text-center mb-3">{rubric.description}</p>
                                             )}
                                             <DataTable
                                                 title="Criterion"
                                                 data={rubric.criteria}
                                                 columns={columns}
                                                 pageSize={5}
-                                                className="border border-gray-300"
+                                                className="border border-gray-300 bg-gray-100"
                                             />
                                         </div>
                                     ))}

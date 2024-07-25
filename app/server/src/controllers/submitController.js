@@ -65,7 +65,7 @@ export const createSubmission = [
 ];
 
 export const getStudentSubmission = asyncErrorHandler(async (req, res) => {
-	const studentId = req.body.userId;
+	const studentId = req.user.userId;
 	if (!studentId) {
 	  return res.status(400).json({
 		status: "Error",

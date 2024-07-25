@@ -172,6 +172,17 @@ export const deleteReport = async (reportId) => {
 	}
 };
 
+export const getMyGrades = async () => {
+	try {
+		const response = await axios.get(`${BASE_URL}/grade/grades`);
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		handleError(error);
+		return error.response.data;
+	}
+};
+
 function handleError(error) {
 	if (error.response && error.response.data) {
 		showStatusToast({

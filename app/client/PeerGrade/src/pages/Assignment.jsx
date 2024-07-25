@@ -14,7 +14,7 @@ import { useUser } from "@/contexts/contextHooks/useUser";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import ViewSubmissionDialog from "@/pages/classNav/assignment/submission/ViewSubmissionDialog";
+import ViewSubmissionDialog from '@/components/assign/assignment/submission/ViewSubmissionDialog';
 import { getStudentSubmission, getStudentSubmissionForAssignment } from '@/api/submitApi';
 
 const Assignment = () => {

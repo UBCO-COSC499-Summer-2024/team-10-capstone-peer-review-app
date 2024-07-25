@@ -12,9 +12,9 @@ import { cn } from "@/utils/utils";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import reviewAPI from "@/api/reviewApi";
 import { useUser } from "@/contexts/contextHooks/useUser";
-import ReviewDetailsDialog from "@/pages/classNav/assignment/submission/ReviewDetailsDialog";
-import ViewSubmissionDialog from "@/pages/classNav/assignment/submission/ViewSubmissionDialog";
-import GradeSubmissionDialog from "@/pages/classNav/assignment/submission/GradeSubmissionDialog";
+import ReviewDetailsDialog from "./submission/ReviewDetailsDialog";
+import ViewSubmissionDialog from "./submission/ViewSubmissionDialog";
+import GradeSubmissionDialog from "./submission/GradeSubmissionDialog";;
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import MultiSelect from '@/components/ui/MultiSelect'; 
 import {

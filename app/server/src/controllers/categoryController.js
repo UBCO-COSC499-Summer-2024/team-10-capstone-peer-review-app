@@ -1,5 +1,4 @@
-import express from "express";
-import categoryService from "../services/categoryServices.js";
+import categoryService from "../services/categoryService.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 //import { user } from "../../../../../../../node_modules/pg/lib/defaults.js";
 

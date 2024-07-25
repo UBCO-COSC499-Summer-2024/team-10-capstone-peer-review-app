@@ -9,7 +9,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Button } from "@/components/ui/button";
 import Grades from "./classNav/Grades";
 import Groups from "./classNav/Groups";
-import Files from "./classNav/Files";
+import Assignments from "./classNav/Assignments";
 import People from "./classNav/People";
 import Rubrics from "./classNav/Rubrics";
 import AssignmentCreation from "../components/assign/assignment/AssignmentCreation";
@@ -98,8 +98,8 @@ const Class = () => {
         return <People classId={classId} />;
       case "groups":
         return <Groups classId={classId} />;
-      case "files":
-        return <Files classId={classId} />;
+      case "assignments":
+        return <Assignments classId={classId} />;
       case "assignmentCreation":
         return <AssignmentCreation onAssignmentCreated={() => {
           fetchClassData();
@@ -217,6 +217,15 @@ const Class = () => {
 					</MenubarMenu>
 					<MenubarMenu>
 						<MenubarTrigger
+							isActive={currentView === "assignments"}
+							className="cursor-pointer"
+							onClick={() => handleViewChange("assignments")}
+						>
+							Assignments
+						</MenubarTrigger>
+					</MenubarMenu>
+					<MenubarMenu>
+						<MenubarTrigger
 							isActive={currentView === "grades"}
 							className="cursor-pointer"
 							onClick={() => handleViewChange("grades")}
@@ -240,15 +249,6 @@ const Class = () => {
 							onClick={() => handleViewChange("groups")}
 						>
 							Groups
-						</MenubarTrigger>
-					</MenubarMenu>
-					<MenubarMenu>
-						<MenubarTrigger
-							isActive={currentView === "files"}
-							className="cursor-pointer"
-							onClick={() => handleViewChange("files")}
-						>
-							Files
 						</MenubarTrigger>
 					</MenubarMenu>
 					{(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (

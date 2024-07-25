@@ -6,7 +6,7 @@ import PDFViewer from "@/components/assign/PDFViewer";
 
 const ViewSubmissionDialog = ({ submission, open, onClose, onDownload }) => (
     <Dialog open={open} onOpenChange={onClose}>
-        <DialogContent className="max-w-4xl h-[80vh]">
+        <DialogContent className="max-w-4xl h-[80vh] ml-[80px]">
             <DialogHeader>
                 <DialogTitle>Submission View</DialogTitle>
             </DialogHeader>

@@ -139,6 +139,16 @@ export const getAssignmentInClass = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+export const getAllAssignments = asyncErrorHandler(
+	async (req, res) => {
+		const assignments = await assignService.getAllAssignments();
+		return res.status(200).json({
+			status: "Success",
+			data: assignments
+		});
+	}
+);
+
 export const getAllAssignmentsByClassId = asyncErrorHandler(
 	async (req, res) => {
 		const { classId } = req.body;
@@ -156,5 +166,6 @@ export default {
 	removeAssignmentFromClass,
 	updateAssignmentInClass,
 	getAssignmentInClass,
+	getAllAssignments,
 	getAllAssignmentsByClassId
 };

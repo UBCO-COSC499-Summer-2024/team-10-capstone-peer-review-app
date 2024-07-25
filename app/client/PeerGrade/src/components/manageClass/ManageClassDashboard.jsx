@@ -464,6 +464,9 @@ const ManageClassDashboard = () => {
                             }}
                           >
                             {student.label}
+														<Check
+															className={`ml-auto h-4 w-4 ${selectedStudents.includes(student.studentId) ? "opacity-100" : "opacity-0"}`}
+														/>
                           </CommandItem>
                         ))}
                       </CommandGroup>

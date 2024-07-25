@@ -77,6 +77,16 @@ export const getAssignmentInClass = async (classId, assignmentId) => {
     }
 };
 
+export const getAllAssignments = async () => {
+    try {
+        const response = await axios.post(`${BASE_URL}/assignment/get-all-assignments`);
+        return response.data;
+    } catch (error) {
+        handleError(error);
+        return error.response.data;
+    }
+};
+
 export const getAllAssignmentsByClassId = async (classId) => {
     try {
         const response = await axios.post(`${BASE_URL}/assignment/get-class-assignments`, {

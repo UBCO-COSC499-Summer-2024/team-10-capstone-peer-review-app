@@ -50,7 +50,7 @@ const EditAssignment = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [rubrics, setRubrics] = useState([]);
-  const [selectedRubric, sets] = useState([]);
+  const [selectedRubrics, setSelectedRubrics] = useState([]);
   
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -102,9 +102,9 @@ const EditAssignment = () => {
           
           // Check if assignmentData.rubrics exists before mapping
           if (assignmentData.rubrics && Array.isArray(assignmentData.rubrics)) {
-            sets(assignmentData.rubrics.map(rubric => rubric.rubricId));
+            setSelectedRubrics(assignmentData.rubrics.map(rubric => rubric.rubricId));
           } else {
-            sets([]);
+            setSelectedRubrics([]);
           }
         }
       } catch (error) {
@@ -139,7 +139,7 @@ const EditAssignment = () => {
       reviewOption: data.reviewOption,
       maxSubmissions: data.maxSubmissions,
     }));
-    formData.append('rubrics', JSON.stringify(selectedRubric));
+    formData.append('rubrics', JSON.stringify(selectedRubrics));
 
     if (fileInputRef.current.files[0]) {
       formData.append('file', fileInputRef.current.files[0]);
@@ -417,19 +417,19 @@ const EditAssignment = () => {
                                 key={rubric.rubricId}
                                 value={rubric.rubricId}
                                 onSelect={(currentValue) => {
-                                  sets(prev => 
+                                  setSelectedRubrics(prev => 
                                     prev.includes(currentValue)
                                       ? prev.filter(id => id !== currentValue)
                                       : [...prev, currentValue]
                                   );
-                                  field.onChange(selectedRubric);
+                                  field.onChange(selectedRubrics);
                                 }}
                               >
                                 {rubric.title || 'Untitled Rubric'}
                                 <CheckIcon
                                   className={cn(
                                     "ml-auto h-4 w-4",
-                                    selectedRubric.includes(rubric.rubricId) ? "opacity-100" : "opacity-0"
+                                    selectedRubrics.includes(rubric.rubricId) ? "opacity-100" : "opacity-0"
                                   )}
                                 />
                               </CommandItem>

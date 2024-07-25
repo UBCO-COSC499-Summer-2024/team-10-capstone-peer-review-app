@@ -14,34 +14,26 @@ import GradeReviewDialog from "./GradeReviewDialog";
 import reviewAPI from "@/api/reviewApi";
 import { toast } from "@/components/ui/use-toast";
 
-const AssignedReviews = ({
-	assignedReviews,
-	onViewDetails,
-	onReviewsUpdate
-}) => {
+const AssignedReviews = ({ assignedReviews, onViewDetails }) => {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [expandedAssignments, setExpandedAssignments] = useState({});
 	const [selectedReview, setSelectedReview] = useState(null);
 	const [gradeDialogOpen, setGradeDialogOpen] = useState(false);
 
-	// Group reviews by assignment
 	const groupedReviews = useMemo(() => {
 		return assignedReviews.reduce((acc, review) => {
-			if (review && review.submission && review.submission.assignment) {
-				const assignmentId = review.submission.assignment.assignmentId;
-				if (!acc[assignmentId]) {
-					acc[assignmentId] = {
-						assignment: review.submission.assignment,
-						reviews: []
-					};
-				}
-				acc[assignmentId].reviews.push(review);
+			const assignmentId = review.submission.assignment.assignmentId;
+			if (!acc[assignmentId]) {
+				acc[assignmentId] = {
+					assignment: review.submission.assignment,
+					reviews: []
+				};
 			}
+			acc[assignmentId].reviews.push(review);
 			return acc;
 		}, {});
-	}, [assignedReviews]); // Add assignedReviews as a dependency
+	}, [assignedReviews]);
 
-	// Filter assignments based on search term
 	const filteredAssignments = useMemo(() => {
 		return Object.values(groupedReviews).filter(
 			(group) =>
@@ -54,7 +46,6 @@ const AssignedReviews = ({
 		);
 	}, [groupedReviews, searchTerm]);
 
-	// Toggle Dropdownn menu for each assignment
 	const toggleExpanded = (assignmentId) => {
 		setExpandedAssignments((prev) => ({
 			...prev,
@@ -62,7 +53,6 @@ const AssignedReviews = ({
 		}));
 	};
 
-	// Calculate percentage grade for a review to show in the UI
 	const calculatePercentageGrade = (review) => {
 		console.log("Review object:", JSON.stringify(review, null, 2));
 		if (!review.criterionGrades || review.criterionGrades.length === 0) {
@@ -81,13 +71,11 @@ const AssignedReviews = ({
 			: "0%";
 	};
 
-	// Handle click on a review to open the grade review dialog
 	const handleGradeReview = (review) => {
 		setSelectedReview(review);
 		setGradeDialogOpen(true);
 	};
 
-	// Handle form submission for the grade review dialog
 	const handleGradeSubmit = async (event) => {
 		event.preventDefault();
 
@@ -104,7 +92,7 @@ const AssignedReviews = ({
 		const formData = new FormData(event.target);
 		let totalMark = 0;
 		const criterionGrades = [];
-		// Iterate over each criterion in the rubric
+
 		selectedReview.submission.assignment.rubric.forEach(
 			(rubricForAssignment) => {
 				rubricForAssignment.rubric.criteria.forEach((criterion) => {
@@ -132,27 +120,13 @@ const AssignedReviews = ({
 				updatedReviewData
 			);
 
-			console.log("API response:", response.data); // Add this log
-
-			// Update the review in the local state, preserving the existing structure
+			// Update the review in the local state
 			const updatedAssignedReviews = assignedReviews.map((review) =>
-				review.reviewId === selectedReview.reviewId
-					? {
-							...review,
-							...response.data,
-							submission: {
-								...review.submission,
-								assignment: review.submission.assignment
-							},
-							criterionGrades: response.data.criterionGrades // Ensure this is updated
-						}
-					: review
+				review.reviewId === selectedReview.reviewId ? response.data : review
 			);
 
-			console.log("Updated reviews:", updatedAssignedReviews);
-
-			// Call the parent component's function to update the state
-			onReviewsUpdate(updatedAssignedReviews);
+			// You might want to call a function to update the parent component's state here
+			// For example: onReviewsUpdate(updatedAssignedReviews);
 
 			setGradeDialogOpen(false);
 			setSelectedReview(null);

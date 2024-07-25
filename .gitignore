@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 node_modules/
 /app/database/
 *.DS_Store
 *.vite
 *.vscode
+=======
+node_modules/ 
+app/database/
+*.env
+>>>>>>> origin

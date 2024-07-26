@@ -98,14 +98,15 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* This cycle was a lot better in terms of coming back to the pace of things. I was able to get a lot of the bugs fixed and merge my new changes from the peer testing workshop into our dev branch
+* I also helped Josh finish up his Student Review grading UI and solved conflicts for merging that into dev as well.
+* I started refactoring more code so that assignments and rubrics are more organized and have a 1-many relationship rather than many-many (1 assignment can have 1 rubric but 1 rubric can have many assignments)
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Fix the bugs remaining for refactoring the new changes (reports don't work at the moment)
+* Fix up remaining issues acquired from peer testing
+* Make sure our project can be as close as possible to the requirements list for our specific project (sent out by Scott) 
+
   
   
 

@@ -1,4 +1,42 @@
 
+# Bhavya's Log for Cycle 16
+
+
+## Tuesday, July 23, 2024, 05:22 PM - Thursday, July 25, 2024, 05:22 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[235](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/235)**: Create/Delete/Edit Categories  
+  
+
+## Time entries from Clockify on this cycle:
+
+## All Features worked on this cycle:
+
+## Features completed on this cycle:
+
+## Completed tasks:
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[235](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/235)**: Create/Delete/Edit Categories  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[198](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/198)**: Writing new back-end tests for dockerized test enviroment. Start with services, then controllers  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
+  
+
+## Recap on goals from last cycle
+* Couldn't do much this cycle as I had to prepare for my midterms for other courses this thursday, but did some refactoring of the routes
+* tested other branches as well
+  
+## Goals for next cycle
+* Create more tests for the backend
+* Look for more routes if possible
+* Add good documentations
+  
+
 # Bhavya's Log for Cycle 15
 
 

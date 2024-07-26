@@ -1,4 +1,70 @@
 
+# Abdul's Log for Cycle 16
+
+
+## Tuesday, July 23, 2024, 05:22 PM - Thursday, July 25, 2024, 05:53 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[255](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/255)**: Have students able to view their submission  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[239](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/239)**: Link Admin Dashboard UI elements to the back-end  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[234](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/234)**: Delete Rubric / Edit Rubric  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: database, type: UI 
+  
+
+## Time entries from Clockify on this cycle:
+
+&nbsp; &nbsp; :watch: **Working on reviewing other branches + fixing bugs** *(Total duration: 0.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 25, 2024, 05:00 PM - Thursday, July 25, 2024, 05:53 PM *(0.9 hours)*  
+
+&nbsp; &nbsp; :watch: **Working on Testing Session feedback refactor** *(Total duration: 2.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 25, 2024, 02:41 PM - Thursday, July 25, 2024, 04:51 PM *(2.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on Grades UI + back-end linking** *(Total duration: 0.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 25, 2024, 12:51 PM - Thursday, July 25, 2024, 01:43 PM *(0.9 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on Reports implementation** *(Total duration: 4.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 23, 2024, 05:30 PM - Tuesday, July 23, 2024, 09:30 PM *(4.0 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[267](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/267)**: Full Reports implementation (more UI & back-end)  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[267](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/267)**: Full Reports implementation (more UI & back-end)  
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[239](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/239)**: Link Admin Dashboard UI elements to the back-end  
+  
+
+## In-progress tasks: 
+&nbsp; &nbsp; :orange_circle: **Issue-[234](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/234)**: Delete Rubric / Edit Rubric  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[172](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/172)**: Refactor front-end test  
+  
+
+## Recap on goals from last cycle
+* Peer Reviews is finally done! Individual ones at least.
+* We may need to drop group peer reviews and focus on polishing the app up instead to make it ready for production.
+
+## Goals for next cycle
+* Focus on finishing up the app, filling in any holes or smoothing any rough corners.
+* Get more testing done.
+* UI refinements (such as using the red confirm delete dialog when deleting something everywhere in the web-app)
+  
+  
+
 # Abdul's Log for Cycle 15
 
 

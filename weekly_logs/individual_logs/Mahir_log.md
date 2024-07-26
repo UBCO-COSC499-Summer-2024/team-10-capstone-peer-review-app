@@ -1,4 +1,115 @@
 
+# Mahir's Log for Cycle 16
+
+
+## Tuesday, July 23, 2024, 05:22 PM - Thursday, July 25, 2024, 05:22 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[269](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/269)**: Back-end refactor for Assignment, rubric, submission, and reviews  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[265](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/265)**: Allow for uploading other file types as submission  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[252](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/252)**: Update dashboard for assignments, reviews, and grades  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[241](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/241)**: Fix toasts (ones that arent coloring properly)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[240](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/240)**: Add Change Password in Settings page  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[235](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/235)**: Create/Delete/Edit Categories  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[234](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/234)**: Delete Rubric / Edit Rubric  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: database, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[230](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/230)**: Personalized TODO creator for each class? extra feature  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: database, type: UI, Reach 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **219-244 Structural changes and merge conflicts** *(Total duration: 2.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 25, 2024, 02:44 PM - Thursday, July 25, 2024, 04:49 PM *(2.1 hours)*  
+  
+&nbsp; &nbsp; :watch: **Refactor Planning / Team Meeting** *(Total duration: 1.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 25, 2024, 12:22 PM - Thursday, July 25, 2024, 02:06 PM *(1.7 hours)*  
+  
+&nbsp; &nbsp; :watch: **Peer-Testing additions** *(Total duration: 2.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 24, 2024, 10:46 AM - Wednesday, July 24, 2024, 01:11 PM *(2.4 hours)*  
+  
+&nbsp; &nbsp; :watch: **Edit Rubric & Delete Rubric** *(Total duration: 5.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 24, 2024, 01:15 AM - Wednesday, July 24, 2024, 07:05 AM *(5.8 hours)*  
+  
+&nbsp; &nbsp; :watch: **Team Logs** *(Total duration: 0.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 24, 2024, 12:13 AM - Wednesday, July 24, 2024, 01:09 AM *(0.9 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[268](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/268)**: Logs review!  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[268](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/268)**: Logs review!  
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[241](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/241)**: Fix toasts (ones that arent coloring properly)  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[269](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/269)**: Back-end refactor for Assignment, rubric, submission, and reviews  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[265](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/265)**: Allow for uploading other file types as submission  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[252](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/252)**: Update dashboard for assignments, reviews, and grades  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[245](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/245)**: Add a rubric creation in Assignemnt View tab (for each assignment)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[242](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/242)**: Implement comments for assignments  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[240](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/240)**: Add Change Password in Settings page  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[235](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/235)**: Create/Delete/Edit Categories  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[234](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/234)**: Delete Rubric / Edit Rubric  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[230](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/230)**: Personalized TODO creator for each class? extra feature  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[120](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/120)**: Major Use Case 5: Send Reports to Admin   
+  
+
+## Recap on goals from last cycle
+* This cycle was a lot better in terms of coming back to the pace of things. I was able to get a lot of the bugs fixed and merge my new changes from the peer testing workshop into our dev branch
+* I also helped Josh finish up his Student Review grading UI and solved conflicts for merging that into dev as well.
+* I started refactoring more code so that assignments and rubrics are more organized and have a 1-many relationship rather than many-many (1 assignment can have 1 rubric but 1 rubric can have many assignments)
+
+## Goals for next cycle
+* Fix the bugs remaining for refactoring the new changes (reports don't work at the moment)
+* Fix up remaining issues acquired from peer testing
+* Make sure our project can be as close as possible to the requirements list for our specific project (sent out by Scott) 
+
+  
+  
+
 # Mahir's Log for Cycle 15
 
 

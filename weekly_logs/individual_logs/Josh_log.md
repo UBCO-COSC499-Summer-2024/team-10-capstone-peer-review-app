@@ -1,4 +1,77 @@
 
+# Josh's Log for Cycle 16
+
+
+## Tuesday, July 23, 2024, 05:22 PM - Thursday, July 25, 2024, 05:22 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[247](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/247)**: Graceful Logouts (Checking valid session before setting userContext)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: api 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[244](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/244)**: Complete a peer-review page   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[243](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/243)**: Add re-send verification email to login card  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Reviewing PR's** *(Total duration: 0.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 25, 2024, 03:19 PM - Thursday, July 25, 2024, 04:15 PM *(0.9 hours)*  
+  
+&nbsp; &nbsp; :watch: **Looking through db... trying to refactor database schema to fit some better changes to calls.** *(Total duration: 0.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 25, 2024, 03:00 PM - Thursday, July 25, 2024, 03:19 PM *(0.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 25, 2024, 09:55 AM - Thursday, July 25, 2024, 10:24 AM *(0.5 hours)*  
+  
+&nbsp; &nbsp; :watch: **244 - Creating a submit peer review page** *(Total duration: 3.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 25, 2024, 08:54 AM - Thursday, July 25, 2024, 09:46 AM *(0.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 24, 2024, 04:02 PM - Wednesday, July 24, 2024, 07:03 PM *(3.0 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[266](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/266)**: Peer Review Page for Students and Instructors  
+  
+
+## Features completed on this cycle:
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[247](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/247)**: Graceful Logouts (Checking valid session before setting userContext)  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[243](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/243)**: Add re-send verification email to login card  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[244](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/244)**: Complete a peer-review page   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[207](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/207)**: Integrate back-end testing env into drone  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[198](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/198)**: Writing new back-end tests for dockerized test enviroment. Start with services, then controllers  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
+  
+
+## Recap on goals from last cycle
+* Mainly working on Setting up Peer Reviews its set up for students we just need an instructor page
+* Have not set up new tests
+
+## Goals for next cycle
+* Need to complete instructor side for peer review
+* We decided to ditch group related stuff for our application to improve the user experience and other smaller parts of the application
+* Need to set up more testing and also help with small issues
+  
+  
+
 # Josh's Log for Cycle 15
 
 

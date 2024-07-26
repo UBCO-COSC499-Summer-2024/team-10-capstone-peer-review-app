@@ -117,7 +117,7 @@ const Assignment = () => {
         <TabsContent value="view">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className='rounded-md flex justify-center lg:col-span-2'>
-                  <PDFViewer url={assignment.assignmentFilePath} scale='0.93'/>
+                  <PDFViewer url={assignment.assignmentFilePath} scale='0.93' />
                 </div>
             
             <div className="space-y-6">

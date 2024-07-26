@@ -50,7 +50,7 @@ const EditAssignment = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [rubrics, setRubrics] = useState([]);
-  const [selectedRubrics, setSelectedRubrics] = useState([]);
+  const [selectedRubric, setSelectedRubric] = useState("");
   
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -138,6 +138,7 @@ const EditAssignment = () => {
       dueDate: data.dueDate,
       reviewOption: data.reviewOption,
       maxSubmissions: data.maxSubmissions,
+      rubricId: selectedRubric, 
     }));
     formData.append('rubrics', JSON.stringify(selectedRubrics));
 
@@ -390,10 +391,10 @@ const EditAssignment = () => {
             />
             <FormField
               control={form.control}
-              name="rubrics"
+              name="rubricId"
               render={({ field }) => (
                 <FormItem style={{ display: 'flex', flexDirection: 'column' }}>
-                  <FormLabel>Rubrics</FormLabel>
+                  <FormLabel>Rubric</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -403,7 +404,9 @@ const EditAssignment = () => {
                           aria-expanded={open}
                           className="w-[200px] justify-between bg-white"
                         >
-                          Select Rubrics
+                          {selectedRubric
+                            ? rubrics.find(rubric => rubric.rubricId === selectedRubric)?.title || 'Untitled Rubric'
+                            : "Select Rubric"}
                           <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                       </FormControl>
@@ -417,19 +420,15 @@ const EditAssignment = () => {
                                 key={rubric.rubricId}
                                 value={rubric.rubricId}
                                 onSelect={(currentValue) => {
-                                  setSelectedRubrics(prev => 
-                                    prev.includes(currentValue)
-                                      ? prev.filter(id => id !== currentValue)
-                                      : [...prev, currentValue]
-                                  );
-                                  field.onChange(selectedRubrics);
+                                  setSelectedRubric(currentValue);
+                                  field.onChange(currentValue);
                                 }}
                               >
                                 {rubric.title || 'Untitled Rubric'}
                                 <CheckIcon
                                   className={cn(
                                     "ml-auto h-4 w-4",
-                                    selectedRubrics.includes(rubric.rubricId) ? "opacity-100" : "opacity-0"
+                                    selectedRubric === rubric.rubricId ? "opacity-100" : "opacity-0"
                                   )}
                                 />
                               </CommandItem>
@@ -439,12 +438,11 @@ const EditAssignment = () => {
                       </Command>
                     </PopoverContent>
                   </Popover>
-                  <FormDescription>Select rubrics for this assignment.</FormDescription>
+                  <FormDescription>Select a rubric for this assignment.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
-            />
-            
+             />
             <FormItem>
               <FormLabel htmlFor="file-upload">Upload File</FormLabel>
               <input

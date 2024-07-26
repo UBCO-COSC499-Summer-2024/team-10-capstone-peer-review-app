@@ -73,9 +73,9 @@ const getRubricsForAssignment = async (assignmentId) => {
 			throw new apiError("Assignment not found", 404);
 		}
 
-		if (!assignment.rubric) {
-			throw new apiError("Rubrics not found", 404);
-		}
+		// if (!assignment.rubric) {
+		// 	throw new apiError("Rubrics not found", 404);
+		// }
 
 		const rubricAssignments = await prisma.rubricForAssignment.findMany({
 			where: {
@@ -94,9 +94,9 @@ const getRubricsForAssignment = async (assignmentId) => {
 			}
 		});
 
-		if (!rubricAssignments.length) {
-			throw new apiError("Rubrics not found for the assignment", 404);
-		}
+		// if (!rubricAssignments.length) {
+		// 	throw new apiError("Rubrics not found for the assignment", 404);
+		// }
 
 		// Map the result to only include rubric details
 		const rubrics = rubricAssignments.map((ra) => ra.rubric);

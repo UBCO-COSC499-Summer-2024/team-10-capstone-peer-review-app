@@ -18,7 +18,7 @@ router.get("/", (req, res) => {
 router.post("/studentSubmissions", getStudentSubmission);
 router.post("/studentSubmissionsForAssignment", getSubmissionsForAssignment);
 
-router.post("/submissionsForAssignment", ensureInstructorOrAdmin, getSubmissionsForAssignment);
+router.post("/submissionsForAssignment", getSubmissionsForAssignment);
 
 router.post("/createSubmission", createSubmission);
 

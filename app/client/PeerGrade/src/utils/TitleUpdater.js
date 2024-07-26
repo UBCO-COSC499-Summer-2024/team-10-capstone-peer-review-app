@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 // TODO -> Add wildcards for paramaterized routes
 const routeTitles = {
 	"/": "Welcome!",
-	"/dashboard": "Dåashboard",
+	"/dashboard": "Dashboard",
 	"/class/*": "Class Details",
 	"/class/createAssignment": "Create Assignment",
 	"/manageclass": "Manage Class",

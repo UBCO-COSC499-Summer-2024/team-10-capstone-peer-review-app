@@ -24,12 +24,14 @@ export const getStudentSubmissionForAssignment = async (studentId, assignmentId)
 };
 
 export const getSubmissionsForAssignment = async (assignmentId) => {
+  console.log('assignmentId:', assignmentId);
   try {
     const response = await axios.post(`${BASE}/submit/submissionsForAssignment`, { assignmentId });
+    console.log('response', response);
     return response.data;
   } catch (error) {
     handleError(error);
-    throw error.response.data;
+    throw error.response?.data || error;
   }
 };
 

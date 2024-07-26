@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import NotifCard from "@/components/global/NotifCard";
 import { deleteNotification, getNotifications } from "@/api/notifsApi";
@@ -7,41 +7,32 @@ export default function Notifications() {
   const { user, userLoading } = useUser();
   const [notifications, setNotifications] = useState([]);
 
-  useEffect(() => {
-    const fetchNotifs = async () => {
-      if (user && !userLoading) {
-        try {
-          const notifs = await getNotifications(user.userId);
-          setNotifications(Array.isArray(notifs.data) ? notifs.data : []);
-        } catch (error) {
-          console.error("Failed to fetch notifications", error);
-        }
+  const fetchNotifications = useCallback(async () => {
+    if (user && !userLoading) {
+      try {
+        const notifs = await getNotifications(user.userId);
+        setNotifications(Array.isArray(notifs.data) ? notifs.data : []);
+      } catch (error) {
+        console.error("Failed to fetch notifications", error);
       }
-    };
-
-    fetchNotifs();
-
-    const intervalId = setInterval(() => {
-      fetchNotifs();
-    }, 10000); // Fetch notifications every 30 seconds
-
-    return () => {
-      clearInterval(intervalId); // Clear the interval when the component unmounts
-    };
+    }
   }, [user, userLoading]);
 
-	const handleDeleteNotif = async (notificationId) => {
-		const deleteNotif = await deleteNotification(notificationId);
-		if (deleteNotif.status === "Success") {
-			setNotifications((prevNotifs) =>
-				prevNotifs.filter(
-					(notification) => notification.notificationId !== notificationId
-				)
-			);
-		} else {
-			console.error('An error occurred while deleting the notification.', deleteNotif.message);
-		}
-	};
+  useEffect(() => {
+    fetchNotifications();
+    const intervalId = setInterval(fetchNotifications, 10000); // Poll every 10 seconds
+
+    return () => clearInterval(intervalId);
+  }, [fetchNotifications]);
+
+  const handleDeleteNotif = async (notificationId) => {
+    const deleteNotif = await deleteNotification(notificationId);
+    if (deleteNotif.status === "Success") {
+      await fetchNotifications();
+    } else {
+      console.error('An error occurred while deleting the notification.', deleteNotif.message);
+    }
+  };
 
   return (
     <div className="w-full px-6">

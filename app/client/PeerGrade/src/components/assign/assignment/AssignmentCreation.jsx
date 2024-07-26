@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { format } from 'date-fns';
@@ -25,6 +25,7 @@ import {
 import { toast } from '@/components/ui/use-toast';
 import { getCategoriesByClassId } from '@/api/classApi';
 import { addAssignmentToClass } from '@/api/assignmentApi';
+import { getAllRubricsInClass } from '@/api/rubricApi';
 
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -47,6 +48,8 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
   const [selectedFileName, setSelectedFileName] = useState('');
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [rubrics, setRubrics] = useState([]);
+  const [selectedRubrics, setSelectedRubrics] = useState([]);
   
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -59,11 +62,6 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
       dueDate: null,
       file: null,
     }
-  });
-
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: "rubric"
   });
 
   const dropdown_options = [
@@ -84,21 +82,26 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
   };
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchCategoriesAndRubrics = async () => {
       try {
-        const response = await getCategoriesByClassId(classId);
-        setCategories(response.data);
+        const [categoriesResponse, rubricsResponse] = await Promise.all([
+          getCategoriesByClassId(classId),
+          getAllRubricsInClass(classId)
+        ]);
+        setCategories(categoriesResponse.data);
+        setRubrics(rubricsResponse.data);
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        console.error("Error fetching categories and rubrics:", error);
       }
     };
 
-    fetchCategories();
+    fetchCategoriesAndRubrics();
   }, [classId]);
 
   const onSubmit = async (data) => {
     console.log('Form submitted:', data);  // Add logging to check form data
     console.log('selectedCategory:', selectedCategory);
+    console.log('selectedRubrics:', selectedRubrics);
    
     const formData = new FormData();
     formData.append('classId', classId);
@@ -110,6 +113,8 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
       reviewOption: data.reviewOption,
       maxSubmissions: data.maxSubmissions,
     }));
+    formData.append('rubrics', JSON.stringify(selectedRubrics.map(rubricId => ({ rubricId }))));
+
     if (fileInputRef.current.files[0]) {
       formData.append('file', fileInputRef.current.files[0]);
     }
@@ -126,6 +131,7 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
         form.reset();
         setSelectedFileName('');
         setSelectedCategory('');
+        setSelectedRubrics([]);
         
         // Call the callback function to refresh assignments
         onAssignmentCreated();
@@ -345,6 +351,62 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="rubrics"
+              render={({ field }) => (
+                <FormItem style={{ display: 'flex', flexDirection: 'column' }}>
+                  <FormLabel>Rubrics</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={open}
+                          className="w-[200px] justify-between bg-white"
+                        >
+                          Select Rubrics
+                          <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0 rounded-md">
+                      <Command>
+                        <CommandList>
+                          <CommandGroup>
+                            {rubrics.map((rubric) => (
+                              <CommandItem
+                                key={rubric.rubricId}
+                                value={rubric.rubricId}
+                                onSelect={(currentValue) => {
+                                  setSelectedRubrics(prev => 
+                                    prev.includes(currentValue)
+                                      ? prev.filter(id => id !== currentValue)
+                                      : [...prev, currentValue]
+                                  );
+                                  field.onChange(selectedRubrics);
+                                }}
+                              >
+                                {rubric.title || 'Untitled Rubric'}
+                                <CheckIcon
+                                  className={cn(
+                                    "ml-auto h-4 w-4",
+                                    selectedRubrics.includes(rubric.rubricId) ? "opacity-100" : "opacity-0"
+                                  )}
+                                />
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  <FormDescription>Select rubrics for this assignment.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormItem>
               <FormLabel htmlFor="file-upload">Upload File</FormLabel>
               <input
@@ -365,7 +427,7 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
               <FormDescription>Attach any PDF files related to the assignment.</FormDescription>
               <FormMessage />
             </FormItem>
-            <Button type="submit" className='bg-primary text-white ' onSubmit={form.reset}>Submit</Button>
+            <Button type="submit" className='bg-primary text-white'>Submit</Button>
           </form>
         </Form>
       </div>

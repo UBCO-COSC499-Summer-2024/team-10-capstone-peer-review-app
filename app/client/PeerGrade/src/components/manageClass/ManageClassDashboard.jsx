@@ -4,16 +4,10 @@ import { Button } from "@/components/ui/button";
 import { useClass } from "@/contexts/contextHooks/useClass";
 import EditClassDialog from "@/components/manageClass/EditClassModal";
 import { Users, FileText, Edit, Plus, MinusCircle, FileUp, ChevronLeft, ChevronRight, FileQuestion, Trash2, Check } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from "@/components/ui/table";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import StudentsTable from "@/components/manageClass/StudentsTable";
+import EnrollTable from "@/components/manageClass/EnrollTable";
+import AssignmentsTable from "@/components/manageClass/AssignmentsTable";
+
 import { 
   Dialog, 
   DialogContent, 
@@ -38,6 +32,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import AddStudentsByCSVDialog from "@/components/class/addStudentsByCSVDialog";
 import { getStudentsByClassId, removeStudentFromClass, addStudentToClass, deleteClass } from "@/api/classApi";
+import { getAllAssignmentsByClassId, removeAssignmentFromClass } from "@/api/assignmentApi";
 import { getUsersByRole } from "@/api/userApi";
 import { getEnrollRequestsForClass, updateEnrollRequestStatus, deleteEnrollRequest } from "@/api/enrollmentApi";
 import { useToast } from "@/components/ui/use-toast";
@@ -63,6 +58,63 @@ const ManageClassDashboard = () => {
   const [itemsPerPage] = useState(10);
   const { toast } = useToast();
   const { user } = useUser();
+  const [assignments, setAssignments] = useState([]);
+  const [currentAssignmentPage, setCurrentAssignmentPage] = useState(1);
+  const [confirmDeleteAssignment, setConfirmDeleteAssignment] = useState(false);
+  const [selectedAssignment, setSelectedAssignment] = useState(null);
+  const [deleteAssignmentDialogOpen, setDeleteAssignmentDialogOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchAssignments = async () => {
+      try {
+        const response = await getAllAssignmentsByClassId(classId);
+        setAssignments(response.data);
+      } catch (error) {
+        console.error("Error fetching assignments:", error);
+      }
+    };
+
+    fetchAssignments();
+  }, [classId]);
+
+  const handleDeleteAssignmentClick = (assignment) => {
+    setSelectedAssignment(assignment);
+    setDeleteAssignmentDialogOpen(true);
+  };
+
+  const handleDeleteAssignment = async () => {
+    if (confirmDeleteAssignment) {
+      setConfirmDeleteAssignment(false);
+      if (selectedAssignment) {
+        try {
+          const response = await removeAssignmentFromClass(selectedAssignment.assignmentId);
+          if (response.status === "Success") {
+            setDeleteAssignmentDialogOpen(false);
+            setAssignments((prevAssignments) =>
+              prevAssignments.filter(
+                (assignment) => assignment.assignmentId !== selectedAssignment.assignmentId
+              )
+            );
+            toast({
+              title: "Success",
+              description: "Assignment deleted successfully"
+            });
+          } else {
+            throw new Error(response.message);
+          }
+        } catch (error) {
+          console.error("Error deleting assignment:", error);
+          toast({
+            title: "Error",
+            description: "Failed to delete assignment",
+            variant: "destructive"
+          });
+        }
+      }
+    } else {
+      setConfirmDeleteAssignment(true);
+    }
+  };
 
   useEffect(() => {
     const currentClass = classes.find((c) => c.classId === classId);
@@ -292,7 +344,17 @@ const ManageClassDashboard = () => {
   return (
     <div className="w-full rounded-lg">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">{classData.classname}</h1>
+        <div className="flex items-center">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate(-1)}
+            className="mr-2"
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </Button>
+          <h1 className="text-3xl font-bold">{classData.classname}</h1>
+        </div>
         <div>
           <Button
             variant="outline"
@@ -312,137 +374,38 @@ const ManageClassDashboard = () => {
         </div>
       </div>
 
-      {/* Students Table */}
-      <div className="bg-card p-6 rounded-lg shadow mb-6">
-        <div className="flex flex-row items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold">Students</h2>
-          {(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (classData.classSize - currentStudents.length) > 0 && (
-            <div>
-              <Button
-                variant="ghost"
-                className="bg-accent h-10 mr-2"
-                onClick={() => setAddByCSVOpen(true)}
-              >
-                <FileUp className="w-5 h-5 mr-2" />
-                Add Students via CSV
-              </Button>
-              <Button
-                variant="ghost"
-                className="bg-accent h-10"
-                onClick={() => setAddDialogOpen(true)}
-              >
-                <Plus className="w-5 h-5 mr-2" />
-                Add Students Manually
-              </Button>
-            </div>
-          )}
-        </div>
-        <Input
-          type="text"
-          placeholder="Search students"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="mb-4"
-        />
-        {filteredStudents.length === 0 ? (
-          <div className="text-center py-4">No students found</div>
-        ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {currentStudents.map((student) => (
-                <TableRow key={student.userId}>
-                  <TableCell className="flex items-center mt-1">
-                    <Avatar className="w-8 h-8 mr-2">
-                      <AvatarImage src={student.avatarUrl} alt={`${student.firstname} ${student.lastname}`} />
-                      <AvatarFallback>{getInitials(student.firstname, student.lastname)}</AvatarFallback>
-                    </Avatar>
-                    {student.firstname} {student.lastname}
-                  </TableCell>
-                  <TableCell>{student.email}</TableCell>
-                  <TableCell>
-                    {(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (
-                      <Button
-                        variant="outline"
-                        className="bg-accent"
-                        onClick={() => handleDeleteStudent(student)}
-                      >
-                        <MinusCircle className="w-5 h-5 mr-2" /> Delete
-                      </Button>
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )}
-        {renderPagination(currentStudentPage, setCurrentStudentPage, filteredStudents.length)}
-      </div>
+      <StudentsTable 
+        students={currentStudents}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        handleDeleteStudent={handleDeleteStudent}
+        setAddByCSVOpen={setAddByCSVOpen}
+        setAddDialogOpen={setAddDialogOpen}
+        user={user}
+        renderPagination={renderPagination}
+        currentPage={currentStudentPage}
+        setCurrentPage={setCurrentStudentPage}
+      />
 
-      {/* Enrollment Requests Table */}
-      <div className="bg-card p-6 rounded-lg shadow">
-        <h2 className="text-xl font-semibold mb-4">Enrollment Requests</h2>
-        {enrollRequests.length === 0 ? (
-          <div className="text-center py-4">No enrollment requests</div>
-        ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Student Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Request Date</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {currentEnrollRequests.map((request) => (
-                <TableRow key={request.enrollRequestId}>
-                  <TableCell>{`${request.user.firstname} ${request.user.lastname}`}</TableCell>
-                  <TableCell>{request.user.email}</TableCell>
-                  <TableCell>{new Date(request.createdAt).toLocaleDateString()}</TableCell>
-                  <TableCell>
-                    <Badge variant={request.status.toLowerCase()}>
-                      {request.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                  <Button
-                      variant="outline"
-                      className="mr-2"
-                      onClick={() => handleUpdateEnrollRequest(request.enrollRequestId, "APPROVED")}
-                      disabled={request.status === "APPROVED"}
-                    >
-                      Approve
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="mr-2"
-                      onClick={() => handleUpdateEnrollRequest(request.enrollRequestId, "DENIED")}
-                      disabled={request.status === "DENIED"}
-                    >
-                      Deny
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => handleDeleteEnrollRequest(request.enrollRequestId, request.userId)}
-                    >
-                      Delete
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )}
-        {renderPagination(currentEnrollRequestPage, setCurrentEnrollRequestPage, enrollRequests.length)}
-      </div>
+      <EnrollTable 
+        enrollRequests={currentEnrollRequests}
+        handleUpdateEnrollRequest={handleUpdateEnrollRequest}
+        handleDeleteEnrollRequest={handleDeleteEnrollRequest}
+        renderPagination={renderPagination}
+        currentPage={currentEnrollRequestPage}
+        setCurrentPage={setCurrentEnrollRequestPage}
+      />
+
+      <AssignmentsTable 
+        assignments={assignments.slice((currentAssignmentPage - 1) * itemsPerPage, currentAssignmentPage * itemsPerPage)}
+        classId={classId}
+        handleDeleteClick={handleDeleteAssignmentClick}
+        user={user}
+        renderPagination={renderPagination}
+        currentPage={currentAssignmentPage}
+        setCurrentPage={setCurrentAssignmentPage}
+      />
+
 
       <EditClassDialog
         open={editModalOpen}
@@ -528,6 +491,36 @@ const ManageClassDashboard = () => {
         onOpenChange={setAddByCSVOpen}
         onStudentsAdded={fetchStudents}
       />
+    
+    <Dialog open={deleteAssignmentDialogOpen} onOpenChange={setDeleteAssignmentDialogOpen}>
+        <DialogContent
+          className={
+            confirmDeleteAssignment ? "border-red-950 bg-red-500 text-white" : ""
+          }
+        >
+          <DialogHeader>
+            <DialogTitle>
+              {confirmDeleteAssignment ? "Confirm" : ""} Delete Assignment
+            </DialogTitle>
+          </DialogHeader>
+          Are you {confirmDeleteAssignment ? "really " : ""}sure you want to delete the assignment {selectedAssignment?.title} from this class?
+          <DialogFooter>
+            <Button
+              onClick={() => setDeleteAssignmentDialogOpen(false)}
+              className={confirmDeleteAssignment ? "shadow-md shadow-red-900" : ""}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleDeleteAssignment}
+              className={confirmDeleteAssignment ? "shadow-md shadow-red-900" : ""}
+            >
+              Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

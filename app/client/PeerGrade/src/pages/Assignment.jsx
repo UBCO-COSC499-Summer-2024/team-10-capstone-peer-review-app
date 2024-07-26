@@ -4,9 +4,9 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription }
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Calendar, FileText, Users, Edit, Upload } from 'lucide-react';
 import PDFViewer from '@/components/assign/PDFViewer';
-import EditAssignment from './classNav/assignment/EditAssignment';
-import Submissions from './classNav/assignment/Submissions';
-import Submission from './classNav/assignment/StudentSubmission';
+import EditAssignment from '../components/assign/assignment/EditAssignment';
+import Submissions from '../components/assign/assignment/Submissions';
+import Submission from '../components/assign/assignment/StudentSubmission';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { getAssignmentInClass } from '@/api/assignmentApi';
 import { toast } from "@/components/ui/use-toast";
@@ -14,7 +14,7 @@ import { useUser } from "@/contexts/contextHooks/useUser";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import ViewSubmissionDialog from "@/pages/classNav/assignment/submission/ViewSubmissionDialog";
+import ViewSubmissionDialog from '@/components/assign/assignment/submission/ViewSubmissionDialog';
 import { getStudentSubmission, getStudentSubmissionForAssignment } from '@/api/submitApi';
 
 const Assignment = () => {

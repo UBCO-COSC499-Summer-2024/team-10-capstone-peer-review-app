@@ -6,35 +6,37 @@
 
 
 ### Major features worked on in c-16
-*  
+*  Peer Reviews / Grades
   
-*  
+*  Notifications and Reports
   
-*  
+*  Other UI fixes and smaller bug fixes
   
 
 ### Major features completed in c-16
-*  
+*  Notifications and Reports
   
-*  
-  
-*  
+*  Other UI fixes and smaller bug fixes
   
 
 ### Major features to work on for c-17
-*  
+*  Peer Reviews / Grades
   
-*  
-  
-*  
+*  Possibly refactoring some prisma database calls
+
+*  Cleaning up the rest of the application
+
+*  Refactoring back-end testing 
   
 
 ### Team Issues and Hurdles for c-16
-*  
+*  We discussed about the time we have to finish up the Peer Reviews and Grades, we are currently working on the Peer Reviews and Grades and will trying to finishing up the Peer Reviews and Grades in the next cycle.
   
-*  
+*  With what time we have left, we made the decision to scrap trying to complete Group Reviews and other Group related things, since we are not sure both Peer Reviews, grades, and other bug fixes. 
   
-*  
+*  Our plan going forward is to fully finish up Peer Reviews and Grades then focus on cleaning up the rest of the application, even if we aren't able to complete all features we want to have a clean application with few to no bugs.
+
+* We also need to update our testing suite for the back-end, many api calls are not testing properly as things are constantly changing and being added to the application.
   
 
 ### Clockify Dashboard for this Week

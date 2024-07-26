@@ -4,7 +4,6 @@
 
 ## Tuesday, July 23, 2024, 05:22 PM - Thursday, July 25, 2024, 05:22 PM
 
-
 ## Tasks currently in the Backlog for c-16:
 ![Tasks in Backlog for c-16](./team_log_images/backlog_issues/backlog_issues_c16.png)  
   
@@ -28,11 +27,12 @@
 ## Test Reports for c-16
 
 #### Front-end Testing for c-16
-![Front-end Tests for c-16](./team_log_images/front_end_tests/front_end_tests_c16.png)  
+![Front-end Tests for c-16](./team_log_images/front_end_tests/front_end_tests_c15.png)  
   
 
 #### Back-end Testing for c-16
-![Back end Tests for c-16](./team_log_images/back_end_tests/back_end_tests_c16.png)  
+![Back end Tests for c-16](./team_log_images/back_end_tests/back_end_unit_tests_c15.png)  
+![Back end Tests for c-16](./team_log_images/back_end_tests/back_end_integration_tests_c15.png)  
   
   
   

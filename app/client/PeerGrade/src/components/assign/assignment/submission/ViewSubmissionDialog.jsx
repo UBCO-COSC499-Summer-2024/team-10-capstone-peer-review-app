@@ -12,10 +12,10 @@ const ViewSubmissionDialog = ({ submission, rubric, open, onClose, onDownload })
                 <DialogTitle className="flex justify-between items-center">
                     Submission View
                     {rubric && (
-                        <TooltipProvider>
+                        <TooltipProvider delayDuration={200}>
                             <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Button variant="ghost" size="sm">
+                                <TooltipTrigger asChild className='mt-[-18px] mr-4'>
+                                    <Button variant="ghost" size="sm" className='hover:bg-transparent'>
                                         <Info className="h-4 w-4" />
                                     </Button>
                                 </TooltipTrigger>
@@ -28,7 +28,7 @@ const ViewSubmissionDialog = ({ submission, rubric, open, onClose, onDownload })
                     )}
                 </DialogTitle>
             </DialogHeader>
-            <div className="flex-1 overflow-auto">
+            <div className="flex-1 overflow-x-hidden">
                 {submission && (
                     <PDFViewer
                         url={submission.submissionFilePath}
@@ -36,10 +36,10 @@ const ViewSubmissionDialog = ({ submission, rubric, open, onClose, onDownload })
                     />
                 )}
             </div>
-            <Button onClick={() => onDownload(submission)}>
+            {/* <Button onClick={() => onDownload(submission)}>
                 <Download className="h-4 w-4 mr-1" />
                 Download
-            </Button>
+            </Button> */}
         </DialogContent>
     </Dialog>
 );

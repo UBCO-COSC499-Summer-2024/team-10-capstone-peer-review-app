@@ -307,100 +307,93 @@ const getReviewDetails = async (reviewId) => {
 };
 
 const getReviewsAssigned = async (userId) => {
-	try {
-		const reviewsAssigned = await prisma.review.findMany({
-			where: {
-				reviewerId: userId
-			},
-			include: {
-				submission: {
-					include: {
-						assignment: {
-							include: {
-								classes: true,
-								category: true,
-								// The rubrics for assignment is called rubric, bit confusing..
-								rubric: {
-									include: {
-										rubric: {
-											include: {
-												criteria: {
-													include: {
-														criterionRatings: true
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				},
-				reviewer: true,
-				reviewee: true,
-				criterionGrades: {
-					include: {
-						criterion: true
-					}
-				}
-			}
-		});
-		return reviewsAssigned;
-	} catch (error) {
-		throw new apiError(
-			`Failed to retrieve user reviews: ${error.message}`,
-			500
-		);
-	}
+    try {
+        const reviewsAssigned = await prisma.review.findMany({
+            where: {
+                reviewerId: userId
+            },
+            include: {
+                submission: {
+                    include: {
+                        assignment: {
+                            include: {
+                                classes: true,
+                                category: true,
+                                rubric: {
+                                    include: {
+                                        criteria: {
+                                            include: {
+                                                criterionRatings: true
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                reviewer: true,
+                reviewee: true,
+                criterionGrades: {
+                    include: {
+                        criterion: true
+                    }
+                }
+            }
+        });
+        return reviewsAssigned;
+    } catch (error) {
+        console.error("Error in getReviewsAssigned:", error);
+        throw new apiError(
+            `Failed to retrieve user reviews: ${error.message}`,
+            500
+        );
+    }
 };
 
 const getReviewsReceived = async (userId) => {
-	try {
-		const reviewsReceived = await prisma.review.findMany({
-			where: {
-				revieweeId: userId
-			},
-			include: {
-				submission: {
-					include: {
-						assignment: {
-							include: {
-								classes: true,
-								category: true,
-								rubric: {
-									include: {
-										rubric: {
-											include: {
-												criteria: {
-													include: {
-														criterionRatings: true
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				},
-				reviewer: true,
-				reviewee: true,
-				criterionGrades: {
-					include: {
-						criterion: true
-					}
-				}
-			}
-		});
-		return reviewsReceived;
-	} catch (error) {
-		throw new apiError(
-			`Failed to retrieve user reviews: ${error.message}`,
-			500
-		);
-	}
+    try {
+        const reviewsReceived = await prisma.review.findMany({
+            where: {
+                revieweeId: userId
+            },
+            include: {
+                submission: {
+                    include: {
+                        assignment: {
+                            include: {
+                                classes: true,
+                                category: true,
+                                rubric: {
+                                    include: {
+                                        criteria: {
+                                            include: {
+                                                criterionRatings: true
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                reviewer: true,
+                reviewee: true,
+                criterionGrades: {
+                    include: {
+                        criterion: true
+                    }
+                }
+            }
+        });
+        return reviewsReceived;
+    } catch (error) {
+        console.error("Error in getReviewsReceived:", error);
+        throw new apiError(
+            `Failed to retrieve user reviews: ${error.message}`,
+            500
+        );
+    }
 };
 
 export default {

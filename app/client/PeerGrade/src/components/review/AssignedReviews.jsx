@@ -62,10 +62,11 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 			(total, cg) => total + (cg.grade || 0),
 			0
 		);
-		const totalMaxPoints = review.criterionGrades.reduce(
-			(total, cg) => total + (cg.criterion?.maxMark || 0),
+		const rubric = review.submission.assignment.rubric;
+		const totalMaxPoints = rubric ? rubric.criteria.reduce(
+			(total, criterion) => total + (criterion.maxMark || 0),
 			0
-		);
+		) : 0;
 		return totalMaxPoints > 0
 			? `${((totalGrade / totalMaxPoints) * 100).toFixed(2)}%`
 			: "0%";
@@ -78,7 +79,7 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 
 	const handleGradeSubmit = async (event) => {
 		event.preventDefault();
-
+	
 		if (!selectedReview) {
 			console.error("No review selected");
 			toast({
@@ -88,46 +89,54 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 			});
 			return;
 		}
-
+	
 		const formData = new FormData(event.target);
 		let totalMark = 0;
 		const criterionGrades = [];
-
-		selectedReview.submission.assignment.rubric.forEach(
-			(rubricForAssignment) => {
-				rubricForAssignment.rubric.criteria.forEach((criterion) => {
-					const grade =
-						parseFloat(formData.get(`grade-${criterion.criterionId}`)) || 0;
-					totalMark += grade;
-					const comment = formData.get(`comment-${criterion.criterionId}`);
-					criterionGrades.push({
-						criterionId: criterion.criterionId,
-						grade,
-						comment
-					});
+	
+		const rubric = selectedReview.submission.assignment.rubric;
+		
+		if (rubric && rubric.criteria) {
+			rubric.criteria.forEach((criterion) => {
+				const grade =
+					parseFloat(formData.get(`grade-${criterion.criterionId}`)) || 0;
+				totalMark += grade;
+				const comment = formData.get(`comment-${criterion.criterionId}`);
+				criterionGrades.push({
+					criterionId: criterion.criterionId,
+					grade,
+					comment
 				});
-			}
-		);
-
+			});
+		} else {
+			console.error("Rubric or criteria not found");
+			toast({
+				title: "Error",
+				description: "Rubric information is missing. Please try again.",
+				variant: "destructive"
+			});
+			return;
+		}
+	
 		try {
 			const updatedReviewData = {
 				reviewGrade: totalMark,
 				criterionGrades: criterionGrades
 			};
-
+	
 			const response = await reviewAPI.updateReview(
 				selectedReview.reviewId,
 				updatedReviewData
 			);
-
+	
 			// Update the review in the local state
 			const updatedAssignedReviews = assignedReviews.map((review) =>
 				review.reviewId === selectedReview.reviewId ? response.data : review
 			);
-
+	
 			// You might want to call a function to update the parent component's state here
 			// For example: onReviewsUpdate(updatedAssignedReviews);
-
+	
 			setGradeDialogOpen(false);
 			setSelectedReview(null);
 			

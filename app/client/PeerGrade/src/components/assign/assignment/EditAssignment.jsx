@@ -36,6 +36,7 @@ const FormSchema = z.object({
   dueDate: z.date({
     required_error: "Due date is required",
   }),
+  rubricId: z.string().min(1, "Rubric is required"), // Add this line
   file: z.any().optional(),
 });
 
@@ -95,16 +96,15 @@ const EditAssignment = () => {
             categoryId: assignmentData.categoryId,
             reviewOption: assignmentData.reviewOption,
             dueDate: new Date(assignmentData.dueDate),
+            rubricId: assignmentData.rubricId, // Add this line
           });
     
           setSelectedCategory(assignmentData.categoryId);
           setSelectedFileName(assignmentData.assignmentFilePath ? assignmentData.assignmentFilePath.split('/').pop() : '');
           
-          // Check if assignmentData.rubrics exists before mapping
-          if (assignmentData.rubrics && Array.isArray(assignmentData.rubrics)) {
-            setSelectedRubrics(assignmentData.rubrics.map(rubric => rubric.rubricId));
-          } else {
-            setSelectedRubrics([]);
+          // Set the selected rubric
+          if (assignmentData.rubricId) {
+            setSelectedRubric(assignmentData.rubricId);
           }
         }
       } catch (error) {
@@ -116,7 +116,7 @@ const EditAssignment = () => {
         });
       }
     };
-
+  
     fetchAssignmentAndCategories();
   }, [classId, assignmentId, form]);
 
@@ -138,10 +138,9 @@ const EditAssignment = () => {
       dueDate: data.dueDate,
       reviewOption: data.reviewOption,
       maxSubmissions: data.maxSubmissions,
-      rubricId: selectedRubric, 
+      rubricId: selectedRubric, // Include the selected rubric
     }));
-    formData.append('rubrics', JSON.stringify(selectedRubrics));
-
+  
     if (fileInputRef.current.files[0]) {
       formData.append('file', fileInputRef.current.files[0]);
     }
@@ -156,20 +155,22 @@ const EditAssignment = () => {
           status: "success"
         });
         
-        // Clear the form and reset fields
-        form.reset({
-          title: "",
-          description: "",
-          maxSubmissions: 1,
-          categoryId: "",
-          reviewOption: "",
-          dueDate: null,
-          file: null,
-        });
+        // // Clear the form and reset fields
+        // form.reset({
+        //   title: "",
+        //   description: "",
+        //   maxSubmissions: 1,
+        //   categoryId: "",
+        //   reviewOption: "",
+        //   dueDate: null,
+        //   file: null,
+        //   rubricId: "", // Reset rubric
+        // });
         
         setSelectedCategory("");
         setSelectedFileName("");
         setValue("");
+        setSelectedRubric(""); // Reset selected rubric
         
         // Redirect to the assignment page
         navigate(`/class/${classId}/assignment/${assignmentId}`);

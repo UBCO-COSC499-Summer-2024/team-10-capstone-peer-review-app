@@ -37,14 +37,15 @@ import { getUsersByRole } from "@/api/userApi";
 import { getEnrollRequestsForClass, updateEnrollRequestStatus, deleteEnrollRequest } from "@/api/enrollmentApi";
 import { useToast } from "@/components/ui/use-toast";
 import { useUser } from "@/contexts/contextHooks/useUser";
+import DeleteClassDialog from "./DeleteClassDialog";
 
 const ManageClassDashboard = () => {
   const { classId } = useParams();
   const navigate = useNavigate();
-  const { classes, setClasses, updateClasses } = useClass();
+  const { classes, setClasses, updateClasses, removeClass } = useClass();
   const [classData, setClassData] = useState(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deleteClassDialogOpen, setDeleteClassDialogOpen] = useState(false);
   const [students, setStudents] = useState([]);
   const [enrollRequests, setEnrollRequests] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -60,6 +61,7 @@ const ManageClassDashboard = () => {
   const { user } = useUser();
   const [assignments, setAssignments] = useState([]);
   const [currentAssignmentPage, setCurrentAssignmentPage] = useState(1);
+  const [confirmDeleteClass, setConfirmDeleteClass] = useState(false);
   const [confirmDeleteAssignment, setConfirmDeleteAssignment] = useState(false);
   const [selectedAssignment, setSelectedAssignment] = useState(null);
   const [deleteAssignmentDialogOpen, setDeleteAssignmentDialogOpen] = useState(false);
@@ -266,30 +268,28 @@ const ManageClassDashboard = () => {
     setEditModalOpen(true);
   };
 
-  const handleDeleteClass = () => {
-    setDeleteDialogOpen(true);
-  };
+	const handleDeleteClass = (selected_class) => {
+		setConfirmDeleteClass(false);
+		setDeleteClassDialogOpen(true);
+	};
 
-  const confirmDeleteClass = async () => {
-    try {
-      const result = await deleteClass(classId);
-      console.log(result);
-      if (result.status === "Success") {
-        toast({
-          title: "Success",
-          description: "Class deleted successfully"
-        });
-        setClasses(classes.filter(c => c.classId !== classId));
-        navigate("/manage-class");  // Redirect to the classes list page
-      } else {
-        throw new Error(result);
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setDeleteDialogOpen(false);
-    }
-  };
+	const deleteClass = async () => {
+		if (confirmDeleteClass) {
+			setConfirmDeleteAssignment(false);
+			if (classData) {
+				removeClass(classData.classId);
+				setDeleteClassDialogOpen(false);
+        navigate(-1);
+			} else {
+				console.error(
+					"An error occurred while deleting the class.",
+					classData.message
+				);
+			}
+		} else {
+			setConfirmDeleteClass(true);
+		}
+	};
 
   const filteredStudents = students.filter((student) =>
     `${student.firstname} ${student.lastname}`
@@ -413,18 +413,13 @@ const ManageClassDashboard = () => {
         classItem={classData}
       />
 
-      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Delete Class</DialogTitle>
-          </DialogHeader>
-          <p>Are you sure you want to delete this class? This action cannot be undone.</p>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
-            <Button variant="destructive" onClick={confirmDeleteClass}>Delete</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <DeleteClassDialog 
+        open={deleteClassDialogOpen}
+        onOpenChange={setDeleteClassDialogOpen}
+        confirmDelete={confirmDeleteClass}
+        selectedClass={classData}
+        handleDeleteClass={deleteClass}
+      />
 
       <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
         <DialogContent>

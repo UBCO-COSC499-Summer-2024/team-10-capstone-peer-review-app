@@ -105,8 +105,8 @@ const Assignment = () => {
       <Tabs defaultValue="view" className="space-y-4">
         {(user.role !== "STUDENT" || new Date(assignment.dueDate) >= new Date()) && <TabsList className="bg-muted">
           <TabsTrigger value="view">View Assignment</TabsTrigger>
-          {user.role === 'INSTRUCTOR' && <TabsTrigger value="edit">Edit Assignment</TabsTrigger>}
-          {user.role === 'INSTRUCTOR' && <TabsTrigger value="submissions">View Submissions</TabsTrigger>}
+          {user.role !== 'STUDENT' && <TabsTrigger value="edit">Edit Assignment</TabsTrigger>}
+          {user.role !== 'STUDENT' && <TabsTrigger value="submissions">View Submissions</TabsTrigger>}
           {user.role === 'STUDENT' && <TabsTrigger value="submission">Submit Assignment</TabsTrigger>}
         </TabsList>}
         
@@ -180,7 +180,7 @@ const Assignment = () => {
           </div>
         </TabsContent>
         
-        {user.role === 'INSTRUCTOR' && (
+        {user.role !== 'STUDENT' && (
           <>
             <TabsContent value="edit">
               <EditAssignment assignment={assignment} />
@@ -191,7 +191,7 @@ const Assignment = () => {
           </>
         )}
         
-        {!(user.role === 'INSTRUCTOR') && (
+        {user.role === "STUDENT" && (
           <TabsContent value="submission">
             <Submission assignmentId={assignmentId} refresh={refreshToggle} />
           </TabsContent>

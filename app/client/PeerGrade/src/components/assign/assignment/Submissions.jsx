@@ -441,15 +441,17 @@ const Submissions = () => {
 																	<Download className="h-4 w-4 mr-1" />
 																	Download
 																</Button>
-																<Button
-																	variant="outline"
-																	size="sm"
-																	onClick={() =>
-																		handleGradeAssignment(submission)
-																	}
-																>
-																	Grade
-																</Button>
+																{user.role === "INSTRUCTOR" && 
+																	<Button
+																		variant="outline"
+																		size="sm"
+																		onClick={() =>
+																			handleGradeAssignment(submission)
+																		}
+																	>
+																		Grade
+																	</Button>
+																}
 																<Button
 																	variant="outline"
 																	size="sm"

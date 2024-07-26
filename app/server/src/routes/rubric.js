@@ -21,7 +21,7 @@ import {
 
 import {
 	ensureUser,
-	ensureInstructor,
+	ensureInstructorOrAdmin,
 	ensureAdmin,
 } from "../middleware/ensureUserTypes.js";
 
@@ -32,7 +32,7 @@ console.log("rubric router");
 
 router
 	.route("/add-rubrics")
-	.post(ensureUser, ensureInstructor, addRubricsToAssignment);
+	.post(ensureUser, ensureInstructorOrAdmin, addRubricsToAssignment);
 
 router
 	.route("/remove-rubric")
@@ -40,7 +40,7 @@ router
 
 router
 	.route("/update-rubrics")
-	.post(ensureUser, ensureInstructor, updateRubricsForAssignment);
+	.post(ensureUser, ensureInstructorOrAdmin, updateRubricsForAssignment);
 
 router
 	.route("/get-rubrics")
@@ -48,11 +48,11 @@ router
 
 router
 	.route("/get-all-rubrics")
-	.post(ensureUser, ensureInstructor, getAllRubrics);
+	.post(ensureUser, ensureInstructorOrAdmin, getAllRubrics);
 
 router
 	.route("/get-rubrics-in-class")
-	.post(ensureUser, ensureInstructor, getAllRubricsInClass);
+	.post(ensureUser, ensureInstructorOrAdmin, getAllRubricsInClass);
 
 router
 	.route("/get-rubric-by-id")
@@ -61,42 +61,42 @@ router
 // Criterion Routes
 router
 	.route("/add-criterion")
-	.post(ensureUser, ensureInstructor, addCriterionToRubric);
+	.post(ensureUser, ensureInstructorOrAdmin, addCriterionToRubric);
 
 router
 	.route("/remove-criterion")
-	.post(ensureUser, ensureInstructor, removeCriterionFromRubric);
+	.post(ensureUser, ensureInstructorOrAdmin, removeCriterionFromRubric);
 
 router
 	.route("/update-criterion")
-	.post(ensureUser, ensureInstructor, updateCriterionInRubric);
+	.post(ensureUser, ensureInstructorOrAdmin, updateCriterionInRubric);
 
 router
 	.route("/get-criterion")
-	.post(ensureUser, ensureInstructor, getCriterionInRubric);
+	.post(ensureUser, ensureInstructorOrAdmin, getCriterionInRubric);
 
 router
 	.route("/add-criterion-rating")
-	.post(ensureUser, ensureInstructor, addCriterionRating);
+	.post(ensureUser, ensureInstructorOrAdmin, addCriterionRating);
   
   //add update and delete here for rating
 
 // Criterion Grade Routes
 router
 	.route("/give-criterion-grade")
-	.post(ensureUser, ensureInstructor, addCriterionGrade);
+	.post(ensureUser, ensureInstructorOrAdmin, addCriterionGrade);
 
 router
 	.route("/remove-criterion-grade")
-	.post(ensureUser, ensureInstructor, removeCriterionGrade);
+	.post(ensureUser, ensureInstructorOrAdmin, removeCriterionGrade);
 
 router
 	.route("/update-criterion-grade")
-	.post(ensureUser, ensureInstructor, updateCriterionGrade);
+	.post(ensureUser, ensureInstructorOrAdmin, updateCriterionGrade);
 
 router
 	.route("/get-criterion-grade")
-	.post(ensureUser, ensureInstructor, getCriterionGrade);
+	.post(ensureUser, ensureInstructorOrAdmin, getCriterionGrade);
 
 
 export default router;

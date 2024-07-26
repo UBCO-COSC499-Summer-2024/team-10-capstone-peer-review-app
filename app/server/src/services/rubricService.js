@@ -200,7 +200,12 @@ const deleteRubricsFromAssignment = async (rubricId) => {
     try {
         const rubric = await prisma.rubric.findUnique({
             where: { rubricId: rubricId },
-            include: { criteria: { include: { criterionRatings: true } } }
+            include: { 
+                criteria: { 
+                    include: { criterionRatings: true } 
+                },
+                assignments: true
+            }
         });
 
         if (!rubric) {
@@ -208,24 +213,34 @@ const deleteRubricsFromAssignment = async (rubricId) => {
         }
 
         // Delete related records
-        await prisma.$transaction([
-            prisma.criterionRating.deleteMany({
+        await prisma.$transaction(async (prisma) => {
+            // Remove rubric reference from assignments
+            for (const assignment of rubric.assignments) {
+                await prisma.assignment.update({
+                    where: { assignmentId: assignment.assignmentId },
+                    data: { rubricId: null }
+                });
+            }
+
+            // Delete criterion ratings
+            await prisma.criterionRating.deleteMany({
                 where: { criterionId: { in: rubric.criteria.map(c => c.criterionId) } }
-            }),
-            prisma.criterion.deleteMany({
+            });
+
+            // Delete criteria
+            await prisma.criterion.deleteMany({
                 where: { rubricId: rubricId }
-            }),
-            prisma.rubricForAssignment.deleteMany({
+            });
+
+            // Delete the rubric itself
+            await prisma.rubric.delete({
                 where: { rubricId: rubricId }
-            }),
-            prisma.rubric.delete({
-                where: { rubricId: rubricId }
-            })
-        ]);
+            });
+        });
 
         return { message: "Rubric and related data successfully deleted" };
     } catch (error) {
-        console.error("Error in deleteRubricsForAssignment:", error);
+        console.error("Error in deleteRubricsFromAssignment:", error);
         throw new apiError(`Failed to delete rubric: ${error.message}`, 500);
     }
 };

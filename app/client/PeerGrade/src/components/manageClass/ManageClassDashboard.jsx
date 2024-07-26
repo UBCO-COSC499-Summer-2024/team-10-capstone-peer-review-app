@@ -37,6 +37,7 @@ import { getEnrollRequestsForClass, updateEnrollRequestStatus, deleteEnrollReque
 import { useToast } from "@/components/ui/use-toast";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import DeleteClassDialog from "./DeleteClassDialog";
+import DeleteAssignmentDialog from "./DeleteAssignmentDialog";
 
 const ManageClassDashboard = () => {
   const { classId } = useParams();
@@ -79,6 +80,7 @@ const ManageClassDashboard = () => {
   }, [classId]);
 
   const handleDeleteAssignmentClick = (assignment) => {
+    setConfirmDeleteAssignment(false);
     setSelectedAssignment(assignment);
     setDeleteAssignmentDialogOpen(true);
   };
@@ -381,8 +383,8 @@ const ManageClassDashboard = () => {
 
       <AssignmentsTable 
         assignments={assignments.slice((currentAssignmentPage - 1) * itemsPerPage, currentAssignmentPage * itemsPerPage)}
+        setAssignments={setAssignments}
         classId={classId}
-        handleDeleteClick={handleDeleteAssignmentClick}
         user={user}
         renderPagination={renderPagination}
         currentPage={currentAssignmentPage}
@@ -470,35 +472,13 @@ const ManageClassDashboard = () => {
         onStudentsAdded={fetchStudents}
       />
     
-    <Dialog open={deleteAssignmentDialogOpen} onOpenChange={setDeleteAssignmentDialogOpen}>
-        <DialogContent
-          className={
-            confirmDeleteAssignment ? "border-red-950 bg-red-500 text-white" : ""
-          }
-        >
-          <DialogHeader>
-            <DialogTitle>
-              {confirmDeleteAssignment ? "Confirm" : ""} Delete Assignment
-            </DialogTitle>
-          </DialogHeader>
-          Are you {confirmDeleteAssignment ? "really " : ""}sure you want to delete the assignment {selectedAssignment?.title} from this class?
-          <DialogFooter>
-            <Button
-              onClick={() => setDeleteAssignmentDialogOpen(false)}
-              className={confirmDeleteAssignment ? "shadow-md shadow-red-900" : ""}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={handleDeleteAssignment}
-              className={confirmDeleteAssignment ? "shadow-md shadow-red-900" : ""}
-            >
-              Delete
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <DeleteAssignmentDialog 
+        dialogOpen={deleteAssignmentDialogOpen}
+        setDialogOpen={setDeleteAssignmentDialogOpen}
+        confirmDelete={confirmDeleteAssignment}
+        selectedAssignment={selectedAssignment}
+        handleDeleteAssignment={handleDeleteAssignment}
+      />
     </div>
   );
 };

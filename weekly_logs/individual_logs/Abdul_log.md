@@ -1,4 +1,80 @@
 
+# Abdul's Log for Cycle 16
+
+
+## Tuesday, July 23, 2024, 05:22 PM - Thursday, July 25, 2024, 05:22 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[255](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/255)**: Have students able to view their submission  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[239](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/239)**: Link Admin Dashboard UI elements to the back-end  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[234](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/234)**: Delete Rubric / Edit Rubric  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: database, type: UI 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Working on Testing Session feedback refactor** *(Total duration: 2.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 25, 2024, 05:00 PM - Ongoing *(Ongoing)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 25, 2024, 02:41 PM - Thursday, July 25, 2024, 04:51 PM *(2.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on Grades UI + back-end linking** *(Total duration: 0.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 25, 2024, 12:51 PM - Thursday, July 25, 2024, 01:43 PM *(0.9 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on Reports implementation** *(Total duration: 4.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 23, 2024, 05:30 PM - Tuesday, July 23, 2024, 09:30 PM *(4.0 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[267](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/267)**: Full Reports implementation (more UI & back-end)  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[267](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/267)**: Full Reports implementation (more UI & back-end)  
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[239](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/239)**: Link Admin Dashboard UI elements to the back-end  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[259](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/259)**: Fix Manage Class being able to add students to a class of size 0  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[258](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/258)**: Make the Add Student buttons larger/more apparent & add checkmarks to Add Student dropdown in Manage Class  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[257](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/257)**: Refactor Role Requests Card to include an Approve (check) button  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[255](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/255)**: Have students able to view their submission  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[234](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/234)**: Delete Rubric / Edit Rubric  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[172](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/172)**: Refactor front-end test  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[140](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/140)**: Major Use Case 24: View User Reports   
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Abdul's Log for Cycle 15
 
 

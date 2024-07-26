@@ -4,7 +4,7 @@ import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
-import { CheckCircle, Clock, Trash2 } from "lucide-react";
+import { CheckCircle, Clock, Trash2, ChevronRight } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import Grades from "./classNav/Grades";
@@ -178,10 +178,7 @@ const Class = () => {
                                 </AlertDescription>
                               </div>
                               <div className="flex items-center gap-2">
-                                <Button variant="outline" size="sm">
-                                  <Clock className="h-4 w-4 mr-1" />
-                                  Start
-                                </Button>
+                                <ChevronRight className='h-5 w-5' />
                               </div>
                             </div>
                           </Alert>

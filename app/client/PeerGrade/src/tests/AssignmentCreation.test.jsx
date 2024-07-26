@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import AssignmentCreation from '@/pages/classNav/assignment/AssignmentCreation';
+import AssignmentCreation from '@/components/assign/assignment/AssignmentCreation';
 import { getCategoriesByClassId } from '@/api/classApi';
 import { addAssignmentToClass } from '@/api/assignmentApi';
 import { toast } from "@/components/ui/use-toast";

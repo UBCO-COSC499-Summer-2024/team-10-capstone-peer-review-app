@@ -15,6 +15,8 @@ import assignmentRouter from "./assignment.js";
 import rubricRouter from "./rubric.js";
 import categoryRouter from "./category.js";
 import enrollRequestsRouter from "./enroll-requests.js";
+import categoryRouter from "./category.js";
+
 
 // Middlewares
 import localStrategy from "../middleware/passportStrategies/localStrategy.js";
@@ -34,13 +36,13 @@ router.use("/classes", classesRouter);
 router.use("/category", categoryRouter);
 router.use("/assignment", assignmentRouter);
 router.use("/rubric", rubricRouter);
-router.use("/users", usersRoutes);
+router.use("/users", ensureUser, usersRoutes);
 router.use("/students", ensureUser, studentsRouter);
 router.use("/enroll-requests", ensureUser, enrollRequestsRouter);
 router.use("/notifs", ensureUser, notifsRouter);
-router.use("/submit", submitRouter);
-router.use("/review2", review2Router);
-router.use("/groupReview", groupReviewRouter);
+router.use("/category", categoryRouter);
+router.use("/submit", ensureUser, submitRouter);
+router.use("/review", ensureUser, reviewRouter);
 router.use("/grade", ensureUser, gradesRouter);
 
 router.use("/instructors", ensureUser, ensureInstructor, instructorsRouter);

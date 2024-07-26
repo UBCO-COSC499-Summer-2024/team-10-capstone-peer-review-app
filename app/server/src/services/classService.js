@@ -23,7 +23,15 @@ const getAllClasses = async () => {
 				EnrollRequest: true
 			}
 		});
-		return classes;
+
+		// Map the classes to include the assignment & user counts directly in the class object
+		const classesWithCounts = classes.map((classItem) => ({
+			...classItem,
+			assignmentCount: classItem.Assignments.length,
+			userCount: classItem.usersInClass.length,
+		}));
+
+		return classesWithCounts;
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
@@ -205,8 +213,19 @@ const updateClass = async (classId, updateData) => {
 		const classInfo = await prisma.class.findUnique({
 			where: {
 				classId: classId
+			},
+			include: {
+				usersInClass: true
 			}
 		});
+
+		// Check if new class size (if given) is less than the current number of students in the class
+		if (
+			updateData.classSize &&
+			updateData.classSize < classInfo.usersInClass.length
+		) {
+			throw new apiError("The new class size given is less than the number of students in the class", 400);
+		}
 
 		await sendNotificationToRole(null, `The class '${classInfo.classname}' has been updated`, "", "ADMIN", 'class');
 		return updatedClass;
@@ -561,24 +580,6 @@ const getGroupsInClass = async (classId) => {
 	}
 };
 
-const getAllGroups = async () => {
-	try {
-		const groupsInfo = await prisma.group.findMany();
-
-		if (!groupsInfo) {
-			throw new apiError("Groups not found", 404);
-		}
-
-		return groupsInfo;
-	} catch (error) {
-		if (error instanceof apiError) {
-			throw error;
-		} else {
-			throw new apiError("Failed to get all groups", 500);
-		}
-	}
-};
-
 const addGroupMember = async (groupId, userId) => {
 	try {
 		const group = await prisma.group.findUnique({
@@ -840,7 +841,6 @@ export default {
 	getGroupInClass,
 	getGroupsInClass,
 	getGroupMembers,
-	getAllGroups,
 	addGroupMember,
 	removeGroupMember,
 	isUserInGroup,

@@ -1,7 +1,6 @@
 import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
 import pkg from '@prisma/client';
-import getGroupMembers from "./classService.js";
 import classService from "./classService.js";
 
 const { PrismaClientKnownRequestError } = pkg;
@@ -107,7 +106,6 @@ export async function sendNotificationToClass(userId, title, content, classId, t
 	try {
 		const usersInClass = await classService.getStudentsByClass(classId);
 		
-		console.log(usersInClass);
 		const notifications = usersInClass.map(user => ({
 			receiverId: user.userId,
 			title: title,
@@ -130,14 +128,27 @@ export async function sendNotificationToClass(userId, title, content, classId, t
 
 export async function sendNotificationToGroup(userId, title, content, groupId, type) {
 	try {
-		const usersInGroup = await getGroupMembers(groupId);
+		const group = await prisma.group.findUnique({
+			where: {
+				groupId: groupId
+			},
+			include: {
+				students: true
+			}
+		});
 
-		const notifications = usersInGroup.map(user => ({
+		if (!group) {
+			throw new apiError("Group not found", 404);
+		} else if (group.students.length === 0) {
+			throw new apiError("No users found to send notifications to in the group", 404);
+		}
+
+		const notifications = group.students.map(user => ({
 			receiverId: user.userId,
 			title: title,
 			content: content,
 			senderId: userId,
-			type: type || null
+			type: type || "group"
 		}));
 
 		await prisma.notification.createMany({ data: notifications });
@@ -163,7 +174,7 @@ export async function sendNotificationToRole(userId, title, content, role, type)
 			title: title,
 			content: content,
 			senderId: userId,
-			type: type || null
+			type: type || role
 		}));
 
 		await prisma.notification.createMany({ data: notifications });

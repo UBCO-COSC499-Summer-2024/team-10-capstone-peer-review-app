@@ -1,48 +1,9 @@
 import axios from "axios";
 import showStatusToast from "@/utils/showToastStatus";
 
-const BASE_URL = "/api"; // Use environment variable if available
+const BASE_URL = "/api";
 
-export const getRubricsForAssignment = async (assignmentId) => {
-  const response = await axios.post(`${BASE_URL}/rubric/get-rubrics`, { assignmentId }); // Adjust the endpoint as necessary
-  return response.data;
-}
-
-export const getAllRubrics = async () => {
-  return await axios.post(`${BASE_URL}/rubric/get-all-rubrics`); // Adjust the endpoint as necessary
-};
-
-export const getAllRubricsInClass = async (classId) => {
-  console.log("hello",classId);
- const response = await axios.post(`${BASE_URL}/rubric/get-rubrics-in-class`, { classId }); // Adjust the endpoint as necessary
-  return response.data;
-};
-
-export const getRubricById = async (rubricId) => {
-  console.log(rubricId);
-  const response = await axios.post(`${BASE_URL}/rubric/get-rubric-by-id`, { rubricId }); // Adjust the endpoint as necessary
-  return response.data;
-};
-
-export const addRubricToAssignment = async (data) => {
-  const { userId, assignmentId, rubricData } = data;
-  console.log('userId:', userId);
-  console.log('assignmentId:', assignmentId);
-  console.log('rubricData:', rubricData);
-  try {
-    const response = await axios.post(`${BASE_URL}/rubric/add-rubrics`, { userId, assignmentId, rubricData });
-    showStatusToast({
-      status: "Success",
-      message: "Rubric added successfully"
-    });
-    return response;
-  } catch (error) {
-    handleError(error);
-    throw error;
-  }
-};
-
-const handleError = (error) => {    
+const handleError = (error) => {
     if (error.response && error.response.data) {
         showStatusToast({
             status: error.response.data.status,
@@ -54,4 +15,86 @@ const handleError = (error) => {
             message: "An unexpected error occurred. Please try again."
         });
     }
-}
+};
+
+export const getRubricsForAssignment = async (assignmentId) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/rubric/get-rubrics`, { assignmentId });
+        return response.data;
+    } catch (error) {
+        handleError(error);
+        throw error;
+    }
+};
+
+export const getAllRubrics = async () => {
+    try {
+        const response = await axios.post(`${BASE_URL}/rubric/get-all-rubrics`);
+        return response.data;
+    } catch (error) {
+        handleError(error);
+        throw error;
+    }
+};
+
+export const getAllRubricsInClass = async (classId) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/rubric/get-rubrics-in-class`, { classId });
+        return response.data;
+    } catch (error) {
+        handleError(error);
+        throw error;
+    }
+};
+
+export const getRubricById = async (rubricId) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/rubric/get-rubric-by-id`, { rubricId });
+        return response.data;
+    } catch (error) {
+        handleError(error);
+        throw error;
+    }
+};
+
+export const addRubricToAssignment = async (data) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/rubric/add-rubrics`, data);
+        showStatusToast({
+            status: "Success",
+            message: "Rubric added successfully"
+        });
+        return response.data;
+    } catch (error) {
+        handleError(error);
+        throw error;
+    }
+};
+
+export const deleteRubricsFromAssignment = async (rubricId) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/rubric/remove-rubric`, { rubricId });
+        showStatusToast({
+            status: "Success",
+            message: "Rubric removed successfully"
+        });
+        return response.data;
+    } catch (error) {
+        handleError(error);
+        throw error;
+    }
+};
+
+export const updateRubricsForAssignment = async (rubricId, updateData) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/rubric/update-rubrics`, { rubricId, updateData });
+        showStatusToast({
+            status: "Success",
+            message: "Rubric updated successfully"
+        });
+        return response.data;
+    } catch (error) {
+        handleError(error);
+        throw error;
+    }
+};

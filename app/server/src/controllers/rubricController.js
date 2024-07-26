@@ -12,9 +12,9 @@ export const addRubricsToAssignment = asyncErrorHandler(async (req, res) => {
     });
 });
 
-export const removeRubricsFromAssignment = asyncErrorHandler(async (req, res) => {
+export const deleteRubricsFromAssignment = asyncErrorHandler(async (req, res) => {
 	const { rubricId } = req.body;
-	const updatedClass = await rubricService.deleteRubricsForAssignment(rubricId);
+	const updatedClass = await rubricService.deleteRubricsFromAssignment(rubricId);
 	return res.status(200).json({
 		status: "Success",
 		message: "Rubric successfully removed from assignment",
@@ -22,7 +22,7 @@ export const removeRubricsFromAssignment = asyncErrorHandler(async (req, res) =>
 	});
 });
 
-export const updateRubricsInAssignment = asyncErrorHandler(async (req, res) => {
+export const updateRubricsForAssignment = asyncErrorHandler(async (req, res) => {
 	const { rubricId, updateData } = req.body;
 	const updatedClass = await rubricService.updateRubricsForAssignment(rubricId, updateData);
 	return res.status(200).json({
@@ -179,8 +179,8 @@ export const getCriterionGrade = asyncErrorHandler(async (req, res) => {
 // Export all controller methods
 export default {
 	addRubricsToAssignment,
-	removeRubricsFromAssignment,
-	updateRubricsInAssignment,
+	deleteRubricsFromAssignment,
+	updateRubricsForAssignment,
 	getRubricsInAssignment,
 	getAllRubrics,
 	getAllRubricsInClass,

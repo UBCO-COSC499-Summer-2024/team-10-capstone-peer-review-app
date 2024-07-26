@@ -5,8 +5,7 @@ import { sendNotificationToUser } from "./notifsService.js";
 // Submit operations
 const getStudentSubmission = async (studentId) => {
     try {
-        let allSubmissions = [];
-        const submissions = await prisma.submission.findMany({
+        const allSubmissions = await prisma.submission.findMany({
             where: {
                 submitterId: studentId
             },
@@ -33,48 +32,124 @@ const getStudentSubmission = async (studentId) => {
             }
         });
 
-        allSubmissions = allSubmissions.concat(submissions);
+        // const student = await prisma.user.findFirst({
+        //     where: {
+        //         userId: studentId
+        //     },
+        //     include: {
+        //         groups: true
+        //     }
+        // });
 
-        const student = await prisma.user.findFirst({
+        // for (const group of student.groups) {
+        //     const groupSubmissions = await prisma.submission.findMany({
+        //         where: {
+        //             submitterGroupId: group.groupId
+        //         },
+        //         include: {
+        //             assignment: {
+        //                 include: {
+        //                     classes: {
+        //                         include: {
+        //                             instructor: {
+        //                                 select: {
+        //                                     firstname: true,
+        //                                     lastname: true
+        //                                 }
+        //                             }
+        //                         }
+        //                     }
+        //                 }
+        //             },
+        //             reviews: {
+        //                 select: {
+        //                     reviewerId: true,
+        //                     isPeerReview: true
+        //                 }
+        //             }
+        //         }
+        //     });
+
+        //     allSubmissions = allSubmissions.concat(groupSubmissions);
+        // }
+
+        return allSubmissions;
+    } catch (error) {
+        console.error("Error in getStudentSubmission:", error);
+        throw new apiError("Failed to retrieve submissions: " + error.message, 500);
+    }
+}
+
+const getStudentSubmissionForAssignment = async (studentId, assignmentId) => {
+    try {
+        const allSubmissions = await prisma.submission.findMany({
             where: {
-                userId: studentId
+                submitterId: studentId,
+                assignmentId: assignmentId
             },
             include: {
-                groups: true
-            }
-        });
-
-        for (const group of student.groups) {
-            const groupSubmissions = await prisma.submission.findMany({
-                where: {
-                    submitterGroupId: group.groupId
-                },
-                include: {
-                    assignment: {
-                        include: {
-                            classes: {
-                                include: {
-                                    instructor: {
-                                        select: {
-                                            firstname: true,
-                                            lastname: true
-                                        }
+                assignment: {
+                    include: {
+                        classes: {
+                            include: {
+                                instructor: {
+                                    select: {
+                                        firstname: true,
+                                        lastname: true
                                     }
                                 }
                             }
                         }
-                    },
-                    reviews: {
-                        select: {
-                            reviewerId: true,
-                            isPeerReview: true
-                        }
+                    }
+                },
+                reviews: {
+                    select: {
+                        isPeerReview: true
                     }
                 }
-            });
+            }
+        });
 
-            allSubmissions = allSubmissions.concat(groupSubmissions);
-        }
+        // const student = await prisma.user.findFirst({
+        //     where: {
+        //         userId: studentId
+        //     },
+        //     include: {
+        //         groups: true
+        //     }
+        // });
+
+        // for (const group of student.groups) {
+        //     const groupSubmissions = await prisma.submission.findMany({
+        //         where: {
+        //             submitterGroupId: group.groupId
+        //         },
+        //         include: {
+        //             assignment: {
+        //                 include: {
+        //                     classes: {
+        //                         include: {
+        //                             instructor: {
+        //                                 select: {
+        //                                     firstname: true,
+        //                                     lastname: true
+        //                                 }
+        //                             }
+        //                         }
+        //                     }
+        //                 }
+        //             },
+        //             reviews: {
+        //                 select: {
+        //                     reviewerId: true,
+        //                     isPeerReview: true
+        //                 }
+        //             }
+        //         }
+        //     });
+
+        //     allSubmissions = allSubmissions.concat(groupSubmissions);
+        // }
 
         return allSubmissions;
     } catch (error) {
@@ -253,6 +328,7 @@ const deleteSubmission = async (submissionId) => {
 
 export default {
     getStudentSubmission,
+    getStudentSubmissionForAssignment,
     getSubmissionsForAssignment,
     createSubmission,
     updateSubmission,

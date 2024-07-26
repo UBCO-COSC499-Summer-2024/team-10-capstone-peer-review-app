@@ -43,3 +43,15 @@ main {
     padding-right: 32px;
   }
 }
+
+.fade-in {
+  opacity: 1;
+  transition: opacity 300ms ease-in;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 300ms ease-out;
+}
+
+

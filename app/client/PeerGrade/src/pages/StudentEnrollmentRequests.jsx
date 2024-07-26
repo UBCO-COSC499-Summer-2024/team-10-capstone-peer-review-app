@@ -75,7 +75,7 @@ const StudentEnrollmentRequests = () => {
       const response = await getAllClassesUserisNotIn();
       if (response.status === "Success") {
         setAllClasses(response.data);
-        setFilteredClasses(response.data);
+        setFilteredClasses(response.data.filter((classItem) => classItem.availableSeats > 0));
       } else {
         toast({
           title: "Error",

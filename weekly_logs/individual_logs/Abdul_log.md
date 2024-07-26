@@ -2,7 +2,7 @@
 # Abdul's Log for Cycle 16
 
 
-## Tuesday, July 23, 2024, 05:22 PM - Thursday, July 25, 2024, 05:22 PM
+## Tuesday, July 23, 2024, 05:22 PM - Thursday, July 25, 2024, 05:53 PM
 
 
 ## Tasks worked on this cycle:
@@ -18,9 +18,12 @@
   
 
 ## Time entries from Clockify on this cycle:
-&nbsp; &nbsp; :watch: **Working on Testing Session feedback refactor** *(Total duration: 2.2 hours)*  
+
+&nbsp; &nbsp; :watch: **Working on reviewing other branches + fixing bugs** *(Total duration: 0.9 hours)*  
   
-&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 25, 2024, 05:00 PM - Ongoing *(Ongoing)*  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 25, 2024, 05:00 PM - Thursday, July 25, 2024, 05:53 PM *(0.9 hours)*  
+
+&nbsp; &nbsp; :watch: **Working on Testing Session feedback refactor** *(Total duration: 2.2 hours)*  
   
 &nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 25, 2024, 02:41 PM - Thursday, July 25, 2024, 04:51 PM *(2.2 hours)*  
   
@@ -45,33 +48,20 @@
 &nbsp; &nbsp; :purple_circle: **Issue-[239](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/239)**: Link Admin Dashboard UI elements to the back-end  
   
 
-## In-progress tasks:
-&nbsp; &nbsp; :orange_circle: **Issue-[259](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/259)**: Fix Manage Class being able to add students to a class of size 0  
-  
-&nbsp; &nbsp; :orange_circle: **Issue-[258](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/258)**: Make the Add Student buttons larger/more apparent & add checkmarks to Add Student dropdown in Manage Class  
-  
-&nbsp; &nbsp; :orange_circle: **Issue-[257](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/257)**: Refactor Role Requests Card to include an Approve (check) button  
-  
-&nbsp; &nbsp; :orange_circle: **Issue-[255](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/255)**: Have students able to view their submission  
-  
+## In-progress tasks: 
 &nbsp; &nbsp; :orange_circle: **Issue-[234](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/234)**: Delete Rubric / Edit Rubric  
   
 &nbsp; &nbsp; :orange_circle: **Issue-[172](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/172)**: Refactor front-end test  
   
-&nbsp; &nbsp; :orange_circle: **Issue-[140](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/140)**: Major Use Case 24: View User Reports   
-  
-&nbsp; &nbsp; :orange_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
-  
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Peer Reviews is finally done! Individual ones at least.
+* We may need to drop group peer reviews and focus on polishing the app up instead to make it ready for production.
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Focus on finishing up the app, filling in any holes or smoothing any rough corners.
+* Get more testing done.
+* UI refinements (such as using the red confirm delete dialog when deleting something everywhere in the web-app)
   
   
 

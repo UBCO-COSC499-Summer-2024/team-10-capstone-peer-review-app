@@ -7,7 +7,6 @@ import { Users, FileText, Edit, Plus, MinusCircle, FileUp, ChevronLeft, ChevronR
 import StudentsTable from "@/components/manageClass/StudentsTable";
 import EnrollTable from "@/components/manageClass/EnrollTable";
 import AssignmentsTable from "@/components/manageClass/AssignmentsTable";
-
 import { 
   Dialog, 
   DialogContent, 
@@ -42,6 +41,8 @@ import DeleteClassDialog from "./DeleteClassDialog";
 const ManageClassDashboard = () => {
   const { classId } = useParams();
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const { user } = useUser();
   const { classes, setClasses, updateClasses, removeClass } = useClass();
   const [classData, setClassData] = useState(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -57,8 +58,6 @@ const ManageClassDashboard = () => {
   const [currentStudentPage, setCurrentStudentPage] = useState(1);
   const [currentEnrollRequestPage, setCurrentEnrollRequestPage] = useState(1);
   const [itemsPerPage] = useState(10);
-  const { toast } = useToast();
-  const { user } = useUser();
   const [assignments, setAssignments] = useState([]);
   const [currentAssignmentPage, setCurrentAssignmentPage] = useState(1);
   const [confirmDeleteClass, setConfirmDeleteClass] = useState(false);
@@ -162,23 +161,6 @@ const ManageClassDashboard = () => {
       fetchAllStudents();
     }
   }, [user, students]);
-
-  const handleDeleteStudent = async (student) => {
-    const result = await removeStudentFromClass(classId, student.userId);
-    if (result.status === "Success") {
-      setStudents(students.filter(s => s.userId !== student.userId));
-      toast({
-        title: "Success",
-        description: "Student removed from class"
-      });
-    } else {
-      toast({
-        title: "Error",
-        description: "Failed to remove student",
-        variant: "destructive"
-      });
-    }
-  };
 
   const handleAddStudents = async (e) => {
     e.preventDefault();
@@ -376,12 +358,13 @@ const ManageClassDashboard = () => {
 
       <StudentsTable 
         students={currentStudents}
+        setStudents={setStudents}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
-        handleDeleteStudent={handleDeleteStudent}
         setAddByCSVOpen={setAddByCSVOpen}
         setAddDialogOpen={setAddDialogOpen}
         user={user}
+        classId={classId}
         renderPagination={renderPagination}
         currentPage={currentStudentPage}
         setCurrentPage={setCurrentStudentPage}

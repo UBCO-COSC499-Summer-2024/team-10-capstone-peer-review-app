@@ -43,6 +43,7 @@ import {
 	addStudentToClass
 } from "@/api/classApi";
 import { getUsersByRole, getGroups } from "@/api/userApi";
+import DeleteStudentDialog from "@/components/manageClass/DeleteStudentDialog";
 
 const People = ({ classId }) => {
 	const [searchTerm, setSearchTerm] = useState("");
@@ -324,37 +325,13 @@ const People = ({ classId }) => {
 					</Card>
 				))}
 			</div>
-			<Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-				<DialogContent
-					className={
-						confirmDelete ? "border-red-950 bg-red-500 text-white" : ""
-					}
-				>
-					<DialogHeader>
-						<DialogTitle>
-							{confirmDelete ? "Confirm" : ""} Remove Student
-						</DialogTitle>
-					</DialogHeader>
-					Are you {confirmDelete ? "really " : ""}sure you want to remove the
-					student {selectedStudent.firstname} {selectedStudent.lastname} from
-					this class?
-					<DialogFooter>
-						<Button
-							onClick={() => setDialogOpen(false)}
-							className={confirmDelete ? "shadow-md shadow-red-900" : ""}
-						>
-							Cancel
-						</Button>
-						<Button
-							variant="destructive"
-							onClick={handleDeleteStudent}
-							className={confirmDelete ? "shadow-md shadow-red-900" : ""}
-						>
-							Remove
-						</Button>
-					</DialogFooter>
-				</DialogContent>
-			</Dialog>
+			<DeleteStudentDialog
+				dialogOpen={dialogOpen}
+				setDialogOpen={setDialogOpen}
+				confirmDelete={confirmDelete}
+				selectedStudent={selectedStudent}
+				handleDeleteStudent={handleDeleteStudent}
+			/>
 			<Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
 				<DialogContent>
 					<DialogHeader>

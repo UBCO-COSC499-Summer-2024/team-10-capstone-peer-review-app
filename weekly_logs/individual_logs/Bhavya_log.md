@@ -28,15 +28,13 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
-
-## Goals for next cycle
-* 
-* 
-* 
+* Couldn't do much this cycle as I had to prepare for my midterms for other courses this thursday, but did some refactoring of the routes
+* tested other branches as well
   
+## Goals for next cycle
+* Create more tests for the backend
+* Look for more routes if possible
+* Add good documentations
   
 
 # Bhavya's Log for Cycle 15

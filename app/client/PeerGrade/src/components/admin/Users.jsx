@@ -54,7 +54,7 @@ const userColumns = [
 	{ accessorKey: "firstname", header: "First Name" },
 	{ accessorKey: "lastname", header: "Last Name" },
 	{ accessorKey: "email", header: "Email" },
-	{ accessorKey: "password", header: "Password" },
+	// { accessorKey: "password", header: "Password" },
 	{ accessorKey: "role", header: "Role" },
 	{ accessorKey: "isEmailVerified", header: "Email Verified" },
 	{ accessorKey: "isRoleActivated", header: "Role Activated" },
@@ -70,75 +70,30 @@ const userColumns = [
 	// { accessorKey: "description", header: "Description" }
 ];
 
-const instructorApprovals = [
-	{
-		id: 1,
-		title: "Prof. Pending Approval 1",
-		description: "Request to approve Prof. 1"
-	},
-	{
-		id: 2,
-		title: "Prof. Pending Approval 2",
-		description: "Request to approve Prof. 2"
-	},
-	{
-		id: 3,
-		title: "Prof. Pending Approval 3",
-		description: "Request to approve Prof. 3"
-	},
-	{
-		id: 4,
-		title: "Prof. Pending Approval 4",
-		description: "Request to approve Prof. 4"
-	},
-	{
-		id: 5,
-		title: "Prof. Pending Approval 5",
-		description: "Request to approve Prof. 5"
-	},
-	{
-		id: 6,
-		title: "Prof. Pending Approval 6",
-		description: "Request to approve Prof. 6"
-	},
-	{
-		id: 7,
-		title: "Prof. Pending Approval 7",
-		description: "Request to approve Prof. 7"
-	},
-	{
-		id: 8,
-		title: "Prof. Pending Approval 8",
-		description: "Request to approve Prof. 8"
-	}
-];
-
 const Users = () => {
 	const [usersData, setUsersData] = useState([]);
 	const [roleRequests, setRoleRequests] = useState([]);
 
-	const fetchRoleRequests = async () => {
-		const allRoleRequests = await getAllRoleRequests();
-		if (allRoleRequests.status === "Success") {
-			setRoleRequests(allRoleRequests.data);
-		}
-		console.log("roleRequestsData: ", roleRequests);
-	};
-
-	const fetchUsers = async () => {
-		const allUsers = await getAllUsers();
-		if (allUsers.status === "Success") {
-			setUsersData(allUsers.data);
-		}
-		console.log("usersData: ", usersData);
-	};
-
 	// TODO -> decrypt passwords for admins to view them in plain text
+	// Abdul - i don't think admins should be able to view passwords (change them, maybe, but not view them)
 	useEffect(() => {
-		fetchUsers();
-	}, []);
+		const fetchRoleRequests = async () => {
+			const allRoleRequests = await getAllRoleRequests();
+			if (allRoleRequests.status === "Success") {
+				setRoleRequests(allRoleRequests.data);
+			}
+			console.log("roleRequestsData: ", roleRequests);
+		};
+	
+		const fetchUsers = async () => {
+			const allUsers = await getAllUsers();
+			if (allUsers.status === "Success") {
+				setUsersData(allUsers.data);
+			}
+			console.log("usersData: ", usersData);
+		};
 
-	useEffect(() => {
+		fetchUsers();
 		fetchRoleRequests();
 	}, []);
 
@@ -148,7 +103,7 @@ const Users = () => {
 	}));
 
 	return (
-		<div className="max-w-4xl flex flex-col gap-6">
+		<div className="flex flex-col gap-6">
 			<div className="w-full space-y-6">
 				<h1 className="text-2xl font-bold">Current Users</h1>
 				<div className="pt-6 bg-white rounded-lg">
@@ -169,9 +124,9 @@ const Users = () => {
 					yAxisLabel="Number of Users"
 					filterTypes={["All", "Student", "Instructor"]}
 				/>
-				<div className="flex flex-col md:w-1/3 overflow-y-auto rounded-md">
+				<div className="flex flex-col w-1/2 overflow-y-auto rounded-md">
 					<h1 className="text-2xl font-semibold mb-6">Role Requests</h1>
-					<div className="py-6 bg-white rounded-lg space-y-1">
+					<div className="p-5 bg-white rounded-lg space-y-1">
 						{roleRequests.length === 0 && <div className="text-gray-500 text-sm px-6">No role requests were found.</div>}
 						{roleRequests.map((roleRequest) => {
 							const { color } = getStatusDetails(roleRequest.status);

@@ -156,9 +156,9 @@ const Rubrics = () => {
               How to read this rubric:
             </h4>
             <ul className="text-sm space-y-1">
-              <li><Badge variant="outline" className="mr-2 bg-accent text-slate-900">Criteria</Badge> Specific aspects of the assignment being evaluated</li>
-              <li><Badge variant="outline" className="mr-2 bg-accent text-slate-900">Ratings</Badge> Descriptions of performance levels for each criterion</li>
-              <li><Badge variant="outline" className="mr-2 bg-accent text-slate-900">Points</Badge> Score associated with each rating level</li>
+              <li><Badge variant="outline" className="mr-2 bg-accent/70 text-slate-900">Criteria</Badge> Specific aspects of the assignment being evaluated</li>
+              <li><Badge variant="outline" className="mr-2 bg-accent/70 text-slate-900">Ratings</Badge> Descriptions of performance levels for each criterion</li>
+              <li><Badge variant="outline" className="mr-2 bg-accent/70 text-slate-900">Points</Badge> Score associated with each rating level</li>
             </ul>
           </div>
           <div className="px-4 pb-4 max-h-[60vh] overflow-y-auto">

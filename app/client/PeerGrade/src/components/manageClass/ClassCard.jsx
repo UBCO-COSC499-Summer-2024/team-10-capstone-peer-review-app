@@ -18,7 +18,7 @@ const ClassCard = ({ classItem, pendingApprovals }) => {
         <div className="flex justify-between items-start">
           <CardTitle className="text-xl font-bold text-primary">{classItem.classname}</CardTitle>
           {pendingApprovals > 0 && (
-            <Badge variant="destructive" className="ml-2">
+            <Badge variant="outline" className="ml-2 bg-warning/30 ">
               {pendingApprovals} Pending
             </Badge>
           )}

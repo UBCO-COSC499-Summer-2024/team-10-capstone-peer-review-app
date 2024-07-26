@@ -62,14 +62,13 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Mainly working on Setting up Peer Reviews its set up for students we just need an instructor page
+* Have not set up new tests
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Need to complete instructor side for peer review
+* We decided to ditch group related stuff for our application to improve the user experience and other smaller parts of the application
+* Need to set up more testing and also help with small issues
   
   
 

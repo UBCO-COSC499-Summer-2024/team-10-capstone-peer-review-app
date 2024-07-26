@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { format } from 'date-fns';
 import { Calendar as CalendarIcon, ChevronDown as ChevronDownIcon, ChevronUp as ChevronUpIcon, Check as CheckIcon, Upload } from 'lucide-react';
+import MultiSelect from '@/components/ui/MultiSelect';
 
 import { cn } from '@/utils/utils';
 import { Input } from '@/components/ui/input';
@@ -27,6 +28,15 @@ import { getCategoriesByClassId } from '@/api/classApi';
 import { addAssignmentToClass } from '@/api/assignmentApi';
 import { getAllRubricsInClass } from '@/api/rubricApi';
 
+const fileTypeOptions = [
+  { value: 'pdf', label: 'PDF' },
+  { value: 'doc', label: 'DOC' },
+  { value: 'docx', label: 'DOCX' },
+  { value: 'txt', label: 'TXT' },
+  { value: 'jpg', label: 'JPG' },
+  { value: 'png', label: 'PNG' },
+];
+
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
@@ -37,6 +47,8 @@ const FormSchema = z.object({
     required_error: "Due date is required",
   }),
   file: z.any().optional(),
+  allowedFileTypes: z.array(z.string()).min(1, "At least one file type must be selected"),
+
 });
 
 const AssignmentCreation = ({ onAssignmentCreated }) => {
@@ -50,7 +62,8 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [rubrics, setRubrics] = useState([]);
   const [selectedRubric, setSelectedRubric] = useState("");
-  
+  const [selectedFileTypes, setSelectedFileTypes] = useState([]);
+
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -61,8 +74,10 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
       reviewOption: "",
       dueDate: null,
       file: null,
+      allowedFileTypes: [],  // Add this line
     }
   });
+
 
   const dropdown_options = [
     {
@@ -99,29 +114,42 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
   }, [classId]);
 
   const onSubmit = async (data) => {
-    console.log('Form submitted:', data);  // Add logging to check form data
+    console.log('Form submitted:', data);
     console.log('selectedCategory:', selectedCategory);
     console.log('selectedRubric:', selectedRubric);
+    console.log('allowedFileTypes:', data.allowedFileTypes);
    
     const formData = new FormData();
     formData.append('classId', classId);
     formData.append('categoryId', selectedCategory);
-    formData.append('assignmentData', JSON.stringify({
+  
+    // Create an object with all the assignment data
+    const assignmentData = {
       title: data.title,
       description: data.description,
       dueDate: data.dueDate,
       reviewOption: data.reviewOption,
       maxSubmissions: data.maxSubmissions,
-      rubricId: selectedRubric, // Add this line
-    }));
-
+      rubricId: selectedRubric,
+      allowedFileTypes: data.allowedFileTypes,  // Include allowedFileTypes here
+    };
+  
+    // Stringify the entire object and append it to formData
+    formData.append('assignmentData', JSON.stringify(assignmentData));
+  
     if (fileInputRef.current.files[0]) {
       formData.append('file', fileInputRef.current.files[0]);
     }
-
+  
+    // Log the formData to check its contents
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+    console.log("assignment", assignmentData);
+  
     try {
       const response = await addAssignmentToClass(formData);
-
+  
       if (response.status === 'Success') {
         toast({
           title: "Assignment Created",
@@ -132,8 +160,8 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
         setSelectedFileName('');
         setSelectedCategory('');
         setSelectedRubric('');
+        setSelectedFileTypes([]);
         
-        // Call the callback function to refresh assignments
         onAssignmentCreated();
       } else {
         toast({
@@ -401,6 +429,28 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
                     </PopoverContent>
                   </Popover>
                   <FormDescription>Select a rubric for this assignment.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="allowedFileTypes"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Allowed File Types</FormLabel>
+                  <FormControl>
+                    <MultiSelect
+                      options={fileTypeOptions}
+                      value={field.value}
+                      onChange={(value) => {
+                        setSelectedFileTypes(value);
+                        field.onChange(value);
+                      }}
+                      placeholder="Select allowed file types"
+                    />
+                  </FormControl>
+                  <FormDescription>Select the file types that students can submit for this assignment.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

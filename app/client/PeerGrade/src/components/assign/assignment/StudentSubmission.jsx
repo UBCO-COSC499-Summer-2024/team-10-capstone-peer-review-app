@@ -18,6 +18,7 @@ const Submission = ({refresh}) => {
     const [file, setFile] = useState(null);
     const [submissionMessage, setSubmissionMessage] = useState('');
     const { user } = useUser();
+    const [selectedFileName, setSelectedFileName] = useState('');
 
     useEffect(() => {
         const fetchAssignmentDetails = async () => {
@@ -44,8 +45,21 @@ const Submission = ({refresh}) => {
     }, [classId, assignmentId]);
 
     const handleFileChange = (event) => {
-        setFile(event.target.files[0]);
-    };
+        const selectedFile = event.target.files[0];
+        const fileExtension = selectedFile.name.split('.').pop().toLowerCase();
+        console.log("fileExtension", assignment);
+        if (!assignment.allowedFileTypes.includes(fileExtension)) {
+          toast({
+            title: "Invalid file type",
+            description: `Please select a file with one of the following extensions: ${assignment.allowedFileTypes.join(', ')}`,
+            variant: "destructive",
+          });
+          return;
+        }
+        
+        setFile(selectedFile);
+        setSelectedFileName(selectedFile.name);
+      };
 
     const handleSubmit = async (event) => {
         event.preventDefault();

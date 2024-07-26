@@ -5,6 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon, ChevronDown as ChevronDownIcon, ChevronUp as ChevronUpIcon, Check as CheckIcon, Upload } from "lucide-react";
+import MultiSelect from '@/components/ui/MultiSelect';
+
 import { useNavigate } from 'react-router-dom';
 import { cn } from "@/utils/utils";
 import { Input } from '@/components/ui/input';
@@ -27,6 +29,16 @@ import { getAssignmentInClass, updateAssignmentInClass } from '@/api/assignmentA
 import { getCategoriesByClassId } from '@/api/classApi';
 import { getAllRubricsInClass } from '@/api/rubricApi';
 
+const fileTypeOptions = [
+  { value: 'pdf', label: 'PDF' },
+  { value: 'doc', label: 'DOC' },
+  { value: 'docx', label: 'DOCX' },
+  { value: 'txt', label: 'TXT' },
+  { value: 'jpg', label: 'JPG' },
+  { value: 'png', label: 'PNG' },
+];
+
+
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
@@ -38,6 +50,8 @@ const FormSchema = z.object({
   }),
   rubricId: z.string().min(1, "Rubric is required"), // Add this line
   file: z.any().optional(),
+  allowedFileTypes: z.array(z.string()).min(1, "At least one file type must be selected"),
+
 });
 
 const EditAssignment = () => {
@@ -52,6 +66,8 @@ const EditAssignment = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [rubrics, setRubrics] = useState([]);
   const [selectedRubric, setSelectedRubric] = useState("");
+  const [selectedFileTypes, setSelectedFileTypes] = useState([]);
+
   
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -63,6 +79,8 @@ const EditAssignment = () => {
       reviewOption: "",
       dueDate: null,
       file: null,
+      rubricId: "", // Add this line
+      allowedFileTypes: [],
     }
   });
 
@@ -86,9 +104,9 @@ const EditAssignment = () => {
             rubricsResponse.status === 'Success') {
           const assignmentData = assignmentResponse.data;
           setCategories(categoriesResponse.data);
-          console.log('rubrics', rubricsResponse.data);
           setRubrics(rubricsResponse.data);
-    
+          setSelectedFileTypes(assignmentData.allowedFileTypes || []);
+
           form.reset({
             title: assignmentData.title,
             description: assignmentData.description,
@@ -138,7 +156,8 @@ const EditAssignment = () => {
       dueDate: data.dueDate,
       reviewOption: data.reviewOption,
       maxSubmissions: data.maxSubmissions,
-      rubricId: selectedRubric, // Include the selected rubric
+      rubricId: selectedRubric, 
+      allowedFileTypes: data.allowedFileTypes,  // Use data.allowedFileTypes instead of selectedFileTypes
     }));
   
     if (fileInputRef.current.files[0]) {
@@ -155,24 +174,7 @@ const EditAssignment = () => {
           status: "success"
         });
         
-        // // Clear the form and reset fields
-        // form.reset({
-        //   title: "",
-        //   description: "",
-        //   maxSubmissions: 1,
-        //   categoryId: "",
-        //   reviewOption: "",
-        //   dueDate: null,
-        //   file: null,
-        //   rubricId: "", // Reset rubric
-        // });
-        
-        setSelectedCategory("");
-        setSelectedFileName("");
-        setValue("");
-        setSelectedRubric(""); // Reset selected rubric
-        
-        // Redirect to the assignment page
+        // Navigate to the assignment page
         navigate(`/class/${classId}/assignment/${assignmentId}`);
       } else {
         toast({
@@ -444,6 +446,28 @@ const EditAssignment = () => {
                 </FormItem>
               )}
              />
+            <FormField
+              control={form.control}
+              name="allowedFileTypes"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Allowed File Types</FormLabel>
+                  <FormControl>
+                    <MultiSelect
+                      options={fileTypeOptions}
+                      value={field.value}
+                      onChange={(value) => {
+                        setSelectedFileTypes(value);
+                        field.onChange(value);
+                      }}
+                      placeholder="Select allowed file types"
+                    />
+                  </FormControl>
+                  <FormDescription>Select the file types that students can submit for this assignment.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormItem>
               <FormLabel htmlFor="file-upload">Upload File</FormLabel>
               <input

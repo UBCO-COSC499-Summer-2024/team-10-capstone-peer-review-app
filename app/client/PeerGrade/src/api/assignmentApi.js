@@ -5,24 +5,36 @@ const BASE_URL = "/api"; // Use environment variable if available
 
 export const addAssignmentToClass = async (formData) => {
   try {
-      const response = await axios.post('/api/assignment/add-assignment', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
+    // Get the assignmentData from formData
+    const assignmentDataString = formData.get('assignmentData');
+    let assignmentData = JSON.parse(assignmentDataString);
 
-        if (response.data.status === 'Success') {
-          showStatusToast({
-            status: response.data.status,
-            message: "The assignment and its rubric have been successfully created."
-          });
-        }
-        console.log('Updated assignment data:', response.data);
+    // Ensure allowedFileTypes is included in assignmentData
+    if (!assignmentData.allowedFileTypes || assignmentData.allowedFileTypes.length === 0) {
+      console.warn('allowedFileTypes is empty or not set');
+    }
 
-       return response.data;
+    // Log the assignmentData for debugging
+    console.log('Assignment Data being sent:', assignmentData);
+
+    const response = await axios.post('/api/assignment/add-assignment', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+
+    if (response.data.status === 'Success') {
+      showStatusToast({
+        status: response.data.status,
+        message: "The assignment has been successfully created."
+      });
+    }
+    console.log('Updated assignment data:', response.data);
+
+    return response.data;
   } catch (error) {
-      handleError(error);
-      return error.response.data;
+    handleError(error);
+    return error.response.data;
   }
 };
 

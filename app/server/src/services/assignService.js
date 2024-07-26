@@ -24,20 +24,20 @@ const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
             throw new apiError("Assignment due date is outside the class duration", 400);
         }
 
-        // Create the new assignment
-		const newAssignment = await prisma.assignment.create({
-            data: {
-                title: assignmentData.title,
-                description: assignmentData.description,
-                dueDate: assignmentData.dueDate,
-                maxSubmissions: assignmentData.maxSubmissions,
-                reviewOption: assignmentData.reviewOption,
-                assignmentFilePath: assignmentData.assignmentFilePath,
-                classId,
-                categoryId,
-                rubricId: assignmentData.rubricId, // Add this line
-            }
-        });
+        const newAssignment = await prisma.assignment.create({
+			data: {
+			  title: assignmentData.title,
+			  description: assignmentData.description,
+			  dueDate: assignmentData.dueDate,
+			  maxSubmissions: assignmentData.maxSubmissions,
+			  reviewOption: assignmentData.reviewOption,
+			  assignmentFilePath: assignmentData.assignmentFilePath,
+			  classId,
+			  categoryId,
+			  rubricId: assignmentData.rubricId,
+			  allowedFileTypes: assignmentData.allowedFileTypes,  // Ensure this line is present
+			}
+		  });
 
         // Connect rubrics to the new assignment
         if (assignmentData.rubrics && assignmentData.rubrics.length > 0) {
@@ -136,11 +136,17 @@ const updateAssignmentInClass = async (classId, assignmentId, categoryId, update
 	  const updatedAssignment = await prisma.assignment.update({
 		where: { assignmentId },
 		data: {
-			...updateData,
-			categoryId,
-			rubricId: updateData.rubricId, // Add this line
+		  title: updateData.title,
+		  description: updateData.description,
+		  dueDate: updateData.dueDate,
+		  maxSubmissions: updateData.maxSubmissions,
+		  reviewOption: updateData.reviewOption,
+		  assignmentFilePath: updateData.assignmentFilePath,
+		  categoryId,
+		  rubricId: updateData.rubricId,
+		  allowedFileTypes: updateData.allowedFileTypes,  // Ensure this line is present
 		}
-	});
+	  });
   
 	  // Update the Category table if the category has changed
 	  if (assignment.categoryId !== categoryId) {

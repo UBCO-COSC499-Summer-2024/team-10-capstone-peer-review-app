@@ -75,7 +75,7 @@ model Assignment {
   dueDate            DateTime
   maxSubmissions     Int            @default(1)
   isGroupAssignment  Boolean        @default(false)
-  assignmentType     SubmissionType @default(URL)
+  allowedFileTypes   String[]       
   assignmentFilePath String?
   classes            Class          @relation(fields: [classId], references: [classId], onDelete: Cascade)
   categoryId         String? // Add this line

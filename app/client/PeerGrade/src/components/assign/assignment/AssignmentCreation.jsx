@@ -64,11 +64,6 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
   const [selectedRubric, setSelectedRubric] = useState("");
   const [selectedFileTypes, setSelectedFileTypes] = useState([]);
 
-  useEffect(() => {
-    console.log('selectedFileTypes:', selectedFileTypes);
-
-  }, [selectedFileTypes]);
-
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -184,8 +179,6 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
       });
     }
   };
-
-  const acceptAttribute = selectedFileTypes.map(type => `.${type}`).join(',');
 
   return (
     <div className='flex bg-white justify-left flex-row p-4'>
@@ -468,7 +461,6 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
                 type="file"
                 id="file-upload"
                 ref={fileInputRef}
-                accept={acceptAttribute || ".pdf"}
                 style={{ display: 'none' }}
                 onChange={handleFileChange}
               />
@@ -479,7 +471,7 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
                 </Button>
                 {selectedFileName && <span>{selectedFileName}</span>}
               </div>
-              <FormDescription>Attach any PDF files related to the assignment.</FormDescription>
+              <FormDescription>Attach any files related to the assignment (PDFs preferred).</FormDescription>
               <FormMessage />
             </FormItem>
             <Button type="submit" className='bg-primary text-white'>Submit</Button>

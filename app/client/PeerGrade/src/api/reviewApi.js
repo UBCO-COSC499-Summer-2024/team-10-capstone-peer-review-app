@@ -104,6 +104,23 @@ const reviewAPI = {
 		}
 	},
 
+	assignRandomPeerReviews: async (assignmentId, reviewsPerStudent) => {
+		try {
+		  const response = await axios.post(`${BASE_URL}/review/assign-random-peer-reviews`, {
+			assignmentId,
+			reviewsPerStudent
+		  });
+		  showStatusToast({
+			status: "Success",
+			message: response.data.message || "Peer reviews assigned successfully."
+		  });
+		  return response.data;
+		} catch (error) {
+		  handleError(error);
+		  throw error;
+		}
+	  },
+
 	updateReview: async (reviewId, review) => {
 		console.log("reviewId", reviewId);
 		console.log("review", review);

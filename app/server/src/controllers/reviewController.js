@@ -64,6 +64,30 @@ export const createReview = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+export const assignRandomPeerReviews = asyncErrorHandler(async (req, res) => {
+	const { assignmentId, reviewsPerStudent } = req.body;
+
+	if (!assignmentId || !reviewsPerStudent) {
+		throw new apiError(
+			"Assignment ID and number of reviews per student are required",
+			400
+		);
+	}
+
+	const result = await reviewService.assignRandomPeerReviews(
+		assignmentId,
+		reviewsPerStudent
+	);
+
+	return res.status(200).json({
+		status: "Success",
+		message: `Peer reviews assigned successfully. ${result.assignedReviews} reviews assigned in total.`,
+		data: {
+			assignedReviews: result.assignedReviews
+		}
+	});
+});
+
 export const getReviewDetails = asyncErrorHandler(async (req, res) => {
 	const { reviewId } = req.params;
 	const reviewDetails = await reviewService.getReviewDetails(reviewId);
@@ -118,6 +142,7 @@ export default {
 	getInstructorReview,
 	getAllReviews,
 	createReview,
+	assignRandomPeerReviews,
 	updateReview,
 	deleteReview,
 	getReviewDetails,

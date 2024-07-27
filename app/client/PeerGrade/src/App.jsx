@@ -18,6 +18,7 @@ import PeerReview from "./pages/Reviews";
 import Settings from "./pages/Settings";
 import AppNavbar from "./components/global/Navbar";
 import ManageClass from "./pages/ManageClass";
+import ManageReviews from "./pages/ManageReviews";
 import Submission from "./components/assign/assignment/StudentSubmission";
 import StudentEnrollmentRequests from "./pages/StudentEnrollmentRequests";
 import Report from "./pages/Report";
@@ -160,6 +161,15 @@ function MainLayout() {
 								<ProtectedRoute
 									element={<PeerReview />}
 									allowedRoles={["STUDENT", "INSTRUCTOR", "ADMIN"]}
+								/>
+							}
+						/>
+						<Route
+							path="/manage-reviews"
+							element={
+								<ProtectedRoute
+									element={<ManageReviews />}
+									allowedRoles={["INSTRUCTOR", "ADMIN"]}
 								/>
 							}
 						/>

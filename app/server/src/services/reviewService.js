@@ -275,6 +275,74 @@ const createReview = async (userId, review) => {
 	}
 };
 
+const assignRandomPeerReviews = async (assignmentId, reviewsPerStudent) => {
+	try {
+		return await prisma.$transaction(async (prisma) => {
+			const submissions = await prisma.submission.findMany({
+				where: { assignmentId: assignmentId },
+				include: { submitter: true }
+			});
+
+			if (submissions.length < 2) {
+				throw new apiError(
+					"Not enough submissions to assign peer reviews",
+					400
+				);
+			}
+
+			const submittingStudentIds = new Set(
+				submissions.map((s) => s.submitterId)
+			);
+			const shuffledSubmissions = submissions.sort(() => 0.5 - Math.random());
+
+			const reviewAssignments = [];
+
+			for (const reviewerId of submittingStudentIds) {
+				let assignedReviews = 0;
+				for (
+					let j = 0;
+					assignedReviews < reviewsPerStudent && j < shuffledSubmissions.length;
+					j++
+				) {
+					const submissionToReview = shuffledSubmissions[j];
+
+					if (
+						submissionToReview.submitterId !== reviewerId &&
+						!reviewAssignments.some(
+							(ra) =>
+								ra.reviewerId === reviewerId &&
+								ra.submissionId === submissionToReview.submissionId
+						)
+					) {
+						reviewAssignments.push({
+							submissionId: submissionToReview.submissionId,
+							reviewerId: reviewerId,
+							revieweeId: submissionToReview.submitterId
+						});
+						assignedReviews++;
+					}
+				}
+			}
+
+			// Create reviews in bulk
+			await prisma.review.createMany({
+				data: reviewAssignments.map((ra) => ({
+					...ra,
+					isPeerReview: true,
+					reviewGrade: 0
+				}))
+			});
+
+			return {
+				assignedReviews: reviewAssignments.length
+			};
+		});
+	} catch (error) {
+		console.error("Error in assignRandomPeerReviews:", error);
+		throw new apiError("Failed to assign peer reviews: " + error.message, 500);
+	}
+};
+
 const getReviewDetails = async (reviewId) => {
 	try {
 		const review = await prisma.review.findUnique({
@@ -411,6 +479,7 @@ export default {
 	updateReview,
 	deleteReview,
 	createReview,
+	assignRandomPeerReviews,
 	getReviewDetails,
 	getReviewsAssigned,
 	getReviewsReceived,

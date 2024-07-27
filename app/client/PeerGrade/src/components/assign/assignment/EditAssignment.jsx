@@ -474,7 +474,6 @@ const EditAssignment = () => {
                 type="file"
                 id="file-upload"
                 ref={fileInputRef}
-                accept=".pdf"
                 style={{ display: 'none' }}
                 onChange={handleFileChange}
               />
@@ -485,7 +484,7 @@ const EditAssignment = () => {
                 </Button>
                 {selectedFileName && <span>{selectedFileName}</span>}
               </div>
-              <FormDescription>Attach any PDF files related to the assignment.</FormDescription>
+              <FormDescription>Attach any files related to the assignment (PDFs preferred).</FormDescription>
               <FormMessage />
             </FormItem>
             <Button type="submit" className='bg-primary text-white'>Update Assignment</Button>

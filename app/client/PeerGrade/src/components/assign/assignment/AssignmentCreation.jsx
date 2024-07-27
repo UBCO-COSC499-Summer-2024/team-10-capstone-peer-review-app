@@ -176,7 +176,7 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
             <Input id="maxSubmissions" name="maxSubmissions" type="number" value={formData.maxSubmissions} onChange={handleInputChange} required />
           </div>
 
-          <div>
+          <div className='flex flex-col gap-2'>
             <label>Due by:</label>
             <Popover>
               <PopoverTrigger asChild>
@@ -258,7 +258,10 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
                 Upload File
               </Button>
               {selectedFileName && <span>{selectedFileName}</span>}
+
             </div>
+            <p className='text-sm text-slate-600 mt-3'>Attach any files related to the assignment (PDFs preferred).</p>
+
           </div>
 
           <Button type="submit" className='bg-primary text-white'>Submit</Button>

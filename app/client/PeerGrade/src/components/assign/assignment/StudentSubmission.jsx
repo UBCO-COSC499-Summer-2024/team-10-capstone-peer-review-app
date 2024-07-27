@@ -164,7 +164,7 @@ const Submission = ({ refresh }) => {
                                     <TabsTrigger value="text-submission">Text Submission</TabsTrigger>
                                 </TabsList>
                                 <TabsContent value="file-upload">
-                                    <Accordion type="single" collapsible className="bg-gray-100 rounded-lg px-6">
+                                    {/* <Accordion type="single" collapsible className="bg-gray-100 rounded-lg px-6">
                                         <AccordionItem value="submit-assignment">
                                             <AccordionTrigger className="text-gray-600 hover:text-gray-800 flex items-center">
                                                 <div className='flex justify-between items-center w-full mr-3'>
@@ -172,7 +172,7 @@ const Submission = ({ refresh }) => {
                                                 <span>Submit Assignment</span>
                                                 </div>
                                             </AccordionTrigger>
-                                            <AccordionContent>
+                                            <AccordionContent> */}
                                                 <div className="p-4 w-full bg-white border border-gray-300 rounded-md">
                                                     <h2 className="text-xl font-bold mb-4">Submit Your Assignment</h2>
                                                     <form onSubmit={handleSubmit}>
@@ -191,9 +191,9 @@ const Submission = ({ refresh }) => {
                                                         </div>
                                                     )}
                                                 </div>
-                                            </AccordionContent>
+                                            {/* </AccordionContent>
                                         </AccordionItem>
-                                    </Accordion>
+                                    </Accordion> */}
                                 </TabsContent>
                                 <TabsContent value="text-submission">
                                     <div className="p-4 w-full bg-white border border-gray-300 rounded-md">

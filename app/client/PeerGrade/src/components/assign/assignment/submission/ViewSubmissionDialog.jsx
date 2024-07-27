@@ -41,7 +41,7 @@ const ViewSubmissionDialog = ({ submission, rubric, open, onClose, onDownload })
                     </DialogTitle>
                 </DialogHeader>
                 {submission &&
-                    <div className="flex-1 overflow-x-hidden">
+                    <div className="flex-1 overflow-x-hidden h-[65vh]">
                         {submission.submissionFilePath.endsWith('.txt') ? (
                             <div className="h-full">
                                 <h2 className="text-lg font-semibold pb-4">Text Submission</h2>

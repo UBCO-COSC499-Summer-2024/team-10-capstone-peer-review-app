@@ -154,19 +154,55 @@ const getInstructorReview = async (submissionId) => {
 	}
 };
 
-const getAllReviews = async (submissionId) => {
-	try {
-		const reviews = await prisma.review.findMany({
-			where: {
-				submissionId: submissionId
-			}
-		});
-
-		return reviews;
-	} catch (error) {
-		throw new apiError("Failed to retrieve reviews", 500);
-	}
-};
+const getAllReviews = async () => {
+    try {
+      const reviews = await prisma.review.findMany({
+        include: {
+          reviewer: {
+            select: {
+              userId: true,
+              firstname: true,
+              lastname: true,
+              role: true,
+            },
+          },
+          reviewee: {
+            select: {
+              userId: true,
+              firstname: true,
+              lastname: true,
+              role: true,
+            },
+          },
+          submission: {
+            include: {
+              assignment: {
+                include: {
+                  classes: {
+                    select: {
+                      classId: true,
+                      classname: true,
+                    },
+                  },
+                  rubric: {
+                    select: {
+                      totalMarks: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+          criterionGrades: true,
+        },
+      });
+  
+      return reviews;
+    } catch (error) {
+      console.error("Error in getAllReviews:", error);
+      throw new apiError("Failed to retrieve reviews", 500);
+    }
+  };
 
 const updateReview = async (reviewId, review) => {
 	const { criterionGrades, ...reviewData } = review;

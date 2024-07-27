@@ -6,20 +6,22 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/utils/utils";
 
 const GradeCard = ({
+  reviewId,
   assignmentId,
   classId,
   assignmentTitle,
   grade,
   totalMarks,
   dueDate,
-  onViewGradeDetails,
+  onViewGradeDetails,  // Changed from viewDetailsLink
   isGraded
 }) => {
+  console.log("GradeCard: ", reviewId, assignmentId, classId, assignmentTitle, grade, totalMarks, dueDate, onViewGradeDetails, isGraded);
   const percentageGrade = totalMarks > 0 ? ((grade / totalMarks) * 100).toFixed(2) : 0;
-  const gradeColor = percentageGrade >= 75 ? "bg-success/30 text-success/80" : percentageGrade >= 50 ? "bg-warning/30 text-warning/80" : "bg-destructive/20 text-destructive/80";
+  const gradeColor = percentageGrade >= 75 ? "bg-success/30 " : percentageGrade >= 50 ? "bg-warning/30 " : "bg-destructive/20 ";
 
   return (
-    <Alert className={cn("mb-4", isGraded && "bg-green-100")}>
+    <Alert className={cn("mb-4")}>
       <AlertTitle className="flex justify-between items-center">
         <span>{assignmentTitle}</span>
         <Badge variant="outline" className={gradeColor}>{isGraded ? `${percentageGrade}%` : "Not Graded"}</Badge>
@@ -36,7 +38,7 @@ const GradeCard = ({
             </Button>
           </Link>
           <Button 
-            onClick={onViewGradeDetails} 
+            onClick={() => onViewGradeDetails(reviewId)}  // Changed this line
             variant="outline" 
             size="sm"
           >

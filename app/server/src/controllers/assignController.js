@@ -166,6 +166,43 @@ export const getAllAssignmentsByClassId = asyncErrorHandler(
 	}
 );
 
+export const addAssignmentWithRubric = [
+	upload.single("file"),
+	asyncErrorHandler(async (req, res) => {
+	  const classId = req.body.classId;
+	  const categoryId = req.body.categoryId;
+	  const assignmentData = JSON.parse(req.body.assignmentData);
+	  const rubricData = JSON.parse(req.body.rubricData);
+	  const creatorId = req.body.creatorId;
+  
+	  console.log('Received data in controller:', { classId, categoryId, assignmentData, rubricData, creatorId });
+  
+	  let fileUrl = null;
+	  if (req.file) {
+		// Handle file upload similar to addAssignmentToClass
+		const uniqueFilename = `${uuidv4()}${path.extname(req.file.originalname)}`;
+		const filePath = path.join(UPLOAD_PATH, uniqueFilename);
+		fs.mkdirSync(UPLOAD_PATH, { recursive: true });
+		fs.writeFileSync(filePath, req.file.buffer);
+		fileUrl = `${BASE_URL}/${uniqueFilename}`;
+	  }
+  
+	  const result = await assignService.addAssignmentWithRubric(
+		classId,
+		categoryId,
+		{ ...assignmentData, assignmentFilePath: fileUrl },
+		rubricData,
+		creatorId
+	  );
+  
+	  return res.status(200).json({
+		status: "Success",
+		message: "Assignment and rubric successfully added",
+		data: result
+	  });
+	})
+  ];
+
 // Export all controller methods
 export default {
 	addAssignmentToClass,
@@ -173,5 +210,6 @@ export default {
 	updateAssignmentInClass,
 	getAssignmentInClass,
 	getAllAssignments,
-	getAllAssignmentsByClassId
+	getAllAssignmentsByClassId,
+	addAssignmentWithRubric
 };

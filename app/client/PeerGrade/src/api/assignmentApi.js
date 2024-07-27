@@ -38,6 +38,32 @@ export const addAssignmentToClass = async (formData) => {
   }
 };
 
+export const addAssignmentWithRubric = async (data) => {
+  console.log('Data to add assignment with rubric:', data);
+  try {
+    const formData = new FormData();
+    formData.append('classId', data.classId);
+    formData.append('categoryId', data.categoryId);
+    formData.append('assignmentData', JSON.stringify(data.assignmentData));
+    formData.append('rubricData', JSON.stringify(data.rubricData));
+    formData.append('creatorId', data.creatorId);
+
+    if (data.file) {
+      formData.append('file', data.file);
+    }
+
+    const response = await axios.post('/api/assignment/add-assignment-with-rubric', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error adding assignment with rubric:', error);
+    throw error;
+  }
+};
+
 export const updateAssignmentInClass = async (formData) => {
     try {
       const response = await axios.post('/api/assignment/update-assignment', formData, {

@@ -262,7 +262,65 @@ const getAllAssignmentsByClassId = async (classId) => {
 	  }
 	}
 };
+
+const addAssignmentWithRubric = async (classId, categoryId, assignmentData, rubricData, creatorId) => {
+	try {
+	  console.log('Received data in service:', { classId, categoryId, assignmentData, rubricData, creatorId });
   
+	  // Calculate totalMarks
+	  const totalMarks = rubricData.criteria.reduce((total, criterion) => {
+		return total + criterion.ratings.reduce((subtotal, rating) => subtotal + parseFloat(rating.points), 0);
+	  }, 0);
+  
+	  // Create the rubric
+	  const newRubric = await prisma.rubric.create({
+		data: {
+		  title: rubricData.title,
+		  description: rubricData.description,
+		  creatorId: creatorId,
+		  totalMarks: totalMarks,
+		  classId: classId,
+		  criteria: {
+			create: rubricData.criteria.map(criterion => ({
+			  title: criterion.criteria,
+			  maxMark: Math.max(...criterion.ratings.map(r => parseFloat(r.points))),
+			  minMark: Math.min(...criterion.ratings.map(r => parseFloat(r.points))),
+			  criterionRatings: {
+				create: criterion.ratings.map(rating => ({
+				  description: rating.text,
+				  points: parseInt(rating.points, 10)
+				}))
+			  }
+			}))
+		  }
+		}
+	  });
+  
+	  console.log('Created rubric:', newRubric);
+  
+	  // Then create the assignment with the new rubric
+	  const newAssignment = await prisma.assignment.create({
+		data: {
+		  title: assignmentData.title,
+		  description: assignmentData.description,
+		  dueDate: new Date(assignmentData.dueDate),
+		  maxSubmissions: parseInt(assignmentData.maxSubmissions, 10),
+		  allowedFileTypes: assignmentData.allowedFileTypes,
+		  assignmentFilePath: assignmentData.assignmentFilePath,
+		  classId: classId,
+		  categoryId: categoryId,
+		  rubricId: newRubric.rubricId
+		}
+	  });
+  
+	  console.log('Created assignment:', newAssignment);
+  
+	  return { assignment: newAssignment, rubric: newRubric };
+	} catch (error) {
+	  console.error('Detailed error in addAssignmentWithRubric:', error);
+	  throw new apiError(`Failed to add assignment with rubric: ${error.message}`, 500);
+	}
+  };
 export default {
 	updateAssignmentInClass,
 	addAssignmentToClass,
@@ -270,4 +328,5 @@ export default {
 	getAssignmentInClass,
 	getAllAssignments,
 	getAllAssignmentsByClassId,
+	addAssignmentWithRubric
 };

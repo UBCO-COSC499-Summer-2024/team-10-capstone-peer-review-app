@@ -193,6 +193,8 @@ const EditAssignment = () => {
     }
   };
 
+  const acceptAttribute = selectedFileTypes.map(type => `.${type}`).join(',');
+
   return (
     <div className='flex bg-white justify-left flex-row p-4'>
       <div>
@@ -474,7 +476,7 @@ const EditAssignment = () => {
                 type="file"
                 id="file-upload"
                 ref={fileInputRef}
-                accept=".pdf"
+                accept={acceptAttribute || ".pdf"}
                 style={{ display: 'none' }}
                 onChange={handleFileChange}
               />

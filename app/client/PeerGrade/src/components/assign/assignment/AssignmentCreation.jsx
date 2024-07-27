@@ -64,6 +64,11 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
   const [selectedRubric, setSelectedRubric] = useState("");
   const [selectedFileTypes, setSelectedFileTypes] = useState([]);
 
+  useEffect(() => {
+    console.log('selectedFileTypes:', selectedFileTypes);
+
+  }, [selectedFileTypes]);
+
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -179,6 +184,8 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
       });
     }
   };
+
+  const acceptAttribute = selectedFileTypes.map(type => `.${type}`).join(',');
 
   return (
     <div className='flex bg-white justify-left flex-row p-4'>
@@ -461,7 +468,7 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
                 type="file"
                 id="file-upload"
                 ref={fileInputRef}
-                accept=".pdf"
+                accept={acceptAttribute || ".pdf"}
                 style={{ display: 'none' }}
                 onChange={handleFileChange}
               />

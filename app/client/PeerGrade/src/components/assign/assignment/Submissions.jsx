@@ -10,10 +10,11 @@ import {
 	TableRow
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Download } from "lucide-react";
+import { Download, Search } from "lucide-react";
 import { getSubmissionsForAssignment } from "@/api/submitApi";
 import { getStudentsByClassId } from "@/api/classApi";
 import { getRubricsForAssignment } from "@/api/rubricApi";
+import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { cn } from "@/utils/utils";
 import {
@@ -26,7 +27,7 @@ import reviewAPI from "@/api/reviewApi";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import ReviewDetailsDialog from "./submission/ReviewDetailsDialog";
 import ViewSubmissionDialog from "./submission/ViewSubmissionDialog";
-import GradeSubmissionDialog from "./submission/GradeSubmissionDialog";;
+import GradeSubmissionDialog from "./submission/GradeSubmissionDialog";
 import {
 	Dialog,
 	DialogContent,
@@ -56,7 +57,9 @@ const Submissions = () => {
 	const [existingReviewers, setExistingReviewers] = useState([]);
 	const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
 	const [reviewersToDelete, setReviewersToDelete] = useState([]);
+	const [searchTerm, setSearchTerm] = useState("");
 
+	// Fetch initial data when component mounts
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -67,6 +70,7 @@ const Submissions = () => {
 						getRubricsForAssignment(assignmentId)
 					]);
 
+				// Group submissions by student
 				const submissionsMap = submissionsResponse.data.reduce(
 					(acc, submission) => {
 						if (!acc[submission.submitterId]) {
@@ -78,10 +82,14 @@ const Submissions = () => {
 					{}
 				);
 
+				// Process student data and their submissions
 				const studentsWithSubmissionStatus = await Promise.all(
 					studentsResponse.data.map(async (student) => {
 						const submissions = submissionsMap[student.userId] || [];
-						const latestSubmission = submissions[submissions.length - 1];
+						submissions.sort(
+							(a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+						);
+						const latestSubmission = submissions[0];
 						let latestGrade = null;
 						if (latestSubmission) {
 							const reviews = await reviewAPI.getAllReviews(
@@ -107,6 +115,7 @@ const Submissions = () => {
 				setAllStudents(studentsResponse.data);
 				setStudentsWithSubmissions(studentsWithSubmissionStatus);
 
+				// Set rubrics and calculate total points
 				setRubrics(rubricData.data);
 				const totalPoints = rubricData.data.reduce((acc, rubric) => {
 					return acc + rubric.totalMarks;
@@ -126,17 +135,14 @@ const Submissions = () => {
 		fetchData();
 	}, [assignmentId, classId]);
 
+	// Handle assigning reviewers to a submission
 	const handleAssignReviewers = async (submission) => {
 		setCurrentSubmission(submission);
-		console.log("submission", submission);
-		// Fetch existing reviewers
 		try {
 			const reviews = await reviewAPI.getAllReviews(submission.submissionId);
-			console.log("reiveeees", reviews);
 			const existingReviewerIds = reviews.data
 				.filter((review) => review.isPeerReview)
 				.map((review) => review.reviewerId);
-			console.log("existingReviewerIds", existingReviewerIds);
 			setExistingReviewers(existingReviewerIds);
 			setSelectedReviewers(existingReviewerIds);
 		} catch (error) {
@@ -151,6 +157,7 @@ const Submissions = () => {
 		setAssignReviewersDialogOpen(true);
 	};
 
+	// Handle submission of assigned reviewers
 	const handleAssignReviewersSubmit = () => {
 		const reviewersToRemove = existingReviewers.filter(
 			(id) => !selectedReviewers.includes(id)
@@ -164,17 +171,20 @@ const Submissions = () => {
 		}
 	};
 
+	// Handle confirmation of reviewer deletion
 	const handleConfirmDelete = () => {
 		updateReviewers();
 		setConfirmDialogOpen(false);
 	};
 
+	// Handle cancellation of reviewer deletion
 	const handleCancelDelete = () => {
 		setConfirmDialogOpen(false);
 		setAssignReviewersDialogOpen(true);
 		setSelectedReviewers(existingReviewers);
 	};
 
+	// Update reviewers for a submission
 	const updateReviewers = async () => {
 		try {
 			// Delete reviews for unchecked existing reviewers
@@ -227,6 +237,7 @@ const Submissions = () => {
 		}
 	};
 
+	// Handle downloading a submission
 	const handleDownload = (submission) => {
 		const link = document.createElement("a");
 		link.href = submission.submissionFilePath;
@@ -236,10 +247,10 @@ const Submissions = () => {
 		document.body.removeChild(link);
 	};
 
+	// Fetch rubrics for an assignment
 	const fetchRubrics = async (assignmentId) => {
 		try {
 			const rubricData = await getRubricsForAssignment(assignmentId);
-			console.log("rubricData", rubricData);
 			setRubrics(rubricData.data);
 
 			const totalPoints = rubricData.data.reduce((acc, rubric) => {
@@ -251,6 +262,7 @@ const Submissions = () => {
 		}
 	};
 
+	// Handle submission of grades
 	const handleGradeSubmit = async (event) => {
 		event.preventDefault();
 
@@ -318,6 +330,7 @@ const Submissions = () => {
 				response = await reviewAPI.createReview(user.userId, review);
 			}
 
+			// Update the studentsWithSubmissions state to reflect the new grade
 			setStudentsWithSubmissions((prev) =>
 				prev.map((student) => {
 					if (student.userId === selectedSubmission.submitterId) {
@@ -348,11 +361,13 @@ const Submissions = () => {
 		}
 	};
 
+	// Handle viewing a submission
 	const handleViewSubmission = (submission) => {
 		setSelectedSubmission(submission);
 		setViewDialogOpen(true);
 	};
 
+	// Handle grading an assignment
 	const handleGradeAssignment = async (submission) => {
 		if (!submission) {
 			console.error("No submission provided to grade");
@@ -366,20 +381,10 @@ const Submissions = () => {
 
 		setSelectedSubmission(submission);
 		await fetchRubrics(assignmentId);
-
-		// if (rubrics.length === 0) {
-		//     console.error("No rubrics available to grade with.");
-		//     toast({
-		//         title: "Error",
-		//         description: "Please assign or create a rubric to this assignment to be able to grade it.",
-		//         variant: "destructive"
-		//     });
-		//     return;
-		// }
-
 		setGradeDialogOpen(true);
 	};
 
+	// Handle viewing review details
 	const handleViewReviewDetails = async (submissionId) => {
 		setSelectedSubmissionId(submissionId);
 		if (rubrics.length === 0) {
@@ -387,6 +392,11 @@ const Submissions = () => {
 		}
 		setReviewDialogOpen(true);
 	};
+
+	// Filter students based on search term
+	const filteredStudents = studentsWithSubmissions.filter((student) =>
+		student.name.toLowerCase().includes(searchTerm.toLowerCase())
+	);
 
 	if (loading) {
 		return <div>Loading submissions...</div>;
@@ -398,9 +408,19 @@ const Submissions = () => {
 				<CardHeader>
 					<CardTitle>Submissions</CardTitle>
 				</CardHeader>
+				<div className="mb-4 flex items-center mx-5">
+					<Search className="mr-2 h-4 w-4 text-gray-500" />
+					<Input
+						type="text"
+						placeholder="Search by student name"
+						value={searchTerm}
+						onChange={(e) => setSearchTerm(e.target.value)}
+						className="flex-grow"
+					/>
+				</div>
 				<CardContent>
 					<Accordion type="single" collapsible className="w-full">
-						{studentsWithSubmissions.map((student, index) => (
+						{filteredStudents.map((student, index) => (
 							<AccordionItem value={`item-${index}`} key={student.userId}>
 								<AccordionTrigger
 									className={cn(
@@ -413,9 +433,6 @@ const Submissions = () => {
 										<span>
 											{student.hasSubmitted ? "Submitted" : "No Submission"}
 										</span>
-										{/* <span>
-                                        {student.latestGrade !== null ? student.latestGrade.toFixed(2) : "N/A"}
-                                    </span> */}
 									</div>
 								</AccordionTrigger>
 								<AccordionContent>
@@ -431,7 +448,9 @@ const Submissions = () => {
 											{student.submissions.length > 0 ? (
 												student.submissions.map((submission, subIndex) => (
 													<TableRow key={submission.submissionId}>
-														<TableCell>Attempt {subIndex + 1}</TableCell>
+														<TableCell>
+															Attempt {student.submissions.length - subIndex}
+														</TableCell>
 														<TableCell>
 															{new Date(submission.createdAt).toLocaleString()}
 														</TableCell>
@@ -454,35 +473,41 @@ const Submissions = () => {
 																	<Download className="h-4 w-4 mr-1" />
 																	Download
 																</Button>
-																<Button
-																	variant="outline"
-																	size="sm"
-																	onClick={() =>
-																		handleGradeAssignment(submission)
-																	}
-																>
-																	Grade
-																</Button>
-																<Button
-																	variant="outline"
-																	size="sm"
-																	onClick={() =>
-																		handleViewReviewDetails(
-																			submission.submissionId
-																		)
-																	}
-																>
-																	View Grades
-																</Button>
-																<Button
-																	variant="outline"
-																	size="sm"
-																	onClick={() =>
-																		handleAssignReviewers(submission)
-																	}
-																>
-																	Assign Reviewers
-																</Button>
+																{subIndex === 0 && (
+																	<>
+																		<Button
+																			variant="outline"
+																			size="sm"
+																			onClick={() =>
+																				handleGradeAssignment(submission)
+																			}
+																		>
+																			{submission.finalGrade !== null
+																				? "Re-grade"
+																				: "Grade"}
+																		</Button>
+																		<Button
+																			variant="outline"
+																			size="sm"
+																			onClick={() =>
+																				handleViewReviewDetails(
+																					submission.submissionId
+																				)
+																			}
+																		>
+																			View Grades
+																		</Button>
+																		<Button
+																			variant="outline"
+																			size="sm"
+																			onClick={() =>
+																				handleAssignReviewers(submission)
+																			}
+																		>
+																			Assign Reviewers
+																		</Button>
+																	</>
+																)}
 															</div>
 														</TableCell>
 													</TableRow>
@@ -501,6 +526,7 @@ const Submissions = () => {
 						))}
 					</Accordion>
 				</CardContent>
+				{/* Dialogs */}
 				<ViewSubmissionDialog
 					submission={selectedSubmission}
 					open={viewDialogOpen}
@@ -585,6 +611,7 @@ const Submissions = () => {
 					</DialogContent>
 				</Dialog>
 			</Card>
+			{/* Rubrics Card */}
 			<Card className="mt-4">
 				{rubrics.length > 0 && (
 					<CardContent>

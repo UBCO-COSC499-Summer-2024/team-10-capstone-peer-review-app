@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +23,7 @@ const AssignedPR = () => {
 	const [instructorReview, setInstructorReview] = useState(null);
 	const [peerReviews, setPeerReviews] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (!user || !user.userId) {
@@ -166,9 +167,13 @@ const AssignedPR = () => {
 	return (
 		<div className="w-ful ">
 			<div className="flex items-center space-x-4 mb-4">
-				<Link to="/peer-review" className="text-xl text-primary">
-					<ChevronLeft className="h-6 w-6" />
-				</Link>
+				<Button
+					variant="ghost"
+					onClick={() => navigate(-1)}
+					className="text-xl text-primary flex items-center"
+				>
+					<ChevronLeft className="h-6 w-6 mr-2" />
+				</Button>
 				<h1 className="text-2xl font-bold text-primary">Review Details</h1>
 			</div>
 

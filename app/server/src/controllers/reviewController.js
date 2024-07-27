@@ -32,6 +32,16 @@ export const getAllReviews = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+export const getReviewsForAssignment = asyncErrorHandler(async (req, res) => {
+	const { assignmentId } = req.params;
+	const reviews = await reviewService.getReviewsForAssignment(assignmentId);
+
+	return res.status(200).json({
+		status: "Success",
+		data: reviews
+	});
+});
+
 export const updateReview = asyncErrorHandler(async (req, res) => {
 	console.log("req.body", req.body);
 	const { review, reviewId } = req.body;
@@ -141,6 +151,7 @@ export default {
 	getPeerReviews,
 	getInstructorReview,
 	getAllReviews,
+	getReviewsForAssignment,
 	createReview,
 	assignRandomPeerReviews,
 	updateReview,

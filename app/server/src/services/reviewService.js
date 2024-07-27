@@ -173,6 +173,51 @@ const getAllReviews = async (submissionId) => {
 	}
 };
 
+const getReviewsForAssignment = async (assignmentId) => {
+	try {
+		const reviews = await prisma.review.findMany({
+			where: {
+				submission: {
+					assignmentId: assignmentId
+				}
+			},
+			include: {
+				reviewer: {
+					select: {
+						firstname: true,
+						lastname: true,
+						role: true
+					}
+				},
+				reviewee: {
+					select: {
+						firstname: true,
+						lastname: true
+					}
+				},
+				criterionGrades: {
+					include: {
+						criterion: true
+					}
+				},
+				submission: {
+					include: {
+						assignment: true
+					}
+				}
+			}
+		});
+
+		return reviews;
+	} catch (error) {
+		console.error("Error in getReviewsForAssignment:", error);
+		throw new apiError(
+			`Failed to retrieve reviews for assignment: ${error.message}`,
+			500
+		);
+	}
+};
+
 const updateReview = async (reviewId, review) => {
 	const { criterionGrades, ...reviewData } = review;
 
@@ -278,60 +323,104 @@ const createReview = async (userId, review) => {
 const assignRandomPeerReviews = async (assignmentId, reviewsPerStudent) => {
 	try {
 		return await prisma.$transaction(async (prisma) => {
-			const submissions = await prisma.submission.findMany({
+			// Fetch the latest submission for each student
+			const latestSubmissions = await prisma.submission.findMany({
 				where: { assignmentId: assignmentId },
+				orderBy: { createdAt: "desc" },
+				distinct: ["submitterId"],
 				include: { submitter: true }
 			});
 
-			if (submissions.length < 2) {
+			const submissionCount = latestSubmissions.length;
+
+			// Check if there are enough submissions for the required number of reviews
+			if (submissionCount < 2 || submissionCount <= reviewsPerStudent) {
 				throw new apiError(
-					"Not enough submissions to assign peer reviews",
+					`Not enough submissions to assign ${reviewsPerStudent} peer reviews per student. At least ${reviewsPerStudent + 1} submissions are required.`,
 					400
 				);
 			}
 
-			const submittingStudentIds = new Set(
-				submissions.map((s) => s.submitterId)
-			);
-			const shuffledSubmissions = submissions.sort(() => 0.5 - Math.random());
+			// Fetch existing peer reviews for this assignment
+			const existingPeerReviews = await prisma.review.findMany({
+				where: {
+					submission: { assignmentId: assignmentId },
+					isPeerReview: true
+				},
+				select: {
+					reviewerId: true,
+					submissionId: true
+				}
+			});
 
+			const submittingStudentIds = new Set(
+				latestSubmissions.map((s) => s.submitterId)
+			);
+			const shuffledSubmissions = latestSubmissions.sort(
+				() => 0.5 - Math.random()
+			);
 			const reviewAssignments = [];
 
 			for (const reviewerId of submittingStudentIds) {
-				let assignedReviews = 0;
-				for (
-					let j = 0;
-					assignedReviews < reviewsPerStudent && j < shuffledSubmissions.length;
-					j++
-				) {
-					const submissionToReview = shuffledSubmissions[j];
+				let assignedPeerReviews = existingPeerReviews.filter(
+					(r) => r.reviewerId === reviewerId
+				).length;
+				let attempts = 0;
+				const maxAttempts = submissionCount * 2; // Arbitrary limit to prevent infinite loops
 
-					if (
-						submissionToReview.submitterId !== reviewerId &&
-						!reviewAssignments.some(
-							(ra) =>
-								ra.reviewerId === reviewerId &&
-								ra.submissionId === submissionToReview.submissionId
-						)
+				while (
+					assignedPeerReviews < reviewsPerStudent &&
+					attempts < maxAttempts
+				) {
+					for (
+						let j = 0;
+						j < shuffledSubmissions.length &&
+						assignedPeerReviews < reviewsPerStudent;
+						j++
 					) {
-						reviewAssignments.push({
-							submissionId: submissionToReview.submissionId,
-							reviewerId: reviewerId,
-							revieweeId: submissionToReview.submitterId
-						});
-						assignedReviews++;
+						const submissionToReview = shuffledSubmissions[j];
+						if (
+							submissionToReview.submitterId !== reviewerId &&
+							!reviewAssignments.some(
+								(ra) =>
+									ra.reviewerId === reviewerId &&
+									ra.submissionId === submissionToReview.submissionId
+							) &&
+							!existingPeerReviews.some(
+								(er) =>
+									er.reviewerId === reviewerId &&
+									er.submissionId === submissionToReview.submissionId
+							)
+						) {
+							reviewAssignments.push({
+								submissionId: submissionToReview.submissionId,
+								reviewerId: reviewerId,
+								revieweeId: submissionToReview.submitterId
+							});
+							assignedPeerReviews++;
+						}
 					}
+					attempts++;
+				}
+
+				if (assignedPeerReviews < reviewsPerStudent) {
+					throw new apiError(
+						`Unable to assign ${reviewsPerStudent} unique peer reviews for each student. Please reduce the number of reviews per student or wait for more submissions.`,
+						400
+					);
 				}
 			}
 
-			// Create reviews in bulk
-			await prisma.review.createMany({
-				data: reviewAssignments.map((ra) => ({
-					...ra,
-					isPeerReview: true,
-					reviewGrade: 0
-				}))
-			});
+			// Create new reviews in bulk
+			if (reviewAssignments.length > 0) {
+				await prisma.review.createMany({
+					data: reviewAssignments.map((ra) => ({
+						...ra,
+						isPeerReview: true,
+						reviewGrade: 0
+					}))
+				});
+			}
 
 			return {
 				assignedReviews: reviewAssignments.length
@@ -476,6 +565,7 @@ export default {
 	getPeerReviews,
 	getInstructorReview,
 	getAllReviews,
+	getReviewsForAssignment,
 	updateReview,
 	deleteReview,
 	createReview,

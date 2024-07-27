@@ -31,6 +31,7 @@ import NotFound from "./components/global/NotFound";
 import SubmitReview from "./pages/SubmitReview";
 import TitleUpdater from "@/utils/TitleUpdater";
 import { Toaster } from "@/components/ui/toaster";
+import ManageAssignmentReviews from "./components/instructorReview/ManageAssignmentReviews";
 
 function App() {
 	return (
@@ -169,6 +170,15 @@ function MainLayout() {
 							element={
 								<ProtectedRoute
 									element={<ManageReviews />}
+									allowedRoles={["INSTRUCTOR", "ADMIN"]}
+								/>
+							}
+						/>
+						<Route
+							path="/manage-reviews2"
+							element={
+								<ProtectedRoute
+									element={<ManageAssignmentReviews />}
 									allowedRoles={["INSTRUCTOR", "ADMIN"]}
 								/>
 							}

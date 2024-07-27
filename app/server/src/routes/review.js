@@ -2,6 +2,7 @@ import express from "express";
 import {
 	getInstructorReview,
 	getAllReviews,
+	getReviewsForAssignment,
 	createReview,
 	assignRandomPeerReviews,
 	updateReview,
@@ -28,6 +29,8 @@ router.post("/instructorReview", getInstructorReview);
 router.get("/received", getReviewsReceived);
 
 router.get("/assigned", getReviewsAssigned);
+
+router.get("/assignment/:assignmentId", getReviewsForAssignment);
 
 router.post("/allReviews", getAllReviews);
 

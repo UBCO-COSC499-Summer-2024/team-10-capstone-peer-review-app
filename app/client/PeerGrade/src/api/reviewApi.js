@@ -30,6 +30,20 @@ const reviewAPI = {
 		}
 	},
 
+	// Add this method to your reviewAPI object
+
+	getReviewsForAssignment: async (assignmentId) => {
+		try {
+			const response = await axios.get(
+				`${BASE_URL}/review/assignment/${assignmentId}`
+			);
+			return response.data;
+		} catch (error) {
+			handleError(error);
+			throw error;
+		}
+	},
+
 	getInstructorReview: async (submissionId) => {
 		console.log("submissionId", submissionId);
 		try {
@@ -106,20 +120,23 @@ const reviewAPI = {
 
 	assignRandomPeerReviews: async (assignmentId, reviewsPerStudent) => {
 		try {
-		  const response = await axios.post(`${BASE_URL}/review/assign-random-peer-reviews`, {
-			assignmentId,
-			reviewsPerStudent
-		  });
-		  showStatusToast({
-			status: "Success",
-			message: response.data.message || "Peer reviews assigned successfully."
-		  });
-		  return response.data;
+			const response = await axios.post(
+				`${BASE_URL}/review/assignPeerReviews`,
+				{
+					assignmentId,
+					reviewsPerStudent
+				}
+			);
+			showStatusToast({
+				status: "Success",
+				message: response.data.message || "Peer reviews assigned successfully."
+			});
+			return response.data;
 		} catch (error) {
-		  handleError(error);
-		  throw error;
+			handleError(error);
+			throw error;
 		}
-	  },
+	},
 
 	updateReview: async (reviewId, review) => {
 		console.log("reviewId", reviewId);

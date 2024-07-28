@@ -34,7 +34,6 @@ import {
 	Info
 } from "lucide-react";
 import { cn } from "@/utils/utils";
-import { Link } from "react-router-dom";
 import {
 	Accordion,
 	AccordionContent,
@@ -95,7 +94,6 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 	useEffect(() => {
 		if (selectedClass) {
 			fetchAssignments(selectedClass);
-			fetchStudents(selectedClass);
 		}
 	}, [selectedClass]);
 
@@ -117,19 +115,6 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 			toast({
 				title: "Error",
 				description: "Failed to fetch assignments",
-				variant: "destructive"
-			});
-		}
-	};
-
-	const fetchStudents = async (classId) => {
-		try {
-			const response = await getStudentsByClassId(classId);
-			setAllStudents(response.data);
-		} catch (error) {
-			toast({
-				title: "Error",
-				description: "Failed to fetch students",
 				variant: "destructive"
 			});
 		}
@@ -164,6 +149,7 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 			});
 
 			setStudentsWithSubmissions(studentsWithSubmissionStatus);
+			setAllStudents(students);
 		} catch (error) {
 			toast({
 				title: "Error",
@@ -188,12 +174,10 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 	};
 
 	const isDueDatePassed = (dueDate) => {
-		// if (!dueDate) return false;
-
-		// const currentDate = new Date();
-		// const assignmentDueDate = new Date(dueDate);
-		// return currentDate > assignmentDueDate;
-		if (dueDate) return true;
+		if (!dueDate) return false;
+		const currentDate = new Date();
+		const assignmentDueDate = new Date(dueDate);
+		return currentDate > assignmentDueDate;
 	};
 
 	const handleAssignReviewers = async (submission) => {
@@ -496,6 +480,8 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 														setSelectedClass(
 															cls.classId === selectedClass ? "" : cls.classId
 														);
+														setSelectedAssignment(null);
+														setStudentsWithSubmissions([]);
 														setOpenClass(false);
 													}}
 												>
@@ -581,212 +567,201 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 						</Button>
 					)}
 
-					<div className="flex items-center flex-grow">
-						<Search className="mr-2 h-4 w-4 text-gray-500" />
-						<Input
-							placeholder="Search by student name"
-							value={searchTerm}
-							onChange={(e) => setSearchTerm(e.target.value)}
-							className="flex-grow"
-						/>
-					</div>
-					<Button
-						onClick={() => setAutoAssignDialogOpen(true)}
-						disabled={
-							!selectedAssignment ||
-							!isDueDatePassed(selectedAssignment.dueDate)
-						}
-						className={cn(
-							!isDueDatePassed(selectedAssignment?.dueDate) &&
-								"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
-						)}
-					>
-						Auto Assign Peer Reviews
-					</Button>
-				</div>
-
-				<TooltipProvider>
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<div className="flex items-center mb-4 text-yellow-800 bg-yellow-100 p-2 rounded">
-								<Info className="h-4 w-4 mr-2" />
-								<span>
-									Some actions are disabled until the assignment due date has
-									passed.
-								</span>
+					{selectedClass && selectedAssignment && (
+						<>
+							<div className="flex items-center flex-grow">
+								<Search className="mr-2 h-4 w-4 text-gray-500" />
+								<Input
+									placeholder="Search by student name"
+									value={searchTerm}
+									onChange={(e) => setSearchTerm(e.target.value)}
+									className="flex-grow"
+								/>
 							</div>
-						</TooltipTrigger>
-						<TooltipContent>
-							<p>
-								Grading, viewing grades, and assigning reviewers are only
-								available after the due date.
-							</p>
-						</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
-
-				<Accordion type="single" collapsible className="w-full">
-					{filteredStudents.map((student) => (
-						<AccordionItem value={student.userId} key={student.userId}>
-							<AccordionTrigger
+							<Button
+								onClick={() => setAutoAssignDialogOpen(true)}
+								disabled={!isDueDatePassed(selectedAssignment.dueDate)}
 								className={cn(
-									student.hasSubmitted ? "bg-green-50" : "bg-red-50",
-									"hover:bg-opacity-80 px-4"
+									!isDueDatePassed(selectedAssignment.dueDate) &&
+										"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
 								)}
 							>
-								<div className="flex justify-between w-full items-center">
-									<span className="flex items-center">
-										{student.hasSubmitted ? (
-											<FileText className="mr-2 h-4 w-4 text-green-500" />
-										) : (
-											<UserX className="mr-2 h-4 w-4 text-red-500" />
+								Auto Assign Peer Reviews
+							</Button>
+						</>
+					)}
+				</div>
+
+				{selectedClass && selectedAssignment && (
+					<>
+						<TooltipProvider>
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<div className="flex items-center mb-4 text-yellow-800 bg-yellow-100 p-2 rounded">
+										<Info className="h-4 w-4 mr-2" />
+										<span>
+											Some actions are disabled until the assignment due date
+											has passed.
+										</span>
+									</div>
+								</TooltipTrigger>
+								<TooltipContent>
+									<p>
+										Grading, viewing grades, and assigning reviewers are only
+										available after the due date.
+									</p>
+								</TooltipContent>
+							</Tooltip>
+						</TooltipProvider>
+
+						<Accordion type="single" collapsible className="w-full">
+							{filteredStudents.map((student) => (
+								<AccordionItem value={student.userId} key={student.userId}>
+									<AccordionTrigger
+										className={cn(
+											student.hasSubmitted ? "bg-green-50" : "bg-red-50",
+											"hover:bg-opacity-80 px-4"
 										)}
-										{`${student.firstname} ${student.lastname}`}
-									</span>
-									<span>
-										{student.hasSubmitted ? "Submitted" : "Not Submitted"}
-									</span>
-								</div>
-							</AccordionTrigger>
-							<AccordionContent>
-								{student.hasSubmitted ? (
-									<div className="p-4 bg-white rounded-lg shadow">
-										<h3 className="font-semibold mb-2 flex items-center">
-											<Clock className="mr-2 h-4 w-4" />
-											Latest Submission
-										</h3>
-										<Table>
-											<TableHeader>
-												<TableRow>
-													<TableHead>Submitted At</TableHead>
-													<TableHead>Actions</TableHead>
-												</TableRow>
-											</TableHeader>
-											<TableBody>
-												<TableRow>
-													<TableCell>
-														{new Date(
-															student.submission.createdAt
-														).toLocaleString()}
-													</TableCell>
-													<TableCell>
-														<div className="flex flex-wrap gap-2">
-															<Button
-																variant="outline"
-																size="sm"
-																onClick={() =>
-																	handleViewSubmission(student.submission)
-																}
-															>
-																View
-															</Button>
-															<Button
-																variant="outline"
-																size="sm"
-																onClick={() =>
-																	handleDownload(student.submission)
-																}
-															>
-																<Download className="h-4 w-4 mr-1" />
-																Download
-															</Button>
-															<Button
-																variant="outline"
-																size="sm"
-																onClick={() =>
-																	handleGradeAssignment(student.submission)
-																}
-																disabled={
-																	!isDueDatePassed(selectedAssignment?.dueDate)
-																}
-																className={cn(
-																	!isDueDatePassed(
-																		selectedAssignment?.dueDate
-																	) &&
-																		"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
-																)}
-															>
-																{student.submission.finalGrade !== null
-																	? "Re-grade"
-																	: "Grade"}
-															</Button>
-															<Button
-																variant="outline"
-																size="sm"
-																onClick={() =>
-																	handleViewReviewDetails(
-																		student.submission.submissionId
-																	)
-																}
-																disabled={
-																	!isDueDatePassed(selectedAssignment?.dueDate)
-																}
-																className={cn(
-																	!isDueDatePassed(
-																		selectedAssignment?.dueDate
-																	) &&
-																		"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
-																)}
-															>
-																View Instructor Grade
-															</Button>
-															<Button
-																variant="outline"
-																size="sm"
-																onClick={() =>
-																	handleAssignReviewers(student.submission)
-																}
-																disabled={
-																	!isDueDatePassed(selectedAssignment?.dueDate)
-																}
-																className={cn(
-																	!isDueDatePassed(
-																		selectedAssignment?.dueDate
-																	) &&
-																		"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
-																)}
-															>
-																Assign Reviewers
-															</Button>
-															<Link>
-																<Button
-																	variant="outline"
-																	size="sm"
-																	// onClick={() =>
-																	// 	handleAssignReviewers(student.submission)
-																	// }
-																	disabled={
-																		!isDueDatePassed(
-																			selectedAssignment?.dueDate
-																		)
-																	}
-																	className={cn(
-																		!isDueDatePassed(
-																			selectedAssignment?.dueDate
-																		) &&
-																			"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
-																	)}
-																>
-																	View Peer-Reviews
-																</Button>
-															</Link>
-														</div>
-													</TableCell>
-												</TableRow>
-											</TableBody>
-										</Table>
-									</div>
-								) : (
-									<div className="p-4 bg-white rounded-lg shadow">
-										<p className="text-gray-500 italic">
-											No submission for this assignment.
-										</p>
-									</div>
-								)}
-							</AccordionContent>
-						</AccordionItem>
-					))}
-				</Accordion>
+									>
+										<div className="flex justify-between w-full items-center">
+											<span className="flex items-center">
+												{student.hasSubmitted ? (
+													<FileText className="mr-2 h-4 w-4 text-green-500" />
+												) : (
+													<UserX className="mr-2 h-4 w-4 text-red-500" />
+												)}
+												{`${student.firstname} ${student.lastname}`}
+											</span>
+											<span>
+												{student.hasSubmitted ? "Submitted" : "Not Submitted"}
+											</span>
+										</div>
+									</AccordionTrigger>
+									<AccordionContent>
+										{student.hasSubmitted ? (
+											<div className="p-4 bg-white rounded-lg shadow">
+												<h3 className="font-semibold mb-2 flex items-center">
+													<Clock className="mr-2 h-4 w-4" />
+													Latest Submission
+												</h3>
+												<Table>
+													<TableHeader>
+														<TableRow>
+															<TableHead>Submitted At</TableHead>
+															<TableHead>Actions</TableHead>
+														</TableRow>
+													</TableHeader>
+													<TableBody>
+														<TableRow>
+															<TableCell>
+																{new Date(
+																	student.submission.createdAt
+																).toLocaleString()}
+															</TableCell>
+															<TableCell>
+																<div className="flex flex-wrap gap-2">
+																	<Button
+																		variant="outline"
+																		size="sm"
+																		onClick={() =>
+																			handleViewSubmission(student.submission)
+																		}
+																	>
+																		View
+																	</Button>
+																	<Button
+																		variant="outline"
+																		size="sm"
+																		onClick={() =>
+																			handleDownload(student.submission)
+																		}
+																	>
+																		<Download className="h-4 w-4 mr-1" />
+																		Download
+																	</Button>
+																	<Button
+																		variant="outline"
+																		size="sm"
+																		onClick={() =>
+																			handleGradeAssignment(student.submission)
+																		}
+																		disabled={
+																			!isDueDatePassed(
+																				selectedAssignment.dueDate
+																			)
+																		}
+																		className={cn(
+																			!isDueDatePassed(
+																				selectedAssignment.dueDate
+																			) &&
+																				"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
+																		)}
+																	>
+																		{student.submission.finalGrade !== null
+																			? "Re-grade"
+																			: "Grade"}
+																	</Button>
+																	<Button
+																		variant="outline"
+																		size="sm"
+																		onClick={() =>
+																			handleViewReviewDetails(
+																				student.submission.submissionId
+																			)
+																		}
+																		disabled={
+																			!isDueDatePassed(
+																				selectedAssignment.dueDate
+																			)
+																		}
+																		className={cn(
+																			!isDueDatePassed(
+																				selectedAssignment.dueDate
+																			) &&
+																				"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
+																		)}
+																	>
+																		View Grades
+																	</Button>
+																	<Button
+																		variant="outline"
+																		size="sm"
+																		onClick={() =>
+																			handleAssignReviewers(student.submission)
+																		}
+																		disabled={
+																			!isDueDatePassed(
+																				selectedAssignment.dueDate
+																			)
+																		}
+																		className={cn(
+																			!isDueDatePassed(
+																				selectedAssignment.dueDate
+																			) &&
+																				"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
+																		)}
+																	>
+																		Assign Reviewers
+																	</Button>
+																</div>
+															</TableCell>
+														</TableRow>
+													</TableBody>
+												</Table>
+											</div>
+										) : (
+											<div className="p-4 bg-white rounded-lg shadow">
+												<p className="text-gray-500 italic">
+													No submission for this assignment.
+												</p>
+											</div>
+										)}
+									</AccordionContent>
+								</AccordionItem>
+							))}
+						</Accordion>
+					</>
+				)}
 			</CardContent>
 
 			{/* Dialogs */}

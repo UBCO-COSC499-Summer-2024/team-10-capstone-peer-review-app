@@ -235,7 +235,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
                 onChange={handleAssignmentSelection}
               />
             </div>
-            <div className="p-4 bg-gray-100 rounded-t-md">
+            <div className="p-4 bg-slate-200 rounded-t-md">
               <h4 className="font-semibold mb-2">How to use this table:</h4>
               <ul className="text-sm space-y-2">
                 <li className="flex items-center">

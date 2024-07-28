@@ -166,17 +166,17 @@ const updateRubricsForAssignment = async (rubricId, updateData) => {
             data: {
                 title: updateData.title,
                 description: updateData.description,
-                totalMarks: updateData.totalMarks,
+                totalMarks: parseInt(updateData.totalMarks, 10),
                 criteria: {
                     deleteMany: {},
                     create: updateData.criteria.map(criterion => ({
                         title: criterion.title,
-                        minMark: criterion.minPoints,
-                        maxMark: criterion.maxPoints,
+                        minMark: parseInt(criterion.minMark, 10) || 0,
+                        maxMark: parseInt(criterion.maxMark, 10) || criterion.criterionRatings.reduce((sum, rating) => sum + parseInt(rating.points, 10), 0),
                         criterionRatings: {
                             create: criterion.criterionRatings.map(rating => ({
-                                description: rating.text,
-                                points: rating.points
+                                description: rating.description || '',
+                                points: parseInt(rating.points, 10)
                             }))
                         }
                     }))

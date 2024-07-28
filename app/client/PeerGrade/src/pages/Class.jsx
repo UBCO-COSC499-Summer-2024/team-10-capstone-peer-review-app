@@ -4,9 +4,11 @@ import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
-import { CheckCircle, Clock, Trash2, ChevronRight } from "lucide-react";
+import { Pencil, CheckCircle, Clock, Trash2, ChevronRight } from "lucide-react";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import Grades from "./classNav/Grades";
 import Groups from "./classNav/Groups";
 import Assignments from "./classNav/Assignments";
@@ -17,6 +19,7 @@ import EditClass from "../components/class/EditClass";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { getAllAssignmentsByClassId } from "@/api/assignmentApi";
 import { getCategoriesByClassId } from "@/api/classApi";
+import { createCategory, updateCategory, deleteCategory } from "@/api/categoryApi";
 import { useToast } from "@/components/ui/use-toast";
 import { useClass } from "@/contexts/contextHooks/useClass";
 import CreateRubric from "../components/rubrics/CreateRubric";
@@ -28,7 +31,9 @@ const Class = () => {
   const [categories, setCategories] = useState([]);
   const [rubricCreated, setRubricCreated] = useState(false);
   const [openAccordion, setOpenAccordion] = useState(null);
-
+  const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [editingCategory, setEditingCategory] = useState(null);
   const { toast } = useToast();
   const { user, userLoading } = useUser();
   const { classes } = useClass();
@@ -49,6 +54,69 @@ const Class = () => {
         title: "Error",
         description: "Failed to fetch class data",
         variant: "destructive"
+      });
+    }
+  };
+
+  const handleAddCategory = async () => {
+    try {
+      const response = await createCategory(classId, newCategoryName);
+      if (response.status === "Success") {
+        toast({
+          title: "Success",
+          description: "Category created successfully",
+          variant: "default",
+        });
+        setIsAddCategoryOpen(false);
+        setNewCategoryName("");
+        fetchClassData();
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to create category",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleEditCategory = async () => {
+    try {
+      const response = await updateCategory(editingCategory.categoryId, editingCategory.name);
+      if (response.status === "Success") {
+        toast({
+          title: "Success",
+          description: "Category updated successfully",
+          variant: "default",
+        });
+        setEditingCategory(null);
+        fetchClassData();
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to update category",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDeleteCategory = async (categoryId) => {
+    try {
+      const response = await deleteCategory(categoryId);
+      if (response.status === "Success") {
+        toast({
+          title: "Success",
+          description: "Category deleted successfully",
+          variant: "default",
+        });
+        fetchClassData();
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to delete category",
+        variant: "destructive",
       });
     }
   };
@@ -84,11 +152,6 @@ const Class = () => {
     }
   };
 
-  const handleDeleteCategory = (categoryId) => {
-    console.log(`Deleting category with ID: ${categoryId}`);
-    // Implement the actual deletion logic here
-  };
-
   if (!classItem) {
     return <div>Class not found</div>;
   }
@@ -121,23 +184,39 @@ const Class = () => {
                 No recent announcements
               </AlertDescription>
             </Alert>
-           <Accordion 
-			type="single" 
-			collapsible
-			className="w-full bg-muted p-4 rounded-lg"
-			value={openAccordion}
-			onValueChange={(value) => setOpenAccordion(value)}
-			>
-			{categories.map((category) => (
-				<AccordionItem value={category.categoryId} key={category.categoryId}>
-                  <AccordionTrigger className="text-lg font-semibold">
-                    <div className="flex justify-between w-full">
-                      <span>{category.name}</span>
-                      {(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (
+            <Accordion 
+            type="single" 
+            collapsible
+            className="w-full bg-muted p-4 rounded-lg"
+            value={openAccordion}
+            onValueChange={(value) => setOpenAccordion(value)}
+          >
+            {categories.map((category) => (
+              <AccordionItem value={category.categoryId} key={category.categoryId}>
+                <AccordionTrigger className="text-lg font-semibold">
+                  <div className="flex justify-between w-full">
+                    <span>{category.name}</span>
+                    {(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (
+                      <div className="flex gap-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setEditingCategory(category);
+                          }}
+                        >
+                          <Pencil className="h-4 w-4 text-primary" />
+                        </Button>
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
-                            <Button variant="ghost" size="sm" className="mx-2 bg-destructive/60">
-                              <Trash2 className="h-4 w-4 text-priamry" />
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="bg-destructive/60"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <Trash2 className="h-4 w-4 text-primary" />
                             </Button>
                           </AlertDialogTrigger>
                           <AlertDialogContent>
@@ -155,10 +234,11 @@ const Class = () => {
                             </AlertDialogFooter>
                           </AlertDialogContent>
                         </AlertDialog>
-                      )}
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent>
+                      </div>
+                    )}
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent>
                     <div className="space-y-4">
                       {category.assignments.map((assignment) => (
                         <Link
@@ -276,7 +356,44 @@ const Class = () => {
 				</Menubar>
 			</div>
 			<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-				<div className="lg:col-span-2">{renderContent()}</div>
+				<div className="lg:col-span-2">
+          {renderContent()}
+          {/* Add Category Dialog */}
+          <Dialog open={isAddCategoryOpen} onOpenChange={setIsAddCategoryOpen}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Add New Category</DialogTitle>
+              </DialogHeader>
+              <Input
+                value={newCategoryName}
+                onChange={(e) => setNewCategoryName(e.target.value)}
+                placeholder="Enter category name"
+              />
+              <DialogFooter>
+                <Button onClick={() => setIsAddCategoryOpen(false)}>Cancel</Button>
+                <Button onClick={handleAddCategory}>Add Category</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
+          {/* Edit Category Dialog */}
+          <Dialog open={!!editingCategory} onOpenChange={() => setEditingCategory(null)}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Edit Category</DialogTitle>
+              </DialogHeader>
+              <Input
+                value={editingCategory?.name || ""}
+                onChange={(e) => setEditingCategory({ ...editingCategory, name: e.target.value })}
+                placeholder="Enter new category name"
+              />
+              <DialogFooter>
+                <Button onClick={() => setEditingCategory(null)}>Cancel</Button>
+                <Button onClick={handleEditCategory}>Update Category</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
 				<div className="space-y-3">
 				{(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") &&
 					currentView !== "assignmentCreation" && (
@@ -288,13 +405,15 @@ const Class = () => {
 					>
 						Create Assignment
 					</Button>
-					<Button
-						variant="outline"
-						onClick={() => {/* Implement add category logic */}}
-						className="w-full bg-muted "
-					>
-						Add Category
-					</Button>
+          {(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (
+            <Button
+              variant="outline"
+              onClick={() => setIsAddCategoryOpen(true)}
+              className="w-full bg-muted"
+            >
+              Add Category
+            </Button>
+          )}
 					<CreateRubric 
             classId={classId} 
             assignments={assignments} 

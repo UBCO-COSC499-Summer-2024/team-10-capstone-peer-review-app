@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { format } from 'date-fns';
-import { Calendar as CalendarIcon, ChevronDown as ChevronDownIcon, ChevronUp as ChevronUpIcon, Check as CheckIcon, Upload } from 'lucide-react';
+import { Plus, Calendar as CalendarIcon, ChevronDown as ChevronDownIcon, ChevronUp as ChevronUpIcon, Check as CheckIcon, Upload } from 'lucide-react';
 import MultiSelect from '@/components/ui/MultiSelect';
 import RubricCreationForm from '@/components/rubrics/RubricCreationForm';
 import { cn } from '@/utils/utils';
@@ -16,6 +16,7 @@ import { toast } from '@/components/ui/use-toast';
 import { getCategoriesByClassId } from '@/api/classApi';
 import { addAssignmentToClass, addAssignmentWithRubric } from '@/api/assignmentApi';
 import { getAllRubricsInClass } from '@/api/rubricApi';
+import { createCategory, getAllCategoriesInClass } from '@/api/categoryApi';
 import { useUser } from "@/contexts/contextHooks/useUser";
 
 const fileTypeOptions = [
@@ -47,6 +48,8 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
   const [errors, setErrors] = useState({});
   const fileInputRef = useRef(null);
   const { user, userLoading } = useUser();
+  const [newCategoryName, setNewCategoryName] = useState('');
+  const [isCreatingCategory, setIsCreatingCategory] = useState(false);
 
 
   useEffect(() => {
@@ -65,6 +68,39 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
 
     fetchCategoriesAndRubrics();
   }, [classId]);
+
+  const handleCreateCategory = async () => {
+    if (!newCategoryName.trim()) {
+      toast({
+        title: "Error",
+        description: "Category name cannot be empty",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const response = await createCategory(classId, newCategoryName);
+      if (response.status === "Success") {
+        toast({
+          title: "Success",
+          description: "New category created successfully",
+          variant: "info",
+        });
+        setFormData(prev => ({ ...prev, categoryId: response.data.categoryId }));
+        setCategories(prev => [...prev, response.data]);
+        setIsCreatingCategory(false);
+        setNewCategoryName('');
+      }
+    } catch (error) {
+      console.error('Error creating category:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to create new category",
+        variant: "destructive",
+      });
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -254,21 +290,43 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
 
           <div>
             <label>Category</label>
-            <Select 
-              onValueChange={(value) => setFormData(prev => ({ ...prev, categoryId: value }))}
-              value={formData.categoryId}
-            >
-              <SelectTrigger className={errors.categoryId ? "border-red-500" : ""}>
-                <SelectValue placeholder="Select category..." />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map((category) => (
-                  <SelectItem key={category.categoryId} value={category.categoryId}>
-                    {category.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            {isCreatingCategory ? (
+              <div className="flex items-center space-x-2">
+                <Input
+                  value={newCategoryName}
+                  onChange={(e) => setNewCategoryName(e.target.value)}
+                  placeholder="Enter new category name"
+                />
+                <Button type="button" onClick={handleCreateCategory}>Create</Button>
+                <Button type="button" onClick={() => setIsCreatingCategory(false)}>Cancel</Button>
+              </div>
+            ) : (
+              <>
+                <Select 
+                  onValueChange={(value) => setFormData(prev => ({ ...prev, categoryId: value }))}
+                  value={formData.categoryId}
+                >
+                  <SelectTrigger className={errors.categoryId ? "border-red-500" : ""}>
+                    <SelectValue placeholder="Select category..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map((category) => (
+                      <SelectItem key={category.categoryId} value={category.categoryId}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="mt-2"
+                  onClick={() => setIsCreatingCategory(true)}
+                >
+                  <Plus className="mr-2 h-4 w-4" /> Create New Category
+                </Button>
+              </>
+            )}
             {errors.categoryId && <p className="text-red-500 text-sm mt-1">{errors.categoryId}</p>}
           </div>
 

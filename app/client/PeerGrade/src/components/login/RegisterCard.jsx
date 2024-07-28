@@ -345,13 +345,13 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 							<Button
 								variant="success"
 								type="submit"
-								className="w-full"
+								className="w-full bg-success/40 "
 								disabled={isLoading}
 							>
 								{isLoading ? (
 									<Loader className="animate-spin h-5 w-5" />
 								) : (
-									"Sign up"
+									<span className="font-semibold text-sm text-green-900">Sign up</span>
 								)}
 							</Button>
 						</div>

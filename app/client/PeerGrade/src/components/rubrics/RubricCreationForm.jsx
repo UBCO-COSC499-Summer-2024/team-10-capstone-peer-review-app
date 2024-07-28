@@ -340,7 +340,7 @@ const RubricCreationForm = ({ onRubricChange, assignments }) => {
                   </TableCell>
                   <TableCell className="border-r p-0">
                     <span className="text-sm">
-                      {criterion.ratings.reduce((sum, rating) => sum + (parseFloat(rating.points) || 0), 0)}
+                      {Math.max(...criterion.ratings.map(rating => parseFloat(rating.points) || 0), 0)}
                     </span>
                   </TableCell>
                   <TableCell className="p-0">

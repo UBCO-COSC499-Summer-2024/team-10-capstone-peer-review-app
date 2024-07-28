@@ -70,13 +70,13 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
       title: newRubricData.title,
       description: newRubricData.description,
       totalMarks: newRubricData.criteria.reduce((total, criterion) =>
-        total + criterion.ratings.reduce((sum, rating) => sum + (parseFloat(rating.points) || 0), 0),
+        total + Math.max(...criterion.ratings.map(rating => parseFloat(rating.points) || 0), 0),
       0),
       classId: classId,
       criterion: newRubricData.criteria.map(criterion => ({
         title: criterion.criteria,
         minPoints: 0,
-        maxPoints: criterion.ratings.reduce((sum, rating) => sum + (parseFloat(rating.points) || 0), 0),
+        maxPoints: Math.max(...criterion.ratings.map(rating => parseFloat(rating.points) || 0), 0),
         criterionRatings: criterion.ratings.map(rating => ({
           text: rating.text,
           points: parseFloat(rating.points) || 0
@@ -178,7 +178,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
       ) &&
       selectedAssignments.length > 0;
     setIsValid(isValid);
-
+  
     const hasNegative = newRubricData.criteria.some(criterion =>
       criterion.ratings.some(rating => parseFloat(rating.points) < 0)
     );
@@ -381,7 +381,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
                     </TableCell>
                     <TableCell className="border-r p-0">
                       <span className="text-sm">
-                        {criterion.ratings.reduce((sum, rating) => sum + (parseFloat(rating.points) || 0), 0)}
+                        {Math.max(...criterion.ratings.map(rating => parseFloat(rating.points) || 0), 0)}
                       </span>
                     </TableCell>
                     <TableCell className="p-0">

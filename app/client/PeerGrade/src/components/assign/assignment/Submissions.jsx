@@ -42,14 +42,13 @@ const Submissions = () => {
 	const [studentsWithSubmissions, setStudentsWithSubmissions] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [selectedSubmission, setSelectedSubmission] = useState(null);
-	const [rubrics, setRubrics] = useState([]);
-	const [totalPoints, setTotalPoints] = useState(0);
+    const [rubric, setRubric] = useState(null);
+    const [totalPoints, setTotalPoints] = useState(0);
 	const [viewDialogOpen, setViewDialogOpen] = useState(false);
 	const [gradeDialogOpen, setGradeDialogOpen] = useState(false);
 	const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
 	const [selectedSubmissionId, setSelectedSubmissionId] = useState(null);
-	const [assignReviewersDialogOpen, setAssignReviewersDialogOpen] =
-		useState(false);
+	const [assignReviewersDialogOpen, setAssignReviewersDialogOpen] = useState(false);
 	const [selectedReviewers, setSelectedReviewers] = useState([]);
 	const [currentSubmission, setCurrentSubmission] = useState(null);
 	const [allStudents, setAllStudents] = useState([]);
@@ -59,13 +58,13 @@ const Submissions = () => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			try {
-				const [submissionsResponse, studentsResponse, rubricData] =
-					await Promise.all([
-						getSubmissionsForAssignment(assignmentId),
-						getStudentsByClassId(classId),
-						getRubricsForAssignment(assignmentId)
-					]);
+            try {
+              const [submissionsResponse, studentsResponse, rubricData] =
+                await Promise.all([
+                  getSubmissionsForAssignment(assignmentId),
+                  getStudentsByClassId(classId),
+                  getRubricsForAssignment(assignmentId)
+                ]);
 
 				const submissionsMap = submissionsResponse.data.reduce(
 					(acc, submission) => {
@@ -107,21 +106,20 @@ const Submissions = () => {
 				setAllStudents(studentsResponse.data);
 				setStudentsWithSubmissions(studentsWithSubmissionStatus);
 
-				setRubrics(rubricData.data);
-				const totalPoints = rubricData.data.reduce((acc, rubric) => {
-					return acc + rubric.totalMarks;
-				}, 0);
-				setTotalPoints(totalPoints);
-			} catch (error) {
-				toast({
-					title: "Error",
-					description: "Failed to fetch data",
-					variant: "destructive"
-				});
-			} finally {
-				setLoading(false);
-			}
-		};
+                setRubric(rubricData.data);
+                if (rubricData.data) {
+                  setTotalPoints(rubricData.data.totalMarks);
+                }
+              } catch (error) {
+                toast({
+                  title: "Error",
+                  description: "Failed to fetch data",
+                  variant: "destructive"
+                });
+              } finally {
+                setLoading(false);
+              }
+            };
 
 		fetchData();
 	}, [assignmentId, classId]);
@@ -236,117 +234,106 @@ const Submissions = () => {
 		document.body.removeChild(link);
 	};
 
-	const fetchRubrics = async (assignmentId) => {
-		try {
-			const rubricData = await getRubricsForAssignment(assignmentId);
-			console.log("rubricData", rubricData);
-			setRubrics(rubricData.data);
+    const fetchRubrics = async (assignmentId) => {
+        try {
+          const rubricData = await getRubricsForAssignment(assignmentId);
+          setRubric(rubricData.data);
+          if (rubricData.data) {
+            setTotalPoints(rubricData.data.totalMarks);
+          }
+        } catch (error) {
+          console.error("Error fetching rubric:", error);
+        }
+      };
 
-			const totalPoints = rubricData.data.reduce((acc, rubric) => {
-				return acc + rubric.totalMarks;
-			}, 0);
-			setTotalPoints(totalPoints);
-		} catch (error) {
-			console.error("Error fetching rubrics:", error);
-		}
-	};
-
-	const handleGradeSubmit = async (event) => {
-		event.preventDefault();
-
-		if (!selectedSubmission) {
-			console.error("No submission selected");
-			toast({
-				title: "Error",
-				description: "No submission selected. Please try again.",
-				variant: "destructive"
-			});
-			return;
-		}
-
-		const formData = new FormData(event.target);
-		let totalMark = 0;
-		const criterionGrades = [];
-
-		rubrics.forEach((rubric) => {
-			rubric.criteria.forEach((criterion) => {
-				const grade =
-					parseFloat(formData.get(`grade-${criterion.criterionId}`)) || 0;
-				totalMark += grade;
-				const comment = formData.get(`comment-${criterion.criterionId}`);
-				criterionGrades.push({
-					criterionId: criterion.criterionId,
-					grade,
-					comment
-				});
-			});
-		});
-
-		const finalScore = (totalMark / totalPoints) * 100;
-
-		try {
-			const existingReview = await reviewAPI.getInstructorReview(
-				selectedSubmission.submissionId
-			);
-
-			let response;
-			if (existingReview && existingReview.data) {
-				const review = {
-					submissionId: selectedSubmission.submissionId,
-					reviewGrade: totalMark,
-					reviewerId: user.userId,
-					revieweeId: selectedSubmission.submitterId,
-					updatedAt: new Date(),
-					isPeerReview: false,
-					isGroup: false,
-					criterionGrades: criterionGrades
-				};
-				response = await reviewAPI.updateReview(
-					existingReview.data.reviewId,
-					review
-				);
-			} else {
-				const review = {
-					submissionId: selectedSubmission.submissionId,
-					reviewGrade: totalMark,
-					reviewerId: user.userId,
-					revieweeId: selectedSubmission.submitterId,
-					isPeerReview: false,
-					isGroup: false,
-					criterionGrades: criterionGrades
-				};
-				response = await reviewAPI.createReview(user.userId, review);
-			}
-
-			setStudentsWithSubmissions((prev) =>
-				prev.map((student) => {
-					if (student.userId === selectedSubmission.submitterId) {
-						const updatedSubmissions = student.submissions.map((sub) =>
-							sub.submissionId === selectedSubmission.submissionId
-								? { ...sub, finalGrade: finalScore }
-								: sub
-						);
-						return {
-							...student,
-							submissions: updatedSubmissions,
-							latestGrade: finalScore
-						};
-					}
-					return student;
-				})
-			);
-
-			setGradeDialogOpen(false);
-			setSelectedSubmission(null);
-		} catch (error) {
-			console.error("Error submitting/updating grade:", error);
-			toast({
-				title: "Error",
-				description: "Failed to submit/update grade",
-				variant: "destructive"
-			});
-		}
-	};
+      const handleGradeSubmit = async (event) => {
+        event.preventDefault();
+    
+        if (!selectedSubmission || !rubric) {
+            console.error("No submission selected or no rubric available");
+            toast({
+                title: "Error",
+                description: "Unable to grade. Please try again.",
+                variant: "destructive"
+            });
+            return;
+        }
+    
+        const formData = new FormData(event.target);
+        let totalMark = 0;
+        const criterionGrades = [];
+    
+        rubric.criteria.forEach((criterion) => {
+            const grade = parseFloat(formData.get(`grade-${criterion.criterionId}`)) || 0;
+            totalMark += grade;
+            const comment = formData.get(`comment-${criterion.criterionId}`);
+            criterionGrades.push({
+                criterionId: criterion.criterionId,
+                grade,
+                comment
+            });
+        });
+    
+        const finalScore = (totalMark / rubric.totalMarks) * 100;
+    
+        try {
+            const existingReview = await reviewAPI.getInstructorReview(selectedSubmission.submissionId);
+    
+            let response;
+            if (existingReview && existingReview.data) {
+                const review = {
+                    submissionId: selectedSubmission.submissionId,
+                    reviewGrade: totalMark,
+                    reviewerId: user.userId,
+                    revieweeId: selectedSubmission.submitterId,
+                    updatedAt: new Date(),
+                    isPeerReview: false,
+                    // Remove isGroup field
+                    criterionGrades: criterionGrades
+                };
+                response = await reviewAPI.updateReview(existingReview.data.reviewId, review);
+            } else {
+                const review = {
+                    submissionId: selectedSubmission.submissionId,
+                    reviewGrade: totalMark,
+                    reviewerId: user.userId,
+                    revieweeId: selectedSubmission.submitterId,
+                    isPeerReview: false,
+                    // Remove isGroup field
+                    criterionGrades: criterionGrades
+                };
+                response = await reviewAPI.createReview(user.userId, review);
+            }
+    
+            setStudentsWithSubmissions((prev) =>
+                prev.map((student) => {
+                    if (student.userId === selectedSubmission.submitterId) {
+                        const updatedSubmissions = student.submissions.map((sub) =>
+                            sub.submissionId === selectedSubmission.submissionId
+                                ? { ...sub, finalGrade: finalScore }
+                                : sub
+                        );
+                        return {
+                            ...student,
+                            submissions: updatedSubmissions,
+                            latestGrade: finalScore
+                        };
+                    }
+                    return student;
+                })
+            );
+    
+            setGradeDialogOpen(false);
+            setSelectedSubmission(null);
+        } catch (error) {
+            console.error("Error submitting/updating grade:", error);
+            toast({
+                title: "Error",
+                description: "Failed to submit/update grade",
+                variant: "destructive"
+            });
+        }
+    };
 
 	const handleViewSubmission = (submission) => {
 		setSelectedSubmission(submission);
@@ -382,7 +369,7 @@ const Submissions = () => {
 
 	const handleViewReviewDetails = async (submissionId) => {
 		setSelectedSubmissionId(submissionId);
-		if (rubrics.length === 0) {
+		if (!rubric) {
 			await fetchRubrics(assignmentId);
 		}
 		setReviewDialogOpen(true);
@@ -454,15 +441,17 @@ const Submissions = () => {
 																	<Download className="h-4 w-4 mr-1" />
 																	Download
 																</Button>
-																<Button
-																	variant="outline"
-																	size="sm"
-																	onClick={() =>
-																		handleGradeAssignment(submission)
-																	}
-																>
-																	Grade
-																</Button>
+																{user.role === "INSTRUCTOR" && 
+																	<Button
+																		variant="outline"
+																		size="sm"
+																		onClick={() =>
+																			handleGradeAssignment(submission)
+																		}
+																	>
+																		Grade
+																	</Button>
+																}
 																<Button
 																	variant="outline"
 																	size="sm"
@@ -501,22 +490,23 @@ const Submissions = () => {
 						))}
 					</Accordion>
 				</CardContent>
-				<ViewSubmissionDialog
-					submission={selectedSubmission}
-					open={viewDialogOpen}
-					onClose={() => setViewDialogOpen(false)}
-					onDownload={handleDownload}
-				/>
-				<GradeSubmissionDialog
-					submission={selectedSubmission}
-					rubrics={rubrics}
-					open={gradeDialogOpen && selectedSubmission !== null}
-					onClose={() => {
-						setGradeDialogOpen(false);
-						setSelectedSubmission(null);
-					}}
-					onGradeSubmit={handleGradeSubmit}
-				/>
+                <ViewSubmissionDialog
+                    submission={selectedSubmission}
+                    rubric={rubric}  // Pass the single rubric object here
+                    open={viewDialogOpen}
+                    onClose={() => setViewDialogOpen(false)}
+                    onDownload={handleDownload}
+                />
+                <GradeSubmissionDialog
+                submission={selectedSubmission}
+                rubric={rubric}
+                open={gradeDialogOpen && selectedSubmission !== null}
+                onClose={() => {
+                    setGradeDialogOpen(false);
+                    setSelectedSubmission(null);
+                }}
+                onGradeSubmit={handleGradeSubmit}
+                />
 				<ReviewDetailsDialog
 					submissionId={selectedSubmissionId}
 					open={reviewDialogOpen}
@@ -586,54 +576,52 @@ const Submissions = () => {
 				</Dialog>
 			</Card>
 			<Card className="mt-4">
-				{rubrics.length > 0 && (
-					<CardContent>
-						<h3 className="text-lg font-semibold underline mb-3">Rubrics</h3>
-						{rubrics.map((rubric, index) => (
-							<div key={index} className="mb-4">
-								<h4 className="text-md font-semibold mb-3 text-center">
-									{rubric.title}
-								</h4>
-								{rubric.description && (
-									<p className="text-sm">{rubric.description}</p>
-								)}
-								<Table>
-									<TableHeader>
-										<TableRow>
-											<TableHead>Criterion Title</TableHead>
-											<TableHead>Ratings</TableHead>
-											<TableHead>Max Marks</TableHead>
-										</TableRow>
-									</TableHeader>
-									<TableBody>
-										{rubric.criteria.map((criterion, idx) => (
-											<TableRow key={idx}>
-												<TableCell>{criterion.title}</TableCell>
-												<TableCell>
-													<ul className="list-disc pl-4">
-														{criterion.criterionRatings.map((rating, rIdx) => (
-															<li
-																key={rIdx}
-																className="flex mb-5 bg-gray-200 rounded-lg p-2 justify-between items-start "
-															>
-																<span>{rating.description}</span>
-																<span className="font-bold border border-black rounded-full p-1 w-6 h-6 flex justify-center items-center">
-																	{rating.points}
-																</span>
-															</li>
-														))}
-													</ul>
-												</TableCell>
-												<TableCell>{criterion.maxMark}</TableCell>
-											</TableRow>
-										))}
-									</TableBody>
-								</Table>
-							</div>
-						))}
-					</CardContent>
-				)}
-			</Card>
+            {rubric && (
+                <CardContent>
+                <h3 className="text-lg font-semibold underline mb-3">Rubric</h3>
+                <div className="mb-4">
+                    <h4 className="text-md font-semibold mb-3 text-center">
+                    {rubric.title}
+                    </h4>
+                    {rubric.description && (
+                    <p className="text-sm">{rubric.description}</p>
+                    )}
+                    <Table>
+                    <TableHeader>
+                        <TableRow>
+                        <TableHead>Criterion Title</TableHead>
+                        <TableHead>Ratings</TableHead>
+                        <TableHead>Max Marks</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {rubric.criteria.map((criterion, idx) => (
+                        <TableRow key={idx}>
+                            <TableCell>{criterion.title}</TableCell>
+                            <TableCell>
+                            <ul className="list-disc pl-4">
+                                {criterion.criterionRatings.map((rating, rIdx) => (
+                                <li
+                                    key={rIdx}
+                                    className="flex mb-5 bg-gray-200 rounded-lg p-2 justify-between items-start "
+                                >
+                                    <span>{rating.description}</span>
+                                    <span className="font-bold border border-black rounded-full p-1 w-6 h-6 flex justify-center items-center">
+                                    {rating.points}
+                                    </span>
+                                </li>
+                                ))}
+                            </ul>
+                            </TableCell>
+                            <TableCell>{criterion.maxMark}</TableCell>
+                        </TableRow>
+                        ))}
+                    </TableBody>
+                    </Table>
+                </div>
+                </CardContent>
+            )}
+            </Card>
 		</>
 	);
 };

@@ -18,6 +18,22 @@ const EditRubric = ({ rubricData, isOpen, onOpenChange, onRubricUpdated }) => {
   const { toast } = useToast();
 
   useEffect(() => {
+    if (rubricData) {
+      setRubric({
+        ...rubricData,
+        criteria: rubricData.criteria.map((criterion, index) => ({
+          id: index + 1,
+          criteria: criterion.title,
+          ratings: criterion.criterionRatings.map(rating => ({
+            text: rating.description,
+            points: rating.points.toString()
+          }))
+        }))
+      });
+    }
+  }, [rubricData]);
+
+  useEffect(() => {
     setRubric(rubricData);
   }, [rubricData]);
 
@@ -33,17 +49,17 @@ const EditRubric = ({ rubricData, isOpen, onOpenChange, onRubricUpdated }) => {
         totalMarks: rubric.criteria.reduce((total, criterion) =>
           total + criterion.ratings.reduce((sum, rating) => sum + (parseFloat(rating.points) || 0), 0),
         0),
-        criterion: rubric.criteria.map(criterion => ({
+        criteria: rubric.criteria.map(criterion => ({
           title: criterion.criteria,
-          minPoints: 0,
-          maxPoints: criterion.ratings.reduce((sum, rating) => sum + (parseFloat(rating.points) || 0), 0),
+          minMark: 0,
+          maxMark: criterion.ratings.reduce((sum, rating) => sum + (parseFloat(rating.points) || 0), 0),
           criterionRatings: criterion.ratings.map(rating => ({
-            text: rating.text,
+            description: rating.text,
             points: parseFloat(rating.points) || 0
           }))
         }))
       };
-
+  
       await updateRubricsForAssignment(rubric.rubricId, formattedRubricData);
       onRubricUpdated();
       onOpenChange(false);
@@ -79,7 +95,6 @@ const EditRubric = ({ rubricData, isOpen, onOpenChange, onRubricUpdated }) => {
         {
           id: prevData.criteria.length + 1,
           criteria: "",
-          points: "",
           ratings: [{ text: "", points: "" }]
         }
       ]

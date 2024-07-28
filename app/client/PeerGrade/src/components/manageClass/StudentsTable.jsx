@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { MinusCircle, FileUp, Plus } from "lucide-react";
+import { removeStudentFromClass } from '@/api/classApi';
+import DeleteStudentDialog from './DeleteStudentDialog';
 
 const StudentsTable = ({ 
-  students, 
+  students,
+  setStudents,
   searchTerm, 
-  setSearchTerm, 
-  handleDeleteStudent, 
+  setSearchTerm,
   setAddByCSVOpen, 
   setAddDialogOpen, 
+  classId,
   user,
   renderPagination,
   currentPage,
@@ -22,6 +25,47 @@ const StudentsTable = ({
     const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : "";
     return `${firstInitial}${lastInitial}`;
   };
+
+	const [confirmDelete, setConfirmDelete] = useState(false);
+	const [selectedStudent, setSelectedStudent] = useState({});
+	const [deleteStudentOpen, setDeleteStudentOpen] = useState(false);
+
+	const handleDeleteClick = (selectedStudent) => {
+		// handles the actual click event to delete a student
+		setConfirmDelete(false);
+		setSelectedStudent(selectedStudent);
+		setDeleteStudentOpen(true);
+	};
+
+  const handleDeleteStudent = async () => {
+    // handles the deletion of a student via the backend
+		if (confirmDelete) {
+			setConfirmDelete(false);
+			if (selectedStudent) {
+				const userData = await removeStudentFromClass(
+					classId,
+					selectedStudent.userId
+				);
+				if (userData.status === "Success") {
+					console.log("deleted user", userData);
+					setDeleteStudentOpen(false);
+					setStudents((prevStudents) =>
+						prevStudents.filter(
+							(student) => student.userId !== selectedStudent.userId
+						)
+					);
+				} else {
+					console.log(userData);
+					console.error(
+						"An error occurred while deleting the user.",
+						userData.message
+					);
+				}
+			}
+		} else {
+			setConfirmDelete(true);
+		}
+  }
 
   return (
     <div className="bg-card p-6 rounded-lg shadow mb-6">
@@ -80,7 +124,7 @@ const StudentsTable = ({
                     <Button
                       variant="outline"
                       className="bg-accent"
-                      onClick={() => handleDeleteStudent(student)}
+                      onClick={() => handleDeleteClick(student)}
                     >
                       <MinusCircle className="w-5 h-5 mr-2" /> Delete
                     </Button>
@@ -92,6 +136,14 @@ const StudentsTable = ({
         </Table>
       )}
       {renderPagination(currentPage, setCurrentPage, students.length)}
+      
+			<DeleteStudentDialog
+        dialogOpen={deleteStudentOpen}
+        setDialogOpen={setDeleteStudentOpen}
+        confirmDelete={confirmDelete}
+        selectedStudent={selectedStudent}
+        handleDeleteStudent={handleDeleteStudent}
+			/>
     </div>
   );
 };

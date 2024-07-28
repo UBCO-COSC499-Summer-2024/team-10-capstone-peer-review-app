@@ -7,7 +7,6 @@ import { Users, FileText, Edit, Plus, MinusCircle, FileUp, ChevronLeft, ChevronR
 import StudentsTable from "@/components/manageClass/StudentsTable";
 import EnrollTable from "@/components/manageClass/EnrollTable";
 import AssignmentsTable from "@/components/manageClass/AssignmentsTable";
-
 import { 
   Dialog, 
   DialogContent, 
@@ -37,14 +36,18 @@ import { getUsersByRole } from "@/api/userApi";
 import { getEnrollRequestsForClass, updateEnrollRequestStatus, deleteEnrollRequest } from "@/api/enrollmentApi";
 import { useToast } from "@/components/ui/use-toast";
 import { useUser } from "@/contexts/contextHooks/useUser";
+import DeleteClassDialog from "./DeleteClassDialog";
+import DeleteAssignmentDialog from "./DeleteAssignmentDialog";
 
 const ManageClassDashboard = () => {
   const { classId } = useParams();
   const navigate = useNavigate();
-  const { classes, setClasses, updateClasses } = useClass();
+  const { toast } = useToast();
+  const { user } = useUser();
+  const { classes, setClasses, updateClasses, removeClass } = useClass();
   const [classData, setClassData] = useState(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deleteClassDialogOpen, setDeleteClassDialogOpen] = useState(false);
   const [students, setStudents] = useState([]);
   const [enrollRequests, setEnrollRequests] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -56,10 +59,9 @@ const ManageClassDashboard = () => {
   const [currentStudentPage, setCurrentStudentPage] = useState(1);
   const [currentEnrollRequestPage, setCurrentEnrollRequestPage] = useState(1);
   const [itemsPerPage] = useState(10);
-  const { toast } = useToast();
-  const { user } = useUser();
   const [assignments, setAssignments] = useState([]);
   const [currentAssignmentPage, setCurrentAssignmentPage] = useState(1);
+  const [confirmDeleteClass, setConfirmDeleteClass] = useState(false);
   const [confirmDeleteAssignment, setConfirmDeleteAssignment] = useState(false);
   const [selectedAssignment, setSelectedAssignment] = useState(null);
   const [deleteAssignmentDialogOpen, setDeleteAssignmentDialogOpen] = useState(false);
@@ -78,6 +80,7 @@ const ManageClassDashboard = () => {
   }, [classId]);
 
   const handleDeleteAssignmentClick = (assignment) => {
+    setConfirmDeleteAssignment(false);
     setSelectedAssignment(assignment);
     setDeleteAssignmentDialogOpen(true);
   };
@@ -160,23 +163,6 @@ const ManageClassDashboard = () => {
       fetchAllStudents();
     }
   }, [user, students]);
-
-  const handleDeleteStudent = async (student) => {
-    const result = await removeStudentFromClass(classId, student.userId);
-    if (result.status === "Success") {
-      setStudents(students.filter(s => s.userId !== student.userId));
-      toast({
-        title: "Success",
-        description: "Student removed from class"
-      });
-    } else {
-      toast({
-        title: "Error",
-        description: "Failed to remove student",
-        variant: "destructive"
-      });
-    }
-  };
 
   const handleAddStudents = async (e) => {
     e.preventDefault();
@@ -266,30 +252,28 @@ const ManageClassDashboard = () => {
     setEditModalOpen(true);
   };
 
-  const handleDeleteClass = () => {
-    setDeleteDialogOpen(true);
-  };
+	const handleDeleteClass = (selected_class) => {
+		setConfirmDeleteClass(false);
+		setDeleteClassDialogOpen(true);
+	};
 
-  const confirmDeleteClass = async () => {
-    try {
-      const result = await deleteClass(classId);
-      console.log(result);
-      if (result.status === "Success") {
-        toast({
-          title: "Success",
-          description: "Class deleted successfully"
-        });
-        setClasses(classes.filter(c => c.classId !== classId));
-        navigate("/manage-class");  // Redirect to the classes list page
-      } else {
-        throw new Error(result);
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setDeleteDialogOpen(false);
-    }
-  };
+	const deleteClass = async () => {
+		if (confirmDeleteClass) {
+			setConfirmDeleteAssignment(false);
+			if (classData) {
+				removeClass(classData.classId);
+				setDeleteClassDialogOpen(false);
+        navigate(-1);
+			} else {
+				console.error(
+					"An error occurred while deleting the class.",
+					classData.message
+				);
+			}
+		} else {
+			setConfirmDeleteClass(true);
+		}
+	};
 
   const filteredStudents = students.filter((student) =>
     `${student.firstname} ${student.lastname}`
@@ -376,12 +360,13 @@ const ManageClassDashboard = () => {
 
       <StudentsTable 
         students={currentStudents}
+        setStudents={setStudents}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
-        handleDeleteStudent={handleDeleteStudent}
         setAddByCSVOpen={setAddByCSVOpen}
         setAddDialogOpen={setAddDialogOpen}
         user={user}
+        classId={classId}
         renderPagination={renderPagination}
         currentPage={currentStudentPage}
         setCurrentPage={setCurrentStudentPage}
@@ -398,8 +383,8 @@ const ManageClassDashboard = () => {
 
       <AssignmentsTable 
         assignments={assignments.slice((currentAssignmentPage - 1) * itemsPerPage, currentAssignmentPage * itemsPerPage)}
+        setAssignments={setAssignments}
         classId={classId}
-        handleDeleteClick={handleDeleteAssignmentClick}
         user={user}
         renderPagination={renderPagination}
         currentPage={currentAssignmentPage}
@@ -413,18 +398,13 @@ const ManageClassDashboard = () => {
         classItem={classData}
       />
 
-      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Delete Class</DialogTitle>
-          </DialogHeader>
-          <p>Are you sure you want to delete this class? This action cannot be undone.</p>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
-            <Button variant="destructive" onClick={confirmDeleteClass}>Delete</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <DeleteClassDialog 
+        open={deleteClassDialogOpen}
+        onOpenChange={setDeleteClassDialogOpen}
+        confirmDelete={confirmDeleteClass}
+        selectedClass={classData}
+        handleDeleteClass={deleteClass}
+      />
 
       <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
         <DialogContent>
@@ -492,35 +472,13 @@ const ManageClassDashboard = () => {
         onStudentsAdded={fetchStudents}
       />
     
-    <Dialog open={deleteAssignmentDialogOpen} onOpenChange={setDeleteAssignmentDialogOpen}>
-        <DialogContent
-          className={
-            confirmDeleteAssignment ? "border-red-950 bg-red-500 text-white" : ""
-          }
-        >
-          <DialogHeader>
-            <DialogTitle>
-              {confirmDeleteAssignment ? "Confirm" : ""} Delete Assignment
-            </DialogTitle>
-          </DialogHeader>
-          Are you {confirmDeleteAssignment ? "really " : ""}sure you want to delete the assignment {selectedAssignment?.title} from this class?
-          <DialogFooter>
-            <Button
-              onClick={() => setDeleteAssignmentDialogOpen(false)}
-              className={confirmDeleteAssignment ? "shadow-md shadow-red-900" : ""}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={handleDeleteAssignment}
-              className={confirmDeleteAssignment ? "shadow-md shadow-red-900" : ""}
-            >
-              Delete
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <DeleteAssignmentDialog 
+        dialogOpen={deleteAssignmentDialogOpen}
+        setDialogOpen={setDeleteAssignmentDialogOpen}
+        confirmDelete={confirmDeleteAssignment}
+        selectedAssignment={selectedAssignment}
+        handleDeleteAssignment={handleDeleteAssignment}
+      />
     </div>
   );
 };

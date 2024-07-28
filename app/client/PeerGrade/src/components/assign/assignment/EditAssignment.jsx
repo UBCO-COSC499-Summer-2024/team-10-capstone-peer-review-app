@@ -5,8 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon, ChevronDown as ChevronDownIcon, ChevronUp as ChevronUpIcon, Check as CheckIcon, Upload } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import MultiSelect from '@/components/ui/MultiSelect';
-
 import { useNavigate } from 'react-router-dom';
 import { cn } from "@/utils/utils";
 import { Input } from '@/components/ui/input';
@@ -44,7 +44,6 @@ const FormSchema = z.object({
   description: z.string().min(1, "Description is required"),
   maxSubmissions: z.number().min(1, "Max submissions is required"),
   categoryId: z.string().min(1, "Category is required"),
-  reviewOption: z.string().min(1, "Review option is required"),
   dueDate: z.date({
     required_error: "Due date is required",
   }),
@@ -76,18 +75,12 @@ const EditAssignment = () => {
       description: "",
       maxSubmissions: 1,
       categoryId: "",
-      reviewOption: "",
       dueDate: null,
       file: null,
       rubricId: "", // Add this line
       allowedFileTypes: [],
     }
   });
-
-  const dropdown_options = [
-    { value: "manual", label: "Manual" },
-    { value: "auto", label: "Auto" }
-  ];
 
 
   useEffect(() => {
@@ -105,21 +98,30 @@ const EditAssignment = () => {
           const assignmentData = assignmentResponse.data;
           setCategories(categoriesResponse.data);
           setRubrics(rubricsResponse.data);
-          setSelectedFileTypes(assignmentData.allowedFileTypes || []);
+          
+          // Convert allowed file types to the format expected by MultiSelect
+          const allowedFileTypes = assignmentData.allowedFileTypes.map(type => ({
+            value: type,
+            label: type.toUpperCase()
+          }));
+          
+          setSelectedFileTypes(allowedFileTypes);
 
           form.reset({
             title: assignmentData.title,
             description: assignmentData.description,
             maxSubmissions: assignmentData.maxSubmissions,
             categoryId: assignmentData.categoryId,
-            reviewOption: assignmentData.reviewOption,
             dueDate: new Date(assignmentData.dueDate),
             rubricId: assignmentData.rubricId, // Add this line
+            allowedFileTypes: assignmentData.allowedFileTypes || [],
+
           });
     
           setSelectedCategory(assignmentData.categoryId);
           setSelectedFileName(assignmentData.assignmentFilePath ? assignmentData.assignmentFilePath.split('/').pop() : '');
-          
+          setSelectedFileTypes(assignmentData.allowedFileTypes || []);
+
           // Set the selected rubric
           if (assignmentData.rubricId) {
             setSelectedRubric(assignmentData.rubricId);
@@ -154,7 +156,6 @@ const EditAssignment = () => {
       title: data.title,
       description: data.description,
       dueDate: data.dueDate,
-      reviewOption: data.reviewOption,
       maxSubmissions: data.maxSubmissions,
       rubricId: selectedRubric, 
       allowedFileTypes: data.allowedFileTypes,  // Use data.allowedFileTypes instead of selectedFileTypes
@@ -169,9 +170,10 @@ const EditAssignment = () => {
   
       if (response.status === 'Success') {
         toast({
-          title: "Assignment Updated",
+          title: "Data Updated",
           description: "The assignment has been successfully updated.",
-          status: "success"
+          status: "success",
+          variant: "info"
         });
         
         // Navigate to the assignment page
@@ -237,64 +239,6 @@ const EditAssignment = () => {
                     <Input  {...field} type="number" onBlur={(e) => field.onChange(Number(e.target.value))}/>
                   </FormControl>
                   <FormDescription>Max number of submissions.</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="reviewOption"
-              render={({ field }) => (
-                <FormItem style={{ display: 'flex', flexDirection: 'column' }}>
-                  <FormLabel>Manual/Auto Review</FormLabel>
-                  <Popover open={open} onOpenChange={setOpen}>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          aria-expanded={open}
-                          className="w-[200px] justify-between bg-white"
-                        >
-                          {value
-                            ? dropdown_options.find((option) => option.value === value)?.label
-                            : "Select option..."}
-                          {open
-                            ? <ChevronUpIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                            : <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                          }
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-[200px] p-0 rounded-md">
-                      <Command>
-                        <CommandList>
-                          <CommandGroup>
-                            {dropdown_options.map((option) => (
-                              <CommandItem
-                                key={option.value}
-                                value={option.value}
-                                onSelect={(currentValue) => {
-                                  setValue(currentValue === value ? "" : currentValue);
-                                  setOpen(false);
-                                  field.onChange(currentValue);
-                                }}
-                              >
-                                {option.label}
-                                <CheckIcon
-                                  className={cn(
-                                    "ml-auto h-4 w-4",
-                                    value === option.value ? "opacity-100" : "opacity-0"
-                                  )}
-                                />
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                  <FormDescription>Manual - Pick students to assign the peer review to manually. Auto - The system automatically picks students to assign the peer review to.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -392,61 +336,33 @@ const EditAssignment = () => {
                 </FormItem>
               )}
             />
-            <FormField
+           <FormField
               control={form.control}
               name="rubricId"
               render={({ field }) => (
-                <FormItem style={{ display: 'flex', flexDirection: 'column' }}>
+                <FormItem>
                   <FormLabel>Rubric</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          aria-expanded={open}
-                          className="w-[200px] justify-between bg-white"
-                        >
-                          {selectedRubric
-                            ? rubrics.find(rubric => rubric.rubricId === selectedRubric)?.title || 'Untitled Rubric'
-                            : "Select Rubric"}
-                          <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-[200px] p-0 rounded-md">
-                      <Command>
-                        <CommandList>
-                          <CommandGroup>
-                            {rubrics.map((rubric) => (
-                              <CommandItem
-                                key={rubric.rubricId}
-                                value={rubric.rubricId}
-                                onSelect={(currentValue) => {
-                                  setSelectedRubric(currentValue);
-                                  field.onChange(currentValue);
-                                }}
-                              >
-                                {rubric.title || 'Untitled Rubric'}
-                                <CheckIcon
-                                  className={cn(
-                                    "ml-auto h-4 w-4",
-                                    selectedRubric === rubric.rubricId ? "opacity-100" : "opacity-0"
-                                  )}
-                                />
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a rubric" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {rubrics.map((rubric) => (
+                        <SelectItem key={rubric.rubricId} value={rubric.rubricId}>
+                          {rubric.title || 'Untitled Rubric'}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormDescription>Select a rubric for this assignment.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
-             />
-            <FormField
+            />
+
+<FormField
               control={form.control}
               name="allowedFileTypes"
               render={({ field }) => (

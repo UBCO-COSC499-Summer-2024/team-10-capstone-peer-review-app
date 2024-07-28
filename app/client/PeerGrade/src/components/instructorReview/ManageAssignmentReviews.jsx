@@ -55,6 +55,7 @@ import {
 	TooltipProvider,
 	TooltipTrigger
 } from "@/components/ui/tooltip";
+import { Link, Navigate } from "react-router-dom";
 
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { useClass } from "@/contexts/contextHooks/useClass";
@@ -721,7 +722,7 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 																				"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
 																		)}
 																	>
-																		View Grades
+																		View Instructor Grade
 																	</Button>
 																	<Button
 																		variant="outline"
@@ -743,6 +744,30 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 																	>
 																		Assign Reviewers
 																	</Button>
+																	<Link>
+																		<Button
+																			variant="outline"
+																			size="sm"
+																			// onClick={() =>
+																			// 	handleAssignReviewers(
+																			// 		student.submission
+																			// 	)
+																			// }
+																			disabled={
+																				!isDueDatePassed(
+																					selectedAssignment.dueDate
+																				)
+																			}
+																			className={cn(
+																				!isDueDatePassed(
+																					selectedAssignment.dueDate
+																				) &&
+																					"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
+																			)}
+																		>
+																			View Peer Reviews
+																		</Button>
+																	</Link>
 																</div>
 															</TableCell>
 														</TableRow>

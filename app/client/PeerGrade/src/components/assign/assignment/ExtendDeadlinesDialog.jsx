@@ -94,7 +94,7 @@ const ExtendDeadlinesDialog = ({
               <tr key={index}>
                 <td className="border border-gray-200 px-4 py-2 text-center">{students.find(student => student.studentId === entry.userId)?.label || 'Unknown'}</td>
                 <td className="border border-gray-200 px-4 py-2 text-center">{format(new Date(entry.newDueDate), 'dd/MM/yyyy')}</td>
-                <td className="border border-gray-200 px-4 py-2 flex items-center justify-center">
+                <td className="px-4 py-2 flex items-center justify-center">
                   {confirmDelete === entry.userId ?
                   (
                     <Button variant="ghost" className="bg-white text-red-500 border-red-500 border-2 hover:text-red-500 hover:bg-red-100" onClick={() => handleDeleteExtendedDueDate(entry.userId)}>Confirm Deletion</Button>
@@ -185,12 +185,11 @@ const ExtendDeadlinesDialog = ({
               </PopoverContent>
             </Popover>
           </div>
-
-          <Button className='mt-4' onClick={handleAddExtendedDueDate}>Add Extended Due Date</Button>
         </div>
 
         <DialogFooter>
-          <Button onClick={() => setOpenExtendDeadlines(false)}>Close</Button>
+          <Button onClick={handleAddExtendedDueDate}>Add Extended Due Date</Button>
+          <Button className='bg-gray-400 hover:bg-gray-300 text-white hover:text-gray-600' variant='ghost' onClick={() => setOpenExtendDeadlines(false)}>Close</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

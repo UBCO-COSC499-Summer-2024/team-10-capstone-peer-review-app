@@ -126,7 +126,7 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
         toast({
           title: "Assignment Created",
           description: "The assignment has been successfully created.",
-          status: "success"
+          variant: "positive"
         });
         form.reset();
         setSelectedFileName('');

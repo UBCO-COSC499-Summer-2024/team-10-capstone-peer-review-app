@@ -97,7 +97,8 @@ const ManageClassDashboard = () => {
             );
             toast({
               title: "Success",
-              description: "Assignment deleted successfully"
+              description: "Assignment deleted successfully",
+              variant: "positive"
             });
           } else {
             throw new Error(response.message);
@@ -167,7 +168,8 @@ const ManageClassDashboard = () => {
       setStudents(students.filter(s => s.userId !== student.userId));
       toast({
         title: "Success",
-        description: "Student removed from class"
+        description: "Student removed from class",
+        variant: "positive"
       });
     } else {
       toast({

@@ -213,7 +213,7 @@ const Class = () => {
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="bg-destructive/60"
+                              className="bg-destructive/60 mr-2"
                               onClick={(e) => e.stopPropagation()}
                             >
                               <Trash2 className="h-4 w-4 text-primary" />

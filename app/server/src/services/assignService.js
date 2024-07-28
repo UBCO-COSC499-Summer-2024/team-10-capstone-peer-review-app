@@ -179,7 +179,7 @@ const getAssignmentInClass = async (classId, assignmentId) => {
 				classId: classId
 			},
 			include: {
-				Assignments: true
+				Assignments: true,
 			}
 		});
 
@@ -190,6 +190,9 @@ const getAssignmentInClass = async (classId, assignmentId) => {
 		const assignment = await prisma.assignment.findUnique({
 			where: {
 				assignmentId: assignmentId
+			},
+			include: {
+				extendedDueDates: true
 			}
 		});
 
@@ -216,7 +219,8 @@ const getAllAssignments = async () => {
 			classes: true,
 			category: true,
 			rubric: true,
-			submissions: true
+			submissions: true,
+			extendedDueDates: true
 		}
 	  });
   
@@ -237,7 +241,11 @@ const getAllAssignmentsByClassId = async (classId) => {
 		  classId: classId
 		},
 		include: {
-		  Assignments: true
+		  Assignments: {
+			include: {
+			  extendedDueDates: true
+		  	}
+		  }
 		}
 	  });
   
@@ -254,6 +262,55 @@ const getAllAssignmentsByClassId = async (classId) => {
 	  }
 	}
 };
+
+const extendDeadlineForStudent = async (studentId, assignmentId, newDueDate) => {
+	try {
+		const assignment = await prisma.assignment.findUnique({
+			where: { assignmentId }
+		});
+
+		if (!assignment) {
+			throw new apiError("Assignment not found", 404);
+		}
+
+		const user = await prisma.user.findUnique({
+			where: { userId: studentId }
+		});
+
+		if (!user) {
+			throw new apiError("User not found", 404);
+		}
+
+		// Check if the user has already extended the due date for this assignment
+		const existingExtension = await prisma.extendedDueDate.findFirst({
+			where: {
+				userId: studentId,
+				assignmentId
+			}
+		});
+
+		// Check if the new due date is after the original due date
+		if (new Date(newDueDate) <= new Date(assignment.dueDate)) {
+			throw new apiError("New due date must be after the original due date", 400);
+		}
+
+		const newExtension = await prisma.extendedDueDate.create({
+			data: {
+				userId: studentId,
+				assignmentId,
+				newDueDate
+			}
+		});
+
+		return newExtension;
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to extend deadline for student", 500);
+		}
+	}
+}
   
 export default {
 	updateAssignmentInClass,
@@ -262,4 +319,5 @@ export default {
 	getAssignmentInClass,
 	getAllAssignments,
 	getAllAssignmentsByClassId,
+	extendDeadlineForStudent
 };

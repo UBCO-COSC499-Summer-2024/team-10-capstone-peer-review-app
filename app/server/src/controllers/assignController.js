@@ -160,6 +160,20 @@ export const getAllAssignmentsByClassId = asyncErrorHandler(
 	}
 );
 
+export const extendDeadlineForStudent = asyncErrorHandler(async (req, res) => {
+	const { userId, assignmentId, newDueDate } = req.body;
+	const updatedAssignment = await assignService.extendDeadlineForStudent(
+		userId,
+		assignmentId,
+		newDueDate
+	);
+	return res.status(200).json({
+		status: "Success",
+		message: "Deadline successfully extended for student",
+		data: updatedAssignment
+	});
+});
+
 // Export all controller methods
 export default {
 	addAssignmentToClass,
@@ -167,5 +181,6 @@ export default {
 	updateAssignmentInClass,
 	getAssignmentInClass,
 	getAllAssignments,
-	getAllAssignmentsByClassId
+	getAllAssignmentsByClassId,
+	extendDeadlineForStudent
 };

@@ -12,7 +12,8 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
+import { Command, CommandGroup, CommandItem, CommandList, CommandEmpty, CommandInput } from "@/components/ui/command";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -24,7 +25,7 @@ import {
 } from "@/components/ui/form";
 import { toast } from "@/components/ui/use-toast";
 import { getAssignmentInClass, updateAssignmentInClass } from '@/api/assignmentApi';
-import { getCategoriesByClassId } from '@/api/classApi';
+import { getCategoriesByClassId, getStudentsByClassId } from '@/api/classApi';
 import { getAllRubricsInClass } from '@/api/rubricApi';
 
 const FormSchema = z.object({
@@ -42,8 +43,13 @@ const FormSchema = z.object({
 const EditAssignment = () => {
   const navigate = useNavigate();
   const { classId, assignmentId } = useParams();
+
   const [open, setOpen] = useState(false);
   const [openCat, setOpenCat] = useState(false);
+  const [selectStudentOpen, setSelectStudentOpen] = useState(false);
+  const [selectNewDueDateOpen, setSelectNewDueDateOpen] = useState(false);
+  const [openExtendDeadlines, setOpenExtendDeadlines] = useState(false);
+
   const [value, setValue] = useState("");
   const fileInputRef = useRef(null);
   const [selectedFileName, setSelectedFileName] = useState('');
@@ -51,6 +57,11 @@ const EditAssignment = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [rubrics, setRubrics] = useState([]);
   const [selectedRubrics, setSelectedRubrics] = useState([]);
+
+  const [extendedDueDates, setExtendedDueDates] = useState([]);
+  const [selectedStudent, setSelectedStudent] = useState({});
+  const [newDueDate, setNewDueDate] = useState(null);
+  const [students, setStudents] = useState([]);
   
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -84,7 +95,9 @@ const EditAssignment = () => {
             categoriesResponse.status === 'Success' &&
             rubricsResponse.status === 'Success') {
           const assignmentData = assignmentResponse.data;
+          console.log("assignment", assignmentData);
           setCategories(categoriesResponse.data);
+          setExtendedDueDates(assignmentData.extendedDueDates || []);
           console.log('rubrics', rubricsResponse.data);
           setRubrics(rubricsResponse.data);
     
@@ -117,6 +130,13 @@ const EditAssignment = () => {
       }
     };
 
+    const fetchStudents = async () => {
+      const response = await getStudentsByClassId(classId);
+      if (response.status === 'Success') {
+        setStudents(response.data.map(student => ({studentId: student.userId, label: student.firstname + ' ' + student.lastname})));
+      }
+    };
+    fetchStudents();
     fetchAssignmentAndCategories();
   }, [classId, assignmentId, form]);
 
@@ -189,10 +209,30 @@ const EditAssignment = () => {
     }
   };
 
+  const handleAddExtendedDueDate = () => {
+    if (selectedStudent && newDueDate) {
+      const newEntry = {
+        studentId: selectedStudent.label,
+        newDueDate: newDueDate.toISOString(),
+      };
+      setExtendedDueDates([...extendedDueDates, newEntry]);
+      setSelectedStudent("");
+      setNewDueDate(null);
+    }
+  };
+
+  const handleDeleteExtendedDueDate = (index) => {
+    const updatedDueDates = extendedDueDates.filter((_, i) => i !== index);
+    setExtendedDueDates(updatedDueDates);
+  };
+
   return (
     <div className='flex bg-white justify-left flex-row p-4'>
       <div>
-        <h2 className="text-xl font-semibold mb-4">Edit Assignment</h2>
+        <div className='flex items-center justify-between mb-4'>
+          <h2 className="text-xl font-semibold">Edit Assignment</h2>
+          <Button variant='outline' className='bg-white text-primary' onClick={() => setOpenExtendDeadlines(true)}>Extend Deadlines</Button>
+        </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
           <FormField
@@ -468,6 +508,126 @@ const EditAssignment = () => {
             <Button type="submit" className='bg-primary text-white'>Update Assignment</Button>
           </form>
         </Form>
+        <Dialog open={openExtendDeadlines} onOpenChange={setOpenExtendDeadlines}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Extend Deadlines</DialogTitle>
+              <DialogDescription>
+                <p>Extend the deadline for this assignment for particular students here.</p>
+              </DialogDescription>
+            </DialogHeader>
+
+            {/* Table of current extended due dates */}
+            <table className="w-full border-collapse border border-gray-200">
+              <thead>
+                <tr>
+                  <th className="border border-gray-200 px-4 py-2">Student</th>
+                  <th className="border border-gray-200 px-4 py-2">New Due Date</th>
+                  <th className="border border-gray-200 px-4 py-2">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {extendedDueDates.length === 0 && (
+                  <tr>
+                    <td colSpan="3" className="border border-gray-200 px-4 py-2 text-center">No extended due dates have been made yet.</td>
+                  </tr>
+                )}
+                {extendedDueDates.map((entry, index) => (
+                  <tr key={index}>
+                    <td className="border border-gray-200 px-4 py-2 text-center">{students.find(student => student.studentId === entry.userId)?.label || 'Unknown'}</td>
+                    <td className="border border-gray-200 px-4 py-2 text-center">{format(new Date(entry.newDueDate), 'dd/MM/yyyy')}</td>
+                    <td className="border border-gray-200 px-4 py-2 flex items-center justify-center">
+                      <Button variant="outline" className="bg-red-500 text-white" onClick={() => handleDeleteExtendedDueDate(index)}>Delete</Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <div className="flex flex-col mt-4">
+              {/* Student Selection */}
+              <div className="mb-2">
+                <label htmlFor="studentSelect" className="block text-sm font-medium text-gray-700">
+                  Select Student
+                </label>
+                <Popover open={selectStudentOpen} onOpenChange={setSelectStudentOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={open}
+                      className="w-full justify-between bg-white mt-1 border"
+                    >
+                      {selectedStudent.label ? selectedStudent.label : "Select a student"}
+                      {open ? (
+                        <ChevronUpIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      ) : (
+                        <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="p-5 rounded-md">
+                    <Command>
+                      <CommandInput placeholder="Search students..." />
+                      <CommandList>
+                        <CommandEmpty>No available students found.</CommandEmpty>
+                        <CommandGroup>
+                          {students.map((student) => (
+                            <CommandItem
+                              key={student.studentId}
+                              value={student.label}
+                              onSelect={() => setSelectedStudent(student)}
+                            >
+                              {student.label}
+                              <CheckIcon
+                                className={`ml-auto h-4 w-4 ${selectedStudent && selectedStudent.studentId === student.studentId ? "opacity-100" : "opacity-0"}`}
+                              />
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+              {/* Due Date Picker */}
+              <div className="mb-2">
+                <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700">
+                  New Due Date
+                </label>
+                <Popover open={selectNewDueDateOpen} onOpenChange={setSelectNewDueDateOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-full pl-3 text-left font-normal",
+                        !newDueDate && "text-muted-foreground"
+                      )}
+                    >
+                      {newDueDate ? format(newDueDate, "PPP") : "Pick a date"}
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={newDueDate}
+                      onSelect={setNewDueDate}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+              <Button className='mt-4' onClick={handleAddExtendedDueDate}>Add Extended Due Date</Button>
+            </div>
+
+            <DialogFooter>
+              <Button onClick={() => setOpenExtendDeadlines(false)}>Close</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

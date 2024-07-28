@@ -13,71 +13,31 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// TODOS: 
-// - ENROLLEMENT and GROUP INVITES AND REQUESTS 
-// - NOTIFICATION STATUSES? 
-// - SUBMISSION, PEER REVIEW, INSTRUCTOR REVIEW, GROUP REVIEW STATUSES?
-
-// User Models
-
-// model Student {
-//   studentId                 String             @id @default(uuid())
-//   username                  String             @unique
-//   password                  String
-//   email                     String             @unique
-//   firstname                 String
-//   lastname                  String
-//   classes                   StudentInClass[] // Retrieve Assignments based on classes they are. 
-//   submissions               Submission[]
-//   peerReviewsDone           PeerReview[]       @relation("Reviewer")
-//   peerReviewsRecieved       PeerReview[]       @relation("Reviewee")
-//   instructorReviewsRecieved InstructorReview[] @relation("RevieweeStudent")
-//   studentGroups             StudentInGroup[]
-//   GroupSubmission           GroupSubmission[]  @relation("SubmittedByStudent")
-// }
-
 model User {
-  userId            String          @id @default(uuid())
-  email             String          @unique
+  userId            String            @id @default(uuid())
+  email             String            @unique
   password          String
   firstname         String
   lastname          String
-  isEmailVerified   Boolean         @default(false)
-  isRoleActivated   Boolean         @default(false)
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  role              UserRole        @default(STUDENT)
+  isEmailVerified   Boolean           @default(false)
+  isRoleActivated   Boolean           @default(false)
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  role              UserRole          @default(STUDENT)
   classes           UserInClass[]
   submissions       Submission[]
-  reviewsDone       Review[]        @relation("Reviewer")
-  reviewsRecieved   Review[]        @relation("Reviewee")
-  classesInstructed Class[]         @relation("InstructorClasses")
+  reviewsDone       Review[]          @relation("Reviewer")
+  reviewsRecieved   Review[]          @relation("Reviewee")
+  classesInstructed Class[]           @relation("InstructorClasses")
   groups            Group[]
   RoleRequest       RoleRequest?
   enrollRequests    EnrollRequest[]
-  notifications     Notification[]  @relation("ReceiverNotifications")
-  sentNotifications Notification[]  @relation("SenderNotifications")
+  notifications     Notification[]    @relation("ReceiverNotifications")
+  sentNotifications Notification[]    @relation("SenderNotifications")
+  GroupSubmission   GroupSubmission[]
   reports           Report[]        @relation("ReportReceiver")
   sentReports       Report[]        @relation("ReportSender")
 }
-
-// // Need to refactor last references to others tables, depending on what we want instructors to be able to pull up
-// model Instructor {
-//   instructorId      String             @id @default(uuid())
-//   username          String             @unique
-//   password          String
-//   email             String             @unique
-//   firstname         String
-//   lastname          String
-//   // isAdmin            Boolean             @default(false) // Create separate admin model?
-//   classes           Class[]            @relation("TaughtBy") // Classes the instructor is teaching
-//   rubricsCreated    Rubric[]           @relation("RubricCreatedByInstructor") // Rubrics created by the instructor
-//   instructorReviews InstructorReview[] @relation("ReviewerInstructor")
-// }
-
-// Admin General Crud operations 
-
-// Class and Assignment Models
 
 model Class {
   classId       String          @id @default(uuid())
@@ -91,7 +51,7 @@ model Class {
   groups        Group[]
   usersInClass  UserInClass[]
   Assignments   Assignment[]
-  categories    Category[] // Add this line
+  categories    Category[]
   instructor    User            @relation("InstructorClasses", fields: [instructorId], references: [userId]) // Only one instructor per class 
   EnrollRequest EnrollRequest[]
   rubrics       Rubric[]
@@ -106,34 +66,22 @@ model UserInClass {
   @@id([userId, classId], name: "UserInClassId")
 }
 
-// Removing, Single instructor for a class, Admin can which instructors are associated with a class
-
-// model InstructorInClass {
-//   instructorId String
-//   classId      String
-//   Instructor   Instructor @relation(fields: [instructorId], references: [instructorId])
-//   Class        Class      @relation(fields: [classId], references: [classId])
-
-//   @@id([instructorId, classId])
-// }
-
-// Make a many to many relationship with rubric 
 model Assignment {
-  assignmentId       String                @id @default(uuid())
+  assignmentId       String         @id @default(uuid())
   classId            String
+  rubricId           String?
   title              String
   description        String?
   dueDate            DateTime
-  maxSubmissions     Int                   @default(1)
-  isGroup            Boolean               @default(false)
-  assignmentType     SubmissionType        @default(URL)
+  maxSubmissions     Int            @default(1)
+  isGroupAssignment  Boolean        @default(false)
+  assignmentType     SubmissionType @default(URL)
   assignmentFilePath String?
-  classes            Class                 @relation(fields: [classId], references: [classId], onDelete: Cascade)
+  classes            Class          @relation(fields: [classId], references: [classId], onDelete: Cascade)
   categoryId         String? // Add this line
-  category           Category?             @relation(fields: [categoryId], references: [categoryId]) // Add this line
-  rubric             RubricForAssignment[]
+  category           Category?      @relation(fields: [categoryId], references: [categoryId]) // Add this line
+  rubric             Rubric?        @relation(fields: [rubricId], references: [rubricId])
   submissions        Submission[]
-  // Switch to the enum later
   reviewOption       String?
 }
 
@@ -141,82 +89,43 @@ model Assignment {
 
 model Group {
   groupId          String       @id @default(uuid())
-  //assignmentId     String
   classId          String
   groupName        String
   groupDescription String?
+  // 
   groupSize        Int          @default(0)
-  //assignment       Assignment        @relation(fields: [assignmentId], references: [assignmentId])
   class            Class        @relation(fields: [classId], references: [classId], onDelete: Cascade)
   students         User[] // Students in the group
   submissions      Submission[] // Submissions from the group
 }
 
-// model StudentInGroup {
-//   studentId      String
-//   groupId String
-//   student        Student      @relation(fields: [studentId], references: [studentId])
-//   groupProject   GroupProject @relation(fields: [groupId], references: [groupId])
-
-//   @@id([studentId, groupProjectId])
-// } 
-
-// Group Sumbission + Group Review  
-
-// 3 Types of eval -> peer, isntructor, group
-
-// Submission Models
-
 model Submission {
-  submissionId       String     @id @default(uuid())
+  submissionId       String            @id @default(uuid())
   assignmentId       String
-  submitterId        String?
+  submitterId        String
   submitterGroupId   String?
-  createdAt          DateTime   @default(now())
-  updatedAt          DateTime   @updatedAt
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
   // submissionType     SubmissionType // Either a File or a URL, we need to discuss file storage options
   submissionFilePath String?
   finalGrade         Int? // Final grade of the Submission, default to the instructor grade?
-  assignment         Assignment @relation(fields: [assignmentId], references: [assignmentId], onDelete: Cascade)
-  submitter          User?      @relation(fields: [submitterId], references: [userId])
-  submitterGroup     Group?     @relation(fields: [submitterGroupId], references: [groupId])
-  reviews            Review[]
   submissionComment  String?
+  assignment         Assignment        @relation(fields: [assignmentId], references: [assignmentId], onDelete: Cascade)
+  submitter          User              @relation(fields: [submitterId], references: [userId])
+  submitterGroup     Group?            @relation(fields: [submitterGroupId], references: [groupId])
+  reviews            Review[]
+  GroupSubmission    GroupSubmission[]
 }
 
-// model GroupSubmission {
-//   submissionId       String         @id @default(uuid())
-//   groupProjectId     String
-//   createdAt          DateTime       @default(now())
-//   updatedAt          DateTime       @updatedAt
-//   submittedBy        String // The studentId of the student who made the submission
-//   submissionFilePath String
-// submissionType     SubmissionType // Either a File or a URL, we need to discuss file storage options
-//   grade              Int? // Final grade of the Submission, Graded by the instructor)
-//   // groupProject       GroupProject   @relation(fields: [groupProjectId], references: [groupProjectId])
-//   submittedByUser    User           @relation("SubmittedByUser", fields: [submittedBy], references: [userId])
-// }
+model GroupSubmission {
+  id           String     @id @default(uuid())
+  submissionId String
+  userId       String
+  submission   Submission @relation(fields: [submissionId], references: [submissionId], onDelete: Cascade)
+  user         User       @relation(fields: [userId], references: [userId], onDelete: Cascade)
 
-// Review model. 
-
-// model PeerReview {
-//   peerReviewId           String                  @id @default(uuid())
-//   submissionId           String
-//   studentReviewerId      String
-//   revieweeId             String
-//   createdAt              DateTime                @default(now())
-//   updatedAt              DateTime                @updatedAt
-//   peerReviewGrade        Int // Total grade of the review = sum of reviewerCriteronGrades
-//   submission             Submission              @relation(fields: [submissionId], references: [submissionId])
-//   reviewerStudent        Student                 @relation("Reviewer", fields: [studentReviewerId], references: [studentId])
-//   reviewee               Student                 @relation("Reviewee", fields: [revieweeId], references: [studentId])
-//   reviewerCriteronGrades StudentCriterionGrade[]
-// }
-
-// Way to check if all students have submitted their group reivew,  
-// and if not, send a reminder to the students who haven't submitted  
-
-// Group Review is 
+  @@unique([submissionId, userId])
+}
 
 model Review {
   reviewId        String           @id @default(uuid())
@@ -225,7 +134,6 @@ model Review {
   revieweeId      String
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
-  isGroup         Boolean          @default(false)
   isPeerReview    Boolean          @default(false)
   reviewGrade     Int // Total grade of the review = sum of criterionGrades
   submission      Submission       @relation(fields: [submissionId], references: [submissionId], onDelete: Cascade)
@@ -234,65 +142,16 @@ model Review {
   criterionGrades CriterionGrade[]
 }
 
-// Way to check if all students have submitted their group reivew,  
-// and if not, send a reminder to the students who haven't submitted  
-
-// Group Review is 
-
-// model InstructorReview {
-//   instructorReviewId       String                     @id @default(uuid())
-//   submissionId             String
-//   instructorReviewerId     String
-//   revieweeId               String
-//   createdAt                DateTime                   @default(now())
-//   updatedAt                DateTime                   @updatedAt
-//   instructorReviewGrade    Int // Total grade of the review = sum of instructorCriteronGrades
-//   submission               Submission                 @relation(fields: [submissionId], references: [submissionId], onDelete: Cascade)
-//   reviewerInstructor       Instructor                 @relation("ReviewerInstructor", fields: [instructorReviewerId], references: [instructorId])
-//   reviewee                 Student                    @relation("RevieweeStudent", fields: [revieweeId], references: [studentId])
-//   instructorCriterionGrade InstructorCriterionGrade[]
-// }
-
-// TODO refactor / reimplment GroupReview
-
-// model GroupReview {
-//   groupReviewId     String       @id @default(uuid())
-//   groupProjectId    String
-//   rubricId          String
-//   studentReviewerId String
-//   revieweeId        String
-//   createdAt         DateTime     @default(now())
-//   updatedAt         DateTime     @updatedAt
-//   reviewerStudent   Student     @relation("Reviewer", fields: [studentReviewerId], references: [studentId])
-//   revieweeStudent   Student     @relation("Reviewee", fields: [revieweeId], references: [studentId])
-//   groupProject      GroupProject @relation(fields: [groupProjectId], references: [groupProjectId])
-// }
-
-// Rubric and Criterion Models
-
-// Make a many to many relationship with assignment
 model Rubric {
-  rubricId    String                @id @default(uuid())
+  rubricId    String       @id @default(uuid())
   creatorId   String
   classId     String
   title       String
   description String?
   totalMarks  Int // Total marks of the rubric? Not sure if this is needed or not 
-  // We may not need this
-  // createdBy   User                  @relation(fields: [creatorId], references: [userId])
   criteria    Criterion[]
-  assignments RubricForAssignment[]
-  // GroupSubmission     GroupSubmission[]
-  class       Class?                @relation(fields: [classId], references: [classId], onDelete: Cascade)
-}
-
-model RubricForAssignment {
-  assignmentId String
-  rubricId     String
-  assignment   Assignment @relation(fields: [assignmentId], references: [assignmentId])
-  rubric       Rubric     @relation(fields: [rubricId], references: [rubricId])
-
-  @@id([assignmentId, rubricId], name: "RubricForAssignmentId")
+  assignments Assignment[]
+  class       Class?       @relation(fields: [classId], references: [classId], onDelete: Cascade)
 }
 
 model Criterion {
@@ -328,34 +187,6 @@ model CriterionGrade {
   @@unique([criterionId, reviewId], name: "UniqueCriteronGradePerReview") // Ensure unique combination of criterionId and reviewId
 }
 
-// model StudentCriterionGrade {
-//   studentCriteronGradeId String     @id @default(uuid())
-//   criterionId            String
-//   peerReviewId           String
-//   grade                  Int
-//   textEntry              String
-//   criterion              Criterion  @relation(fields: [criterionId], references: [criterionId])
-//   peerReview             PeerReview @relation(fields: [peerReviewId], references: [peerReviewId])
-// }
-
-// model InstructorCriterionGrade {
-//   instructorCriteronGradeId String           @id @default(uuid())
-//   criterionId               String
-//   instructorReviewId        String
-//   grade                     Int
-//   textEntry                 String
-//   criterion                 Criterion        @relation(fields: [criterionId], references: [criterionId])
-//   instructorReview          InstructorReview @relation(fields: [instructorReviewId], references: [instructorReviewId])
-// }
-
-// Todo 
-// Enroll links to clases and enrollRequests
-// Todo 
-// EnrollRequest links to Enroll and students
-
-// TODO
-// Request / Status Models 
-// I.e. Enrollment, Group Invites, Intructor to Admin Requests  
 model RoleRequest {
   roleRequestId String        @id @default(uuid())
   userId        String
@@ -406,8 +237,6 @@ model Category {
   assignments Assignment[]
 }
 
-// Initial implementation - Abdul
-// Only instructors have specific receiverId's as all admins receive admin reports.
 model Report {
   reportId       String   @id @default(uuid())
   senderId       String

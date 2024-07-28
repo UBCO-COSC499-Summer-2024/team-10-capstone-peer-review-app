@@ -244,57 +244,128 @@ async function main() {
 		}
 	});
 
+
+	// Create rubrics
+const rubric1 = await prisma.rubric.create({
+	data: {
+	  title: "Basic Rubric",
+	  description: "A basic rubric for general assignments",
+	  totalMarks: 100,
+	  creatorId: instructor.userId,
+	  classId: class1.classId,
+	}
+  });
+  
+  const rubric2 = await prisma.rubric.create({
+	data: {
+	  title: "Advanced Rubric",
+	  description: "An advanced rubric for complex assignments",
+	  totalMarks: 100,
+	  creatorId: instructor.userId,
+	  classId: class2.classId,
+	}
+  });
+  
+  const rubric3 = await prisma.rubric.create({
+	data: {
+	  title: "Exam Rubric",
+	  description: "A rubric for exams",
+	  totalMarks: 100,
+	  creatorId: instructor.userId,
+	  classId: class3.classId,
+	}
+  });
+  
+  const rubric4 = await prisma.rubric.create({
+	data: {
+	  title: "Project Rubric",
+	  description: "A rubric for projects",
+	  totalMarks: 100,
+	  creatorId: instructor.userId,
+	  classId: class4.classId,
+	}
+  });
+  
 	// Create assignments and link them to categories
 
 	// TODO - Refactor by adding a URL to the assignment file path
-	const assignment1 = await prisma.assignment.create({
-		data: {
-			title: faker.person.firstName() + " Assignment",
-			description: "This is a test assignment",
-			dueDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
-			classId: class1.classId,
-			assignmentFilePath:
-				"https://raw.githubusercontent.com/py-pdf/sample-files/8c405ece5eff12396a34a1fae3276132002e1753/004-pdflatex-4-pages/pdflatex-4-pages.pdf", // dummy file
-			categoryId: category1.categoryId // Link to category
-		}
-	});
+	// Create assignments and link them to categories and classes
+// Create assignments and link them to categories, classes, and rubrics
+const assignment1 = await prisma.assignment.create({
+    data: {
+        title: faker.person.firstName() + " Assignment",
+        description: "This is a test assignment",
+        dueDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
+        assignmentFilePath:
+            "https://raw.githubusercontent.com/py-pdf/sample-files/8c405ece5eff12396a34a1fae3276132002e1753/004-pdflatex-4-pages/pdflatex-4-pages.pdf", // dummy file
+        category: {
+            connect: { categoryId: category1.categoryId }
+        },
+        classes: {
+            connect: { classId: class1.classId }
+        },
+        rubric: {
+            connect: { rubricId: rubric1.rubricId }
+        }
+    }
+});
 
-	const assignment2 = await prisma.assignment.create({
-		data: {
-			title: faker.person.firstName() + " Assignment",
-			description: "This is another test assignment",
-			dueDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
-			classId: class2.classId,
-			assignmentFilePath:
-				"https://raw.githubusercontent.com/py-pdf/sample-files/8c405ece5eff12396a34a1fae3276132002e1753/004-pdflatex-4-pages/pdflatex-4-pages.pdf", // dummy file
-			categoryId: category2.categoryId // Link to category
-		}
-	});
+const assignment2 = await prisma.assignment.create({
+    data: {
+        title: faker.person.firstName() + " Assignment",
+        description: "This is another test assignment",
+        dueDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
+        assignmentFilePath:
+            "https://raw.githubusercontent.com/py-pdf/sample-files/8c405ece5eff12396a34a1fae3276132002e1753/004-pdflatex-4-pages/pdflatex-4-pages.pdf", // dummy file
+        category: {
+            connect: { categoryId: category2.categoryId }
+        },
+        classes: {
+            connect: { classId: class2.classId }
+        },
+        rubric: {
+            connect: { rubricId: rubric2.rubricId }
+        }
+    }
+});
 
-	const assignment3 = await prisma.assignment.create({
-		data: {
-			title: faker.person.firstName() + " Exam",
-			description: "This is a test exam",
-			dueDate: new Date(new Date().setMonth(new Date().getMonth() + 2)),
-			classId: class3.classId,
-			assignmentFilePath:
-				"https://raw.githubusercontent.com/py-pdf/sample-files/8c405ece5eff12396a34a1fae3276132002e1753/004-pdflatex-4-pages/pdflatex-4-pages.pdf", // dummy file
-			categoryId: category3.categoryId // Link to category
-		}
-	});
+const assignment3 = await prisma.assignment.create({
+    data: {
+        title: faker.person.firstName() + " Exam",
+        description: "This is a test exam",
+        dueDate: new Date(new Date().setMonth(new Date().getMonth() + 2)),
+        assignmentFilePath:
+            "https://raw.githubusercontent.com/py-pdf/sample-files/8c405ece5eff12396a34a1fae3276132002e1753/004-pdflatex-4-pages/pdflatex-4-pages.pdf", // dummy file
+        category: {
+            connect: { categoryId: category3.categoryId }
+        },
+        classes: {
+            connect: { classId: class3.classId }
+        },
+        rubric: {
+            connect: { rubricId: rubric3.rubricId }
+        }
+    }
+});
 
-	const assignment4 = await prisma.assignment.create({
-		data: {
-			title: faker.person.firstName() + " Project",
-			description: "This is a test project",
-			dueDate: new Date(new Date().setMonth(new Date().getMonth() + 3)),
-			classId: class4.classId,
-			assignmentFilePath:
-				"https://raw.githubusercontent.com/py-pdf/sample-files/8c405ece5eff12396a34a1fae3276132002e1753/004-pdflatex-4-pages/pdflatex-4-pages.pdf", // dummy file
-			categoryId: category4.categoryId // Link to category
-		}
-	});
-
+const assignment4 = await prisma.assignment.create({
+    data: {
+        title: faker.person.firstName() + " Project",
+        description: "This is a test project",
+        dueDate: new Date(new Date().setMonth(new Date().getMonth() + 3)),
+        assignmentFilePath:
+            "https://raw.githubusercontent.com/py-pdf/sample-files/8c405ece5eff12396a34a1fae3276132002e1753/004-pdflatex-4-pages/pdflatex-4-pages.pdf", // dummy file
+        category: {
+            connect: { categoryId: category4.categoryId }
+        },
+        classes: {
+            connect: { classId: class4.classId }
+        },
+        rubric: {
+            connect: { rubricId: rubric4.rubricId }
+        }
+    }
+});
 
 	// Create groups
 	const group1 = await prisma.group.create({
@@ -335,6 +406,8 @@ async function main() {
 
 	console.log("Database has been seeded. 🌱");
 }
+
+
 
 main()
 	.catch((e) => {

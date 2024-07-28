@@ -1,18 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Eye, Trash2 } from "lucide-react";
+import DeleteAssignmentDialog from './DeleteAssignmentDialog';
+import { removeAssignmentFromClass } from '@/api/assignmentApi';
 
 const AssignmentsTable = ({ 
   assignments, 
-  classId, 
-  handleDeleteClick, 
+  setAssignments,
+  classId,
   user,
   renderPagination,
   currentPage,
   setCurrentPage
 }) => {
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [selectedAssignment, setSelectedAssignment] = useState(null);
+  const [deleteAssignmentOpen, setDeleteAssignmentOpen] = useState(false);
+
+  const handleDeleteClick = (assignment) => {
+    setConfirmDelete(false);
+    setSelectedAssignment(assignment);
+    setDeleteAssignmentOpen(true);
+  };
+
+  const handleDeleteAssignment = async () => {
+    if (confirmDelete && selectedAssignment) {
+        setConfirmDelete(false);
+        try {
+            const response = await removeAssignmentFromClass(selectedAssignment.assignmentId);
+            if (response.status === "Success") {
+                setAssignments((prevAssignments) =>
+                    prevAssignments.filter(
+                        (assignment) => assignment.assignmentId !== selectedAssignment.assignmentId
+                    )
+                );
+                setDeleteAssignmentOpen(false);
+            } else {
+                console.error("An error occurred while deleting the assignment.", response.message);
+            }
+        } catch (error) {
+            console.error("Error deleting assignment:", error.response?.data || error.message);
+        }
+    } else {
+        setConfirmDelete(true);
+    }
+  };
+
   return (
     <div className="bg-card p-6 rounded-lg shadow mt-6">
       <h2 className="text-xl font-semibold mb-4">Class Assignments</h2>
@@ -59,6 +94,13 @@ const AssignmentsTable = ({
         </Table>
       )}
       {renderPagination(currentPage, setCurrentPage, assignments.length)}
+      <DeleteAssignmentDialog 
+        dialogOpen={deleteAssignmentOpen}
+        setDialogOpen={setDeleteAssignmentOpen}
+        confirmDelete={confirmDelete}
+        selectedAssignment={selectedAssignment}
+        handleDeleteAssignment={handleDeleteAssignment}
+      />
     </div>
   );
 };

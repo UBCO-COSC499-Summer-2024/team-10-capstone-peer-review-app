@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import {
 	Card,
 	CardHeader,
@@ -149,7 +149,7 @@ const Assignment = () => {
 						{user.role === "INSTRUCTOR" && (
 							<TabsTrigger value="edit">Edit Assignment</TabsTrigger>
 						)}
-						{user.role === "INSTRUCTOR" && (
+						{user.role !== "STUDENT" && (
 							<TabsTrigger value="submissions">View Submissions</TabsTrigger>
 						)}
 						{user.role === "STUDENT" && (

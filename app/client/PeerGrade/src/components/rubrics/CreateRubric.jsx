@@ -103,9 +103,10 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
       toast({
         title: "Success",
         description: "Rubric created and linked to selected assignments",
-        variant: "success"
+        variant: "info"
       });
   
+      onRubricCreated(createdRubric.data);
       setIsCreateDrawerOpen(false);
       setNewRubricData({
         title: "",

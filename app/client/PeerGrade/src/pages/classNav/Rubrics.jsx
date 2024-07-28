@@ -35,33 +35,24 @@ const Rubrics = () => {
   const [rubricToDelete, setRubricToDelete] = useState(null);
 
   useEffect(() => {
+    fetchData();
+  }, [classId]);
+
+
     const fetchData = async () => {
       try {
-        const [rubricsResponse, assignmentsResponse] = await Promise.all([
-          getAllRubricsInClass(classId),
-          getAllAssignmentsByClassId(classId)
-        ]);
-
+        const rubricsResponse = await getAllRubricsInClass(classId);
         if (rubricsResponse && rubricsResponse.status === 'Success' && Array.isArray(rubricsResponse.data)) {
           setRubrics(rubricsResponse.data);
         } else {
           setRubrics([]);
         }
-
-        if (assignmentsResponse && assignmentsResponse.data) {
-          setAssignments(assignmentsResponse.data);
-        } else {
-          setAssignments([]);
-        }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching rubrics:', error);
         setRubrics([]);
-        setAssignments([]);
       }
     };
   
-    fetchData();
-  }, [classId]);
 
   const handleDeleteRubric = async () => {
     try {
@@ -90,6 +81,8 @@ const Rubrics = () => {
   };
 
   const handleRubricCreated = () => {
+    setRubrics(prevRubrics => [...prevRubrics, newRubric]);
+
     fetchRubrics();
   };
 

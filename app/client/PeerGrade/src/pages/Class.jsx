@@ -77,8 +77,11 @@ const Class = () => {
     fetchClassData();
   };
 
-  const handleRubricCreated = () => {
+  const handleRubricCreated = (newRubric) => {
     setRubricCreated(true);
+    if (currentView === "rubrics") {
+      fetchClassData();
+    }
   };
 
   const handleDeleteCategory = (categoryId) => {
@@ -108,7 +111,7 @@ const Class = () => {
       case "edit":
         return <EditClass classItem={classItem} />;
       case "rubrics":
-        return <Rubrics key={rubricCreated} />;
+        return <Rubrics key={rubricCreated} classId={classId} />;
       default:
         return (
           <>
@@ -293,10 +296,10 @@ const Class = () => {
 						Add Category
 					</Button>
 					<CreateRubric 
-						classId={classId} 
-						assignments={assignments} 
-						onRubricCreated={handleRubricCreated} 
-						/>					
+            classId={classId} 
+            assignments={assignments} 
+            onRubricCreated={handleRubricCreated} 
+          />					
 					</>
 					)}
 				<Card>

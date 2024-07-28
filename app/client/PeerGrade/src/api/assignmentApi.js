@@ -4,26 +4,26 @@ import showStatusToast from "@/utils/showToastStatus";
 const BASE_URL = "/api"; // Use environment variable if available
 
 export const addAssignmentToClass = async (formData) => {
-    try {
-        const response = await axios.post('/api/assignment/add-assignment', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          });
-
-          if (response.data.status === 'Success') {
-            showStatusToast({
-              status: response.data.status,
-              message: "The assignment and its rubric have been successfully created."
-            });
+  try {
+      const response = await axios.post('/api/assignment/add-assignment', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
           }
-          console.log('Updated assignment data:', response.data);
+        });
 
-         return response.data;
-    } catch (error) {
-        handleError(error);
-        return error.response.data;
-    }
+        if (response.data.status === 'Success') {
+          showStatusToast({
+            status: response.data.status,
+            message: "The assignment and its rubric have been successfully created."
+          });
+        }
+        console.log('Updated assignment data:', response.data);
+
+       return response.data;
+  } catch (error) {
+      handleError(error);
+      return error.response.data;
+  }
 };
 
 export const updateAssignmentInClass = async (formData) => {

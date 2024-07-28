@@ -8,24 +8,24 @@ import {
 	deleteEnrollRequest
 } from "../controllers/enrollRequestController.js";
 
-import { ensureInstructor } from "../middleware/ensureUserTypes.js";
+import { ensureInstructorOrAdmin } from "../middleware/ensureUserTypes.js";
 
 const router = express.Router();
 
 router
 	.route("/")
 	.post(createEnrollRequest)
-	.get(ensureInstructor, getAllEnrollRequests);
+	.get(ensureInstructorOrAdmin, getAllEnrollRequests);
 
 router
 	.route("/class/:classId")
-	.get(ensureInstructor, getEnrollRequestsForClass);
+	.get(ensureInstructorOrAdmin, getEnrollRequestsForClass);
 
 router.route("/user").get(getEnrollRequestsForUser);
 
 router
 	.route("/:enrollRequestId")
-	.put(ensureInstructor, updateEnrollRequestStatus)
+	.put(ensureInstructorOrAdmin, updateEnrollRequestStatus)
 	.delete(deleteEnrollRequest);
 
 export default router;

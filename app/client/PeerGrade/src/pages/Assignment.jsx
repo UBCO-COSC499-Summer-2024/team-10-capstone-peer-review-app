@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from "@/components/ui/card";
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Calendar, FileText, Users, Edit, Upload } from 'lucide-react';
@@ -105,15 +105,19 @@ const Assignment = () => {
       <Tabs defaultValue="view" className="space-y-4">
         {(user.role !== "STUDENT" || new Date(assignment.dueDate) >= new Date()) && <TabsList className="bg-muted">
           <TabsTrigger value="view">View Assignment</TabsTrigger>
-          {user.role === 'INSTRUCTOR' && <TabsTrigger value="edit">Edit Assignment</TabsTrigger>}
-          {user.role === 'INSTRUCTOR' && <TabsTrigger value="submissions">View Submissions</TabsTrigger>}
+          {user.role !== 'STUDENT' && <TabsTrigger value="edit">Edit Assignment</TabsTrigger>}
+          {user.role !== 'STUDENT' && (
+            <Link to={`/class/${classId}/assignment/${assignmentId}/submissions`} className="inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm">
+              View Submissions
+            </Link>
+          )}
           {user.role === 'STUDENT' && <TabsTrigger value="submission">Submit Assignment</TabsTrigger>}
         </TabsList>}
         
         <TabsContent value="view">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className='rounded-md flex justify-center lg:col-span-2'>
-                  <PDFViewer url={assignment.assignmentFilePath} scale='0.93'/>
+                  <PDFViewer url={assignment.assignmentFilePath} scale='0.93' />
                 </div>
             
             <div className="space-y-6">
@@ -180,7 +184,7 @@ const Assignment = () => {
           </div>
         </TabsContent>
         
-        {user.role === 'INSTRUCTOR' && (
+        {user.role !== 'STUDENT' && (
           <>
             <TabsContent value="edit">
               <EditAssignment assignment={assignment} />
@@ -191,7 +195,7 @@ const Assignment = () => {
           </>
         )}
         
-        {!(user.role === 'INSTRUCTOR') && (
+        {user.role === "STUDENT" && (
           <TabsContent value="submission">
             <Submission assignmentId={assignmentId} refresh={refreshToggle} />
           </TabsContent>

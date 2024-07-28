@@ -14,7 +14,7 @@ import { toast } from '@/components/ui/use-toast';
 const Submission = ({refresh}) => {
     const { classId, assignmentId } = useParams();
     const [assignment, setAssignment] = useState(null);
-    const [rubrics, setRubrics] = useState([]);
+    const [rubric, setRubric] = useState(null);
     const [file, setFile] = useState(null);
     const [submissionMessage, setSubmissionMessage] = useState('');
     const { user } = useUser();
@@ -28,7 +28,7 @@ const Submission = ({refresh}) => {
                 console.log("assign", assignmentData.data.assignmentId);
                 
                 const rubricData = await getRubricsForAssignment(assignmentData.data.assignmentId);
-                setRubrics(rubricData.data);
+                setRubric(rubricData.data);
                 console.log("rubric", rubricData.data);
 
                 if (rubricData.data.length === 0) {
@@ -146,24 +146,22 @@ const Submission = ({refresh}) => {
                                     </AccordionContent>
                                 </AccordionItem>
                             </Accordion>
-                            {rubrics.length > 0 && (
+                            {rubric && (
                                 <div className="mb-4 rounded-lg">
-                                    <h3 className="text-lg font-bold mb-3 text-center">Rubrics</h3>
-                                    {rubrics.map((rubric, index) => (
-                                        <div key={index} className="mb-4">
-                                            <h4 className="text-md font-semibold text-center">{rubric.title}</h4>
-                                            {rubric.description && (
-                                                <p className="text-sm text-center mb-3">{rubric.description}</p>
-                                            )}
-                                            <DataTable
-                                                title="Criterion"
-                                                data={rubric.criteria}
-                                                columns={columns}
-                                                pageSize={5}
-                                                className="border border-gray-300 bg-gray-100"
-                                            />
-                                        </div>
-                                    ))}
+                                    <h3 className="text-lg font-bold mb-3 text-center">Rubric</h3>
+                                    <div className="mb-4">
+                                        <h4 className="text-md font-semibold text-center">{rubric.title}</h4>
+                                        {rubric.description && (
+                                            <p className="text-sm text-center mb-3">{rubric.description}</p>
+                                        )}
+                                        <DataTable
+                                            title="Criterion"
+                                            data={rubric.criteria}
+                                            columns={columns}
+                                            pageSize={5}
+                                            className="border border-gray-300 bg-gray-100"
+                                        />
+                                    </div>
                                 </div>
                             )}
                         </>

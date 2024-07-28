@@ -25,7 +25,7 @@ const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
         }
 
         // Create the new assignment
-        const newAssignment = await prisma.assignment.create({
+		const newAssignment = await prisma.assignment.create({
             data: {
                 title: assignmentData.title,
                 description: assignmentData.description,
@@ -35,6 +35,7 @@ const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
                 assignmentFilePath: assignmentData.assignmentFilePath,
                 classId,
                 categoryId,
+                rubricId: assignmentData.rubricId, // Add this line
             }
         });
 
@@ -50,13 +51,13 @@ const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
 
         await sendNotificationToClass(null, `Assignment ${newAssignment.title} was just created.`, `Due on ${format(dueDate, 'MMMM do, yyyy')}`, classId);
 
-        // Fetch the assignment with related rubrics
-        const assignmentWithRubrics = await prisma.assignment.findUnique({
+		const assignmentWithRubric = await prisma.assignment.findUnique({
             where: { assignmentId: newAssignment.assignmentId },
             include: { rubric: true }
         });
+		
+        return assignmentWithRubric;
 
-        return assignmentWithRubrics;
     } catch (error) {
         console.error('Error adding assignment:', error);
         if (error instanceof apiError) {
@@ -70,29 +71,29 @@ const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
 const removeAssignmentFromClass = async (assignmentId) => {
     try {
         const deletedAssignment = await prisma.$transaction(async (prisma) => {
-            // Delete all related RubricForAssignment records
-            await prisma.rubricForAssignment.deleteMany({
-                where: {
-                    assignmentId: assignmentId
-                }
-            });
+            // // Delete all related RubricForAssignment records
+            // await prisma.rubricForAssignment.deleteMany({
+            //     where: {
+            //         assignmentId: assignmentId
+            //     }
+            // });
 
-            // Delete all related Submission records
-            await prisma.submission.deleteMany({
-                where: {
-                    assignmentId: assignmentId
-                }
-            });
+			// Delete all related Submission records
+			await prisma.submission.deleteMany({
+				where: {
+					assignmentId: assignmentId
+				}
+			});
 
-            // Delete the assignment
-            return prisma.assignment.delete({
-                where: {
-                    assignmentId: assignmentId
-                }
-            });
-        });
+			// Delete the assignment
+			return prisma.assignment.delete({
+				where: {
+					assignmentId: assignmentId
+				}
+			});
+		});
 
-        return deletedAssignment;
+		return deletedAssignment;
     } catch (error) {
         console.error("Error in removeAssignmentFromClass:", error);
         if (error instanceof apiError) {
@@ -135,10 +136,11 @@ const updateAssignmentInClass = async (classId, assignmentId, categoryId, update
 	  const updatedAssignment = await prisma.assignment.update({
 		where: { assignmentId },
 		data: {
-		  ...updateData,
-		  categoryId // Update the category if it has changed
+			...updateData,
+			categoryId,
+			rubricId: updateData.rubricId, // Add this line
 		}
-	  });
+	});
   
 	  // Update the Category table if the category has changed
 	  if (assignment.categoryId !== categoryId) {

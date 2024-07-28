@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { getAllAssignmentsByClassId, removeAssignmentFromClass } from '@/api/assignmentApi';
 import { useUser } from "@/contexts/contextHooks/useUser";
+import DeleteAssignmentDialog from '@/components/manageClass/DeleteAssignmentDialog';
 
 const Assignments = () => {
     const { classId } = useParams();
@@ -115,35 +116,13 @@ const Assignments = () => {
                     ))}
                 </CardContent>
             </Card>
-            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-                <DialogContent
-                    className={
-                        confirmDelete ? "border-red-950 bg-red-500 text-white" : ""
-                    }
-                >
-                    <DialogHeader>
-                        <DialogTitle>
-                            {confirmDelete ? "Confirm" : ""} Delete Assignment
-                        </DialogTitle>
-                    </DialogHeader>
-                    Are you {confirmDelete ? "really " : ""}sure you want to delete the assignment {selectedAssignment.title} from this class?
-                    <DialogFooter>
-                        <Button
-                            onClick={() => setDialogOpen(false)}
-                            className={confirmDelete ? "shadow-md shadow-red-900" : ""}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            variant="destructive"
-                            onClick={handleDeleteAssignment}
-                            className={confirmDelete ? "shadow-md shadow-red-900" : ""}
-                        >
-                            Delete
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+            <DeleteAssignmentDialog 
+                dialogOpen={dialogOpen}
+                setDialogOpen={setDialogOpen}
+                confirmDelete={confirmDelete}
+                selectedAssignment={selectedAssignment}
+                handleDeleteAssignment={handleDeleteAssignment}
+            />
         </div>
     );
 };

@@ -19,7 +19,7 @@ const createRubricsForAssignment = async (creatorId, assignmentId, rubricData) =
                 title: rubricData.title,
                 description: rubricData.description,
                 totalMarks: rubricData.totalMarks,
-				classId: rubricData.classId,
+                classId: rubricData.classId,
                 creatorId: creatorId,
                 criteria: {
                     create: criteria.map(criterion => ({
@@ -34,11 +34,6 @@ const createRubricsForAssignment = async (creatorId, assignmentId, rubricData) =
                         }
                     }))
                 },
-                assignments: {
-                    create: {
-                        assignmentId: assignmentId,
-                    }
-                }
             },
             include: {
                 criteria: {
@@ -46,7 +41,14 @@ const createRubricsForAssignment = async (creatorId, assignmentId, rubricData) =
                         criterionRatings: true
                     }
                 },
-                assignments: true
+            }
+        });
+
+        // Update the assignment with the new rubric
+        await prisma.assignment.update({
+            where: { assignmentId: assignmentId },
+            data: {
+                rubricId: newRubric.rubricId
             }
         });
 
@@ -59,56 +61,40 @@ const createRubricsForAssignment = async (creatorId, assignmentId, rubricData) =
 
 
 const getRubricsForAssignment = async (assignmentId) => {
-	try {
-		const assignment = await prisma.assignment.findUnique({
-			where: {
-				assignmentId: assignmentId
-			},
-			include: {
-				rubric: true
-			}
-		});
+    try {
+        const assignment = await prisma.assignment.findUnique({
+            where: {
+                assignmentId: assignmentId
+            },
+            include: {
+                rubric: {
+                    include: {
+                        criteria: {
+                            include: {
+                                criterionRatings: true
+                            }
+                        }
+                    }
+                }
+            }
+        });
 
-		if (!assignment) {
-			throw new apiError("Assignment not found", 404);
-		}
+        if (!assignment) {
+            throw new apiError("Assignment not found", 404);
+        }
 
-		// if (!assignment.rubric) {
-		// 	throw new apiError("Rubrics not found", 404);
-		// }
+        if (!assignment.rubric) {
+            throw new apiError("Rubric not found for this assignment", 404);
+        }
 
-		const rubricAssignments = await prisma.rubricForAssignment.findMany({
-			where: {
-				assignmentId: assignmentId
-			},
-			include: {
-				rubric: {
-					include: {
-						criteria: {
-							include: {
-								criterionRatings: true
-							}
-						}
-					}
-				}
-			}
-		});
-
-		// if (!rubricAssignments.length) {
-		// 	throw new apiError("Rubrics not found for the assignment", 404);
-		// }
-
-		// Map the result to only include rubric details
-		const rubrics = rubricAssignments.map((ra) => ra.rubric);
-
-		return rubrics;
-	} catch (error) {
-		if (error instanceof apiError) {
-			throw error;
-		} else {
-			throw new apiError("Failed to get rubrics for assignment", 500);
-		}
-	}
+        return assignment.rubric;
+    } catch (error) {
+        if (error instanceof apiError) {
+            throw error;
+        } else {
+            throw new apiError("Failed to get rubric for assignment", 500);
+        }
+    }
 };
 
 const getAllRubrics = async () => {
@@ -214,7 +200,12 @@ const deleteRubricsFromAssignment = async (rubricId) => {
     try {
         const rubric = await prisma.rubric.findUnique({
             where: { rubricId: rubricId },
-            include: { criteria: { include: { criterionRatings: true } } }
+            include: { 
+                criteria: { 
+                    include: { criterionRatings: true } 
+                },
+                assignments: true
+            }
         });
 
         if (!rubric) {
@@ -222,24 +213,35 @@ const deleteRubricsFromAssignment = async (rubricId) => {
         }
 
         // Delete related records
-        await prisma.$transaction([
-            prisma.criterionRating.deleteMany({
+        await prisma.$transaction(async (prisma) => {
+            // // Remove rubric reference from assignments
+            // for (const assignment of rubric.assignments) {
+			// 	console.log("hoooooo",assignment.assignmentId);
+            //     await prisma.assignment.update({
+            //         where: { assignmentId: assignment.assignmentId },
+            //         data: { rubric: null }
+            //     });
+            // }
+
+            // Delete criterion ratings
+            await prisma.criterionRating.deleteMany({
                 where: { criterionId: { in: rubric.criteria.map(c => c.criterionId) } }
-            }),
-            prisma.criterion.deleteMany({
+            });
+
+            // Delete criteria
+            await prisma.criterion.deleteMany({
                 where: { rubricId: rubricId }
-            }),
-            prisma.rubricForAssignment.deleteMany({
+            });
+
+            // Delete the rubric itself
+            await prisma.rubric.delete({
                 where: { rubricId: rubricId }
-            }),
-            prisma.rubric.delete({
-                where: { rubricId: rubricId }
-            })
-        ]);
+            });
+        });
 
         return { message: "Rubric and related data successfully deleted" };
     } catch (error) {
-        console.error("Error in deleteRubricsForAssignment:", error);
+        console.error("Error in deleteRubricsFromAssignment:", error);
         throw new apiError(`Failed to delete rubric: ${error.message}`, 500);
     }
 };

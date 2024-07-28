@@ -11,12 +11,11 @@ const upload = multer({ storage: multer.memoryStorage() });
 const UPLOAD_PATH = "/usr/server/uploads";
 
 export const addAssignmentToClass = [
-	upload.single("file"), // Handle single file upload
-
-	asyncErrorHandler(async (req, res) => {
-		const classId = req.body.classId;
-		const categoryId = req.body.categoryId;
-		const assignmentData = JSON.parse(req.body.assignmentData);
+    upload.single("file"),
+    asyncErrorHandler(async (req, res) => {
+        const classId = req.body.classId;
+        const categoryId = req.body.categoryId;
+        const assignmentData = JSON.parse(req.body.assignmentData);
 
 		let fileUrl = null;
 		if (req.file) {
@@ -35,14 +34,14 @@ export const addAssignmentToClass = [
 		}
 
 		const newAssignment = await assignService.addAssignmentToClass(
-			classId,
-			categoryId,
-			{
-				...assignmentData,
-				assignmentFilePath: fileUrl, // Add file URL to assignment data
-				rubrics: JSON.parse(req.body.rubrics) // Parse the rubrics from the request body
-			}
-		);
+            classId,
+            categoryId,
+            {
+                ...assignmentData,
+                assignmentFilePath: fileUrl,
+                rubricId: assignmentData.rubricId, // Change this line
+            }
+        );
 
 		if (newAssignment) {
 			return res.status(200).json({
@@ -79,14 +78,13 @@ export const removeAssignmentFromClass = asyncErrorHandler(async (req, res) => {
 });
 
 export const updateAssignmentInClass = [
-	upload.single('file'), // Handle single file upload
-  
-	asyncErrorHandler(async (req, res) => {
-	  const classId = req.body.classId;
-	  const assignmentId = req.body.assignmentId;
-	  const categoryId = req.body.categoryId;
-	  const assignmentData = JSON.parse(req.body.assignmentData);
-  
+    upload.single('file'),
+    asyncErrorHandler(async (req, res) => {
+        const classId = req.body.classId;
+        const assignmentId = req.body.assignmentId;
+        const categoryId = req.body.categoryId;
+        const assignmentData = JSON.parse(req.body.assignmentData);
+
 	  let fileUrl = null;
 	  if (req.file) {
 		const uniqueFilename = `${uuidv4()}${path.extname(req.file.originalname)}`;
@@ -107,10 +105,11 @@ export const updateAssignmentInClass = [
 		assignmentId,
 		categoryId,
 		{
-		  ...assignmentData,
-		  assignmentFilePath: fileUrl || assignmentData.assignmentFilePath // Update file URL if new file is uploaded, otherwise keep the existing one
+			...assignmentData,
+			assignmentFilePath: fileUrl || assignmentData.assignmentFilePath,
+			rubricId: assignmentData.rubricId, // Add this line
 		}
-	  );
+	);
   
 	  if (updatedAssignment) {
 		return res.status(200).json({

@@ -6,8 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 
-const RubricCreationForm = ({ onRubricChange, assignments }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const RubricCreationForm = ({ onRubricChange, isOpen, setIsOpen, resetTrigger, disabled }) => {
   const [rubricData, setRubricData] = useState({
     title: "",
     description: "",
@@ -21,6 +20,14 @@ const RubricCreationForm = ({ onRubricChange, assignments }) => {
   const [isValid, setIsValid] = useState(false);
   const [hasNegativePoints, setHasNegativePoints] = useState(false);
   const [editing, setEditing] = useState(null);
+
+
+  useEffect(() => {
+    if (resetTrigger) {
+      clearForm();
+      setIsOpen(false); // This will close the drawer
+    }
+  }, [resetTrigger]);
 
   const initialRubricData = {
     title: "",
@@ -177,7 +184,9 @@ const RubricCreationForm = ({ onRubricChange, assignments }) => {
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger asChild>
-        <Button onClick={() => setIsOpen(true)}>{getTriggerText()}</Button>
+        <Button onClick={() => setIsOpen(true)} disabled={disabled}>
+          {getTriggerText()}
+        </Button>
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="flex justify-between items-center">

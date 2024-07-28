@@ -19,48 +19,47 @@ export const addAssignmentToClass = [
   
 	  console.log('Received assignment data:', assignmentData);  // Add this line for debugging
   
-		let fileUrl = null;
-		if (req.file) {
-			const uniqueFilename = `${uuidv4()}${path.extname(req.file.originalname)}`;
-			console.log("uniqueFilename", uniqueFilename);
-			const filePath = path.join(UPLOAD_PATH, uniqueFilename);
-
-			// Ensure the upload directory exists
-			fs.mkdirSync(UPLOAD_PATH, { recursive: true });
-
-			// Write the file to the shared volume
-			fs.writeFileSync(filePath, req.file.buffer);
-
-			// Construct the URL that Nginx will serve
-			fileUrl = `${BASE_URL}/${uniqueFilename}`;
+	  let fileUrl = null;
+	  if (req.file) {
+		const uniqueFilename = `${uuidv4()}${path.extname(req.file.originalname)}`;
+		console.log("uniqueFilename", uniqueFilename);
+		const filePath = path.join(UPLOAD_PATH, uniqueFilename);
+  
+		// Ensure the upload directory exists
+		fs.mkdirSync(UPLOAD_PATH, { recursive: true });
+  
+		// Write the file to the shared volume
+		fs.writeFileSync(filePath, req.file.buffer);
+  
+		// Construct the URL that Nginx will serve
+		fileUrl = `${BASE_URL}/${uniqueFilename}`;
+	  }
+  
+	  const newAssignment = await assignService.addAssignmentToClass(
+		classId,
+		categoryId,
+		{
+		  ...assignmentData,
+		  assignmentFilePath: fileUrl,
+		  rubricId: assignmentData.rubricId,  // Ensure this is passed correctly
+		  allowedFileTypes: assignmentData.allowedFileTypes,  
 		}
-
-		
-		const newAssignment = await assignService.addAssignmentToClass(
-			classId,
-			categoryId,
-			{
-			  ...assignmentData,
-			  assignmentFilePath: fileUrl,
-			  rubricId: assignmentData.rubricId,
-			  allowedFileTypes: assignmentData.allowedFileTypes,  
-			}
-		  );
-
-		if (newAssignment) {
-			return res.status(200).json({
-				status: "Success",
-				message: "Assignment successfully added to class and category",
-				data: newAssignment
-			});
-		} else {
-			return res.status(500).json({
-				status: "Error",
-				message: "Failed to add assignment to class and category"
-			});
-		}
+	  );
+  
+	  if (newAssignment) {
+		return res.status(200).json({
+		  status: "Success",
+		  message: "Assignment successfully added to class and category",
+		  data: newAssignment
+		});
+	  } else {
+		return res.status(500).json({
+		  status: "Error",
+		  message: "Failed to add assignment to class and category"
+		});
+	  }
 	})
-];
+  ];
 
 
 export const removeAssignmentFromClass = asyncErrorHandler(async (req, res) => {

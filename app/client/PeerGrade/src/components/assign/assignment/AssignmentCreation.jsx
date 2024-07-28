@@ -42,6 +42,8 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
   const [rubrics, setRubrics] = useState([]);
   const [newRubricData, setNewRubricData] = useState(null);
   const [selectedFileName, setSelectedFileName] = useState('');
+  const [resetRubricForm, setResetRubricForm] = useState(false);
+  const [isRubricFormOpen, setIsRubricFormOpen] = useState(false);
   const fileInputRef = useRef(null);
   const { user, userLoading } = useUser();
 
@@ -74,34 +76,33 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
     setFormData(prev => ({ ...prev, file: selectedFile }));
   };
 
-
   const handleRubricSelection = (value) => {
     setFormData(prev => ({
       ...prev,
-      rubricId: prev.rubricId === value ? '' : value // Toggle selection
+      rubricId: value
     }));
+    setNewRubricData(null);  // Clear any new rubric data when selecting an existing rubric
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
     
     if (!formData.title || !formData.description || !formData.dueDate || !formData.categoryId || (!formData.rubricId && !newRubricData)) {
       toast({
         title: "Error",
-        description: "Please fill in all required fields",
+        description: "Please fill in all required fields and select or create a rubric",
         status: "error"
       });
       return;
     }
-
+  
     try {
       const assignmentData = {
         title: formData.title,
         description: formData.description,
         dueDate: formData.dueDate,
-        maxSubmissions: formData.maxSubmissions,
+        maxSubmissions: parseInt(formData.maxSubmissions, 10), // Ensure this is a number
         allowedFileTypes: formData.allowedFileTypes,
+        rubricId: formData.rubricId,
       };
   
       let response;
@@ -112,7 +113,7 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
           assignmentData: assignmentData,
           rubricData: newRubricData,
           creatorId: user.userId,
-          file: formData.file // Include the file here
+          file: formData.file
         };
         response = await addAssignmentWithRubric(data);
       } else {
@@ -120,7 +121,6 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
         formDataToSend.append('classId', classId);
         formDataToSend.append('categoryId', formData.categoryId);
         formDataToSend.append('assignmentData', JSON.stringify(assignmentData));
-        formDataToSend.append('rubricId', formData.rubricId);
         if (formData.file) {
           formDataToSend.append('file', formData.file);
         }
@@ -154,6 +154,12 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
         status: "error"
       });
     }
+  };
+
+  const resetRubric = () => {
+    setNewRubricData(null);
+    setFormData(prev => ({ ...prev, rubricId: '' }));
+    setIsRubricFormOpen(false);
   };
 
   return (
@@ -207,13 +213,31 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
             </Select>
           </div>
 
-          <RubricCreationForm onRubricChange={(newRubricData) => {
-            setNewRubricData(newRubricData);
-            setFormData(prev => ({ ...prev, rubricId: '' }));
-          }} />
+          <div className="space-y-4">
+            <RubricCreationForm 
+              onRubricChange={(newRubricData) => {
+                setNewRubricData(newRubricData);
+                setFormData(prev => ({ ...prev, rubricId: '' }));
+              }} 
+              isOpen={isRubricFormOpen}
+              setIsOpen={setIsRubricFormOpen}
+              disabled={!!formData.rubricId}  // Disable when an existing rubric is selected
+            />
 
-<div>
-            <label>Select Existing Rubric</label>
+            {(newRubricData || formData.rubricId) && (
+              <Button
+                type="button"
+                variant="link"
+                className="text-sm hover:bg-slate-100 m-2 p-1"
+                onClick={resetRubric}
+              >
+                Reset Rubric Selection
+              </Button>
+            )}
+
+            <div className="flex justify-between items-center">
+              <label>Select Existing Rubric</label>
+            </div>
             <Select 
               value={formData.rubricId}
               onValueChange={handleRubricSelection}
@@ -224,7 +248,7 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
               </SelectTrigger>
               <SelectContent>
                 {rubrics.map((rubric) => (
-                  <SelectItem key={rubric.id} value={rubric.id}>
+                  <SelectItem key={rubric.rubricId} value={rubric.rubricId}>
                     {rubric.title}
                   </SelectItem>
                 ))}

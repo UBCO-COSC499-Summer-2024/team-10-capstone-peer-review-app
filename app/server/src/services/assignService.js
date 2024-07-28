@@ -5,6 +5,7 @@ import { format } from "date-fns";
 
 const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
     console.log('assignmentFilePath:', assignmentData.assignmentFilePath);
+    console.log('Received assignment data in service:', assignmentData);
     try {
         const classInfo = await prisma.class.findUnique({
             where: { classId },
@@ -25,37 +26,27 @@ const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
         }
 
         const newAssignment = await prisma.assignment.create({
-			data: {
-			  title: assignmentData.title,
-			  description: assignmentData.description,
-			  dueDate: assignmentData.dueDate,
-			  maxSubmissions: assignmentData.maxSubmissions,
-			  reviewOption: assignmentData.reviewOption,
-			  assignmentFilePath: assignmentData.assignmentFilePath,
-			  classId,
-			  categoryId,
-			  rubricId: assignmentData.rubricId,
-			  allowedFileTypes: assignmentData.allowedFileTypes,  // Ensure this line is present
-			}
-		  });
-
-        // Connect rubrics to the new assignment
-        if (assignmentData.rubrics && assignmentData.rubrics.length > 0) {
-            await prisma.rubricForAssignment.createMany({
-                data: assignmentData.rubrics.map(rubric => ({
-                    assignmentId: newAssignment.assignmentId,
-                    rubricId: rubric.rubricId
-                }))
-            });
-        }
+            data: {
+                title: assignmentData.title,
+                description: assignmentData.description,
+                dueDate: assignmentData.dueDate,
+                maxSubmissions: parseInt(assignmentData.maxSubmissions, 10), // Convert to integer
+                reviewOption: assignmentData.reviewOption,
+                assignmentFilePath: assignmentData.assignmentFilePath,
+                classId,
+                categoryId,
+                rubricId: assignmentData.rubricId,
+                allowedFileTypes: assignmentData.allowedFileTypes,
+            }
+        });
 
         await sendNotificationToClass(null, `Assignment ${newAssignment.title} was just created.`, `Due on ${format(dueDate, 'MMMM do, yyyy')}`, classId);
 
-		const assignmentWithRubric = await prisma.assignment.findUnique({
+        const assignmentWithRubric = await prisma.assignment.findUnique({
             where: { assignmentId: newAssignment.assignmentId },
             include: { rubric: true }
         });
-		
+        
         return assignmentWithRubric;
 
     } catch (error) {

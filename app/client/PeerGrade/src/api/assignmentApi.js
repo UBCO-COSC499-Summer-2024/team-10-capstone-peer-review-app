@@ -8,6 +8,9 @@ export const addAssignmentToClass = async (formData) => {
     // Get the assignmentData from formData
     const assignmentDataString = formData.get('assignmentData');
     let assignmentData = JSON.parse(assignmentDataString);
+    
+    assignmentData.maxSubmissions = parseInt(assignmentData.maxSubmissions, 10);
+
 
     // Ensure allowedFileTypes is included in assignmentData
     if (!assignmentData.allowedFileTypes || assignmentData.allowedFileTypes.length === 0) {

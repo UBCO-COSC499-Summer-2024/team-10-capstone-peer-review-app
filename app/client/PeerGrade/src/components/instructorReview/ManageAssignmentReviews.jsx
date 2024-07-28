@@ -30,7 +30,8 @@ import {
 	Search,
 	FileText,
 	UserX,
-	Clock
+	Clock,
+	Info
 } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { Link } from "react-router-dom";
@@ -49,6 +50,12 @@ import {
 } from "@/components/ui/dialog";
 import MultiSelect from "@/components/ui/MultiSelect";
 import { toast } from "@/components/ui/use-toast";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger
+} from "@/components/ui/tooltip";
 
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { useClass } from "@/contexts/contextHooks/useClass";
@@ -58,13 +65,17 @@ import { getStudentsByClassId } from "@/api/classApi";
 import reviewAPI from "@/api/reviewApi";
 import { getRubricsForAssignment } from "@/api/rubricApi";
 
+import ViewSubmissionDialog from "@/components/assign/assignment/submission/ViewSubmissionDialog";
+import GradeSubmissionDialog from "@/components/assign/assignment/submission/GradeSubmissionDialog";
+import ReviewDetailsDialog from "@/components/assign/assignment/submission/ReviewDetailsDialog";
+
 const ManageAssignmentReviewsAndSubmissions = () => {
 	const { user } = useUser();
 	const { classes, loading: classLoading } = useClass();
 	const [assignments, setAssignments] = useState([]);
 	const [studentsWithSubmissions, setStudentsWithSubmissions] = useState([]);
 	const [selectedClass, setSelectedClass] = useState("");
-	const [selectedAssignment, setSelectedAssignment] = useState("");
+	const [selectedAssignment, setSelectedAssignment] = useState(null);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [openClass, setOpenClass] = useState(false);
 	const [openAssignment, setOpenAssignment] = useState(false);
@@ -75,7 +86,11 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 	const [allStudents, setAllStudents] = useState([]);
 	const [autoAssignDialogOpen, setAutoAssignDialogOpen] = useState(false);
 	const [reviewsPerStudent, setReviewsPerStudent] = useState(1);
-	const [rubrics, setRubrics] = useState([]);
+	const [rubric, setRubric] = useState(null);
+	const [viewDialogOpen, setViewDialogOpen] = useState(false);
+	const [gradeDialogOpen, setGradeDialogOpen] = useState(false);
+	const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
+	const [selectedSubmissionId, setSelectedSubmissionId] = useState(null);
 
 	useEffect(() => {
 		if (selectedClass) {
@@ -86,8 +101,11 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 
 	useEffect(() => {
 		if (selectedClass && selectedAssignment) {
-			fetchStudentsAndSubmissions(selectedClass, selectedAssignment);
-			fetchRubrics(selectedAssignment);
+			fetchStudentsAndSubmissions(
+				selectedClass,
+				selectedAssignment.assignmentId
+			);
+			fetchRubrics(selectedAssignment.assignmentId);
 		}
 	}, [selectedClass, selectedAssignment]);
 
@@ -128,17 +146,14 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 			const submissions = submissionsResponse.data;
 
 			const studentsWithSubmissionStatus = students.map((student) => {
-				// Get all submissions for this student
 				const studentSubmissions = submissions.filter(
 					(sub) => sub.submitterId === student.userId
 				);
 
-				// Sort submissions by date, most recent first
 				studentSubmissions.sort(
 					(a, b) => new Date(b.createdAt) - new Date(a.createdAt)
 				);
 
-				// Get the most recent submission (if any)
 				const mostRecentSubmission = studentSubmissions[0] || null;
 
 				return {
@@ -161,18 +176,36 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 	const fetchRubrics = async (assignmentId) => {
 		try {
 			const rubricData = await getRubricsForAssignment(assignmentId);
-			setRubrics(rubricData.data);
+			setRubric(rubricData.data);
 		} catch (error) {
-			console.error("Error fetching rubrics:", error);
+			console.error("Error fetching rubric:", error);
 			toast({
 				title: "Error",
-				description: "Failed to fetch rubrics",
+				description: "Failed to fetch rubric",
 				variant: "destructive"
 			});
 		}
 	};
 
+	const isDueDatePassed = (dueDate) => {
+		// if (!dueDate) return false;
+
+		// const currentDate = new Date();
+		// const assignmentDueDate = new Date(dueDate);
+		// return currentDate > assignmentDueDate;
+		if (dueDate) return true;
+	};
+
 	const handleAssignReviewers = async (submission) => {
+		if (!isDueDatePassed(selectedAssignment.dueDate)) {
+			toast({
+				title: "Action not allowed",
+				description:
+					"You must wait for the due date to pass before assigning reviewers",
+				variant: "warning"
+			});
+			return;
+		}
 		setSelectedSubmission(submission);
 		try {
 			const reviews = await reviewAPI.getAllReviews(submission.submissionId);
@@ -193,7 +226,6 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 
 	const handleAssignReviewersSubmit = async () => {
 		try {
-			// Delete reviews for unchecked existing reviewers
 			const existingReviews = await reviewAPI.getPeerReviews(
 				selectedSubmission.submissionId
 			);
@@ -203,7 +235,6 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 				}
 			}
 
-			// Create new blank reviews for newly selected reviewers
 			for (const reviewerId of selectedReviewers) {
 				if (!existingReviews.data.some((r) => r.reviewerId === reviewerId)) {
 					const blankReview = {
@@ -222,7 +253,10 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 			setAssignReviewersDialogOpen(false);
 			setSelectedSubmission(null);
 			setSelectedReviewers([]);
-			fetchStudentsAndSubmissions(selectedClass, selectedAssignment);
+			fetchStudentsAndSubmissions(
+				selectedClass,
+				selectedAssignment.assignmentId
+			);
 			toast({
 				title: "Success",
 				description: "Reviewers assigned successfully",
@@ -239,13 +273,25 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 	};
 
 	const handleAutoAssignPeerReviews = async () => {
+		if (!isDueDatePassed(selectedAssignment.dueDate)) {
+			toast({
+				title: "Action not allowed",
+				description:
+					"You must wait for the due date to pass before auto-assigning peer reviews",
+				variant: "warning"
+			});
+			return;
+		}
 		try {
 			await reviewAPI.assignRandomPeerReviews(
-				selectedAssignment,
+				selectedAssignment.assignmentId,
 				reviewsPerStudent
 			);
 			setAutoAssignDialogOpen(false);
-			fetchStudentsAndSubmissions(selectedClass, selectedAssignment);
+			fetchStudentsAndSubmissions(
+				selectedClass,
+				selectedAssignment.assignmentId
+			);
 			toast({
 				title: "Success",
 				description: "Peer reviews automatically assigned",
@@ -268,6 +314,140 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 		document.body.appendChild(link);
 		link.click();
 		document.body.removeChild(link);
+	};
+
+	const handleViewSubmission = (submission) => {
+		setSelectedSubmission(submission);
+		setViewDialogOpen(true);
+	};
+
+	const handleGradeAssignment = async (submission) => {
+		if (!isDueDatePassed(selectedAssignment.dueDate)) {
+			toast({
+				title: "Action not allowed",
+				description: "You must wait for the due date to pass before grading",
+				variant: "warning"
+			});
+			return;
+		}
+		if (!submission) {
+			toast({
+				title: "Error",
+				description: "Unable to grade submission. Please try again.",
+				variant: "destructive"
+			});
+			return;
+		}
+		setSelectedSubmission(submission);
+		await fetchRubrics(selectedAssignment.assignmentId);
+		setGradeDialogOpen(true);
+	};
+
+	const handleViewReviewDetails = async (submissionId) => {
+		if (!isDueDatePassed(selectedAssignment.dueDate)) {
+			toast({
+				title: "Action not allowed",
+				description:
+					"You must wait for the due date to pass before viewing grades",
+				variant: "warning"
+			});
+			return;
+		}
+		setSelectedSubmissionId(submissionId);
+		if (!rubric) {
+			await fetchRubrics(selectedAssignment.assignmentId);
+		}
+		setReviewDialogOpen(true);
+	};
+
+	const handleGradeSubmit = async (event) => {
+		event.preventDefault();
+
+		if (!selectedSubmission || !rubric) {
+			toast({
+				title: "Error",
+				description: "Unable to grade. Please try again.",
+				variant: "destructive"
+			});
+			return;
+		}
+
+		const formData = new FormData(event.target);
+		let totalMark = 0;
+		const criterionGrades = [];
+
+		rubric.criteria.forEach((criterion) => {
+			const grade =
+				parseFloat(formData.get(`grade-${criterion.criterionId}`)) || 0;
+			totalMark += grade;
+			const comment = formData.get(`comment-${criterion.criterionId}`);
+			criterionGrades.push({
+				criterionId: criterion.criterionId,
+				grade,
+				comment
+			});
+		});
+
+		const finalScore = (totalMark / rubric.totalMarks) * 100;
+
+		try {
+			const existingReview = await reviewAPI.getInstructorReview(
+				selectedSubmission.submissionId
+			);
+
+			if (existingReview && existingReview.data) {
+				const review = {
+					submissionId: selectedSubmission.submissionId,
+					reviewGrade: totalMark,
+					reviewerId: user.userId,
+					revieweeId: selectedSubmission.submitterId,
+					updatedAt: new Date(),
+					isPeerReview: false,
+					criterionGrades: criterionGrades
+				};
+				await reviewAPI.updateReview(existingReview.data.reviewId, review);
+			} else {
+				const review = {
+					submissionId: selectedSubmission.submissionId,
+					reviewGrade: totalMark,
+					reviewerId: user.userId,
+					revieweeId: selectedSubmission.submitterId,
+					isPeerReview: false,
+					criterionGrades: criterionGrades
+				};
+				await reviewAPI.createReview(user.userId, review);
+			}
+
+			setStudentsWithSubmissions((prev) =>
+				prev.map((student) => {
+					if (student.userId === selectedSubmission.submitterId) {
+						return {
+							...student,
+							submission: {
+								...student.submission,
+								finalGrade: finalScore
+							}
+						};
+					}
+					return student;
+				})
+			);
+
+			setGradeDialogOpen(false);
+			setSelectedSubmission(null);
+			toast({
+				title: "Success",
+				description: "Grade submitted successfully",
+				variant: "default"
+			});
+		} catch (error) {
+			console.error("Error submitting/updating grade:", error);
+			toast({
+				title: "Error",
+				description: "Failed to submit/update grade",
+				variant: "destructive"
+			});
+		}
 	};
 
 	const filteredStudents = studentsWithSubmissions.filter((student) =>
@@ -352,9 +532,7 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 									disabled={!selectedClass}
 								>
 									{selectedAssignment
-										? assignments.find(
-												(a) => a.assignmentId === selectedAssignment
-											)?.title
+										? selectedAssignment.title
 										: "Select Assignment"}
 									<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 								</Button>
@@ -370,9 +548,10 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 													key={assignment.assignmentId}
 													onSelect={() => {
 														setSelectedAssignment(
-															assignment.assignmentId === selectedAssignment
-																? ""
-																: assignment.assignmentId
+															assignment.assignmentId ===
+																selectedAssignment?.assignmentId
+																? null
+																: assignment
 														);
 														setOpenAssignment(false);
 													}}
@@ -380,7 +559,8 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 													<Check
 														className={cn(
 															"mr-2 h-4 w-4",
-															selectedAssignment === assignment.assignmentId
+															selectedAssignment?.assignmentId ===
+																assignment.assignmentId
 																? "opacity-100"
 																: "opacity-0"
 														)}
@@ -412,11 +592,38 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 					</div>
 					<Button
 						onClick={() => setAutoAssignDialogOpen(true)}
-						disabled={!selectedAssignment}
+						disabled={
+							!selectedAssignment ||
+							!isDueDatePassed(selectedAssignment.dueDate)
+						}
+						className={cn(
+							!isDueDatePassed(selectedAssignment?.dueDate) &&
+								"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
+						)}
 					>
 						Auto Assign Peer Reviews
 					</Button>
 				</div>
+
+				<TooltipProvider>
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<div className="flex items-center mb-4 text-yellow-800 bg-yellow-100 p-2 rounded">
+								<Info className="h-4 w-4 mr-2" />
+								<span>
+									Some actions are disabled until the assignment due date has
+									passed.
+								</span>
+							</div>
+						</TooltipTrigger>
+						<TooltipContent>
+							<p>
+								Grading, viewing grades, and assigning reviewers are only
+								available after the due date.
+							</p>
+						</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
 
 				<Accordion type="single" collapsible className="w-full">
 					{filteredStudents.map((student) => (
@@ -464,13 +671,15 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 													</TableCell>
 													<TableCell>
 														<div className="flex flex-wrap gap-2">
-															<Link
-																to={`/viewSubmission/${student.submission.submissionId}`}
+															<Button
+																variant="outline"
+																size="sm"
+																onClick={() =>
+																	handleViewSubmission(student.submission)
+																}
 															>
-																<Button variant="outline" size="sm">
-																	View
-																</Button>
-															</Link>
+																View
+															</Button>
 															<Button
 																variant="outline"
 																size="sm"
@@ -485,11 +694,82 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 																variant="outline"
 																size="sm"
 																onClick={() =>
+																	handleGradeAssignment(student.submission)
+																}
+																disabled={
+																	!isDueDatePassed(selectedAssignment?.dueDate)
+																}
+																className={cn(
+																	!isDueDatePassed(
+																		selectedAssignment?.dueDate
+																	) &&
+																		"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
+																)}
+															>
+																{student.submission.finalGrade !== null
+																	? "Re-grade"
+																	: "Grade"}
+															</Button>
+															<Button
+																variant="outline"
+																size="sm"
+																onClick={() =>
+																	handleViewReviewDetails(
+																		student.submission.submissionId
+																	)
+																}
+																disabled={
+																	!isDueDatePassed(selectedAssignment?.dueDate)
+																}
+																className={cn(
+																	!isDueDatePassed(
+																		selectedAssignment?.dueDate
+																	) &&
+																		"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
+																)}
+															>
+																View Instructor Grade
+															</Button>
+															<Button
+																variant="outline"
+																size="sm"
+																onClick={() =>
 																	handleAssignReviewers(student.submission)
 																}
+																disabled={
+																	!isDueDatePassed(selectedAssignment?.dueDate)
+																}
+																className={cn(
+																	!isDueDatePassed(
+																		selectedAssignment?.dueDate
+																	) &&
+																		"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
+																)}
 															>
 																Assign Reviewers
 															</Button>
+															<Link>
+																<Button
+																	variant="outline"
+																	size="sm"
+																	// onClick={() =>
+																	// 	handleAssignReviewers(student.submission)
+																	// }
+																	disabled={
+																		!isDueDatePassed(
+																			selectedAssignment?.dueDate
+																		)
+																	}
+																	className={cn(
+																		!isDueDatePassed(
+																			selectedAssignment?.dueDate
+																		) &&
+																			"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
+																	)}
+																>
+																	View Peer-Reviews
+																</Button>
+															</Link>
 														</div>
 													</TableCell>
 												</TableRow>
@@ -509,7 +789,7 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 				</Accordion>
 			</CardContent>
 
-			{/* Assign Reviewers Dialog */}
+			{/* Dialogs */}
 			<Dialog
 				open={assignReviewersDialogOpen}
 				onOpenChange={setAssignReviewersDialogOpen}
@@ -541,7 +821,6 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 				</DialogContent>
 			</Dialog>
 
-			{/* Auto Assign Dialog */}
 			<Dialog
 				open={autoAssignDialogOpen}
 				onOpenChange={setAutoAssignDialogOpen}
@@ -564,6 +843,29 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 					</DialogFooter>
 				</DialogContent>
 			</Dialog>
+
+			<ViewSubmissionDialog
+				submission={selectedSubmission}
+				rubric={rubric}
+				open={viewDialogOpen}
+				onClose={() => setViewDialogOpen(false)}
+				onDownload={handleDownload}
+			/>
+			<GradeSubmissionDialog
+				submission={selectedSubmission}
+				rubric={rubric}
+				open={gradeDialogOpen && selectedSubmission !== null}
+				onClose={() => {
+					setGradeDialogOpen(false);
+					setSelectedSubmission(null);
+				}}
+				onGradeSubmit={handleGradeSubmit}
+			/>
+			<ReviewDetailsDialog
+				submissionId={selectedSubmissionId}
+				open={reviewDialogOpen}
+				onClose={() => setReviewDialogOpen(false)}
+			/>
 		</Card>
 	);
 };

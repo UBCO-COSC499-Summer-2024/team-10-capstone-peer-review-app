@@ -293,7 +293,6 @@ const Submissions = () => {
 				selectedSubmission.submissionId
 			);
 
-			let response;
 			if (existingReview && existingReview.data) {
 				const review = {
 					submissionId: selectedSubmission.submissionId,
@@ -305,10 +304,7 @@ const Submissions = () => {
 					// Remove isGroup field
 					criterionGrades: criterionGrades
 				};
-				response = await reviewAPI.updateReview(
-					existingReview.data.reviewId,
-					review
-				);
+				await reviewAPI.updateReview(existingReview.data.reviewId, review);
 			} else {
 				const review = {
 					submissionId: selectedSubmission.submissionId,
@@ -319,7 +315,8 @@ const Submissions = () => {
 					// Remove isGroup field
 					criterionGrades: criterionGrades
 				};
-				response = await reviewAPI.createReview(user.userId, review);
+
+				await reviewAPI.createReview(user.userId, review);
 			}
 
 			setStudentsWithSubmissions((prev) =>

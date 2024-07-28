@@ -91,8 +91,7 @@ const AddClassModal = ({ show, onClose }) => {
 						>
 							Description
 						</label>
-						<input
-							type="text"
+						<textarea
 							id="description"
 							value={description}
 							onChange={(e) => setDescription(e.target.value)}

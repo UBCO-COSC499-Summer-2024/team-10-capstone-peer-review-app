@@ -189,7 +189,7 @@ const ExtendDeadlinesDialog = ({
 
         <DialogFooter>
           <Button onClick={handleAddExtendedDueDate}>Add Extended Due Date</Button>
-          <Button className='bg-gray-400 hover:bg-gray-300 text-white hover:text-gray-600' variant='ghost' onClick={() => setOpenExtendDeadlines(false)}>Close</Button>
+          <Button className='bg-gray-500 hover:bg-gray-400 text-white hover:text-white' variant='ghost' onClick={() => setOpenExtendDeadlines(false)}>Close</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

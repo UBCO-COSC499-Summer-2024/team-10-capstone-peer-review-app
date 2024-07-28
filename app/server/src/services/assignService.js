@@ -172,44 +172,65 @@ const updateAssignmentInClass = async (classId, assignmentId, categoryId, update
   };
 
 
-const getAssignmentInClass = async (classId, assignmentId) => {
+  const getAssignmentInClass = async (classId, assignmentId, userId = "") => {
 	try {
-		const classInfo = await prisma.class.findUnique({
-			where: {
-				classId: classId
-			},
-			include: {
-				Assignments: true,
-			}
-		});
-
-		if (!classInfo) {
-			throw new apiError("Class not found", 404);
+	  // Fetch the class information
+	  const classInfo = await prisma.class.findUnique({
+		where: {
+		  classId: classId
+		},
+		include: {
+		  Assignments: true,
 		}
-
-		const assignment = await prisma.assignment.findUnique({
-			where: {
-				assignmentId: assignmentId
-			},
-			include: {
-				extendedDueDates: true
-			}
-		});
-
-		if (!assignment) {
-			throw new apiError("Assignment not found", 404);
+	  });
+  
+	  if (!classInfo) {
+		throw new apiError("Class not found", 404);
+	  }
+  
+	  // Fetch the assignment information
+	  const assignment = await prisma.assignment.findUnique({
+		where: {
+		  assignmentId: assignmentId
+		},
+		include: {
+		  extendedDueDates: true
 		}
-
-		return assignment;
+	  });
+  
+	  if (!assignment) {
+		throw new apiError("Assignment not found", 404);
+	  }
+  
+	  // Fetch user information if userId is provided
+	  if (userId) {
+		const user = await prisma.user.findUnique({
+		  where: { userId },
+		  include: { extendedDueDates: true }
+		});
+  
+		if (!user) {
+		  throw new apiError("User not found", 404);
+		}
+  
+		// Check if the user is a student and apply extended due date if available
+		if (user.role === "STUDENT") {
+		  const extendedDueDate = user.extendedDueDates.find(edd => edd.assignmentId === assignmentId);
+		  if (extendedDueDate) {
+			assignment.dueDate = extendedDueDate.newDueDate;
+		  }
+		}
+	  }
+  
+	  return assignment;
 	} catch (error) {
-		if (error instanceof apiError) {
-			throw error;
-		} else {
-			throw new apiError("Failed to get assignment in class " + error, 500);
-		}
+	  if (error instanceof apiError) {
+		throw error;
+	  } else {
+		throw new apiError("Failed to get assignment in class " + error, 500);
+	  }
 	}
-};
-
+  };  
 
 
 const getAllAssignments = async () => {
@@ -234,8 +255,9 @@ const getAllAssignments = async () => {
 	}
 };
 
-const getAllAssignmentsByClassId = async (classId) => {
+const getAllAssignmentsByClassId = async (classId, userId = "") => {
 	try {
+	  // Fetch the class and assignments with extended due dates
 	  const classInfo = await prisma.class.findUnique({
 		where: {
 		  classId: classId
@@ -244,7 +266,7 @@ const getAllAssignmentsByClassId = async (classId) => {
 		  Assignments: {
 			include: {
 			  extendedDueDates: true
-		  	}
+			}
 		  }
 		}
 	  });
@@ -253,7 +275,32 @@ const getAllAssignmentsByClassId = async (classId) => {
 		throw new apiError("Class not found", 404);
 	  }
   
-	  return classInfo.Assignments;
+	  let assignments = classInfo.Assignments;
+  
+	  // If userId is provided, fetch user information
+	  if (userId) {
+		const user = await prisma.user.findUnique({
+		  where: { userId },
+		  include: { extendedDueDates: true }
+		});
+  
+		if (!user) {
+		  throw new apiError("User not found", 404);
+		}
+  
+		// Check if the user is a student and apply extended due dates
+		if (user.role === "STUDENT") {
+		  assignments = assignments.map(assignment => {
+			const extendedDueDate = user.extendedDueDates.find(edd => edd.assignmentId === assignment.assignmentId);
+			if (extendedDueDate) {
+			  assignment.dueDate = extendedDueDate.newDueDate;
+			}
+			return assignment;
+		  });
+		}
+	  }
+  
+	  return assignments;
 	} catch (error) {
 	  if (error instanceof apiError) {
 		throw error;
@@ -261,44 +308,42 @@ const getAllAssignmentsByClassId = async (classId) => {
 		throw new apiError("Failed to get all the assignments for the specific class", 500);
 	  }
 	}
-};
+};  
 
+// Extend the deadline for a student on an assignment
 const extendDeadlineForStudent = async (studentId, assignmentId, newDueDate) => {
 	try {
 		const assignment = await prisma.assignment.findUnique({
 			where: { assignmentId }
 		});
-
-		if (!assignment) {
-			throw new apiError("Assignment not found", 404);
-		}
-
 		const user = await prisma.user.findUnique({
 			where: { userId: studentId }
 		});
 
-		if (!user) {
+		if (!assignment) {
+			throw new apiError("Assignment not found", 404);
+		} else if (!user) {
 			throw new apiError("User not found", 404);
-		}
-
-		// Check if the user has already extended the due date for this assignment
-		const existingExtension = await prisma.extendedDueDate.findFirst({
-			where: {
-				userId: studentId,
-				assignmentId
-			}
-		});
-
-		// Check if the new due date is after the original due date
-		if (new Date(newDueDate) <= new Date(assignment.dueDate)) {
+		} else if (new Date(newDueDate) <= new Date(assignment.dueDate)) {
+			// Check if the new due date is after the original due date
 			throw new apiError("New due date must be after the original due date", 400);
 		}
 
-		const newExtension = await prisma.extendedDueDate.create({
-			data: {
+		const newExtension = await prisma.extendedDueDate.upsert({
+			where: {
+				UniqueExtendedDueDatePerUserAssignment: {
+					userId: studentId,
+					assignmentId
+				}
+			},
+			update: {
+				newDueDate,
+				updatedAt: new Date(),
+			},
+			create: {
 				userId: studentId,
 				assignmentId,
-				newDueDate
+				newDueDate,
 			}
 		});
 
@@ -311,6 +356,47 @@ const extendDeadlineForStudent = async (studentId, assignmentId, newDueDate) => 
 		}
 	}
 }
+
+const deleteExtendedDeadlineForStudent = async (studentId, assignmentId) => {
+	try {
+		// Check if the record exists
+		const existingExtension = await prisma.extendedDueDate.findUnique({
+			where: {
+				UniqueExtendedDueDatePerUserAssignment: {
+					userId: studentId,
+					assignmentId
+				}
+			}
+		});
+
+		if (!existingExtension) {
+			throw new apiError("Record not found", 404);
+		}
+
+		// Proceed to delete the record if it exists
+		const deletedExtension = await prisma.extendedDueDate.delete({
+			where: {
+				UniqueExtendedDueDatePerUserAssignment: {
+					userId: studentId,
+					assignmentId
+				}
+			}
+		});
+
+		return deletedExtension;
+	} catch (error) {
+		if (error instanceof apiError) {
+			console.log(error);
+			throw error;
+		} else if (error.code === 'P2025') {
+			console.log("Record not found");
+			throw new apiError("Record not found", 404);
+		} else {
+			console.log(error);
+			throw new apiError("Failed to delete extended due date", 500);
+		}
+	}
+};
   
 export default {
 	updateAssignmentInClass,
@@ -319,5 +405,6 @@ export default {
 	getAssignmentInClass,
 	getAllAssignments,
 	getAllAssignmentsByClassId,
-	extendDeadlineForStudent
+	extendDeadlineForStudent,
+	deleteExtendedDeadlineForStudent
 };

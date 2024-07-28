@@ -131,7 +131,8 @@ export const getAssignmentInClass = asyncErrorHandler(async (req, res) => {
 	const { classId, assignmentId } = req.body;
 	const assignmentData = await assignService.getAssignmentInClass(
 		classId,
-		assignmentId
+		assignmentId,
+		req.user.userId
 	);
 	return res.status(200).json({
 		status: "Success",
@@ -152,7 +153,7 @@ export const getAllAssignments = asyncErrorHandler(
 export const getAllAssignmentsByClassId = asyncErrorHandler(
 	async (req, res) => {
 		const { classId } = req.body;
-		const assignments = await assignService.getAllAssignmentsByClassId(classId);
+		const assignments = await assignService.getAllAssignmentsByClassId(classId, req.user.userId);
 		return res.status(200).json({
 			status: "Success",
 			data: assignments
@@ -161,9 +162,9 @@ export const getAllAssignmentsByClassId = asyncErrorHandler(
 );
 
 export const extendDeadlineForStudent = asyncErrorHandler(async (req, res) => {
-	const { userId, assignmentId, newDueDate } = req.body;
+	const { studentId, assignmentId, newDueDate } = req.body;
 	const updatedAssignment = await assignService.extendDeadlineForStudent(
-		userId,
+		studentId,
 		assignmentId,
 		newDueDate
 	);
@@ -171,6 +172,19 @@ export const extendDeadlineForStudent = asyncErrorHandler(async (req, res) => {
 		status: "Success",
 		message: "Deadline successfully extended for student",
 		data: updatedAssignment
+	});
+});
+
+export const deleteExtendedDeadlineForStudent = asyncErrorHandler(async (req, res) => {
+	const { studentId, assignmentId } = req.body;
+	const deletedExtension = await assignService.deleteExtendedDeadlineForStudent(
+		studentId,
+		assignmentId
+	);
+	return res.status(200).json({
+		status: "Success",
+		message: "Extended deadline successfully deleted",
+		data: deletedExtension
 	});
 });
 
@@ -182,5 +196,6 @@ export default {
 	getAssignmentInClass,
 	getAllAssignments,
 	getAllAssignmentsByClassId,
-	extendDeadlineForStudent
+	extendDeadlineForStudent,
+	deleteExtendedDeadlineForStudent
 };

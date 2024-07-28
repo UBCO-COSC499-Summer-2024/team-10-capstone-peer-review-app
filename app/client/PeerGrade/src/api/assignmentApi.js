@@ -107,7 +107,34 @@ export const addAssignmentToCategory = async (classId, categoryId, assignmentDat
       handleError(error);
       throw error;
     }
-  };
+};
+
+export const extendDeadlineForStudent = async (assignmentId, studentId, newDueDate) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/assignment/extend-deadline`, {
+            studentId,
+            assignmentId,
+            newDueDate
+        });
+        return response.data;
+    } catch (error) {
+        handleError(error);
+        return error.response.data;
+    }
+};
+
+export const deleteExtendedDeadlineForStudent = async (studentId, assignmentId) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/assignment/delete-extended-deadline`, {
+            studentId,
+            assignmentId
+        });
+        return response.data;
+    } catch (error) {
+        handleError(error);
+        return error.response.data;
+    }
+};
 
 function handleError(error) {
     if (error.response && error.response.data) {

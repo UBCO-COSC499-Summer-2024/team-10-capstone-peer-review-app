@@ -27,6 +27,7 @@ import { toast } from "@/components/ui/use-toast";
 import { getAssignmentInClass, updateAssignmentInClass } from '@/api/assignmentApi';
 import { getCategoriesByClassId, getStudentsByClassId } from '@/api/classApi';
 import { getAllRubricsInClass } from '@/api/rubricApi';
+import { extendDeadlineForStudent, deleteExtendedDeadlineForStudent } from '@/api/assignmentApi';
 
 const FormSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -62,6 +63,8 @@ const EditAssignment = () => {
   const [selectedStudent, setSelectedStudent] = useState({});
   const [newDueDate, setNewDueDate] = useState(null);
   const [students, setStudents] = useState([]);
+
+  const [confirmDelete, setConfirmDelete] = useState(''); // Student ID to confirm delete
   
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -172,7 +175,7 @@ const EditAssignment = () => {
         toast({
           title: "Assignment Updated",
           description: "The assignment has been successfully updated.",
-          status: "success"
+          variant: "positive",
         });
         
         // Clear the form and reset fields
@@ -204,26 +207,46 @@ const EditAssignment = () => {
       toast({
         title: "Error",
         description: "There was an error updating the assignment.",
-        status: "error"
+        variant: "destructive",
       });
     }
   };
 
-  const handleAddExtendedDueDate = () => {
+  const handleAddExtendedDueDate = async () => {
     if (selectedStudent && newDueDate) {
-      const newEntry = {
-        studentId: selectedStudent.label,
-        newDueDate: newDueDate.toISOString(),
-      };
-      setExtendedDueDates([...extendedDueDates, newEntry]);
-      setSelectedStudent("");
-      setNewDueDate(null);
+      const response = await extendDeadlineForStudent(assignmentId, selectedStudent.studentId, newDueDate);
+      if (response.status === 'Success') {
+        if (extendedDueDates.find(entry => entry.userId === selectedStudent.studentId)) {
+          setExtendedDueDates(prev => prev.map(entry => entry.userId === selectedStudent.studentId ? { userId: selectedStudent.studentId, newDueDate } : entry));
+        } else {
+          setExtendedDueDates(prev => [...prev, { userId: selectedStudent.studentId, newDueDate }]);
+        }
+        setSelectedStudent("");
+        setNewDueDate(null);
+        toast({
+          title: "Extended Due Date Added",
+          description: "The due date has been successfully extended for the selected student.",
+          variant: "positive",
+        });
+      }
     }
   };
 
-  const handleDeleteExtendedDueDate = (index) => {
-    const updatedDueDates = extendedDueDates.filter((_, i) => i !== index);
-    setExtendedDueDates(updatedDueDates);
+  const handleDeleteExtendedDueDate = async (studentId) => {
+    if (confirmDelete === studentId) {
+      setConfirmDelete('');
+      const response = await deleteExtendedDeadlineForStudent(studentId, assignmentId);
+      if (response.status === 'Success') {
+        setExtendedDueDates(prev => prev.filter(entry => entry.userId !== studentId));
+        toast({
+          title: "Extended Due Date Removed",
+          description: "The extended due date has been successfully removed.",
+          variant: "positive",
+        });
+      }
+    } else {
+      setConfirmDelete(studentId);
+    }
   };
 
   return (
@@ -231,7 +254,16 @@ const EditAssignment = () => {
       <div>
         <div className='flex items-center justify-between mb-4'>
           <h2 className="text-xl font-semibold">Edit Assignment</h2>
-          <Button variant='outline' className='bg-white text-primary' onClick={() => setOpenExtendDeadlines(true)}>Extend Deadlines</Button>
+          <Button
+            variant='outline'
+            className='bg-white text-primary'
+            onClick={() => {
+            setOpenExtendDeadlines(true);
+            setConfirmDelete('');
+            }}
+          >
+            Extend Deadlines
+          </Button>
         </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
@@ -513,7 +545,8 @@ const EditAssignment = () => {
             <DialogHeader>
               <DialogTitle>Extend Deadlines</DialogTitle>
               <DialogDescription>
-                <p>Extend the deadline for this assignment for particular students here.</p>
+                Extend the deadline for this assignment for particular students here.
+                Note: You can re-add the same student to edit the extended due date.
               </DialogDescription>
             </DialogHeader>
 
@@ -537,7 +570,15 @@ const EditAssignment = () => {
                     <td className="border border-gray-200 px-4 py-2 text-center">{students.find(student => student.studentId === entry.userId)?.label || 'Unknown'}</td>
                     <td className="border border-gray-200 px-4 py-2 text-center">{format(new Date(entry.newDueDate), 'dd/MM/yyyy')}</td>
                     <td className="border border-gray-200 px-4 py-2 flex items-center justify-center">
-                      <Button variant="outline" className="bg-red-500 text-white" onClick={() => handleDeleteExtendedDueDate(index)}>Delete</Button>
+                      {confirmDelete === entry.userId ?
+                      (
+                        <Button variant="ghost" className="bg-white text-red-500 border-red-500 border-2 hover:text-red-500 hover:bg-red-100" onClick={() => handleDeleteExtendedDueDate(entry.userId)}>Confirm Deletion</Button>
+                      )
+                      :
+                      (
+                        <Button variant="ghost" className="bg-red-500 text-white" onClick={() => handleDeleteExtendedDueDate(entry.userId)}>Delete</Button>
+                      )
+                      }
                     </td>
                   </tr>
                 ))}
@@ -601,7 +642,7 @@ const EditAssignment = () => {
                     <Button
                       variant={"outline"}
                       className={cn(
-                        "w-full pl-3 text-left font-normal",
+                        "w-full pl-3 mt-1",
                         !newDueDate && "text-muted-foreground"
                       )}
                     >

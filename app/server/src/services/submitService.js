@@ -187,7 +187,8 @@ const createSubmission = async (studentId, assignmentId, submissionFilePath) => 
                 role: "STUDENT"
             }, include: {
                 classes: true,
-                groups: true
+                groups: true,
+                extendedDueDates: true,
             }
         });
 
@@ -195,7 +196,8 @@ const createSubmission = async (studentId, assignmentId, submissionFilePath) => 
             throw new apiError("Assignment or student not found", 404);
         }
 
-        if (assignment.dueDate < new Date()) {
+        const extendedDueDate = student.extendedDueDates.find(d => d.assignmentId === assignmentId);
+        if (assignment.dueDate < new Date() && (!extendedDueDate || extendedDueDate.newDueDate < new Date())) {
             throw new apiError("Assignment is overdue", 400);
         }
 

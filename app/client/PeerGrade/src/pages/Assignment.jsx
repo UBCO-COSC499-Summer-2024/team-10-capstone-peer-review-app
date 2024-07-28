@@ -60,23 +60,6 @@ const Assignment = () => {
     }
   }, [user, userLoading, classId, assignmentId, refresh]);
 
-  useEffect(() => {
-    if (assignment && user.extendedDueDates) {
-      // Find the extended due date for the current assignment
-      const extendedDueDateEntry = user.extendedDueDates.find(
-        (dueDate) => dueDate.assignmentId === assignment.assignmentId
-      );
-
-      // If an extended due date is found, update the assignment's due date
-      if (extendedDueDateEntry) {
-        setAssignment((prevAssignment) => ({
-          ...prevAssignment,
-          dueDate: extendedDueDateEntry.newDueDate,
-        }));
-      }
-    }
-  }, [assignment, user.extendedDueDates]);
-
   if (userLoading || !assignment) {
     return <div className="flex justify-center items-center h-screen">Loading...</div>;
   }

@@ -6,7 +6,8 @@ import {
   getAssignmentInClass,
   getAllAssignments,
   getAllAssignmentsByClassId,
-  extendDeadlineForStudent
+  extendDeadlineForStudent,
+  deleteExtendedDeadlineForStudent
 
 } from "../controllers/assignController.js";
 
@@ -35,5 +36,8 @@ router.route("/get-class-assignments")
 
 router.route("/extend-deadline")
   .post(ensureUser, ensureInstructorOrAdmin, extendDeadlineForStudent);
+
+router.route("/delete-extended-deadline")
+  .post(ensureUser, ensureInstructorOrAdmin, deleteExtendedDeadlineForStudent);
 
 export default router;

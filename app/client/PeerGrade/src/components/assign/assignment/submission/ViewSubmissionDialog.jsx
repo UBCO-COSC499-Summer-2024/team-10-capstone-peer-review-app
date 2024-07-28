@@ -10,7 +10,7 @@ const ViewSubmissionDialog = ({ submission, open, onClose, onDownload }) => (
             <DialogHeader>
                 <DialogTitle>Submission View</DialogTitle>
             </DialogHeader>
-            <div className="flex-1 overflow-auto">
+            <div className="flex-1 overflow-y-auto overflow-x-hidden">
                 {submission && (
                     <PDFViewer
                         url={submission.submissionFilePath}

@@ -32,7 +32,7 @@ const Submission = ({refresh}) => {
                 console.log("rubric", rubricData.data);
 
                 if (rubricData.data.length === 0) {
-                    toast({ title: "No rubrics Assigned", description: "No rubric found for this assignment", variant: "warning" });
+                    toast({ title: "No rubrics assigned", description: "No rubric found for this assignment", variant: "warning" });
                     console.log("No rubric found for this assignment");
                 }
             } catch (error) {

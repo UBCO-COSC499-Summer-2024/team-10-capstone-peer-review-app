@@ -59,6 +59,7 @@ model User {
   sentNotifications Notification[]  @relation("SenderNotifications")
   reports           Report[]        @relation("ReportReceiver")
   sentReports       Report[]        @relation("ReportSender")
+  extendedDueDates  ExtendedDueDate[] @relation("UserExtendedDueDates")
 }
 
 // // Need to refactor last references to others tables, depending on what we want instructors to be able to pull up
@@ -135,6 +136,7 @@ model Assignment {
   submissions        Submission[]
   // Switch to the enum later
   reviewOption       String?
+  extendedDueDates   ExtendedDueDate[] @relation("AssignmentExtendedDueDates")
 }
 
 // Group Models
@@ -421,6 +423,20 @@ model Report {
   
   receiver       User?    @relation("ReportReceiver", fields: [receiverId], references: [userId], onDelete: Cascade)
   sender         User     @relation("ReportSender", fields: [senderId], references: [userId], onDelete: Cascade)
+}
+
+model ExtendedDueDate {
+  extendedDueDateId String   @id @default(uuid())
+  userId            String
+  assignmentId      String
+  newDueDate        DateTime
+  reason            String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation("UserExtendedDueDates", fields: [userId], references: [userId], onDelete: Cascade)
+  assignment        Assignment @relation("AssignmentExtendedDueDates", fields: [assignmentId], references: [assignmentId], onDelete: Cascade)
+
+  @@unique([userId, assignmentId], name: "UniqueExtendedDueDatePerUserAssignment")
 }
 
 enum UserRole {

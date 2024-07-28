@@ -44,6 +44,7 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
   const [selectedFileName, setSelectedFileName] = useState('');
   const [resetRubricForm, setResetRubricForm] = useState(false);
   const [isRubricFormOpen, setIsRubricFormOpen] = useState(false);
+  const [errors, setErrors] = useState({});
   const fileInputRef = useRef(null);
   const { user, userLoading } = useUser();
 
@@ -83,28 +84,50 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
     }));
     setNewRubricData(null);  // Clear any new rubric data when selecting an existing rubric
   };
+
+  const resetRubric = () => {
+    setNewRubricData(null);
+    setFormData(prev => ({ ...prev, rubricId: '' }));
+    setIsRubricFormOpen(false);
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.title.trim()) newErrors.title = "Title is required";
+    if (!formData.description.trim()) newErrors.description = "Description is required";
+    if (!formData.dueDate) newErrors.dueDate = "Due date is required";
+    if (!formData.categoryId) newErrors.categoryId = "Category is required";
+    if (!formData.rubricId && !newRubricData) newErrors.rubric = "Please select or create a rubric";
+    if (formData.maxSubmissions <= 0) newErrors.maxSubmissions = "Max submissions must be greater than 0";
+    if (formData.allowedFileTypes.length === 0) newErrors.allowedFileTypes = "Please select at least one file type";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!formData.title || !formData.description || !formData.dueDate || !formData.categoryId || (!formData.rubricId && !newRubricData)) {
+    if (!validateForm()) {
       toast({
-        title: "Error",
-        description: "Please fill in all required fields and select or create a rubric",
-        status: "error"
+        title: "Validation Error",
+        description: "Please correct the highlighted fields",
+        variant: "destructive",
       });
       return;
     }
-  
+
     try {
       const assignmentData = {
         title: formData.title,
         description: formData.description,
         dueDate: formData.dueDate,
-        maxSubmissions: parseInt(formData.maxSubmissions, 10), // Ensure this is a number
+        maxSubmissions: parseInt(formData.maxSubmissions, 10),
         allowedFileTypes: formData.allowedFileTypes,
         rubricId: formData.rubricId,
       };
-  
+
       let response;
       if (newRubricData) {
         const data = {
@@ -130,8 +153,8 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
       console.log('Assignment created:', response);
       toast({
         title: "Success",
-        description: "Assignment created successfully",
-        status: "success"
+        description: "Added to class successfully",
+        variant: "info"
       });
       onAssignmentCreated();
       // Reset form
@@ -146,20 +169,15 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
       });
       setSelectedFileName('');
       setNewRubricData(null);
+      setErrors({});
     } catch (error) {
       console.error('Error submitting assignment:', error);
       toast({
         title: "Error",
-        description: "There was an error creating the assignment.",
-        status: "error"
+        description: error.message || "There was an error creating the assignment.",
+        variant: "destructive"
       });
     }
-  };
-
-  const resetRubric = () => {
-    setNewRubricData(null);
-    setFormData(prev => ({ ...prev, rubricId: '' }));
-    setIsRubricFormOpen(false);
   };
 
   return (
@@ -169,38 +187,78 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
         <form onSubmit={handleSubmit} className="w-full space-y-10">
           <div>
             <label htmlFor="title">Title</label>
-            <Input id="title" name="title" value={formData.title} onChange={handleInputChange} placeholder="e.g. Assignment #1" required />
+            <Input 
+              id="title" 
+              name="title" 
+              value={formData.title} 
+              onChange={handleInputChange} 
+              placeholder="e.g. Assignment #1" 
+              className={errors.title ? "border-red-500" : ""}
+            />
+            {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
           </div>
 
           <div>
             <label htmlFor="description">Description</label>
-            <Textarea id="description" name="description" value={formData.description} onChange={handleInputChange} placeholder="e.g. Use 12pt double-spaced font..." required />
+            <Textarea 
+              id="description" 
+              name="description" 
+              value={formData.description} 
+              onChange={handleInputChange} 
+              placeholder="e.g. Use 12pt double-spaced font..." 
+              className={errors.description ? "border-red-500" : ""}
+            />
+            {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
           </div>
 
           <div>
             <label htmlFor="maxSubmissions">Attempts</label>
-            <Input id="maxSubmissions" name="maxSubmissions" type="number" value={formData.maxSubmissions} onChange={handleInputChange} required />
+            <Input 
+              id="maxSubmissions" 
+              name="maxSubmissions" 
+              type="number" 
+              value={formData.maxSubmissions} 
+              onChange={handleInputChange} 
+              className={errors.maxSubmissions ? "border-red-500" : ""}
+            />
+            {errors.maxSubmissions && <p className="text-red-500 text-sm mt-1">{errors.maxSubmissions}</p>}
           </div>
 
           <div className='flex flex-col gap-2'>
             <label>Due by:</label>
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className={cn("w-[200px] justify-start text-left font-normal", !formData.dueDate && "text-muted-foreground")}>
+                <Button 
+                  variant="outline" 
+                  className={cn(
+                    "w-[200px] justify-start text-left font-normal",
+                    !formData.dueDate && "text-muted-foreground",
+                    errors.dueDate && "border-red-500"
+                  )}
+                >
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {formData.dueDate ? format(formData.dueDate, "PPP") : <span>Pick a date</span>}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0">
-                <Calendar mode="single" selected={formData.dueDate} onSelect={(date) => setFormData(prev => ({ ...prev, dueDate: date }))} initialFocus />
+                <Calendar 
+                  mode="single" 
+                  selected={formData.dueDate} 
+                  onSelect={(date) => setFormData(prev => ({ ...prev, dueDate: date }))} 
+                  initialFocus 
+                />
               </PopoverContent>
             </Popover>
+            {errors.dueDate && <p className="text-red-500 text-sm mt-1">{errors.dueDate}</p>}
           </div>
 
           <div>
             <label>Category</label>
-            <Select onValueChange={(value) => setFormData(prev => ({ ...prev, categoryId: value }))}>
-              <SelectTrigger>
+            <Select 
+              onValueChange={(value) => setFormData(prev => ({ ...prev, categoryId: value }))}
+              value={formData.categoryId}
+            >
+              <SelectTrigger className={errors.categoryId ? "border-red-500" : ""}>
                 <SelectValue placeholder="Select category..." />
               </SelectTrigger>
               <SelectContent>
@@ -211,6 +269,7 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
                 ))}
               </SelectContent>
             </Select>
+            {errors.categoryId && <p className="text-red-500 text-sm mt-1">{errors.categoryId}</p>}
           </div>
 
           <div className="space-y-4">
@@ -221,7 +280,7 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
               }} 
               isOpen={isRubricFormOpen}
               setIsOpen={setIsRubricFormOpen}
-              disabled={!!formData.rubricId}  // Disable when an existing rubric is selected
+              disabled={!!formData.rubricId}
             />
 
             {(newRubricData || formData.rubricId) && (
@@ -243,7 +302,7 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
               onValueChange={handleRubricSelection}
               disabled={newRubricData !== null}
             >
-              <SelectTrigger>
+              <SelectTrigger className={errors.rubric ? "border-red-500" : ""}>
                 <SelectValue placeholder="Select a rubric" />
               </SelectTrigger>
               <SelectContent>
@@ -254,6 +313,7 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
                 ))}
               </SelectContent>
             </Select>
+            {errors.rubric && <p className="text-red-500 text-sm mt-1">{errors.rubric}</p>}
           </div>
 
           <div>
@@ -263,7 +323,9 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
               value={formData.allowedFileTypes}
               onChange={(value) => setFormData(prev => ({ ...prev, allowedFileTypes: value }))}
               placeholder="Select allowed file types"
+              className={errors.allowedFileTypes ? "border-red-500" : ""}
             />
+            {errors.allowedFileTypes && <p className="text-red-500 text-sm mt-1">{errors.allowedFileTypes}</p>}
           </div>
 
           <div>
@@ -282,10 +344,8 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
                 Upload File
               </Button>
               {selectedFileName && <span>{selectedFileName}</span>}
-
             </div>
             <p className='text-sm text-slate-600 mt-3'>Attach any files related to the assignment (PDFs preferred).</p>
-
           </div>
 
           <Button type="submit" className='bg-primary text-white'>Submit</Button>

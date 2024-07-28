@@ -65,7 +65,7 @@ const Class = () => {
         toast({
           title: "Success",
           description: "Category created successfully",
-          variant: "default",
+          variant: "info",
         });
         setIsAddCategoryOpen(false);
         setNewCategoryName("");
@@ -87,7 +87,7 @@ const Class = () => {
         toast({
           title: "Success",
           description: "Category updated successfully",
-          variant: "default",
+          variant: "info",
         });
         setEditingCategory(null);
         fetchClassData();

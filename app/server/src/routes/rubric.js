@@ -16,6 +16,7 @@ import {
 	updateCriterionGrade,
 	getCriterionGrade,
 	addCriterionRating,
+	linkRubricToAssignments
 	
 } from "../controllers/rubricController.js";
 
@@ -97,6 +98,10 @@ router
 router
 	.route("/get-criterion-grade")
 	.post(ensureUser, ensureInstructorOrAdmin, getCriterionGrade);
+
+router
+	.route("/link-rubric-to-assignment")
+	.post(ensureUser, ensureInstructorOrAdmin, linkRubricToAssignments);
 
 
 export default router;

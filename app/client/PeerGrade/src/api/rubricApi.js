@@ -98,3 +98,17 @@ export const updateRubricsForAssignment = async (rubricId, updateData) => {
         throw error;
     }
 };
+
+export const linkRubricToAssignment = async (rubricId, assignmentIds) => {
+    try {
+      const response = await axios.post(`${BASE_URL}/rubric/link-rubric-to-assignment`, { rubricId, assignmentIds });
+      showStatusToast({
+        status: "Success",
+        message: "Rubric linked to assignments successfully"
+      });
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      throw error;
+    }
+  };

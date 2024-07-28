@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
 import { Badge } from '@/components/ui/badge';
 import MultiSelect from '@/components/ui/MultiSelect';
-import { addRubricToAssignment, getAllRubrics } from '@/api/rubricApi';
+import { addRubricToAssignment, getAllRubrics, linkRubricToAssignment } from '@/api/rubricApi';
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { useToast } from "@/components/ui/use-toast";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -58,9 +58,14 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
 
   const handleCreateRubric = async () => {
     if (selectedAssignments.length === 0) {
-      throw new Error("No assignments selected");
+      toast({
+        title: "Error",
+        description: "Please select at least one assignment",
+        variant: "destructive"
+      });
+      return;
     }
-
+  
     const formattedRubricData = {
       title: newRubricData.title,
       description: newRubricData.description,
@@ -78,32 +83,50 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
         }))
       }))
     };
-
-    console.log('formattedRubricData:', formattedRubricData);
-    const userId = user.userId;
-
-    for (const assignmentId of selectedAssignments) {
-      console.log('Adding rubric to assignment:', assignmentId);
-      await addRubricToAssignment({
-        userId,
-        assignmentId,
+  
+    try {
+      // Create a single rubric
+      const createdRubric = await addRubricToAssignment({
+        userId: user.userId,
+        assignmentId: selectedAssignments[0],
         rubricData: formattedRubricData
       });
+  
+      console.log('Rubric created:', createdRubric);
+  
+      // Link the created rubric to all other selected assignments
+      if (selectedAssignments.length > 1) {
+        await linkRubricToAssignment(createdRubric.data.rubricId, selectedAssignments.slice(1));
+      }
+  
+      console.log('Rubric linked to all selected assignments');
+      toast({
+        title: "Success",
+        description: "Rubric created and linked to selected assignments",
+        variant: "success"
+      });
+  
+      setIsCreateDrawerOpen(false);
+      setNewRubricData({
+        title: "",
+        description: "",
+        criteria: [{
+          id: 1,
+          criteria: "",
+          points: "",
+          ratings: [{ text: "", points: "" }]
+        }]
+      });
+      setSelectedAssignments([]);
+      fetchRubrics(); // Refresh the rubrics list
+    } catch (error) {
+      console.error('Error creating rubric:', error);
+      toast({
+        title: "Error",
+        description: "Failed to create rubric",
+        variant: "destructive"
+      });
     }
-
-    console.log('Rubric added to all selected assignments');
-    setIsCreateDrawerOpen(false);
-    setNewRubricData({
-      title: "",
-      description: "",
-      criteria: [{
-        id: 1,
-        criteria: "",
-        points: "",
-        ratings: [{ text: "", points: "" }]
-      }]
-    });
-    setSelectedAssignments([]);
   };
 
   const handleAssignmentSelection = (selectedValues) => {

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 function AssignmentRow({
@@ -9,7 +9,7 @@ function AssignmentRow({
 	peerReviewDueDate,
 	forReview
 }) {
-	const link = forReview ? `/assignedPR/${id}` : `/assignment/${id}`;
+	const link = forReview ? `/viewSubmssion/${id}` : `/assignment/${id}`;
 	const displayDate = forReview ? peerReviewDueDate : dueDate;
 
 	return (

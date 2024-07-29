@@ -78,6 +78,7 @@ model Assignment {
   dueDate            DateTime
   maxSubmissions     Int            @default(1)
   isGroupAssignment  Boolean        @default(false)
+  isPeerReviewAnonymous Boolean        @default(false)
   allowedFileTypes   String[]       
   assignmentFilePath String?
   classes            Class          @relation(fields: [classId], references: [classId], onDelete: Cascade)
@@ -266,18 +267,18 @@ model Category {
 }
 
 model Report {
-  reportId       String   @id @default(uuid())
-  senderId       String
-  receiverRole   String
-  receiverId     String?
-  title          String   @default("No title")
-  content        String   @default("No report contents")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  isResolved     Boolean  @default(false)
-  
-  receiver       User?    @relation("ReportReceiver", fields: [receiverId], references: [userId], onDelete: Cascade)
-  sender         User     @relation("ReportSender", fields: [senderId], references: [userId], onDelete: Cascade)
+  reportId     String   @id @default(uuid())
+  senderId     String
+  receiverRole String
+  receiverId   String?
+  title        String   @default("No title")
+  content      String   @default("No report contents")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  isResolved   Boolean  @default(false)
+
+  receiver User? @relation("ReportReceiver", fields: [receiverId], references: [userId], onDelete: Cascade)
+  sender   User  @relation("ReportSender", fields: [senderId], references: [userId], onDelete: Cascade)
 }
 
 model ExtendedDueDate {

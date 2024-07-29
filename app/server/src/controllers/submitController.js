@@ -67,33 +67,38 @@ export const createSubmission = [
 export const getStudentSubmission = asyncErrorHandler(async (req, res) => {
 	const studentId = req.user.userId;
 	if (!studentId) {
-	  return res.status(400).json({
-		status: "Error",
-		message: "userId is required"
-	  });
+		return res.status(400).json({
+			status: "Error",
+			message: "userId is required"
+		});
 	}
 	const studentData = await submitService.getStudentSubmission(studentId);
 	return res.status(200).json({
-	  status: "Success",
-	  data: studentData
+		status: "Success",
+		data: studentData
 	});
 });
 
-export const getStudentSubmissionForAssignment = asyncErrorHandler(async (req, res) => {
-	const studentId = req.body.userId;
-	const assignmentId = req.body.assignmentId;
-	if (!studentId) {
-	  return res.status(400).json({
-		status: "Error",
-		message: "userId is required"
-	  });
+export const getStudentSubmissionForAssignment = asyncErrorHandler(
+	async (req, res) => {
+		const studentId = req.body.userId;
+		const assignmentId = req.body.assignmentId;
+		if (!studentId) {
+			return res.status(400).json({
+				status: "Error",
+				message: "userId is required"
+			});
+		}
+		const studentData = await submitService.getStudentSubmissionForAssignment(
+			studentId,
+			assignmentId
+		);
+		return res.status(200).json({
+			status: "Success",
+			data: studentData
+		});
 	}
-	const studentData = await submitService.getStudentSubmissionForAssignment(studentId, assignmentId);
-	return res.status(200).json({
-	  status: "Success",
-	  data: studentData
-	});
-});
+);
 
 export const getSubmissionsForAssignment = asyncErrorHandler(
 	async (req, res) => {

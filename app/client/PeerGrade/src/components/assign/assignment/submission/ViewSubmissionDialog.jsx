@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, LargeDialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Download, Info } from "lucide-react";
 import PDFViewer from "@/components/assign/PDFViewer";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger
+} from "@/components/ui/tooltip";
 
 const ViewSubmissionDialog = ({ submission, rubric, open, onClose, onDownload }) => {
     const [textContent, setTextContent] = useState('');
@@ -19,7 +24,7 @@ const ViewSubmissionDialog = ({ submission, rubric, open, onClose, onDownload })
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
-            <DialogContent className="max-w-4xl h-[80vh] ml-[80px]">
+            <LargeDialogContent className="w-full h-[80vh]">
                 <DialogHeader>
                     <DialogTitle className="flex justify-between items-center">
                         Submission View
@@ -62,7 +67,7 @@ const ViewSubmissionDialog = ({ submission, rubric, open, onClose, onDownload })
                     <Download className="h-4 w-4 mr-1" />
                     Download
                 </Button> */}
-            </DialogContent>
+            </LargeDialogContent>
         </Dialog>
     );
 };

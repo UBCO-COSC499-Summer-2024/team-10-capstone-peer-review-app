@@ -7,9 +7,12 @@ import {
   getAllAssignments,
   getAllAssignmentsByClassId,
   extendDeadlineForStudent,
-  deleteExtendedDeadlineForStudent
+  deleteExtendedDeadlineForStudent,
+  addAssignmentWithRubric
 
 } from "../controllers/assignController.js";
+
+import { addComment, getComments } from "../controllers/commentController.js";
 
 import { ensureUser, ensureInstructor, ensureAdmin, ensureInstructorOrAdmin } from "../middleware/ensureUserTypes.js";
 
@@ -39,5 +42,12 @@ router.route("/extend-deadline")
 
 router.route("/delete-extended-deadline")
   .post(ensureUser, ensureInstructorOrAdmin, deleteExtendedDeadlineForStudent);
+
+router.route("/add-assignment-with-rubric")
+  .post(ensureUser, ensureInstructorOrAdmin, addAssignmentWithRubric);
+
+router.route("/:assignmentId/comments")
+  .get(ensureUser, getComments)
+  .post(ensureUser, addComment);
 
 export default router;

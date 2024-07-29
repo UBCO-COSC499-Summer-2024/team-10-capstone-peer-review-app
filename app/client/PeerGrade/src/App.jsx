@@ -26,7 +26,6 @@ import Notifications from "./pages/Notifications";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedRoute from "./components/global/ProtectedRoute";
 import ManageClassDashboard from "./components/manageClass/ManageClassDashboard";
-import SubmissionsPage from "./pages/classNav/SubmissionsPage";
 import NotFound from "./components/global/NotFound";
 import SubmitReview from "./pages/SubmitReview";
 import TitleUpdater from "@/utils/TitleUpdater";
@@ -146,15 +145,6 @@ function MainLayout() {
 								/>
 							}
 						/>
-						<Route path="/class/:classId/assignment/:assignmentId/submissions" 
-							element={
-							<ProtectedRoute
-										element={<SubmissionsPage />}
-										allowedRoles={["STUDENT", "INSTRUCTOR", "ADMIN"]}
-									/>
-							}
-						/>
-
 						<Route
 							path="/viewSubmission/:submissionId"
 							element={

@@ -11,52 +11,55 @@ const upload = multer({ storage: multer.memoryStorage() });
 const UPLOAD_PATH = "/usr/server/uploads";
 
 export const addAssignmentToClass = [
-    upload.single("file"),
-    asyncErrorHandler(async (req, res) => {
-        const classId = req.body.classId;
-        const categoryId = req.body.categoryId;
-        const assignmentData = JSON.parse(req.body.assignmentData);
-
-		let fileUrl = null;
-		if (req.file) {
-			const uniqueFilename = `${uuidv4()}${path.extname(req.file.originalname)}`;
-			console.log("uniqueFilename", uniqueFilename);
-			const filePath = path.join(UPLOAD_PATH, uniqueFilename);
-
-			// Ensure the upload directory exists
-			fs.mkdirSync(UPLOAD_PATH, { recursive: true });
-
-			// Write the file to the shared volume
-			fs.writeFileSync(filePath, req.file.buffer);
-
-			// Construct the URL that Nginx will serve
-			fileUrl = `${BASE_URL}/${uniqueFilename}`;
+	upload.single("file"),
+	asyncErrorHandler(async (req, res) => {
+	  const classId = req.body.classId;
+	  const categoryId = req.body.categoryId;
+	  const assignmentData = JSON.parse(req.body.assignmentData);
+  
+	  console.log('Received assignment data:', assignmentData);  // Add this line for debugging
+  
+	  let fileUrl = null;
+	  if (req.file) {
+		const uniqueFilename = `${uuidv4()}${path.extname(req.file.originalname)}`;
+		console.log("uniqueFilename", uniqueFilename);
+		const filePath = path.join(UPLOAD_PATH, uniqueFilename);
+  
+		// Ensure the upload directory exists
+		fs.mkdirSync(UPLOAD_PATH, { recursive: true });
+  
+		// Write the file to the shared volume
+		fs.writeFileSync(filePath, req.file.buffer);
+  
+		// Construct the URL that Nginx will serve
+		fileUrl = `${BASE_URL}/${uniqueFilename}`;
+	  }
+  
+	  const newAssignment = await assignService.addAssignmentToClass(
+		classId,
+		categoryId,
+		{
+		  ...assignmentData,
+		  assignmentFilePath: fileUrl,
+		  rubricId: assignmentData.rubricId,  // Ensure this is passed correctly
+		  allowedFileTypes: assignmentData.allowedFileTypes,  
 		}
-
-		const newAssignment = await assignService.addAssignmentToClass(
-            classId,
-            categoryId,
-            {
-                ...assignmentData,
-                assignmentFilePath: fileUrl,
-                rubricId: assignmentData.rubricId, // Change this line
-            }
-        );
-
-		if (newAssignment) {
-			return res.status(200).json({
-				status: "Success",
-				message: "Assignment successfully added to class and category",
-				data: newAssignment
-			});
-		} else {
-			return res.status(500).json({
-				status: "Error",
-				message: "Failed to add assignment to class and category"
-			});
-		}
+	  );
+  
+	  if (newAssignment) {
+		return res.status(200).json({
+		  status: "Success",
+		  message: "Assignment successfully added to class and category",
+		  data: newAssignment
+		});
+	  } else {
+		return res.status(500).json({
+		  status: "Error",
+		  message: "Failed to add assignment to class and category"
+		});
+	  }
 	})
-];
+  ];
 
 
 export const removeAssignmentFromClass = asyncErrorHandler(async (req, res) => {
@@ -78,13 +81,15 @@ export const removeAssignmentFromClass = asyncErrorHandler(async (req, res) => {
 });
 
 export const updateAssignmentInClass = [
-    upload.single('file'),
-    asyncErrorHandler(async (req, res) => {
-        const classId = req.body.classId;
-        const assignmentId = req.body.assignmentId;
-        const categoryId = req.body.categoryId;
-        const assignmentData = JSON.parse(req.body.assignmentData);
-
+	upload.single("file"),
+	asyncErrorHandler(async (req, res) => {
+	  const classId = req.body.classId;
+	  const assignmentId = req.body.assignmentId;
+	  const categoryId = req.body.categoryId;
+	  const assignmentData = JSON.parse(req.body.assignmentData);
+  
+	  console.log('Received assignment data for update:', assignmentData);  // Add this line for debugging
+  
 	  let fileUrl = null;
 	  if (req.file) {
 		const uniqueFilename = `${uuidv4()}${path.extname(req.file.originalname)}`;
@@ -108,6 +113,7 @@ export const updateAssignmentInClass = [
 			...assignmentData,
 			assignmentFilePath: fileUrl || assignmentData.assignmentFilePath,
 			rubricId: assignmentData.rubricId, // Add this line
+			allowedFileTypes: assignmentData.allowedFileTypes, // Add this line
 		}
 	);
   
@@ -187,6 +193,43 @@ export const deleteExtendedDeadlineForStudent = asyncErrorHandler(async (req, re
 	});
 });
 
+export const addAssignmentWithRubric = [
+	upload.single("file"),
+	asyncErrorHandler(async (req, res) => {
+	  const classId = req.body.classId;
+	  const categoryId = req.body.categoryId;
+	  const assignmentData = JSON.parse(req.body.assignmentData);
+	  const rubricData = JSON.parse(req.body.rubricData);
+	  const creatorId = req.body.creatorId;
+  
+	  console.log('Received data in controller:', { classId, categoryId, assignmentData, rubricData, creatorId });
+  
+	  let fileUrl = null;
+	  if (req.file) {
+		// Handle file upload similar to addAssignmentToClass
+		const uniqueFilename = `${uuidv4()}${path.extname(req.file.originalname)}`;
+		const filePath = path.join(UPLOAD_PATH, uniqueFilename);
+		fs.mkdirSync(UPLOAD_PATH, { recursive: true });
+		fs.writeFileSync(filePath, req.file.buffer);
+		fileUrl = `${BASE_URL}/${uniqueFilename}`;
+	  }
+  
+	  const result = await assignService.addAssignmentWithRubric(
+		classId,
+		categoryId,
+		{ ...assignmentData, assignmentFilePath: fileUrl },
+		rubricData,
+		creatorId
+	  );
+  
+	  return res.status(200).json({
+		status: "Success",
+		message: "Assignment and rubric successfully added",
+		data: result
+	  });
+	})
+  ];
+
 // Export all controller methods
 export default {
 	addAssignmentToClass,
@@ -196,5 +239,6 @@ export default {
 	getAllAssignments,
 	getAllAssignmentsByClassId,
 	extendDeadlineForStudent,
-	deleteExtendedDeadlineForStudent
+	deleteExtendedDeadlineForStudent,
+	addAssignmentWithRubric
 };

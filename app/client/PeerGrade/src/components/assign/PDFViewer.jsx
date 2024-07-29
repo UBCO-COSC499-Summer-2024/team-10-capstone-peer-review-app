@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 
 const PDFViewer = ({ url, scale = 1 }) => {
   // Check if the URL is a PDF
-  const isPDF = url && url.toLowerCase().endsWith('.pdf');
+  const isPDF = url && url.toLowerCase().endsWith('.pdf' || '.PDF');
 
   // Create an instance of the modified toolbar plugin
   const toolbarPluginInstance = toolbarPlugin();

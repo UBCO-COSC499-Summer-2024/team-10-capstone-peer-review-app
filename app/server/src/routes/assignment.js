@@ -6,6 +6,8 @@ import {
   getAssignmentInClass,
   getAllAssignments,
   getAllAssignmentsByClassId,
+  extendDeadlineForStudent,
+  deleteExtendedDeadlineForStudent,
   addAssignmentWithRubric
 
 } from "../controllers/assignController.js";
@@ -35,9 +37,14 @@ router.route("/get-assignment")
 router.route("/get-class-assignments")
   .post(ensureUser, getAllAssignmentsByClassId);
 
+router.route("/extend-deadline")
+  .post(ensureUser, ensureInstructorOrAdmin, extendDeadlineForStudent);
+
+router.route("/delete-extended-deadline")
+  .post(ensureUser, ensureInstructorOrAdmin, deleteExtendedDeadlineForStudent);
+
 router.route("/add-assignment-with-rubric")
   .post(ensureUser, ensureInstructorOrAdmin, addAssignmentWithRubric);
-
 
 router.route("/:assignmentId/comments")
   .get(ensureUser, getComments)

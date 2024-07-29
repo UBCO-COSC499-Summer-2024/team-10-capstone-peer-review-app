@@ -37,6 +37,7 @@ model User {
   GroupSubmission   GroupSubmission[]
   reports           Report[]          @relation("ReportReceiver")
   sentReports       Report[]          @relation("ReportSender")
+  extendedDueDates  ExtendedDueDate[] @relation("UserExtendedDueDates")
   commentChains     CommentChain[]    @relation("StudentCommentChains")
   comments          Comment[]
 }
@@ -85,8 +86,8 @@ model Assignment {
   rubric             Rubric?        @relation(fields: [rubricId], references: [rubricId])
   submissions        Submission[]
   reviewOption       String?
-  commentChains       CommentChain[]
-
+  extendedDueDates   ExtendedDueDate[] @relation("AssignmentExtendedDueDates")
+  commentChains      CommentChain[]
 }
 
 
@@ -277,6 +278,19 @@ model Report {
   
   receiver       User?    @relation("ReportReceiver", fields: [receiverId], references: [userId], onDelete: Cascade)
   sender         User     @relation("ReportSender", fields: [senderId], references: [userId], onDelete: Cascade)
+}
+
+model ExtendedDueDate {
+  extendedDueDateId String   @id @default(uuid())
+  userId            String
+  assignmentId      String
+  newDueDate        DateTime
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation("UserExtendedDueDates", fields: [userId], references: [userId], onDelete: Cascade)
+  assignment        Assignment @relation("AssignmentExtendedDueDates", fields: [assignmentId], references: [assignmentId], onDelete: Cascade)
+
+  @@unique([userId, assignmentId], name: "UniqueExtendedDueDatePerUserAssignment")
 }
 
 enum UserRole {

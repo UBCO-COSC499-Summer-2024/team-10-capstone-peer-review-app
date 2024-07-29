@@ -10,11 +10,14 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
+import { Command, CommandGroup, CommandItem, CommandList, CommandEmpty, CommandInput } from "@/components/ui/command";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/use-toast";
 import { getAssignmentInClass, updateAssignmentInClass } from '@/api/assignmentApi';
-import { getCategoriesByClassId } from '@/api/classApi';
+import { getCategoriesByClassId, getStudentsByClassId } from '@/api/classApi';
 import { getAllRubricsInClass } from '@/api/rubricApi';
+import { extendDeadlineForStudent, deleteExtendedDeadlineForStudent } from '@/api/assignmentApi';
+import ExtendDeadlinesDialog from './ExtendDeadlinesDialog';
 
 const fileTypeOptions = [
   { value: 'pdf', label: 'PDF' },
@@ -28,7 +31,17 @@ const fileTypeOptions = [
 const EditAssignment = () => {
   const navigate = useNavigate();
   const { classId, assignmentId } = useParams();
+
+  const [open, setOpen] = useState(false);
+  const [openCat, setOpenCat] = useState(false);
+  const [selectStudentOpen, setSelectStudentOpen] = useState(false);
+  const [selectNewDueDateOpen, setSelectNewDueDateOpen] = useState(false);
+  const [openExtendDeadlines, setOpenExtendDeadlines] = useState(false);
+
+  const [value, setValue] = useState("");
   const fileInputRef = useRef(null);
+  const [selectedRubric, setSelectedRubric] = useState("");
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -39,9 +52,17 @@ const EditAssignment = () => {
     allowedFileTypes: [],
     file: null,
   });
+  
   const [selectedFileName, setSelectedFileName] = useState('');
   const [categories, setCategories] = useState([]);
   const [rubrics, setRubrics] = useState([]);
+
+  const [extendedDueDates, setExtendedDueDates] = useState([]);
+  const [selectedStudent, setSelectedStudent] = useState({});
+  const [newDueDate, setNewDueDate] = useState(null);
+  const [students, setStudents] = useState([]);
+
+  const [confirmDelete, setConfirmDelete] = useState(''); // Student ID to confirm delete
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
@@ -57,7 +78,10 @@ const EditAssignment = () => {
             categoriesResponse.status === 'Success' &&
             rubricsResponse.status === 'Success') {
           const assignmentData = assignmentResponse.data;
+          console.log("assignment", assignmentData);
           setCategories(categoriesResponse.data);
+          setExtendedDueDates(assignmentData.extendedDueDates || []);
+          console.log('rubrics', rubricsResponse.data);
           setRubrics(rubricsResponse.data);
           
           setFormData({
@@ -81,7 +105,13 @@ const EditAssignment = () => {
         });
       }
     };
-  
+    const fetchStudents = async () => {
+      const response = await getStudentsByClassId(classId);
+      if (response.status === 'Success') {
+        setStudents(response.data.map(student => ({studentId: student.userId, label: student.firstname + ' ' + student.lastname})));
+      }
+    };
+    fetchStudents();
     fetchAssignmentAndData();
   }, [classId, assignmentId]);
 
@@ -162,15 +192,65 @@ const EditAssignment = () => {
       toast({
         title: "Error",
         description: "There was an error updating the assignment.",
-        status: "error"
+        variant: "destructive",
       });
+    }
+  };
+
+  const handleAddExtendedDueDate = async () => {
+    if (selectedStudent && newDueDate) {
+      const response = await extendDeadlineForStudent(assignmentId, selectedStudent.studentId, newDueDate);
+      if (response.status === 'Success') {
+        if (extendedDueDates.find(entry => entry.userId === selectedStudent.studentId)) {
+          setExtendedDueDates(prev => prev.map(entry => entry.userId === selectedStudent.studentId ? { userId: selectedStudent.studentId, newDueDate } : entry));
+        } else {
+          setExtendedDueDates(prev => [...prev, { userId: selectedStudent.studentId, newDueDate }]);
+        }
+        setSelectedStudent("");
+        setNewDueDate(null);
+        toast({
+          title: "Extended Due Date Added",
+          description: "The due date has been successfully extended for the selected student.",
+          variant: "positive",
+        });
+      }
+    }
+  };
+
+  const handleDeleteExtendedDueDate = async (studentId) => {
+    if (confirmDelete === studentId) {
+      setConfirmDelete('');
+      const response = await deleteExtendedDeadlineForStudent(studentId, assignmentId);
+      if (response.status === 'Success') {
+        setExtendedDueDates(prev => prev.filter(entry => entry.userId !== studentId));
+        toast({
+          title: "Extended Due Date Removed",
+          description: "The extended due date has been successfully removed.",
+          variant: "positive",
+        });
+      }
+    } else {
+      setConfirmDelete(studentId);
     }
   };
 
   return (
     <div className='flex bg-white justify-left flex-row p-4'>
       <div>
-        <h2 className="text-xl font-semibold mb-4">Edit Assignment</h2>
+        <div className='flex items-center justify-between mb-4'>
+          <h2 className="text-xl font-semibold">Edit Assignment</h2>
+          <Button
+            variant='outline'
+            type='button'
+            className='bg-white text-primary'
+            onClick={() => {
+              setOpenExtendDeadlines(true);
+              setConfirmDelete('');
+            }}
+          >
+            Extend Deadlines
+          </Button>
+        </div>
         <form onSubmit={onSubmit} className="space-y-10">
           <div>
             <label htmlFor="title">Title</label>
@@ -311,9 +391,20 @@ const EditAssignment = () => {
             </div>
             <p className='text-sm text-slate-600 mt-3'>Attach any files related to the assignment (PDFs preferred).</p>
           </div>
-
           <Button type="submit" className='bg-primary text-white'>Update Assignment</Button>
         </form>
+        <ExtendDeadlinesDialog
+          assignmentId={assignmentId}
+          openExtendDeadlines={openExtendDeadlines}
+          setOpenExtendDeadlines={setOpenExtendDeadlines}
+          students={students}
+          extendedDueDates={extendedDueDates}
+          setExtendedDueDates={setExtendedDueDates}
+          extendDeadlineForStudent={extendDeadlineForStudent}
+          confirmDelete={confirmDelete}
+          setConfirmDelete={setConfirmDelete}
+          deleteExtendedDeadlineForStudent={deleteExtendedDeadlineForStudent}
+        />
       </div>
     </div>
   );

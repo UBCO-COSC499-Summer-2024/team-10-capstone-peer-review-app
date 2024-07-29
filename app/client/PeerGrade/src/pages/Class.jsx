@@ -164,8 +164,6 @@ const Class = () => {
 
   const renderContent = () => {
     switch (currentView) {
-      case "grades":
-        return <Grades classAssignments={assignments} classId={classId} />;
       case "people":
         return <People classId={classId} />;
       case "groups":
@@ -184,12 +182,6 @@ const Class = () => {
       default:
         return (
           <>
-            <Alert className="mb-6">
-              <AlertTitle>Recent Announcements</AlertTitle>
-              <AlertDescription>
-                No recent announcements
-              </AlertDescription>
-            </Alert>
             <Accordion 
             type="single" 
             collapsible
@@ -312,15 +304,6 @@ const Class = () => {
 							onClick={() => handleViewChange("assignments")}
 						>
 							Assignments
-						</MenubarTrigger>
-					</MenubarMenu>
-					<MenubarMenu>
-						<MenubarTrigger
-							isActive={currentView === "grades"}
-							className="cursor-pointer"
-							onClick={() => handleViewChange("grades")}
-						>
-							Grades
 						</MenubarTrigger>
 					</MenubarMenu>
 					<MenubarMenu>

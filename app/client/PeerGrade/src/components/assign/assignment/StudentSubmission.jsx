@@ -32,7 +32,7 @@ const Submission = ({ refresh }) => {
                 setRubric(rubricData.data);
 
                 if (!rubricData.data) {
-                    toast({ title: "No rubric Assigned", description: "No rubric found for this assignment", variant: "warning" });
+                    toast({ title: "No rubric assigned", description: "No rubric found for this assignment", variant: "warning" });
                 }
             } catch (error) {
                 console.error("Error fetching assignment details:", error);
@@ -197,7 +197,7 @@ const Submission = ({ refresh }) => {
                                 </TabsContent>
                                 <TabsContent value="text-submission">
                                     <div className="p-4 w-full bg-white border border-gray-300 rounded-md">
-                                        <h2 className="text-xl font-bold mb-4">Submit Your Text</h2>
+                                        <h2 className="text-xl font-bold mb-4">Submit Text</h2>
                                         <form onSubmit={handleTextSubmit}>
                                             <textarea
                                                 value={textSubmission}

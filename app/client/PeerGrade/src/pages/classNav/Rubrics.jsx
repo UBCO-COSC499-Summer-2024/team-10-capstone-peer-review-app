@@ -186,7 +186,7 @@ const Rubrics = () => {
                   <Trash2 className="h-4 w-4" /> <span className="ml-2">Delete Rubric</span>
                 </Button>
               </AlertDialogTrigger>
-              <AlertDialogContent className={confirmDeleteRubric ? "text-white bg-red-500 border-red-800" : ""}>
+              <AlertDialogContent className={confirmDeleteRubric ? "text-white bg-red-500 border-red-800 z-[2000]" : "z-[2000]"}>
                 <AlertDialogHeader>
                   <AlertDialogTitle>{confirmDeleteRubric ? "Confirm " : ""}Delete Rubric</AlertDialogTitle>
                   <AlertDialogDescription className={confirmDeleteRubric ? "text-white" : ""}>

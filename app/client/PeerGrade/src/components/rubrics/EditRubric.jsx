@@ -46,7 +46,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
     setEditedRubricData(prevData => ({
       ...prevData,
       criteria: prevData.criteria.map(c =>
-        c.id === criterionId ? { ...c, [field]: value } : c
+        c.criterionId === criterionId ? { ...c, [field]: value } : c
       )
     }));
     validateRubric();
@@ -70,7 +70,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
   const removeCriterion = (id) => {
     setEditedRubricData(prevData => ({
       ...prevData,
-      criteria: prevData.criteria.filter(c => c.id !== id)
+      criteria: prevData.criteria.filter(c => c.criterionId !== id)
     }));
     validateRubric();
   };
@@ -79,7 +79,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
     setEditedRubricData(prevData => ({
       ...prevData,
       criteria: prevData.criteria.map(c =>
-        c.id === criterionId
+        c.criterionId === criterionId
           ? {
             ...c,
             criterionRatings: [
@@ -97,7 +97,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
     setEditedRubricData(prevData => ({
       ...prevData,
       criteria: prevData.criteria.map(c =>
-        c.id === criterionId
+        c.criterionId === criterionId
           ? {
             ...c,
             criterionRatings: c.criterionRatings.filter((_, index) => index !== ratingIndex)
@@ -198,13 +198,13 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
             </TableHeader>
             <TableBody>
               {editedRubricData.criteria.map((criterion) => (
-                <TableRow key={criterion.id} className="border-b">
+                <TableRow key={criterion.criterionId} className="border-b">
                   <TableCell className="font-medium border-r p-0">
                     <div className="flex items-center justify-between p-2">
-                      {editing === `${criterion.id}-criteria` ? (
+                      {editing === `${criterion.criterionId}-criteria` ? (
                         <Input
                           value={criterion.title}
-                          onChange={(e) => handleEdit(criterion.id, 'title', e.target.value)}
+                          onChange={(e) => handleEdit(criterion.criterionId, 'title', e.target.value)}
                           onBlur={() => setEditing(null)}
                           autoFocus
                           placeholder="Enter criteria"
@@ -215,7 +215,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
                           <Button
                             variant="ghost"
                             size="icon"
-                            onClick={() => setEditing(`${criterion.id}-criteria`)}
+                            onClick={() => setEditing(`${criterion.criterionId}-criteria`)}
                           >
                             <Pencil className="h-4 w-4" />
                           </Button>
@@ -229,7 +229,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
                         <div key={index} className="flex-1 border-r last:border-r-0 relative px-6">
                           <div className="flex flex-col py-2">
                             <div className="flex items-center justify-between mb-2">
-                              {editing === `${criterion.id}-rating-points-${index}` ? (
+                              {editing === `${criterion.criterionId}-rating-points-${index}` ? (
                                 <Input
                                   type="number"
                                   min="0"
@@ -238,7 +238,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
                                   onChange={(e) => {
                                     const newRatings = [...criterion.criterionRatings];
                                     newRatings[index].points = e.target.value;
-                                    handleEdit(criterion.id, 'criterionRatings', newRatings);
+                                    handleEdit(criterion.criterionId, 'criterionRatings', newRatings);
                                   }}
                                   onBlur={() => setEditing(null)}
                                   autoFocus
@@ -251,21 +251,21 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
                                     variant="ghost"
                                     size="icon"
                                     className="h-6 w-6"
-                                    onClick={() => setEditing(`${criterion.id}-rating-points-${index}`)}
+                                    onClick={() => setEditing(`${criterion.criterionId}-rating-points-${index}`)}
                                   >
                                     <Pencil className="h-3 w-3" />
                                   </Button>
                                 </div>
                               )}
                             </div>
-                            {editing === `${criterion.id}-rating-${index}` ? (
+                            {editing === `${criterion.criterionId}-rating-${index}` ? (
                               <Input
                                 className="w-full text-sm"
                                 value={rating.description}
                                 onChange={(e) => {
                                   const newRatings = [...criterion.criterionRatings];
                                   newRatings[index].description = e.target.value;
-                                  handleEdit(criterion.id, 'criterionRatings', newRatings);
+                                  handleEdit(criterion.criterionId, 'criterionRatings', newRatings);
                                 }}
                                 onBlur={() => setEditing(null)}
                                 autoFocus
@@ -278,7 +278,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
                                   variant="ghost"
                                   size="icon"
                                   className="h-6 w-6 flex-shrink-0"
-                                  onClick={() => setEditing(`${criterion.id}-rating-${index}`)}
+                                  onClick={() => setEditing(`${criterion.criterionId}-rating-${index}`)}
                                 >
                                   <Pencil className="h-3 w-3" />
                                 </Button>
@@ -290,7 +290,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
                               variant="ghost"
                               size="icon"
                               className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 h-6 w-6 rounded-full bg-red-100 border border-destructive border-dashed"
-                              onClick={() => removeRating(criterion.id, index)}
+                              onClick={() => removeRating(criterion.criterionId, index)}
                             >
                               <Minus className="h-3 w-3 text-destructive" />
                             </Button>
@@ -300,7 +300,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
                               variant="ghost"
                               size="icon"
                               className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full h-6 w-6 rounded-full bg-green-100 border border-success border-dashed"
-                              onClick={() => addRating(criterion.id)}
+                              onClick={() => addRating(criterion.criterionId)}
                             >
                               <Plus className="h-3 w-3 text-green-500" />
                             </Button>
@@ -319,7 +319,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
                       variant="ghost"
                       size="icon"
                       className="h-full w-full bg-red-100 p-2"
-                      onClick={() => removeCriterion(criterion.id)}
+                      onClick={() => removeCriterion(criterion.criterionId)}
                     >
                       <Trash2 className="h-4 w-4 text-destructive" />
                     </Button>

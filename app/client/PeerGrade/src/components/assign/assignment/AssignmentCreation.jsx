@@ -344,7 +344,7 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
             {(newRubricData || formData.rubricId) && (
               <Button
                 type="button"
-                variant="link"
+                variant='outline'
                 className="text-sm hover:bg-slate-100 m-2 p-1"
                 onClick={resetRubric}
               >

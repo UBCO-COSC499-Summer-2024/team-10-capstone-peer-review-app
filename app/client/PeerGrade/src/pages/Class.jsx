@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Pencil, CheckCircle, Clock, Trash2, ChevronRight } from "lucide-react";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,6 +34,7 @@ const Class = () => {
   const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
   const [editingCategory, setEditingCategory] = useState(null);
+  const [confirmDeleteCategory, setConfirmDeleteCategory] = useState(false);
   const { toast } = useToast();
   const { user, userLoading } = useUser();
   const { classes } = useClass();
@@ -102,22 +103,27 @@ const Class = () => {
   };
 
   const handleDeleteCategory = async (categoryId) => {
-    try {
-      const response = await deleteCategory(categoryId);
-      if (response.status === "Success") {
+    if (confirmDeleteCategory) {
+      setConfirmDeleteCategory(false);
+      try {
+        const response = await deleteCategory(categoryId);
+        if (response.status === "Success") {
+          toast({
+            title: "Success",
+            description: "Category deleted successfully",
+            variant: "default",
+          });
+          fetchClassData();
+        }
+      } catch (error) {
         toast({
-          title: "Success",
-          description: "Category deleted successfully",
-          variant: "default",
+          title: "Error",
+          description: error.message || "Failed to delete category",
+          variant: "destructive",
         });
-        fetchClassData();
       }
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to delete category",
-        variant: "destructive",
-      });
+    } else {
+      setConfirmDeleteCategory(true);
     }
   };
 
@@ -214,23 +220,26 @@ const Class = () => {
                               variant="ghost"
                               size="sm"
                               className="bg-destructive/60 mr-2"
-                              onClick={(e) => e.stopPropagation()}
+                              onClick={(e) => {
+                                setConfirmDeleteCategory(false);
+                                e.stopPropagation();
+                              }}
                             >
                               <Trash2 className="h-4 w-4 text-primary" />
                             </Button>
                           </AlertDialogTrigger>
-                          <AlertDialogContent>
+                          <AlertDialogContent className={confirmDeleteCategory ? "text-white bg-red-500 border-red-800" : ""}>
                             <AlertDialogHeader>
-                              <AlertDialogTitle>Are you sure you want to delete this category?</AlertDialogTitle>
-                              <AlertDialogDescription>
+                              <AlertDialogTitle>Are you {confirmDeleteCategory ? "really " : ""}sure you want to delete this category?</AlertDialogTitle>
+                              <AlertDialogDescription className={confirmDeleteCategory ? "text-white" : ""}>
                                 This action cannot be undone. This will permanently delete the category and all its contents.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction onClick={() => handleDeleteCategory(category.categoryId)}>
+                              <AlertDialogCancel className={confirmDeleteCategory ? "text-black" : ""}>Cancel</AlertDialogCancel>
+                              <Button onClick={() => handleDeleteCategory(category.categoryId)}>
                                 Delete
-                              </AlertDialogAction>
+                              </Button>
                             </AlertDialogFooter>
                           </AlertDialogContent>
                         </AlertDialog>

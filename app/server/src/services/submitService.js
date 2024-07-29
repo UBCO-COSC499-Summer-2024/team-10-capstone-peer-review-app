@@ -189,6 +189,7 @@ const createSubmission = async (studentId, assignmentId, submissionFilePath) => 
                 classes: true,
                 groups: true,
                 extendedDueDates: true,
+                submissions: true
             }
         });
 
@@ -199,6 +200,10 @@ const createSubmission = async (studentId, assignmentId, submissionFilePath) => 
         const extendedDueDate = student.extendedDueDates.find(d => d.assignmentId === assignmentId);
         if (assignment.dueDate < new Date() && (!extendedDueDate || extendedDueDate.newDueDate < new Date())) {
             throw new apiError("Assignment is overdue", 400);
+        }
+
+        if (assignment.maxSubmissions <= student.submissions?.filter(s => s.assignmentId === assignmentId).length) {
+            throw new apiError("Max submissions reached", 400);
         }
 
         if (assignment.isGroup) {

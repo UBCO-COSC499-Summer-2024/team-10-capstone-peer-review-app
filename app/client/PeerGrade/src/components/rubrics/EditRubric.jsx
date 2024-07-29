@@ -46,7 +46,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
     setEditedRubricData(prevData => ({
       ...prevData,
       criteria: prevData.criteria.map(c =>
-        c.id === criterionId ? { ...c, [field]: value } : c
+        c.criterionId === criterionId ? { ...c, [field]: value } : c
       )
     }));
     validateRubric();
@@ -70,7 +70,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
   const removeCriterion = (id) => {
     setEditedRubricData(prevData => ({
       ...prevData,
-      criteria: prevData.criteria.filter(c => c.id !== id)
+      criteria: prevData.criteria.filter(c => c.criterionId !== id)
     }));
     validateRubric();
   };
@@ -79,7 +79,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
     setEditedRubricData(prevData => ({
       ...prevData,
       criteria: prevData.criteria.map(c =>
-        c.id === criterionId
+        c.criterionId === criterionId
           ? {
             ...c,
             criterionRatings: [
@@ -97,7 +97,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
     setEditedRubricData(prevData => ({
       ...prevData,
       criteria: prevData.criteria.map(c =>
-        c.id === criterionId
+        c.criterionId === criterionId
           ? {
             ...c,
             criterionRatings: c.criterionRatings.filter((_, index) => index !== ratingIndex)

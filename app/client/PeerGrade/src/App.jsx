@@ -13,12 +13,11 @@ import Class from "./pages/Class";
 import EditClass from "./components/class/EditClass";
 import AssignmentCreation from "./components/assign/assignment/AssignmentCreation";
 import Assignment from "./pages/Assignment";
-import AssignedPR from "./pages/AssignedPR";
 import PeerReview from "./pages/Reviews";
 import Settings from "./pages/Settings";
 import AppNavbar from "./components/global/Navbar";
 import ManageClass from "./pages/ManageClass";
-import ManageReviews from "./pages/ManageReviews";
+import ViewAllReviews from "./pages/ViewAllReviews";
 import Submission from "./components/assign/assignment/StudentSubmission";
 import StudentEnrollmentRequests from "./pages/StudentEnrollmentRequests";
 import Report from "./pages/Report";
@@ -31,7 +30,7 @@ import NotFound from "./components/global/NotFound";
 import SubmitReview from "./pages/SubmitReview";
 import TitleUpdater from "@/utils/TitleUpdater";
 import { Toaster } from "@/components/ui/toaster";
-import ManageAssignmentReviews from "./components/instructorReview/ManageAssignmentReviews";
+import ManageGradesAndReviews from "./components/instructorReview/ManageGradesAndReviews";
 
 function App() {
 	return (
@@ -151,7 +150,7 @@ function MainLayout() {
 							path="/viewSubmission/:submissionId"
 							element={
 								<ProtectedRoute
-									element={<AssignedPR />}
+									element={<ViewAllReviews />}
 									allowedRoles={["STUDENT", "INSTRUCTOR", "ADMIN"]}
 								/>
 							}
@@ -166,19 +165,10 @@ function MainLayout() {
 							}
 						/>
 						<Route
-							path="/manage-reviews"
+							path="/manage-grades-and-reviews"
 							element={
 								<ProtectedRoute
-									element={<ManageReviews />}
-									allowedRoles={["INSTRUCTOR", "ADMIN"]}
-								/>
-							}
-						/>
-						<Route
-							path="/manage-reviews2"
-							element={
-								<ProtectedRoute
-									element={<ManageAssignmentReviews />}
+									element={<ManageGradesAndReviews />}
 									allowedRoles={["INSTRUCTOR", "ADMIN"]}
 								/>
 							}

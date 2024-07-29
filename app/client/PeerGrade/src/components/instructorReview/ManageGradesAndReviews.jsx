@@ -55,7 +55,6 @@ import {
 	TooltipProvider,
 	TooltipTrigger
 } from "@/components/ui/tooltip";
-import { Link, Navigate } from "react-router-dom";
 
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { useClass } from "@/contexts/contextHooks/useClass";
@@ -68,8 +67,9 @@ import { getRubricsForAssignment } from "@/api/rubricApi";
 import ViewSubmissionDialog from "@/components/assign/assignment/submission/ViewSubmissionDialog";
 import GradeSubmissionDialog from "@/components/assign/assignment/submission/GradeSubmissionDialog";
 import ReviewDetailsDialog from "@/components/assign/assignment/submission/ReviewDetailsDialog";
+import ViewAllPeerReviewsDialog from "@/components/instructorReview/ViewAllPeerReviewsDialog";
 
-const ManageAssignmentReviewsAndSubmissions = () => {
+const ManageGradesAndReviews = () => {
 	const { user } = useUser();
 	const { classes, loading: classLoading } = useClass();
 	const [assignments, setAssignments] = useState([]);
@@ -91,6 +91,12 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 	const [gradeDialogOpen, setGradeDialogOpen] = useState(false);
 	const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
 	const [selectedSubmissionId, setSelectedSubmissionId] = useState(null);
+	const [viewAllPeerReviewsDialogOpen, setViewAllPeerReviewsDialogOpen] =
+		useState(false);
+	const [
+		selectedSubmissionForPeerReviews,
+		setSelectedSubmissionForPeerReviews
+	] = useState(null);
 
 	useEffect(() => {
 		if (selectedClass) {
@@ -179,6 +185,8 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 		const currentDate = new Date();
 		const assignmentDueDate = new Date(dueDate);
 		return currentDate > assignmentDueDate;
+		// comment this in to test
+		// return true;
 	};
 
 	const handleAssignReviewers = async (submission) => {
@@ -255,6 +263,11 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 				variant: "destructive"
 			});
 		}
+	};
+
+	const handleViewAllPeerReviews = (submissionId) => {
+		setSelectedSubmissionForPeerReviews(submissionId);
+		setViewAllPeerReviewsDialogOpen(true);
 	};
 
 	const handleAutoAssignPeerReviews = async () => {
@@ -444,7 +457,7 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 	return (
 		<Card className="w-full">
 			<CardHeader>
-				<CardTitle>Manage Assignment Reviews and Submissions</CardTitle>
+				<CardTitle>Manage Grades and Reviews</CardTitle>
 			</CardHeader>
 			<CardContent>
 				<div className="flex space-x-4 mb-4">
@@ -722,7 +735,7 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 																				"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
 																		)}
 																	>
-																		View Instructor Grade
+																		View Grade
 																	</Button>
 																	<Button
 																		variant="outline"
@@ -744,30 +757,28 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 																	>
 																		Assign Reviewers
 																	</Button>
-																	<Link>
-																		<Button
-																			variant="outline"
-																			size="sm"
-																			// onClick={() =>
-																			// 	handleAssignReviewers(
-																			// 		student.submission
-																			// 	)
-																			// }
-																			disabled={
-																				!isDueDatePassed(
-																					selectedAssignment.dueDate
-																				)
-																			}
-																			className={cn(
-																				!isDueDatePassed(
-																					selectedAssignment.dueDate
-																				) &&
-																					"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
-																			)}
-																		>
-																			View Peer Reviews
-																		</Button>
-																	</Link>
+																	<Button
+																		variant="outline"
+																		size="sm"
+																		onClick={() =>
+																			handleViewAllPeerReviews(
+																				student.submission.submissionId
+																			)
+																		}
+																		disabled={
+																			!isDueDatePassed(
+																				selectedAssignment.dueDate
+																			)
+																		}
+																		className={cn(
+																			!isDueDatePassed(
+																				selectedAssignment.dueDate
+																			) &&
+																				"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
+																		)}
+																	>
+																		View Peer Reviews
+																	</Button>
 																</div>
 															</TableCell>
 														</TableRow>
@@ -866,8 +877,13 @@ const ManageAssignmentReviewsAndSubmissions = () => {
 				open={reviewDialogOpen}
 				onClose={() => setReviewDialogOpen(false)}
 			/>
+			<ViewAllPeerReviewsDialog
+				submissionId={selectedSubmissionForPeerReviews}
+				open={viewAllPeerReviewsDialogOpen}
+				onClose={() => setViewAllPeerReviewsDialogOpen(false)}
+			/>
 		</Card>
 	);
 };
 
-export default ManageAssignmentReviewsAndSubmissions;
+export default ManageGradesAndReviews;

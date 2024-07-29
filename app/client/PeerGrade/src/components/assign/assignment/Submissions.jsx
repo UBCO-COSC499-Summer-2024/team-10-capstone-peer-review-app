@@ -35,9 +35,16 @@ import {
 	DialogTitle,
 	DialogFooter
 } from "@/components/ui/dialog";
+import { Info } from "lucide-react";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger
+} from "@/components/ui/tooltip";
 import MultiSelect from "@/components/ui/MultiSelect";
 
-const Submissions = () => {
+const Submissions = (assignment) => {
 	const { user } = useUser();
 	const { assignmentId, classId } = useParams();
 	const [studentsWithSubmissions, setStudentsWithSubmissions] = useState([]);
@@ -381,6 +388,12 @@ const Submissions = () => {
 		setReviewDialogOpen(true);
 	};
 
+	const isDueDatePassed = () => {
+		const currentDate = new Date();
+		const assignmentDueDate = new Date(assignment.assignment.dueDate);
+		return currentDate > assignmentDueDate;
+	};
+
 	// Filter students based on search term
 	const filteredStudents = studentsWithSubmissions.filter((student) =>
 		student.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -407,6 +420,25 @@ const Submissions = () => {
 					/>
 				</div>
 				<CardContent>
+					<TooltipProvider>
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<div className="flex items-center mb-4 text-yellow-800 bg-yellow-100 p-2 rounded">
+									<Info className="h-4 w-4 mr-2" />
+									<span>
+										Some actions are disabled until the assignment due date has
+										passed.
+									</span>
+								</div>
+							</TooltipTrigger>
+							<TooltipContent>
+								<p>
+									Grading, viewing grades, and assigning reviewers are only
+									available after the due date.
+								</p>
+							</TooltipContent>
+						</Tooltip>
+					</TooltipProvider>
 					<Accordion type="single" collapsible className="w-full">
 						{filteredStudents.map((student, index) => (
 							<AccordionItem value={`item-${index}`} key={student.userId}>
@@ -469,6 +501,11 @@ const Submissions = () => {
 																			onClick={() =>
 																				handleGradeAssignment(submission)
 																			}
+																			disabled={!isDueDatePassed()}
+																			className={cn(
+																				!isDueDatePassed() &&
+																					"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
+																			)}
 																		>
 																			{submission.finalGrade !== null
 																				? "Re-grade"
@@ -482,6 +519,11 @@ const Submissions = () => {
 																					submission.submissionId
 																				)
 																			}
+																			disabled={!isDueDatePassed()}
+																			className={cn(
+																				!isDueDatePassed() &&
+																					"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
+																			)}
 																		>
 																			View Grades
 																		</Button>
@@ -491,6 +533,11 @@ const Submissions = () => {
 																			onClick={() =>
 																				handleAssignReviewers(submission)
 																			}
+																			disabled={!isDueDatePassed()}
+																			className={cn(
+																				!isDueDatePassed() &&
+																					"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
+																			)}
 																		>
 																			Assign Reviewers
 																		</Button>

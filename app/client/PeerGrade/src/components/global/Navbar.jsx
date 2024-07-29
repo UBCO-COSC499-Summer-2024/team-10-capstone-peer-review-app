@@ -239,8 +239,8 @@ export default function AppNavbar() {
 												))}
 												{/* TODO: make this instructors only*/}
 												<ListItem
-													title="Manage Reviews"
-													href="/manage-reviews"
+													title="Manage Grades and Reviews"
+													href="/manage-grades-and-reviews"
 													className="w-full bg-blue-100"
 													onItemClick={() => setIsPeerReviewSheetOpen(false)}
 												>

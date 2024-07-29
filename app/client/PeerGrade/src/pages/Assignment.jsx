@@ -254,14 +254,21 @@ const Assignment = () => {
 							<EditAssignment assignment={assignment} />
 						</TabsContent>
 						<TabsContent value="submissions">
-							<Submissions assignmentId={assignmentId} />
+							<Submissions
+								assignmentId={assignmentId}
+								assignment={assignment}
+							/>
 						</TabsContent>
 					</>
 				)}
 
 				{!(user.role === "INSTRUCTOR") && (
 					<TabsContent value="submission">
-						<Submission assignmentId={assignmentId} refresh={refreshToggle} />
+						<Submission
+							assignmentId={assignmentId}
+							refresh={refreshToggle}
+							assignment={assignment}
+						/>
 					</TabsContent>
 				)}
 			</Tabs>

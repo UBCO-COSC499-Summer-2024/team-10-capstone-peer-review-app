@@ -41,8 +41,7 @@ const EditAssignment = () => {
   const [value, setValue] = useState("");
   const fileInputRef = useRef(null);
   const [selectedRubric, setSelectedRubric] = useState("");
-  
-  const fileInputRef = useRef(null);
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -238,9 +237,22 @@ const EditAssignment = () => {
   return (
     <div className='flex bg-white justify-left flex-row p-4'>
       <div>
-        <h2 className="text-xl font-semibold mb-4">Edit Assignment</h2>
+        <div className='flex items-center justify-between mb-4'>
+          <h2 className="text-xl font-semibold">Edit Assignment</h2>
+          <Button
+            variant='outline'
+            type='button'
+            className='bg-white text-primary'
+            onClick={() => {
+              setOpenExtendDeadlines(true);
+              setConfirmDelete('');
+            }}
+          >
+            Extend Deadlines
+          </Button>
+        </div>
         <form onSubmit={onSubmit} className="space-y-10">
-          <div className='flex items-center justify-between'>
+          <div>
             <label htmlFor="title">Title</label>
             <Input 
               id="title" 
@@ -250,16 +262,6 @@ const EditAssignment = () => {
               placeholder="e.g. Assignment #1" 
               className={errors.title ? "border-red-500" : ""}
             />
-            <Button
-              variant='outline'
-              className='bg-white text-primary'
-              onClick={() => {
-                setOpenExtendDeadlines(true);
-                setConfirmDelete('');
-              }}
-            >
-              Extend Deadlines
-            </Button>
             {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
           </div>
 

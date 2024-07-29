@@ -197,7 +197,7 @@ const Submission = ({ refresh }) => {
                                 </TabsContent>
                                 <TabsContent value="text-submission">
                                     <div className="p-4 w-full bg-white border border-gray-300 rounded-md">
-                                        <h2 className="text-xl font-bold mb-4">Submit Your Text</h2>
+                                        <h2 className="text-xl font-bold mb-4">Submit Text</h2>
                                         <form onSubmit={handleTextSubmit}>
                                             <textarea
                                                 value={textSubmission}

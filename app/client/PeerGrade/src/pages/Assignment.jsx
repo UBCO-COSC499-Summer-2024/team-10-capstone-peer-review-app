@@ -188,12 +188,12 @@ const Assignment = () => {
   }, [assignmentId, selectedStudentForChat]);
 
   const handleStudentSelect = (student) => {
-	setIsTransitioning(true);
-	setTimeout(() => {
-	  setSelectedStudentForChat(student);
-	  setSelectedStudent(student ? student.student.userId : null);
-	  setIsTransitioning(false);
-	}, 300);
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setSelectedStudentForChat(student);
+      setSelectedStudent(student ? student.student.userId : null);
+      setIsTransitioning(false);
+    }, 300);
   };
 
   const handleBackClick = () => {
@@ -212,9 +212,6 @@ const Assignment = () => {
   const refreshToggle = () => {
     setRefresh(!refresh);
   };
-
-
-  
   
   const handleAddComment = async () => {
 	if (!newComment.trim()) {
@@ -364,10 +361,11 @@ const renderInstructorComments = () => {
                   onChange={(e) => setNewComment(e.target.value)}
                   placeholder="Add a comment..."
                 />
-				<Button onClick={handleAddComment} disabled={!newComment.trim()}>Send</Button>
+				        <Button onClick={handleAddComment} disabled={!newComment.trim()}>Send</Button>
               </div>
-			  <Button 
-                onClick={() => handleStudentSelect(null)} 
+			        <Button 
+                // onClick={() => handleStudentSelect(null)} // Animation for going back to student selection was a bit buggy
+                onClick={() => window.location.reload()}
                 variant="outline" 
                 className="mt-4"
               >

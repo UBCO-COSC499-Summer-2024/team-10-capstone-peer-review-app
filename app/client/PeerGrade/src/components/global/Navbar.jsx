@@ -211,7 +211,7 @@ export default function AppNavbar() {
 											onClick={() => setIsPeerReviewSheetOpen(true)}
 										>
 											<ClipboardList className="w-5 h-5 mb-1" />
-											Reviews
+											Grades & Reviews
 										</Button>
 									</SheetTrigger>
 									<SheetContent

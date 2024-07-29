@@ -6,8 +6,11 @@ import {
   getAssignmentInClass,
   getAllAssignments,
   getAllAssignmentsByClassId,
+  addAssignmentWithRubric
 
 } from "../controllers/assignController.js";
+
+import { addComment, getComments } from "../controllers/commentController.js";
 
 import { ensureUser, ensureInstructor, ensureAdmin, ensureInstructorOrAdmin } from "../middleware/ensureUserTypes.js";
 
@@ -32,5 +35,12 @@ router.route("/get-assignment")
 router.route("/get-class-assignments")
   .post(ensureUser, getAllAssignmentsByClassId);
 
+router.route("/add-assignment-with-rubric")
+  .post(ensureUser, ensureInstructorOrAdmin, addAssignmentWithRubric);
+
+
+router.route("/:assignmentId/comments")
+  .get(ensureUser, getComments)
+  .post(ensureUser, addComment);
 
 export default router;

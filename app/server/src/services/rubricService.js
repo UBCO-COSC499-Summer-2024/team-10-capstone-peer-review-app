@@ -166,17 +166,17 @@ const updateRubricsForAssignment = async (rubricId, updateData) => {
             data: {
                 title: updateData.title,
                 description: updateData.description,
-                totalMarks: updateData.totalMarks,
+                totalMarks: parseInt(updateData.totalMarks, 10),
                 criteria: {
                     deleteMany: {},
                     create: updateData.criteria.map(criterion => ({
                         title: criterion.title,
-                        minMark: criterion.minPoints,
-                        maxMark: criterion.maxPoints,
+                        minMark: parseInt(criterion.minMark, 10) || 0,
+                        maxMark: parseInt(criterion.maxMark, 10) || criterion.criterionRatings.reduce((sum, rating) => sum + parseInt(rating.points, 10), 0),
                         criterionRatings: {
                             create: criterion.criterionRatings.map(rating => ({
-                                description: rating.text,
-                                points: rating.points
+                                description: rating.description || '',
+                                points: parseInt(rating.points, 10)
                             }))
                         }
                     }))
@@ -444,9 +444,41 @@ const createCriterionRating = async (criterionId, ratingData) => {
 	}
 };
 
-//add update and delete and get crieterion rating here
+const linkRubricToAssignments = async (rubricId, assignmentIds) => {
+    try {
+        if (!Array.isArray(assignmentIds) || assignmentIds.length === 0) {
+            throw new apiError("Invalid or empty assignment IDs provided", 400);
+        }
 
-// criterion grade operations
+        const rubric = await prisma.rubric.findUnique({
+            where: { rubricId: rubricId }
+        });
+
+        if (!rubric) {
+            throw new apiError("Rubric not found", 404);
+        }
+
+        const updates = await prisma.assignment.updateMany({
+            where: {
+                assignmentId: {
+                    in: assignmentIds
+                }
+            },
+            data: {
+                rubricId: rubricId
+            }
+        });
+
+        return { 
+            message: "Rubric linked to assignments successfully",
+            updatedCount: updates.count
+        };
+    } catch (error) {
+        console.error("Error in linkRubricToAssignments:", error);
+        throw new apiError(`Failed to link rubric to assignments: ${error.message}`, 500);
+    }
+};
+
 
 export default {
 	createRubricsForAssignment,
@@ -456,10 +488,11 @@ export default {
 	getRubricById,
 	updateRubricsForAssignment,
 	deleteRubricsFromAssignment,
-
 	createCriterionForRubric,
 	getCriterionForRubric,
 	updateCriterionForRubric,
 	deleteCriterionForRubric,
-	createCriterionRating
+	createCriterionRating,
+
+	linkRubricToAssignments,
 };

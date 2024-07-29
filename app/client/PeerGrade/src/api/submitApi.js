@@ -47,12 +47,18 @@ export const createSubmission = async (studentId, assignmentId, file) => {
         'Content-Type': 'multipart/form-data',
       },
     });
-    console.log('response:', response);
 
-    showStatusToast({
-      status: 'Success',
-      message: 'Submission created successfully.'
-    });
+    if (response.data.status === 'Success') {
+      showStatusToast({
+        status: 'Success',
+        message: 'Submission created successfully.'
+      });
+    } else {
+      showStatusToast({
+        status: 'Error',
+        message: response.data.message || 'Failed to create submission.'
+      });
+    }
 
     return response.data;
   } catch (error) {

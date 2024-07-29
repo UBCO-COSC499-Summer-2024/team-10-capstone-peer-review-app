@@ -1,241 +1,220 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from "@/components/ui/button";
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
-import { Badge } from '@/components/ui/badge';
-import MultiSelect from '@/components/ui/MultiSelect';
-import { addRubricToAssignment, getAllRubrics, linkRubricToAssignment } from '@/api/rubricApi';
-import { useUser } from "@/contexts/contextHooks/useUser";
-import { useToast } from "@/components/ui/use-toast";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { Pencil, Trash2, Plus, Minus } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Plus, Minus, Pencil, Trash2, RefreshCw  } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 
-const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
-  const [isCreateDrawerOpen, setIsCreateDrawerOpen] = useState(false);
-  const [selectedAssignments, setSelectedAssignments] = useState([]);
-  const [newRubricData, setNewRubricData] = useState({
+const RubricCreationForm = ({ onRubricChange, isOpen, setIsOpen, resetTrigger, disabled }) => {
+  const [rubricData, setRubricData] = useState({
     title: "",
     description: "",
+    selectedAssignments: [],
     criteria: [{
       id: 1,
       criteria: "",
-      points: "",
       ratings: [{ text: "", points: "" }]
     }]
   });
   const [isValid, setIsValid] = useState(false);
-  const [editing, setEditing] = useState(null);
   const [hasNegativePoints, setHasNegativePoints] = useState(false);
+  const [editing, setEditing] = useState(null);
 
-  const { user } = useUser();
-  const { toast } = useToast();
 
   useEffect(() => {
-    if (!isCreateDrawerOpen) {
-      fetchRubrics();
+    if (resetTrigger) {
+      clearForm();
+      setIsOpen(false); // This will close the drawer
     }
-  }, [isCreateDrawerOpen]);
+  }, [resetTrigger]);
 
+  const initialRubricData = {
+    title: "",
+    description: "",
+    selectedAssignments: [],
+    criteria: [{
+      id: 1,
+      criteria: "",
+      ratings: [{ text: "", points: "" }]
+    }]
+  };
+
+  const clearForm = () => {
+    setRubricData(initialRubricData);
+    setEditing(null);
+    setIsValid(false);
+    setHasNegativePoints(false);
+    onRubricChange(initialRubricData);
+  };
+
+  
   useEffect(() => {
     validateRubric();
-  }, [newRubricData, selectedAssignments]);
+  }, [rubricData]);
+  
 
-  const fetchRubrics = async () => {
-    try {
-      const response = await getAllRubrics();
-      if (response.data && Array.isArray(response.data.data)) {
-        onRubricCreated(response.data.data);
-      }
-    } catch (error) {
-      console.error('Error fetching rubrics:', error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch updated rubrics",
-        variant: "destructive"
-      });
-    }
-  };
-
-  const handleCreateRubric = async () => {
-    if (selectedAssignments.length === 0) {
-      toast({
-        title: "Error",
-        description: "Please select at least one assignment",
-        variant: "destructive"
-      });
-      return;
-    }
-  
-    const formattedRubricData = {
-      title: newRubricData.title,
-      description: newRubricData.description,
-      totalMarks: newRubricData.criteria.reduce((total, criterion) =>
-        total + Math.max(...criterion.ratings.map(rating => parseFloat(rating.points) || 0), 0),
-      0),
-      classId: classId,
-      criterion: newRubricData.criteria.map(criterion => ({
-        title: criterion.criteria,
-        minPoints: 0,
-        maxPoints: Math.max(...criterion.ratings.map(rating => parseFloat(rating.points) || 0), 0),
-        criterionRatings: criterion.ratings.map(rating => ({
-          text: rating.text,
-          points: parseFloat(rating.points) || 0
-        }))
-      }))
-    };
-  
-    try {
-      // Create a single rubric
-      const createdRubric = await addRubricToAssignment({
-        userId: user.userId,
-        assignmentId: selectedAssignments[0],
-        rubricData: formattedRubricData
-      });
-  
-      console.log('Rubric created:', createdRubric);
-  
-      // Link the created rubric to all other selected assignments
-      if (selectedAssignments.length > 1) {
-        await linkRubricToAssignment(createdRubric.data.rubricId, selectedAssignments.slice(1));
-      }
-  
-      console.log('Rubric linked to all selected assignments');
-      toast({
-        title: "Success",
-        description: "Rubric created and linked to selected assignments",
-        variant: "info"
-      });
-  
-      onRubricCreated(createdRubric.data);
-      setIsCreateDrawerOpen(false);
-      setNewRubricData({
-        title: "",
-        description: "",
-        criteria: [{
-          id: 1,
-          criteria: "",
-          points: "",
-          ratings: [{ text: "", points: "" }]
-        }]
-      });
-      setSelectedAssignments([]);
-      fetchRubrics(); // Refresh the rubrics list
-    } catch (error) {
-      console.error('Error creating rubric:', error);
-      toast({
-        title: "Error",
-        description: "Failed to create rubric",
-        variant: "destructive"
-      });
-    }
-  };
-
-  const handleAssignmentSelection = (selectedValues) => {
-    console.log('Selected assignments:', selectedValues);
-    setSelectedAssignments(selectedValues);
-  };
-
-  const handleEdit = (id, field, value) => {
-    setNewRubricData(prevData => ({
-      ...prevData,
-      criteria: prevData.criteria.map(c =>
-        c.id === id ? { ...c, [field]: value } : c
-      )
-    }));
+  const handleChange = (field, value) => {
+    setRubricData(prev => {
+      const newData = { ...prev, [field]: value };
+      onRubricChange(newData);
+      return newData;
+    });
   };
 
   const addCriterion = () => {
-    setNewRubricData(prevData => ({
-      ...prevData,
-      criteria: [
-        ...prevData.criteria,
-        {
-          id: prevData.criteria.length + 1,
-          criteria: "",
-          points: "",
-          ratings: [{ text: "", points: "" }]
-        }
-      ]
-    }));
+    setRubricData(prev => {
+      const newData = {
+        ...prev,
+        criteria: [
+          ...prev.criteria,
+          {
+            id: prev.criteria.length + 1,
+            criteria: "",
+            ratings: [{ text: "", points: "" }]
+          }
+        ]
+      };
+      onRubricChange(newData);
+      return newData;
+    });
   };
 
   const removeCriterion = (id) => {
-    setNewRubricData(prevData => ({
-      ...prevData,
-      criteria: prevData.criteria.filter(c => c.id !== id)
-    }));
+    setRubricData(prev => {
+      const newData = {
+        ...prev,
+        criteria: prev.criteria.filter(c => c.id !== id)
+      };
+      onRubricChange(newData);
+      return newData;
+    });
   };
 
+  const addRating = (criterionId) => {
+    setRubricData(prev => {
+      const newData = {
+        ...prev,
+        criteria: prev.criteria.map(c =>
+          c.id === criterionId
+            ? { ...c, ratings: [...c.ratings, { text: "", points: "" }] }
+            : c
+        )
+      };
+      onRubricChange(newData);
+      return newData;
+    });
+  };
+
+  const removeRating = (criterionId, ratingIndex) => {
+    setRubricData(prev => {
+      const newData = {
+        ...prev,
+        criteria: prev.criteria.map(c =>
+          c.id === criterionId
+            ? { ...c, ratings: c.ratings.filter((_, i) => i !== ratingIndex) }
+            : c
+        )
+      };
+      onRubricChange(newData);
+      return newData;
+    });
+  };
+
+  const handleEdit = (criterionId, field, value, ratingIndex = null) => {
+    setRubricData(prev => {
+      const newData = {
+        ...prev,
+        criteria: prev.criteria.map(c =>
+          c.id === criterionId
+            ? ratingIndex !== null
+              ? {
+                  ...c,
+                  ratings: c.ratings.map((r, i) =>
+                    i === ratingIndex ? { ...r, [field]: value } : r
+                  )
+                }
+              : { ...c, [field]: value }
+            : c
+        )
+      };
+      onRubricChange(newData);
+      return newData;
+    });
+  };
+
+ 
   const validateRubric = () => {
-    const isValid = newRubricData.title.trim() !== "" &&
-      newRubricData.criteria.length > 0 &&
-      newRubricData.criteria.every(criterion =>
+    const isValid = rubricData.title.trim() !== "" &&
+      rubricData.criteria.length > 0 &&
+      rubricData.criteria.every(criterion =>
         criterion.criteria.trim() !== "" &&
         criterion.ratings.length > 0 &&
         criterion.ratings.every(rating =>
           rating.text.trim() !== "" && !isNaN(parseFloat(rating.points)) && parseFloat(rating.points) >= 0
         )
-      ) &&
-      selectedAssignments.length > 0;
+      );
+    
+    console.log("Validation result:", isValid);
+    console.log("Rubric data:", rubricData);
+    
     setIsValid(isValid);
   
-    const hasNegative = newRubricData.criteria.some(criterion =>
+    const hasNegative = rubricData.criteria.some(criterion =>
       criterion.ratings.some(rating => parseFloat(rating.points) < 0)
     );
     setHasNegativePoints(hasNegative);
+    
+    console.log("Has negative points:", hasNegative);
   };
 
-  const addRating = (criterionId, index) => {
-    setNewRubricData(prevData => ({
-      ...prevData,
-      criteria: prevData.criteria.map(c =>
-        c.id === criterionId
-          ? {
-            ...c, ratings: [
-              ...c.ratings.slice(0, index + 1),
-              { text: "", points: "" },
-              ...c.ratings.slice(index + 1)
-            ]
-          }
-          : c
-      )
-    }));
+  const handleSaveRubric = () => {
+    onRubricChange(rubricData);
+    setIsOpen(false);
+  };
+
+  const getTriggerText = () => {
+    if (rubricData.title) {
+      const words = rubricData.title.split(' ');
+      return words.length > 1 ? `${words[0]}...` : rubricData.title;
+    }
+    return "Create New Rubric";
   };
 
   return (
-    <>
-      <Button onClick={() => setIsCreateDrawerOpen(true)} className="w-full mb-4">Add a Rubric</Button>
-      <Drawer open={isCreateDrawerOpen} onOpenChange={setIsCreateDrawerOpen}>
-        <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>Create a Rubric</DrawerTitle>
-          </DrawerHeader>
-          <div className="p-4 max-h-[85vh] z-[70] overflow-y-auto">
-            <div className='mb-4'>
-              <Input
-                placeholder="Rubric Title"
-                value={newRubricData.title}
-                onChange={(e) => setNewRubricData(prev => ({ ...prev, title: e.target.value }))}
-                className="mb-2"
-              />
-              <Input
-                placeholder="Rubric Description"
-                value={newRubricData.description}
-                onChange={(e) => setNewRubricData(prev => ({ ...prev, description: e.target.value }))}
-              />
-            </div>
-            <div className='mb-8'>
-              <h3 className="text-md mb-2">Select Assignments</h3>
-              <MultiSelect
-                options={assignments.map(assignment => ({
-                  value: assignment.assignmentId,
-                  label: assignment.title
-                }))}
-                value={selectedAssignments}
-                onChange={handleAssignmentSelection}
-              />
-            </div>
-            <div className="p-4 bg-slate-200 rounded-t-md">
+    <Drawer open={isOpen} onOpenChange={setIsOpen}>
+      <DrawerTrigger asChild>
+        <Button onClick={() => setIsOpen(true)} disabled={disabled}>
+          {getTriggerText()}
+        </Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader className="flex justify-between items-center">
+          <DrawerTitle>Create a Rubric</DrawerTitle>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={clearForm}
+            className="flex items-center"
+          >
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Clear Form
+          </Button>
+        </DrawerHeader>
+        <div className="p-4 max-h-[80vh] z-[70] overflow-y-auto">
+
+          <div className="space-y-4">
+            <Input
+              placeholder="Rubric Title"
+              value={rubricData.title}
+              onChange={(e) => handleChange('title', e.target.value)}
+            />
+            <Input
+              placeholder="Rubric Description"
+              value={rubricData.description}
+              onChange={(e) => handleChange('description', e.target.value)}
+            />
+            <div className="p-4 bg-gray-100 rounded-md">
               <h4 className="font-semibold mb-2">How to use this table:</h4>
               <ul className="text-sm space-y-2">
                 <li className="flex items-center">
@@ -250,7 +229,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
                 <li className="flex items-center">
                   <Trash2 className="h-4 w-4 mr-2 text-destructive" /> Remove a criterion
                 </li>
-                <li><Badge variant="outline" className="bg-warning ">Important</Badge> You must fill out all the fields in order to submit the rubric! </li>
+                <li><Badge variant="outline" className="bg-warning">Important</Badge> You must fill out all the fields in order to submit the rubric!</li>
                 <li className="flex items-center"><Badge variant="outline" className="bg-red-200 text-destructive mr-1">Negative</Badge> Points are not allowed</li>
               </ul>
             </div>
@@ -264,7 +243,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {newRubricData.criteria.map((criterion) => (
+                {rubricData.criteria.map((criterion) => (
                   <TableRow key={criterion.id} className="border-b">
                     <TableCell className="font-medium border-r p-0">
                       <div className="flex items-center justify-between p-2">
@@ -302,11 +281,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
                                     min="0"
                                     className="w-12 text-sm"
                                     value={rating.points}
-                                    onChange={(e) => {
-                                      const newRatings = [...criterion.ratings];
-                                      newRatings[index].points = e.target.value;
-                                      handleEdit(criterion.id, 'ratings', newRatings);
-                                    }}
+                                    onChange={(e) => handleEdit(criterion.id, 'points', e.target.value, index)}
                                     onBlur={() => setEditing(null)}
                                     autoFocus
                                     placeholder="Pts"
@@ -329,11 +304,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
                                 <Input
                                   className="w-full text-sm"
                                   value={rating.text}
-                                  onChange={(e) => {
-                                    const newRatings = [...criterion.ratings];
-                                    newRatings[index].text = e.target.value;
-                                    handleEdit(criterion.id, 'ratings', newRatings);
-                                  }}
+                                  onChange={(e) => handleEdit(criterion.id, 'text', e.target.value, index)}
                                   onBlur={() => setEditing(null)}
                                   autoFocus
                                   placeholder="Enter description"
@@ -354,23 +325,22 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
                             </div>
                             {index > 0 && (
                               <Button
+                                type="button"
                                 variant="ghost"
                                 size="icon"
                                 className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 h-6 w-6 rounded-full bg-red-100 border border-destructive border-dashed"
-                                onClick={() => {
-                                  const newRatings = criterion.ratings.filter((_, i) => i !== index);
-                                  handleEdit(criterion.id, 'ratings', newRatings);
-                                }}
+                                onClick={() => removeRating(criterion.id, index)}
                               >
                                 <Minus className="h-3 w-3 text-destructive" />
                               </Button>
                             )}
                             {index === criterion.ratings.length - 1 && (
                               <Button
+                                type="button"
                                 variant="ghost"
                                 size="icon"
-                                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full h-6 w-6 rounded-full  bg-green-100 border border-success border-dashed"
-                                onClick={() => addRating(criterion.id, index)}
+                                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full h-6 w-6 rounded-full bg-green-100 border border-success border-dashed"
+                                onClick={() => addRating(criterion.id)}
                               >
                                 <Plus className="h-3 w-3 text-green-500" />
                               </Button>
@@ -386,6 +356,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
                     </TableCell>
                     <TableCell className="p-0">
                       <Button
+                        type="button"
                         variant="ghost"
                         size="icon"
                         className="h-full w-full bg-red-100 p-2"
@@ -399,6 +370,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
                 <TableRow>
                   <TableCell colSpan={4} className="p-0">
                     <Button
+                      type="button"
                       variant="ghost"
                       className="w-full h-12 border border-success border-dashed bg-green-50"
                       onClick={addCriterion}
@@ -409,12 +381,12 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
                 </TableRow>
               </TableBody>
             </Table>
-            <Button onClick={handleCreateRubric} disabled={!isValid || hasNegativePoints} className="mt-4">Save Rubric</Button>
+            <Button onClick={handleSaveRubric} disabled={!isValid || hasNegativePoints}>Save Rubric</Button>
           </div>
-        </DrawerContent>
-      </Drawer>
-    </>
+        </div>
+      </DrawerContent>
+    </Drawer>
   );
 };
 
-export default CreateRubric;
+export default RubricCreationForm;

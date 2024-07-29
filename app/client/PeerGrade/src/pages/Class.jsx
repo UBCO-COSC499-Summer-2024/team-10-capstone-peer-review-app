@@ -193,17 +193,17 @@ const Class = () => {
             <Accordion 
             type="single" 
             collapsible
-            className="w-full bg-muted p-4 rounded-lg"
+            className="w-full bg-muted px-6 py-2 rounded-lg space-y-2"
             value={openAccordion}
             onValueChange={(value) => setOpenAccordion(value)}
           >
             {categories.map((category) => (
-              <AccordionItem value={category.categoryId} key={category.categoryId}>
+              <AccordionItem value={category.categoryId} key={category.categoryId} className='border-none'>
                 <AccordionTrigger className="text-lg font-semibold">
                   <div className="flex justify-between w-full">
                     <span>{category.name}</span>
                     {(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (
-                      <div className="flex gap-2">
+                      <div className="flex">
                         <Button
                           variant="ghost"
                           size="sm"

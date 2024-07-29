@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from "@/components/ui/card";
 import { Button } from '@/components/ui/button';
@@ -16,12 +16,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import ViewSubmissionDialog from '@/components/assign/assignment/submission/ViewSubmissionDialog';
 import { getStudentSubmission, getStudentSubmissionForAssignment } from '@/api/submitApi';
-
-
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { addCommentToAssignment, getCommentsForAssignment } from '@/api/commentApi';
+import { Input } from '@/components/ui/input';
 
 const NonPDFFileDownload = ({ url, fileName }) => {
   const fileType = url.split('.').pop().toUpperCase();
-
   return (
     <div className="flex w-full flex-col items-center justify-center p-8 border-2 border-dashed rounded-lg">
       <FileText className="w-16 h-16 mb-4 text-gray-400" />
@@ -40,6 +40,7 @@ const NonPDFFileDownload = ({ url, fileName }) => {
 
 
 const Assignment = () => {
+ 
   const { user, userLoading } = useUser();
   const { classId, assignmentId } = useParams();
   const [assignment, setAssignment] = useState(null);
@@ -47,7 +48,17 @@ const Assignment = () => {
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
   const [selectedSubmission, setSelectedSubmission] = useState(null);
   const [refresh, setRefresh] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState('');
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [selectedStudentForChat, setSelectedStudentForChat] = useState(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const navigate = useNavigate();
+  const scrollAreaRef = useRef(null);
+  const selectedStudentIdRef = useRef(null);
+
+
+  const isPDF = assignment?.assignmentFilePath?.toLowerCase().endsWith('.pdf') || false;
 
   useEffect(() => {
     const fetchAssignment = async () => {
@@ -62,34 +73,132 @@ const Assignment = () => {
         });
       }
     };
+
     const fetchSubmissions = async () => {
-      try {
-        const fetchedSubmissions = await getStudentSubmissionForAssignment(user.userId, assignmentId);
-        setSubmissions(fetchedSubmissions.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
-        console.log("subbys",submissions);
-      } catch (error) {
-        toast({
-          title: "Error",
-          description: "Failed to fetch submissions data",
-          variant: "destructive",
-        });
+      if (user.role === 'STUDENT') {
+        try {
+          const fetchedSubmissions = await getStudentSubmissionForAssignment(user.userId, assignmentId);
+          setSubmissions(fetchedSubmissions.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+        } catch (error) {
+          toast({
+            title: "Error",
+            description: "Failed to fetch submissions data",
+            variant: "destructive",
+          });
+        }
       }
     };
 
-    fetchAssignment();
-    if (user.role === 'STUDENT') {
+    if (!userLoading) {
+      fetchAssignment();
       fetchSubmissions();
     }
   }, [user, userLoading, classId, assignmentId, refresh]);
 
-  if (userLoading || !assignment) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>;
-  }
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const fetchedComments = await getCommentsForAssignment(assignmentId);
+        setComments(fetchedComments.data);
+        
+        // Update selectedStudentForChat if it exists and is still selected
+        if (selectedStudentIdRef.current) {
+          const updatedStudent = fetchedComments.data.find(
+            chain => chain.student.userId === selectedStudentIdRef.current
+          );
+          if (updatedStudent) {
+            setSelectedStudentForChat(prevState => {
+              if (prevState && prevState.student.userId === selectedStudentIdRef.current) {
+                return updatedStudent;
+              }
+              return prevState;
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch comments:", error);
+      }
+    };
+  
+    fetchComments(); // Initial fetch
+  
+    const intervalId = setInterval(fetchComments, 10000); // Fetch every 10 seconds
+  
+    return () => clearInterval(intervalId); // Clean up on unmount
+  }, [assignmentId]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [comments]);
+
+  const scrollToBottom = () => {
+    if (scrollAreaRef.current) {
+      const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+      if (scrollElement) {
+        scrollElement.scrollTop = scrollElement.scrollHeight;
+      }
+    }
+  };
+
+  useEffect(() => {
+	const fetchComments = async () => {
+	  try {
+		const fetchedComments = await getCommentsForAssignment(assignmentId);
+		setComments(fetchedComments.data);
+	  } catch (error) {
+		console.error("Failed to fetch comments:", error);
+	  }
+	};
+  
+	fetchComments(); // Initial fetch
+  
+	const intervalId = setInterval(fetchComments, 10000); // Fetch every 10 seconds
+  
+	return () => clearInterval(intervalId); // Clean up on unmount
+  }, [assignmentId]);
+
+
+
+
+  useEffect(() => {
+	const fetchComments = async () => {
+	  try {
+		const fetchedComments = await getCommentsForAssignment(assignmentId);
+		setComments(fetchedComments.data);
+		
+		// Update selectedStudentForChat if it exists
+		if (selectedStudentForChat) {
+		  const updatedStudent = fetchedComments.data.find(
+			chain => chain.student.userId === selectedStudentForChat.student.userId
+		  );
+		  if (updatedStudent) {
+			setSelectedStudentForChat(updatedStudent);
+		  }
+		}
+	  } catch (error) {
+		console.error("Failed to fetch comments:", error);
+	  }
+	};
+  
+	fetchComments(); // Initial fetch
+  
+	const intervalId = setInterval(fetchComments, 10000); // Fetch every 10 seconds
+  
+	return () => clearInterval(intervalId); // Clean up on unmount
+  }, [assignmentId, selectedStudentForChat]);
+
+  const handleStudentSelect = (student) => {
+	setIsTransitioning(true);
+	setTimeout(() => {
+	  setSelectedStudentForChat(student);
+	  setSelectedStudent(student ? student.student.userId : null);
+	  setIsTransitioning(false);
+	}, 300);
+  };
 
   const handleBackClick = () => {
     navigate(`/class/${classId}`);
   };
-
 
   const handleDownload = (submission) => {
       const link = document.createElement("a");
@@ -104,7 +213,174 @@ const Assignment = () => {
     setRefresh(!refresh);
   };
 
-  const isPDF = assignment?.assignmentFilePath?.toLowerCase().endsWith('.pdf') || false;
+
+  
+  
+  const handleAddComment = async () => {
+	if (!newComment.trim()) {
+	  return; // Don't send empty comments
+	}
+  
+	try {
+	  const studentId = user.role === 'STUDENT' ? user.userId : (selectedStudentForChat?.student.userId);
+	  if (!studentId) {
+		toast({
+		  title: "Error",
+		  description: "No student selected for comment",
+		  variant: "destructive",
+		});
+		return;
+	  }
+	  const addedComment = await addCommentToAssignment(assignmentId, newComment.trim(), studentId);
+	  setComments(prevComments => {
+		if (user.role === 'STUDENT') {
+		  return [...prevComments, addedComment.data];
+		} else {
+		  return prevComments.map(chain => 
+			chain.student.userId === studentId 
+			  ? { ...chain, comments: [...chain.comments, addedComment.data] }
+			  : chain
+		  );
+		}
+	  });
+	  
+	  // Update the selectedStudentForChat with the new comment
+	  if (selectedStudentForChat) {
+		setSelectedStudentForChat(prevState => ({
+		  ...prevState,
+		  comments: [...prevState.comments, addedComment.data]
+		}));
+	  }
+  
+	  setNewComment('');
+      setTimeout(scrollToBottom, 100); // Scroll to bottom after a short delay to ensure the new comment is rendered
+  } catch (error) {
+	  toast({
+		title: "Error",
+		description: error.response?.data?.message || "Failed to add comment",
+		variant: "destructive",
+	  });
+	}
+  };
+
+  if (userLoading || !assignment) {
+    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+  }
+ 
+
+  const renderStudentComments = () => (
+    <Card className="bg-card">
+      <CardHeader>
+        <CardTitle className="text-lg font-semibold">Comments</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <ScrollArea className="h-[300px] mb-4" ref={scrollAreaRef}>
+          {comments.map((comment) => (
+            <div key={comment.commentId} className={`flex items-start space-x-2 mb-4 ${comment.user.role === 'INSTRUCTOR' ? 'justify-end' : 'justify-start'}`}>
+              <div className={`flex flex-col ${comment.user.role === 'INSTRUCTOR' ? 'items-end' : 'items-start'}`}>
+                <div className="flex items-center space-x-2 mb-1">
+                  <Avatar className="h-6 w-6">
+                    <AvatarFallback className="text-xs">{`${comment.user.firstname[0]}${comment.user.lastname[0]}`}</AvatarFallback>
+                  </Avatar>
+                  <p className="text-sm font-semibold">{`${comment.user.firstname} ${comment.user.lastname}`}</p>
+                </div>
+                <div className={`bg-slate-100 rounded-lg p-2 max-w-[80%] ${comment.user.role === 'INSTRUCTOR' ? 'rounded-tr-none' : 'rounded-tl-none'}`}>
+                  <p className="text-sm">{comment.content}</p>
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">{new Date(comment.createdAt).toLocaleString()}</p>
+              </div>
+            </div>
+          ))}
+        </ScrollArea>
+        <div className="flex space-x-2">
+          <Input
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            placeholder="Add a comment..."
+          />
+          <Button onClick={handleAddComment} disabled={!newComment.trim()}>Send</Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  
+
+const renderInstructorComments = () => {
+  const studentsWithComments = comments.length > 0 ? comments : [{ student: { userId: 'default', firstname: 'No', lastname: 'Students' }, comments: [] }];
+
+  return (
+    <Card className="bg-card">
+      <CardHeader>
+        <CardTitle className="text-lg font-semibold">Student Comments</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className={`transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
+          {!selectedStudentForChat ? (
+            <div className="flex flex-wrap justify-center gap-4">
+              {studentsWithComments.map(chain => (
+                <div
+                  key={chain.student.userId}
+                  className="cursor-pointer transform transition-transform duration-200 hover:scale-105 active:scale-95"
+                  onClick={() => handleStudentSelect(chain)}
+                >
+                  <Card className="flex flex-col min-w-[300px] justify-center items-center text-center p-3">
+                    <Avatar className="mx-auto mb-2">
+                      <AvatarFallback>{`${chain.student.firstname[0]}${chain.student.lastname[0]}`}</AvatarFallback>
+                    </Avatar>
+                    <p className="font-semibold">{`${chain.student.firstname} ${chain.student.lastname}`}</p>
+                  </Card>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div>
+             
+			 <ScrollArea className="h-[300px] mb-4" ref={scrollAreaRef}>
+                {selectedStudentForChat.comments.length > 0 ? (
+                  selectedStudentForChat.comments.map((comment) => (
+                    <div key={comment.commentId} className={`flex items-start space-x-2 mb-4 ${comment.user.role === 'INSTRUCTOR' ? 'justify-end' : 'justify-start'}`}>
+                      <div className={`flex flex-col ${comment.user.role === 'INSTRUCTOR' ? 'items-end' : 'items-start'}`}>
+                        <div className="flex items-center space-x-2 mb-1">
+                          <Avatar className="h-6 w-6">
+                            <AvatarFallback className="text-xs">{`${comment.user.firstname[0]}${comment.user.lastname[0]}`}</AvatarFallback>
+                          </Avatar>
+                          <p className="text-sm font-semibold">{`${comment.user.firstname} ${comment.user.lastname}`}</p>
+                        </div>
+                        <div className={`bg-slate-100 rounded-lg p-2 max-w-[80%] ${comment.user.role === 'INSTRUCTOR' ? 'rounded-tr-none' : 'rounded-tl-none'}`}>
+                          <p className="text-sm">{comment.content}</p>
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-1">{new Date(comment.createdAt).toLocaleString()}</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p>No comments yet.</p>
+                )}
+              </ScrollArea>
+              <div className="flex space-x-2">
+                <Input
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  placeholder="Add a comment..."
+                />
+				<Button onClick={handleAddComment} disabled={!newComment.trim()}>Send</Button>
+              </div>
+			  <Button 
+                onClick={() => handleStudentSelect(null)} 
+                variant="outline" 
+                className="mt-4"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Students
+              </Button>
+            </div>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
 
 
   return (
@@ -215,20 +491,8 @@ const Assignment = () => {
               </Card>
               }
               
-              <Card className="bg-card">
-                <CardHeader>
-                  <CardTitle className="text-lg font-semibold">Comments</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ScrollArea className="h-[200px]">
-                    <p className="text-muted-foreground">No comments yet.</p>
-                  </ScrollArea>
-                </CardContent>
-                <CardFooter>
-                  <Button className="w-full">Add Comment</Button>
-                </CardFooter>
-              </Card>
-              
+			  {user.role === 'STUDENT' ? renderStudentComments() : renderInstructorComments()}
+  
              
             </div>
           </div>

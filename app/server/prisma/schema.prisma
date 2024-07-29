@@ -35,8 +35,10 @@ model User {
   notifications     Notification[]    @relation("ReceiverNotifications")
   sentNotifications Notification[]    @relation("SenderNotifications")
   GroupSubmission   GroupSubmission[]
-  reports           Report[]        @relation("ReportReceiver")
-  sentReports       Report[]        @relation("ReportSender")
+  reports           Report[]          @relation("ReportReceiver")
+  sentReports       Report[]          @relation("ReportSender")
+  commentChains     CommentChain[]    @relation("StudentCommentChains")
+  comments          Comment[]
 }
 
 model Class {
@@ -83,7 +85,10 @@ model Assignment {
   rubric             Rubric?        @relation(fields: [rubricId], references: [rubricId])
   submissions        Submission[]
   reviewOption       String?
+  commentChains       CommentChain[]
+
 }
+
 
 // Group Models
 
@@ -115,6 +120,28 @@ model Submission {
   submitterGroup     Group?            @relation(fields: [submitterGroupId], references: [groupId])
   reviews            Review[]
   GroupSubmission    GroupSubmission[]
+}
+
+model CommentChain {
+  commentChainId String    @id @default(uuid())
+  assignmentId   String
+  studentId      String
+  assignment     Assignment @relation(fields: [assignmentId], references: [assignmentId], onDelete: Cascade)
+  student        User       @relation("StudentCommentChains", fields: [studentId], references: [userId])
+  comments       Comment[]
+
+  @@unique([assignmentId, studentId])
+}
+
+model Comment {
+  commentId      String      @id @default(uuid())
+  commentChainId String
+  userId         String
+  content        String
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  commentChain   CommentChain @relation(fields: [commentChainId], references: [commentChainId], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 
 model GroupSubmission {

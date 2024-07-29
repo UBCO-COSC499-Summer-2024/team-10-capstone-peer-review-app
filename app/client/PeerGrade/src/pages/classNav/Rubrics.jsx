@@ -34,6 +34,7 @@ const Rubrics = () => {
   const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
   const [rubricToEdit, setRubricToEdit] = useState(null);
   const [editDrawerKey, setEditDrawerKey] = useState(0); // Add this line
+  const [confirmDeleteRubric, setConfirmDeleteRubric] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -61,13 +62,18 @@ const Rubrics = () => {
   };
 
   const handleDeleteRubric = async () => {
-    try {
-      await deleteRubricsFromAssignment(rubricToDelete.rubricId);
-      await fetchData(); // Wait for the data to be fetched
-      setIsDrawerOpen(false);
-      setIsAlertDialogOpen(false);
-    } catch (error) {
-      console.error('Error deleting rubric:', error);
+    if (confirmDeleteRubric) {
+      setConfirmDeleteRubric(false);
+      try {
+        await deleteRubricsFromAssignment(rubricToDelete.rubricId);
+        await fetchData(); // Wait for the data to be fetched
+        setIsDrawerOpen(false);
+        setIsAlertDialogOpen(false);
+      } catch (error) {
+        console.error('Error deleting rubric:', error);
+      }
+    } else {
+      setConfirmDeleteRubric(true);
     }
   };
 
@@ -171,6 +177,7 @@ const Rubrics = () => {
                 <Button 
                   onClick={() => {
                     setRubricToDelete(selectedRubric);
+                    setConfirmDeleteRubric(false);
                     setIsAlertDialogOpen(true);
                   }} 
                   variant="destructive"
@@ -179,20 +186,18 @@ const Rubrics = () => {
                   <Trash2 className="h-4 w-4" /> <span className="ml-2">Delete Rubric</span>
                 </Button>
               </AlertDialogTrigger>
-              <AlertDialogContent>
+              <AlertDialogContent className={confirmDeleteRubric ? "text-white bg-red-500 border-red-800" : ""}>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Confirm Delete</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    Are you sure you want to delete this rubric? This action cannot be undone.
+                  <AlertDialogTitle>{confirmDeleteRubric ? "Confirm " : ""}Delete Rubric</AlertDialogTitle>
+                  <AlertDialogDescription className={confirmDeleteRubric ? "text-white" : ""}>
+                    Are you {confirmDeleteRubric ? "really " : ""}sure you want to delete this rubric? This action cannot be undone.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel asChild>
-                    <Button variant="outline">Cancel</Button>
+                    <Button variant="outline" className={confirmDeleteRubric ? "text-black" : ""}>Cancel</Button>
                   </AlertDialogCancel>
-                  <AlertDialogAction asChild>
-                    <Button variant="destructive" onClick={handleDeleteRubric}>Delete</Button>
-                  </AlertDialogAction>
+                  <Button variant="destructive" onClick={handleDeleteRubric}>Delete</Button>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>

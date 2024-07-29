@@ -17,8 +17,6 @@ const ViewAllReviews = () => {
 	const [loading, setLoading] = useState(true);
 	const navigate = useNavigate();
 
-	const isInstructor = user.role === "INSTRUCTOR";
-
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -109,18 +107,16 @@ const ViewAllReviews = () => {
 
 			<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 				<div className="lg:col-span-2">
-					{instructorReview ? (
+					{user.role !== "INSTRUCTOR" && instructorReview ? (
 						<Card className="mb-6 border border-slate-200 hover:shadow-lg transition-shadow duration-300">
 							<CardHeader className="bg-slate-50">
 								<CardTitle className="text-primary">
-									Instructor Review
+									Instructor Review: {instructorReview.reviewer.firstname}{" "}
+									{instructorReview.reviewer.lastname}
 								</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<ReviewComponent
-									review={instructorReview}
-									isInstructor={true}
-								/>
+								<ReviewComponent review={instructorReview} />
 							</CardContent>
 						</Card>
 					) : (
@@ -139,7 +135,9 @@ const ViewAllReviews = () => {
 							>
 								<CardHeader className="bg-slate-50">
 									<CardTitle className="text-primary">
-										Peer Review {index + 1}
+										{!review.submission.assignment.isPeerReviewAnonymous
+											? `Peer Review for ${review.reviewer.firstname} ${review.reviewer.lastname}`
+											: `Peer Review ${index + 1}`}
 									</CardTitle>
 								</CardHeader>
 								<CardContent>

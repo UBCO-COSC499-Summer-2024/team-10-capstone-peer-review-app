@@ -35,8 +35,8 @@ model User {
   notifications     Notification[]    @relation("ReceiverNotifications")
   sentNotifications Notification[]    @relation("SenderNotifications")
   GroupSubmission   GroupSubmission[]
-  reports           Report[]        @relation("ReportReceiver")
-  sentReports       Report[]        @relation("ReportSender")
+  reports           Report[]          @relation("ReportReceiver")
+  sentReports       Report[]          @relation("ReportSender")
 }
 
 model Class {
@@ -67,22 +67,23 @@ model UserInClass {
 }
 
 model Assignment {
-  assignmentId       String         @id @default(uuid())
-  classId            String
-  rubricId           String?
-  title              String
-  description        String?
-  dueDate            DateTime
-  maxSubmissions     Int            @default(1)
-  isGroupAssignment  Boolean        @default(false)
-  assignmentType     SubmissionType @default(URL)
-  assignmentFilePath String?
-  classes            Class          @relation(fields: [classId], references: [classId], onDelete: Cascade)
-  categoryId         String? // Add this line
-  category           Category?      @relation(fields: [categoryId], references: [categoryId]) // Add this line
-  rubric             Rubric?        @relation(fields: [rubricId], references: [rubricId])
-  submissions        Submission[]
-  reviewOption       String?
+  assignmentId          String         @id @default(uuid())
+  classId               String
+  rubricId              String?
+  title                 String
+  description           String?
+  dueDate               DateTime
+  maxSubmissions        Int            @default(1)
+  isGroupAssignment     Boolean        @default(false)
+  isPeerReviewAnonymous Boolean        @default(false)
+  assignmentType        SubmissionType @default(URL)
+  assignmentFilePath    String?
+  classes               Class          @relation(fields: [classId], references: [classId], onDelete: Cascade)
+  categoryId            String? // Add this line
+  category              Category?      @relation(fields: [categoryId], references: [categoryId]) // Add this line
+  rubric                Rubric?        @relation(fields: [rubricId], references: [rubricId])
+  submissions           Submission[]
+  reviewOption          String?
 }
 
 // Group Models
@@ -238,18 +239,18 @@ model Category {
 }
 
 model Report {
-  reportId       String   @id @default(uuid())
-  senderId       String
-  receiverRole   String
-  receiverId     String?
-  title          String   @default("No title")
-  content        String   @default("No report contents")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  isResolved     Boolean  @default(false)
-  
-  receiver       User?    @relation("ReportReceiver", fields: [receiverId], references: [userId], onDelete: Cascade)
-  sender         User     @relation("ReportSender", fields: [senderId], references: [userId], onDelete: Cascade)
+  reportId     String   @id @default(uuid())
+  senderId     String
+  receiverRole String
+  receiverId   String?
+  title        String   @default("No title")
+  content      String   @default("No report contents")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  isResolved   Boolean  @default(false)
+
+  receiver User? @relation("ReportReceiver", fields: [receiverId], references: [userId], onDelete: Cascade)
+  sender   User  @relation("ReportSender", fields: [senderId], references: [userId], onDelete: Cascade)
 }
 
 enum UserRole {

@@ -122,7 +122,8 @@ const ViewAllPeerReviewsDialog = ({ submissionId, open, onClose }) => {
 							{peerReviews.map((review, index) => (
 								<Card key={index} className="mb-6">
 									<CardHeader>
-										{isInstructor ? (
+										{isInstructor ||
+										!review.submission.assignment.isPeerReviewAnonymous ? (
 											<CardTitle>
 												{review.reviewer.firstname} {review.reviewer.lastname}
 											</CardTitle>
@@ -131,10 +132,7 @@ const ViewAllPeerReviewsDialog = ({ submissionId, open, onClose }) => {
 										)}
 									</CardHeader>
 									<CardContent>
-										<ReviewComponent
-											review={review}
-											isInstructor={isInstructor}
-										/>
+										<ReviewComponent review={review} />
 									</CardContent>
 								</Card>
 							))}

@@ -11,7 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardTitle, CardContent } from "@/components/ui/card";
 
-const ReviewComponent = ({ review, isInstructor = false }) => {
+const ReviewComponent = ({ review }) => {
 	if (!review) {
 		console.warn("Review data is missing", review);
 		return <div>No review data available</div>;

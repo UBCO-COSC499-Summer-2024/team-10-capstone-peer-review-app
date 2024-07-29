@@ -20,7 +20,7 @@ const GradeSubmissionDialog = ({
 	onGradeSubmit
 }) => (
 	<Dialog open={open} onOpenChange={onClose}>
-		<DialogContent className="max-w-4xl h-[80vh]">
+		<DialogContent className="max-w-lg h-[80vh] overflow-hidden flex flex-col">
 			<DialogHeader>
 				<DialogTitle>Grade Assignment</DialogTitle>
 			</DialogHeader>

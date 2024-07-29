@@ -1,7 +1,7 @@
 import React from "react";
 import {
 	Dialog,
-	DialogContent,
+	LargeDialogContent,
 	DialogHeader,
 	DialogTitle
 } from "@/components/ui/dialog";
@@ -23,7 +23,7 @@ const ViewSubmissionDialog = ({
 	onDownload
 }) => (
 	<Dialog open={open} onOpenChange={onClose}>
-		<DialogContent className="max-w-2xl h-[80vh] ml-[80px]">
+		<LargeDialogContent className="w-full h-[90vh]">
 			<DialogHeader>
 				<DialogTitle className="flex justify-between items-center">
 					Submission View
@@ -50,14 +50,14 @@ const ViewSubmissionDialog = ({
 			</DialogHeader>
 			<div className="flex-1 overflow-x-hidden">
 				{submission && (
-					<PDFViewer url={submission.submissionFilePath} scale="1" />
+					<PDFViewer url={submission.submissionFilePath} scale="2" />
 				)}
 			</div>
 			{/* <Button onClick={() => onDownload(submission)}>
                 <Download className="h-4 w-4 mr-1" />
                 Download
             </Button> */}
-		</DialogContent>
+		</LargeDialogContent>
 	</Dialog>
 );
 

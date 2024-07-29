@@ -11,7 +11,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 // Reused Prisma queries
 
 async function checkUserByEmail(email) {
-	return await prisma.user.findUnique({ where: { email } });
+	return await prisma.user.findUnique({ where: { email } } );
 }
 
 async function checkRequestByEmail(email) {
@@ -450,7 +450,10 @@ export async function getCurrentUser(email) {
 					password: false,
 					firstname: true,
 					lastname: true,
-					role: true
+					role: true,
+					extendedDueDates: true,
+					notifications: true,
+					sentReports: true
 				}
 			});
 			return userInfo;

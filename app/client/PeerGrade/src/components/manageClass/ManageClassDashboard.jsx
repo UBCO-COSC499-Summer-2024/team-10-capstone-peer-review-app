@@ -100,7 +100,8 @@ const ManageClassDashboard = () => {
             );
             toast({
               title: "Success",
-              description: "Assignment deleted successfully"
+              description: "Assignment deleted successfully",
+              variant: "positive"
             });
           } else {
             throw new Error(response.message);
@@ -164,6 +165,24 @@ const ManageClassDashboard = () => {
     }
   }, [user, students]);
 
+  const handleDeleteStudent = async (student) => {
+    const result = await removeStudentFromClass(classId, student.userId);
+    if (result.status === "Success") {
+      setStudents(students.filter(s => s.userId !== student.userId));
+      toast({
+        title: "Success",
+        description: "Student removed from class",
+        variant: "positive"
+      });
+    } else {
+      toast({
+        title: "Error",
+        description: "Failed to remove student",
+        variant: "destructive"
+      });
+    }
+  };
+  
   const handleAddStudents = async (e) => {
     e.preventDefault();
     if (selectedStudents.length > 0) {

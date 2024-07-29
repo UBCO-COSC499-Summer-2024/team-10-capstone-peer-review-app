@@ -176,6 +176,27 @@ export const getCriterionGrade = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+
+export const linkRubricToAssignments = asyncErrorHandler(async (req, res) => {
+    const { rubricId, assignmentIds } = req.body;
+    if (!rubricId || !assignmentIds) {
+        return res.status(400).json({
+            status: "Error",
+            message: "Invalid input: rubricId and assignmentIds are required"
+        });
+    }
+    
+    const assignmentIdsArray = Array.isArray(assignmentIds) ? assignmentIds : [assignmentIds];
+    
+    const result = await rubricService.linkRubricToAssignments(rubricId, assignmentIdsArray);
+    return res.status(200).json({
+        status: "Success",
+        message: "Rubric successfully linked to assignments",
+        data: result,
+    });
+});
+
+
 // Export all controller methods
 export default {
 	addRubricsToAssignment,
@@ -196,4 +217,6 @@ export default {
 	updateCriterionGrade,
 	getCriterionGrade,
 	addCriterionRating,
+
+	linkRubricToAssignments,
 };

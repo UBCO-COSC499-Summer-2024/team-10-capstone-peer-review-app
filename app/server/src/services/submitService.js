@@ -159,146 +159,130 @@ const getStudentSubmissionForAssignment = async (studentId, assignmentId) => {
 };
 
 const getSubmissionsForAssignment = async (assignmentId) => {
-	try {
-		const assignment = await prisma.submission.findMany({
-			where: {
-				assignmentId: assignmentId
-			},
-			include: {
-				submitter: true
-			}
-		});
+    try {
+        const assignment = await prisma.submission.findMany({
+            where: {
+                assignmentId: assignmentId
+            }
+        });
 
-		return assignment;
-	} catch (error) {
-		throw new apiError("Failed to retrieve assignment", 500);
-	}
-};
+        return assignment;
+    } catch (error) {
+        throw new apiError("Failed to retrieve assignment", 500);
+    }
+}
 
-const createSubmission = async (
-	studentId,
-	assignmentId,
-	submissionFilePath
-) => {
-	try {
-		let submitterGroupId, submitterId;
-		const assignment = await prisma.assignment.findFirst({
-			where: {
-				assignmentId: assignmentId
-			}
-		});
+const createSubmission = async (studentId, assignmentId, submissionFilePath) => {
+    try {
+        let submitterGroupId, submitterId;
+        const assignment = await prisma.assignment.findFirst({
+            where: {
+                assignmentId: assignmentId
+            }
+        });
 
-		const student = await prisma.user.findFirst({
-			where: {
-				userId: studentId,
-				role: "STUDENT"
-			},
-			include: {
-				classes: true,
-				groups: true
-			}
-		});
+        const student = await prisma.user.findFirst({
+            where: {
+                userId: studentId,
+                role: "STUDENT"
+            }, include: {
+                classes: true,
+                groups: true,
+                extendedDueDates: true,
+            }
+        });
 
-		if (!assignment || !student) {
-			throw new apiError("Assignment or student not found", 404);
-		}
+        if (!assignment || !student) {
+            throw new apiError("Assignment or student not found", 404);
+        }
 
-		if (assignment.dueDate < new Date()) {
-			throw new apiError("Assignment is overdue", 400);
-		}
+        const extendedDueDate = student.extendedDueDates.find(d => d.assignmentId === assignmentId);
+        if (assignment.dueDate < new Date() && (!extendedDueDate || extendedDueDate.newDueDate < new Date())) {
+            throw new apiError("Assignment is overdue", 400);
+        }
 
-		if (assignment.isGroup) {
-			if (student.groups === null || student.groups.length === 0) {
-				throw new apiError("Student is not in a group", 400);
-			}
+        if (assignment.isGroup) {
+            if (student.groups === null || student.groups.length === 0) {
+                throw new apiError("Student is not in a group", 400);
+            }
 
-			let xgroup;
-			for (const group of student.groups) {
-				if (group.classId === assignment.classId) {
-					xgroup = group;
-					break;
-				}
-			}
+            let xgroup;
+            for (const group of student.groups) {
+                if (group.classId === assignment.classId) {
+                    xgroup = group;
+                    break;
+                }
+            }
 
-			if (!xgroup) {
-				throw new apiError("Group not in class", 404);
-			}
+            if (!xgroup) {
+                throw new apiError("Group not in class", 404);
+            }
 
-			const group = await prisma.group.findFirst({
-				where: {
-					groupId: xgroup.groupId
-				},
-				include: {
-					students: true
-				}
-			});
+            const group = await prisma.group.findFirst({
+                where: {
+                    groupId: xgroup.groupId
+                }, 
+                include: {
+                    students: true
+                }
+            });
 
-			if (!group) {
-				throw new apiError("Group not found", 404);
-			}
+            if (!group) {
+                throw new apiError("Group not found", 404);
+            }
 
-			if (group.students === null || group.students.length === 0) {
-				throw new apiError("Group has no students", 400);
-			}
+            if (group.students === null || group.students.length === 0) {
+                throw new apiError("Group has no students", 400);
+            }
 
-			submitterGroupId = xgroup.groupId;
-			submitterId = studentId;
-		} else {
-			if (student.classes === null || student.classes.length === 0) {
-				throw new apiError("Student is not in a class", 400);
-			}
+            submitterGroupId = xgroup.groupId;
+            submitterId = studentId;
 
-			let xclass;
-			for (const c of student.classes) {
-				if (c.classId === assignment.classId) {
-					xclass = c;
-					break;
-				}
-			}
 
-			if (!xclass) {
-				throw new apiError("Class not found", 404);
-			}
+        } else {
+            if (student.classes === null || student.classes.length === 0) {
+                throw new apiError("Student is not in a class", 400);
+            }
 
-			submitterGroupId = null;
-			submitterId = studentId;
-		}
-		const newSubmission = await prisma.submission.create({
-			data: {
-				submitterId: submitterId,
-				submitterGroupId: submitterGroupId,
-				assignmentId: assignmentId,
-				submissionFilePath: submissionFilePath
-			}
-		});
+            let xclass;
+            for (const c of student.classes) {
+                if (c.classId === assignment.classId) {
+                    xclass = c;
+                    break;
+                }
+            }
 
-		const assignmentClass = await prisma.class.findUnique({
-			where: {
-				classId: assignment.classId
-			},
-			include: {
-				instructor: true
-			}
-		});
+            if (!xclass) {
+                throw new apiError("Class not found", 404);
+            }
 
-		await sendNotificationToUser(
-			null,
-			`You've successfully submitted the '${assignment.title}' assignment`,
-			assignmentClass.classname,
-			studentId,
-			"submit"
-		);
-		await sendNotificationToUser(
-			null,
-			`Student ${student.firstname} ${student.lastname} submitted the '${assignment.title}' assignment`,
-			assignmentClass.classname,
-			assignmentClass.instructor.userId,
-			"submit"
-		);
-		return newSubmission;
-	} catch (error) {
-		throw new apiError("Failed to create submission" + error, 500);
-	}
+            submitterGroupId = null;
+            submitterId = studentId;
+        }
+        const newSubmission = await prisma.submission.create({
+            data: {
+                submitterId: submitterId,
+                submitterGroupId: submitterGroupId,
+                assignmentId: assignmentId,
+                submissionFilePath: submissionFilePath
+            }
+        });
+
+        const assignmentClass = await prisma.class.findUnique({
+            where: {
+                classId: assignment.classId
+            },
+            include: {
+                instructor: true
+            }
+        });
+
+		await sendNotificationToUser(null, `You've successfully submitted the '${assignment.title}' assignment`, assignmentClass.classname, studentId, 'submit');
+		await sendNotificationToUser(null, `Student ${student.firstname} ${student.lastname} submitted the '${assignment.title}' assignment`, assignmentClass.classname, assignmentClass.instructor.userId, 'submit');
+        return newSubmission;
+    } catch (error) {
+        throw new apiError("Failed to create submission" + error, 500);
+    }
 };
 
 const updateSubmission = async (submissionId, submission) => {

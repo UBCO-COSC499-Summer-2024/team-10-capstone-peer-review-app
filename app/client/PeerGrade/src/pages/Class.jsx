@@ -219,13 +219,13 @@ const Class = () => {
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="bg-destructive/60 mr-2"
+                              className="mr-2 hover:bg-red-100 hover:text-red-500"
                               onClick={(e) => {
                                 setConfirmDeleteCategory(false);
                                 e.stopPropagation();
                               }}
                             >
-                              <Trash2 className="h-4 w-4 text-primary" />
+                              <Trash2 className="h-4 w-4" />
                             </Button>
                           </AlertDialogTrigger>
                           <AlertDialogContent className={confirmDeleteCategory ? "text-white bg-red-500 border-red-800" : ""}>
@@ -249,6 +249,7 @@ const Class = () => {
                 </AccordionTrigger>
                 <AccordionContent>
                     <div className="space-y-4">
+                      {category.assignments.length === 0 && <div className="text-center">There are no assignments here.</div>}
                       {category.assignments.map((assignment) => (
                         <Link
                           key={assignment.assignmentId}

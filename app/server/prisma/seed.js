@@ -298,6 +298,7 @@ const assignment1 = await prisma.assignment.create({
         dueDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
         assignmentFilePath:
             "https://raw.githubusercontent.com/py-pdf/sample-files/8c405ece5eff12396a34a1fae3276132002e1753/004-pdflatex-4-pages/pdflatex-4-pages.pdf", // dummy file
+		allowedFileTypes: ["pdf"],
         category: {
             connect: { categoryId: category1.categoryId }
         },
@@ -317,6 +318,7 @@ const assignment2 = await prisma.assignment.create({
         dueDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
         assignmentFilePath:
             "https://raw.githubusercontent.com/py-pdf/sample-files/8c405ece5eff12396a34a1fae3276132002e1753/004-pdflatex-4-pages/pdflatex-4-pages.pdf", // dummy file
+		allowedFileTypes: ["pdf"],
         category: {
             connect: { categoryId: category2.categoryId }
         },
@@ -336,6 +338,7 @@ const assignment3 = await prisma.assignment.create({
         dueDate: new Date(new Date().setMonth(new Date().getMonth() + 2)),
         assignmentFilePath:
             "https://raw.githubusercontent.com/py-pdf/sample-files/8c405ece5eff12396a34a1fae3276132002e1753/004-pdflatex-4-pages/pdflatex-4-pages.pdf", // dummy file
+		allowedFileTypes: ["pdf"],
         category: {
             connect: { categoryId: category3.categoryId }
         },
@@ -355,6 +358,7 @@ const assignment4 = await prisma.assignment.create({
         dueDate: new Date(new Date().setMonth(new Date().getMonth() + 3)),
         assignmentFilePath:
             "https://raw.githubusercontent.com/py-pdf/sample-files/8c405ece5eff12396a34a1fae3276132002e1753/004-pdflatex-4-pages/pdflatex-4-pages.pdf", // dummy file
+		allowedFileTypes: ["pdf"],
         category: {
             connect: { categoryId: category4.categoryId }
         },

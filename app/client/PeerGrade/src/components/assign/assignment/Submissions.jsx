@@ -426,8 +426,7 @@ const Submissions = (assignment) => {
 								<div className="flex items-center mb-4 text-yellow-800 bg-yellow-100 p-2 rounded">
 									<Info className="h-4 w-4 mr-2" />
 									<span>
-										Some actions are disabled until the assignment due date has
-										passed.
+										Some actions are disabled until the assignment due date.
 									</span>
 								</div>
 							</TooltipTrigger>

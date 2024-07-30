@@ -487,9 +487,15 @@ const Assignment = () => {
 								<CardDescription>{assignment.description}</CardDescription>
 							</div>
 						</div>
-						<span className="text-md font-semibold">
-							Due Date: {new Date(assignment.dueDate).toLocaleDateString()}
-						</span>
+						<div className="text-right">
+							<span className="text-md font-semibold">
+								Due Date: {new Date(assignment.dueDate).toLocaleDateString()}
+							</span>
+							<p className="text-sm italic bg-slate-200 p-1 px-2 rounded">
+								Assignments are due by 11:59 PM on the day before the listed
+								date.
+							</p>
+						</div>
 					</div>
 				</CardHeader>
 			</Card>
@@ -592,20 +598,27 @@ const Assignment = () => {
 												<div className="flex justify-between items-center space-x-2">
 													<span>Submissions:</span>
 													<div className="flex flex-col">
-														{submissions.reverse().map((submission, index) => (
-															<Button
-																onClick={() => {
-																	setSelectedSubmission(submission);
-																	setViewDialogOpen(true);
-																}}
-																key={index}
-																variant="ghost"
-																className="flex items-center space-x-2"
-															>
-																<FileText className="h-5 w-5" />
-																<span>Submission {index + 1}</span>
-															</Button>
-														))}
+														{submissions
+															.sort(
+																(a, b) =>
+																	new Date(b.createdAt) - new Date(a.createdAt)
+															)
+															.map((submission, index) => (
+																<Button
+																	onClick={() => {
+																		setSelectedSubmission(submission);
+																		setViewDialogOpen(true);
+																	}}
+																	key={submission.submissionId}
+																	variant="ghost"
+																	className="flex items-center space-x-2"
+																>
+																	<FileText className="h-5 w-5" />
+																	<span>
+																		Attempt {submissions.length - index}
+																	</span>
+																</Button>
+															))}
 													</div>
 												</div>
 											</div>

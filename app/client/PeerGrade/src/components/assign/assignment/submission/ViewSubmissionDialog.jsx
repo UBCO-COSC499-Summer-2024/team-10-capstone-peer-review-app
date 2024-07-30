@@ -29,7 +29,7 @@ const ViewSubmissionDialog = ({ submission, rubric, open, onClose }) => {
 
 	return (
 		<Dialog open={open} onOpenChange={onClose}>
-			<LargeDialogContent className="w-full h-[80vh]">
+			<LargeDialogContent className="w-full h-[80vh] ml-[80px]">
 				<DialogHeader>
 					<DialogTitle className="flex justify-between items-center">
 						Submission View

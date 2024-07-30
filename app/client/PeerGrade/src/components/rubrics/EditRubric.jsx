@@ -18,6 +18,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
   useEffect(() => {
     if (rubricData) {
       setEditedRubricData(rubricData);
+      console.log('rubricData:', rubricData);
       validateRubric(rubricData);
     }
   }, [rubricData]);
@@ -58,12 +59,13 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
       criteria: [
         ...prevData.criteria,
         {
-          id: Date.now(), // Use a unique identifier
+          criterionId: Date.now(), // Use a unique identifier
           title: "",
           criterionRatings: [{ description: "", points: "" }]
         }
       ]
     }));
+    console.log('editedRubricData:', editedRubricData.criteria);
     validateRubric();
   };
 
@@ -90,6 +92,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
           : c
       )
     }));
+    console.log('editedRubricData:', editedRubricData.criteria);
     validateRubric();
   };
 
@@ -198,7 +201,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
             </TableHeader>
             <TableBody>
               {editedRubricData.criteria.map((criterion) => (
-                <TableRow key={criterion.criterionId} className="border-b">
+                <TableRow key={criterion.criterionId} className="border-b" id={criterion.criterionId}>
                   <TableCell className="font-medium border-r p-0">
                     <div className="flex items-center justify-between p-2">
                       {editing === `${criterion.criterionId}-criteria` ? (

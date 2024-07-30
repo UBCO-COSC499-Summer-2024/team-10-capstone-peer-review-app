@@ -77,7 +77,7 @@ const Assign = () => {
   }, [selectedClass]);
 
   return (
-    <div className="flex flex-col justify-center space-y-8">
+    <div className="flex flex-col justify-center space-y-8" data-testid='assignments-tab'>
       <div className="w-full space-y-6">
         <h1 className="text-2xl font-bold">Assignments</h1>
         {classes && classes.length !== 0 &&

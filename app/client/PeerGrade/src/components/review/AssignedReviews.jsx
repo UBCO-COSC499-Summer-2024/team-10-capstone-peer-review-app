@@ -236,7 +236,7 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 										className="p-0 h-auto mr-4"
 										onClick={() => onViewDetails(review, true)}
 									>
-										View in Dialog
+										View Grade Details
 									</Button>
 									<Button
 										variant="link"

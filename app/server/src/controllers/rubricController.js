@@ -1,7 +1,20 @@
+
+/**
+ * @module rubricController
+ * @desc Controller module for handling rubric-related operations
+ */
+
 // Import necessary modules and services
 import rubricService from "../services/rubricService.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 
+/**
+ * @async
+ * @function createRubricsForAssignment
+ * @desc Adds rubrics to an assignment
+ * @param {Object} req - The request object containing the userId, assignmentId, and rubricData
+ * @returns {Object} The updated class object
+ */
 export const addRubricsToAssignment = asyncErrorHandler(async (req, res) => {
     const { userId, assignmentId, rubricData } = req.body;
     const updatedClass = await rubricService.createRubricsForAssignment(userId, assignmentId, rubricData);
@@ -12,6 +25,13 @@ export const addRubricsToAssignment = asyncErrorHandler(async (req, res) => {
     });
 });
 
+/**
+ * @async
+ * @function deleteRubricsFromAssignment
+ * @desc Deletes rubrics from an assignment
+ * @param {Object} req - The request object containing the rubricId
+ * @returns {Object} The updated class object
+ */
 export const deleteRubricsFromAssignment = asyncErrorHandler(async (req, res) => {
 	const { rubricId } = req.body;
 	const updatedClass = await rubricService.deleteRubricsFromAssignment(rubricId);
@@ -22,6 +42,13 @@ export const deleteRubricsFromAssignment = asyncErrorHandler(async (req, res) =>
 	});
 });
 
+/**
+ * @async
+ * @function updateRubricsForAssignment
+ * @desc Updates rubrics for an assignment
+ * @param {Object} req - The request object containing the rubricId and updateData
+ * @returns {Object} The updated class object
+ */
 export const updateRubricsForAssignment = asyncErrorHandler(async (req, res) => {
 	const { rubricId, updateData } = req.body;
 	const updatedClass = await rubricService.updateRubricsForAssignment(rubricId, updateData);
@@ -32,6 +59,13 @@ export const updateRubricsForAssignment = asyncErrorHandler(async (req, res) => 
 	});
 });
 
+/**
+ * @async
+ * @function getRubricsInAssignment
+ * @desc Gets rubrics in an assignment
+ * @param {Object} req - The request object containing the assignmentId
+ * @returns {Object} The rubric data
+ */
 export const getRubricsInAssignment = asyncErrorHandler(async (req, res) => {
 	const { assignmentId } = req.body;
 	const rubricData = await rubricService.getRubricsForAssignment(assignmentId);
@@ -41,6 +75,12 @@ export const getRubricsInAssignment = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+/**
+ * @async
+ * @function getAllRubrics
+ * @desc Gets all rubrics
+ * @returns {Object} The rubrics data
+ */
 export const getAllRubrics = asyncErrorHandler(async (req, res) => {
 	const rubrics = await rubricService.getAllRubrics();
 	return res.status(200).json({
@@ -49,6 +89,13 @@ export const getAllRubrics = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+/**
+ * @async
+ * @function getAllRubricsInClass
+ * @desc Gets all rubrics in a class
+ * @param {Object} req - The request object containing the classId
+ * @returns {Object} The rubrics data
+ */
 export const getAllRubricsInClass = asyncErrorHandler(async (req, res) => {
 	const { classId } = req.body;
 	const rubrics = await rubricService.getAllRubricsInClass(classId);
@@ -58,6 +105,13 @@ export const getAllRubricsInClass = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+/**
+ * @async
+ * @function getRubricById
+ * @desc Gets a rubric by its ID
+ * @param {Object} req - The request object containing the rubricId
+ * @returns {Object} The rubric data
+ */
 export const getRubricById = asyncErrorHandler(async (req, res) => {
 	const { rubricId } = req.body;
 	console.log(rubricId);
@@ -68,8 +122,13 @@ export const getRubricById = asyncErrorHandler(async (req, res) => {
 	});
 });
 
-
-// Controller methods for criterion operations
+/**
+ * @async
+ * @function addCriterionToRubric
+ * @desc Adds a criterion to a rubric
+ * @param {Object} req - The request object containing the rubricId and criterionData
+ * @returns {Object} The updated class object
+ */
 export const addCriterionToRubric = asyncErrorHandler(async (req, res) => {
 	const { rubricId, criterionData } = req.body;
 	const updatedClass = await rubricService.createCriterionForRubric(
@@ -83,6 +142,13 @@ export const addCriterionToRubric = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+/**
+ * @async
+ * @function removeCriterionFromRubric
+ * @desc Removes a criterion from a rubric
+ * @param {Object} req - The request object containing the criterionId
+ * @returns {Object} The updated class object
+ */
 export const removeCriterionFromRubric = asyncErrorHandler(async (req, res) => {
 	const { criterionId } = req.body;
 	const updatedClass = await rubricService.deleteCriterionForRubric(criterionId);
@@ -93,6 +159,13 @@ export const removeCriterionFromRubric = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+/**
+ * @async
+ * @function updateCriterionInRubric
+ * @desc Updates a criterion in a rubric
+ * @param {Object} req - The request object containing the criterionId and updateData
+ * @returns {Object} The updated class object
+ */
 export const updateCriterionInRubric = asyncErrorHandler(async (req, res) => {
 	const { criterionId, updateData } = req.body;
 	const updatedClass = await rubricService.updateCriterionForRubric(
@@ -106,6 +179,13 @@ export const updateCriterionInRubric = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+/**
+ * @async
+ * @function getCriterionInRubric
+ * @desc Gets the criterion in a rubric
+ * @param {Object} req - The request object containing the rubricId
+ * @returns {Object} The criterion data
+ */
 export const getCriterionInRubric = asyncErrorHandler(async (req, res) => {
 	const { rubricId } = req.body;
 	const criterionData = await rubricService.getCriterionForRubric(rubricId);
@@ -115,6 +195,13 @@ export const getCriterionInRubric = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+/**
+ * @async
+ * @function addCriterionRating
+ * @desc Adds a rating to a criterion
+ * @param {Object} req - The request object containing the criterionId and ratingData
+ * @returns {Object} The new rating data
+ */
 export const addCriterionRating = asyncErrorHandler(async (req, res) => {
 	const { criterionId, ratingData } = req.body;
 	const newRating = await rubricService.createCriterionRating(
@@ -128,9 +215,13 @@ export const addCriterionRating = asyncErrorHandler(async (req, res) => {
 	});
 });
 
-//add update and delete here
-
-// Controller methods for criterion Grade operations
+/**
+ * @async
+ * @function addCriterionGrade
+ * @desc Adds a grade to a criterion
+ * @param {Object} req - The request object containing the rubricId and criterionData
+ * @returns {Object} The updated class object
+ */
 export const addCriterionGrade = asyncErrorHandler(async (req, res) => {
 	const { rubricId, criterionData } = req.body;
 	const updatedClass = await rubricService.createCriterionForRubric(
@@ -144,6 +235,13 @@ export const addCriterionGrade = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+/**
+ * @async
+ * @function removeCriterionGrade
+ * @desc Removes a grade from a criterion
+ * @param {Object} req - The request object containing the criterionId
+ * @returns {Object} The updated class object
+ */
 export const removeCriterionGrade = asyncErrorHandler(async (req, res) => {
 	const { criterionId } = req.body;
 	const updatedClass = await rubricService.deleteCriterionForRubric(criterionId);
@@ -154,6 +252,13 @@ export const removeCriterionGrade = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+/**
+ * @async
+ * @function updateCriterionGrade
+ * @desc Updates a grade in a criterion
+ * @param {Object} req - The request object containing the criterionId and updateData
+ * @returns {Object} The updated class object
+ */
 export const updateCriterionGrade = asyncErrorHandler(async (req, res) => {
 	const { criterionId, updateData } = req.body;
 	const updatedClass = await rubricService.updateCriterionForRubric(
@@ -167,6 +272,13 @@ export const updateCriterionGrade = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+/**
+ * @async
+ * @function getCriterionGrade
+ * @desc Gets the grade in a criterion
+ * @param {Object} req - The request object containing the rubricId
+ * @returns {Object} The criterion data
+ */
 export const getCriterionGrade = asyncErrorHandler(async (req, res) => {
 	const { rubricId } = req.body;
 	const criterionData = await rubricService.getCriterionForRubric(rubricId);
@@ -176,26 +288,31 @@ export const getCriterionGrade = asyncErrorHandler(async (req, res) => {
 	});
 });
 
-
+/**
+ * @async
+ * @function linkRubricToAssignments
+ * @desc Links a rubric to multiple assignments and checks if the rubric or assignment exists or is array else converts to array
+ * @param {Object} req - The request object containing the rubricId and assignmentIds
+ * @returns {Object} The result of the linking operation
+ */
 export const linkRubricToAssignments = asyncErrorHandler(async (req, res) => {
-    const { rubricId, assignmentIds } = req.body;
-    if (!rubricId || !assignmentIds) {
-        return res.status(400).json({
-            status: "Error",
-            message: "Invalid input: rubricId and assignmentIds are required"
-        });
-    }
-    
-    const assignmentIdsArray = Array.isArray(assignmentIds) ? assignmentIds : [assignmentIds];
-    
-    const result = await rubricService.linkRubricToAssignments(rubricId, assignmentIdsArray);
-    return res.status(200).json({
-        status: "Success",
-        message: "Rubric successfully linked to assignments",
-        data: result,
-    });
+	const { rubricId, assignmentIds } = req.body;
+	if (!rubricId || !assignmentIds) {
+		return res.status(400).json({
+			status: "Error",
+			message: "Invalid input: rubricId and assignmentIds are required"
+		});
+	}
+	
+	const assignmentIdsArray = Array.isArray(assignmentIds) ? assignmentIds : [assignmentIds];
+	
+	const result = await rubricService.linkRubricToAssignments(rubricId, assignmentIdsArray);
+	return res.status(200).json({
+		status: "Success",
+		message: "Rubric successfully linked to assignments",
+		data: result,
+	});
 });
-
 
 // Export all controller methods
 export default {

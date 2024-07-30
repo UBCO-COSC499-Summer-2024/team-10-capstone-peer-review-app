@@ -1,9 +1,17 @@
+/**
+ * Controller methods for category operations.
+ * @module categoryController
+ */
 import categoryService from "../services/categoryService.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
-//import { user } from "../../../../../../../node_modules/pg/lib/defaults.js";
 
-
-// Controller methods for category operations
+/**
+ * @async
+ * @desc Retrieves all categories in a class.
+ * @function getAllCategories
+ * @param {Object} req - The request object contains the classId in the body.
+ * @returns {Object} - The response object with the retrieved categories.
+ */
 export const getAllCategoriesInClass = asyncErrorHandler(async (req, res) => {
     const { classId } = req.body;
     const categories = await categoryService.getAllCategories(classId);
@@ -14,6 +22,13 @@ export const getAllCategoriesInClass = asyncErrorHandler(async (req, res) => {
     });
 });
 
+/**
+ * @async
+ * @desc Creates a new category in a class.
+ * @function createCategory
+ * @param {Object} req - The request object having classId and name in the body.
+ * @returns {Object} - The response object with the newly created category.
+ */
 export const createCategory = asyncErrorHandler(async (req, res) => {
     const { classId, name } = req.body;
     const newCategory = await categoryService.createCategory(classId, name);
@@ -24,8 +39,15 @@ export const createCategory = asyncErrorHandler(async (req, res) => {
     });
 });
 
+/**
+ * @async
+ * @desc Updates a category in a class.
+ * @function updateCategory
+ * @param {Object} req - The request object having categoryId and name in the body.
+ * @returns {Object} - The response object with the updated category.
+ */
 export const updateCategory = asyncErrorHandler(async (req, res) => {
-    const {categoryId, name } = req.body;
+    const { categoryId, name } = req.body;
     const updatedCategory = await categoryService.updateCategory(categoryId, name);
     return res.status(200).json({
         status: "Success",
@@ -34,6 +56,13 @@ export const updateCategory = asyncErrorHandler(async (req, res) => {
     });
 });
 
+/**
+ * @async
+ * @desc Deletes a category from a class.
+ * @function deleteCategory
+ * @param {Object} req - The request object having categoryId in the body.
+ * @returns {Object} - The response object indicating the success of the deletion.
+ */
 export const deleteCategory = asyncErrorHandler(async (req, res) => {
     const categoryId = req.body.categoryId;
     await categoryService.deleteCategory(categoryId);
@@ -43,6 +72,13 @@ export const deleteCategory = asyncErrorHandler(async (req, res) => {
     });
 });
 
+/**
+ * @async
+ * @desc Retrieves all assignments in a category.
+ * @function getCategoryAssignments
+ * @param {Object} req - The request object having categoryId  in the body.
+ * @returns {Object} - The response object with the retrieved assignments.
+ */
 export const getCategoryAssignments = asyncErrorHandler(async (req, res) => {
     const categoryId = req.body.categoryId;
     const assignments = await categoryService.getCategoryAssignments(categoryId);
@@ -53,6 +89,13 @@ export const getCategoryAssignments = asyncErrorHandler(async (req, res) => {
     });
 });
 
+/**
+ * @async
+ * @desc Adds an assignment to a category.
+ * @function addAssignmentToCategory
+ * @param {Object} req - The request object having categoryId and assignmentId in the body.
+ * @returns {Object} - The response object with the updated category.
+ */
 export const addAssignmentToCategory = asyncErrorHandler(async (req, res) => {
     const { categoryId, assignmentId } = req.body;
     const updatedCategory = await categoryService.addAssignmentToCategory(categoryId, assignmentId);
@@ -63,6 +106,13 @@ export const addAssignmentToCategory = asyncErrorHandler(async (req, res) => {
     });
 });
 
+/**
+ * @async
+ * @desc Deletes an assignment from a category.
+ * @function deleteAssignmentFromCategory
+ * @param {Object} req - The request object having categoryId and assignmentId in the body.
+ * @returns {Object} - The response object with the updated category.
+ */
 export const deleteAssignmentFromCategory = asyncErrorHandler(async (req, res) => {
     const { categoryId, assignmentId } = req.body;
     const updatedCategory = await categoryService.deleteAssignmentFromCategory(categoryId, assignmentId);

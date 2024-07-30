@@ -68,10 +68,6 @@ const ViewSubmissionDialog = ({ submission, rubric, open, onClose }) => {
 						)}
 					</div>
 				)}
-				{/* <Button onClick={() => onDownload(submission.submissionFilePath)}>
-                    <Download className="h-4 w-4 mr-1" />
-                    Download
-                </Button> */}
 			</LargeDialogContent>
 		</Dialog>
 	);

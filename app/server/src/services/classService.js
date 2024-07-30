@@ -308,10 +308,8 @@ const addStudentToClass = async (classId, studentId) => {
 	} catch (error) {
 		// Rethrow the error if it's an instance of apiError, else throw general apiError
 		if (error instanceof apiError) {
-			console.log("hey",error);
 			throw error;
 		} else {
-			console.log("hey",error);
 			throw new apiError(`Failed to add student to class: ${error}`, 500);
 		}
 	}

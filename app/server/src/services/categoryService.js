@@ -162,8 +162,10 @@ const deleteCategory = async (categoryId) => {
         });
     } catch (error) {
         if (error instanceof apiError) {
+            console.log(error);
             throw error;
         }
+        console.log(error);
         throw new apiError("Failed to delete category" + error, 500);
     }
 };

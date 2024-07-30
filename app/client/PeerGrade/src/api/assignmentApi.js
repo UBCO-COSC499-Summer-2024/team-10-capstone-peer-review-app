@@ -5,24 +5,65 @@ const BASE_URL = "/api"; // Use environment variable if available
 
 export const addAssignmentToClass = async (formData) => {
   try {
-      const response = await axios.post('/api/assignment/add-assignment', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
+    // Get the assignmentData from formData
+    const assignmentDataString = formData.get('assignmentData');
+    let assignmentData = JSON.parse(assignmentDataString);
+    
+    assignmentData.maxSubmissions = parseInt(assignmentData.maxSubmissions, 10);
 
-        if (response.data.status === 'Success') {
-          showStatusToast({
-            status: response.data.status,
-            message: "The assignment and its rubric have been successfully created."
-          });
-        }
-        console.log('Updated assignment data:', response.data);
 
-       return response.data;
+    // Ensure allowedFileTypes is included in assignmentData
+    if (!assignmentData.allowedFileTypes || assignmentData.allowedFileTypes.length === 0) {
+      console.warn('allowedFileTypes is empty or not set');
+    }
+
+    // Log the assignmentData for debugging
+    console.log('Assignment Data being sent:', assignmentData);
+
+    const response = await axios.post('/api/assignment/add-assignment', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+
+    if (response.data.status === 'Success') {
+      showStatusToast({
+        status: response.data.status,
+        message: "The assignment has been successfully created."
+      });
+    }
+    console.log('Updated assignment data:', response.data);
+
+    return response.data;
   } catch (error) {
-      handleError(error);
-      return error.response.data;
+    handleError(error);
+    return error.response.data;
+  }
+};
+
+export const addAssignmentWithRubric = async (data) => {
+  console.log('Data to add assignment with rubric:', data);
+  try {
+    const formData = new FormData();
+    formData.append('classId', data.classId);
+    formData.append('categoryId', data.categoryId);
+    formData.append('assignmentData', JSON.stringify(data.assignmentData));
+    formData.append('rubricData', JSON.stringify(data.rubricData));
+    formData.append('creatorId', data.creatorId);
+
+    if (data.file) {
+      formData.append('file', data.file);
+    }
+
+    const response = await axios.post('/api/assignment/add-assignment-with-rubric', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error adding assignment with rubric:', error);
+    throw error;
   }
 };
 
@@ -107,7 +148,34 @@ export const addAssignmentToCategory = async (classId, categoryId, assignmentDat
       handleError(error);
       throw error;
     }
-  };
+};
+
+export const extendDeadlineForStudent = async (assignmentId, studentId, newDueDate) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/assignment/extend-deadline`, {
+            studentId,
+            assignmentId,
+            newDueDate
+        });
+        return response.data;
+    } catch (error) {
+        handleError(error);
+        return error.response.data;
+    }
+};
+
+export const deleteExtendedDeadlineForStudent = async (studentId, assignmentId) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/assignment/delete-extended-deadline`, {
+            studentId,
+            assignmentId
+        });
+        return response.data;
+    } catch (error) {
+        handleError(error);
+        return error.response.data;
+    }
+};
 
 function handleError(error) {
     if (error.response && error.response.data) {

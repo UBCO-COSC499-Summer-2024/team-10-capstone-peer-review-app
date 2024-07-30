@@ -13,11 +13,11 @@ import Class from "./pages/Class";
 import EditClass from "./components/class/EditClass";
 import AssignmentCreation from "./components/assign/assignment/AssignmentCreation";
 import Assignment from "./pages/Assignment";
-import AssignedPR from "./pages/AssignedPR";
 import PeerReview from "./pages/Reviews";
 import Settings from "./pages/Settings";
 import AppNavbar from "./components/global/Navbar";
 import ManageClass from "./pages/ManageClass";
+import ViewAllReviews from "./pages/ViewAllReviews";
 import Submission from "./components/assign/assignment/StudentSubmission";
 import StudentEnrollmentRequests from "./pages/StudentEnrollmentRequests";
 import Report from "./pages/Report";
@@ -26,11 +26,11 @@ import Notifications from "./pages/Notifications";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedRoute from "./components/global/ProtectedRoute";
 import ManageClassDashboard from "./components/manageClass/ManageClassDashboard";
-import SubmissionsPage from "./pages/classNav/SubmissionsPage";
 import NotFound from "./components/global/NotFound";
 import SubmitReview from "./pages/SubmitReview";
 import TitleUpdater from "@/utils/TitleUpdater";
 import { Toaster } from "@/components/ui/toaster";
+import ManageGradesAndReviews from "./components/instructorReview/ManageGradesAndReviews";
 
 function App() {
 	return (
@@ -146,20 +146,11 @@ function MainLayout() {
 								/>
 							}
 						/>
-						<Route path="/class/:classId/assignment/:assignmentId/submissions" 
-							element={
-							<ProtectedRoute
-										element={<SubmissionsPage />}
-										allowedRoles={["STUDENT", "INSTRUCTOR", "ADMIN"]}
-									/>
-							}
-						/>
-
 						<Route
 							path="/viewSubmission/:submissionId"
 							element={
 								<ProtectedRoute
-									element={<AssignedPR />}
+									element={<ViewAllReviews />}
 									allowedRoles={["STUDENT", "INSTRUCTOR", "ADMIN"]}
 								/>
 							}
@@ -170,6 +161,15 @@ function MainLayout() {
 								<ProtectedRoute
 									element={<PeerReview />}
 									allowedRoles={["STUDENT", "INSTRUCTOR", "ADMIN"]}
+								/>
+							}
+						/>
+						<Route
+							path="/manage-grades-and-reviews"
+							element={
+								<ProtectedRoute
+									element={<ManageGradesAndReviews />}
+									allowedRoles={["INSTRUCTOR", "ADMIN"]}
 								/>
 							}
 						/>

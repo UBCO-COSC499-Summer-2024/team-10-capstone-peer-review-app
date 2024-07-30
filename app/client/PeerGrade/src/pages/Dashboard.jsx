@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GradeCard from "@/components/class/GradeCard";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
@@ -7,7 +7,7 @@ import { Bell, Users, BookOpen, Calendar, GraduationCap } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import GroupCard from "@/components/class/GroupCard";
 import { Skeleton } from "@/components/ui/skeleton";
-import { format, parseISO } from "date-fns";
+import { format, parseISO, differenceInWeeks } from "date-fns";
 import { getAllAssignments } from "@/api/classApi";
 import { getGroups } from "@/api/userApi";
 import { useUser } from "@/contexts/contextHooks/useUser";
@@ -18,167 +18,157 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getNotifications, deleteNotification } from "@/api/notifsApi";
 import NotifCard from "@/components/global/NotifCard";
-
+import reviewAPI from "@/api/reviewAPI";
 
 function Dashboard() {
-	const { user, userLoading } = useUser();
-	const { classes, isClassLoading } = useClass();
-	const [isLoading, setIsLoading] = useState(false);
-	const [assignments, setAssignments] = useState([]);
-	const [groups, setGroups] = useState([]);
-	const [notifications, setNotifications] = useState([]);
-	const { toast } = useToast();
+  const { user, userLoading } = useUser();
+  const { classes, isClassLoading } = useClass();
+  const [isLoading, setIsLoading] = useState(false);
+  const [assignments, setAssignments] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [groups, setGroups] = useState([]);
+  const [notifications, setNotifications] = useState([]);
+  const [allReviews, setAllReviews] = useState([]);
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
-	useEffect(() => {
-		if (user) {
-			const fetchAssignments = async () => {
-				setIsLoading(true);
-				try {
-					const assignmentsData = await getAllAssignments(user.userId);
-					setAssignments(
-						Array.isArray(assignmentsData.data) ? assignmentsData.data : []
-					);
-				} catch (error) {
-					console.error("Failed to fetch assignments", error);
-					toast({
-						title: "Error",
-						description: "Failed to fetch assignments",
-						variant: "destructive"
-					});
-				}
-				setIsLoading(false);
-			};
+  useEffect(() => {
+    if (user) {
+      const fetchData = async () => {
+        setIsLoading(true);
+        try {
+          const [assignmentsData, groupsData, notifsData, reviewsData, allReviewsData] = await Promise.all([
+            getAllAssignments(user.userId),
+            getGroups(user.userId),
+            getNotifications(user.userId),
+            reviewAPI.getReviewsAssigned(),
+            reviewAPI.getAllReviews()
+          ]);
 
-			const fetchGroups = async () => {
-				try {
-				const groups = await getGroups(user.userId);
-				setGroups(Array.isArray(groups.data) ? groups.data : []);
-				} catch (error) {
-				toast({
-					title: "Error",
-					description: "Failed to fetch groups",
-					variant: "destructive"
-				});
-				}
-			};
+          setAssignments(Array.isArray(assignmentsData.data) ? assignmentsData.data : []);
+          setGroups(Array.isArray(groupsData.data) ? groupsData.data : []);
+          setNotifications(Array.isArray(notifsData.data) ? notifsData.data : []);
+          setReviews(Array.isArray(reviewsData.data) ? reviewsData.data : []);
+          setAllReviews(Array.isArray(allReviewsData.data) ? allReviewsData.data : []);
+        } catch (error) {
+          console.error("Failed to fetch data", error);
+          toast({
+            title: "Error",
+            description: "Failed to fetch data",
+            variant: "destructive"
+          });
+        }
+        setIsLoading(false);
+      };
 
-			// IDEALLY WE WOULD HAVE A SEPARATE ANNOUNCEMENTS MODEL (in prisma) AND USE THAT HERE
-			const fetchNotifs = async () => {
-				if (user && !userLoading) {
-				try {
-					const notifs = await getNotifications(user.userId);
-					setNotifications(Array.isArray(notifs.data) ? notifs.data : []);
-				} catch (error) {
-					console.error("Failed to fetch notifications", error);
-				}
-				}
-			};
+      fetchData();
+      const intervalId = setInterval(() => getNotifications(user.userId), 10000);
+      return () => clearInterval(intervalId);
+    }
+  }, [user]);
 
-			fetchAssignments();
-			fetchGroups();
-			fetchNotifs();
+  const handleDeleteNotif = async (notificationId) => {
+    const deleteNotif = await deleteNotification(notificationId);
+    if (deleteNotif.status === "Success") {
+      setNotifications((prevNotifs) =>
+        prevNotifs.filter(
+          (notification) => notification.notificationId !== notificationId
+        )
+      );
+    } else {
+      console.error('An error occurred while deleting the notification.', deleteNotif.message);
+    }
+  };
 
-			const intervalId = setInterval(() => {
-				fetchNotifs();
-			}, 10000); // Fetch notifications every 30 seconds
-	
-			return () => {
-				clearInterval(intervalId); // Clear the interval when the component unmounts
-			};
-		}
-	}, [user]);
+  const currentDate = new Date();
+  
+  const assignmentData = assignments.filter(
+    (assignment) => new Date(assignment.dueDate) > currentDate && assignment.evaluation_type !== "peer"
+  );
 
-	const handleDeleteNotif = async (notificationId) => {
-		const deleteNotif = await deleteNotification(notificationId);
-		if (deleteNotif.status === "Success") {
-			setNotifications((prevNotifs) =>
-				prevNotifs.filter(
-					(notification) => notification.notificationId !== notificationId
-				)
-			);
-		} else {
-			console.error('An error occurred while deleting the notification.', deleteNotif.message);
-		}
-	};
+  const reviewData = reviews.filter(
+    (review) => {
+      const reviewDueDate = new Date(review.submission.assignment.dueDate);
+      return review.reviewerId === user.userId && differenceInWeeks(currentDate, reviewDueDate) <= 2;
+    }
+  );
 
-	const assignmentData = assignments.filter(
-		(assignment) => assignment.evaluation_type !== "peer"
-	);
-	const reviewData = assignments.filter(
-		(assignment) => assignment.evaluation_type === "peer"
-	);
 
-	const gradeData = assignments.map((assignment) => ({
-		assignmentId: assignment.assignmentId,
-		classId: assignment.classId,
-		className: assignment.classes.classname,
-		assignmentTitle: assignment.title,
-		grade: assignment.grade, // Assuming grade is part of the assignment data
-		dueDate: format(parseISO(assignment.dueDate), "MMM d, yyyy")
-	}));
+  const handleViewGradeDetails = (reviewId) => {
+    navigate('/peer-review', { state: { defaultTab: 'received', reviewId } });
+  };
 
-	if (userLoading) {
-		return (
-			<div className="flex justify-center items-center h-screen">
-				<Skeleton className="h-[600px] w-[800px]" />
-			</div>
-		);
-	}
+  const gradeData = allReviews
+  .filter(review => 
+    review.reviewer.role === 'INSTRUCTOR' &&
+    review.reviewee.userId === user.userId &&
+    differenceInWeeks(currentDate, new Date(review.updatedAt)) <= 2
+  )
+  .map(review => ({
+    reviewId: review.reviewId,
+    assignmentId: review.submission.assignment.assignmentId,
+    classId: review.submission.assignment.classes.classId,
+    assignmentTitle: review.submission.assignment.title,
+    grade: review.reviewGrade,
+    totalMarks: review.submission.assignment.rubric?.totalMarks || 0,
+    dueDate: format(parseISO(review.submission.assignment.dueDate), "MMM d, yyyy"),
+    isGraded: review.criterionGrades.length > 0
+  }));
 
-	if (!user) {
-		return (
-			<Alert variant="destructive">
-				<AlertTitle>Error</AlertTitle>
-				<AlertDescription>User is not logged in.</AlertDescription>
-			</Alert>
-		);
-	}
 
-	const renderAssignmentAlert = (assignment) => (
-		<Alert key={assignment.assignmentId} className="mb-4">
-			<AlertTitle className="flex justify-between items-center">
-				<span>{assignment.title}</span>
-				<Link to={`/class/${assignment.classId}`}><Badge variant="default">{assignment.classes.classname}</Badge></Link>
-			</AlertTitle>
-			<AlertDescription className="flex justify-between items-center mt-2">
-				<span className="flex items-center">
-					<Calendar className="mr-2 h-4 w-4" />
-					Due: {format(parseISO(assignment.dueDate), "MMM d, yyyy")}
-				</span>
-				<Link
-					to={`/class/${assignment.classId}/assignment/${assignment.assignmentId}`}
-					className="text-primary hover:text-primary-foreground"
-				>
-					<Button variant="outline" size="sm">
-						Open
-					</Button>
-				</Link>
-			</AlertDescription>
-		</Alert>
-	);
+  const renderAssignmentAlert = (assignment) => (
+    <Alert key={assignment.assignmentId} className="mb-4">
+      <AlertTitle className="flex justify-between items-center">
+        <span>{assignment.title}</span>
+        <Link to={`/class/${assignment.classId}`}><Badge variant="default">{assignment.classes.classname}</Badge></Link>
+      </AlertTitle>
+      <AlertDescription className="flex justify-between items-center mt-2">
+        <span className="flex items-center">
+          <Calendar className="mr-2 h-4 w-4" />
+          Due: {format(parseISO(assignment.dueDate), "MMM d, yyyy")}
+        </span>
+        <Link
+          to={`/class/${assignment.classId}/assignment/${assignment.assignmentId}`}
+          className="text-primary hover:text-primary-foreground"
+        >
+          <Button variant="outline" size="sm">
+            Open
+          </Button>
+        </Link>
+      </AlertDescription>
+    </Alert>
+  );
 
-	const renderReviewAlert = (review) => (
-		<Alert key={review.assignmentId} className="mb-4">
-			<AlertTitle className="flex justify-between items-center">
-				<span>{review.title}</span>
-				<Badge variant="default">{review.classes.classname}</Badge>
-			</AlertTitle>
-			<AlertDescription className="flex justify-between items-center mt-2">
-				<span className="flex items-center">
-					<Calendar className="mr-2 h-4 w-4" />
-					Review Due: {format(parseISO(review.dueDate), "MMM d, yyyy")}
-				</span>
-				<Link
-					to={review.link}
-					className="text-primary hover:text-primary-foreground"
-				>
-					<Button variant="outline" size="sm">
-						Review
-					</Button>
-				</Link>
-			</AlertDescription>
-		</Alert>
-	);
+  const renderReviewAlert = (review) => (
+    <Alert key={review.reviewId} className="mb-4">
+      <AlertTitle className="flex justify-between items-center">
+        <span>{review.submission.assignment.title}</span>
+        <div>
+          <Badge variant="default" className="mr-2">
+            {review.submission.assignment.classes.classname}
+          </Badge>
+          {review.criterionGrades && review.criterionGrades.length > 0 && review.criterionGrades.every(cg => cg.grade !== null) && (
+            <Badge variant="outline" className="bg-success/30 text-green-700 font-bold">
+              Submitted
+            </Badge>
+          )}
+        </div>
+      </AlertTitle>
+      <AlertDescription className="flex justify-between items-center mt-2">
+        <span className="flex items-center">
+          <Calendar className="mr-2 h-4 w-4" />
+          Review Due: {format(parseISO(review.submission.assignment.dueDate), "MMM d, yyyy")}
+        </span>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => navigate('/peer-review', { state: { defaultTab: 'assigned' } })}
+        >
+          Review
+        </Button>
+      </AlertDescription>
+    </Alert>
+  );
 
   return (
     <div className="mx-auto px-4">
@@ -218,7 +208,7 @@ function Dashboard() {
         </Card>
         }
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+	  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <Card className="bg-muted rounded-lg shadow-md">
           <CardContent>
             <Tabs defaultValue="assignments">
@@ -248,12 +238,23 @@ function Dashboard() {
                 <TabsTrigger value="grades">Recent Grades</TabsTrigger>
               </TabsList>
               <TabsContent value="grades">
-                <ScrollArea className="h-[400px] w-full ">
-                  {gradeData.length > 0 ? gradeData.map((grade) => (
-                    <GradeCard key={grade.assignmentId} {...grade} />
-                  )) : 
-                    <p className="text-muted-foreground">No recent grades available.</p>}
-                </ScrollArea>
+			  <ScrollArea className="h-[400px] w-full ">
+					{gradeData.length > 0 ? gradeData.map((grade) => (
+					<GradeCard 
+						key={grade.reviewId}
+						reviewId={grade.reviewId}
+						assignmentId={grade.assignmentId}
+						classId={grade.classId}
+						assignmentTitle={grade.assignmentTitle}
+						grade={grade.grade}
+						totalMarks={grade.totalMarks}
+						dueDate={grade.dueDate}
+						isGraded={grade.isGraded}
+						onViewGradeDetails={handleViewGradeDetails}
+					/>
+					)) : 
+					<p className="text-muted-foreground">No recent grades available.</p>}
+				</ScrollArea>
               </TabsContent>
             </Tabs>
           </CardContent>

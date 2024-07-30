@@ -35,8 +35,11 @@ model User {
   notifications     Notification[]    @relation("ReceiverNotifications")
   sentNotifications Notification[]    @relation("SenderNotifications")
   GroupSubmission   GroupSubmission[]
-  reports           Report[]        @relation("ReportReceiver")
-  sentReports       Report[]        @relation("ReportSender")
+  reports           Report[]          @relation("ReportReceiver")
+  sentReports       Report[]          @relation("ReportSender")
+  extendedDueDates  ExtendedDueDate[] @relation("UserExtendedDueDates")
+  commentChains     CommentChain[]    @relation("StudentCommentChains")
+  comments          Comment[]
 }
 
 model Class {
@@ -75,7 +78,8 @@ model Assignment {
   dueDate            DateTime
   maxSubmissions     Int            @default(1)
   isGroupAssignment  Boolean        @default(false)
-  assignmentType     SubmissionType @default(URL)
+  isPeerReviewAnonymous Boolean        @default(false)
+  allowedFileTypes   String[]       
   assignmentFilePath String?
   classes            Class          @relation(fields: [classId], references: [classId], onDelete: Cascade)
   categoryId         String? // Add this line
@@ -83,7 +87,10 @@ model Assignment {
   rubric             Rubric?        @relation(fields: [rubricId], references: [rubricId])
   submissions        Submission[]
   reviewOption       String?
+  extendedDueDates   ExtendedDueDate[] @relation("AssignmentExtendedDueDates")
+  commentChains      CommentChain[]
 }
+
 
 // Group Models
 
@@ -115,6 +122,28 @@ model Submission {
   submitterGroup     Group?            @relation(fields: [submitterGroupId], references: [groupId])
   reviews            Review[]
   GroupSubmission    GroupSubmission[]
+}
+
+model CommentChain {
+  commentChainId String    @id @default(uuid())
+  assignmentId   String
+  studentId      String
+  assignment     Assignment @relation(fields: [assignmentId], references: [assignmentId], onDelete: Cascade)
+  student        User       @relation("StudentCommentChains", fields: [studentId], references: [userId])
+  comments       Comment[]
+
+  @@unique([assignmentId, studentId])
+}
+
+model Comment {
+  commentId      String      @id @default(uuid())
+  commentChainId String
+  userId         String
+  content        String
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  commentChain   CommentChain @relation(fields: [commentChainId], references: [commentChainId], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 
 model GroupSubmission {
@@ -238,18 +267,31 @@ model Category {
 }
 
 model Report {
-  reportId       String   @id @default(uuid())
-  senderId       String
-  receiverRole   String
-  receiverId     String?
-  title          String   @default("No title")
-  content        String   @default("No report contents")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  isResolved     Boolean  @default(false)
-  
-  receiver       User?    @relation("ReportReceiver", fields: [receiverId], references: [userId], onDelete: Cascade)
-  sender         User     @relation("ReportSender", fields: [senderId], references: [userId], onDelete: Cascade)
+  reportId     String   @id @default(uuid())
+  senderId     String
+  receiverRole String
+  receiverId   String?
+  title        String   @default("No title")
+  content      String   @default("No report contents")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  isResolved   Boolean  @default(false)
+
+  receiver User? @relation("ReportReceiver", fields: [receiverId], references: [userId], onDelete: Cascade)
+  sender   User  @relation("ReportSender", fields: [senderId], references: [userId], onDelete: Cascade)
+}
+
+model ExtendedDueDate {
+  extendedDueDateId String   @id @default(uuid())
+  userId            String
+  assignmentId      String
+  newDueDate        DateTime
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation("UserExtendedDueDates", fields: [userId], references: [userId], onDelete: Cascade)
+  assignment        Assignment @relation("AssignmentExtendedDueDates", fields: [assignmentId], references: [assignmentId], onDelete: Cascade)
+
+  @@unique([userId, assignmentId], name: "UniqueExtendedDueDatePerUserAssignment")
 }
 
 enum UserRole {

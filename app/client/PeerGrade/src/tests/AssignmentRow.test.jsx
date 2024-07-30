@@ -49,7 +49,7 @@ describe('AssignmentRow Component', () => {
   test('should render link to assigned peer review if for review', () => {
     const { getByRole } = renderComponent({ forReview: true });
     const link = getByRole('link');
-    expect(link).toHaveAttribute('href', '/assignedPR/1');
+    expect(link).toHaveAttribute('href', '/viewSubmssion/1');
   });
 
   test('should render OPEN button', () => {

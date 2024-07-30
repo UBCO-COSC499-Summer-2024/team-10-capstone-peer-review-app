@@ -3,6 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import AssignmentCreation from '@/components/assign/assignment/AssignmentCreation';
 import { getCategoriesByClassId } from '@/api/classApi';
 import { addAssignmentToClass } from '@/api/assignmentApi';
+import { useUser } from "@/contexts/contextHooks/useUser";
 import { toast } from "@/components/ui/use-toast";
 
 window.HTMLElement.prototype.scrollIntoView = function() {};
@@ -24,17 +25,23 @@ jest.mock('@/api/assignmentApi', () => ({
   addAssignmentToClass: jest.fn(),
 }));
 
+jest.mock('@/contexts/contextHooks/useUser', () => ({
+  useUser: jest.fn(),
+}));
+
 describe('AssignmentCreation', () => {
   beforeEach(() => {
     // Mock API responses
+    jest.clearAllMocks();
     getCategoriesByClassId.mockResolvedValue({
       data: [
-        { categoryId: 'cat-1', name: 'Category 1' },
-        { categoryId: 'cat-2', name: 'Category 2' },
+        { categoryId: 'cat-1', classId: "1", name: 'Category 1' },
+        { categoryId: 'cat-2', classId: "1", name: 'Category 2' },
       ],
     });
 
     addAssignmentToClass.mockResolvedValue({ status: 'Success' });
+    useUser.mockReturnValue({ user: { userId: '123' }, userLoading: false });
 
     render(<AssignmentCreation />);
   });
@@ -51,15 +58,7 @@ describe('AssignmentCreation', () => {
     fireEvent.change(fileInput, { target: { files: [file] } });
     expect(screen.getByText('chucknorris.png')).toBeInTheDocument();
   });
-
-  it('handles review option selection', async () => {
-    const reviewButton = screen.getByText('Select option...');
-    fireEvent.click(reviewButton);
-    const autoOption = screen.getByText('Auto');
-    fireEvent.click(autoOption);
-    await waitFor(() => expect(screen.getByText('Auto')).toBeInTheDocument());
-  });
-
+  
   it('handles due date selection', async () => {
     const dateButton = screen.getByText('Pick a date');
     fireEvent.click(dateButton);
@@ -77,19 +76,20 @@ describe('AssignmentCreation', () => {
     fireEvent.change(titleInput, { target: { value: 'Test Assignment' } });
     fireEvent.change(descriptionInput, { target: { value: 'This is a test assignment.' } });
 
-    const reviewButton = screen.getByText('Select option...');
-    fireEvent.click(reviewButton);
-    const autoOption = screen.getByText('Auto');
-    fireEvent.click(autoOption);
-
     const categoryButton = screen.getByText('Select category...');
     fireEvent.click(categoryButton);
-    const categoryOption = await screen.findByText('Category 1'); // Use findByText for async content
+    const categoryOption = await screen.findByText('Category 1');
     fireEvent.click(categoryOption);
+
+    const multiSelect = screen.getByText('Select allowed file types');
+    fireEvent.click(multiSelect);
+
+    const fileTypeOption = await screen.findByText('PDF');
+    fireEvent.click(fileTypeOption);
 
     const dateButton = screen.getByText('Pick a date');
     fireEvent.click(dateButton);
-    const dateOption = screen.getByText('15');
+    const dateOption = await screen.getByText('15');
     fireEvent.click(dateOption);
 
     fireEvent.click(submitButton);

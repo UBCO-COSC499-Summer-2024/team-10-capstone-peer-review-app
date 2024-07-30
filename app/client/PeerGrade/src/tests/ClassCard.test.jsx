@@ -1,82 +1,72 @@
+// ClassCard.test.jsx
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import ClassCard from '@/components/class/ClassCard';
+import ClassCard from '@/components/manageClass/ClassCard';
+
+// Mock the useNavigate hook
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => jest.fn(),
+}));
+
+const mockClassItem = {
+  classId: '1',
+  classname: 'Math 101',
+  description: 'This is a detailed description of the Math 101 class.',
+  userCount: 30,
+  assignmentCount: 5,
+};
 
 describe('ClassCard Component', () => {
-  const renderComponent = (props) => {
+  test('renders ClassCard component', () => {
     render(
       <BrowserRouter>
-        <ClassCard {...props} />
+        <ClassCard classItem={mockClassItem} pendingApprovals={0} />
       </BrowserRouter>
     );
-  };
-  
-  test('renders correctly', () => {
-    const props = {
-      classId: '1',
-      className: 'Math 101',
-      instructor: 'John Doe',
-      numStudents: 25,
-      numAssignments: 5,
-      numPeerReviews: 3,
-    };
-
-    renderComponent(props);
 
     expect(screen.getByText('Math 101')).toBeInTheDocument();
-    expect(screen.getByText('John Doe')).toBeInTheDocument();
-    expect(screen.getByText('25 Students')).toBeInTheDocument();
-    expect(screen.getByText('5 Assignments Due')).toBeInTheDocument();
-    expect(screen.getByText('3 Peer Reviews Left')).toBeInTheDocument();
+    expect(screen.getByText('This is a detailed description of the Math 101 class.')).toBeInTheDocument();
+    expect(screen.getByText('30 students')).toBeInTheDocument();
+    expect(screen.getByText('5 assignments')).toBeInTheDocument();
   });
 
-  test('renders link to the class', () => {
-    const props = {
-      classId: '1',
-      className: 'Math 101',
-      instructor: 'John Doe',
-    };
+  test('truncates description correctly', () => {
+    const longDescription = 'A'.repeat(150);
+    render(
+      <BrowserRouter>
+        <ClassCard classItem={{ ...mockClassItem, description: longDescription }} pendingApprovals={0} />
+      </BrowserRouter>
+    );
 
-    renderComponent(props);
-
-    const link = screen.getByRole('link');
-    expect(link).toHaveAttribute('href', '/class/1');
+    expect(screen.getByText(`${'A'.repeat(100)}...`)).toBeInTheDocument();
   });
 
-  test('does not render numStudents if not provided', () => {
-    const props = {
-      classId: '1',
-      className: 'Math 101',
-      instructor: 'John Doe',
-    };
+  test('displays pending approvals badge', () => {
+    render(
+      <BrowserRouter>
+        <ClassCard classItem={mockClassItem} pendingApprovals={5} />
+      </BrowserRouter>
+    );
 
-    renderComponent(props);
-
-    expect(screen.queryByText(/Students/)).not.toBeInTheDocument();
+    expect(screen.getByText('5 Pending')).toBeInTheDocument();
   });
 
-  test('does not render numAssignments if not provided', () => {
-    const props = {
-      classId: '1',
-      className: 'Math 101',
-      instructor: 'John Doe',
-    };
+  test('navigates to correct routes on button click', () => {
+    const navigate = jest.fn();
+    jest.spyOn(require('react-router-dom'), 'useNavigate').mockImplementation(() => navigate);
 
-    renderComponent(props);
+    render(
+      <BrowserRouter>
+        <ClassCard classItem={mockClassItem} pendingApprovals={0} />
+      </BrowserRouter>
+    );
 
-    expect(screen.queryByText(/Assignments Due/)).not.toBeInTheDocument();
-  });
+    fireEvent.click(screen.getByText(/View Class/i));
+    expect(navigate).toHaveBeenCalledWith('/class/1');
 
-  test('does not render numPeerReviews if not provided', () => {
-    const props = {
-      classId: '1',
-      className: 'Math 101',
-      instructor: 'John Doe',
-    };
-
-    renderComponent(props);
-
-    expect(screen.queryByText(/Peer Reviews Left/)).not.toBeInTheDocument();
+    fireEvent.click(screen.getByText(/Manage Class/i));
+    expect(navigate).toHaveBeenCalledWith('/manage-class/1');
   });
 });

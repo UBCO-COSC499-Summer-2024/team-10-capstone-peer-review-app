@@ -96,7 +96,7 @@ const Assignments = () => {
                                 </Link>
                                 {user.role !== 'STUDENT' && (
                                 <>
-                                <Button variant="outline" size="sm" className="text-red-600 hover:text-red-800" onClick={() => handleDeleteClick(assignment)}>
+                                <Button variant="outline" size="sm" className="text-red-600 hover:text-red-800" onClick={() => handleDeleteClick(assignment)} data-testid={`delete-assignment-${assignment.assignmentId}`}>
                                     <Trash2 className="h-4 w-4 mr-1" />
                                     Delete
                                 </Button>

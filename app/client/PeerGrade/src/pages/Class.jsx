@@ -23,6 +23,7 @@ import { createCategory, updateCategory, deleteCategory } from "@/api/categoryAp
 import { useToast } from "@/components/ui/use-toast";
 import { useClass } from "@/contexts/contextHooks/useClass";
 import CreateRubric from "../components/rubrics/CreateRubric";
+import InfoButton from '../components/global/InfoButton';
 
 const Class = () => {
   const { classId } = useParams();
@@ -162,6 +163,43 @@ const Class = () => {
     return <div>Class not found</div>;
   }
 
+  const globalInfoContent = {
+    title: "About the Classroom",
+    description: (
+      <>
+        <p>This is the main classroom page. Here you can:</p>
+        <ul className="list-disc list-inside mt-2">
+          <li>View and manage assignments</li>
+          <li>See class participants</li>
+          <li>Manage groups</li>
+          <li>Create and edit rubrics</li>
+          <li>Edit class details (for instructors)</li>
+        </ul>
+        <p className="mt-2">Use the navigation menu to switch between different views.</p>
+        
+        {(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (
+          <>
+            <p className="mt-4 font-semibold">Instructor Tools:</p>
+            <ul className="list-disc list-inside mt-2">
+              <li>
+                <strong>Create Assignment:</strong> Use this button to add new assignments to the class.
+              </li>
+              <li>
+                <strong>Add Category:</strong> Organize assignments by creating new categories.
+              </li>
+              <li>
+                <strong>Create Rubric:</strong> Design grading rubrics for assignments to standardize evaluation.
+              </li>
+            </ul>
+            <p className="mt-2">
+              These tools are located on the right side of the page for quick access and management of class content.
+            </p>
+          </>
+        )}
+      </>
+    )
+  };
+
   const renderContent = () => {
     switch (currentView) {
       case "people":
@@ -274,6 +312,7 @@ const Class = () => {
                 </AccordionItem>
               ))}
             </Accordion>
+            <InfoButton content={globalInfoContent} user={user} />
           </>
         );
     }

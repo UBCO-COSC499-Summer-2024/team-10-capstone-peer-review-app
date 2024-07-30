@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { Plus, Calendar as CalendarIcon, ChevronDown as ChevronDownIcon, ChevronUp as ChevronUpIcon, Check as CheckIcon, Upload } from 'lucide-react';
 import MultiSelect from '@/components/ui/MultiSelect';
@@ -16,7 +16,9 @@ import { toast } from '@/components/ui/use-toast';
 import { getCategoriesByClassId } from '@/api/classApi';
 import { addAssignmentToClass, addAssignmentWithRubric } from '@/api/assignmentApi';
 import { getAllRubricsInClass } from '@/api/rubricApi';
-import { createCategory, getAllCategoriesInClass } from '@/api/categoryApi';
+import { createCategory } from '@/api/categoryApi';
+import InfoButton from '@/components/global/InfoButton';
+
 import { useUser } from "@/contexts/contextHooks/useUser";
 
 const fileTypeOptions = [
@@ -30,6 +32,7 @@ const fileTypeOptions = [
 
 const AssignmentCreation = ({ onAssignmentCreated }) => {
   const { classId } = useParams();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -216,10 +219,28 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
     }
   };
 
+  const assignmentCreationInfoContent = {
+    title: "Creating a New Assignment",
+    description: (
+      <>
+        <p>This page allows you to create a new assignment for your class. Here's what you can do:</p>
+        <ul className="list-disc list-inside mt-2">
+          <li>Set a title and description for the assignment</li>
+          <li>Specify the due date and maximum number of submission attempts</li>
+          <li>Choose or create a category for the assignment</li>
+          <li>Select an existing rubric or create a new one</li>
+          <li>Define allowed file types for submissions</li>
+          <li>Upload any related files or instructions</li>
+        </ul>
+        <p className="mt-2">Make sure to fill out all required fields before submitting the assignment.</p>
+      </>
+    )
+  };
+
   return (
     <div className='w-full flex bg-white justify-left flex-row p-4'>
       <div>
-        <h2 className="text-xl font-semibold mb-4">Add a New Assignment</h2>
+        <h2 className="text-xl font-semibold mb-4 ">Add a New Assignment</h2>
         <form onSubmit={handleSubmit} className="w-full space-y-10">
           <div>
             <label htmlFor="title">Title</label>
@@ -409,6 +430,8 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
           <Button type="submit" className='bg-primary text-white'>Submit</Button>
         </form>
       </div>
+      <InfoButton content={assignmentCreationInfoContent} />
+
     </div>
   );
 };

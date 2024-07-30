@@ -25,7 +25,9 @@ const InfoButton = ({ content }) => {
             <DialogTitle>{content.title}</DialogTitle>
           </DialogHeader>
           <DialogDescription>
-            {content.description}
+            {typeof content.description === 'function' 
+              ? content.description({ user }) 
+              : content.description}
           </DialogDescription>
           <DialogFooter>
             <Button onClick={() => setShowInfoOverlay(false)}>Got it</Button>

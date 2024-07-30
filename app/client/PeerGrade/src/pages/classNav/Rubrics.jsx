@@ -22,6 +22,7 @@ import {
   AlertDialogAction,
   AlertDialogCancel
 } from '@/components/ui/alert-dialog';
+import InfoButton from '@/components/global/InfoButton';
 
 const Rubrics = () => {
   const { classId } = useParams();
@@ -35,6 +36,7 @@ const Rubrics = () => {
   const [rubricToEdit, setRubricToEdit] = useState(null);
   const [editDrawerKey, setEditDrawerKey] = useState(0); // Add this line
   const [confirmDeleteRubric, setConfirmDeleteRubric] = useState(false);
+
 
   useEffect(() => {
     fetchData();
@@ -119,6 +121,30 @@ const Rubrics = () => {
       rubric.rubricId === updatedRubric.rubricId ? updatedRubric : rubric
     ));
     handleCloseEditDrawer(); // Close the drawer after updating
+  };
+
+  const rubricsInfoContent = {
+    title: "About Rubrics",
+    description: (
+      <>
+        <p>This page allows you to manage rubrics for the class:</p>
+        <ul className="list-disc list-inside mt-2">
+          <li>View all existing rubrics</li>
+          <li>See details of each rubric including criteria and point distributions</li>
+          {(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (
+            <>
+              <li>Create new rubrics</li>
+              <li>Edit existing rubrics</li>
+              <li>Delete rubrics</li>
+            </>
+          )}
+        </ul>
+        <p className="mt-2">Click on 'View Details' to see the full rubric structure.</p>
+        {(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (
+          <p className="mt-2">Use 'Edit Rubric' to modify existing rubrics or create new ones to standardize grading across assignments.</p>
+        )}
+      </>
+    )
   };
 
   return (
@@ -266,7 +292,8 @@ const Rubrics = () => {
         rubricData={rubricToEdit}
         onRubricUpdated={handleRubricUpdated}
       />
-    
+      <InfoButton content={rubricsInfoContent} />
+
     </div>
   );
 };

@@ -10,13 +10,13 @@ const routeTitles = {
 	"/class/createAssignment": "Create Assignment",
 	"/manageclass": "Manage Class",
 	"/manageClass/*": "Manage a Class",
-	"/enrollment" : "Enrollment",
+	"/enrollment": "Enrollment",
 	"/search": "Search",
 	"/assignment/*": "Assignment Details",
-	"/assignedPR/*": "Assigned Peer Reviews",
+	"/viewSubmission/*": "Assigned Peer Reviews",
 	"/peer-review": "Peer Review",
 	"/settings": "Settings",
-	"/admin": "Admin Dashboard",
+	"/admin": "Admin Dashboard"
 };
 
 function TitleUpdater() {

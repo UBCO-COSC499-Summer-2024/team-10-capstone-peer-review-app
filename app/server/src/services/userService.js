@@ -1,7 +1,10 @@
 import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
 import pkg from "@prisma/client";
-import { sendNotificationToRole, sendNotificationToUser } from "./notifsService.js";
+import {
+	sendNotificationToRole,
+	sendNotificationToUser
+} from "./notifsService.js";
 
 const { PrismaClientKnownRequestError } = pkg;
 
@@ -97,7 +100,7 @@ export async function getUserClasses(userId) {
 			throw error;
 		}
 	}
-};
+}
 
 export async function getUserAssignments(userId) {
 	try {
@@ -178,7 +181,7 @@ export async function getGroups(userId) {
 			throw error;
 		}
 	}
-};
+}
 
 export async function getAllGroups() {
 	try {
@@ -196,7 +199,7 @@ export async function getAllGroups() {
 			throw new apiError("Failed to get all groups", 500);
 		}
 	}
-};
+}
 
 export async function updateProfile(userId, updateData) {
 	try {
@@ -228,175 +231,204 @@ export async function updateProfile(userId, updateData) {
 			throw new apiError("Failed to update profile", 500);
 		}
 	}
-};
+}
 
 // Reports
 export async function getAdminReports() {
-    try {
-        const reports = await prisma.report.findMany({
-            where: {
-                receiverRole: 'ADMIN',
-                receiverId: null,
-            },
-            include: {
-                sender: true,
-            },
-			orderBy: {
-				createdAt: 'desc',
+	try {
+		const reports = await prisma.report.findMany({
+			where: {
+				receiverRole: "ADMIN",
+				receiverId: null
 			},
-        });
-        return reports;
-    } catch (error) {
-        throw new apiError('Failed to fetch admin reports', 500);
-    }
-};
+			include: {
+				sender: true
+			},
+			orderBy: {
+				createdAt: "desc"
+			}
+		});
+		return reports;
+	} catch (error) {
+		throw new apiError("Failed to fetch admin reports", 500);
+	}
+}
 
 export async function getInstructorReports(instructorId) {
-    try {
-        const reports = await prisma.report.findMany({
-            where: {
-                receiverRole: 'INSTRUCTOR',
-                receiverId: instructorId,
-            },
-            include: {
-                sender: true,
-                receiver: true,
-            },
-			orderBy: {
-				createdAt: 'desc',
+	try {
+		const reports = await prisma.report.findMany({
+			where: {
+				receiverRole: "INSTRUCTOR",
+				receiverId: instructorId
 			},
-        });
-        return reports;
-    } catch (error) {
-        throw new apiError('Failed to fetch instructor reports', 500);
-    }
-};
+			include: {
+				sender: true,
+				receiver: true
+			},
+			orderBy: {
+				createdAt: "desc"
+			}
+		});
+		return reports;
+	} catch (error) {
+		throw new apiError("Failed to fetch instructor reports", 500);
+	}
+}
 
 export async function getSentReports(senderId) {
-    try {
-        const reports = await prisma.report.findMany({
-            where: {
-                senderId: senderId,
-            },
-            include: {
-                sender: true,
-                receiver: true,
-            },
-			orderBy: {
-				createdAt: 'desc',
+	try {
+		const reports = await prisma.report.findMany({
+			where: {
+				senderId: senderId
 			},
-        });
-        return reports;
-    } catch (error) {
-        throw new apiError('Failed to fetch sent reports', 500);
-    }
-};
+			include: {
+				sender: true,
+				receiver: true
+			},
+			orderBy: {
+				createdAt: "desc"
+			}
+		});
+		return reports;
+	} catch (error) {
+		throw new apiError("Failed to fetch sent reports", 500);
+	}
+}
 
-export async function sendReportToInstructor(senderId, title, content, instructorId) {
-    try {
-        const newReport = await prisma.report.create({
-            data: {
-                senderId,
-                receiverRole: 'INSTRUCTOR',
-                receiverId: instructorId,
-                title,
+export async function sendReportToInstructor(
+	senderId,
+	title,
+	content,
+	instructorId
+) {
+	try {
+		const newReport = await prisma.report.create({
+			data: {
+				senderId,
+				receiverRole: "INSTRUCTOR",
+				receiverId: instructorId,
+				title,
 				content,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-            },
-        });
+				createdAt: new Date(),
+				updatedAt: new Date()
+			}
+		});
 
 		const senderInfo = await prisma.user.findUnique({
 			where: {
 				userId: senderId
 			}
 		});
-		await sendNotificationToUser(senderId, 'Report', `You have a new report from user ${senderInfo.firstname} ${senderInfo.lastname}`, instructorId, "report");
-        return newReport;
-    } catch (error) {
+		await sendNotificationToUser(
+			senderId,
+			"Report",
+			`You have a new report from user ${senderInfo.firstname} ${senderInfo.lastname}`,
+			instructorId,
+			"report"
+		);
+		return newReport;
+	} catch (error) {
 		console.log(error);
-        throw new apiError('Failed to send report to instructor', 500);
-    }
-};
+		throw new apiError("Failed to send report to instructor", 500);
+	}
+}
 
 export async function sendReportToAdmin(senderId, title, content) {
-    try {
-        const newReport = await prisma.report.create({
-            data: {
-                senderId,
-                receiverRole: 'ADMIN',
-                receiverId: null,
-                title,
-                content,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-            },
-        });
+	try {
+		const newReport = await prisma.report.create({
+			data: {
+				senderId,
+				receiverRole: "ADMIN",
+				receiverId: null,
+				title,
+				content,
+				createdAt: new Date(),
+				updatedAt: new Date()
+			}
+		});
 
 		const senderInfo = await prisma.user.findUnique({
 			where: {
 				userId: senderId
 			}
 		});
-		await sendNotificationToRole(senderId, 'Report', `You have a new report from user ${senderInfo.firstname} ${senderInfo.lastname}`, "ADMIN", "report");
-        return newReport;
-    } catch (error) {
+		await sendNotificationToRole(
+			senderId,
+			"Report",
+			`You have a new report from user ${senderInfo.firstname} ${senderInfo.lastname}`,
+			"ADMIN",
+			"report"
+		);
+		return newReport;
+	} catch (error) {
 		console.log(error);
-        throw new apiError('Failed to send report to admin', 500);
-    }
-};
+		throw new apiError("Failed to send report to admin", 500);
+	}
+}
 
 export async function resolveReport(reportId) {
 	try {
 		const updatedReport = await prisma.report.update({
 			where: {
-				reportId: reportId,
+				reportId: reportId
 			},
 			data: {
-				isResolved: true,
-			},
+				isResolved: true
+			}
 		});
 
-		await sendNotificationToUser(null, 'Report - Resolved', `Your report '${updatedReport.title}' has been marked as resolved.`, updatedReport.senderId, "report");
+		await sendNotificationToUser(
+			null,
+			"Report - Resolved",
+			`Your report '${updatedReport.title}' has been marked as resolved.`,
+			updatedReport.senderId,
+			"report"
+		);
 		return updatedReport;
 	} catch (error) {
-		throw new apiError('Failed to mark report as resolved', 500);
+		throw new apiError("Failed to mark report as resolved", 500);
 	}
-};
+}
 
 export async function unResolveReport(reportId) {
 	try {
 		const updatedReport = await prisma.report.update({
 			where: {
-				reportId: reportId,
+				reportId: reportId
 			},
 			data: {
-				isResolved: false,
-			},
+				isResolved: false
+			}
 		});
 
-		await sendNotificationToUser(null, 'Report - Not Resolved', `Your report '${updatedReport.title}' has been marked as not resolved.`, updatedReport.senderId, "report");
+		await sendNotificationToUser(
+			null,
+			"Report - Not Resolved",
+			`Your report '${updatedReport.title}' has been marked as not resolved.`,
+			updatedReport.senderId,
+			"report"
+		);
 		return updatedReport;
 	} catch (error) {
-		throw new apiError('Failed to mark report as not resolved', 500);
+		throw new apiError("Failed to mark report as not resolved", 500);
 	}
-};
+}
 
 export async function deleteReport(reportId) {
 	try {
 		const deletedReport = await prisma.report.delete({
 			where: {
-				reportId: reportId,
-			},
+				reportId: reportId
+			}
 		});
 
 		// await sendNotificationToUser(null, 'Report - Deleted', `Your report '${updatedReport.title}' has been deleted.`, updatedReport.senderId, "report");
 		return deletedReport;
 	} catch (error) {
 		console.log(error);
-		throw new apiError('Failed to delete report', 500);
+		throw new apiError("Failed to delete report", 500);
 	}
-};
+}
 
 export default {
 	getUsersByRole,
@@ -413,5 +445,5 @@ export default {
 	sendReportToAdmin,
 	resolveReport,
 	unResolveReport,
-	deleteReport,
+	deleteReport
 };

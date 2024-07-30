@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
 	Dialog,
-	DialogContent,
+	LargeDialogContent,
 	DialogHeader,
 	DialogTitle
 } from "@/components/ui/dialog";
@@ -29,7 +29,7 @@ const ViewSubmissionDialog = ({ submission, rubric, open, onClose }) => {
 
 	return (
 		<Dialog open={open} onOpenChange={onClose}>
-			<DialogContent className="max-w-4xl h-[80vh] ml-[80px]">
+			<LargeDialogContent className="w-full h-[80vh]">
 				<DialogHeader>
 					<DialogTitle className="flex justify-between items-center">
 						Submission View
@@ -68,7 +68,11 @@ const ViewSubmissionDialog = ({ submission, rubric, open, onClose }) => {
 						)}
 					</div>
 				)}
-			</DialogContent>
+				{/* <Button onClick={() => onDownload(submission.submissionFilePath)}>
+                    <Download className="h-4 w-4 mr-1" />
+                    Download
+                </Button> */}
+			</LargeDialogContent>
 		</Dialog>
 	);
 };

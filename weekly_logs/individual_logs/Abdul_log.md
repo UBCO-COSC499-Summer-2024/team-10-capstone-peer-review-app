@@ -2,7 +2,7 @@
 # Abdul's Log for Cycle 17
 
 
-## Thursday, July 25, 2024, 05:18 PM - Tuesday, July 30, 2024, 05:18 PM
+## Thursday, July 25, 2024, 05:18 PM - Tuesday, July 31, 2024, 01:30 AM
 
 
 ## Tasks worked on this cycle:
@@ -44,7 +44,13 @@
   
 
 ## Time entries from Clockify on this cycle:
-&nbsp; &nbsp; :watch: **Working on front-end test refactors** *(Total duration: 2.4 hours)*  
+&nbsp; &nbsp; :watch: **Working on front-end test refactors** *(Total duration: 6.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 31, 2024, 12:35 AM - Wednesday, July 31, 2024, 1:30 AM *(0.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 30, 2024, 10:22 PM - Tuesday, July 30, 2024, 11:28 PM *(1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 30, 2024, 05:26 PM - Tuesday, July 30, 2024, 07:13 PM *(1.8 hours)*  
   
 &nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 30, 2024, 02:57 PM - Tuesday, July 30, 2024, 05:19 PM *(2.4 hours)*  
   
@@ -122,14 +128,13 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Did a lot of tests! I'm pretty satisfied with what we have.
+* Worked on a feature and implemented it (both UI & back-end) as well which was nice.
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Finish up testing, should be doable in 2 days now that I know how long it's going to take for me to work on making tests for each file. Each test may not have full coverage but at least a decent amount.
+* Test run the app to find bugs if any and fix them right away.
+* Wrap up coding and shift focus onto the Individual Report. (likely for the cycle after this one, from Friday onwards)
   
   
 

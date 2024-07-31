@@ -1,4 +1,110 @@
 
+# Josh's Log for Cycle 17
+
+
+## Thursday, July 25, 2024, 05:18 PM - Tuesday, July 30, 2024, 05:18 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[276](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/276)**: Instructors will be able to randomly assign peer reviewers for individual assignments  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[263](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/263)**: List of all features to be implemented for Project 3  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[244](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/244)**: Complete a peer-review page   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[243](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/243)**: Add re-send verification email to login card  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Creating anon slider + adding a view submissions dialog for peer-review** *(Total duration: 3.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 30, 2024, 04:39 PM - Tuesday, July 30, 2024, 05:11 PM *(0.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 30, 2024, 01:45 PM - Tuesday, July 30, 2024, 02:21 PM *(0.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 30, 2024, 11:23 AM - Tuesday, July 30, 2024, 01:56 PM *(2.5 hours)*  
+  
+&nbsp; &nbsp; :watch: **resolving merge conflict issues** *(Total duration: 2.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 29, 2024, 01:20 PM - Monday, July 29, 2024, 03:45 PM *(2.4 hours)*  
+  
+&nbsp; &nbsp; :watch: **270 - Anon vs not anon for peer-reviews** *(Total duration: 1.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 29, 2024, 09:01 AM - Monday, July 29, 2024, 10:43 AM *(1.7 hours)*  
+  
+&nbsp; &nbsp; :watch: **270 - Instructors view for peer reviews, automatically assigning peer-views.** *(Total duration: 8.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 28, 2024, 02:47 PM - Sunday, July 28, 2024, 04:27 PM *(1.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 28, 2024, 10:54 AM - Sunday, July 28, 2024, 12:02 PM *(1.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 28, 2024, 09:18 AM - Sunday, July 28, 2024, 10:30 AM *(1.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 27, 2024, 02:22 PM - Saturday, July 27, 2024, 04:12 PM *(1.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 27, 2024, 11:24 AM - Saturday, July 27, 2024, 12:43 PM *(1.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 27, 2024, 09:05 AM - Saturday, July 27, 2024, 10:23 AM *(1.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **Drafting a randomize peer-reviews method** *(Total duration: 2.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 26, 2024, 09:56 AM - Friday, July 26, 2024, 12:51 PM *(2.9 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[284](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/284)**: New page for Instructors for submissions / grading  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[271](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/271)**: Logs review for c16  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[284](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/284)**: New page for Instructors for submissions / grading  
+  
+&nbsp; &nbsp; :arrow_heading_up: **PR-[271](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/271)**: Logs review for c16  
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[276](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/276)**: Instructors will be able to randomly assign peer reviewers for individual assignments  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[244](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/244)**: Complete a peer-review page   
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[243](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/243)**: Add re-send verification email to login card  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[263](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/263)**: List of all features to be implemented for Project 3  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[207](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/207)**: Integrate back-end testing env into drone  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[198](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/198)**: Writing new back-end tests for dockerized test enviroment. Start with services, then controllers  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+
+## Recap on goals from last cycle
+* Was able to finish up Reviews pagea for both instructors and students, also setup automated peer-reviews assigning, as well a anonymous peer-reviewing. 
+* Was not able to refactor any the existing tests yet, but that is the next priority now 
+* Want to complete a reach goal and create personalized todo's for each user and class
+
+## Goals for next cycle
+* Complete Todo's for each user and class
+* Refactor existing tests, create new back-end tests
+* Fix any existing bugs that pop up, and start working on documentation / user guide
+  
+  
+
 # Josh's Log for Cycle 16
 
 

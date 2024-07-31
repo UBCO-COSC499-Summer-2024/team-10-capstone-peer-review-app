@@ -1,4 +1,190 @@
 
+# Mahir's Log for Cycle 17
+
+
+## Thursday, July 25, 2024, 05:18 PM - Tuesday, July 30, 2024, 05:18 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[287](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/287)**: Info Dialogs and Rubrics view fixes  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[285](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/285)**: Group Submissions / Group Review Facilitataion  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature, type: database, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[274](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/274)**: Instructor will be able to restrict submission files/links (i.e. only accept .PDF or .ZIP or only google docs links)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[269](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/269)**: Back-end refactor for Assignment, rubric, submission, and reviews  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[265](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/265)**: Allow for uploading other file types as submission  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: database, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[263](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/263)**: List of all features to be implemented for Project 3  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[252](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/252)**: Update dashboard for assignments, reviews, and grades  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[245](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/245)**: Add a rubric creation in Assignemnt View tab (for each assignment)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[242](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/242)**: Implement comments for assignments  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[240](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/240)**: Add Change Password in Settings page  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[235](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/235)**: Create/Delete/Edit Categories  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: database, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[234](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/234)**: Delete Rubric / Edit Rubric  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: database, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[230](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/230)**: Personalized TODO creator for each class? extra feature  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: database, type: UI, Reach 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[120](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/120)**: Major Use Case 5: Send Reports to Admin   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Info tags** *(Total duration: 1.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 30, 2024, 04:07 PM - Ongoing *(Ongoing)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 30, 2024, 02:44 PM - Tuesday, July 30, 2024, 04:07 PM *(1.4 hours)*  
+  
+&nbsp; &nbsp; :watch: **Merge conflicts + team meeting** *(Total duration: 3.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 29, 2024, 01:00 PM - Monday, July 29, 2024, 04:00 PM *(3.0 hours)*  
+  
+&nbsp; &nbsp; :watch: **285/Group_submissions** *(Total duration: 0.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 28, 2024, 08:05 PM - Sunday, July 28, 2024, 08:14 PM *(0.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **265 Edit Rubric** *(Total duration: 5.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 28, 2024, 12:47 PM - Sunday, July 28, 2024, 03:44 PM *(2.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 27, 2024, 11:28 PM - Sunday, July 28, 2024, 01:35 AM *(2.1 hours)*  
+  
+&nbsp; &nbsp; :watch: **265/Rubric creation on Assigment Creation** *(Total duration: 4.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 27, 2024, 11:25 PM - Sunday, July 28, 2024, 12:25 AM *(1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 27, 2024, 01:51 PM - Saturday, July 27, 2024, 02:44 PM *(0.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 27, 2024, 12:46 PM - Saturday, July 27, 2024, 01:23 PM *(0.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 26, 2024, 07:24 PM - Friday, July 26, 2024, 09:30 PM *(2.1 hours)*  
+  
+&nbsp; &nbsp; :watch: **265/Rubric linking bug** *(Total duration: 2.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 27, 2024, 06:04 PM - Saturday, July 27, 2024, 08:03 PM *(2.0 hours)*  
+  
+&nbsp; &nbsp; :watch: **265/Assignment Comments** *(Total duration: 3.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 26, 2024, 10:43 PM - Saturday, July 27, 2024, 02:03 AM *(3.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **265/File_submission_type** *(Total duration: 2.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 26, 2024, 03:32 PM - Friday, July 26, 2024, 05:54 PM *(2.4 hours)*  
+  
+&nbsp; &nbsp; :watch: **269/Refactoring Assignments to be 1-many** *(Total duration: 7.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 26, 2024, 10:25 AM - Friday, July 26, 2024, 11:46 AM *(1.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 26, 2024, 04:30 AM - Friday, July 26, 2024, 06:36 AM *(2.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 25, 2024, 10:26 PM - Friday, July 26, 2024, 01:01 AM *(2.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, July 25, 2024, 08:25 PM - Thursday, July 25, 2024, 09:54 PM *(1.5 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[280](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/280)**: Submission File Types, Category Management, Rubric Management, Minor additions of features  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[273](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/273)**: 269/refactoring assignments/rubrics  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[280](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/280)**: Submission File Types, Category Management, Rubric Management, Minor additions of features  
+  
+&nbsp; &nbsp; :arrow_heading_up: **PR-[273](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/273)**: 269/refactoring assignments/rubrics  
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[285](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/285)**: Group Submissions / Group Review Facilitataion  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[274](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/274)**: Instructor will be able to restrict submission files/links (i.e. only accept .PDF or .ZIP or only google docs links)  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[269](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/269)**: Back-end refactor for Assignment, rubric, submission, and reviews  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[265](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/265)**: Allow for uploading other file types as submission  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[252](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/252)**: Update dashboard for assignments, reviews, and grades  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[245](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/245)**: Add a rubric creation in Assignemnt View tab (for each assignment)  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[242](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/242)**: Implement comments for assignments  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[240](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/240)**: Add Change Password in Settings page  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[235](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/235)**: Create/Delete/Edit Categories  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[234](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/234)**: Delete Rubric / Edit Rubric  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[126](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/126)**: Major Use Case 11: Link Group Assignment (with isGroup var) to Group  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[120](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/120)**: Major Use Case 5: Send Reports to Admin   
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[287](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/287)**: Info Dialogs and Rubrics view fixes  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[263](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/263)**: List of all features to be implemented for Project 3  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[230](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/230)**: Personalized TODO creator for each class? extra feature  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+
+## Recap on goals from last cycle
+* This cycle was quite an extensive one for me as I was working on a lot of refactoring at the beginning of the cycle. We decided to refactor the schema to have assignments to be many to many with rubrics to having it now be 1-many. This refactor took a while to trickle down and edit so that all our files are compatible.
+* After that, I focused on the remaining tasks and features left to finish on our to-do list. I was able to get all of my assigned issues done and some bigger changes included comments for assignments, rubric creation within assignments, and restricting file types.
+* The last day or so I worked on plugging in information tags throughout our app to have a user guide for each page, it is not as detailed and extensive as I would have hoped but for now, it gets the job done. 
+
+## Goals for next cycle
+* I have finished all my development/code related issues on the list so the next cycle will heavily focus on getting our documentation and demos up and running for next week's meetings and presentation
+* I will have to work on my personal documentation report a good amount
+* Testing is also remaining to get done, I will try to help out on that after I set up the template for our documentation procedure. 
+  
+  
+
 # Mahir's Log for Cycle 16
 
 

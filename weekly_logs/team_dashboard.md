@@ -1,4 +1,70 @@
 
+# Team 10's Team Dashboard for Cycle 17
+
+
+## Thursday, July 25, 2024, 05:18 PM - Tuesday, July 30, 2024, 05:18 PM
+
+
+### Major features worked on in c-17
+*  Extendeding Deadlines for Students
+  
+*  Anonymous Peer Reviews
+
+*  Peer Reviews for Students and Instructors 
+
+*  Automatic Assigning of Peer Reviews
+  
+*  Polishing Create / Edit Assignment, Edit / Delete Rubric 
+
+*  Adding Assignment File type options and uploading specific file types, also text submissions
+
+*  Assignment Due Dates / Attempts functionalities
+
+*  Create Categories for Assignments
+
+*  Personalized Grades in Class-Dashboard
+  
+
+### Major features completed in c-17
+*  Extendeding Deadlines for Students
+  
+*  Anonymous Peer Reviews
+
+*  Peer Reviews for Students and Instructors 
+
+*  Automatic Assigning of Peer Reviews
+  
+*  Polishing Create / Edit Assignment, Edit / Delete Rubric 
+
+*  Adding Assignment File type options and uploading specific file types, also text submissions
+
+*  Assignment Due Dates / Attempts functionalities
+
+*  Create Categories for Assignments
+
+*  Personalized Grades in Class-Dashboard
+  
+
+### Major features to work on for c-18
+  
+*  Personalized TODOs in Class-Dashboard
+  
+*  Tests, Tests, Tests, and more Tests
+  
+
+### Team Issues and Hurdles for c-17
+  
+*  Got a-lot of work done this cycle, app is pretty much 100% for where we want it to be
+  
+*  Still need to set up and refactor some more tests but for the most part we are pretty much done with the major features
+  
+
+### Clockify Dashboard for this Week
+
+![Clockify Dashboard for c-17](./team_dashboard_images/clockify_dashboards/clockify_dashboard_c17.png)
+  
+  
+
 # Team 10's Team Dashboard for Cycle 16
 
 

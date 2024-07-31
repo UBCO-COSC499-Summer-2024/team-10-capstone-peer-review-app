@@ -68,9 +68,13 @@ const Class = () => {
 
   const fetchReviews = async () => {
     try {
-      const response = await reviewAPI.getReviewsReceived();
+      let response;
+      if (user.role === "STUDENT") {
+        response = await reviewAPI.getReviewsReceived();
+      } else if (user.role === "INSTRUCTOR" || user.role === "ADMIN") {
+        response = await reviewAPI.getReviewsAssigned();
+      }
       setReviews(response.data);
-      console.log("respones", response.data);
       calculateGrades(response.data);
     } catch (error) {
       console.error("Failed to fetch reviews", error);
@@ -80,8 +84,8 @@ const Class = () => {
         variant: "destructive"
       });
     }
-  };
-
+  };;
+  
   const calculateGrades = (reviews) => {
     let totalInstructorPoints = 0;
     let totalPeerPoints = 0;
@@ -516,50 +520,54 @@ const Class = () => {
           />					
 					</>
 					)}
-        <Card>
-        <CardContent className="text-center py-6 relative">
-          <div className="flex flex-col gap-2">
-          <span className={`text-4xl font-bold ${getGradeColorClass(parseFloat(classAverage))}`}>
-            {classAverage}%
-          </span>
-          <span className="text-gray-500">Class Grade</span>
-          </div>
-          <HoverCard>
-            <HoverCardTrigger asChild>
-              <Button variant="ghost" size="sm" className="absolute top-2 right-2">
-                <Info className="h-4 w-4" />
-              </Button>
-            </HoverCardTrigger>
-            <HoverCardContent className="w-80">
-              <h3 className="font-semibold mb-2">Grade Color Legend</h3>
-              <p className="text-sm text-destructive bg-destructive/20 p-1 mb-1">Below 50%: Needs Improvement</p>
-              <p className="text-sm text-warning bg-warning/20 p-1 mb-1">50% - 74%: Satisfactory</p>
-              <p className="text-sm text-success bg-success/20 p-1">75% and above: Excellent</p>
-            </HoverCardContent>
-          </HoverCard>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardContent className="text-center py-6 relative">
-          <span className={`block text-4xl font-bold ${getGradeColorClass(parseFloat(avgPeerGrade))}`}>
-            {avgPeerGrade}%
-          </span>
-          <span className="text-gray-500">Avg Peer Grade</span>
-          <HoverCard>
-            <HoverCardTrigger asChild>
-              <Button variant="ghost" size="sm" className="absolute top-2 right-2">
-                <Info className="h-4 w-4" />
-              </Button>
-            </HoverCardTrigger>
-            <HoverCardContent className="w-80">
-              <h3 className="font-semibold mb-2">Grade Color Legend</h3>
-              <p className="text-sm text-destructive bg-destructive/20 p-1 mb-1">Below 50%: Needs Improvement</p>
-              <p className="text-sm text-warning bg-warning/20 p-1 mb-1">50% - 74%: Satisfactory</p>
-              <p className="text-sm text-success bg-success/20 p-1">75% and above: Excellent</p>
-            </HoverCardContent>
-          </HoverCard>
-        </CardContent>
-      </Card>
+         <Card>
+          <CardContent className="text-center py-6 relative">
+            <div className="flex flex-col gap-2">
+              <span className={`text-4xl font-bold ${getGradeColorClass(parseFloat(classAverage))}`}>
+                {classAverage}%
+              </span>
+              <span className="text-gray-500">
+                {user.role === "STUDENT" ? "Average Class Grade" : "Average Grade of All Students "}
+              </span>
+            </div>
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <Button variant="ghost" size="sm" className="absolute top-2 right-2">
+                  <Info className="h-4 w-4" />
+                </Button>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-80">
+                <h3 className="font-semibold mb-2">Grade Color Legend</h3>
+                <p className="text-sm bg-destructive/20 p-1 mb-1">Below 50%: Needs Improvement</p>
+                <p className="text-sm bg-warning/20 p-1 mb-1">50% - 74%: Satisfactory</p>
+                <p className="text-sm bg-success/20 p-1">75% and above: Excellent</p>
+              </HoverCardContent>
+            </HoverCard>
+          </CardContent>
+        </Card>
+        {user.role === "STUDENT" && (
+          <Card>
+            <CardContent className="text-center py-6 relative">
+              <span className={`block text-4xl font-bold ${getGradeColorClass(parseFloat(avgPeerGrade))}`}>
+                {avgPeerGrade}%
+              </span>
+              <span className="text-gray-500">Avg Peer Grade</span>
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <Button variant="ghost" size="sm" className="absolute top-2 right-2">
+                    <Info className="h-4 w-4" />
+                  </Button>
+                </HoverCardTrigger>
+                <HoverCardContent className="w-80">
+                  <h3 className="font-semibold mb-2">Grade Color Legend</h3>
+                  <p className="text-sm bg-destructive/20 p-1 mb-1">Below 50%: Needs Improvement</p>
+                  <p className="text-sm bg-warning/20 p-1 mb-1">50% - 74%: Satisfactory</p>
+                  <p className="text-sm bg-success/20 p-1">75% and above: Excellent</p>
+                </HoverCardContent>
+              </HoverCard>
+            </CardContent>
+          </Card>
+        )}
 				<Card>
 					<CardHeader>
 					<CardTitle>To Do</CardTitle>

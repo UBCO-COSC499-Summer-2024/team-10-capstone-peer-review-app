@@ -25,7 +25,7 @@ import { useClass } from "@/contexts/contextHooks/useClass";
 import CreateRubric from "../components/rubrics/CreateRubric";
 import InfoButton from '../components/global/InfoButton';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import reviewAPI from "@/api/reviewAPI";
+import reviewAPI from "@/api/reviewApi";
 
 
 const Class = () => {

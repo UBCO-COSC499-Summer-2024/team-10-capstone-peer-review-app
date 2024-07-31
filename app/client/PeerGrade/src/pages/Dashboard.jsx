@@ -144,6 +144,37 @@ function Dashboard() {
     </Alert>
   );
 
+  const renderReviewAlert = (review) => (
+    <Alert key={review.reviewId} className="mb-4">
+      <AlertTitle className="flex justify-between items-center">
+        <span>{review.submission.assignment.title}</span>
+        <div>
+          <Badge variant="default" className="mr-2">
+            {review.submission.assignment.classes.classname}
+          </Badge>
+          {review.criterionGrades && review.criterionGrades.length > 0 && review.criterionGrades.every(cg => cg.grade !== null) && (
+            <Badge variant="outline" className="bg-success/30 text-green-700 font-bold">
+              Submitted
+            </Badge>
+          )}
+        </div>
+      </AlertTitle>
+      <AlertDescription className="flex justify-between items-center mt-2">
+        <span className="flex items-center">
+          <Calendar className="mr-2 h-4 w-4" />
+          Review Due: {format(parseISO(review.submission.assignment.dueDate), "MMM d, yyyy")}
+        </span>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => navigate('/peer-review', { state: { defaultTab: 'assigned' } })}
+        >
+          Review
+        </Button>
+      </AlertDescription>
+    </Alert>
+  );
+
   const renderInfoDialog = () => {
     if (infoStep === 1) {
       return (

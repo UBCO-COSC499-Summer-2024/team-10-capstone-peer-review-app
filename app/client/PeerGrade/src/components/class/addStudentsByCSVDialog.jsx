@@ -260,6 +260,7 @@ const AddStudentsByCSVDialog = ({
 											<Button
 												variant="ghost"
 												size="sm"
+												data-testid='remove-email-button'
 												onClick={() => handleRemoveEmail(email)}
 											>
 												<Trash2 className="h-4 w-4" />

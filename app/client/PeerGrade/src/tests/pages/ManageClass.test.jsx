@@ -1,166 +1,84 @@
+// ManageClass.test.jsx
 import React from 'react';
-import { render, fireEvent, waitFor, screen } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import { MemoryRouter } from 'react-router-dom';
-import configureStore from 'redux-mock-store';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import ManageClass from '@/pages/ManageClass';
-import { iClass, assignment, PeerReview, submission } from '@/utils/dbData';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { useUser } from '@/contexts/contextHooks/useUser';
+import { useClass } from '@/contexts/contextHooks/useClass';
+import { getEnrollRequestsForClass } from '@/api/enrollmentApi';
 
-// Mock the dbData module
-jest.mock('@/utils/dbData', () => {
-  return {
-    iClass: [],
-    assignment: [],
-    PeerReview: [],
-    submission: []
-  };
-});
+// Mock dependencies
+jest.mock('@/contexts/contextHooks/useUser');
+jest.mock('@/contexts/contextHooks/useClass');
+jest.mock('@/api/enrollmentApi');
 
-describe('ManageClass component', () => {
-  const mockStore = configureStore([]);
-  let store;
-  let userClasses;
-
+describe('ManageClass', () => {
   beforeEach(() => {
-    iClass.length = 0;
-    assignment.length = 0;
-    PeerReview.length = 0;
-    submission.length = 0;
-
-    const initialState = {
-      user: {
-        currentUser: {
-          userId: 1,
-          firstname: 'John',
-          lastname: 'Doe',
-          role: 'INSTRUCTOR',
+    useUser.mockReturnValue({ user: { role: 'INSTRUCTOR' } });
+    useClass.mockReturnValue({ classes: [{ classId: '1', classname: 'Class 1', description: "haha lol" }] });
+    getEnrollRequestsForClass.mockResolvedValue({
+      status: 'Success',
+      data: [
+        {
+          "requestId": "req1",
+          "status": "PENDING",
+          "studentId": "student1",
+          "classId": "1"
         },
-      },
-    };
-
-    store = mockStore(initialState);
-
-    userClasses = [
-      {
-        class_id: 1,
-        instructor_id: 1,
-        classname: 'ART 101',
-        description: 'Introduction to Art',
-        start: new Date(),
-        term: 'Winter',
-        end: new Date(),
-        size: 50,
-      },
-      {
-        class_id: 2,
-        instructor_id: 1,
-        classname: 'Mathematics',
-        description: 'Introduction to Mathematics',
-        start: new Date(),
-        term: 'Winter',
-        end: new Date(),
-        size: 25,
-      },
-    ];
-
-    iClass.push(...userClasses);
-  });
-
-  test('should render ManageClass component for instructor', () => {
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ManageClass />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(screen.getByText('My Classrooms')).toBeInTheDocument();
-  });
-
-  test('should render permission error for non-instructor/admin', () => {
-    const nonInstructorStore = mockStore({
-      user: { currentUser: null },
+        {
+          "requestId": "req2",
+          "status": "APPROVED",
+          "studentId": "student2",
+          "classId": "1"
+        },
+        {
+          "requestId": "req3",
+          "status": "PENDING",
+          "studentId": "student3",
+          "classId": "1"
+        }
+      ],
     });
-
-    render(
-      <Provider store={nonInstructorStore}>
-        <MemoryRouter>
-          <ManageClass />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(screen.getByText('You do not have permission to view this page.')).toBeInTheDocument();
   });
 
-  test('should add a new class', async () => {
+  test('renders Manage Classes heading', () => {
     render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ManageClass />
-        </MemoryRouter>
-      </Provider>
+      <Router>
+        <ManageClass />
+      </Router>
     );
+    expect(screen.getByText('Manage Classes')).toBeInTheDocument();
+  });
 
-    // Open modal
+  test('opens AddClassModal when Add a class button is clicked', () => {
+    render(
+      <Router>
+        <ManageClass />
+      </Router>
+    );
     fireEvent.click(screen.getByText('Add a class'));
+    expect(screen.getByText("Add a New Class")).toBeInTheDocument();
+  });
 
-    // Fill out form fields
-    fireEvent.change(screen.getByLabelText('Class Name'), { target: { value: 'New Class' } });
-    fireEvent.change(screen.getByLabelText('Description'), { target: { value: 'Class Description' } });
-    fireEvent.change(screen.getByLabelText('Term'), { target: { value: 'Spring 2024' } });
-    fireEvent.change(screen.getByLabelText('Size'), { target: { value: '30' } });
-
-    // Submit form
-    fireEvent.click(screen.getByText('Add Class'));
-
-    // Wait for the new class to appear in the list
+  test('renders ClassCard with correct pending approvals', async () => {
+    render(
+      <Router>
+        <ManageClass />
+      </Router>
+    );
     await waitFor(() => {
-      expect(screen.getByText('New Class')).toBeInTheDocument();
-      expect(screen.getByText('30 Students')).toBeInTheDocument();
+      expect(screen.getByText('Class 1')).toBeInTheDocument();
+      expect(screen.getByText('2 Pending')).toBeInTheDocument();
     });
   });
 
-  test('should display classes from mock data', async () => {
+  test('shows permission message for non-INSTRUCTOR/ADMIN users', () => {
+    useUser.mockReturnValue({ user: { role: 'STUDENT' } });
     render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ManageClass />
-        </MemoryRouter>
-      </Provider>
+      <Router>
+        <ManageClass />
+      </Router>
     );
-
-    // Wait for the component to render the classes
-    await waitFor(() => {
-      expect(screen.getByText('ART 101')).toBeInTheDocument();
-      expect(screen.getByText('50 Students')).toBeInTheDocument();
-      expect(screen.getByText('Mathematics')).toBeInTheDocument();
-      expect(screen.getByText('25 Students')).toBeInTheDocument();
-    });
-  });
-
-  test('should delete a class', async () => {
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ManageClass />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    // Wait for the component to render the classes
-    await waitFor(() => {
-      expect(screen.getByText('Mathematics')).toBeInTheDocument();
-    });
-
-    // Find and click delete button for the Mathematics class
-    const deleteButton = screen.getByTestId('delete-class-2');
-    fireEvent.click(deleteButton);
-
-    // Check if the deleted class is no longer in the DOM
-    await waitFor(() => {
-      expect(screen.queryByText('Mathematics')).toBeNull();
-    });
+    expect(screen.getByText('You do not have permission to view this page.')).toBeInTheDocument();
   });
 });

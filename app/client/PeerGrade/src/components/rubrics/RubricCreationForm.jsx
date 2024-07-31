@@ -52,6 +52,19 @@ const RubricCreationForm = ({ onRubricChange, isOpen, setIsOpen, resetTrigger, d
   useEffect(() => {
     validateRubric();
   }, [rubricData]);
+
+  useEffect(() => {
+    if (isOpen) {
+      // Workaround to fix the drawer pushing the navbar up
+      const timer = setTimeout(() => {
+        document.body.style.top = '0px';
+        console.log("Drawer opened, body top style set to 0px");
+      }, 0); // Timeout of 0 ensures the style is applied right after DOM updates
+  
+      // Clean up function to clear the timer
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
   
 
   const handleChange = (field, value) => {

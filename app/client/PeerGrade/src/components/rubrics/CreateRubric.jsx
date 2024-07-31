@@ -40,6 +40,19 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
     validateRubric();
   }, [newRubricData, selectedAssignments]);
 
+  useEffect(() => {
+    if (isCreateDrawerOpen) {
+      // Workaround to fix the drawer pushing the navbar up
+      const timer = setTimeout(() => {
+        document.body.style.top = '0px';
+        console.log("Drawer opened, body top style set to 0px");
+      }, 0); // Timeout of 0 ensures the style is applied right after DOM updates
+  
+      // Clean up function to clear the timer
+      return () => clearTimeout(timer);
+    }
+  }, [isCreateDrawerOpen]);
+
   const fetchRubrics = async () => {
     try {
       const response = await getAllRubrics();

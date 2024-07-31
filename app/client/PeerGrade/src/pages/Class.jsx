@@ -212,6 +212,7 @@ const Class = () => {
                               variant="ghost"
                               size="sm"
                               className="mr-2 hover:bg-red-100 hover:text-red-500"
+                              data-testid={`delete-category-${category.categoryId}`}
                               onClick={(e) => {
                                 setConfirmDeleteCategory(false);
                                 e.stopPropagation();
@@ -229,7 +230,7 @@ const Class = () => {
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                               <AlertDialogCancel className={confirmDeleteCategory ? "text-black" : ""}>Cancel</AlertDialogCancel>
-                              <Button onClick={() => handleDeleteCategory(category.categoryId)}>
+                              <Button onClick={() => handleDeleteCategory(category.categoryId)} data-testid='delete-dialog-button'>
                                 Delete
                               </Button>
                             </AlertDialogFooter>

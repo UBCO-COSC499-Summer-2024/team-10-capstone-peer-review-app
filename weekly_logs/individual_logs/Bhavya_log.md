@@ -58,14 +58,13 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* This cycle I added more tests for the backend and keep on formulating new ones. Some amount of refactoring in the services is required in making those work perfectly
+* I added good documentations and comments to backend routes and controllers with extensive guides on how to use them and what it encompasses.
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Working on testing the backend more and more
+* Work on documentations for services
+* Prepare for live demos and presentations
   
   
 

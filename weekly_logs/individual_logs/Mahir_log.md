@@ -174,14 +174,14 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* This cycle was quite an extensive one for me as I was working on a lot of refactoring at the beginning of the cycle. We decided to refactor the schema to have assignments to be many to many with rubrics to having it now be 1-many. This refactor took a while to trickle down and edit so that all our files are compatible.
+* After that, I focused on the remaining tasks and features left to finish on our to-do list. I was able to get all of my assigned issues done and some bigger changes included comments for assignments, rubric creation within assignments, and restricting file types.
+* The last day or so I worked on plugging in information tags throughout our app to have a user guide for each page, it is not as detailed and extensive as I would have hoped but for now, it gets the job done. 
 
 ## Goals for next cycle
-* 
-* 
-* 
+* I have finished all my development/code related issues on the list so the next cycle will heavily focus on getting our documentation and demos up and running for next week's meetings and presentation
+* I will have to work on my personal documentation report a good amount
+* Testing is also remaining to get done, I will try to help out on that after I set up the template for our documentation procedure. 
   
   
 

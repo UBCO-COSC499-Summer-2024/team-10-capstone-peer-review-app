@@ -32,8 +32,8 @@
   
 
 #### Back-end Testing for c-17
-![Back end Tests for c-17](./team_log_images/back_end_tests/back_end_tests_c17.png)  
-  
+![Back end Tests for c-16](./team_log_images/back_end_tests/back_end_unit_tests_c17.png)  
+![Back end Tests for c-16](./team_log_images/back_end_tests/back_end_integration_tests_c17.png)    
   
   
 

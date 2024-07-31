@@ -94,14 +94,14 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Was able to finish up Reviews pagea for both instructors and students, also setup automated peer-reviews assigning, as well a anonymous peer-reviewing. 
+* Was not able to refactor any the existing tests yet, but that is the next priority now 
+* Want to complete a reach goal and create personalized todo's for each user and class
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Complete Todo's for each user and class
+* Refactor existing tests, create new back-end tests
+* Fix any existing bugs that pop up, and start working on documentation / user guide
   
   
 

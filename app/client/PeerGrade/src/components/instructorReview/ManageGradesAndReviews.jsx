@@ -214,7 +214,6 @@ const ManageGradesAndReviews = () => {
 			const reviews = await reviewAPI.getAllReviews(
 				selectedSubmission.submissionId
 			);
-			console.log("selectedSubmission:", selectedSubmission);
 			const existingReviewerIds = reviews.data
 				.filter(
 					(review) =>
@@ -263,7 +262,6 @@ const ManageGradesAndReviews = () => {
 			}
 
 			setAssignReviewersDialogOpen(false);
-			setSelectedSubmission(null);
 			setSelectedReviewers([]);
 			fetchStudentsAndSubmissions(
 				selectedClass,
@@ -451,7 +449,6 @@ const ManageGradesAndReviews = () => {
 			);
 
 			setGradeDialogOpen(false);
-			setSelectedSubmission(null);
 			toast({
 				title: "Success",
 				description: "Grade submitted successfully",
@@ -901,7 +898,6 @@ const ManageGradesAndReviews = () => {
 				open={gradeDialogOpen && selectedSubmission !== null}
 				onClose={() => {
 					setGradeDialogOpen(false);
-					setSelectedSubmission(null);
 				}}
 				onGradeSubmit={handleGradeSubmit}
 			/>

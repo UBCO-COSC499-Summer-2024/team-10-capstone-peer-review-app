@@ -146,10 +146,13 @@ const Submissions = (assignment) => {
 		try {
 			const reviews = await reviewAPI.getAllReviews(submission.submissionId);
 			const existingReviewerIds = reviews.data
-				.filter((review) => review.isPeerReview)
+				.filter(
+					(review) =>
+						review.isPeerReview && review.reviewerId !== submission.submitterId
+				)
 				.map((review) => review.reviewerId);
-			setExistingReviewers(existingReviewerIds);
 			setSelectedReviewers(existingReviewerIds);
+			setExistingReviewers(existingReviewerIds);
 		} catch (error) {
 			console.error("Error fetching existing reviewers:", error);
 			toast({
@@ -308,7 +311,6 @@ const Submissions = (assignment) => {
 					revieweeId: selectedSubmission.submitterId,
 					updatedAt: new Date(),
 					isPeerReview: false,
-					// Remove isGroup field
 					criterionGrades: criterionGrades
 				};
 				await reviewAPI.updateReview(existingReview.data.reviewId, review);
@@ -319,7 +321,6 @@ const Submissions = (assignment) => {
 					reviewerId: user.userId,
 					revieweeId: selectedSubmission.submitterId,
 					isPeerReview: false,
-					// Remove isGroup field
 					criterionGrades: criterionGrades
 				};
 
@@ -562,7 +563,7 @@ const Submissions = (assignment) => {
 				</CardContent>
 				<ViewSubmissionDialog
 					submission={selectedSubmission}
-					rubric={rubric} // Pass the single rubric object here
+					rubric={rubric}
 					open={viewDialogOpen}
 					onClose={() => setViewDialogOpen(false)}
 					onDownload={handleDownload}

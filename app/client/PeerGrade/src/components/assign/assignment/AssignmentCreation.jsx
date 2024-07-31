@@ -42,7 +42,7 @@ import {
 	addAssignmentWithRubric
 } from "@/api/assignmentApi";
 import { getAllRubricsInClass } from "@/api/rubricApi";
-import { createCategory, getAllCategoriesInClass } from "@/api/categoryApi";
+import { createCategory } from "@/api/categoryApi";
 import { useUser } from "@/contexts/contextHooks/useUser";
 
 const fileTypeOptions = [
@@ -76,7 +76,6 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
 	const { user } = useUser();
 	const [newCategoryName, setNewCategoryName] = useState("");
 	const [isCreatingCategory, setIsCreatingCategory] = useState(false);
-	const [isPeerReviewAnonymous, setIsPeerReviewAnonymous] = useState(false);
 
 	useEffect(() => {
 		const fetchCategoriesAndRubrics = async () => {
@@ -304,18 +303,20 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
 						)}
 					</div>
 
-					<div className="flex items-center space-x-2">
-						<Switch
-							id="anonymous-peer-review"
-							checked={isPeerReviewAnonymous}
-							onCheckedChange={setIsPeerReviewAnonymous}
-						/>
-						<label
-							htmlFor="anonymous-peer-review"
-							className="text-sm font-medium"
-						>
+					<div className="flex flex-col space-y-2">
+						<label htmlFor="anonymous-peer-review">
 							Enable Anonymous Peer Reviews
 						</label>
+						<Switch
+							id="anonymous-peer-review"
+							checked={formData.isPeerReviewAnonymous}
+							onCheckedChange={(checked) => {
+								setFormData((prev) => ({
+									...prev,
+									isPeerReviewAnonymous: checked
+								}));
+							}}
+						/>
 					</div>
 
 					<div className="flex flex-col gap-2">

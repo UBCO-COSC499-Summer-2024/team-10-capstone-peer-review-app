@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
+import { Switch } from "@/components/ui/switch";
 import {
 	Popover,
 	PopoverContent,
@@ -46,20 +47,14 @@ const EditAssignment = () => {
 	const navigate = useNavigate();
 	const { classId, assignmentId } = useParams();
 
-	const [open, setOpen] = useState(false);
-	const [openCat, setOpenCat] = useState(false);
-	const [selectStudentOpen, setSelectStudentOpen] = useState(false);
-	const [selectNewDueDateOpen, setSelectNewDueDateOpen] = useState(false);
 	const [openExtendDeadlines, setOpenExtendDeadlines] = useState(false);
-
-	const [value, setValue] = useState("");
 	const fileInputRef = useRef(null);
-	const [selectedRubric, setSelectedRubric] = useState("");
 
 	const [formData, setFormData] = useState({
 		title: "",
 		description: "",
 		maxSubmissions: 1,
+		isPeerReviewAnonymous: false,
 		categoryId: "",
 		dueDate: null,
 		rubricId: "",
@@ -105,6 +100,7 @@ const EditAssignment = () => {
 						title: assignmentData.title,
 						description: assignmentData.description,
 						maxSubmissions: assignmentData.maxSubmissions,
+						isPeerReviewAnonymous: assignmentData.isPeerReviewAnonymous,
 						categoryId: assignmentData.categoryId,
 						dueDate: new Date(assignmentData.dueDate),
 						rubricId: assignmentData.rubricId,
@@ -191,6 +187,7 @@ const EditAssignment = () => {
 				description: formData.description,
 				dueDate: formData.dueDate,
 				maxSubmissions: formData.maxSubmissions,
+				isPeerReviewAnonymous: formData.isPeerReviewAnonymous,
 				rubricId: formData.rubricId,
 				allowedFileTypes: formData.allowedFileTypes
 			})
@@ -226,66 +223,6 @@ const EditAssignment = () => {
 				description: "There was an error updating the assignment.",
 				variant: "destructive"
 			});
-		}
-	};
-
-	const handleAddExtendedDueDate = async () => {
-		if (selectedStudent && newDueDate) {
-			const response = await extendDeadlineForStudent(
-				assignmentId,
-				selectedStudent.studentId,
-				newDueDate
-			);
-			if (response.status === "Success") {
-				if (
-					extendedDueDates.find(
-						(entry) => entry.userId === selectedStudent.studentId
-					)
-				) {
-					setExtendedDueDates((prev) =>
-						prev.map((entry) =>
-							entry.userId === selectedStudent.studentId
-								? { userId: selectedStudent.studentId, newDueDate }
-								: entry
-						)
-					);
-				} else {
-					setExtendedDueDates((prev) => [
-						...prev,
-						{ userId: selectedStudent.studentId, newDueDate }
-					]);
-				}
-				setSelectedStudent("");
-				setNewDueDate(null);
-				toast({
-					title: "Extended Due Date Added",
-					description:
-						"The due date has been successfully extended for the selected student.",
-					variant: "positive"
-				});
-			}
-		}
-	};
-
-	const handleDeleteExtendedDueDate = async (studentId) => {
-		if (confirmDelete === studentId) {
-			setConfirmDelete("");
-			const response = await deleteExtendedDeadlineForStudent(
-				studentId,
-				assignmentId
-			);
-			if (response.status === "Success") {
-				setExtendedDueDates((prev) =>
-					prev.filter((entry) => entry.userId !== studentId)
-				);
-				toast({
-					title: "Extended Due Date Removed",
-					description: "The extended due date has been successfully removed.",
-					variant: "positive"
-				});
-			}
-		} else {
-			setConfirmDelete(studentId);
 		}
 	};
 
@@ -352,6 +289,22 @@ const EditAssignment = () => {
 								{errors.maxSubmissions}
 							</p>
 						)}
+					</div>
+
+					<div className="flex flex-col space-y-2">
+						<label htmlFor="anonymous-peer-review">
+							Enable Anonymous Peer Reviews
+						</label>
+						<Switch
+							id="anonymous-peer-review"
+							checked={formData.isPeerReviewAnonymous}
+							onCheckedChange={(checked) => {
+								setFormData((prev) => ({
+									...prev,
+									isPeerReviewAnonymous: checked
+								}));
+							}}
+						/>
 					</div>
 
 					<div className="flex flex-col gap-2">

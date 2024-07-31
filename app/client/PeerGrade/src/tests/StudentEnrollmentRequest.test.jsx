@@ -1,10 +1,12 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import StudentEnrollmentRequests from '@/pages/StudentEnrollmentRequests';
-import { getAllClassesUserisNotIn, createEnrollRequest, getEnrollRequestsForUser } from '@/api/classApi';
+import { getAllClassesUserisNotIn } from "@/api/classApi";
+import { createEnrollRequest, getEnrollRequestsForUser } from "@/api/enrollmentApi";
 import { useToast } from '@/components/ui/use-toast';
 
 jest.mock('@/api/classApi');
+jest.mock('@/api/enrollmentApi');
 jest.mock('@/components/ui/use-toast');
 
 describe('StudentEnrollmentRequests', () => {

@@ -1,127 +1,78 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import Report from '@/pages/Report';
-import { getInstructorByClassId } from '@/api/classApi';
+import { useToast } from '@/components/ui/use-toast';
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { useClass } from "@/contexts/contextHooks/useClass";
-import { useToast } from '@/components/ui/use-toast';
-import userEvent from '@testing-library/user-event';
+import { getInstructorByClassId } from '@/api/classApi';
+import { sendReportToInstructor, sendReportToAdmin, getSentReports } from '@/api/userApi';
 
-// Mock the API and context hooks
-jest.mock('@/api/classApi', () => ({
-    getInstructorByClassId: jest.fn(),
-}));
-
-jest.mock('@/contexts/contextHooks/useUser', () => ({
-    useUser: jest.fn(),
-}));
-
-jest.mock('@/contexts/contextHooks/useClass', () => ({
-    useClass: jest.fn(),
-}));
-
-jest.mock('@/components/ui/use-toast', () => ({
-    useToast: jest.fn(),
-}));
+// Mock the necessary hooks and API calls
+jest.mock('@/components/ui/use-toast');
+jest.mock('@/contexts/contextHooks/useUser');
+jest.mock('@/contexts/contextHooks/useClass');
+jest.mock('@/api/userApi');
+jest.mock('@/api/classApi');
 
 describe('Report Component', () => {
-    const mockToast = jest.fn();
-    
     beforeEach(() => {
-        useToast.mockReturnValue({ toast: mockToast });
+        useToast.mockReturnValue({ toast: jest.fn() });
+        useUser.mockReturnValue({ user: { role: 'STUDENT', userId: '1' }, userLoading: false });
+        useClass.mockReturnValue({ classes: [], isClassLoading: false });
+        getInstructorByClassId.mockResolvedValue({ status: 'Success', data: { userId: '2', firstname: 'John', lastname: 'Doe' } });
+        sendReportToInstructor.mockResolvedValue({ status: 'Success', data: {} });
+        sendReportToAdmin.mockResolvedValue({ status: 'Success', data: {} });
+        getSentReports.mockResolvedValue({ status: 'Success', data: [] });
     });
 
-    it('renders the component for an instructor', () => {
-        useUser.mockReturnValue({
-            user: { role: 'INSTRUCTOR' },
-            userLoading: false,
-        });
-        useClass.mockReturnValue({
-            classes: [],
-            isClassLoading: false,
-        });
-
+    test('renders initial UI elements', () => {
         render(<Report />);
-
-        expect(screen.getByText('Send a Report to Admin')).toBeInTheDocument();
+        expect(screen.getByText('Send a Report')).toBeInTheDocument();
+        expect(screen.getByPlaceholderText('Enter title')).toBeInTheDocument();
+        expect(screen.getByPlaceholderText('Enter your report content')).toBeInTheDocument();
         expect(screen.getByText('Submit Report')).toBeInTheDocument();
     });
 
-    // it('renders the component for a student', async () => {
-    //     useUser.mockReturnValue({
-    //         user: { role: 'STUDENT' },
-    //         userLoading: false,
-    //     });
-    //     useClass.mockReturnValue({
-    //         classes: [{ classId: '1' }],
-    //         isClassLoading: false,
-    //     });
+    test('submits the report form', async () => {
+        render(<Report />);
+        fireEvent.change(screen.getByPlaceholderText('Enter title'), { target: { value: 'Test Title' } });
+        fireEvent.change(screen.getByPlaceholderText('Enter your report content'), { target: { value: 'Test Content' } });
+        fireEvent.click(screen.getByText('Submit Report'));
 
-    //     getInstructorByClassId.mockResolvedValue({
-    //         status: 'Success',
-    //         data: { userId: '1', firstname: 'John', lastname: 'Doe' },
-    //     });
+        await waitFor(() => {
+            expect(sendReportToAdmin).toHaveBeenCalledWith('1', 'Test Title', 'Test Content');
+        });
+    });
 
+    // test('changes role and selects instructor', async () => {
     //     render(<Report />);
+    //     fireEvent.change(screen.getByPlaceholderText('Enter title'), { target: { value: 'Test Title' } });
+    //     fireEvent.change(screen.getByPlaceholderText('Enter your report content'), { target: { value: 'Test Content' } });
 
-    //     fireEvent.click(await screen.getByLabelText('Recipient'));
-
-    //     fireEvent.click(await screen.getByText('Instructor'));
-
-    //     fireEvent.click(await screen.getByLabelText('Instructor'));
+    //     fireEvent.click(screen.getByLabelText('Recipient'));
+    //     fireEvent.click(screen.getByText('Instructor'));
 
     //     await waitFor(() => {
-    //         expect(screen.getByText('John Doe')).toBeInTheDocument();
-    //     });
-    // });
-
-    // it('submits the report', async () => {
-    //     useUser.mockReturnValue({
-    //         user: { role: 'STUDENT' },
-    //         userLoading: false,
-    //     });
-    //     useClass.mockReturnValue({
-    //         classes: [{ classId: '1' }],
-    //         isClassLoading: false,
+    //         expect(screen.getByLabelText('Instructor')).toBeInTheDocument();
     //     });
 
-    //     getInstructorByClassId.mockResolvedValue({
-    //         status: 'Success',
-    //         data: { userId: '1', firstname: 'John', lastname: 'Doe' },
-    //     });
-
-    //     render(<Report />);
-
-    //     fireEvent.click(screen.getByText('Select recipient'));
-    //     fireEvent.click(await screen.findByText('Instructor'));
-
-    //     fireEvent.change(screen.getByPlaceholderText('Enter subject'), { target: { value: 'Test Subject' } });
-    //     fireEvent.change(screen.getByPlaceholderText('Enter your report content'), { target: { value: 'This is a test report.' } });
+    //     fireEvent.click(screen.getByText('Select instructor'));
+    //     fireEvent.click(screen.getByText('John Doe'));
 
     //     fireEvent.click(screen.getByText('Submit Report'));
 
     //     await waitFor(() => {
-    //         expect(mockToast).toHaveBeenCalledWith(expect.objectContaining({
-    //             title: "Report Submitted",
-    //             description: expect.any(Object),
-    //             variant: "positive",
-    //         }));
+    //         expect(sendReportToInstructor).toHaveBeenCalledWith('1', 'Test Title', 'Test Content', '2');
     //     });
     // });
 
-    // it('renders the Reports component for admin role', () => {
-    //     useUser.mockReturnValue({
-    //         user: { role: 'ADMIN' },
-    //         userLoading: false,
-    //     });
-    //     useClass.mockReturnValue({
-    //         classes: [],
-    //         isClassLoading: false,
-    //     });
+    test('fetches and displays reports', async () => {
+        getSentReports.mockResolvedValueOnce({ status: 'Success', data: [{ id: 1, title: 'Report 1', content: 'Content 1', createdAt: new Date() }] });
+        render(<Report />);
 
-    //     render(<Report />);
-
-    //     fireEvent.click(screen.getByText('View'));
-    //     expect(screen.getByText('Reports')).toBeInTheDocument();
-    // });
+        await waitFor(() => {
+            expect(screen.getByText('Report 1')).toBeInTheDocument();
+            expect(screen.getByText('Content 1')).toBeInTheDocument();
+        });
+    });
 });

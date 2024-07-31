@@ -70,12 +70,10 @@ function ClassTable() {
 	}
 
 	useEffect(() => {
-		if (queryClassname) {
-			setFilter((prevFilter) => ({
-				...prevFilter,
-				searchQuery: queryClassname
-			}));
-		}
+		setFilter((prevFilter) => ({
+			...prevFilter,
+			searchQuery: queryClassname
+		}));
 	}, [queryClassname]);
 
 	const handleSort = (key) => {
@@ -363,7 +361,7 @@ function ClassTable() {
 									size="icon"
 									className="text-blue-500 hover:bg-blue-100"
 									onClick={() => navigate(`/class/${classItem.classId}/edit`)}
-									data-testid="edit-button"
+									data-testid={`edit-button-${classItem.classId}`}
 								>
 									<Pencil className="h-5 w-5" />
 								</Button>

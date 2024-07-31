@@ -1,4 +1,138 @@
 
+# Abdul's Log for Cycle 17
+
+
+## Thursday, July 25, 2024, 05:18 PM - Tuesday, July 30, 2024, 05:18 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[275](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/275)**: Instructors will be able to extend deadlines for students  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: database, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[272](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/272)**: System will accept links such as google doc, google drive, github etc. as submission links  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[263](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/263)**: List of all features to be implemented for Project 3  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[260](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/260)**: Be able to delete students by selecting them as you would when adding students  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[259](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/259)**: Fix Manage Class being able to add students to a class of size 0  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[258](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/258)**: Make the Add Student buttons larger/more apparent & add checkmarks to Add Student dropdown in Manage Class  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[257](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/257)**: Refactor Role Requests Card to include an Approve (check) button  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[255](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/255)**: Have students able to view their submission  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[239](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/239)**: Link Admin Dashboard UI elements to the back-end  
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[234](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/234)**: Delete Rubric / Edit Rubric  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: database, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[140](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/140)**: Major Use Case 24: View User Reports   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Working on front-end test refactors** *(Total duration: 2.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 30, 2024, 02:57 PM - Tuesday, July 30, 2024, 05:19 PM *(2.4 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on bug fixes + code refactor** *(Total duration: 1.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 30, 2024, 02:32 AM - Tuesday, July 30, 2024, 03:12 AM *(0.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 29, 2024, 09:04 PM - Monday, July 29, 2024, 09:15 PM *(0.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 29, 2024, 08:12 PM - Monday, July 29, 2024, 08:32 PM *(0.3 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on Merging everyone's code + bugfixes** *(Total duration: 3.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Monday, July 29, 2024, 01:01 PM - Monday, July 29, 2024, 04:12 PM *(3.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **Trying to fix Drawer UI bugs + reviewing other's PR's** *(Total duration: 1.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, July 28, 2024, 05:19 PM - Sunday, July 28, 2024, 06:50 PM *(1.5 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on Extending Due Dates for Students** *(Total duration: 5.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 27, 2024, 09:52 PM - Sunday, July 28, 2024, 12:16 AM *(2.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 27, 2024, 07:51 PM - Saturday, July 27, 2024, 08:25 PM *(0.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, July 27, 2024, 04:01 PM - Saturday, July 27, 2024, 06:42 PM *(2.7 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on the Project (refactors + new features)** *(Total duration: 1.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 26, 2024, 07:30 PM - Friday, July 26, 2024, 08:20 PM *(0.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 26, 2024, 06:05 PM - Friday, July 26, 2024, 06:48 PM *(0.7 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on the Project (refactors + new features) with the group** *(Total duration: 3.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, July 26, 2024, 09:45 AM - Friday, July 26, 2024, 12:51 PM *(3.1 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[281](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/281)**: Implemented Extending Student Assignment Deadlines  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[281](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/281)**: Implemented Extending Student Assignment Deadlines  
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[275](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/275)**: Instructors will be able to extend deadlines for students  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[272](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/272)**: System will accept links such as google doc, google drive, github etc. as submission links  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[260](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/260)**: Be able to delete students by selecting them as you would when adding students  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[259](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/259)**: Fix Manage Class being able to add students to a class of size 0  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[258](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/258)**: Make the Add Student buttons larger/more apparent & add checkmarks to Add Student dropdown in Manage Class  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[257](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/257)**: Refactor Role Requests Card to include an Approve (check) button  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[255](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/255)**: Have students able to view their submission  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[239](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/239)**: Link Admin Dashboard UI elements to the back-end  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[234](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/234)**: Delete Rubric / Edit Rubric  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[140](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/140)**: Major Use Case 24: View User Reports   
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[263](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/263)**: List of all features to be implemented for Project 3  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[172](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/172)**: Refactor front-end test  
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Abdul's Log for Cycle 16
 
 

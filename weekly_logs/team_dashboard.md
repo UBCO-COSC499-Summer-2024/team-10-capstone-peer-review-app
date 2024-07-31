@@ -1,4 +1,48 @@
 
+# Team 10's Team Dashboard for Cycle 17
+
+
+## Thursday, July 25, 2024, 05:18 PM - Tuesday, July 30, 2024, 05:18 PM
+
+
+### Major features worked on in c-17
+*  
+  
+*  
+  
+*  
+  
+
+### Major features completed in c-17
+*  
+  
+*  
+  
+*  
+  
+
+### Major features to work on for c-18
+*  
+  
+*  
+  
+*  
+  
+
+### Team Issues and Hurdles for c-17
+*  
+  
+*  
+  
+*  
+  
+
+### Clockify Dashboard for this Week
+
+![Clockify Dashboard for c-17](./team_dashboard_images/clockify_dashboards/clockify_dashboard_c17.png)
+  
+  
+
 # Team 10's Team Dashboard for Cycle 16
 
 

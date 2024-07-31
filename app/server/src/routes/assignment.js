@@ -24,6 +24,7 @@ const router = express.Router();
 
 /**
  * @async
+ * @route POST /assignment/add-assignment
  * @desc Add an assignment to a class.
  * @function addAssignmenToClass
  * @middleware ensureUser - Ensure the user is logged in.
@@ -36,6 +37,7 @@ router.route("/add-assignment")
 
 /**
  * @async
+ * @route POST /assignment/remove-assignment
  * @desc Remove an assignment from a class.
  * @function removeAssignmentFromClass
  * @middleware ensureUser - Ensure the user is logged in.
@@ -48,6 +50,7 @@ router.route("/remove-assignment")
 
 /**
  * @async
+ * @route POST /assignment/update-assignment
  * @desc Update an assignment in a class.
  * @middleware ensureUser - Ensure the user is logged in.
  * @middleware ensureInstructorOrAdmin - Ensure the user is an instructor or admin.
@@ -60,6 +63,7 @@ router.route("/update-assignment")
 
 /**
  * @async
+ * @route POST /assignment/get-assignment
  * @desc Get an assignment in a class.
  * @middleware ensureUser - Ensure the user is logged in.
  * @function getAssignmentInClass
@@ -71,6 +75,7 @@ router.route("/get-assignment")
 
 /**
  * @async
+ * @route POST /assignment/get-all-assignments
  * @desc Get all assignments.
  * @middleware ensureUser - Ensure the user is logged in.
  * @middleware ensureAdmin - Ensure the user is admin
@@ -82,6 +87,7 @@ router.route("/get-all-assignments")
 
 /**
  * @async
+ * @route POST /assignment/get-class-assignments
  * @desc Get all assignments by class ID.
  * @middleware ensureUser - Ensure the user is logged in.
  * @function getAllAssignmentsByClassId
@@ -93,6 +99,7 @@ router.route("/get-class-assignments")
 
 /**
  * @async
+ * @route POST /assignment/extend-deadline
  * @desc Extend the deadline for a student.
  * @middleware ensureUser - Ensure the user is logged in.
  * @middleware ensureInstructorOrAdmin - Ensure the user is an instructor or admin.
@@ -105,6 +112,7 @@ router.route("/extend-deadline")
 
 /**
  * @async
+ * @route POST /assignment/delete-extended-deadline
  * @desc Delete the extended deadline for a student.
  * @middleware ensureUser - Ensure the user is logged in.
  * @middleware ensureInstructorOrAdmin - Ensure the user is an instructor or admin.
@@ -117,6 +125,7 @@ router.route("/delete-extended-deadline")
 
 /**
  * @async
+ * @route POST /assignment/add-assignment-with-rubric
  * @desc Add an assignment with a rubric.
  * @middleware ensureUser - Ensure the user is logged in.
  * @middleware ensureInstructorOrAdmin - Ensure the user is an instructor or admin.
@@ -129,6 +138,7 @@ router.route("/add-assignment-with-rubric")
 
 /**
  * @async
+ * @route /assignment/:assignmentId/comments
  * @desc It extracts the assignmentId and userId from the request object. It calls the commentService to get the comments for the assignment and sends a success response with the comments.
  * @middleware ensureUser - Ensure the user is logged in.
  * @function getComments
@@ -139,6 +149,7 @@ router.route("/:assignmentId/comments")
   .get(ensureUser, getComments)
   /**
  * @async
+ * @route /assignment/:assignmentId/comments
  * @desc It extracts the assignmentId, content, studentId, and userId from the request object. If the studentId is missing, it sends a 400 error response. Otherwise, it calls the commentService to add the comment to the assignment and sends a success response with the added comment.
  * @middleware ensureUser - Ensure the user is logged in.
  * @function addComment

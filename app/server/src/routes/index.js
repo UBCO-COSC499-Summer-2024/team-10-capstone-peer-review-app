@@ -1,3 +1,7 @@
+/**
+ * @module routes/index
+ * @file This file defines the routes for the application.
+ */
 import { Router } from "express";
 import passport from "passport";
 // Routers

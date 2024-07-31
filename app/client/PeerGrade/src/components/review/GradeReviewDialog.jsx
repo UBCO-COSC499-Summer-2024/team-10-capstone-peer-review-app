@@ -32,10 +32,12 @@ const GradeReviewDialog = ({ review, open, onClose, onGradeSubmit }) => {
                                     <h3 className="text-xl font-bold mb-4">
                                         {rubric.title}
                                     </h3>
+                                    
                                     {rubric.criteria.map((criterion) => {
                                         const criterionGrade = review?.criterionGrades?.find(
                                             (cg) => cg.criterionId === criterion.criterionId
                                         );
+                                        const maxRating = Math.max(...criterion.criterionRatings.map(rating => rating.points));
                                         return (
                                             <div
                                                 key={criterion.criterionId}
@@ -71,14 +73,14 @@ const GradeReviewDialog = ({ review, open, onClose, onGradeSubmit }) => {
                                                         <Input
                                                             id={`grade-${criterion.criterionId}`}
                                                             type="number"
-                                                            min={criterion.minMark}
-                                                            max={criterion.maxMark}
+                                                            min="0"
+                                                            max={maxRating}
                                                             name={`grade-${criterion.criterionId}`}
                                                             defaultValue={criterionGrade?.grade || 0}
                                                             className="w-[80px] mr-2"
                                                         />
                                                         <span className="text-sm">
-                                                            / {criterion.maxMark}
+                                                            / {maxRating}
                                                         </span>
                                                     </div>
                                                 </div>

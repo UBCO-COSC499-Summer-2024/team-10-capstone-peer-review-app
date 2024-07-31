@@ -4,7 +4,7 @@ import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
-import { Pencil, CheckCircle, Clock, Trash2, ChevronRight } from "lucide-react";
+import { Info, Pencil, CheckCircle, Clock, Trash2, ChevronRight } from "lucide-react";
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -24,6 +24,9 @@ import { useToast } from "@/components/ui/use-toast";
 import { useClass } from "@/contexts/contextHooks/useClass";
 import CreateRubric from "../components/rubrics/CreateRubric";
 import InfoButton from '../components/global/InfoButton';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import reviewAPI from "@/api/reviewAPI";
+
 
 const Class = () => {
   const { classId } = useParams();
@@ -36,6 +39,9 @@ const Class = () => {
   const [newCategoryName, setNewCategoryName] = useState("");
   const [editingCategory, setEditingCategory] = useState(null);
   const [confirmDeleteCategory, setConfirmDeleteCategory] = useState(false);
+  const [classAverage, setClassAverage] = useState(0);
+  const [avgPeerGrade, setAvgPeerGrade] = useState(0);
+  const [reviews, setReviews] = useState([]);
   const { toast } = useToast();
   const { user, userLoading } = useUser();
   const { classes } = useClass();
@@ -58,6 +64,62 @@ const Class = () => {
         variant: "destructive"
       });
     }
+  };
+
+  const fetchReviews = async () => {
+    try {
+      const response = await reviewAPI.getReviewsReceived();
+      setReviews(response.data);
+      console.log("respones", response.data);
+      calculateGrades(response.data);
+    } catch (error) {
+      console.error("Failed to fetch reviews", error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch reviews",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const calculateGrades = (reviews) => {
+    let totalInstructorPoints = 0;
+    let totalPeerPoints = 0;
+    let totalInstructorMaxPoints = 0;
+    let totalPeerMaxPoints = 0;
+  
+    // Filter reviews for the current class
+    const classReviews = reviews.filter(review => review.submission.assignment.classId === classId);
+  
+    classReviews.forEach(review => {
+      const earnedPoints = review.reviewGrade;
+      const maxPoints = review.submission.assignment.rubric.totalMarks;
+  
+      if (review.isPeerReview) {
+        totalPeerPoints += earnedPoints;
+        totalPeerMaxPoints += maxPoints;
+      } else {
+        totalInstructorPoints += earnedPoints;
+        totalInstructorMaxPoints += maxPoints;
+      }
+    });
+  
+    const instructorGradePercentage = totalInstructorMaxPoints > 0
+      ? (totalInstructorPoints / totalInstructorMaxPoints) * 100
+      : 0;
+  
+    const peerGradePercentage = totalPeerMaxPoints > 0
+      ? (totalPeerPoints / totalPeerMaxPoints) * 100
+      : 0;
+  
+    setClassAverage(instructorGradePercentage.toFixed(2));
+    setAvgPeerGrade(peerGradePercentage.toFixed(2));
+  };
+
+  const getGradeColorClass = (grade) => {
+    if (grade < 50) return "text-red-700";
+    if (grade < 75) return "text-amber-600";
+    return "text-green-500";
   };
 
   const handleAddCategory = async () => {
@@ -131,6 +193,7 @@ const Class = () => {
   useEffect(() => {
     if (!userLoading && user) {
       fetchClassData();
+      fetchReviews();
     }
   }, [classId, user, userLoading, currentView]);
 
@@ -453,18 +516,50 @@ const Class = () => {
           />					
 					</>
 					)}
-				<Card>
-					<CardContent className="text-center py-6">
-					<span className="block text-4xl font-bold">98%</span>
-					<span className="text-gray-500">Class Grade</span>
-					</CardContent>
-				</Card>
-				<Card>
-					<CardContent className="text-center py-6">
-					<span className="block text-4xl font-bold">98%</span>
-					<span className="text-gray-500">Avg Peer Grade</span>
-					</CardContent>
-				</Card>
+        <Card>
+        <CardContent className="text-center py-6 relative">
+          <div className="flex flex-col gap-2">
+          <span className={`text-4xl font-bold ${getGradeColorClass(parseFloat(classAverage))}`}>
+            {classAverage}%
+          </span>
+          <span className="text-gray-500">Class Grade</span>
+          </div>
+          <HoverCard>
+            <HoverCardTrigger asChild>
+              <Button variant="ghost" size="sm" className="absolute top-2 right-2">
+                <Info className="h-4 w-4" />
+              </Button>
+            </HoverCardTrigger>
+            <HoverCardContent className="w-80">
+              <h3 className="font-semibold mb-2">Grade Color Legend</h3>
+              <p className="text-sm text-destructive bg-destructive/20 p-1 mb-1">Below 50%: Needs Improvement</p>
+              <p className="text-sm text-warning bg-warning/20 p-1 mb-1">50% - 74%: Satisfactory</p>
+              <p className="text-sm text-success bg-success/20 p-1">75% and above: Excellent</p>
+            </HoverCardContent>
+          </HoverCard>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardContent className="text-center py-6 relative">
+          <span className={`block text-4xl font-bold ${getGradeColorClass(parseFloat(avgPeerGrade))}`}>
+            {avgPeerGrade}%
+          </span>
+          <span className="text-gray-500">Avg Peer Grade</span>
+          <HoverCard>
+            <HoverCardTrigger asChild>
+              <Button variant="ghost" size="sm" className="absolute top-2 right-2">
+                <Info className="h-4 w-4" />
+              </Button>
+            </HoverCardTrigger>
+            <HoverCardContent className="w-80">
+              <h3 className="font-semibold mb-2">Grade Color Legend</h3>
+              <p className="text-sm text-destructive bg-destructive/20 p-1 mb-1">Below 50%: Needs Improvement</p>
+              <p className="text-sm text-warning bg-warning/20 p-1 mb-1">50% - 74%: Satisfactory</p>
+              <p className="text-sm text-success bg-success/20 p-1">75% and above: Excellent</p>
+            </HoverCardContent>
+          </HoverCard>
+        </CardContent>
+      </Card>
 				<Card>
 					<CardHeader>
 					<CardTitle>To Do</CardTitle>

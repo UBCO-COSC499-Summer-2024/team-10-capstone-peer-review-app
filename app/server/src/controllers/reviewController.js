@@ -119,6 +119,7 @@ export const getReviewsAssigned = asyncErrorHandler(async (req, res) => {
 export const getReviewsReceived = asyncErrorHandler(async (req, res) => {
 	const userId = req.user.userId;
 	const reviewsReceived = await reviewService.getReviewsReceived(userId);
+	console.log("reviewsReceived", reviewsReceived);
 	return res.status(200).json({
 		status: "Success",
 		data: reviewsReceived

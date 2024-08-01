@@ -6,7 +6,9 @@ import { useUser } from "@/contexts/contextHooks/useUser";
 import { useClass } from "@/contexts/contextHooks/useClass";
 import AddClassModal from "@/components/manageClass/AddClassDialog";
 import ClassCard from "@/components/manageClass/ClassCard";
+import InfoButton from "@/components/global/InfoButton";
 import { getEnrollRequestsForClass } from "@/api/enrollmentApi";
+
 
 const ManageClass = () => {
   const { user } = useUser();
@@ -30,6 +32,30 @@ const ManageClass = () => {
 
     fetchPendingApprovals();
   }, [classes]);
+
+  const infoContent = {
+    title: "Manage Classes",
+    description: (
+      <>
+        <p>This page allows you to manage all your classes:</p>
+        <ul className="list-disc list-inside mt-2">
+          <li>View all classes you're teaching</li>
+          <li>Create new classes using the 'Add a class' button</li>
+          <li>Edit existing class details</li>
+          <li>View and manage student enrollment requests</li>
+          <li>Access individual class dashboards</li>
+        </ul>
+        <p className="mt-2">Each class card shows:</p>
+        <ul className="list-disc list-inside mt-2">
+          <li>Class name and description</li>
+          <li>Number of enrolled students</li>
+          <li>Number of pending enrollment requests</li>
+          <li>Options to edit, view dashboard, or manage enrollments</li>
+        </ul>
+        <p className="mt-2">Click on a class card to see more options and details.</p>
+      </>
+    )
+  };
 
   if (!user || (user.role !== "INSTRUCTOR" && user.role !== "ADMIN")) {
     return <div>You do not have permission to view this page.</div>;
@@ -62,6 +88,8 @@ const ManageClass = () => {
         show={addModalOpen}
         onClose={() => setAddModalOpen(false)}
       />
+      <InfoButton content={infoContent} />
+
     </div>
   );
 };

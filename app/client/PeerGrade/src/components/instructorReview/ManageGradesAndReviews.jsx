@@ -47,6 +47,7 @@ import {
 	DialogTitle,
 	DialogFooter
 } from "@/components/ui/dialog";
+import InfoButton from '@/components/global/InfoButton';
 import MultiSelect from "@/components/ui/MultiSelect";
 import { toast } from "@/components/ui/use-toast";
 import {
@@ -453,6 +454,35 @@ const ManageGradesAndReviews = () => {
 			.toLowerCase()
 			.includes(searchTerm.toLowerCase())
 	);
+
+	const infoContent = {
+		title: "Manage Reviews and Submissions",
+		description: (
+		  <>
+			<p>This page allows you to manage and grade student submissions for all your classes and assignments:</p>
+			<ul className="list-disc list-inside mt-2">
+			  <li>Select a class and an assignment to view submissions</li>
+			  <li>Search for specific students using the search bar</li>
+			  <li>View submission details:
+				<ul className="list-disc list-inside ml-4">
+				  <li>Submission status (Submitted or No Submission)</li>
+				  <li>Latest grade (if graded)</li>
+				  <li>All attempts for each student</li>
+				</ul>
+			  </li>
+			  <li>Actions for each submission:
+				<ul className="list-disc list-inside ml-4">
+				  <li>View the submission details</li>
+				  <li>Download the submitted file</li>
+				  <li>Grade or re-grade the submission</li>
+				</ul>
+			  </li>
+			</ul>
+			<p className="mt-2">Use the accordion to expand and collapse student details for better visibility.</p>
+			<p className="mt-2">The grading dialog allows you to assign scores based on the rubric criteria and provide comments for each criterion.</p>
+		  </>
+		)
+	  };
 
 	return (
 		<Card className="w-full">
@@ -882,6 +912,7 @@ const ManageGradesAndReviews = () => {
 				open={viewAllPeerReviewsDialogOpen}
 				onClose={() => setViewAllPeerReviewsDialogOpen(false)}
 			/>
+			<InfoButton content={infoContent} />
 		</Card>
 	);
 };

@@ -1,17 +1,39 @@
+/**
+ * @module assignService
+ */
+
 import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
 import { sendNotificationToClass } from "./notifsService.js";
 import { format } from "date-fns";
 
+/**
+ * @def Add an assignment to a class.
+ * @async
+ * @param {string} classId - The ID of the class.
+ * @param {string} categoryId - The ID of the category.
+ * @param {object} assignmentData - The assignment data.
+ * @param {string} assignmentData.title - The title of the assignment.
+ * @param {string} assignmentData.description - The description of the assignment.
+ * @param {string} assignmentData.dueDate - The due date of the assignment.
+ * @param {string} assignmentData.maxSubmissions - The maximum number of submissions allowed for the assignment.
+ * @param {string} assignmentData.reviewOption - The review option for the assignment.
+ * @param {string} assignmentData.assignmentFilePath - The file path of the assignment.
+ * @param {string} assignmentData.rubricId - The ID of the rubric.
+ * @param {string[]} assignmentData.allowedFileTypes - The allowed file types for the assignment.
+ * @returns {Promise<object>} The created assignment with rubric.
+ */
 const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
     console.log('assignmentFilePath:', assignmentData.assignmentFilePath);
     console.log('Received assignment data in service:', assignmentData);
     try {
+		// get the class with class ID
         const classInfo = await prisma.class.findUnique({
             where: { classId },
             include: { Assignments: true }
         });
 
+		// check if the class exists
         if (!classInfo) {
             throw new apiError("Class not found", 404);
         }
@@ -25,6 +47,7 @@ const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
             throw new apiError("Assignment due date is outside the class duration", 400);
         }
 
+		// create the assignment
         const newAssignment = await prisma.assignment.create({
             data: {
                 title: assignmentData.title,
@@ -40,8 +63,10 @@ const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
             }
         });
 
+		// send notif on class
         await sendNotificationToClass(null, `Assignment ${newAssignment.title} was just created.`, `Due on ${format(dueDate, 'MMMM do, yyyy')}`, classId);
 
+		// get the assignment with rubric
         const assignmentWithRubric = await prisma.assignment.findUnique({
             where: { assignmentId: newAssignment.assignmentId },
             include: { rubric: true }
@@ -59,15 +84,15 @@ const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
     }
 };
 
+/**
+ * @desc Remove an assignment from a class.
+ * @async
+ * @param {string} assignmentId - The ID of the assignment.
+ * @returns {Promise<object>} The deleted assignment.
+ */
 const removeAssignmentFromClass = async (assignmentId) => {
     try {
         const deletedAssignment = await prisma.$transaction(async (prisma) => {
-            // // Delete all related RubricForAssignment records
-            // await prisma.rubricForAssignment.deleteMany({
-            //     where: {
-            //         assignmentId: assignmentId
-            //     }
-            // });
 
 			// Delete all related Submission records
 			await prisma.submission.deleteMany({
@@ -95,18 +120,37 @@ const removeAssignmentFromClass = async (assignmentId) => {
     }
 };
 
-
+/**
+ * Update an assignment in a class.
+ * @async
+ * @param {string} classId - The ID of the class.
+ * @param {string} assignmentId - The ID of the assignment.
+ * @param {string} categoryId - The ID of the category.
+ * @param {object} updateData - The updated assignment data.
+ * @param {string} updateData.title - The updated title of the assignment.
+ * @param {string} updateData.description - The updated description of the assignment.
+ * @param {string} updateData.dueDate - The updated due date of the assignment.
+ * @param {string} updateData.maxSubmissions - The updated maximum number of submissions allowed for the assignment.
+ * @param {string} updateData.reviewOption - The updated review option for the assignment.
+ * @param {string} updateData.assignmentFilePath - The updated file path of the assignment.
+ * @param {string} updateData.rubricId - The updated ID of the rubric.
+ * @param {string[]} updateData.allowedFileTypes - The updated allowed file types for the assignment.
+ * @returns {Promise<object>} The updated assignment.
+ */
 const updateAssignmentInClass = async (classId, assignmentId, categoryId, updateData) => {
 	try {
+		// check for class existence
 	  const classInfo = await prisma.class.findUnique({
 		where: { classId },
 		include: { Assignments: true }
 	  });
   
+	  // check if exists
 	  if (!classInfo) {
 		throw new apiError("Class not found", 404);
 	  }
   
+	  // Check if the assignment exists
 	  const assignment = await prisma.assignment.findUnique({
 		where: { assignmentId }
 	  });
@@ -115,7 +159,7 @@ const updateAssignmentInClass = async (classId, assignmentId, categoryId, update
 		throw new apiError("Assignment not found", 404);
 	  }
   
-	  // Check if the assignment due date is within the class duration
+	  // Check if the assignment new due date is within the class duration
 	  let dueDate = new Date(updateData.dueDate);
 	  let startDate = new Date(classInfo.startDate);
 	  let endDate = new Date(classInfo.endDate);
@@ -170,8 +214,15 @@ const updateAssignmentInClass = async (classId, assignmentId, categoryId, update
 	}
   };
 
-
-  const getAssignmentInClass = async (classId, assignmentId, userId = "") => {
+/**
+ * @desc Get an assignment in a class.
+ * @async
+ * @param {string} classId - The ID of the class.
+ * @param {string} assignmentId - The ID of the assignment.
+ * @param {string} userId - The ID of the user.
+ * @returns {Promise<object>} The assignment.
+ */
+const getAssignmentInClass = async (classId, assignmentId, userId = "") => {
 	try {
 	  // Fetch the class information
 	  const classInfo = await prisma.class.findUnique({
@@ -183,6 +234,7 @@ const updateAssignmentInClass = async (classId, assignmentId, categoryId, update
 		}
 	  });
   
+	  // check if class exists
 	  if (!classInfo) {
 		throw new apiError("Class not found", 404);
 	  }
@@ -197,6 +249,7 @@ const updateAssignmentInClass = async (classId, assignmentId, categoryId, update
 		}
 	  });
   
+	  // check if assignment exists
 	  if (!assignment) {
 		throw new apiError("Assignment not found", 404);
 	  }
@@ -208,6 +261,7 @@ const updateAssignmentInClass = async (classId, assignmentId, categoryId, update
 		  include: { extendedDueDates: true }
 		});
   
+		// check if the user exists
 		if (!user) {
 		  throw new apiError("User not found", 404);
 		}
@@ -231,7 +285,11 @@ const updateAssignmentInClass = async (classId, assignmentId, categoryId, update
 	}
   };  
 
-
+/**
+ * @desc Get all assignments.
+ * @async
+ * @returns {Promise<object[]>} The list of assignments.
+ */
 const getAllAssignments = async () => {
 	try {
 	  const assignments = await prisma.assignment.findMany({
@@ -254,6 +312,13 @@ const getAllAssignments = async () => {
 	}
 };
 
+/**
+ * @desc Get all assignments by class ID.
+ * @async
+ * @param {string} classId - The ID of the class.
+ * @param {string} userId - The ID of the user.
+ * @returns {Promise<object[]>} The list of assignments.
+ */
 const getAllAssignmentsByClassId = async (classId, userId = "") => {
 	try {
 	  // Fetch the class and assignments with extended due dates
@@ -270,6 +335,7 @@ const getAllAssignmentsByClassId = async (classId, userId = "") => {
 		}
 	  });
   
+	  // check if class exists
 	  if (!classInfo) {
 		throw new apiError("Class not found", 404);
 	  }
@@ -283,6 +349,7 @@ const getAllAssignmentsByClassId = async (classId, userId = "") => {
 		  include: { extendedDueDates: true }
 		});
   
+		// check if user exists
 		if (!user) {
 		  throw new apiError("User not found", 404);
 		}
@@ -309,7 +376,14 @@ const getAllAssignmentsByClassId = async (classId, userId = "") => {
 	}
 };  
 
-// Extend the deadline for a student on an assignment
+/**
+ * @desc Extend the deadline for a student on an assignment.
+ * @async
+ * @param {string} studentId - The ID of the student.
+ * @param {string} assignmentId - The ID of the assignment.
+ * @param {string} newDueDate - The new due date.
+ * @returns {Promise<object>} The new extension.
+ */
 const extendDeadlineForStudent = async (studentId, assignmentId, newDueDate) => {
 	try {
 		const assignment = await prisma.assignment.findUnique({
@@ -319,6 +393,7 @@ const extendDeadlineForStudent = async (studentId, assignmentId, newDueDate) => 
 			where: { userId: studentId }
 		});
 
+		// check if the assignment or user exists or if the new due date is after the original due date
 		if (!assignment) {
 			throw new apiError("Assignment not found", 404);
 		} else if (!user) {
@@ -356,6 +431,13 @@ const extendDeadlineForStudent = async (studentId, assignmentId, newDueDate) => 
 	}
 }
 
+/** 
+ * @desc Delete the extended deadline for a student on an assignment.
+ * @async
+ * @param {string} studentId - The ID of the student.
+ * @param {string} assignmentId - The ID of the assignment.
+ * @returns {Promise<object>} The deleted extension.
+ */
 const deleteExtendedDeadlineForStudent = async (studentId, assignmentId) => {
 	try {
 		// Check if the record exists
@@ -368,6 +450,7 @@ const deleteExtendedDeadlineForStudent = async (studentId, assignmentId) => {
 			}
 		});
 
+		// check if the record exists
 		if (!existingExtension) {
 			throw new apiError("Record not found", 404);
 		}
@@ -397,6 +480,28 @@ const deleteExtendedDeadlineForStudent = async (studentId, assignmentId) => {
 	}
 };
 
+/**
+ * @desc Add an assignment with a rubric to a class.
+ * @async
+ * @param {string} classId - The ID of the class.
+ * @param {string} categoryId - The ID of the category.
+ * @param {object} assignmentData - The assignment data.
+ * @param {string} assignmentData.title - The title of the assignment.
+ * @param {string} assignmentData.description - The description of the assignment.
+ * @param {string} assignmentData.dueDate - The due date of the assignment.
+ * @param {string} assignmentData.maxSubmissions - The maximum number of submissions allowed for the assignment.
+ * @param {string} assignmentData.assignmentFilePath - The file path of the assignment.
+ * @param {object} rubricData - The rubric data.
+ * @param {string} rubricData.title - The title of the rubric.
+ * @param {string} rubricData.description - The description of the rubric.
+ * @param {object[]} rubricData.criteria - The criteria of the rubric.
+ * @param {string} rubricData.criteria.criteria - The criterion of the rubric.
+ * @param {object[]} rubricData.criteria.ratings - The ratings of the rubric.
+ * @param {string} rubricData.criteria.ratings.text - The text of the rating.
+ * @param {string} rubricData.criteria.ratings.points - The points of the rating.
+ * @param {string} creatorId - The ID of the creator.
+ * @returns {Promise<object>} The created assignment with rubric.
+ */
 const addAssignmentWithRubric = async (classId, categoryId, assignmentData, rubricData, creatorId) => {
 	try {
 	  console.log('Received data in service:', { classId, categoryId, assignmentData, rubricData, creatorId });

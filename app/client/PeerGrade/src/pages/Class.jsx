@@ -600,7 +600,7 @@ const Class = () => {
 									<Button
 										variant="outline"
 										onClick={() => setIsAddCategoryOpen(true)}
-										className="w-full bg-gray-500 text-white hover:text-gray-800 hover:bg-gray-400 border-gray-500 transition-colors"
+										className="w-full bg-muted border-muted"
 									>
 										Add Category
 									</Button>

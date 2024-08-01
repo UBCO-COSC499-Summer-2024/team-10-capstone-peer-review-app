@@ -1,10 +1,10 @@
 
-[x] **User Registration and Profile Management**
+- [x] **User Registration and Profile Management**
   - [x] All users are able to register (with email address)
   - [x] All users will be able to reset their passwords if they forget their password (using industry accepted methods)
   - [x] Users will be able to modify their personal details to keep their profile up-to-date
 
-[x] **Instructor Features**
+- [x] **Instructor Features**
   - [x] Instructors are able to send invitational links to students
   - [x] Instructors are able to add and remove students in their classes
   - [x] Instructors are able to create/edit/remove classes

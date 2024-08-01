@@ -225,15 +225,6 @@ const deleteRubricsFromAssignment = async (rubricId) => {
 
 		// Delete related records
 		await prisma.$transaction(async (prisma) => {
-			// // Remove rubric reference from assignments
-			// for (const assignment of rubric.assignments) {
-			// 	console.log("hoooooo",assignment.assignmentId);
-			//     await prisma.assignment.update({
-			//         where: { assignmentId: assignment.assignmentId },
-			//         data: { rubric: null }
-			//     });
-			// }
-
 			// Delete criterion ratings
 			await prisma.criterionRating.deleteMany({
 				where: {

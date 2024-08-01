@@ -12,7 +12,7 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { toast } from '@/components/ui/use-toast';
 
-const Submission = ({ refresh }) => {
+const Submission = ({ refresh, switchToViewOnSubmit }) => {
     const { classId, assignmentId } = useParams();
     const [assignment, setAssignment] = useState(null);
     const [rubric, setRubric] = useState(null);
@@ -79,6 +79,7 @@ const Submission = ({ refresh }) => {
             const timestamp = new Date().toLocaleString();
             const fileName = file.name;
             setSubmissionMessage(`${fileName} successfully submitted at ${timestamp}`);
+            switchToViewOnSubmit();
             refresh();
         } catch (error) {
             console.error("Submission error:", error);
@@ -108,6 +109,7 @@ const Submission = ({ refresh }) => {
 
             const timestamp = new Date().toLocaleString();
             setSubmissionMessage(`Text submission successfully submitted at ${timestamp}`);
+            switchToViewOnSubmit();
             refresh();
         } catch (error) {
             console.error("Text submission error:", error);

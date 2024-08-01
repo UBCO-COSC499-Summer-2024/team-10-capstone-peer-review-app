@@ -549,6 +549,10 @@ const Assignment = () => {
 		}
 	  };
 
+	  const switchToViewOnSubmit = () => {
+		setCurrentView('view');
+	  };
+
 	return (
 		<div className="container mx-auto px-4">
 			<Card className="mb-8 bg-card">
@@ -584,9 +588,9 @@ const Assignment = () => {
 				</CardHeader>
 			</Card>
 
-			<Tabs defaultValue="view" className="space-y-4" onValueChange={(value) => setCurrentView(value)}>
+			<Tabs defaultValue="view" value={currentView} className="space-y-4" onValueChange={(value) => setCurrentView(value)}>
 				{(user.role !== "STUDENT" ||
-					new Date(assignment.dueDate) >= new Date()) && (
+					(user.role === "STUDENT" && assignment.maxSubmissions - submissions?.length > 0 && new Date(assignment.dueDate) >= new Date())) && (
 					<TabsList className="bg-muted">
 						<TabsTrigger value="view">View Assignment</TabsTrigger>
 						{user.role !== "STUDENT" && (
@@ -595,7 +599,7 @@ const Assignment = () => {
 						{user.role !== "STUDENT" && (
 							<TabsTrigger value="submissions">View Submissions</TabsTrigger>
 						)}
-						{user.role === "STUDENT" && (
+						{user.role === "STUDENT" &&  (
 							<TabsTrigger value="submission">Submit Assignment</TabsTrigger>
 						)}
 					</TabsList>
@@ -667,6 +671,13 @@ const Assignment = () => {
 												)}
 											</div>
 										</div>
+										<Separator className="my-4" />
+										<div className="flex justify-between items-center space-x-2">
+											<span>Attempts Left:</span>
+											<span>
+												{submissions && assignment.maxSubmissions - submissions?.length > 0 ? assignment.maxSubmissions - submissions?.length : "0"}
+											</span>
+										</div>
 										{submissions.length > 0 && (
 											<div>
 												<Separator className="my-4" />
@@ -737,6 +748,7 @@ const Assignment = () => {
 						<Submission
 							assignmentId={assignmentId}
 							refresh={refreshToggle}
+							switchToViewOnSubmit={switchToViewOnSubmit}
 							assignment={assignment}
 						/>
 					</TabsContent>

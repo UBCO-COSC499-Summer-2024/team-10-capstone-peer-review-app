@@ -605,6 +605,7 @@ const Assignment = () => {
 
 			<Tabs
 				defaultValue="view"
+				value={currentView}
 				className="space-y-4"
 				onValueChange={(value) => setCurrentView(value)}
 			>

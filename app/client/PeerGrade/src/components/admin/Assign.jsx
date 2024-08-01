@@ -98,8 +98,8 @@ const Assign = () => {
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <CarouselPrevious onClick={handlePrevious} disabled={isPreviousDisabled} />
-                <CarouselNext onClick={handleNext} disabled={isNextDisabled} />
+                <CarouselPrevious onClick={handlePrevious} disabled={isPreviousDisabled} data-testid='previous'/>
+                <CarouselNext onClick={handleNext} disabled={isNextDisabled} data-testid='next'/>
               </Carousel>
             </TabsList>
 

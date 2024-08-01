@@ -76,26 +76,26 @@ const Users = () => {
 
 	// TODO -> decrypt passwords for admins to view them in plain text
 	// Abdul - i don't think admins should be able to view passwords (change them, maybe, but not view them)
-	useEffect(() => {
-		const fetchRoleRequests = async () => {
-			const allRoleRequests = await getAllRoleRequests();
-			if (allRoleRequests.status === "Success") {
-				setRoleRequests(allRoleRequests.data);
-			}
-			console.log("roleRequestsData: ", roleRequests);
-		};
-	
-		const fetchUsers = async () => {
-			const allUsers = await getAllUsers();
-			if (allUsers.status === "Success") {
-				setUsersData(allUsers.data);
-			}
-			console.log("usersData: ", usersData);
-		};
+	const fetchRoleRequests = async () => {
+        const allRoleRequests = await getAllRoleRequests();
+        if (allRoleRequests.status === "Success") {
+            setRoleRequests(allRoleRequests.data);
+        }
+        console.log("roleRequestsData: ", roleRequests);
+    };
 
-		fetchUsers();
-		fetchRoleRequests();
-	}, []);
+    const fetchUsers = async () => {
+        const allUsers = await getAllUsers();
+        if (allUsers.status === "Success") {
+            setUsersData(allUsers.data);
+        }
+        console.log("usersData: ", usersData);
+    };
+
+    useEffect(() => {
+        fetchUsers();
+        fetchRoleRequests();
+    }, []);
 
 	const chartData = usersData.map((user) => ({
 		dateCreated: user.createdAt,

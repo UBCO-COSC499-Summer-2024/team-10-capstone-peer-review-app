@@ -137,12 +137,14 @@ const EditAssignment = () => {
     if (formData.allowedFileTypes.length === 0) newErrors.allowedFileTypes = "Please select at least one file type";
 
     setErrors(newErrors);
+    console.log("ayo",newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) {
+      console.log("eyy",validateForm());
       toast({
         title: "Validation Error",
         description: "Please correct the highlighted fields",
@@ -320,14 +322,14 @@ const EditAssignment = () => {
           </div>
 
           <div>
-            <label>Category</label>
+            <label htmlFor='category'>Category</label>
             <Select 
               onValueChange={(value) => setFormData(prev => ({ ...prev, categoryId: value }))}
               value={formData.categoryId}
               defaultValue={formData.categoryId} // Add this line
             >
-              <SelectTrigger className={errors.categoryId ? "border-red-500" : ""}>
-                <SelectValue placeholder="Select category..." />
+              <SelectTrigger className={errors.categoryId ? "border-red-500" : ""} id='category'>
+                <SelectValue placeholder="Select category..."/>
               </SelectTrigger>
               <SelectContent>
                 {categories.map((category) => (
@@ -341,13 +343,13 @@ const EditAssignment = () => {
           </div>
 
           <div>
-            <label>Rubric</label>
+            <label htmlFor='rubric'>Rubric</label>
             <Select 
               onValueChange={(value) => setFormData(prev => ({ ...prev, rubricId: value }))}
               value={formData.rubricId}
               defaultValue={formData.rubricId} // Add this line
             >
-              <SelectTrigger className={errors.rubricId ? "border-red-500" : ""}>
+              <SelectTrigger className={errors.rubricId ? "border-red-500" : ""} id='rubric'>
                 <SelectValue placeholder="Select a rubric" />
               </SelectTrigger>
               <SelectContent>

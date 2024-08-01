@@ -28,15 +28,12 @@ const localStrategy = (passport) => {
 	);
 
 	passport.serializeUser((user, done) => {
-		console.log("Serializing user: ", user);
-		console.log("Serializing ID: ", user.userId);
 		done(null, user.userId);
 	});
 
 	passport.deserializeUser(async (userId, done) => {
 		try {
 			const user = await prisma.user.findUnique({ where: { userId } });
-			console.log("Deserialized user: ", user);
 			done(null, user);
 		} catch (err) {
 			done(err, null);

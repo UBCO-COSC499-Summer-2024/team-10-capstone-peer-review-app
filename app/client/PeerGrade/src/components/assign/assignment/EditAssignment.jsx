@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { format } from "date-fns";
+import { format, setHours, setMinutes, setSeconds } from "date-fns";
 import { Calendar as CalendarIcon, Upload } from "lucide-react";
 import {
 	Select,
@@ -67,8 +67,6 @@ const EditAssignment = () => {
 	const [rubrics, setRubrics] = useState([]);
 
 	const [extendedDueDates, setExtendedDueDates] = useState([]);
-	const [selectedStudent, setSelectedStudent] = useState({});
-	const [newDueDate, setNewDueDate] = useState(null);
 	const [students, setStudents] = useState([]);
 
 	const [confirmDelete, setConfirmDelete] = useState(""); // Student ID to confirm delete
@@ -90,10 +88,8 @@ const EditAssignment = () => {
 					rubricsResponse.status === "Success"
 				) {
 					const assignmentData = assignmentResponse.data;
-					console.log("assignment", assignmentData);
 					setCategories(categoriesResponse.data);
 					setExtendedDueDates(assignmentData.extendedDueDates || []);
-					console.log("rubrics", rubricsResponse.data);
 					setRubrics(rubricsResponse.data);
 
 					setFormData({
@@ -102,7 +98,9 @@ const EditAssignment = () => {
 						maxSubmissions: assignmentData.maxSubmissions,
 						isPeerReviewAnonymous: assignmentData.isPeerReviewAnonymous,
 						categoryId: assignmentData.categoryId,
-						dueDate: new Date(assignmentData.dueDate),
+						dueDate: assignmentData.dueDate
+							? new Date(assignmentData.dueDate)
+							: null,
 						rubricId: assignmentData.rubricId,
 						allowedFileTypes: assignmentData.allowedFileTypes || []
 					});
@@ -185,7 +183,9 @@ const EditAssignment = () => {
 			JSON.stringify({
 				title: formData.title,
 				description: formData.description,
-				dueDate: formData.dueDate,
+				dueDate: formData.dueDate
+					? setSeconds(setMinutes(setHours(formData.dueDate, 23), 59), 59)
+					: null,
 				maxSubmissions: formData.maxSubmissions,
 				isPeerReviewAnonymous: formData.isPeerReviewAnonymous,
 				rubricId: formData.rubricId,

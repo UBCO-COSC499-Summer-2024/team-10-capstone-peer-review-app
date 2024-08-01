@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { format } from "date-fns";
+import { format, setHours, setMinutes, setSeconds } from "date-fns";
 import {
 	Plus,
 	Calendar as CalendarIcon,
@@ -191,7 +191,9 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
 			const assignmentData = {
 				title: formData.title,
 				description: formData.description,
-				dueDate: formData.dueDate,
+				dueDate: formData.dueDate
+					? setSeconds(setMinutes(setHours(formData.dueDate, 23), 59), 59)
+					: null,
 				maxSubmissions: parseInt(formData.maxSubmissions, 10),
 				isPeerReviewAnonymous: formData.isPeerReviewAnonymous,
 				allowedFileTypes: formData.allowedFileTypes,

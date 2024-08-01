@@ -66,9 +66,8 @@ const Class = () => {
 	const [newCategoryName, setNewCategoryName] = useState("");
 	const [editingCategory, setEditingCategory] = useState(null);
 	const [confirmDeleteCategory, setConfirmDeleteCategory] = useState(false);
-	const [classAverage, setClassAverage] = useState(0);
-	const [avgPeerGrade, setAvgPeerGrade] = useState(0);
-	const [reviews, setReviews] = useState([]);
+	const [classAverage, setClassAverage] = useState("No grades");
+	const [avgPeerGrade, setAvgPeerGrade] = useState("No grades");
 	const { toast } = useToast();
 	const { user, userLoading } = useUser();
 	const { classes } = useClass();
@@ -101,13 +100,12 @@ const Class = () => {
 			} else if (user.role === "INSTRUCTOR" || user.role === "ADMIN") {
 				response = await reviewAPI.getReviewsAssigned();
 			}
-			setReviews(response.data);
 			calculateGrades(response.data);
 		} catch (error) {
 			console.error("Failed to fetch reviews", error);
 			toast({
 				title: "Error",
-				description: "Failed to fetch reviews",
+				description: "Failed to fetch grades",
 				variant: "destructive"
 			});
 		}
@@ -118,6 +116,7 @@ const Class = () => {
 		let totalPeerPoints = 0;
 		let totalInstructorMaxPoints = 0;
 		let totalPeerMaxPoints = 0;
+		let hasGrades = false;
 
 		// Filter reviews for the current class
 		const classReviews = reviews.filter(
@@ -125,33 +124,49 @@ const Class = () => {
 		);
 
 		classReviews.forEach((review) => {
-			const earnedPoints = review.reviewGrade;
-			const maxPoints = review.submission.assignment.rubric.totalMarks;
+			const gradesExist =
+				review.criterionGrades && review.criterionGrades.length > 0;
 
-			if (review.isPeerReview) {
-				totalPeerPoints += earnedPoints;
-				totalPeerMaxPoints += maxPoints;
-			} else {
-				totalInstructorPoints += earnedPoints;
-				totalInstructorMaxPoints += maxPoints;
+			if (gradesExist) {
+				console.log("grades exist for review:", review.revieweeId);
+				hasGrades = true;
+				const earnedPoints = review.reviewGrade;
+				const maxPoints = review.submission.assignment.rubric.totalMarks;
+
+				if (review.isPeerReview) {
+					totalPeerPoints += earnedPoints;
+					totalPeerMaxPoints += maxPoints;
+				} else {
+					totalInstructorPoints += earnedPoints;
+					totalInstructorMaxPoints += maxPoints;
+				}
 			}
 		});
 
-		const instructorGradePercentage =
-			totalInstructorMaxPoints > 0
-				? (totalInstructorPoints / totalInstructorMaxPoints) * 100
-				: 0;
+		if (!hasGrades) {
+			setClassAverage("No grades");
+			setAvgPeerGrade("No grades");
+		} else {
+			const instructorGradePercentage =
+				totalInstructorMaxPoints > 0
+					? (totalInstructorPoints / totalInstructorMaxPoints) * 100
+					: 0;
 
-		const peerGradePercentage =
-			totalPeerMaxPoints > 0 ? (totalPeerPoints / totalPeerMaxPoints) * 100 : 0;
+			const peerGradePercentage =
+				totalPeerMaxPoints > 0
+					? (totalPeerPoints / totalPeerMaxPoints) * 100
+					: 0;
 
-		setClassAverage(instructorGradePercentage.toFixed(2));
-		setAvgPeerGrade(peerGradePercentage.toFixed(2));
+			setClassAverage(instructorGradePercentage.toFixed(2) + "%");
+			setAvgPeerGrade(peerGradePercentage.toFixed(2) + "%");
+		}
 	};
 
 	const getGradeColorClass = (grade) => {
-		if (grade < 50) return "text-red-700";
-		if (grade < 75) return "text-amber-600";
+		if (grade === "No grades") return "text-gray-500";
+		const numericGrade = parseFloat(grade);
+		if (numericGrade < 50) return "text-red-700";
+		if (numericGrade < 75) return "text-amber-600";
 		return "text-green-500";
 	};
 
@@ -616,9 +631,9 @@ const Class = () => {
 						<CardContent className="text-center py-6 relative">
 							<div className="flex flex-col gap-2">
 								<span
-									className={`text-4xl font-bold ${getGradeColorClass(parseFloat(classAverage))}`}
+									className={`text-4xl font-bold ${getGradeColorClass(classAverage)}`}
 								>
-									{classAverage}%
+									{classAverage}
 								</span>
 								<span className="text-gray-500">
 									{user.role === "STUDENT"
@@ -655,9 +670,9 @@ const Class = () => {
 						<Card>
 							<CardContent className="text-center py-6 relative">
 								<span
-									className={`block text-4xl font-bold ${getGradeColorClass(parseFloat(avgPeerGrade))}`}
+									className={`block text-4xl font-bold ${getGradeColorClass(avgPeerGrade)}`}
 								>
-									{avgPeerGrade}%
+									{avgPeerGrade}
 								</span>
 								<span className="text-gray-500">Avg Peer Grade</span>
 								<HoverCard>

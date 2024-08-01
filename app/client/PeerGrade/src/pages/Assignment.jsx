@@ -40,8 +40,7 @@ import {
 	getCommentsForAssignment
 } from "@/api/commentApi";
 import { Input } from "@/components/ui/input";
-import InfoButton from '@/components/global/InfoButton';
-
+import InfoButton from "@/components/global/InfoButton";
 
 const NonPDFFileDownload = ({ url, fileName }) => {
 	const fileType = url.split(".").pop().toUpperCase();
@@ -71,10 +70,9 @@ const Assignment = () => {
 	const [refresh, setRefresh] = useState(false);
 	const [comments, setComments] = useState([]);
 	const [newComment, setNewComment] = useState("");
-	const [selectedStudent, setSelectedStudent] = useState(null);
 	const [selectedStudentForChat, setSelectedStudentForChat] = useState(null);
 	const [isTransitioning, setIsTransitioning] = useState(false);
-	const [currentView, setCurrentView] = useState('view');
+	const [currentView, setCurrentView] = useState("view");
 	const navigate = useNavigate();
 	const scrollAreaRef = useRef(null);
 	const selectedStudentIdRef = useRef(null);
@@ -231,7 +229,6 @@ const Assignment = () => {
 		setIsTransitioning(true);
 		setTimeout(() => {
 			setSelectedStudentForChat(student);
-			setSelectedStudent(student ? student.student.userId : null);
 			setIsTransitioning(false);
 		}, 300);
 	};
@@ -469,85 +466,103 @@ const Assignment = () => {
 	};
 
 	const getInfoContent = () => {
-		if (user.role === 'STUDENT') {
-		  return {
-			title: "Assignment Overview",
-			description: (
-			  <>
-				<p>This page allows you to view and interact with your assignment:</p>
-				<ul className="list-disc list-inside mt-2">
-				  <li>View assignment details and instructions</li>
-				  <li>See the due date and submission requirements</li>
-				  <li>Submit your work (if the deadline hasn't passed)</li>
-				  <li>View your submitted work and grades (if available)</li>
-				  <li>Communicate with your instructor through comments</li>
-				</ul>
-				<p className="mt-2">Use the tabs at the top to switch between viewing the assignment and submitting your work.</p>
-			  </>
-			)
-		  };
-		} else if (user.role === 'INSTRUCTOR' || user.role === 'ADMIN') {
-		  switch (currentView) {
-			case 'view':
-			  return {
-				title: "Assignment Overview (Instructor View)",
+		if (user.role === "STUDENT") {
+			return {
+				title: "Assignment Overview",
 				description: (
-				  <>
-					<p>As an instructor, you can manage all aspects of this assignment:</p>
-					<ul className="list-disc list-inside mt-2">
-					  <li>View the full assignment details</li>
-					  <li>Edit the assignment using the 'Edit Assignment' tab</li>
-					  <li>View and grade student submissions using the 'View Submissions' tab</li>
-					  <li>Communicate with students through comments</li>
-					  <li>Extend deadlines for individual students if needed</li>
-					</ul>
-					<p className="mt-2">Use the tabs at the top to access different functions.</p>
-				  </>
+					<>
+						<p>
+							This page allows you to view and interact with your assignment:
+						</p>
+						<ul className="list-disc list-inside mt-2">
+							<li>View assignment details and instructions</li>
+							<li>See the due date and submission requirements</li>
+							<li>Submit your work (if the deadline hasn't passed)</li>
+							<li>View your submitted work and grades (if available)</li>
+							<li>Communicate with your instructor through comments</li>
+						</ul>
+						<p className="mt-2">
+							Use the tabs at the top to switch between viewing the assignment
+							and submitting your work.
+						</p>
+					</>
 				)
-			  };
-			case 'edit':
-			  return {
-				title: "Edit Assignment",
-				description: (
-				  <>
-					<p>Here you can modify the assignment details:</p>
-					<ul className="list-disc list-inside mt-2">
-					  <li>Update the title, description, and due date</li>
-					  <li>Change the maximum number of submission attempts</li>
-					  <li>Modify the category and rubric</li>
-					  <li>Adjust allowed file types for submissions</li>
-					  <li>Upload or replace assignment files</li>
-					  <li>Extend deadlines for specific students</li>
-					</ul>
-					<p className="mt-2">Remember to save your changes after editing.</p>
-				  </>
-				)
-			  };
-			case 'submissions':
-			  return {
-				title: "View Submissions",
-				description: (
-				  <>
-					<p>Manage and review student submissions:</p>
-					<ul className="list-disc list-inside mt-2">
-					  <li>See a list of all student submissions</li>
-					  <li>View submission details and downloaded files</li>
-					  <li>Grade submissions using the assigned rubric</li>
-					  <li>Provide feedback and comments to students</li>
-					  <li>Track late submissions and extended deadlines</li>
-					</ul>
-					<p className="mt-2">Use the table to sort and filter submissions as needed.</p>
-				  </>
-				)
-			  };
-			default:
-			  return {
-				title: "Assignment Management",
-				description: "Select a tab to view or manage different aspects of this assignment."
-			  };
-		  }
+			};
+		} else if (user.role === "INSTRUCTOR" || user.role === "ADMIN") {
+			switch (currentView) {
+				case "view":
+					return {
+						title: "Assignment Overview (Instructor View)",
+						description: (
+							<>
+								<p>
+									As an instructor, you can manage all aspects of this
+									assignment:
+								</p>
+								<ul className="list-disc list-inside mt-2">
+									<li>View the full assignment details</li>
+									<li>Edit the assignment using the 'Edit Assignment' tab</li>
+									<li>
+										View and grade student submissions using the 'View
+										Submissions' tab
+									</li>
+									<li>Communicate with students through comments</li>
+									<li>Extend deadlines for individual students if needed</li>
+								</ul>
+								<p className="mt-2">
+									Use the tabs at the top to access different functions.
+								</p>
+							</>
+						)
+					};
+				case "edit":
+					return {
+						title: "Edit Assignment",
+						description: (
+							<>
+								<p>Here you can modify the assignment details:</p>
+								<ul className="list-disc list-inside mt-2">
+									<li>Update the title, description, and due date</li>
+									<li>Change the maximum number of submission attempts</li>
+									<li>Modify the category and rubric</li>
+									<li>Adjust allowed file types for submissions</li>
+									<li>Upload or replace assignment files</li>
+									<li>Extend deadlines for specific students</li>
+								</ul>
+								<p className="mt-2">
+									Remember to save your changes after editing.
+								</p>
+							</>
+						)
+					};
+				case "submissions":
+					return {
+						title: "View Submissions",
+						description: (
+							<>
+								<p>Manage and review student submissions:</p>
+								<ul className="list-disc list-inside mt-2">
+									<li>See a list of all student submissions</li>
+									<li>View submission details and downloaded files</li>
+									<li>Grade submissions using the assigned rubric</li>
+									<li>Provide feedback and comments to students</li>
+									<li>Track late submissions and extended deadlines</li>
+								</ul>
+								<p className="mt-2">
+									Use the table to sort and filter submissions as needed.
+								</p>
+							</>
+						)
+					};
+				default:
+					return {
+						title: "Assignment Management",
+						description:
+							"Select a tab to view or manage different aspects of this assignment."
+					};
+			}
 		}
-	  };
+	};
 
 	return (
 		<div className="container mx-auto px-4">
@@ -576,15 +591,18 @@ const Assignment = () => {
 								Due Date: {new Date(assignment.dueDate).toLocaleDateString()}
 							</span>
 							<p className="text-sm italic bg-slate-200 p-1 px-2 rounded">
-								Assignments are due by 11:59 PM on the day before the listed
-								date.
+								Assignments are due at 11:59 PM for the specified due date
 							</p>
 						</div>
 					</div>
 				</CardHeader>
 			</Card>
 
-			<Tabs defaultValue="view" className="space-y-4" onValueChange={(value) => setCurrentView(value)}>
+			<Tabs
+				defaultValue="view"
+				className="space-y-4"
+				onValueChange={(value) => setCurrentView(value)}
+			>
 				{(user.role !== "STUDENT" ||
 					new Date(assignment.dueDate) >= new Date()) && (
 					<TabsList className="bg-muted">
@@ -749,7 +767,6 @@ const Assignment = () => {
 				onDownload={handleDownload}
 			/>
 			<InfoButton content={getInfoContent()} />
-
 		</div>
 	);
 };

@@ -564,6 +564,10 @@ const Assignment = () => {
 		}
 	};
 
+	const switchToViewOnSubmit = () => {
+		setCurrentView("view");
+	};
+
 	return (
 		<div className="container mx-auto px-4">
 			<Card className="mb-8 bg-card">
@@ -588,7 +592,8 @@ const Assignment = () => {
 						</div>
 						<div className="text-right">
 							<span className="text-md font-semibold">
-								Due Date: {new Date(assignment.dueDate).toLocaleDateString()}
+								Due Date: {new Date(assignment.dueDate).toLocaleDateString()} @
+								11:59 PM
 							</span>
 							<p className="text-sm italic bg-slate-200 p-1 px-2 rounded">
 								Assignments are due at 11:59 PM for the specified due date
@@ -604,7 +609,9 @@ const Assignment = () => {
 				onValueChange={(value) => setCurrentView(value)}
 			>
 				{(user.role !== "STUDENT" ||
-					new Date(assignment.dueDate) >= new Date()) && (
+					(user.role === "STUDENT" &&
+						assignment.maxSubmissions - submissions?.length > 0 &&
+						new Date(assignment.dueDate) >= new Date())) && (
 					<TabsList className="bg-muted">
 						<TabsTrigger value="view">View Assignment</TabsTrigger>
 						{user.role !== "STUDENT" && (
@@ -685,6 +692,16 @@ const Assignment = () => {
 												)}
 											</div>
 										</div>
+										<Separator className="my-4" />
+										<div className="flex justify-between items-center space-x-2">
+											<span>Attempts Left:</span>
+											<span>
+												{submissions &&
+												assignment.maxSubmissions - submissions?.length > 0
+													? assignment.maxSubmissions - submissions?.length
+													: "0"}
+											</span>
+										</div>
 										{submissions.length > 0 && (
 											<div>
 												<Separator className="my-4" />
@@ -755,6 +772,7 @@ const Assignment = () => {
 						<Submission
 							assignmentId={assignmentId}
 							refresh={refreshToggle}
+							switchToViewOnSubmit={switchToViewOnSubmit}
 							assignment={assignment}
 						/>
 					</TabsContent>

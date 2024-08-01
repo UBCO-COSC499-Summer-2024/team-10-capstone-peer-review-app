@@ -74,7 +74,7 @@ cd /app/
 docker compose -f docker-compose.test.yml up -d
 ```
 
-Links to more documentations:
+## Links to more documentations:
 * [Development Documentaion](./app/README.md)
 * [Project Plan Documentation](./docs/plan/project-plan.md)
 * [Design Plan Documentation](./docs/design/SystemDesign.md)

@@ -1,4 +1,6 @@
 
+# 27/30 Developed
+
 - [x] **User Registration and Profile Management**
   - [x] All users are able to register (with email address)
   - [x] All users will be able to reset their passwords if they forget their password (using industry accepted methods)

@@ -28,7 +28,7 @@ To set up the application for local development, follow these steps:
 2. Navigate to the `/app/` directory
 
 
-## 🚀 Docker Deployemnt
+## 🐳 Docker Deployemnt
 To deploy the application using Docker, follow these steps:
 1. Navigate to the `/app/` directory
 2. Ensure you have a `.env` file in `/app/.env`

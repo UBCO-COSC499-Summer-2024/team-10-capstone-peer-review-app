@@ -73,12 +73,13 @@ npm run test
 cd /app/
 docker compose -f docker-compose.test.yml up -d
 ```
+## 👨‍💻 Development Documentation
+### Visit our [Development Documentation](./app/README.md) to learn more about our Peer Grade application's development process.
 
-## Links to more documentations:
-* [Development Documentaion](./app/README.md)
-* [Project Plan Documentation](./docs/plan/project-plan.md)
-* [Design Plan Documentation](./docs/design/SystemDesign.md)
-* [Features Checklist](./docs/features.md)
+
+## 📚 Project Plan & Design Plan
+### Want to learn more about our **Peer Grade** project plan? Check out our [Project Plan](./docs/plan/project-plan.md) and [Design Plan](./docs/design/SystemDesign.md)
+
 
 ## License
 * MIT License

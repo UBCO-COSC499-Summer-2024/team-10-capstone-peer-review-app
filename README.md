@@ -48,7 +48,7 @@ The Peer Grade is a peer review application that allows students to submit assig
 
 - **Frontend**: [React](https://reactjs.org/), [shadcn/ui](https://github.com/shadcn/ui), [TailwindCSS](https://tailwindcss.com/)
 - **Backend**: [Node.js](https://nodejs.org/en/), [Express.js](https://expressjs.com/)
-- **Database**: PostgreSQL, [Prisma ORM](https://www.prisma.io/)
+- **Database**: [PostgreSQL](https://www.postgresql.org/), [Prisma ORM](https://www.prisma.io/)
 - **Authentication**: [Passport.js](https://www.passportjs.org/)
 - **File Handling**: [react-pdf-viewer](https://github.com/wojtekmaj/react-pdf-viewer)
 

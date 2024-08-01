@@ -166,12 +166,13 @@ const Submission = ({ refresh }) => {
                                             </AccordionTrigger>
                                             <AccordionContent> */}
                                                 <div className="p-4 w-full bg-white border border-gray-300 rounded-md">
-                                                    <h2 className="text-xl font-bold mb-4">Submit Your Assignment</h2>
+                                                    <h2 className="text-xl font-bold">Submit Your Assignment</h2>
+                                                    {assignment.allowedFileTypes.length > 0 && <span className='text-gray-500 italic'>Allowed file types are: {assignment.allowedFileTypes.join(', ')}</span>}
                                                     <form onSubmit={handleSubmit}>
                                                         <input
                                                             type="file"
                                                             onChange={handleFileChange}
-                                                            className="w-full border border-gray-300 p-2 rounded-md"
+                                                            className="w-full border border-gray-300 p-2 mt-4 rounded-md"
                                                         />
                                                         <Button type="submit" variant="default" className="mt-4 w-full">Submit</Button>
                                                     </form>

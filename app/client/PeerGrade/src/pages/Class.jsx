@@ -515,22 +515,22 @@ const Class = () => {
 					{(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (
 						<MenubarMenu>
 							<MenubarTrigger
-								isActive={currentView === "edit"}
+								isActive={currentView === "rubrics"}
 								className="cursor-pointer"
-								onClick={() => handleViewChange("edit")}
+								onClick={() => handleViewChange("rubrics")}
 							>
-								Edit
+								Rubrics
 							</MenubarTrigger>
 						</MenubarMenu>
 					)}
 					{(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (
 						<MenubarMenu>
 							<MenubarTrigger
-								isActive={currentView === "rubrics"}
+								isActive={currentView === "edit"}
 								className="cursor-pointer"
-								onClick={() => handleViewChange("rubrics")}
+								onClick={() => handleViewChange("edit")}
 							>
-								Rubrics
+								Edit
 							</MenubarTrigger>
 						</MenubarMenu>
 					)}
@@ -600,7 +600,7 @@ const Class = () => {
 									<Button
 										variant="outline"
 										onClick={() => setIsAddCategoryOpen(true)}
-										className="w-full bg-muted"
+										className="w-full bg-gray-500 text-white hover:text-gray-800 hover:bg-gray-400 border-gray-500 transition-colors"
 									>
 										Add Category
 									</Button>

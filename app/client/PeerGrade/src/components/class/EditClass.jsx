@@ -36,6 +36,7 @@ import {
 	AlertDialogTitle
 } from "@/components/ui/alert-dialog";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import InfoButton from '@/components/global/InfoButton';
 
 import { useClass } from "@/contexts/contextHooks/useClass";
 
@@ -135,6 +136,24 @@ const EditClass = ({ classItem }) => {
 
 	const wasDirectlyAccessed =
 		location.pathname === `/class/${classItem.classId}/edit`;
+
+	const editClassInfoContent = {
+		title: "About Editing a Class",
+		description: (
+		<>
+			<p>This page allows you to edit the details of an existing class:</p>
+			<ul className="list-disc list-inside mt-2">
+			<li>Update the class name and description</li>
+			<li>Modify the start and end dates</li>
+			<li>Change the term information</li>
+			<li>Adjust the maximum class size</li>
+			</ul>
+			<p className="mt-2">All fields are required except for the Term field.</p>
+			<p className="mt-2">After making changes, click 'Submit' to save your updates. You'll be asked to confirm before the changes are applied.</p>
+			<p className="mt-2">Note: Changing the class size may affect student enrollment if the new size is smaller than the current number of enrolled students.</p>
+		</>
+		)
+	};
 
 	return (
 		<div className="flex bg-white justify-left flex-row p-4 w-full">
@@ -348,6 +367,7 @@ const EditClass = ({ classItem }) => {
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>
+			<InfoButton content={editClassInfoContent} />
 		</div>
 	);
 };

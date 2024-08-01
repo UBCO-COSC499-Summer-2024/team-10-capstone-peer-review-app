@@ -15,12 +15,14 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogFooter,
   DialogTrigger
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
-import { Plus, Users, FileQuestion, ChevronLeft, ChevronRight } from "lucide-react";
+import { Plus, Users, FileQuestion, ChevronLeft, ChevronRight, Info } from "lucide-react";
+
 import { getAllClassesUserisNotIn } from "@/api/classApi";
 import {
   createEnrollRequest,
@@ -46,6 +48,9 @@ const StudentEnrollmentRequests = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showClassesTable, setShowClassesTable] = useState(false);
   const [showRequestsTable, setShowRequestsTable] = useState(false);
+  const [showInfoOverlay, setShowInfoOverlay] = useState(false);
+  const [infoStep, setInfoStep] = useState(1);
+
   const { toast } = useToast();
 
   const ITEMS_PER_PAGE = 3;
@@ -129,7 +134,8 @@ const StudentEnrollmentRequests = () => {
       await createEnrollRequest(selectedClass.classId, enrollMessage);
       toast({
         title: "Success",
-        description: "Enrollment request sent"
+        description: "Enrollment request sent",
+        variant: "info"
       });
       handleCloseEnrollDialog();
       fetchEnrollRequests();
@@ -151,6 +157,55 @@ const StudentEnrollmentRequests = () => {
   const truncateDescription = (description, maxLength = 50) => {
     if (description.length <= maxLength) return description;
     return description.slice(0, maxLength) + "...";
+  };
+
+  const renderInfoDialog = () => {
+    if (infoStep === 1) {
+      return (
+        <DialogContent className="z-50">
+          <DialogHeader>
+            <DialogTitle>About Enrollment Requests</DialogTitle>
+          </DialogHeader>
+          <DialogDescription>
+            <p className="mb-2">The Enrollment Requests page allows you to:</p>
+            <ul className="list-disc list-inside mb-4">
+              <li>View available classes for enrollment</li>
+              <li>Send enrollment requests for classes you're interested in</li>
+              <li>Track the status of your enrollment requests</li>
+            </ul>
+            <p>Use the search bar to find specific classes.</p>
+          </DialogDescription>
+          <DialogFooter>
+            <Button onClick={() => setInfoStep(2)}>Next</Button>
+          </DialogFooter>
+        </DialogContent>
+      );
+    } else if (infoStep === 2) {
+      return (
+        <DialogContent className="z-50">
+          <DialogHeader>
+            <DialogTitle>Using Enrollment Requests</DialogTitle>
+          </DialogHeader>
+          <DialogDescription>
+            <p className="mb-2">Here's how to use the Enrollment Requests page:</p>
+            <ul className="list-disc list-inside mb-4">
+              <li>Browse available classes in the "Available Classes" section</li>
+              <li>Click "Enroll" to send a request for a class</li>
+              <li>Optionally add a message with your enrollment request</li>
+              <li>View your pending and past requests in the "My Enrollment Requests" section</li>
+              <li>Check the status of your requests (Pending, Approved, or Rejected)</li>
+            </ul>
+            <p>Keep an eye on your request statuses for updates from instructors!</p>
+          </DialogDescription>
+          <DialogFooter>
+            <Button onClick={() => {
+              setShowInfoOverlay(false);
+              setInfoStep(1);
+            }}>Got it</Button>
+          </DialogFooter>
+        </DialogContent>
+      );
+    }
   };
 
   const renderPagination = (currentPage, setCurrentPage, totalItems) => {
@@ -339,6 +394,23 @@ const StudentEnrollmentRequests = () => {
           </div>
         </>
       )}
+
+      <Button
+        className="fixed bottom-4 right-4 rounded-full w-10 h-10 p-0 z-50"
+        onClick={() => setShowInfoOverlay(true)}
+      >
+        <Info className="w-6 h-6" />
+      </Button>
+
+      <Dialog 
+        open={showInfoOverlay} 
+        onOpenChange={(open) => {
+          setShowInfoOverlay(open);
+          if (!open) setInfoStep(1);
+        }}
+      >
+        {renderInfoDialog()}
+      </Dialog>
     </div>
   );
 };

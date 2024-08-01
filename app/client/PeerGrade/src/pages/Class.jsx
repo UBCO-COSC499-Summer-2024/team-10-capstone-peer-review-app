@@ -9,7 +9,7 @@ import {
 	AccordionTrigger,
 	AccordionContent
 } from "@/components/ui/accordion";
-import { Pencil, CheckCircle, Trash2, ChevronRight } from "lucide-react";
+import { Info, Pencil, CheckCircle, Trash2, ChevronRight } from "lucide-react";
 import {
 	AlertDialog,
 	AlertDialogCancel,
@@ -47,6 +47,13 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { useClass } from "@/contexts/contextHooks/useClass";
 import CreateRubric from "../components/rubrics/CreateRubric";
+import InfoButton from "../components/global/InfoButton";
+import {
+	HoverCard,
+	HoverCardContent,
+	HoverCardTrigger
+} from "@/components/ui/hover-card";
+import reviewAPI from "@/api/reviewApi";
 
 const Class = () => {
 	const { classId } = useParams();
@@ -59,6 +66,9 @@ const Class = () => {
 	const [newCategoryName, setNewCategoryName] = useState("");
 	const [editingCategory, setEditingCategory] = useState(null);
 	const [confirmDeleteCategory, setConfirmDeleteCategory] = useState(false);
+	const [classAverage, setClassAverage] = useState(0);
+	const [avgPeerGrade, setAvgPeerGrade] = useState(0);
+	const [reviews, setReviews] = useState([]);
 	const { toast } = useToast();
 	const { user, userLoading } = useUser();
 	const { classes } = useClass();
@@ -81,6 +91,68 @@ const Class = () => {
 				variant: "destructive"
 			});
 		}
+	};
+
+	const fetchReviews = async () => {
+		try {
+			let response;
+			if (user.role === "STUDENT") {
+				response = await reviewAPI.getReviewsReceived();
+			} else if (user.role === "INSTRUCTOR" || user.role === "ADMIN") {
+				response = await reviewAPI.getReviewsAssigned();
+			}
+			setReviews(response.data);
+			calculateGrades(response.data);
+		} catch (error) {
+			console.error("Failed to fetch reviews", error);
+			toast({
+				title: "Error",
+				description: "Failed to fetch reviews",
+				variant: "destructive"
+			});
+		}
+	};
+
+	const calculateGrades = (reviews) => {
+		let totalInstructorPoints = 0;
+		let totalPeerPoints = 0;
+		let totalInstructorMaxPoints = 0;
+		let totalPeerMaxPoints = 0;
+
+		// Filter reviews for the current class
+		const classReviews = reviews.filter(
+			(review) => review.submission.assignment.classId === classId
+		);
+
+		classReviews.forEach((review) => {
+			const earnedPoints = review.reviewGrade;
+			const maxPoints = review.submission.assignment.rubric.totalMarks;
+
+			if (review.isPeerReview) {
+				totalPeerPoints += earnedPoints;
+				totalPeerMaxPoints += maxPoints;
+			} else {
+				totalInstructorPoints += earnedPoints;
+				totalInstructorMaxPoints += maxPoints;
+			}
+		});
+
+		const instructorGradePercentage =
+			totalInstructorMaxPoints > 0
+				? (totalInstructorPoints / totalInstructorMaxPoints) * 100
+				: 0;
+
+		const peerGradePercentage =
+			totalPeerMaxPoints > 0 ? (totalPeerPoints / totalPeerMaxPoints) * 100 : 0;
+
+		setClassAverage(instructorGradePercentage.toFixed(2));
+		setAvgPeerGrade(peerGradePercentage.toFixed(2));
+	};
+
+	const getGradeColorClass = (grade) => {
+		if (grade < 50) return "text-red-700";
+		if (grade < 75) return "text-amber-600";
+		return "text-green-500";
 	};
 
 	const handleAddCategory = async () => {
@@ -157,6 +229,7 @@ const Class = () => {
 	useEffect(() => {
 		if (!userLoading && user) {
 			fetchClassData();
+			fetchReviews();
 		}
 	}, [classId, user, userLoading, currentView]);
 
@@ -188,6 +261,49 @@ const Class = () => {
 	if (!classItem) {
 		return <div>Class not found</div>;
 	}
+
+	const globalInfoContent = {
+		title: "About the Classroom",
+		description: (
+			<>
+				<p>This is the main classroom page. Here you can:</p>
+				<ul className="list-disc list-inside mt-2">
+					<li>View and manage assignments</li>
+					<li>See class participants</li>
+					<li>Manage groups</li>
+					<li>Create and edit rubrics</li>
+					<li>Edit class details (for instructors)</li>
+				</ul>
+				<p className="mt-2">
+					Use the navigation menu to switch between different views.
+				</p>
+
+				{(user?.role === "INSTRUCTOR" || user?.role === "ADMIN") && (
+					<>
+						<p className="mt-4 font-semibold">Instructor Tools:</p>
+						<ul className="list-disc list-inside mt-2">
+							<li>
+								<strong>Create Assignment:</strong> Use this button to add new
+								assignments to the class.
+							</li>
+							<li>
+								<strong>Add Category:</strong> Organize assignments by creating
+								new categories.
+							</li>
+							<li>
+								<strong>Create Rubric:</strong> Design grading rubrics for
+								assignments to standardize evaluation.
+							</li>
+						</ul>
+						<p className="mt-2">
+							These tools are located on the right side of the page for quick
+							access and management of class content.
+						</p>
+					</>
+				)}
+			</>
+		)
+	};
 
 	const renderContent = () => {
 		switch (currentView) {
@@ -345,6 +461,7 @@ const Class = () => {
 								</AccordionItem>
 							))}
 						</Accordion>
+						<InfoButton content={globalInfoContent} user={user} />
 					</>
 				);
 		}
@@ -496,17 +613,79 @@ const Class = () => {
 							</>
 						)}
 					<Card>
-						<CardContent className="text-center py-6">
-							<span className="block text-4xl font-bold">98%</span>
-							<span className="text-gray-500">Class Grade</span>
+						<CardContent className="text-center py-6 relative">
+							<div className="flex flex-col gap-2">
+								<span
+									className={`text-4xl font-bold ${getGradeColorClass(parseFloat(classAverage))}`}
+								>
+									{classAverage}%
+								</span>
+								<span className="text-gray-500">
+									{user.role === "STUDENT"
+										? "Average Class Grade"
+										: "Average Grade of All Students "}
+								</span>
+							</div>
+							<HoverCard>
+								<HoverCardTrigger asChild>
+									<Button
+										variant="ghost"
+										size="sm"
+										className="absolute top-2 right-2"
+									>
+										<Info className="h-4 w-4" />
+									</Button>
+								</HoverCardTrigger>
+								<HoverCardContent className="w-80">
+									<h3 className="font-semibold mb-2">Grade Color Legend</h3>
+									<p className="text-sm bg-destructive/20 p-1 mb-1">
+										Below 50%: Needs Improvement
+									</p>
+									<p className="text-sm bg-warning/20 p-1 mb-1">
+										50% - 74%: Satisfactory
+									</p>
+									<p className="text-sm bg-success/20 p-1">
+										75% and above: Excellent
+									</p>
+								</HoverCardContent>
+							</HoverCard>
 						</CardContent>
 					</Card>
-					<Card>
-						<CardContent className="text-center py-6">
-							<span className="block text-4xl font-bold">98%</span>
-							<span className="text-gray-500">Avg Peer Grade</span>
-						</CardContent>
-					</Card>
+					{user.role === "STUDENT" && (
+						<Card>
+							<CardContent className="text-center py-6 relative">
+								<span
+									className={`block text-4xl font-bold ${getGradeColorClass(parseFloat(avgPeerGrade))}`}
+								>
+									{avgPeerGrade}%
+								</span>
+								<span className="text-gray-500">Avg Peer Grade</span>
+								<HoverCard>
+									<HoverCardTrigger asChild>
+										<Button
+											variant="ghost"
+											size="sm"
+											className="absolute top-2 right-2"
+										>
+											<Info className="h-4 w-4" />
+										</Button>
+									</HoverCardTrigger>
+									<HoverCardContent className="w-80">
+										<h3 className="font-semibold mb-2">Grade Color Legend</h3>
+										<p className="text-sm bg-destructive/20 p-1 mb-1">
+											Below 50%: Needs Improvement
+										</p>
+										<p className="text-sm bg-warning/20 p-1 mb-1">
+											50% - 74%: Satisfactory
+										</p>
+										<p className="text-sm bg-success/20 p-1">
+											75% and above: Excellent
+										</p>
+									</HoverCardContent>
+								</HoverCard>
+							</CardContent>
+						</Card>
+					)}
 					<Card>
 						<CardHeader>
 							<CardTitle>To-Do List</CardTitle>

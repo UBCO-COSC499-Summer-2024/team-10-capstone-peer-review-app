@@ -10,7 +10,6 @@ import { ClassProvider } from "./contexts/classContext";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Class from "./pages/Class";
-import EditClass from "./components/class/EditClass";
 import Assignment from "./pages/Assignment";
 import PeerReview from "./pages/Reviews";
 import Settings from "./pages/Settings";
@@ -80,15 +79,6 @@ function MainLayout() {
 								<ProtectedRoute
 									element={<Class />}
 									allowedRoles={["STUDENT", "INSTRUCTOR", "ADMIN"]}
-								/>
-							}
-						/>
-						<Route
-							path="/class/:classId/edit"
-							element={
-								<ProtectedRoute
-									element={<EditClass />}
-									allowedRoles={["INSTRUCTOR", "ADMIN"]}
 								/>
 							}
 						/>

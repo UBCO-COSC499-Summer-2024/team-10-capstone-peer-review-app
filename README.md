@@ -80,5 +80,5 @@ docker compose -f docker-compose.test.yml up -d
 * [Design Plan Documentation](./docs/design/SystemDesign.md)
 * [Features Checklist](./docs/features.md)
 
-## License (MIT)
+## License
 * MIT License

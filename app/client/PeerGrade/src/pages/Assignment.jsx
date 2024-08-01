@@ -572,8 +572,8 @@ const Assignment = () => {
 		<div className="container mx-auto px-4">
 			<Card className="mb-8 bg-card">
 				<CardHeader>
-					<div className="flex w-full items-center justify-between">
-						<div className="flex items-center ">
+					<div className="flex flex-col sm:flex-row w-full items-start sm:items-center justify-between gap-4">
+						<div className="flex items-start w-full sm:w-3/5">
 							<div className="flex rounded-lg mr-2">
 								<Button
 									onClick={handleBackClick}
@@ -583,26 +583,27 @@ const Assignment = () => {
 									<ArrowLeft className="h-5 w-5" />
 								</Button>
 							</div>
-							<div className="flex flex-col justify-center space-y-1">
+							<div className="flex flex-col justify-center space-y-1 w-full">
 								<CardTitle className="text-2xl font-bold w-full">
 									{assignment.title}
 								</CardTitle>
-								<CardDescription>{assignment.description}</CardDescription>
+								<CardDescription className="w-full sm:w-4/5 line-clamp-5">
+									{assignment.description}
+								</CardDescription>
 							</div>
 						</div>
-						<div className="text-right">
+						<div className="flex flex-col items-end w-full sm:w-2/5">
 							<span className="text-md font-semibold">
 								Due Date: {new Date(assignment.dueDate).toLocaleDateString()} @
 								11:59 PM
 							</span>
-							<p className="text-sm italic bg-slate-200 p-1 px-2 rounded">
+							<p className="text-sm italic bg-slate-200 p-1 px-2 rounded mt-1 text-right">
 								Assignments are due at 11:59 PM for the specified due date
 							</p>
 						</div>
 					</div>
 				</CardHeader>
 			</Card>
-
 			<Tabs
 				defaultValue="view"
 				value={currentView}

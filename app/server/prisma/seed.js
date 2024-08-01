@@ -99,8 +99,8 @@ async function main() {
 			.map(() =>
 				prisma.class.create({
 					data: {
-						classname: `${faker.color.human()} ${faker.science.chemicalElement().name} Class`,
-						description: faker.lorem.sentence(),
+						classname: `${faker.animal.dog()} Class`,
+						description: faker.lorem.paragraph(),
 						startDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
 						endDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
 						instructorId: instructor.userId,
@@ -133,7 +133,7 @@ async function main() {
 			}
 		});
 
-		const assignmentTitle = faker.lorem.words(3);
+		const assignmentTitle = faker.animal.bird() + " Assignment";
 		const rubric = await prisma.rubric.create({
 			data: {
 				creatorId: instructor.userId,
@@ -172,7 +172,7 @@ async function main() {
 				classId: class_.classId,
 				rubricId: rubric.rubricId,
 				title: assignmentTitle,
-				description: `This is the assignment: ${assignmentTitle}`,
+				description: faker.lorem.paragraph(),
 				dueDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
 				assignmentFilePath:
 					"https://raw.githubusercontent.com/py-pdf/sample-files/8c405ece5eff12396a34a1fae3276132002e1753/004-pdflatex-4-pages/pdflatex-4-pages.pdf",

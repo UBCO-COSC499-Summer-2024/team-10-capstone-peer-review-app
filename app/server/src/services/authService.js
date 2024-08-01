@@ -5,15 +5,33 @@ import sendEmail from "../utils/mailer.js";
 import apiError from "../utils/apiError.js";
 import { sendNotificationToRole, sendNotificationToUser } from "./notifsService.js";
 
+/**
+ * @module authService
+ * @desc This module provides authentication services for user registration, login, email verification, password reset, and role requests.
+ */
+
+
 const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS, 10);
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// Reused Prisma queries
-
+/**
+ * @async
+ * @function checkUserByEmail
+ * @desc Check if a user with the given email exists in the database.
+ * @param {string} email - The email of the user to check.
+ * @returns {Promise<Object|null>} - The user object if found, otherwise null.
+ */
 async function checkUserByEmail(email) {
 	return await prisma.user.findUnique({ where: { email } } );
 }
 
+/**
+ * @async
+ * @function checkRequestByEmail
+ * @desc Check if a role request with the given email exists in the database.
+ * @param {string} email - The email of the user to check.
+ * @returns {Promise<Object|null>} - The role request object if found, otherwise null.
+ */
 async function checkRequestByEmail(email) {
 	const user = await prisma.user.findUnique({
 		where: { email },
@@ -23,24 +41,45 @@ async function checkRequestByEmail(email) {
 	return user?.RoleRequest || null;
 }
 
-// Helper functions
-
+/**
+ * @function capitalizeFirstLetter
+ * @desc Capitalize the first letter of a string.
+ * @param {string} string - The string to capitalize.
+ * @returns {string} - The capitalized string.
+ */
 function capitalizeFirstLetter(string) {
-    if (!string) return '';
+    if (!string) {
+		return '';
+	}
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
-// AUTHENTICATION RELATED DATABASE SERVICES
-// Used to decouple the authentication logic from the routes
-
+/**
+ * @async
+ * @function registerUser
+ * @desc Register a new user.
+ * @param {Object} userDetails - The details of the user to register.
+ * @param {string} userDetails.email - The email of the user.
+ * @param {string} userDetails.password - The password of the user.
+ * @param {string} userDetails.firstname - The first name of the user.
+ * @param {string} userDetails.lastname - The last name of the user.
+ * @param {string} userDetails.role - The role of the user.
+ * @throws {apiError} - If a user with that email already exists.
+ * @throws {apiError} - If there is an error creating the role request.
+ * @throws {Error} - If there is an unexpected error.
+ * @returns {Promise<void>}
+ */
 export async function registerUser(userDetails) {
 	try {
 		const { email, password, firstname, lastname, role } = userDetails;
+		// check if user already exists
 		const existingUser = await checkUserByEmail(email);
 		if (existingUser) {
 			throw new apiError("User with that email already exists", 400);
 		}
+		// check if role is valid
 		const isRoleActivated = role === "STUDENT" ? true : false;
+		// hash password
 		const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 		const user = await prisma.user.create({
 			data: {
@@ -53,6 +92,7 @@ export async function registerUser(userDetails) {
 			}
 		});
 
+		// if role is not student, create a role request
 		if (role !== "STUDENT") {
 			try {
 				await createRoleRequest(user.userId, role);
@@ -69,16 +109,33 @@ export async function registerUser(userDetails) {
 	}
 }
 
+/**
+ * @async
+ * @function loginUser
+ * @desc Log in a user.
+ * @param {string} email - The email of the user.
+ * @param {string} password - The password of the user.
+ * @returns {Promise<Object>} - The user object if login is successful.
+ * @throws {apiError} - If there is no user with that email.
+ * @throws {apiError} - If the password is incorrect.
+ * @throws {apiError} - If the email is not verified.
+ * @throws {apiError} - If the role is not activated.
+ * @throws {apiError} - If there is an unexpected error.
+ * @throws {Error} - If there is an unexpected error.
+ */
 export async function loginUser(email, password) {
 	try {
+		// check if user exists
 		const user = await checkUserByEmail(email);
 		if (!user) {
 			throw new apiError("No user with that email", 404);
 		}
+		// check if password matches
 		const passwordMatch = await bcrypt.compare(password, user.password);
 		if (!passwordMatch) {
 			throw new apiError("Invalid password", 400);
 		}
+		// check if email is verified and role is activated
 		if (!user.isEmailVerified && !user.isRoleActivated) {
 			throw new apiError(
 				"Your role and email needs to be verified before logging in",
@@ -103,13 +160,26 @@ export async function loginUser(email, password) {
 	}
 }
 
+/**
+ * @async
+ * @function sendVerificationEmail
+ * @desc Send a verification email to a user.
+ * @param {string} email - The email of the user.
+ * @returns {Promise<void>}
+ * @throws {apiError} - If there is no user with that email.
+ * @throws {Error} - If there is an unexpected error.
+ * @throws {apiError} - If there is an error sending the email.
+ * @throws {apiError} - If the email is already verified.
+ * @throws {apiError} - If the email is not verified using a JWT token.
+ */
 export async function sendVerificationEmail(email) {
 	try {
+		// check if user exists
 		const user = await checkUserByEmail(email);
 		if (!user) {
 			throw new apiError("No user with that email", 404);
 		}
-
+		// check if email is already verified
 		const verifyEmailToken = jwt.sign({ email }, JWT_SECRET, {
 			expiresIn: "5m"
 		});
@@ -151,6 +221,17 @@ export async function sendVerificationEmail(email) {
 	}
 }
 
+/**
+ * @async
+ * @function resetPassword
+ * @desc Reset the password of a user.
+ * @param {string} token - The reset password token.
+ * @param {string} newPassword - The new password.
+ * @returns {Promise<void>}
+ * @throws {apiError} - If the reset password link has expired.
+ * @throws {apiError} - If the new password is the same as the previous password.
+ * @throws {Error} - If there is an unexpected error.
+ */
 export async function resetPassword(token, newPassword) {
 	try {
 		const decoded = jwt.verify(token, JWT_SECRET);
@@ -178,12 +259,21 @@ export async function resetPassword(token, newPassword) {
 	}
 }
 
+/**
+ * @async
+ * @function sendForgotPasswordEmail
+ * @desc Send a forgot password email to a user.
+ * @param {string} email - The email of the user.
+ * @returns {Promise<void>}
+ */
 export async function sendForgotPasswordEmail(email) {
 	try {
+		// check if user exists
 		const user = await checkUserByEmail(email);
 		if (!user) {
 			throw new apiError("No user with that email", 404);
 		}
+		// send forgot password email
 		const forgotPasswordToken = jwt.sign({ email }, JWT_SECRET, {
 			expiresIn: "5m"
 		});
@@ -223,13 +313,25 @@ export async function sendForgotPasswordEmail(email) {
 	}
 }
 
+/**
+ * @async
+ * @function confirmEmail
+ * @desc Confirm the email of a user.
+ * @param {string} token - The email confirmation token.
+ * @returns {Promise<void>}
+ * @throws {apiError} - If the email verification link has expired.
+ * @throws {apiError} - If there is no user with that email.
+ * @throws {Error} - If there is an unexpected error.
+ */
 export async function confirmEmail(token) {
 	try {
+		// check if user exists
 		const decoded = jwt.verify(token, JWT_SECRET);
 		const user = await checkUserByEmail(decoded.email);
 		if (!user) {
 			throw new apiError("No user with that email", 404);
 		}
+		// update user email verification status
 		await prisma.user.update({
 			where: { email: decoded.email },
 			data: { isEmailVerified: true }
@@ -245,6 +347,17 @@ export async function confirmEmail(token) {
 	}
 }
 
+/**
+ * @async
+ * @function isEmailVerifiedJWT
+ * @desc Check if the email of a user is verified using a JWT token.
+ * @param {string} token - The email verification token.
+ * @returns {Promise<boolean>} - True if the email is verified, otherwise false.
+ * @throws {apiError} - If the email verification link has expired.
+ * @throws {apiError} - If there is no user with that email.
+ * @throws {Error} - If there is an unexpected error.
+ */
+
 export async function isEmailVerifiedJWT(token) {
 	try {
 		const decoded = jwt.verify(token, JWT_SECRET);
@@ -255,7 +368,7 @@ export async function isEmailVerifiedJWT(token) {
 		return user.isEmailVerified;
 	} catch (error) {
 		if (error instanceof jwt.TokenExpiredError) {
-			throw new apiError("Your link has expired", 401);
+			throw new apiError("Your email verification link has expired", 401);
 		} else if (error instanceof apiError) {
 			throw error;
 		} else {
@@ -264,6 +377,16 @@ export async function isEmailVerifiedJWT(token) {
 	}
 }
 
+/**
+ * @async
+ * @function createRoleRequest
+ * @desc Create a role request for a user.
+ * @param {number} userId - The ID of the user.
+ * @param {string} role - The role requested by the user.
+ * @throws {apiError} - If there is an error creating the role request.
+ * @throws {Error} - If there is an unexpected error.
+ * @returns {Promise<void>}
+ */
 async function createRoleRequest(userId, role) {
 	await prisma.roleRequest.create({
 		data: {
@@ -279,6 +402,12 @@ async function createRoleRequest(userId, role) {
 	await sendNotificationToRole(null, `The user ${userInfo.firstname} ${userInfo.lastname} has submitted a role request`, `Request: Switch to ${capitalizeFirstLetter(role)}`, "ADMIN", 'role-request');
 }
 
+/**
+ * @async
+ * @function getAllRoleRequests
+ * @desc Get all role requests.
+ * @returns {Promise<Object[]>} - An array of role request objects.
+ */
 export async function getAllRoleRequests() {
 	const requests = await prisma.roleRequest.findMany({
 		include: { user: true }
@@ -286,6 +415,15 @@ export async function getAllRoleRequests() {
 	return requests;
 }
 
+/**
+ * @async
+ * @function deleteRoleRequest
+ * @desc Delete a role request.
+ * @param {number} roleRequestId - The ID of the role request.
+ * @throws {apiError} - If there is an error deleting the role request.
+ * @throws {Error} - If there is an unexpected error.
+ * @returns {Promise<void>}
+ */
 export async function deleteRoleRequest(roleRequestId) {
 	try {
 		await prisma.roleRequest.delete({
@@ -298,6 +436,14 @@ export async function deleteRoleRequest(roleRequestId) {
 	}
 }
 
+/**
+ * @async
+ * @function updateRoleRequestStatus
+ * @desc Update the status of a role request.
+ * @param {number} roleRequestId - The ID of the role request.
+ * @param {string} status - The new status of the role request.
+ * @returns {Promise<void>}
+ */
 export async function updateRoleRequestStatus(roleRequestId, status) {
 	switch (status) {
 		case "APPROVED":
@@ -322,6 +468,18 @@ export async function updateRoleRequestStatus(roleRequestId, status) {
 	}
 }
 
+/**
+ * @async
+ * @function applyForNewRoleRequest
+ * @desc Apply for a new role request.
+ * @param {string} email - The email of the user.
+ * @param {string} role - The role requested by the user.
+ * @throws {apiError} - If the user is not found.
+ * @throws {apiError} - If the user has an existing role request.
+ * @throws {apiError} - If there is an error creating the role request.
+ * @throws {Error} - If there is an unexpected error.
+ * @returns {Promise<void>}
+ */
 export async function applyForNewRoleRequest(email, role) {
 	const user = await checkUserByEmail(email);
 	if (!user) {
@@ -351,6 +509,17 @@ export async function applyForNewRoleRequest(email, role) {
 	}
 }
 
+/**
+ * @async
+ * @function approveRoleRequest
+ * @desc Approve a role request.
+ * @param {number} roleRequestId - The ID of the role request.
+ * @throws {apiError} - If there is an error updating the role request.
+ * @throws {apiError} - If there is an error updating the user.
+ * @throws {apiError} - If there is an error sending the email.
+ * @throws {Error} - If there is an unexpected error.
+ * @returns {Promise<void>}
+ */
 export async function approveRoleRequest(roleRequestId) {
 	const roleRequest = await prisma.roleRequest.update({
 		where: { roleRequestId: roleRequestId },
@@ -390,6 +559,17 @@ export async function approveRoleRequest(roleRequestId) {
 	// TODO: Add logic to remove previous role requests after its been approved?
 }
 
+/**
+ * @async
+ * @function denyRoleRequest
+ * @desc Deny a role request.
+ * @param {number} roleRequestId - The ID of the role request.
+ * @throws {apiError} - If there is an error updating the role request.
+ * @throws {apiError} - If there is an error updating the user.
+ * @throws {apiError} - If there is an error sending the email.
+ * @throws {Error} - If there is an unexpected error.
+ * @returns {Promise<void>}
+ */
 export async function denyRoleRequest(roleRequestId) {
 	try {
 		const roleRequest = await prisma.roleRequest.update({
@@ -435,6 +615,15 @@ export async function denyRoleRequest(roleRequestId) {
 	}
 }
 
+/**
+ * @async
+ * @function getCurrentUser
+ * @desc Get the current user.
+ * @param {string} email - The email of the user.
+ * @returns {Promise<Object>} - The user object.
+ * @throws {apiError} - If there is no user with that email.
+ * @throws {apiError} - If there is an unexpected error.
+ */
 export async function getCurrentUser(email) {
 	try {
 		let user = await checkUserByEmail(email);

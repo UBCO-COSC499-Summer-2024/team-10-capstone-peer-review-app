@@ -1,13 +1,17 @@
+/**
+ * @module categoryService
+ * @desc Service methods for category operations
+ */
+
 import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
 
-
-
-// Service methods for category operations
-
 /**
- * Get all categories in a class
- * @returns categories
+ * @desc Get all categories in a class
+ * @async
+ * @param {Number} classId - The ID of the class
+ * @returns {Array} - An array of categories
+ * @throws {apiError} - If the class is not found or there is an error retrieving the categories
  */
 const getAllCategories = async (classId) => {
     try {
@@ -17,6 +21,7 @@ const getAllCategories = async (classId) => {
             },
         });
 
+        // check if class exists
         if (!classA) {
             throw new apiError(`Class not found`, 404);
         }
@@ -39,9 +44,12 @@ const getAllCategories = async (classId) => {
 };
 
 /**
- * Create a new category
+ * @desc Create a new category
+ * @async
+ * @param {Number} classId - The ID of the class
  * @param {String} name - The name of the category
- * @returns new category
+ * @returns {Object} - The newly created category
+ * @throws {apiError} - If a category with the same name already exists, the class is not found, or there is an error creating the category
  */
 const createCategory = async (classId, name) => {
     try {
@@ -51,6 +59,7 @@ const createCategory = async (classId, name) => {
             },
         });
 
+        // check if category with the same name already exists
         if (categories.length > 0) {
             throw new apiError(`Category with name ${name} already exists`, 400);
         }
@@ -61,6 +70,7 @@ const createCategory = async (classId, name) => {
             },
         });
 
+        // check if class exists
         if (!classA) {
             throw new apiError(`Class not found`, 404);
         }
@@ -80,10 +90,12 @@ const createCategory = async (classId, name) => {
 };
 
 /**
- * Update a category by ID
+ * @desc Update a category by ID
+ * @async
  * @param {Number} categoryId - The ID of the category
  * @param {String} name - The new name of the category
- * @returns updated category
+ * @returns {Object} - The updated category
+ * @throws {apiError} - If the category is not found, a category with the same name already exists, or there is an error updating the category
  */
 const updateCategory = async (categoryId, name) => {
     try {
@@ -93,6 +105,7 @@ const updateCategory = async (categoryId, name) => {
             },
         });
 
+        // check if category exists
         if (!category) {
             throw new apiError(`Category not found`, 404);
         }
@@ -103,6 +116,7 @@ const updateCategory = async (categoryId, name) => {
             },
         });
 
+        // check if category with the same name already exists
         if (categories.length > 0) {
             throw new apiError(`Category with name ${name} already exists`, 400);
         }
@@ -126,9 +140,11 @@ const updateCategory = async (categoryId, name) => {
 };
 
 /**
- * Delete a category by ID
+ * @desc Delete a category by ID
+ * @async
  * @param {Number} categoryId - The ID of the category
- * @returns message indicating the category has been deleted
+ * @returns {String} - A message indicating that the category has been deleted
+ * @throws {apiError} - If the category is not found, the category has assignments, or there is an error deleting the category
  */
 const deleteCategory = async (categoryId) => {
     try {
@@ -138,6 +154,7 @@ const deleteCategory = async (categoryId) => {
             },
         });
 
+        // check if category exists
         if (!category) {
             throw new apiError(`Category not found`, 404);
         }
@@ -151,6 +168,7 @@ const deleteCategory = async (categoryId) => {
             }
         });
 
+        // check if category has assignments
         if (categoryAssignments.length > 0) {
             throw new apiError(`Category has assignments, cannot delete`, 400);
         }
@@ -171,9 +189,11 @@ const deleteCategory = async (categoryId) => {
 };
 
 /**
- * Get assignments for a specific category
+ * @desc Get assignments for a specific category
+ * @async
  * @param {Number} categoryId - The ID of the category
- * @returns assignments
+ * @returns {Array} - An array of assignments
+ * @throws {apiError} - If there is an error retrieving the category assignments
  */
 const getCategoryAssignments = async (categoryId) => {
     try {
@@ -191,10 +211,12 @@ const getCategoryAssignments = async (categoryId) => {
 };
 
 /**
- * Add an assignment to a category
+ * @desc Add an assignment to a category
+ * @async
  * @param {Number} categoryId - The ID of the category
  * @param {Number} assignmentId - The ID of the assignment
- * @returns updated category
+ * @returns {Object} - The updated category
+ * @throws {apiError} - If the category or assignment is not found, the assignment already exists in the category, the assignment doesn't belong to the same class as the category, or there is an error adding the assignment to the category
  */
 const addAssignmentToCategory = async (categoryId, assignmentId) => {
     try {
@@ -204,6 +226,7 @@ const addAssignmentToCategory = async (categoryId, assignmentId) => {
             },
         });
 
+        // check if category exists
         if (!category) {
             throw new apiError(`Category not found`, 404);
         }
@@ -214,6 +237,7 @@ const addAssignmentToCategory = async (categoryId, assignmentId) => {
             },
         });
 
+        // check if assignment exists
         if (!assignment) {
             throw new apiError(`Assignment not found`, 404);
         }
@@ -225,10 +249,12 @@ const addAssignmentToCategory = async (categoryId, assignmentId) => {
             }
         });
 
+        // check if assignment already exists in category
         if (categoryAssignment) {
             throw new apiError(`Assignment already exists in category`, 400);
         }
 
+        // check if assignment belongs to the same class as category
         if (category.classId !== assignment.classId) {
             throw new apiError(`Assignment doesn't belong to the same class as category`, 400);
         }
@@ -254,10 +280,12 @@ const addAssignmentToCategory = async (categoryId, assignmentId) => {
 };
 
 /**
- * Delete an assignment from a category
+ * @desc Delete an assignment from a category
+ * @async
  * @param {Number} categoryId - The ID of the category
  * @param {Number} assignmentId - The ID of the assignment
- * @returns updated category
+ * @returns {Object} - The updated category
+ * @throws {apiError} - If the category or assignment is not found, the assignment doesn't exist in the category, the assignment doesn't belong to the same class as the category, or there is an error deleting the assignment from the category
  */
 const deleteAssignmentFromCategory = async (categoryId, assignmentId) => {
     try {
@@ -267,6 +295,7 @@ const deleteAssignmentFromCategory = async (categoryId, assignmentId) => {
             },
         });
 
+        // check if category exists
         if (!category) {
             throw new apiError(`Category not found`, 404);
         }
@@ -277,6 +306,7 @@ const deleteAssignmentFromCategory = async (categoryId, assignmentId) => {
             },
         });
 
+        // check if assignment exists
         if (!assignment) {
             throw new apiError(`Assignment with not found`, 404);
         }
@@ -288,10 +318,12 @@ const deleteAssignmentFromCategory = async (categoryId, assignmentId) => {
             }
         });
 
+        // check if the category has the assignment
         if (!categoryAssignment) {
             throw new apiError(`Assignment doesn't exists in category`, 400);
         }
 
+        // check if the category and assignment class is the same
         if (category.classId !== assignment.classId) {
             throw new apiError(`Assignment doesn't belong to the same class as category`, 400);
         }

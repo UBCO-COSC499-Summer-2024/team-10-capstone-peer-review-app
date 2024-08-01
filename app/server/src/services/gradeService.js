@@ -1,8 +1,19 @@
+/**
+ * @module gradeService
+ * @desc Provides functions for grading operations
+ */
+
 import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
 
-// Grading operations
-
+/**
+ * @async
+ * @function getGrades
+ * @desc Retrieves grades for a specific student
+ * @param {number} studentId - The ID of the student
+ * @returns {Promise<Array>} - An array of grades
+ * @throws {apiError} - If failed to retrieve grades
+ */
 const getGrades = async (studentId) => {
     try {
         const grades = await prisma.criterionGrade.findMany({
@@ -17,9 +28,16 @@ const getGrades = async (studentId) => {
     }
 };
 
+/**
+ * @async
+ * @function getSubmissionGrade
+ * @desc Retrieves the grade for a specific submission
+ * @param {number} submissionId - The ID of the submission
+ * @returns {Promise<number>} - The grade for the submission
+ * @throws {apiError} - If failed to retrieve grade
+ */
 const getSubmissionGrade = async (submissionId) => {
     try {
-
         const submission = await prisma.review.findMany({
             where: {
                 submissionId: submissionId
@@ -31,17 +49,11 @@ const getSubmissionGrade = async (submissionId) => {
 
         let grade = 0;
         if (submission.reviewer.role === "INSTRUCTOR") {
-            criterionGrades = submission.criterionGrades;
+            const criterionGrades = submission.criterionGrades;
             criterionGrades.forEach(criterionGrade => {
                 grade += criterionGrade.grade;
             });
         }
-
-        // const grade = await prisma.criterionGrade.findFirst({
-        //     where: {
-        //         submissionId: submissionId
-        //     }
-        // });
 
         return grade;
     } catch (error) {
@@ -49,6 +61,14 @@ const getSubmissionGrade = async (submissionId) => {
     }
 }
 
+/**
+ * @async
+ * @function createGrade
+ * @desc Creates a new grade
+ * @param {Object} grade - The grade object to be created
+ * @returns {Promise<Object>} - The newly created grade object
+ * @throws {apiError} - If failed to create grade
+ */
 const createGrade = async (grade) => {
     try {
         const newGrade = await prisma.criterionGrade.create({
@@ -61,6 +81,15 @@ const createGrade = async (grade) => {
     }
 };
 
+/**
+ * @async
+ * @function updateGrade
+ * @desc Updates an existing grade
+ * @param {number} gradeId - The ID of the grade to be updated
+ * @param {Object} grade - The updated grade object
+ * @returns {Promise<Object>} - The updated grade object
+ * @throws {apiError} - If failed to update grade
+ */
 const updateGrade = async (gradeId, grade) => {
     try {
         const updatedGrade = await prisma.criterionGrade.update({
@@ -76,6 +105,14 @@ const updateGrade = async (gradeId, grade) => {
     }
 }
 
+/**
+ * @async
+ * @function deleteGrade
+ * @desc Deletes a grade
+ * @param {number} gradeId - The ID of the grade to be deleted
+ * @returns {Promise<Object>} - The deleted grade object
+ * @throws {apiError} - If failed to delete grade
+ */
 const deleteGrade = async (gradeId) => {
     try {
         const deletedGrade = await prisma.criterionGrade.delete({

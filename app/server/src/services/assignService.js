@@ -21,6 +21,10 @@ import { format } from "date-fns";
  * @param {string} assignmentData.assignmentFilePath - The file path of the assignment.
  * @param {string} assignmentData.rubricId - The ID of the rubric.
  * @param {string[]} assignmentData.allowedFileTypes - The allowed file types for the assignment.
+ * @throws {apiError} If the class is not found.
+ * @throws {apiError} If the assignment due date is outside the class duration.
+ * @throws {apiError} If the assignment is not added to the class.
+ * @throws {apiError} If the assignment with rubric is not found.
  * @returns {Promise<object>} The created assignment with rubric.
  */
 const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
@@ -88,6 +92,8 @@ const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
  * @desc Remove an assignment from a class.
  * @async
  * @param {string} assignmentId - The ID of the assignment.
+ * @throws {apiError} If the assignment is not found.
+ * @throws {apiError} If the assignment is not removed from the class.
  * @returns {Promise<object>} The deleted assignment.
  */
 const removeAssignmentFromClass = async (assignmentId) => {
@@ -135,6 +141,10 @@ const removeAssignmentFromClass = async (assignmentId) => {
  * @param {string} updateData.assignmentFilePath - The updated file path of the assignment.
  * @param {string} updateData.rubricId - The updated ID of the rubric.
  * @param {string[]} updateData.allowedFileTypes - The updated allowed file types for the assignment.
+ * @throws {apiError} If the class is not found.
+ * @throws {apiError} If the assignment is not found.
+ * @throws {apiError} If the assignment due date is outside the class duration.
+ * @throws {apiError} If the assignment is not updated in the class.
  * @returns {Promise<object>} The updated assignment.
  */
 const updateAssignmentInClass = async (classId, assignmentId, categoryId, updateData) => {
@@ -220,6 +230,9 @@ const updateAssignmentInClass = async (classId, assignmentId, categoryId, update
  * @param {string} classId - The ID of the class.
  * @param {string} assignmentId - The ID of the assignment.
  * @param {string} userId - The ID of the user.
+ * @throws {apiError} If the class is not found.
+ * @throws {apiError} If the assignment is not found.
+ * @throws {apiError} If the user is not found.
  * @returns {Promise<object>} The assignment.
  */
 const getAssignmentInClass = async (classId, assignmentId, userId = "") => {
@@ -288,6 +301,7 @@ const getAssignmentInClass = async (classId, assignmentId, userId = "") => {
 /**
  * @desc Get all assignments.
  * @async
+ * @throws {apiError} If the assignments are not found.
  * @returns {Promise<object[]>} The list of assignments.
  */
 const getAllAssignments = async () => {
@@ -317,6 +331,12 @@ const getAllAssignments = async () => {
  * @async
  * @param {string} classId - The ID of the class.
  * @param {string} userId - The ID of the user.
+ * @throws {apiError} If the class is not found.
+ * @throws {apiError} If the user is not found.
+ * @throws {apiError} If the user is not a student.
+ * @throws {apiError} If the user is not a teacher.
+ * @throws {apiError} If the user is not an admin.
+ * @throws {apiError} If the assignments are not found.
  * @returns {Promise<object[]>} The list of assignments.
  */
 const getAllAssignmentsByClassId = async (classId, userId = "") => {
@@ -382,6 +402,10 @@ const getAllAssignmentsByClassId = async (classId, userId = "") => {
  * @param {string} studentId - The ID of the student.
  * @param {string} assignmentId - The ID of the assignment.
  * @param {string} newDueDate - The new due date.
+ * @throws {apiError} If the assignment is not found.
+ * @throws {apiError} If the user is not found.
+ * @throws {apiError} If the new due date is after the original due date.
+ * @throws {apiError} If the extension is not created.
  * @returns {Promise<object>} The new extension.
  */
 const extendDeadlineForStudent = async (studentId, assignmentId, newDueDate) => {
@@ -436,6 +460,8 @@ const extendDeadlineForStudent = async (studentId, assignmentId, newDueDate) => 
  * @async
  * @param {string} studentId - The ID of the student.
  * @param {string} assignmentId - The ID of the assignment.
+ * @throws {apiError} If the record is not found.
+ * @throws {apiError} If the record is not deleted.
  * @returns {Promise<object>} The deleted extension.
  */
 const deleteExtendedDeadlineForStudent = async (studentId, assignmentId) => {
@@ -500,6 +526,10 @@ const deleteExtendedDeadlineForStudent = async (studentId, assignmentId) => {
  * @param {string} rubricData.criteria.ratings.text - The text of the rating.
  * @param {string} rubricData.criteria.ratings.points - The points of the rating.
  * @param {string} creatorId - The ID of the creator.
+ * @throws {apiError} If the class is not found.
+ * @throws {apiError} If the assignment due date is outside the class duration.
+ * @throws {apiError} If the rubric is not created.
+ * @throws {apiError} If the assignment with rubric is not created.
  * @returns {Promise<object>} The created assignment with rubric.
  */
 const addAssignmentWithRubric = async (classId, categoryId, assignmentData, rubricData, creatorId) => {

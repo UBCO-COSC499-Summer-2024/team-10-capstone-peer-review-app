@@ -102,14 +102,16 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* On this cycle, my primary focus was working on the user guide for our application. I created the home page user guide which has introductory information and a quick start guide to getting our app running but also nested in other documents for more information if the user wants to learn more within the app. 
+* I also spent time running through the workflows we will be using for Test-O-Rama to make sure nothing unusual happens before we live run through them at the workshop.
+* I started working on my individual report 
+
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Finish my individual report
+* Add more relevant info to the user guide
+* work on code documentation (comments in code) for the front end
+* Help with testing
   
   
 

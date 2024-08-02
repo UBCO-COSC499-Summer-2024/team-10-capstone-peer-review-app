@@ -1,6 +1,21 @@
+/**
+ * @module services/rubricService
+ * @fileoverview Rubric service for handling rubric related operations
+ */
 import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
 
+/**
+ * @async
+ * @function createRubricsForAssignment
+ * @desc Creates a rubric for an assignment
+ * @param {number} creatorId - The ID of the creator
+ * @param {number} assignmentId - The ID of the assignment
+ * @param {Object} rubricData - The rubric data
+ * @returns {Promise<Object>} - The created rubric
+ * @throws {apiError} - If failed to create rubric
+ * @throws {apiError} - If assignment not found
+ */
 const createRubricsForAssignment = async (
 	creatorId,
 	assignmentId,
@@ -11,6 +26,7 @@ const createRubricsForAssignment = async (
 			where: { assignmentId: assignmentId }
 		});
 
+		// Check if assignment exists
 		if (!assignment) {
 			throw new apiError("Assignment not found", 404);
 		}
@@ -68,6 +84,16 @@ const createRubricsForAssignment = async (
 	}
 };
 
+/**
+ * @async
+ * @function getRubricsForAssignment
+ * @desc Gets the rubric for an assignment
+ * @param {number} assignmentId - The ID of the assignment
+ * @returns {Promise<Object>} - The rubric for the assignment
+ * @throws {apiError} - If failed to get rubric for assignment
+ * @throws {apiError} - If assignment not found
+ * @throws {apiError} - If rubric not found for assignment
+ */
 const getRubricsForAssignment = async (assignmentId) => {
 	try {
 		const assignment = await prisma.assignment.findUnique({
@@ -87,10 +113,12 @@ const getRubricsForAssignment = async (assignmentId) => {
 			}
 		});
 
+		// Check if assignment exists
 		if (!assignment) {
 			throw new apiError("Assignment not found", 404);
 		}
 
+		// Check if rubric exists for the assignment
 		if (!assignment.rubric) {
 			throw new apiError("Rubric not found for this assignment", 404);
 		}
@@ -105,6 +133,13 @@ const getRubricsForAssignment = async (assignmentId) => {
 	}
 };
 
+/**
+ * @async
+ * @function getAllRubrics
+ * @desc Retrieves all rubrics
+ * @returns {Promise<Array>} - An array of rubrics
+ * @throws {apiError} - If failed to get all rubrics
+ */
 const getAllRubrics = async () => {
 	try {
 		const rubrics = await prisma.rubric.findMany();
@@ -114,6 +149,14 @@ const getAllRubrics = async () => {
 	}
 };
 
+/**
+ * @async
+ * @function getAllRubricsInClass
+ * @desc Retrieves all rubrics in a class
+ * @param {number} classId - The ID of the class
+ * @returns {Promise<Array>} - An array of rubrics
+ * @throws {apiError} - If failed to get all rubrics
+ */
 const getAllRubricsInClass = async (classId) => {
 	try {
 		const rubrics = await prisma.rubric.findMany({
@@ -127,6 +170,15 @@ const getAllRubricsInClass = async (classId) => {
 	}
 };
 
+/**
+ * @async
+ * @function getRubricById
+ * @desc Retrieves a rubric by its ID
+ * @param {number} rubricId - The ID of the rubric
+ * @returns {Promise<Object>} - The rubric object
+ * @throws {apiError} - If failed to get rubric by ID
+ * @throws {apiError} - If rubric not found
+ */
 const getRubricById = async (rubricId) => {
 	console.log(rubricId);
 	try {
@@ -141,6 +193,7 @@ const getRubricById = async (rubricId) => {
 			}
 		});
 
+		// Check if rubric exists
 		if (!rubric) {
 			throw new apiError("Rubric not found", 404);
 		}
@@ -151,6 +204,16 @@ const getRubricById = async (rubricId) => {
 	}
 };
 
+/**
+ * @async
+ * @function updateRubricsForAssignment
+ * @desc Updates a rubric for an assignment
+ * @param {number} rubricId - The ID of the rubric
+ * @param {Object} updateData - The updated rubric data
+ * @returns {Promise<Object>} - The updated rubric
+ * @throws {apiError} - If failed to update rubric
+ * @throws {apiError} - If rubric not found
+ */
 const updateRubricsForAssignment = async (rubricId, updateData) => {
 	try {
 		const rubric = await prisma.rubric.findUnique({
@@ -162,6 +225,7 @@ const updateRubricsForAssignment = async (rubricId, updateData) => {
 			}
 		});
 
+		// Check if rubric exists
 		if (!rubric) {
 			throw new apiError("Rubric not found", 404);
 		}
@@ -207,6 +271,15 @@ const updateRubricsForAssignment = async (rubricId, updateData) => {
 	}
 };
 
+/**
+ * @async
+ * @function deleteRubricsFromAssignment
+ * @desc Deletes a rubric from an assignment
+ * @param {number} rubricId - The ID of the rubric
+ * @returns {Promise<Object>} - A success message
+ * @throws {apiError} - If failed to delete rubric
+ * @throws {apiError} - If rubric not found
+ */
 const deleteRubricsFromAssignment = async (rubricId) => {
 	try {
 		const rubric = await prisma.rubric.findUnique({
@@ -219,6 +292,7 @@ const deleteRubricsFromAssignment = async (rubricId) => {
 			}
 		});
 
+		// Check if rubric exists
 		if (!rubric) {
 			throw new apiError("Rubric not found", 404);
 		}
@@ -251,6 +325,18 @@ const deleteRubricsFromAssignment = async (rubricId) => {
 };
 
 // criterion operations
+/**
+ * @async
+ * @function createCriterionForRubric
+ * @desc Creates a criterion for a rubric
+ * @param {number} rubricId - The ID of the rubric
+ * @param {Object} criterionData - The criterion data
+ * @returns {Promise<Object>} - The created criterion
+ * @throws {apiError} - If failed to create criterion
+ * @throws {apiError} - If rubric not found
+ * @throws {apiError} - If maxMarks of criteria exceed the rubric's totalMarks
+ * @throws {apiError} - If criterion maxMark and minMark are not set properly
+ */
 const createCriterionForRubric = async (rubricId, criterionData) => {
 	try {
 		const rubric = await prisma.rubric.findUnique({
@@ -261,7 +347,7 @@ const createCriterionForRubric = async (rubricId, criterionData) => {
 				criteria: true
 			}
 		});
-
+		// Check if rubric exists
 		if (!rubric) {
 			throw new apiError("Rubric not found", 404);
 		}
@@ -280,6 +366,7 @@ const createCriterionForRubric = async (rubricId, criterionData) => {
 			);
 		}
 
+		// Calculate the sum of maxMarks of existing criteria
 		let existingMaxMarksSum = 0;
 		if (rubric.criteria || rubric.criteria.length > 0) {
 			existingMaxMarksSum = rubric.criteria.reduce(
@@ -314,6 +401,15 @@ const createCriterionForRubric = async (rubricId, criterionData) => {
 	}
 };
 
+/**
+ * @async
+ * @function getCriterionForRubric
+ * @desc Retrieves the criteria for a rubric
+ * @param {number} rubricId - The ID of the rubric
+ * @returns {Promise<Array>} - An array of criteria
+ * @throws {apiError} - If failed to get criteria for rubric
+ * @throws {apiError} - If rubric not found
+ */
 const getCriterionForRubric = async (rubricId) => {
 	try {
 		const rubric = await prisma.rubric.findUnique({
@@ -325,6 +421,7 @@ const getCriterionForRubric = async (rubricId) => {
 			}
 		});
 
+		// Check if rubric exists
 		if (!rubric) {
 			throw new apiError("Rubric not found", 404);
 		}
@@ -339,6 +436,18 @@ const getCriterionForRubric = async (rubricId) => {
 	}
 };
 
+/**
+ * @async
+ * @function updateCriterionForRubric
+ * @desc Updates a criterion for a rubric
+ * @param {number} criterionId - The ID of the criterion
+ * @param {Object} updateData - The updated criterion data
+ * @returns {Promise<Object>} - The updated criterion
+ * @throws {apiError} - If failed to update criterion for rubric
+ * @throws {apiError} - If criterion not found
+ * @throws {apiError} - If maxMarks of criteria exceed the rubric's totalMarks
+ * @throws {apiError} - If criterion maxMark and minMark are not set properly
+ */
 const updateCriterionForRubric = async (criterionId, updateData) => {
 	try {
 		const criterion = await prisma.criterion.findUnique({
@@ -355,7 +464,7 @@ const updateCriterionForRubric = async (criterionId, updateData) => {
 				criteria: true
 			}
 		});
-
+		// Check if criterion exists
 		if (!criterion) {
 			throw new apiError("Criterion not found", 404);
 		}
@@ -373,6 +482,7 @@ const updateCriterionForRubric = async (criterionId, updateData) => {
 			);
 		}
 
+		// Calculate the sum of maxMarks of existing criteria excluding the current criterion
 		let existingMaxMarksSum = 0;
 		if (rubric.criteria || rubric.criteria.length > 0) {
 			const otherCriteria = rubric.criteria.filter(
@@ -408,6 +518,15 @@ const updateCriterionForRubric = async (criterionId, updateData) => {
 	}
 };
 
+/**
+ * @async
+ * @function deleteCriterionForRubric
+ * @desc Deletes a criterion for a rubric
+ * @param {number} criterionId - The ID of the criterion
+ * @returns {Promise<Object>} - The deleted criterion
+ * @throws {apiError} - If failed to delete criterion for rubric
+ * @throws {apiError} - If criterion not found
+ */
 const deleteCriterionForRubric = async (criterionId) => {
 	try {
 		const criterion = await prisma.criterion.findUnique({
@@ -416,6 +535,7 @@ const deleteCriterionForRubric = async (criterionId) => {
 			}
 		});
 
+		// Check if criterion exists
 		if (!criterion) {
 			throw new apiError("Criterion not found", 404);
 		}
@@ -434,6 +554,15 @@ const deleteCriterionForRubric = async (criterionId) => {
 	}
 };
 
+/**
+ * @async
+ * @function createCriterionRating
+ * @desc Creates a rating for a criterion
+ * @param {number} criterionId - The ID of the criterion
+ * @param {Object} ratingData - The rating data
+ * @returns {Promise<Object>} - The created rating
+ * @throws {apiError} - If failed to create criterion rating
+ */ 
 const createCriterionRating = async (criterionId, ratingData) => {
 	try {
 		const newRating = await prisma.criterionRating.create({
@@ -448,8 +577,20 @@ const createCriterionRating = async (criterionId, ratingData) => {
 	}
 };
 
+/**
+ * @async
+ * @function linkRubricToAssignments
+ * @desc Links a rubric to multiple assignments
+ * @param {number} rubricId - The ID of the rubric
+ * @param {Array<number>} assignmentIds - An array of assignment IDs
+ * @returns {Promise<Object>} - A success message
+ * @throws {apiError} - If failed to link rubric to assignments
+ * @throws {apiError} - If rubric not found
+ * @throws {apiError} - If invalid or empty assignment IDs provided
+ */
 const linkRubricToAssignments = async (rubricId, assignmentIds) => {
 	try {
+		// Check if rubric exists
 		if (!Array.isArray(assignmentIds) || assignmentIds.length === 0) {
 			throw new apiError("Invalid or empty assignment IDs provided", 400);
 		}
@@ -457,7 +598,7 @@ const linkRubricToAssignments = async (rubricId, assignmentIds) => {
 		const rubric = await prisma.rubric.findUnique({
 			where: { rubricId: rubricId }
 		});
-
+		// Check if rubric exists
 		if (!rubric) {
 			throw new apiError("Rubric not found", 404);
 		}

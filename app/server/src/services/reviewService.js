@@ -1,7 +1,19 @@
+/**
+ * @module services/reviewService
+ * @desc Provides functions for review operations
+ */
 import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
 
 // Review operations
+
+/**
+ * @desc Retrieves a review by its ID.
+ * @async
+ * @param {string} reviewId - The ID of the review.
+ * @returns {Promise<Object>} - The review object.
+ * @throws {apiError} - If there is an error fetching the review or the review is not found.
+ */
 const getReviewById = async (reviewId) => {
 	try {
 		console.log("Fetching review with ID:", reviewId);
@@ -47,6 +59,7 @@ const getReviewById = async (reviewId) => {
 			}
 		});
 
+		// Check if review exists
 		if (!review) {
 			console.log("No review found for ID:", reviewId);
 			throw new apiError("Review not found", 404);
@@ -68,6 +81,13 @@ const getReviewById = async (reviewId) => {
 	}
 };
 
+/**
+ * @desc Retrieves all peer reviews for a submission.
+ * @async
+ * @param {string} submissionId - The ID of the submission.
+ * @returns {Promise<Array>} - An array of peer reviews.
+ * @throws {apiError} - If there is an error fetching the peer reviews.
+ */
 const getPeerReviews = async (submissionId) => {
 	try {
 		const peerReviews = await prisma.review.findMany({
@@ -111,6 +131,13 @@ const getPeerReviews = async (submissionId) => {
 	}
 };
 
+/**
+ * @desc Retrieves the instructor review for a submission.
+ * @async
+ * @param {string} submissionId - The ID of the submission.
+ * @returns {Promise<Object>} - The instructor review object.
+ * @throws {apiError} - If there is an error fetching the instructor review.
+ */
 const getInstructorReview = async (submissionId) => {
 	try {
 		const instructorReview = await prisma.review.findFirst({
@@ -155,6 +182,12 @@ const getInstructorReview = async (submissionId) => {
 	}
 };
 
+/**
+ * @desc Retrieves all reviews.
+ * @async
+ * @returns {Promise<Array>} - An array of all reviews.
+ * @throws {apiError} - If there is an error fetching the reviews.
+ */
 const getAllReviews = async () => {
 	try {
 		const reviews = await prisma.review.findMany({
@@ -205,6 +238,13 @@ const getAllReviews = async () => {
 	}
 };
 
+/**
+ * @desc Retrieves all reviews for an assignment.
+ * @async
+ * @param {string} assignmentId - The ID of the assignment.
+ * @returns {Promise<Array>} - An array of reviews.
+ * @throws {apiError} - If there is an error fetching the reviews.
+ */
 const getReviewsForAssignment = async (assignmentId) => {
 	try {
 		const reviews = await prisma.review.findMany({
@@ -250,6 +290,15 @@ const getReviewsForAssignment = async (assignmentId) => {
 	}
 };
 
+/**
+ * @desc Updates a review.
+ * @async
+ * @param {string} reviewId - The ID of the review.
+ * @param {Object} review - The updated review object.
+ * @returns {Promise<Object>} - The updated review object.
+ * @throws {apiError} - If there is an error updating the review.
+ * @throws {apiError} - If the review is not found.
+ */
 const updateReview = async (reviewId, review) => {
 	const { criterionGrades, ...reviewData } = review;
 
@@ -307,6 +356,14 @@ const updateReview = async (reviewId, review) => {
 	}
 };
 
+/**
+ * @desc Deletes a review.
+ * @async
+ * @param {string} reviewId - The ID of the review.
+ * @throws {apiError} - If there is an error deleting the review.
+ * @throws {apiError} - If the review is not found.
+ * @returns {Promise<void>}
+ */
 const deleteReview = async (reviewId) => {
 	try {
 		await prisma.review.delete({
@@ -321,6 +378,14 @@ const deleteReview = async (reviewId) => {
 	}
 };
 
+/**
+ * @desc Creates a new review.
+ * @async
+ * @param {string} userId - The ID of the user creating the review.
+ * @param {Object} review - The review object to be created.
+ * @returns {Promise<Object>} - The newly created review object.
+ * @throws {apiError} - If there is an error creating the review.
+ */
 const createReview = async (userId, review) => {
 	try {
 		// Remove isGroup from the review object
@@ -356,6 +421,14 @@ const createReview = async (userId, review) => {
 	}
 };
 
+/**
+ * @desc Assigns random peer reviews for an assignment.
+ * @async
+ * @param {string} assignmentId - The ID of the assignment.
+ * @param {number} reviewsPerStudent - The number of reviews to assign per student.
+ * @returns {Promise<Object>} - The number of peer reviews assigned.
+ * @throws {apiError} - If there is an error assigning peer reviews.
+ */
 const assignRandomPeerReviews = async (assignmentId, reviewsPerStudent) => {
 	try {
 		if (reviewsPerStudent === 0 || reviewsPerStudent < 1) {
@@ -395,14 +468,17 @@ const assignRandomPeerReviews = async (assignmentId, reviewsPerStudent) => {
 				}
 			});
 
+			// Get unique student IDs from latest submissions
 			const submittingStudentIds = new Set(
 				latestSubmissions.map((s) => s.submitterId)
 			);
+			// Shuffle the latest submissions to randomize the review assignments
 			const shuffledSubmissions = latestSubmissions.sort(
 				() => 0.5 - Math.random()
 			);
 			const reviewAssignments = [];
 
+			// Assign reviews to each student
 			for (const reviewerId of submittingStudentIds) {
 				let assignedPeerReviews = existingPeerReviews.filter(
 					(r) => r.reviewerId === reviewerId
@@ -410,10 +486,12 @@ const assignRandomPeerReviews = async (assignmentId, reviewsPerStudent) => {
 				let attempts = 0;
 				const maxAttempts = submissionCount * 2; // Arbitrary limit to prevent infinite loops
 
+				// Assign reviews until the required number is reached
 				while (
 					assignedPeerReviews < reviewsPerStudent &&
 					attempts < maxAttempts
 				) {
+					// Iterate through shuffled submissions to assign reviews
 					for (
 						let j = 0;
 						j < shuffledSubmissions.length &&
@@ -445,6 +523,7 @@ const assignRandomPeerReviews = async (assignmentId, reviewsPerStudent) => {
 					attempts++;
 				}
 
+				// Check if the required number of reviews was assigned
 				if (assignedPeerReviews < reviewsPerStudent) {
 					throw new apiError(
 						`Unable to assign ${reviewsPerStudent} unique peer reviews for each student. Please reduce the number of reviews per student or wait for more submissions.`,
@@ -474,6 +553,14 @@ const assignRandomPeerReviews = async (assignmentId, reviewsPerStudent) => {
 	}
 };
 
+/**
+ * @desc Retrieves the details of a review.
+ * @async
+ * @param {string} reviewId - The ID of the review.
+ * @returns {Promise<Object>} - The review details.
+ * @throws {apiError} - If there is an error fetching the review details.
+ * @throws {apiError} - If the review is not found.
+ */
 const getReviewDetails = async (reviewId) => {
 	try {
 		const review = await prisma.review.findUnique({
@@ -506,6 +593,13 @@ const getReviewDetails = async (reviewId) => {
 	}
 };
 
+/**
+ * @desc Retrieves all reviews assigned to a user.
+ * @async
+ * @param {string} userId - The ID of the user.
+ * @returns {Promise<Array>} - An array of reviews assigned to the user.
+ * @throws {apiError} - If there is an error fetching the reviews.
+ */
 const getReviewsAssigned = async (userId) => {
 	try {
 		const reviewsAssigned = await prisma.review.findMany({
@@ -551,6 +645,13 @@ const getReviewsAssigned = async (userId) => {
 	}
 };
 
+/**
+ * @desc Retrieves all reviews received by a user.
+ * @async
+ * @param {string} userId - The ID of the user.
+ * @returns {Promise<Array>} - An array of reviews received by the user.
+ * @throws {apiError} - If there is an error fetching the reviews.
+ */
 const getReviewsReceived = async (userId) => {
 	try {
 		const reviewsReceived = await prisma.review.findMany({

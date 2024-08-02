@@ -34,6 +34,7 @@ import {
 	SelectTrigger,
 	SelectValue
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { toast } from "@/components/ui/use-toast";
 import { getCategoriesByClassId } from "@/api/classApi";
 import {

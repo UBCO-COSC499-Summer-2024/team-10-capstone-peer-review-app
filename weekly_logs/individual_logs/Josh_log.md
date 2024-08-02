@@ -58,14 +58,13 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Completed Todo's for each user and class
+* Fixed some bugs that popped up 
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Refactor existing back-end tests, create some more 
+* Comment the entire back-end code / some of the front-end components I worked on
+* Start working on the report / setting up the presentation
   
   
 

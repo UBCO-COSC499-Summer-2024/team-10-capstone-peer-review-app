@@ -1,4 +1,56 @@
 
+# Bhavya's Log for Cycle 18
+
+
+## Tuesday, July 30, 2024, 05:22 PM - Thursday, August 01, 2024, 05:22 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[263](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/263)**: List of all features to be implemented for Project 3  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[235](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/235)**: Create/Delete/Edit Categories  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: database, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+
+## Time entries from Clockify on this cycle:
+
+## All Features worked on this cycle:
+
+## Features completed on this cycle:
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[263](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/263)**: List of all features to be implemented for Project 3  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[235](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/235)**: Create/Delete/Edit Categories  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[286](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/286)**: Backend Documentation  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[198](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/198)**: Writing new back-end tests for dockerized test enviroment. Start with services, then controllers  
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Bhavya's Log for Cycle 17
 
 

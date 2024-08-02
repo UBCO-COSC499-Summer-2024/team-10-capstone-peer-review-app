@@ -1,4 +1,42 @@
 
+# Team 10's Team Log for Cycle 18
+
+
+## Tuesday, July 30, 2024, 05:22 PM - Thursday, August 01, 2024, 05:22 PM
+
+
+## Tasks currently in the Backlog for c-18:
+![Tasks in Backlog for c-18](./team_log_images/backlog_issues/backlog_issues_c18.png)  
+  
+
+## Tasks currently in Progress for c-18:
+![Tasks in progress for c-18](./team_log_images/in_progress_issues/in_progress_issues_c18.png)  
+  
+
+## Tasks currently in Review for c-18:
+![Tasks in review for c-18](./team_log_images/in_review_issues/in_review_issues_c18.png)  
+  
+
+## Tasks Done for c-18:
+![Tasks done for c-18](./team_log_images/done_issues/done_issues_c18.png)  
+  
+
+## Overall Burn-up Chart of Tasks
+![Burn-Up Chart for c-18](./team_log_images/burnup_charts/burnup_chart_c18.png)  
+  
+
+## Test Reports for c-18
+
+#### Front-end Testing for c-18
+![Front-end Tests for c-18](./team_log_images/front_end_tests/front_end_tests_c18.png)  
+  
+
+#### Back-end Testing for c-18
+![Back end Tests for c-18](./team_log_images/back_end_tests/back_end_tests_c18.png)  
+  
+  
+  
+
 # Team 10's Team Log for Cycle 17
 
 

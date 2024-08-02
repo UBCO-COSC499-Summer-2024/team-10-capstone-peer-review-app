@@ -1,4 +1,74 @@
 
+# Josh's Log for Cycle 18
+
+
+## Tuesday, July 30, 2024, 05:22 PM - Thursday, August 01, 2024, 05:22 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[263](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/263)**: List of all features to be implemented for Project 3  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[230](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/230)**: Personalized TODO creator for each class? extra feature  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: database, type: UI, Reach 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[207](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/207)**: Integrate back-end testing env into drone  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: testing, type: CI/CD 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Setting up Peer Testing event, redoing prisma seed** *(Total duration: 3.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, August 01, 2024, 01:05 PM - Thursday, August 01, 2024, 04:18 PM *(3.2 hours)*  
+  
+&nbsp; &nbsp; :watch: **270 - Removing extra settings tabs, implementing personalized todos** *(Total duration: 2.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 31, 2024, 06:30 PM - Wednesday, July 31, 2024, 08:38 PM *(2.1 hours)*  
+  
+&nbsp; &nbsp; :watch: **Debugging Submissions.JSX** *(Total duration: 1.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 30, 2024, 06:25 PM - Tuesday, July 30, 2024, 07:26 PM *(1.0 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[290](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/290)**: Anonymous slider for Anon Peer reviews, debugs, and todo list  
+  
+
+## Features completed on this cycle:
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[263](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/263)**: List of all features to be implemented for Project 3  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[207](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/207)**: Integrate back-end testing env into drone  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[230](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/230)**: Personalized TODO creator for each class? extra feature  
+  
+&nbsp; &nbsp; :orange_circle: **Issue-[198](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/198)**: Writing new back-end tests for dockerized test enviroment. Start with services, then controllers  
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Josh's Log for Cycle 17
 
 

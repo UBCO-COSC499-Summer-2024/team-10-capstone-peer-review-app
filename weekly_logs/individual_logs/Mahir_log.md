@@ -1,4 +1,118 @@
 
+# Mahir's Log for Cycle 18
+
+
+## Tuesday, July 30, 2024, 05:22 PM - Thursday, August 01, 2024, 05:22 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[292](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/292)**: User Guide Documentation (Readme)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: documentation 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[287](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/287)**: Info Dialogs and Rubrics view fixes  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[285](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/285)**: Group Submissions / Group Review Facilitataion  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature, type: database, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[274](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/274)**: Instructor will be able to restrict submission files/links (i.e. only accept .PDF or .ZIP or only google docs links)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[265](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/265)**: Allow for uploading other file types as submission  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: database, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[263](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/263)**: List of all features to be implemented for Project 3  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[252](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/252)**: Update dashboard for assignments, reviews, and grades  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[235](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/235)**: Create/Delete/Edit Categories  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: database, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[234](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/234)**: Delete Rubric / Edit Rubric  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: database, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Reviewing PRs, Documenting user guide** *(Total duration: 3.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, August 01, 2024, 11:40 AM - Thursday, August 01, 2024, 03:02 PM *(3.4 hours)*  
+  
+&nbsp; &nbsp; :watch: **team logs** *(Total duration: 0.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 31, 2024, 12:30 AM - Wednesday, July 31, 2024, 01:00 AM *(0.5 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[291](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/291)**: Testing and Backend Docs  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[289](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/289)**: Logs review!  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[288](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/288)**: Info Dialogs and Rubric total to max fix  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[289](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/289)**: Logs review!  
+  
+&nbsp; &nbsp; :arrow_heading_up: **PR-[288](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/288)**: Info Dialogs and Rubric total to max fix  
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[287](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/287)**: Info Dialogs and Rubrics view fixes  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[285](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/285)**: Group Submissions / Group Review Facilitataion  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[274](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/274)**: Instructor will be able to restrict submission files/links (i.e. only accept .PDF or .ZIP or only google docs links)  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[265](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/265)**: Allow for uploading other file types as submission  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[263](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/263)**: List of all features to be implemented for Project 3  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[252](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/252)**: Update dashboard for assignments, reviews, and grades  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[235](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/235)**: Create/Delete/Edit Categories  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[234](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/234)**: Delete Rubric / Edit Rubric  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[136](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/136)**: Major Use Case 20: Manage User Account(s)  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[292](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/292)**: User Guide Documentation (Readme)  
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Mahir's Log for Cycle 17
 
 

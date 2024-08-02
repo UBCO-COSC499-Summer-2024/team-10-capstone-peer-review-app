@@ -207,7 +207,6 @@ async function main() {
 			});
 		}
 	}
-
 	console.log("Database has been seeded. 🌱");
 }
 

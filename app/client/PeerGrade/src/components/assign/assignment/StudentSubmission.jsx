@@ -12,7 +12,7 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { toast } from '@/components/ui/use-toast';
 
-const Submission = ({ refresh }) => {
+const Submission = ({ refresh, switchToViewOnSubmit }) => {
     const { classId, assignmentId } = useParams();
     const [assignment, setAssignment] = useState(null);
     const [rubric, setRubric] = useState(null);
@@ -79,6 +79,7 @@ const Submission = ({ refresh }) => {
             const timestamp = new Date().toLocaleString();
             const fileName = file.name;
             setSubmissionMessage(`${fileName} successfully submitted at ${timestamp}`);
+            switchToViewOnSubmit();
             refresh();
         } catch (error) {
             console.error("Submission error:", error);
@@ -108,6 +109,7 @@ const Submission = ({ refresh }) => {
 
             const timestamp = new Date().toLocaleString();
             setSubmissionMessage(`Text submission successfully submitted at ${timestamp}`);
+            switchToViewOnSubmit();
             refresh();
         } catch (error) {
             console.error("Text submission error:", error);
@@ -147,21 +149,13 @@ const Submission = ({ refresh }) => {
     return (
         <div className="container mx-auto p-4">
             <Card className="w-full mb-4">
-                <CardHeader className="flex justify-between items-center bg-gray-200 p-4 rounded-t-lg">
-                    <CardTitle className="text-xl font-bold">Assignment Details</CardTitle>
-                </CardHeader>
                 <CardContent className="p-4 space-y-4">
                     {assignment && (
                         <>
-                            <div className="mb-4">
-                                <h2 className="text-lg font-semibold">{assignment.title}</h2>
-                                <p className="text-gray-600">{assignment.description}</p>
-                                <p className="text-sm text-gray-600">Due: {new Date(assignment.dueDate).toLocaleDateString()}</p>
-                            </div>
                             <Tabs defaultValue="file-upload" className="space-y-4">
                                 <TabsList className="bg-muted">
                                     <TabsTrigger value="file-upload">File Upload</TabsTrigger>
-                                    <TabsTrigger value="text-submission">Text Submission</TabsTrigger>
+                                    {<TabsTrigger value="text-submission">Text Submission</TabsTrigger>}
                                 </TabsList>
                                 <TabsContent value="file-upload">
                                     {/* <Accordion type="single" collapsible className="bg-gray-100 rounded-lg px-6">
@@ -174,13 +168,13 @@ const Submission = ({ refresh }) => {
                                             </AccordionTrigger>
                                             <AccordionContent> */}
                                                 <div className="p-4 w-full bg-white border border-gray-300 rounded-md">
-                                                    <h2 className="text-xl font-bold mb-4">Submit Your Assignment</h2>
+                                                    <h2 className="text-xl font-bold">Submit Your Assignment</h2>
+                                                    {assignment.allowedFileTypes.length > 0 && <span className='text-gray-500 italic'>Allowed file types are: {assignment.allowedFileTypes.join(', ')}</span>}
                                                     <form onSubmit={handleSubmit}>
                                                         <input
                                                             type="file"
-                                                            accept="application/pdf"
                                                             onChange={handleFileChange}
-                                                            className="w-full border border-gray-300 p-2 rounded-md"
+                                                            className="w-full border border-gray-300 p-2 mt-4 rounded-md"
                                                         />
                                                         <Button type="submit" variant="default" className="mt-4 w-full">Submit</Button>
                                                     </form>

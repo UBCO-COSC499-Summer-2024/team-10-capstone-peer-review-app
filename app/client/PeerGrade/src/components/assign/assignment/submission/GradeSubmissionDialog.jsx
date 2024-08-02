@@ -12,13 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 
-const GradeSubmissionDialog = ({
-	submission,
-	rubric,
-	open,
-	onClose,
-	onGradeSubmit
-}) => (
+const GradeSubmissionDialog = ({ rubric, open, onClose, onGradeSubmit }) => (
 	<Dialog open={open} onOpenChange={onClose}>
 		<DialogContent className="max-w-lg h-[80vh] overflow-hidden flex flex-col">
 			<DialogHeader>
@@ -33,7 +27,6 @@ const GradeSubmissionDialog = ({
 				)}
 				{rubric && (
 					<div>
-						{console.log("rubric from grade submission dialog", rubric)}
 						<Card className="mb-6">
 							<CardHeader>
 								<CardTitle>{rubric.title}</CardTitle>

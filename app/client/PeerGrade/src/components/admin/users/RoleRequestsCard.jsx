@@ -1,22 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Terminal, Check, X, Trash } from "lucide-react";
+import { Terminal, Check, X, Trash, LoaderCircle } from "lucide-react";
 import RoleApprovalDrawer from "@/components/admin/users/RoleApprovalDrawer";
 import { DelDialog } from "@/components/admin/users/DelDialog";
 import { deleteRoleRequest, updateRoleRequestStatus } from "@/api/authApi";
-
 import { getStatusDetails } from "@/utils/statusIcons";
-// TODO get state to fetch single roleRequest
 
 const RoleRequestsCard = ({
-	key,
 	roleRequest,
 	refreshRoleRequests,
 	title,
 	description
 }) => {
-	// const [roleRequest, setRoleRequest] = React.useState(null);
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const { icon } = getStatusDetails(roleRequest.status);
@@ -28,14 +24,11 @@ const RoleRequestsCard = ({
 			"APPROVED"
 		);
 		if (response.status === "Success") {
-			closeDrawer();
-			// change to refresh single role request? Not all? May have to have each roll request have seperate state and fetch that way only have to update one role request
 			refreshRoleRequests();
 		}
 		setIsLoading(false);
 	};
 
-	// Handle deny action
 	const handleDeny = async () => {
 		setIsLoading(true);
 		const response = await updateRoleRequestStatus(
@@ -44,7 +37,6 @@ const RoleRequestsCard = ({
 		);
 		if (response.status === "Success") {
 			closeDrawer();
-			// change to refresh single role request? Not all? May have to have each roll request have seperate state and fetch that way only have to update one role request
 			refreshRoleRequests();
 		}
 		setIsLoading(false);
@@ -58,7 +50,6 @@ const RoleRequestsCard = ({
 		);
 		if (response.status === "Success") {
 			closeDrawer();
-			// change to refresh single role request? Not all? May have to have each roll request have seperate state and fetch that way only have to update one role request
 			refreshRoleRequests();
 		}
 		setIsLoading(false);
@@ -81,9 +72,33 @@ const RoleRequestsCard = ({
 		setIsDrawerOpen(true);
 	};
 
+	const handleApproveClick = (e) => {
+		e.stopPropagation();
+		handleApprove();
+	};
+
+	const handleDenyClick = (e) => {
+		e.stopPropagation();
+		handleDeny();
+	};
+
+	const handleDeleteClick = (e) => {
+		e.stopPropagation();
+		handleDelete();
+	};
+
 	return (
 		<div>
-			<Alert onClick={openDrawer} className='hover:cursor-pointer hover:shadow-md transition'>
+			<Alert
+				onClick={(e) => {
+					if (e.target.closest("button")) {
+						e.stopPropagation();
+					} else {
+						openDrawer();
+					}
+				}}
+				className="hover:cursor-pointer hover:scale-[1.03] hover:shadow-lg transition"
+			>
 				{icon ? icon : <Terminal className="h-4 w-4" />}
 				<div className="flex justify-between w-full">
 					<div>
@@ -91,19 +106,38 @@ const RoleRequestsCard = ({
 						<AlertDescription>{description}</AlertDescription>
 					</div>
 					<div className="flex ml-2 flex-col items-end space-y-2">
-						<div className="flex items-center justify-center">
-							<Button variant="ghost" size="icon" className="h-5 w-5 p-0 mr-1" onClick={handleApprove}>
-								<Check className="h-4 w-4 text-green-600" />
-							</Button>
-							<Button variant="ghost" size="icon" className="h-5 w-5 p-0" onClick={handleDeny}>
-								<X className="h-4 w-4 text-red-600" />
-							</Button>
-						</div>
-						<DelDialog handleActionClick={handleDelete}>
-							<Button variant="ghost" size="icon" className="h-5 w-5 p-0">
-								<Trash className="h-4 w-4 text-red-600" />
-							</Button>
-						</DelDialog>
+						{isLoading ? (
+								<LoaderCircle className="h-4 w-4 mr-1 animate-spin text-gray-800" />
+							) : (
+								<>
+									<div className="flex items-center justify-center">
+										<Button
+											variant="ghost"
+											size="icon"
+											className="h-5 w-5 p-0 mr-1"
+											onClick={handleApproveClick}
+											disabled={isLoading}
+										>
+											<Check className="h-4 w-4 text-green-600" />
+										</Button>
+										<Button
+											variant="ghost"
+											size="icon"
+											className="h-5 w-5 p-0 self-end"
+											onClick={handleDenyClick}
+											disabled={isLoading}
+										>
+											<X className="h-4 w-4 text-red-600" />
+										</Button>
+									</div>
+									<DelDialog handleActionClick={handleDeleteClick}>
+										<Button variant="ghost" size="icon" className="h-5 w-5 p-0">
+											<Trash className="h-4 w-4 text-red-600" />
+										</Button>
+									</DelDialog>
+								</>
+							)}
+						
 					</div>
 				</div>
 			</Alert>
@@ -115,7 +149,6 @@ const RoleRequestsCard = ({
 				isLoading={isLoading}
 				isDrawerOpen={isDrawerOpen}
 				closeDrawer={closeDrawer}
-				onClick=""
 			/>
 		</div>
 	);

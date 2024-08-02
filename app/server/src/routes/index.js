@@ -14,7 +14,7 @@ import assignmentRouter from "./assignment.js";
 import rubricRouter from "./rubric.js";
 import enrollRequestsRouter from "./enroll-requests.js";
 import categoryRouter from "./category.js";
-
+import todoRouter from "./todo.js";
 
 // Middlewares
 import localStrategy from "../middleware/passportStrategies/localStrategy.js";
@@ -41,6 +41,7 @@ router.use("/category", categoryRouter);
 router.use("/submit", ensureUser, submitRouter);
 router.use("/review", ensureUser, reviewRouter);
 router.use("/grade", ensureUser, gradesRouter);
+router.use("/todo", ensureUser, todoRouter);
 
 router.use("/instructors", ensureUser, ensureInstructor, instructorsRouter);
 

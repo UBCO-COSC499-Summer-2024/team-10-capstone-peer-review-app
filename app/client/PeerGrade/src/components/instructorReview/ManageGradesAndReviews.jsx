@@ -158,6 +158,7 @@ const ManageGradesAndReviews = () => {
 
 			setStudentsWithSubmissions(studentsWithSubmissionStatus);
 			setAllStudents(students);
+			console.log("students:", allStudents);
 		} catch (error) {
 			toast({
 				title: "Error",
@@ -190,7 +191,16 @@ const ManageGradesAndReviews = () => {
 		// return true;
 	};
 
-	const handleAssignReviewers = async (submission) => {
+	const handleAssignReviewers = async () => {
+		if (!selectedSubmission) {
+			toast({
+				title: "Error",
+				description: "No submission selected. Please try again.",
+				variant: "destructive"
+			});
+			return;
+		}
+
 		if (!isDueDatePassed(selectedAssignment.dueDate)) {
 			toast({
 				title: "Action not allowed",
@@ -200,13 +210,22 @@ const ManageGradesAndReviews = () => {
 			});
 			return;
 		}
-		setSelectedSubmission(submission);
+
 		try {
-			const reviews = await reviewAPI.getAllReviews(submission.submissionId);
+			const reviews = await reviewAPI.getAllReviews(
+				selectedSubmission.submissionId
+			);
 			const existingReviewerIds = reviews.data
-				.filter((review) => review.isPeerReview)
+				.filter(
+					(review) =>
+						review.isPeerReview &&
+						review.reviewerId !== selectedSubmission.submitterId
+				)
 				.map((review) => review.reviewerId);
 			setSelectedReviewers(existingReviewerIds);
+
+			console.log("existing reviewers:", existingReviewerIds);
+			setAssignReviewersDialogOpen(true);
 		} catch (error) {
 			console.error("Error fetching existing reviewers:", error);
 			toast({
@@ -215,7 +234,6 @@ const ManageGradesAndReviews = () => {
 				variant: "destructive"
 			});
 		}
-		setAssignReviewersDialogOpen(true);
 	};
 
 	const handleAssignReviewersSubmit = async () => {
@@ -245,7 +263,6 @@ const ManageGradesAndReviews = () => {
 			}
 
 			setAssignReviewersDialogOpen(false);
-			setSelectedSubmission(null);
 			setSelectedReviewers([]);
 			fetchStudentsAndSubmissions(
 				selectedClass,
@@ -433,7 +450,6 @@ const ManageGradesAndReviews = () => {
 			);
 
 			setGradeDialogOpen(false);
-			setSelectedSubmission(null);
 			toast({
 				title: "Success",
 				description: "Grade submitted successfully",
@@ -644,8 +660,7 @@ const ManageGradesAndReviews = () => {
 									<div className="flex items-center mb-4 text-yellow-800 bg-yellow-100 p-2 rounded">
 										<Info className="h-4 w-4 mr-2" />
 										<span>
-											Some actions are disabled until the assignment due date
-											has passed.
+											Some actions are disabled until the assignment due date.
 										</span>
 									</div>
 								</TooltipTrigger>
@@ -658,14 +673,32 @@ const ManageGradesAndReviews = () => {
 							</Tooltip>
 						</TooltipProvider>
 
-						<Accordion type="single" collapsible className="w-full">
+						<Accordion
+							type="single"
+							collapsible
+							className="w-full"
+							onValueChange={(value) => {
+								if (!value) {
+									setSelectedSubmission(null);
+								}
+							}}
+						>
 							{filteredStudents.map((student) => (
 								<AccordionItem value={student.userId} key={student.userId}>
 									<AccordionTrigger
 										className={cn(
 											student.hasSubmitted ? "bg-green-50" : "bg-red-50",
-											"hover:bg-opacity-80 px-4"
+											"hover:bg-opacity-80 px-4",
+											selectedSubmission?.submissionId ===
+												student.submission?.submissionId
+												? "bg-blue-100"
+												: ""
 										)}
+										onClick={() => {
+											if (student.userId) {
+												setSelectedSubmission(student.submission);
+											}
+										}}
 									>
 										<div className="flex justify-between w-full items-center">
 											<span className="flex items-center">
@@ -770,9 +803,7 @@ const ManageGradesAndReviews = () => {
 																	<Button
 																		variant="outline"
 																		size="sm"
-																		onClick={() =>
-																			handleAssignReviewers(student.submission)
-																		}
+																		onClick={handleAssignReviewers}
 																		disabled={
 																			!isDueDatePassed(
 																				selectedAssignment.dueDate
@@ -890,7 +921,6 @@ const ManageGradesAndReviews = () => {
 				rubric={rubric}
 				open={viewDialogOpen}
 				onClose={() => setViewDialogOpen(false)}
-				onDownload={handleDownload}
 			/>
 			<GradeSubmissionDialog
 				submission={selectedSubmission}
@@ -898,7 +928,6 @@ const ManageGradesAndReviews = () => {
 				open={gradeDialogOpen && selectedSubmission !== null}
 				onClose={() => {
 					setGradeDialogOpen(false);
-					setSelectedSubmission(null);
 				}}
 				onGradeSubmit={handleGradeSubmit}
 			/>

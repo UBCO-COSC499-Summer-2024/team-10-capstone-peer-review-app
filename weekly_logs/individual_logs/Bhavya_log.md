@@ -40,14 +40,13 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Finished adding comments to the backend including all methods
+* Tried improving testing and refactor tests for the backend
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Do more tests for backend
+* Look out for more documentation
+* Work on reports and presentations
   
   
 

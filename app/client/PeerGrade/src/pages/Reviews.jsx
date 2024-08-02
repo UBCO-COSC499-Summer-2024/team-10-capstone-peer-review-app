@@ -162,6 +162,7 @@ const Reviews = () => {
 			<Button
 				className="fixed bottom-4 right-4 rounded-full w-10 h-10 p-0 z-50"
 				onClick={() => setShowInfoOverlay(true)}
+				data-testid="info-button"
 			>
 				<Info className="w-6 h-6" />
 			</Button>

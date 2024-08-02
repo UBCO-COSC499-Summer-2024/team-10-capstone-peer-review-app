@@ -6,6 +6,7 @@ import { addAssignmentToClass } from '@/api/assignmentApi';
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { toast } from "@/components/ui/use-toast";
 
+// needed to avoid 'TypeError: t.scrollIntoView is not a function' testing error
 window.HTMLElement.prototype.scrollIntoView = function() {};
 
 jest.mock('@/components/ui/use-toast', () => ({

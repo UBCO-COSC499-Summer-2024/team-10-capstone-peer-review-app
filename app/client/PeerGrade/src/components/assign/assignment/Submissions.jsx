@@ -142,6 +142,7 @@ const Submissions = (assignment) => {
 
 	// Handle assigning reviewers to a submission
 	const handleAssignReviewers = async (submission) => {
+		console.log("hey");
 		setCurrentSubmission(submission);
 		try {
 			const reviews = await reviewAPI.getAllReviews(submission.submissionId);
@@ -154,6 +155,7 @@ const Submissions = (assignment) => {
 			setSelectedReviewers(existingReviewerIds);
 			setExistingReviewers(existingReviewerIds);
 		} catch (error) {
+			console.log("uhoh");
 			console.error("Error fetching existing reviewers:", error);
 			toast({
 				title: "Error",
@@ -391,7 +393,7 @@ const Submissions = (assignment) => {
 
 	const isDueDatePassed = () => {
 		const currentDate = new Date();
-		const assignmentDueDate = new Date(assignment.assignment.dueDate);
+		const assignmentDueDate = new Date(assignment.dueDate);
 		return currentDate > assignmentDueDate;
 	};
 

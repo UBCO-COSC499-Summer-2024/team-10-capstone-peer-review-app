@@ -13,6 +13,7 @@ import MultiSelect from "@/components/ui/MultiSelect";
 import RubricCreationForm from "@/components/rubrics/RubricCreationForm";
 import { cn } from "@/utils/utils";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";

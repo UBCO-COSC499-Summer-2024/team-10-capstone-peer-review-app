@@ -26,8 +26,6 @@ import {
 import { Check, ChevronsUpDown, Download, Search } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { Link } from "react-router-dom";
-import { getAllAssignmentsByClassId } from "@/api/assignmentApi";
-import { getSubmissionsForAssignment } from "@/api/submitApi";
 import { toast } from "@/components/ui/use-toast";
 import { useClass } from "@/contexts/contextHooks/useClass";
 import {
@@ -36,10 +34,12 @@ import {
 	AccordionItem,
 	AccordionTrigger
 } from "@/components/ui/accordion";
-import reviewAPI from "@/api/reviewApi";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import GradeSubmissionDialog from "@/components/assign/assignment/submission/GradeSubmissionDialog";
+import { getAllAssignmentsByClassId } from "@/api/assignmentApi";
+import { getSubmissionsForAssignment } from "@/api/submitApi";
 import { getRubricsForAssignment } from "@/api/rubricApi";
+import reviewAPI from "@/api/reviewApi";
 
 const ManageReviews = () => {
 	const { user } = useUser();

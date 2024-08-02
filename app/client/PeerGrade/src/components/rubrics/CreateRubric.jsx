@@ -239,6 +239,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
             </div>
             <div className='mb-8'>
               <h3 className="text-md mb-2">Select Assignments</h3>
+              {console.log(assignments)}
               <MultiSelect
                 options={assignments.map(assignment => ({
                   value: assignment.assignmentId,

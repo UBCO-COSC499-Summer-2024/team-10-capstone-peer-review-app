@@ -6,8 +6,7 @@
 
 
 ## Tasks currently in the Backlog for c-18:
-![Tasks in Backlog for c-18](./team_log_images/backlog_issues/backlog_issues_c18.png)  
-  
+* None for this cycle  
 
 ## Tasks currently in Progress for c-18:
 ![Tasks in progress for c-18](./team_log_images/in_progress_issues/in_progress_issues_c18.png)  
@@ -32,7 +31,8 @@
   
 
 #### Back-end Testing for c-18
-![Back end Tests for c-18](./team_log_images/back_end_tests/back_end_tests_c18.png)  
+![Back end Tests for c-16](./team_log_images/back_end_tests/back_end_unit_tests_c18.png)  
+![Back end Tests for c-16](./team_log_images/back_end_tests/back_end_integration_tests_c18.png)    
   
   
   

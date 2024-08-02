@@ -36,6 +36,11 @@ async function main() {
 		return await bcrypt.hash(password, SALT_ROUNDS);
 	}
 
+	// Set the assignment due date to 2 days from now at 11:59 PM
+	const assignmentDueDate = new Date();
+	assignmentDueDate.setDate(assignmentDueDate.getDate() + 2);
+	assignmentDueDate.setHours(23, 59, 0, 0);
+
 	// Create admin user
 	await prisma.user.create({
 		data: {
@@ -173,7 +178,7 @@ async function main() {
 				rubricId: rubric.rubricId,
 				title: assignmentTitle,
 				description: faker.lorem.paragraph(),
-				dueDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+				dueDate: assignmentDueDate,
 				assignmentFilePath:
 					"https://raw.githubusercontent.com/py-pdf/sample-files/8c405ece5eff12396a34a1fae3276132002e1753/004-pdflatex-4-pages/pdflatex-4-pages.pdf",
 				allowedFileTypes: ["pdf"],
@@ -202,7 +207,6 @@ async function main() {
 			});
 		}
 	}
-
 	console.log("Database has been seeded. 🌱");
 }
 

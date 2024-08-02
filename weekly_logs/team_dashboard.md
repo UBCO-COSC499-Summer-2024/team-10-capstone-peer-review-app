@@ -6,11 +6,13 @@
 
 
 ### Major features worked on in c-18
-*  
+*  Personalized TODOs in Class-Dashboard
   
-*  
-  
-*  
+*  Tests, Tests, Tests, and more Tests (Front-end)
+
+* Cleaning up bugs found 
+
+* 
   
 
 ### Major features completed in c-18

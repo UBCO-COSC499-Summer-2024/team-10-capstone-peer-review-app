@@ -1,4 +1,77 @@
 
+# Abdul's Log for Cycle 18
+
+
+## Tuesday, July 30, 2024, 05:22 PM - Friday, August 02, 2024, 04:07 AM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[275](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/275)**: Instructors will be able to extend deadlines for students  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: database, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[263](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/263)**: List of all features to be implemented for Project 3  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug, type: api, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[234](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/234)**: Delete Rubric / Edit Rubric  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: database, type: UI 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: Major Feature 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Working on the Testing Session workflows & bug fixes** *(Total duration: 3.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, August 01, 2024, 01:50 PM - Thursday, August 01, 2024, 04:51 PM *(3.0 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on reviewing PRs** *(Total duration: 0.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, August 01, 2024, 01:27 PM - Thursday, August 01, 2024, 01:49 PM *(0.4 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on front-end test refactors** *(Total duration: 12.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, August 01, 2024, 11:01 PM - Friday, August 01, 2024, 04:07 AM *(5.0 hours)*  
+
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, August 01, 2024, 12:15 AM - Thursday, August 01, 2024, 02:55 AM *(2.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 31, 2024, 10:14 PM - Wednesday, July 31, 2024, 11:33 PM *(1.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Wednesday, July 31, 2024, 12:35 AM - Wednesday, July 31, 2024, 01:30 AM *(0.9 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 30, 2024, 10:22 PM - Tuesday, July 30, 2024, 11:28 PM *(1.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, July 30, 2024, 05:26 PM - Tuesday, July 30, 2024, 07:13 PM *(1.8 hours)*  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[275](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/275)**: Instructors will be able to extend deadlines for students  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[263](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/263)**: List of all features to be implemented for Project 3  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[234](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/234)**: Delete Rubric / Edit Rubric  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[133](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/133)**: Major Use Case 16-2: Create/Manage Rubric for Assignment  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[172](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/172)**: Refactor front-end test
+  
+
+## Recap on goals from last cycle
+* Did a LOT of front-end unit testing. I'm satisfied with the amount of work I put out.
+* Sort of happy w the final product!
+* We've wrapped it up for the most part, just bugfixes and polish to go from the feedback we'll get from the Testing Session on Friday.
+
+## Goals for next cycle
+* Work on bugfixes.
+* Work on appyling testing session feedback & wrapping the project up.
+* Start work and hopefully almost finish the Individual Report.
+  
+  
+
 # Abdul's Log for Cycle 17
 
 

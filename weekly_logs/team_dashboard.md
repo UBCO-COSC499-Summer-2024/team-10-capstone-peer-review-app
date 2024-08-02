@@ -1,4 +1,48 @@
 
+# Team 10's Team Dashboard for Cycle 18
+
+
+## Tuesday, July 30, 2024, 05:22 PM - Thursday, August 01, 2024, 05:22 PM
+
+
+### Major features worked on in c-18
+*  Personalized TODOs in Class-Dashboard
+  
+*  Tests, Tests, Tests, and more Tests (Front-end)
+
+*  Cleaning up bugs found 
+
+*  User Guide 
+
+*  Commenting Back-end and Front-end code
+  
+### Major features completed in c-18
+*  Personalized TODOs in Class-Dashboard
+
+*  Fixing up bugs found 
+
+*  User Guide (Good draft of it, may need to change later on)
+
+### Major features to work on for c-19
+*  Fixing up bugs found 
+  
+*  Tests, Tests, Tests, and more Tests (Front-end and Back-end)
+  
+
+### Team Issues and Hurdles for c-18
+*  Not any really, just a few minor bugs found and fixed
+  
+
+### Clockify Dashboard for this Week
+
+![Clockify Dashboard for c-18](./team_dashboard_images/clockify_dashboards/clockify_dashboard_c18.png)
+
+### Burn-up Chart for this Cycle
+
+![Burn-up Chart for c-18](./team_log_images/burnup_charts/burnup_chart_c18.png)
+  
+  
+
 # Team 10's Team Dashboard for Cycle 17
 
 

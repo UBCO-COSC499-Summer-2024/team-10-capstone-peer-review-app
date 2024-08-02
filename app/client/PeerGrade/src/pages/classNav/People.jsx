@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/command";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import AddStudentsByCSVDialog from "@/components/class/addStudentsByCSVDialog";
-
+import InfoButton from '@/components/global/InfoButton';
 import {
 	MinusCircle,
 	Plus,
@@ -235,6 +235,30 @@ const People = ({ classId }) => {
 		return `${firstInitial}${lastInitial}`;
 	};
 
+	const peopleInfoContent = {
+		title: "About Class Participants",
+		description: (
+		  <>
+			<p>This page shows all participants in the class:</p>
+			<ul className="list-disc list-inside mt-2">
+			  <li>View the class instructor</li>
+			  <li>See a list of all enrolled students</li>
+			  <li>Search for specific participants</li>
+			  {(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (
+				<>
+				  <li>Add new students to the class</li>
+				  <li>Remove students from the class</li>
+				  <li>Import students using a CSV file</li>
+				</>
+			  )}
+			</ul>
+			{(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (
+			  <p className="mt-2">Use the '+' button to add individual students or the file upload button to import multiple students at once.</p>
+			)}
+		  </>
+		)
+	  };
+
 	return (
 		<div className="w-full p-6 bg-muted rounded-lg">
 			<Input
@@ -409,6 +433,8 @@ const People = ({ classId }) => {
 				onOpenChange={setAddByCSVOpen}
 				onStudentsAdded={refreshStudents}
 			/>
+			<InfoButton content={peopleInfoContent} />
+
 		</div>
 	);
 };

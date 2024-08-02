@@ -38,6 +38,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import DeleteClassDialog from "./DeleteClassDialog";
 import DeleteAssignmentDialog from "./DeleteAssignmentDialog";
+import InfoButton from '@/components/global/InfoButton';
 
 const ManageClassDashboard = () => {
   const { classId } = useParams();
@@ -344,6 +345,39 @@ const ManageClassDashboard = () => {
 
   if (!classData) return <div>Loading...</div>;
 
+  const infoContent = {
+    title: "Manage Class Dashboard",
+    description: (
+      <>
+        <p>This dashboard allows you to manage all aspects of your class:</p>
+        <ul className="list-disc list-inside mt-2">
+          <li>Edit class details or delete the class</li>
+          <li>Manage enrolled students:
+            <ul className="list-disc list-inside ml-4">
+              <li>View and search current students</li>
+              <li>Add new students individually or via CSV</li>
+              <li>Remove students from the class</li>
+            </ul>
+          </li>
+          <li>Handle enrollment requests:
+            <ul className="list-disc list-inside ml-4">
+              <li>Approve or reject pending requests</li>
+              <li>Delete enrollment requests</li>
+            </ul>
+          </li>
+          <li>Manage assignments:
+            <ul className="list-disc list-inside ml-4">
+              <li>View all assignments for the class</li>
+              <li>Create new assignments</li>
+              <li>Edit or delete existing assignments</li>
+            </ul>
+          </li>
+        </ul>
+        <p className="mt-2">Use the tables and buttons provided to perform these actions efficiently.</p>
+      </>
+    )
+  };
+
   return (
     <div className="w-full rounded-lg">
       <div className="flex justify-between items-center mb-6">
@@ -498,6 +532,7 @@ const ManageClassDashboard = () => {
         selectedAssignment={selectedAssignment}
         handleDeleteAssignment={handleDeleteAssignment}
       />
+      <InfoButton content={infoContent} />
     </div>
   );
 };

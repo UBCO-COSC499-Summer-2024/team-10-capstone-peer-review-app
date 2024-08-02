@@ -34,7 +34,6 @@ import {
 } from "@/components/ui/sheet";
 
 import { logoutUser } from "@/api/authApi";
-import { getAllAssignments } from "@/api/classApi";
 import { deleteNotification, getNotifications } from "@/api/notifsApi";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { useClass } from "@/contexts/contextHooks/useClass";
@@ -46,10 +45,8 @@ export default function AppNavbar() {
 
 	const location = useLocation();
 	const navigate = useNavigate();
-	const [assignmentsData, setAssignmentsData] = useState([]);
 	const [isCardVisible, setIsCardVisible] = useState(false);
 	const [cardOpacity, setCardOpacity] = useState(0);
-	const [isPeerReviewSheetOpen, setIsPeerReviewSheetOpen] = useState(false);
 	const [isClassesSheetOpen, setIsClassesSheetOpen] = useState(false);
 	const [notifications, setNotifications] = useState([]);
 	const [notificationCount, setNotificationCount] = useState(0);
@@ -97,25 +94,6 @@ export default function AppNavbar() {
 
 		return () => clearInterval(intervalId);
 	}, [fetchNotifications]);
-
-	useEffect(() => {
-		const fetchData = async () => {
-			if (user) {
-				try {
-					const assignments = await getAllAssignments(user.userId);
-					setAssignmentsData(Array.isArray(assignments) ? assignments : []);
-				} catch (error) {
-					console.error("Failed to fetch data", error);
-					toast({
-						title: "Error",
-						description: "Failed to fetch data",
-						variant: "destructive"
-					});
-				}
-			}
-		};
-		fetchData();
-	}, [user]);
 
 	useEffect(() => {
 		const handleClickOutside = (event) => {
@@ -197,67 +175,23 @@ export default function AppNavbar() {
 								</Link>
 							</NavigationMenuItem>
 							<NavigationMenuItem className="w-full flex items-center justify-center">
-								<Sheet
-									open={isPeerReviewSheetOpen}
-									onOpenChange={setIsPeerReviewSheetOpen}
+								<Link
+									to={
+										user.role === "STUDENT"
+											? "/peer-review"
+											: "/manage-grades-and-reviews"
+									}
+									className={cn(
+										navigationMenuTriggerStyle(),
+										"flex flex-col items-center justify-center w-full h-full",
+										(isActive("/peer-review") ||
+											isActive("/manage-grades-and-reviews")) &&
+											"font-bold"
+									)}
 								>
-									<SheetTrigger asChild>
-										<Button
-											variant="ghost"
-											className={cn(
-												navigationMenuTriggerStyle(),
-												"flex flex-col items-center justify-center font-bold w-full h-full"
-											)}
-											onClick={() => setIsPeerReviewSheetOpen(true)}
-										>
-											<ClipboardList className="w-5 h-5 mb-1" />
-											Grades & Reviews
-										</Button>
-									</SheetTrigger>
-									<SheetContent
-										side="left"
-										className="w-[300px] border-l border-gray-200 ml-[-20px]"
-									>
-										<SheetHeader>
-											<SheetTitle>My Peer-Reviews</SheetTitle>
-										</SheetHeader>
-										<div className="mt-4">
-											<p className="text-sm leading-snug text-muted-foreground">
-												{assignmentsData.length} Reviews Assigned
-											</p>
-											<ul className="bg-white flex flex-col justify-center items-center gap-3 p-6 w-full mt-2">
-												{assignmentsData.map((assignment) => (
-													<ListItem
-														key={assignment.assignmentId}
-														title={assignment.title}
-														href={`/assignedPR/${assignment.assignmentId}`}
-														className="w-full"
-														onItemClick={() => setIsPeerReviewSheetOpen(false)}
-													>
-														{assignment.description}
-													</ListItem>
-												))}
-												{/* TODO: make this instructors only*/}
-												<ListItem
-													title="Manage Grades and Reviews"
-													href="/manage-grades-and-reviews"
-													className="w-full bg-blue-100"
-													onItemClick={() => setIsPeerReviewSheetOpen(false)}
-												>
-													View all peer reviews.
-												</ListItem>
-												<ListItem
-													title="All Peer Reviews"
-													href="/peer-review"
-													className="w-full bg-blue-100"
-													onItemClick={() => setIsPeerReviewSheetOpen(false)}
-												>
-													View all peer reviews.
-												</ListItem>
-											</ul>
-										</div>
-									</SheetContent>
-								</Sheet>
+									<ClipboardList className="w-5 h-5 mb-1" />
+									<span className="md:block">Grades & Reviews</span>
+								</Link>
 							</NavigationMenuItem>
 							{(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (
 								<NavigationMenuItem className="w-full flex items-center justify-center">

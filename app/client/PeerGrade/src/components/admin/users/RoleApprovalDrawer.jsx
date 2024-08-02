@@ -11,8 +11,6 @@ import {
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 
-import { updateRoleRequestStatus } from "@/api/authApi";
-
 const RoleApprovalDrawer = ({
 	children,
 	roleRequest,

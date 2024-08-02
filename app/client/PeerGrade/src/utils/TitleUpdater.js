@@ -6,17 +6,18 @@ import { useLocation } from "react-router-dom";
 const routeTitles = {
 	"/": "Welcome!",
 	"/dashboard": "Dashboard",
+	"/admin": "Admin Dashboard",
 	"/class/*": "Class Details",
-	"/class/createAssignment": "Create Assignment",
-	"/manageclass": "Manage Class",
-	"/manageClass/*": "Manage a Class",
+	"/manage-class": "Manage Class",
+	"/manage-class/*": "Manage Class Dashboard",
 	"/enrollment": "Enrollment",
-	"/search": "Search",
 	"/assignment/*": "Assignment Details",
-	"/viewSubmission/*": "Assigned Peer Reviews",
-	"/peer-review": "Peer Review",
-	"/settings": "Settings",
-	"/admin": "Admin Dashboard"
+	"/viewSubmission/*": "Recieved Peer Reviews",
+	"/peer-review": "Peer Reviews",
+	"/manage-grades-and-reviews": "Manage Grades and Reviews",
+	"/report": "Reports",
+	"/notifications": "Notifications",
+	"/settings": "Settings"
 };
 
 function TitleUpdater() {

@@ -111,7 +111,7 @@ const ViewAllReviews = () => {
 						<Card className="mb-6 border border-slate-200 hover:shadow-lg transition-shadow duration-300">
 							<CardHeader className="bg-slate-50">
 								<CardTitle className="text-primary">
-									Instructor Review: {instructorReview.reviewer.firstname}{" "}
+									Instructor Review from {instructorReview.reviewer.firstname}{" "}
 									{instructorReview.reviewer.lastname}
 								</CardTitle>
 							</CardHeader>
@@ -136,8 +136,8 @@ const ViewAllReviews = () => {
 								<CardHeader className="bg-slate-50">
 									<CardTitle className="text-primary">
 										{!review.submission.assignment.isPeerReviewAnonymous
-											? `Peer Review for ${review.reviewer.firstname} ${review.reviewer.lastname}`
-											: `Peer Review ${index + 1}`}
+											? `Peer Review from ${review.reviewer.firstname} ${review.reviewer.lastname}`
+											: `Peer Review: ${index + 1}`}
 									</CardTitle>
 								</CardHeader>
 								<CardContent>

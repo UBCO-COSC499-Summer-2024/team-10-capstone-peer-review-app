@@ -10,8 +10,6 @@ import { ClassProvider } from "./contexts/classContext";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Class from "./pages/Class";
-import EditClass from "./components/class/EditClass";
-import AssignmentCreation from "./components/assign/assignment/AssignmentCreation";
 import Assignment from "./pages/Assignment";
 import PeerReview from "./pages/Reviews";
 import Settings from "./pages/Settings";
@@ -21,13 +19,11 @@ import ViewAllReviews from "./pages/ViewAllReviews";
 import Submission from "./components/assign/assignment/StudentSubmission";
 import StudentEnrollmentRequests from "./pages/StudentEnrollmentRequests";
 import Report from "./pages/Report";
-import Search from "./components/admin/Search";
 import Notifications from "./pages/Notifications";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedRoute from "./components/global/ProtectedRoute";
 import ManageClassDashboard from "./components/manageClass/ManageClassDashboard";
 import NotFound from "./components/global/NotFound";
-import SubmitReview from "./pages/SubmitReview";
 import TitleUpdater from "@/utils/TitleUpdater";
 import { Toaster } from "@/components/ui/toaster";
 import ManageGradesAndReviews from "./components/instructorReview/ManageGradesAndReviews";
@@ -87,24 +83,6 @@ function MainLayout() {
 							}
 						/>
 						<Route
-							path="/class/:classId/edit"
-							element={
-								<ProtectedRoute
-									element={<EditClass />}
-									allowedRoles={["INSTRUCTOR", "ADMIN"]}
-								/>
-							}
-						/>
-						<Route
-							path="/class/createAssignment"
-							element={
-								<ProtectedRoute
-									element={<AssignmentCreation />}
-									allowedRoles={["INSTRUCTOR", "ADMIN"]}
-								/>
-							}
-						/>
-						<Route
 							path="/manage-class"
 							element={
 								<ProtectedRoute
@@ -132,12 +110,6 @@ function MainLayout() {
 							}
 						/>
 						<Route
-							path="/search"
-							element={
-								<ProtectedRoute element={<Search />} allowedRoles={["ADMIN"]} />
-							}
-						/>
-						<Route
 							path="/class/:classId/assignment/:assignmentId"
 							element={
 								<ProtectedRoute
@@ -160,7 +132,7 @@ function MainLayout() {
 							element={
 								<ProtectedRoute
 									element={<PeerReview />}
-									allowedRoles={["STUDENT", "INSTRUCTOR", "ADMIN"]}
+									allowedRoles={["STUDENT"]}
 								/>
 							}
 						/>
@@ -188,15 +160,6 @@ function MainLayout() {
 								<ProtectedRoute
 									element={<Submission />}
 									allowedRoles={["STUDENT"]}
-								/>
-							}
-						/>
-						<Route
-							path="/review/:reviewId"
-							element={
-								<ProtectedRoute
-									element={<SubmitReview />}
-									allowedRoles={["STUDENT", "INSTRUCTOR", "ADMIN"]}
 								/>
 							}
 						/>

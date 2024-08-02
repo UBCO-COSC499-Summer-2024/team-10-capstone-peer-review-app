@@ -8,6 +8,7 @@ import { X, Check, CircleHelp, Trash2 } from 'lucide-react';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { useToast } from '@/components/ui/use-toast';
+import InfoButton from '@/components/global/InfoButton';
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { useClass } from "@/contexts/contextHooks/useClass";
 import { getInstructorByClassId } from '@/api/classApi';
@@ -98,7 +99,7 @@ const Report = () => {
                                 <code className="text-white">{JSON.stringify(response.data, null, 2)}</code>
                             </pre>
                         ),
-                        variant: "positive"
+                        variant: "info"
                     });
 				}
 			} else if (role === "INSTRUCTOR") {
@@ -112,7 +113,7 @@ const Report = () => {
                                 <code className="text-white">{JSON.stringify(response.data, null, 2)}</code>
                             </pre>
                         ),
-                        variant: "positive"
+                        variant: "info"
                     });
                 }
 			}
@@ -125,6 +126,40 @@ const Report = () => {
         setInstructor('');
         setTitle('');
         setReportContent('');
+    };
+
+    const infoContent = {
+        title: "Reports Management",
+        description: (
+            <>
+                <p>This page allows you to send reports and view previously sent reports:</p>
+                <ul className="list-disc list-inside mt-2">
+                    <li>Send Reports:
+                        <ul className="list-disc list-inside ml-4">
+                            <li>Choose the recipient (Admin or Instructor, if applicable)</li>
+                            <li>Select a specific instructor (if reporting to an instructor)</li>
+                            <li>Provide a subject and detailed content for your report</li>
+                        </ul>
+                    </li>
+                    <li>View Previously Sent Reports:
+                        <ul className="list-disc list-inside ml-4">
+                            <li>See a list of all reports you've submitted</li>
+                            <li>Check the status of each report (Pending, In Progress, Resolved)</li>
+                            <li>View the full content and any responses to your reports</li>
+                        </ul>
+                    </li>
+                    {user.role !== "STUDENT" && (
+                        <li>View Received Reports (for Instructors and Admins):
+                            <ul className="list-disc list-inside ml-4">
+                                <li>Access reports sent to you by students or other users</li>
+                                <li>Manage and respond to these reports</li>
+                            </ul>
+                        </li>
+                    )}
+                </ul>
+                <p className="mt-2">Use the tabs at the top to switch between sending reports and viewing received reports (if applicable).</p>
+            </>
+        )
     };
 
     return (
@@ -217,6 +252,7 @@ const Report = () => {
 				</>
 				)}
 			</Tabs>
+            <InfoButton content={infoContent} />
         </div>
     );
 };

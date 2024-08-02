@@ -4,16 +4,11 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Eye, Edit, Trash2, FileCheck } from "lucide-react";
-import {
-	Dialog,
-	DialogContent,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle
-} from "@/components/ui/dialog";
+
 import { getAllAssignmentsByClassId, removeAssignmentFromClass } from '@/api/assignmentApi';
 import { useUser } from "@/contexts/contextHooks/useUser";
 import DeleteAssignmentDialog from '@/components/manageClass/DeleteAssignmentDialog';
+import InfoButton from '@/components/global/InfoButton';
 
 const Assignments = () => {
     const { classId } = useParams();
@@ -72,6 +67,40 @@ const Assignments = () => {
         }
     };
 
+
+    const assignmentsInfoContent = {
+        title: "About Assignments",
+        description: (
+          <>
+            <p>This page shows all assignments for the class.</p>
+            {user.role === 'STUDENT' ? (
+              <>
+                <p className="mt-2">As a student, you can:</p>
+                <ul className="list-disc list-inside mt-2">
+                  <li>View assignment details</li>
+                  <li>Submit your work for assignments</li>
+                  <li>Track assignment due dates</li>
+                </ul>
+                <p className="mt-2">Use the 'View' button to see assignment details and the 'Submit' button to turn in your work.</p>
+              </>
+            ) : (
+              <>
+                <p className="mt-2">As an instructor, you can:</p>
+                <ul className="list-disc list-inside mt-2">
+                  <li>View all assignments for the class</li>
+                  <li>Create new assignments</li>
+                  <li>Edit existing assignments</li>
+                  <li>Delete assignments</li>
+                </ul>
+                <p className="mt-2">Use the 'View' button to see or edit assignment details, and the 'Delete' button to remove an assignment.</p>
+              </>
+            )}
+            <p className="mt-2">All assignments are listed with their titles and due dates for easy reference.</p>
+          </>
+        )
+    };
+
+
     return (
         <div>
             <Card className="w-full">
@@ -123,6 +152,7 @@ const Assignments = () => {
                 selectedAssignment={selectedAssignment}
                 handleDeleteAssignment={handleDeleteAssignment}
             />
+            <InfoButton content={assignmentsInfoContent} />
         </div>
     );
 };

@@ -8,48 +8,6 @@ import { useEffect, useState } from "react";
 import { getAllRoleRequests } from "@/api/authApi";
 import { getStatusDetails } from "@/utils/statusIcons";
 
-const usersData2 = [
-	{
-		userId: "1",
-		username: "johndoe",
-		password: "******",
-		email: "johndoe@example.com",
-		firstname: "John",
-		lastname: "Doe",
-		isEmailVerified: true,
-		role: "STUDENT",
-		classes: 4,
-		submissions: 10,
-		reviewsDone: 5,
-		reviewsRecieved: 3,
-		classesInstructed: 0,
-		Rubric: 1,
-		learningInstitution: "ABC University",
-		description: "Experienced instructor in Computer Science.",
-		dateCreated: "2024-01-01"
-	},
-	{
-		userId: "2",
-		username: "janesmith",
-		password: "******",
-		email: "janesmith@example.com",
-		firstname: "Jane",
-		lastname: "Smith",
-		isEmailVerified: false,
-		role: "STUDENT",
-		classes: 3,
-		submissions: 7,
-		reviewsDone: 4,
-		reviewsRecieved: 2,
-		classesInstructed: 0,
-		Rubric: 0,
-		learningInstitution: "XYZ College",
-		description: "Passionate about teaching mathematics.",
-		dateCreated: "2023-07-15"
-	}
-	// Add more user data here...
-];
-
 const userColumns = [
 	{ accessorKey: "firstname", header: "First Name" },
 	{ accessorKey: "lastname", header: "Last Name" },
@@ -77,25 +35,25 @@ const Users = () => {
 	// TODO -> decrypt passwords for admins to view them in plain text
 	// Abdul - i don't think admins should be able to view passwords (change them, maybe, but not view them)
 	const fetchRoleRequests = async () => {
-        const allRoleRequests = await getAllRoleRequests();
-        if (allRoleRequests.status === "Success") {
-            setRoleRequests(allRoleRequests.data);
-        }
-        console.log("roleRequestsData: ", roleRequests);
-    };
+		const allRoleRequests = await getAllRoleRequests();
+		if (allRoleRequests.status === "Success") {
+			setRoleRequests(allRoleRequests.data);
+		}
+		console.log("roleRequestsData: ", roleRequests);
+	};
 
-    const fetchUsers = async () => {
-        const allUsers = await getAllUsers();
-        if (allUsers.status === "Success") {
-            setUsersData(allUsers.data);
-        }
-        console.log("usersData: ", usersData);
-    };
+	const fetchUsers = async () => {
+		const allUsers = await getAllUsers();
+		if (allUsers.status === "Success") {
+			setUsersData(allUsers.data);
+		}
+		console.log("usersData: ", usersData);
+	};
 
-    useEffect(() => {
-        fetchUsers();
-        fetchRoleRequests();
-    }, []);
+	useEffect(() => {
+		fetchUsers();
+		fetchRoleRequests();
+	}, []);
 
 	const chartData = usersData.map((user) => ({
 		dateCreated: user.createdAt,
@@ -127,7 +85,11 @@ const Users = () => {
 				<div className="flex flex-col w-1/2 overflow-y-auto rounded-md">
 					<h1 className="text-2xl font-semibold mb-6">Role Requests</h1>
 					<div className="p-5 bg-white rounded-lg space-y-1">
-						{roleRequests.length === 0 && <div className="text-gray-500 text-sm px-6">No role requests were found.</div>}
+						{roleRequests.length === 0 && (
+							<div className="text-gray-500 text-sm px-6">
+								No role requests were found.
+							</div>
+						)}
 						{roleRequests.map((roleRequest) => {
 							const { color } = getStatusDetails(roleRequest.status);
 							return (

@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Search, Calendar, ChevronDown, ChevronUp, Check } from "lucide-react";
 import GradeReviewDialog from "./GradeReviewDialog";
+import ViewSubmissionDialog from "@/components/assign/assignment/submission/ViewSubmissionDialog";
 import reviewAPI from "@/api/reviewApi";
 import { toast } from "@/components/ui/use-toast";
 
@@ -19,6 +20,7 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 	const [expandedAssignments, setExpandedAssignments] = useState({});
 	const [selectedReview, setSelectedReview] = useState(null);
 	const [gradeDialogOpen, setGradeDialogOpen] = useState(false);
+	const [viewDialogOpen, setViewDialogOpen] = useState(false);
 
 	const groupedReviews = useMemo(() => {
 		return assignedReviews.reduce((acc, review) => {
@@ -63,13 +65,20 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 			0
 		);
 		const rubric = review.submission.assignment.rubric;
-		const totalMaxPoints = rubric ? rubric.criteria.reduce(
-			(total, criterion) => total + (criterion.maxMark || 0),
-			0
-		) : 0;
+		const totalMaxPoints = rubric
+			? rubric.criteria.reduce(
+					(total, criterion) => total + (criterion.maxMark || 0),
+					0
+				)
+			: 0;
 		return totalMaxPoints > 0
 			? `${((totalGrade / totalMaxPoints) * 100).toFixed(2)}%`
 			: "0%";
+	};
+
+	const handleViewDialogOpen = (review) => {
+		setSelectedReview(review);
+		setViewDialogOpen(true);
 	};
 
 	const handleGradeReview = (review) => {
@@ -79,7 +88,7 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 
 	const handleGradeSubmit = async (event) => {
 		event.preventDefault();
-	
+
 		if (!selectedReview) {
 			console.error("No review selected");
 			toast({
@@ -89,13 +98,13 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 			});
 			return;
 		}
-	
+
 		const formData = new FormData(event.target);
 		let totalMark = 0;
 		const criterionGrades = [];
-	
+
 		const rubric = selectedReview.submission.assignment.rubric;
-		
+
 		if (rubric && rubric.criteria) {
 			rubric.criteria.forEach((criterion) => {
 				const grade =
@@ -117,36 +126,32 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 			});
 			return;
 		}
-	
+
 		try {
 			const updatedReviewData = {
 				reviewGrade: totalMark,
 				criterionGrades: criterionGrades
 			};
-	
+
 			const response = await reviewAPI.updateReview(
 				selectedReview.reviewId,
 				updatedReviewData
 			);
-	
-			// Update the review in the local state
+
 			const updatedAssignedReviews = assignedReviews.map((review) =>
 				review.reviewId === selectedReview.reviewId ? response.data : review
 			);
-	
-			// You might want to call a function to update the parent component's state here
-			// For example: onReviewsUpdate(updatedAssignedReviews);
-	
+
 			setGradeDialogOpen(false);
 			setSelectedReview(null);
-			
+
 			// Call onUpdate to refresh the data
 			await onUpdate();
-	  
+
 			toast({
-			  title: "Success",
-			  description: "Review graded successfully",
-			  variant: "default"
+				title: "Success",
+				description: "Review graded successfully",
+				variant: "default"
 			});
 		} catch (error) {
 			console.error("Error submitting/updating grade:", error);
@@ -214,11 +219,19 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 								className="mb-2 p-3 bg-white rounded-lg shadow-sm"
 							>
 								<div className="flex justify-between items-center">
-									<p className="font-semibold">Review {index + 1}</p>
+									{review.submission.assignment.isPeerReviewAnonymous ? (
+										<p className="font-semibold">Peer Review {index + 1}</p>
+									) : (
+										<p className="font-semibold">
+											Peer Review for {review.reviewee.firstname}{" "}
+											{review.reviewee.lastname}
+										</p>
+									)}
 									<Badge variant="secondary" className="ml-2">
 										{calculatePercentageGrade(review)}
 									</Badge>
 								</div>
+
 								<div className="mt-2">
 									<Button
 										variant="outline"
@@ -241,10 +254,10 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 									<Button
 										variant="link"
 										size="sm"
-										className="p-0 h-auto"
-										onClick={() => onViewDetails(review, false)}
+										className="p-0 h-auto mr-4"
+										onClick={() => handleViewDialogOpen(review, true)}
 									>
-										View in New Page
+										View Student Submission
 									</Button>
 								</div>
 							</div>
@@ -281,6 +294,13 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 				open={gradeDialogOpen}
 				onClose={() => setGradeDialogOpen(false)}
 				onGradeSubmit={handleGradeSubmit}
+			/>
+
+			<ViewSubmissionDialog
+				submission={selectedReview?.submission}
+				rubric={selectedReview?.submission?.assignment?.rubric}
+				open={viewDialogOpen}
+				onClose={() => setViewDialogOpen(false)}
 			/>
 		</div>
 	);

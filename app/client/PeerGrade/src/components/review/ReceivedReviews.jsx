@@ -69,18 +69,18 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 			0
 		);
 		let totalMaxPoints = 0;
-		
+
 		if (assignment.rubric) {
 			if (Array.isArray(assignment.rubric.criteria)) {
 				totalMaxPoints = assignment.rubric.criteria.reduce(
 					(total, criterion) => total + criterion.maxMark,
 					0
 				);
-			} else if (typeof assignment.rubric.totalMarks === 'number') {
+			} else if (typeof assignment.rubric.totalMarks === "number") {
 				totalMaxPoints = assignment.rubric.totalMarks;
 			}
 		}
-	
+
 		return totalMaxPoints > 0
 			? `${((totalGrade / totalMaxPoints) * 100).toFixed(2)}%`
 			: "0%";
@@ -175,11 +175,6 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 								</>
 							)}
 						</Badge>
-
-						<Badge variant="outline" className="bg-purple-100 text-purple-800">
-							<Clipboard className="h-3 w-3 mr-1" />
-							{assignment.rubric ? "1 Rubric" : "No Rubric"}
-						</Badge>
 					</div>
 				</CardContent>
 				{gradedReviews.length > 0 && (
@@ -196,9 +191,21 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 								>
 									<div className="flex justify-between items-center">
 										<p className="font-semibold">
-											{review.reviewer.role === "STUDENT"
-												? `Peer Review ${index + 1}`
-												: "Instructor Review"}
+											{review.reviewer.role === "STUDENT" ? (
+												review.submission.assignment.isPeerReviewAnonymous ? (
+													<span>Peer Review {index + 1}</span>
+												) : (
+													<span>
+														Peer Review from {review.reviewer.firstname}{" "}
+														{review.reviewer.lastname}
+													</span>
+												)
+											) : (
+												<span>
+													Instructor Review from {review.reviewer.firstname}{" "}
+													{review.reviewer.lastname}
+												</span>
+											)}
 										</p>
 										<Badge variant="secondary" className="ml-2">
 											{calculatePercentageGrade(review, assignment)}
@@ -219,7 +226,7 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 											className="p-0 h-auto"
 											onClick={() => onViewDetails(review, false)}
 										>
-											View in New Page
+											View Peer Reviews Summary
 										</Button>
 									</div>
 								</div>

@@ -36,6 +36,7 @@ import { cn } from "@/utils/utils";
 import { getClassesByUserId, deleteClass, getAllClasses } from "@/api/classApi";
 import { useClass } from "@/contexts/contextHooks/useClass";
 import DeleteClassDialog from "@/components/manageClass/DeleteClassDialog";
+import EditClassDialog from "@/components/manageClass/EditClassModal";
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search);
@@ -53,9 +54,11 @@ function ClassTable() {
 		searchQuery: "",
 		instructorQuery: ""
 	});
+	const [open, setOpen] = useState(false);
 	const [openTerm, setOpenTerm] = useState(false);
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [selectedClass, setSelectedClass] = useState({});
+	const [classData, setClassData] = useState({});
 	const [confirmDelete, setConfirmDelete] = useState(false);
 	const itemsPerPage = 5;
 	const query = useQuery();
@@ -140,20 +143,20 @@ function ClassTable() {
 					: b.classname.localeCompare(a.classname);
 			} else if (key === "start") {
 				return order === "asc"
-					? new Date(a.start) - new Date(b.start)
-					: new Date(b.start) - new Date(a.start);
+					? new Date(a.startDate) - new Date(b.startDate)
+					: new Date(b.startDate) - new Date(a.startDate);
 			} else if (key === "end") {
 				return order === "asc"
-					? new Date(a.end) - new Date(b.end)
-					: new Date(b.end) - new Date(a.end);
+					? new Date(a.endDate) - new Date(b.endDate)
+					: new Date(b.endDate) - new Date(a.endDate);
 			} else if (key === "size") {
-				return order === "asc" ? a.size - b.size : b.size - a.size;
+				return order === "asc" ? a.classSize - b.classSize : b.classSize - a.classSize;
 			}
 		});
 
 	const getDropdownOptionsTerm = (classes) => {
 		const uniqueTerms = Array.from(
-			new Set(classes.map((classItem) => classItem.term))
+			new Set(classes.filter((classItem) => classItem.term && classItem.term !== "").map((classItem) => classItem.term))
 		);
 		return [
 			{ value: "", label: "All" },
@@ -171,6 +174,11 @@ function ClassTable() {
 		currentPage * itemsPerPage
 	);
 
+	const handleEditClick = (classItem) => {
+		setClassData(classItem);
+		setOpen(true);
+	}
+
 	return (
 		<div className="w-full bg-white shadow-md rounded-lg">
 			<div className="p-4">
@@ -183,7 +191,7 @@ function ClassTable() {
 									variant="outline"
 									role="combobox"
 									aria-expanded={openTerm}
-									className="w-[200px] justify-between bg-white w-auto mx-3"
+									className="justify-between bg-white w-full mx-3 "
 								>
 									{filter.term
 										? dropdownOptionsTerm.find(
@@ -360,7 +368,7 @@ function ClassTable() {
 									variant="ghost"
 									size="icon"
 									className="text-blue-500 hover:bg-blue-100"
-									onClick={() => navigate(`/class/${classItem.classId}/edit`)}
+									onClick={() => handleEditClick(classItem)}
 									data-testid={`edit-button-${classItem.classId}`}
 								>
 									<Pencil className="h-5 w-5" />
@@ -394,6 +402,8 @@ function ClassTable() {
 				selectedClass={selectedClass}
 				handleDeleteClass={handleDeleteClass}
 			/>
+			{/* This check is here to ensure it doesn't load before the classData data is present. */}
+			{classData.startDate && <EditClassDialog open={open} onOpenChange={setOpen} classItem={classData}/>}
 		</div>
 	);
 }

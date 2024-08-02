@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import GradeCard from "@/components/class/GradeCard";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import { Bell, Users, BookOpen, Calendar, GraduationCap } from "lucide-react";
+import { Bell, Users, Calendar, Info } from "lucide-react";
+import { Home, School, ClipboardList, Settings, MessageSquareWarning, NotebookPen, User } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import GroupCard from "@/components/class/GroupCard";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -18,7 +19,8 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getNotifications, deleteNotification } from "@/api/notifsApi";
 import NotifCard from "@/components/global/NotifCard";
-import reviewAPI from "@/api/reviewAPI";
+import reviewAPI from "@/api/reviewApi";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 
 function Dashboard() {
   const { user, userLoading } = useUser();
@@ -29,6 +31,9 @@ function Dashboard() {
   const [groups, setGroups] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [allReviews, setAllReviews] = useState([]);
+  const [showInfoOverlay, setShowInfoOverlay] = useState(false);
+  const [infoStep, setInfoStep] = useState(1);
+
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -170,6 +175,104 @@ function Dashboard() {
     </Alert>
   );
 
+  const renderInfoDialog = () => {
+    if (infoStep === 1) {
+      return (
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Help Guide</DialogTitle>
+          </DialogHeader>
+          <DialogDescription>
+            <p className="mb-2">This info button is available throughout the app to provide help and guidance:</p>
+            <ul className="list-disc list-inside mb-4">
+              <li>Look for the blue circular (i) button in the bottom-right corner of each page</li>
+              <li>Click it anytime you need assistance or information about the current page</li>
+              <li>It provides context-specific help for the section you're viewing</li>
+            </ul>
+          </DialogDescription>
+          <DialogFooter>
+            <Button onClick={() => setInfoStep(2)}>Next</Button>
+          </DialogFooter>
+        </DialogContent>
+      );
+    } else if (infoStep === 2) {
+      return (
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Navigation Guide</DialogTitle>
+          </DialogHeader>
+          <DialogDescription>
+            <div className="space-y-4">
+              <div className="flex items-center">
+                <Home className="mr-2 h-5 w-5" />
+                <span>Dashboard: View your main overview</span>
+              </div>
+              {user.role === "STUDENT" ? (
+                <div className="flex items-center">
+                  <School className="mr-2 h-5 w-5" />
+                  <span>Classes: Access your enrolled classes and enroll in new classes</span>
+                </div>
+              ) : (
+                <div className="flex items-center">
+                  <NotebookPen className="mr-2 h-5 w-5" />
+                  <span>Manage Classes: Create and manage your classes</span>
+                </div>
+              )}
+              <div className="flex items-center">
+                <ClipboardList className="mr-2 h-5 w-5" />
+                {user.role === "INSTRUCTOR" || user.role === "ADMIN" ? (
+                  <span>Grades & Reviews: Manage grades and reviews for your classes</span>
+                ) : (
+                  <span>Grades & Reviews: View your grades and grade reviews for other students</span>
+                )}
+              </div>
+              <div className="flex items-center">
+                <Settings className="mr-2 h-5 w-5" />
+                <span>Settings: Edit your profile details</span>
+              </div>
+              <div className="flex items-center">
+                <MessageSquareWarning className="mr-2 h-5 w-5" />
+                <span>Report: Submit a report to an instructor or admin (for app bugs)</span>
+              </div>
+              <div className="border-t pt-4 mt-4">
+                <div className="flex items-center">
+                  <span className="flex gap-2"><div className="w-6 h-6 bg-black rounded-full"></div> Click the Avatar button to access notifications, logout, and view profile</span>
+                </div>
+              </div>
+            </div>
+          </DialogDescription>
+          <DialogFooter>
+            <Button onClick={() => setInfoStep(3)}>Next</Button>
+          </DialogFooter>
+        </DialogContent>
+      );
+    } else if (infoStep === 3) {
+      return (
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>About the Dashboard</DialogTitle>
+          </DialogHeader>
+          <DialogDescription>
+            <p className="mb-2">The Dashboard provides an overview of your recent activities and upcoming tasks:</p>
+            <ul className="list-disc list-inside mb-4">
+              <li>Recent Class Notifications: View announcements and updates from your classes</li>
+              <li>My Groups: See the groups you're part of (for students)</li>
+              <li>Assignments: Check your upcoming assignments across all classes</li>
+              <li>Reviews: View peer reviews you need to complete</li>
+            </ul>
+            <p>This centralized view helps you stay organized and on top of your academic responsibilities.</p>
+          </DialogDescription>
+          <DialogFooter>
+            <Button onClick={() => {
+              setShowInfoOverlay(false);
+              setInfoStep(1);
+            }}>Got it</Button>
+          </DialogFooter>
+        </DialogContent>
+      );
+    }
+  };
+
   return (
     <div className="mx-auto px-4">
       <h1 className="text-3xl font-bold mb-8 text-primary">Dashboard</h1>
@@ -260,6 +363,20 @@ function Dashboard() {
           </CardContent>
         </Card>
       </div>
+      <Button
+        className="fixed bottom-4 right-4 rounded-full w-10 h-10 p-0"
+        onClick={() => setShowInfoOverlay(true)}
+      >
+        <Info className="w-6 h-6" />
+      </Button>
+
+      {/* Info overlay */}
+      <Dialog open={showInfoOverlay} onOpenChange={(open) => {
+        setShowInfoOverlay(open);
+        if (!open) setInfoStep(1);
+      }}>
+        {renderInfoDialog()}
+      </Dialog>
     </div>
   );
 }

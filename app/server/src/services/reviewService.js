@@ -1,6 +1,14 @@
 import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
 
+// Fisher-Yates (Knuth) Shuffle Algorithm for the randomzation of Auto Assign
+function shuffleArray(array) {
+	for (let i = array.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[array[i], array[j]] = [array[j], array[i]];
+	}
+	return array;
+}
 // Review operations
 const getReviewById = async (reviewId) => {
 	try {
@@ -398,59 +406,73 @@ const assignRandomPeerReviews = async (assignmentId, reviewsPerStudent) => {
 			const submittingStudentIds = new Set(
 				latestSubmissions.map((s) => s.submitterId)
 			);
-			const shuffledSubmissions = latestSubmissions.sort(
-				() => 0.5 - Math.random()
-			);
+
+			// Copy of submissions and shuffle them randomly
+			const shuffledSubmissions = shuffleArray(latestSubmissions);
+
 			const reviewAssignments = [];
 
-			for (const reviewerId of submittingStudentIds) {
-				let assignedPeerReviews = existingPeerReviews.filter(
-					(r) => r.reviewerId === reviewerId
-				).length;
-				let attempts = 0;
-				const maxAttempts = submissionCount * 2; // Arbitrary limit to prevent infinite loops
+			// Map to keep track of how many reviews each student has been assigned
+			const reviewsAssignedToStudent = new Map(
+				Array.from(submittingStudentIds).map((id) => [id, 0])
+			);
 
-				while (
-					assignedPeerReviews < reviewsPerStudent &&
-					attempts < maxAttempts
-				) {
-					for (
-						let j = 0;
-						j < shuffledSubmissions.length &&
-						assignedPeerReviews < reviewsPerStudent;
-						j++
+			// Iterates through each submission
+			for (const submission of shuffledSubmissions) {
+				// Creates a shuffled list of potential reviewers, excluding the submission's author
+				const shuffledReviewers = shuffleArray(
+					Array.from(submittingStudentIds).filter(
+						(id) => id !== submission.submitterId
+					)
+				);
+
+				// Keeps track of how many reviewers have been assigned to this submission
+				let assignedReviewers = 0;
+
+				// Iterates through the shuffled list of potential reviewers
+				for (const reviewerId of shuffledReviewers) {
+					// Stop assigning reviewers if we've reached the desired number per submission
+					if (assignedReviewers >= reviewsPerStudent) break;
+
+					// Check if this reviewer can be assigned to this submission:
+					// 1. They haven't been assigned their maximum number of reviews yet
+					// 2. They haven't already been assigned to review this submission
+					if (
+						reviewsAssignedToStudent.get(reviewerId) < reviewsPerStudent &&
+						!existingPeerReviews.some(
+							(er) =>
+								er.reviewerId === reviewerId &&
+								er.submissionId === submission.submissionId
+						)
 					) {
-						const submissionToReview = shuffledSubmissions[j];
-						if (
-							submissionToReview.submitterId !== reviewerId &&
-							!reviewAssignments.some(
-								(ra) =>
-									ra.reviewerId === reviewerId &&
-									ra.submissionId === submissionToReview.submissionId
-							) &&
-							!existingPeerReviews.some(
-								(er) =>
-									er.reviewerId === reviewerId &&
-									er.submissionId === submissionToReview.submissionId
-							)
-						) {
-							reviewAssignments.push({
-								submissionId: submissionToReview.submissionId,
-								reviewerId: reviewerId,
-								revieweeId: submissionToReview.submitterId
-							});
-							assignedPeerReviews++;
-						}
-					}
-					attempts++;
-				}
+						// Add this review assignment to our list
+						reviewAssignments.push({
+							submissionId: submission.submissionId,
+							reviewerId: reviewerId,
+							revieweeId: submission.submitterId
+						});
 
-				if (assignedPeerReviews < reviewsPerStudent) {
-					throw new apiError(
-						`Unable to assign ${reviewsPerStudent} unique peer reviews for each student. Please reduce the number of reviews per student or wait for more submissions.`,
-						400
-					);
+						// Increment counters
+						assignedReviewers++;
+						reviewsAssignedToStudent.set(
+							reviewerId,
+							reviewsAssignedToStudent.get(reviewerId) + 1
+						);
+					}
 				}
+			}
+
+			// After all assignments, check if every student has been assigned the correct number of reviews
+			if (
+				Array.from(reviewsAssignedToStudent.values()).some(
+					(count) => count < reviewsPerStudent
+				)
+			) {
+				// If not, throw an error
+				throw new apiError(
+					`Unable to assign ${reviewsPerStudent} unique peer reviews for each student. Please reduce the number of reviews per student or wait for more submissions.`,
+					400
+				);
 			}
 
 			// Create new reviews in bulk

@@ -105,26 +105,26 @@ const ViewAllPeerReviewsDialog = ({ submissionId, open, onClose }) => {
 					<div className="text-center">Loading peer reviews...</div>
 				) : (
 					<>
-						<Card className="mb-6">
-							<CardHeader>
-								<CardTitle>Grade Summary</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<div className="space-y-4">
-									<div>
-										<h3 className="font-semibold">Average Peer Grade</h3>
-										<Progress
-											value={parseFloat(calculateAveragePeerGrade())}
-											className="h-2 mt-2"
-										/>
-										<p className="text-sm mt-1">
-											{calculateAveragePeerGrade()}%
-										</p>
+						<ScrollArea className="h-[75vh]">
+							<Card className="mb-6">
+								<CardHeader>
+									<CardTitle>Grade Summary</CardTitle>
+								</CardHeader>
+								<CardContent>
+									<div className="space-y-4">
+										<div>
+											<h3 className="font-semibold">Average Peer Grade</h3>
+											<Progress
+												value={parseFloat(calculateAveragePeerGrade())}
+												className="h-2 mt-2"
+											/>
+											<p className="text-sm mt-1">
+												{calculateAveragePeerGrade()}%
+											</p>
+										</div>
 									</div>
-								</div>
-							</CardContent>
-						</Card>
-						<ScrollArea className="h-[50vh]">
+								</CardContent>
+							</Card>
 							{peerReviews.map((review, index) => (
 								<Card key={index} className="mb-6">
 									<CardHeader>

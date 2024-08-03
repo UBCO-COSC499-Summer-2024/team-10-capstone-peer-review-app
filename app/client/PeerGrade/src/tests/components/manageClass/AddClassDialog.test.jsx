@@ -78,7 +78,6 @@ describe('AddClassModal Component', () => {
     fireEvent.submit(screen.getByText('Add Class'));
 
     await waitFor(() => {
-        console.log(document.body.innerHTML);   
       expect(screen.getByText('Please select an end date that is after the start date.')).toBeInTheDocument();
     });
   });

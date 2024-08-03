@@ -86,7 +86,6 @@ describe('Overview Component', () => {
     userEvent.click(screen.getByRole('tab', { name: 'Students' }));
 
     await waitFor(() => {
-      console.log(document.body.innerHTML);
       expect(screen.getByText('John')).toBeInTheDocument();
       expect(screen.getByText('Doe')).toBeInTheDocument();
     });

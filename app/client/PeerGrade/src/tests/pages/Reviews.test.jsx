@@ -72,7 +72,6 @@ describe('Reviews Component', () => {
 
   //   // Initially, "Reviews Received" tab should be active
   //   expect(screen.getByText('Reviews Received')).toBeInTheDocument();
-  //   console.log(document.body.innerHTML);
 
   //   // Switch to "Reviews Assigned" tab
   //   userEvent.click(screen.getByText('Reviews Assigned'));

@@ -132,7 +132,6 @@ describe('EditAssignment Component', () => {
 //     fireEvent.click(screen.getByText('Update Assignment'));
 
 //     await waitFor(() => {
-//         console.log(document.body.innerHTML);
 //       expect(updateAssignmentInClass).toHaveBeenCalled();
 //       expect(toast).toHaveBeenCalledWith({
 //         title: 'Data Updated',

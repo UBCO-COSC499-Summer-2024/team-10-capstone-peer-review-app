@@ -76,7 +76,6 @@ describe('ManageReviews Component', () => {
     fireEvent.click(screen.getByText('Select Assignment'));
     await waitFor(() => expect(screen.getByText('Assignment 1')).toBeInTheDocument());
 
-    console.log(document.body.innerHTML);
     fireEvent.click(screen.getByText('Assignment 1'));
     await waitFor(() => expect(getSubmissionsForAssignment).toHaveBeenCalledWith('1'));
     expect(screen.getByText('John Doe')).toBeInTheDocument();

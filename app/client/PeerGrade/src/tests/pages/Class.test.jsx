@@ -112,8 +112,6 @@ describe('Class Component', () => {
       </MemoryRouter>
     );
 
-    console.log(document.body.innerHTML);
-
     fireEvent.click(screen.getByTestId('delete-category-1'));
 
     await waitFor(() => {

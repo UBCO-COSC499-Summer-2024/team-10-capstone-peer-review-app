@@ -79,6 +79,7 @@ describe('AssignmentCreation', () => {
 
     const categoryButton = screen.getByText('Select category...');
     fireEvent.click(categoryButton);
+    
     const categoryOption = await screen.findByText('Category 1');
     fireEvent.click(categoryOption);
 

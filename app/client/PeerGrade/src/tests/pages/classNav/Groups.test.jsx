@@ -126,7 +126,6 @@ describe('Groups Component', () => {
       expect(screen.getByText("Group 1")).toBeInTheDocument();
     });
 
-    console.log(document.body.innerHTML);
     fireEvent.click(await screen.findByText('Leave'));
 
     await waitFor(() => expect(leaveGroup).toHaveBeenCalledWith('1'));

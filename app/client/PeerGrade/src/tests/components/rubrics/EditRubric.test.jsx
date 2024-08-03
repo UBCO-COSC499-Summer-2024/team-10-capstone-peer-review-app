@@ -51,7 +51,6 @@ describe('EditRubric Component', () => {
     fireEvent.click(screen.getByTestId('add-criterion'));
     expect(screen.getAllByText('Enter criteria').length).toBe(1);
 
-    console.log(document.body.innerHTML);
     fireEvent.click(screen.queryAllByTestId(/^remove-criterion-/)[1]);
     expect(screen.queryByText('Enter criteria')).not.toBeInTheDocument();
   });

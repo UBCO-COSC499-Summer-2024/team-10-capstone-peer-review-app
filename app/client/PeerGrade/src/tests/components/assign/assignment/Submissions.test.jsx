@@ -92,7 +92,6 @@ describe('Submissions Component', () => {
 //     userEvent.click(screen.getByText(/assign reviewers/i));
 
 //     await waitFor(() => {
-//       console.log(document.body.innerHTML);
 //       expect(screen.getByText("Assign Peer Reviewers")).toBeInTheDocument();
 //     });
 //   });

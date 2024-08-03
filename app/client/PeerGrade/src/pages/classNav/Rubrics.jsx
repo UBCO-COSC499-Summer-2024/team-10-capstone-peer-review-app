@@ -9,19 +9,7 @@ import { useUser } from "@/contexts/contextHooks/useUser";
 import { Pencil, Trash2, Eye, Info, ChevronDown } from 'lucide-react';
 import { deleteRubricsFromAssignment, getAllRubricsInClass, getRubricById } from '@/api/rubricApi';
 import EditRubric from '@/components/rubrics/EditRubric';
-import {
-  AlertDialog,
-  AlertDialogTrigger,
-  AlertDialogPortal,
-  AlertDialogOverlay,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogFooter,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogAction,
-  AlertDialogCancel
-} from '@/components/ui/alert-dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import InfoButton from '@/components/global/InfoButton';
 
 const Rubrics = () => {
@@ -30,7 +18,7 @@ const Rubrics = () => {
   const [rubrics, setRubrics] = useState([]);
   const [selectedRubric, setSelectedRubric] = useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [rubricToDelete, setRubricToDelete] = useState(null);
   const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
   const [rubricToEdit, setRubricToEdit] = useState(null);
@@ -70,7 +58,7 @@ const Rubrics = () => {
         await deleteRubricsFromAssignment(rubricToDelete.rubricId);
         await fetchData(); // Wait for the data to be fetched
         setIsDrawerOpen(false);
-        setIsAlertDialogOpen(false);
+        setIsDialogOpen(false);
       } catch (error) {
         console.error('Error deleting rubric:', error);
       }
@@ -173,17 +161,29 @@ const Rubrics = () => {
               <CardFooter className="mt-auto">
                   <Button 
                       onClick={() => handleRubricClick(rubric.rubricId)} 
-                      className="w-1/2 bg-gray-100 text-gray-800 hover:bg-gray-200 mr-2"
+                      className="w-2/5 bg-gray-100 text-gray-800 hover:bg-gray-200 mr-2"
                       variant="ghost"
                   >
                       <Eye className="mr-2 h-4 w-4" /> View Details
                   </Button>
                   <Button 
                       onClick={() => handleEditRubricClick(rubric.rubricId)} 
-                      className="w-1/2 bg-blue-100 text-blue-800 hover:bg-blue-200"
+                      className="w-2/5 bg-blue-100 text-blue-800 hover:bg-blue-200 mr-2"
                       variant="ghost"
                   >
                       <Pencil className="mr-2 h-4 w-4" /> Edit Rubric
+                  </Button>
+                  <Button 
+                    onClick={() => {
+                      console.log('Delete rubric:', rubric);
+                      setRubricToDelete(rubric);
+                      setConfirmDeleteRubric(false);
+                      setIsDialogOpen(true);
+                    }} 
+                    variant="destructive"
+                    className="w-1/5"
+                  >
+                    <Trash2 className="h-4 w-4" />
                   </Button>
               </CardFooter>
             </Card>
@@ -198,35 +198,6 @@ const Rubrics = () => {
               <DrawerTitle className="text-2xl">{selectedRubric?.title}</DrawerTitle>
               <DrawerDescription>{selectedRubric?.description}</DrawerDescription>
             </div>
-            <AlertDialog open={isAlertDialogOpen} onOpenChange={setIsAlertDialogOpen}>
-              <AlertDialogTrigger asChild>
-                <Button 
-                  onClick={() => {
-                    setRubricToDelete(selectedRubric);
-                    setConfirmDeleteRubric(false);
-                    setIsAlertDialogOpen(true);
-                  }} 
-                  variant="destructive"
-                  size="sm"
-                >
-                  <Trash2 className="h-4 w-4" /> <span className="ml-2">Delete Rubric</span>
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent className={confirmDeleteRubric ? "text-white bg-red-500 border-red-800 z-[2000]" : "z-[2000]"}>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>{confirmDeleteRubric ? "Confirm " : ""}Delete Rubric</AlertDialogTitle>
-                  <AlertDialogDescription className={confirmDeleteRubric ? "text-white" : ""}>
-                    Are you {confirmDeleteRubric ? "really " : ""}sure you want to delete this rubric? This action cannot be undone.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel asChild>
-                    <Button variant="outline" className={confirmDeleteRubric ? "text-black" : ""}>Cancel</Button>
-                  </AlertDialogCancel>
-                  <Button variant="destructive" onClick={handleDeleteRubric}>Delete</Button>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
             </div>
           </DrawerHeader>
           <div className="p-4 bg-gray-100 rounded-md mb-4">
@@ -292,6 +263,20 @@ const Rubrics = () => {
         rubricData={rubricToEdit}
         onRubricUpdated={handleRubricUpdated}
       />
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className={confirmDeleteRubric ? "text-white bg-red-500 border-red-800 z-[2000]" : "z-[2000]"}>
+          <DialogHeader>
+            <DialogTitle>{confirmDeleteRubric ? "Confirm " : ""}Delete Rubric</DialogTitle>
+            <DialogDescription className={confirmDeleteRubric ? "text-white" : ""}>
+              Are you {confirmDeleteRubric ? "really " : ""}sure you want to delete the rubric '{rubricToDelete?.title}'? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" className={confirmDeleteRubric ? "text-black" : ""} onClick={() => setIsDialogOpen(false)}>Cancel</Button>
+            <Button variant="destructive" onClick={handleDeleteRubric}>Delete</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       <InfoButton content={rubricsInfoContent} />
 
     </div>

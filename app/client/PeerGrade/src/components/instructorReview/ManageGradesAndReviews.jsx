@@ -498,7 +498,7 @@ const ManageGradesAndReviews = () => {
 			<p className="mt-2">The grading dialog allows you to assign scores based on the rubric criteria and provide comments for each criterion.</p>
 		  </>
 		)
-	  };
+	};
 
 	return (
 		<Card className="w-full">

@@ -43,7 +43,7 @@ const fileTypeOptions = [
 	{ value: "png", label: "PNG" }
 ];
 
-const EditAssignment = () => {
+const EditAssignment = ({ refresh }) => {
 	const navigate = useNavigate();
 	const { classId, assignmentId } = useParams();
 
@@ -209,6 +209,7 @@ const EditAssignment = () => {
 				});
 
 				navigate(`/class/${classId}/assignment/${assignmentId}`);
+				refresh();
 			} else {
 				toast({
 					title: "Error",

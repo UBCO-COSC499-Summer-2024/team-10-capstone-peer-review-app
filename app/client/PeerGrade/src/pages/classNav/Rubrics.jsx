@@ -229,7 +229,7 @@ const Rubrics = () => {
                         {criterion.criterionRatings && criterion.criterionRatings.map((rating, ratingIndex) => (
                           <div key={ratingIndex} className="flex items-center bg-gray-100 rounded p-2">
                             <p className="text-sm mr-2">{rating.description}</p>
-                            <Badge variant="secondary">{rating.points}</Badge>
+                            <Badge variant="secondary">{rating.points} pts</Badge>
                           </div>
                         ))}
                       </div>

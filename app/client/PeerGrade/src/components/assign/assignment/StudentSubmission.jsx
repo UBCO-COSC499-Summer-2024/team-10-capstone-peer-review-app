@@ -132,14 +132,14 @@ const Submission = ({ refresh, switchToViewOnSubmit }) => {
             accessorKey: "criterionRatings",
             header: "Ratings",
             cell: ({ cell }) => (
-                <ul className="list-disc pl-4">
+                <div className="flex gap-2 w-full items-center justify-center flex-wrap">
                     {cell.getValue().map((rating, idx) => (
-                        <li key={idx} className='flex mb-5 bg-gray-200 rounded-lg p-2 justify-between items-start '>
+                        <li key={idx} className='flex bg-gray-200 rounded-lg p-2 justify-center items-center w-auto'>
                                 <span>{rating.description}</span>
-                                <span className='font-bold border border-black rounded-full p-1 w-6 h-6 flex justify-center items-center'>{rating.points}</span>
+                                <span className='font-bold border border-black rounded-full ml-2 p-2 h-6 flex justify-center items-center'>{rating.points} pts</span>
                         </li>
                     ))}
-                </ul>
+                </div>
             )
         },
         {

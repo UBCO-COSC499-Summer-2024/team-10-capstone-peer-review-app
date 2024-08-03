@@ -518,7 +518,7 @@ const ManageGradesAndReviews = () => {
 									variant="outline"
 									role="combobox"
 									aria-expanded={openClass}
-									className="justify-between"
+									className="min-w-[200px] justify-between"
 								>
 									{selectedClass
 										? classes.find((cls) => cls.classId === selectedClass)
@@ -574,7 +574,7 @@ const ManageGradesAndReviews = () => {
 									variant="outline"
 									role="combobox"
 									aria-expanded={openAssignment}
-									className="justify-between"
+									className="min-w-[200px] justify-between"
 									disabled={!selectedClass}
 								>
 									{selectedAssignment

@@ -150,41 +150,41 @@ const Rubrics = () => {
   return (
     <div className="p-6 bg-muted rounded-lg">
       <h1 className="text-3xl font-bold mb-8 text-gray-800">Rubrics</h1>
-      <div className="flex flex-wrap gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         {rubrics.length === 0 ? (
           <div className="col-span-full text-center text-gray-500">No rubrics found</div>
         ) : (
           rubrics.map((rubric) => (
-            <Card key={rubric.rubricId} className="hover:shadow-md min-w-[300px] transition-shadow bg-white">
+            <Card key={rubric.rubricId} className="hover:shadow-md transition-shadow bg-white flex flex-col h-full">
               <CardHeader className="pb-2 flex justify-between">
-                 <div>
-                    <CardTitle className="text-xl font-semibold text-gray-800">{rubric.title}</CardTitle>
-                    <CardDescription className="text-sm text-gray-600 line-clamp-2">{rubric.description}</CardDescription>
+                  <div>
+                      <CardTitle className="text-xl font-semibold text-gray-800 mb-2">{rubric.title}</CardTitle>
+                      <CardDescription className="text-sm text-gray-600 line-clamp-2">{rubric.description}</CardDescription>
                   </div>
                   <div>
-                    <Badge variant="outline" className="text-xs flex justify-center items-center bg-success/30">
-                      {rubric.totalMarks} Points
-                    </Badge>
+                      <Badge variant="outline" className="text-xs flex justify-center items-center bg-success/30">
+                          {rubric.totalMarks} Points
+                      </Badge>
                   </div>
               </CardHeader>
-              <CardContent className="pt-2">
-              
+              <CardContent className="pt-2 flex-grow">
+                
               </CardContent>
-              <CardFooter>
-                <Button 
-                  onClick={() => handleRubricClick(rubric.rubricId)} 
-                  className="w-1/2 bg-gray-100 text-gray-800 hover:bg-gray-200 mr-2"
-                  variant="ghost"
-                >
-                  <Eye className="mr-2 h-4 w-4" /> View Details
-                </Button>
-                <Button 
-                  onClick={() => handleEditRubricClick(rubric.rubricId)} 
-                  className="w-1/2 bg-blue-100 text-blue-800 hover:bg-blue-200"
-                  variant="ghost"
-                >
-                  <Pencil className="mr-2 h-4 w-4" /> Edit Rubric
-                </Button>
+              <CardFooter className="mt-auto">
+                  <Button 
+                      onClick={() => handleRubricClick(rubric.rubricId)} 
+                      className="w-1/2 bg-gray-100 text-gray-800 hover:bg-gray-200 mr-2"
+                      variant="ghost"
+                  >
+                      <Eye className="mr-2 h-4 w-4" /> View Details
+                  </Button>
+                  <Button 
+                      onClick={() => handleEditRubricClick(rubric.rubricId)} 
+                      className="w-1/2 bg-blue-100 text-blue-800 hover:bg-blue-200"
+                      variant="ghost"
+                  >
+                      <Pencil className="mr-2 h-4 w-4" /> Edit Rubric
+                  </Button>
               </CardFooter>
             </Card>
           ))

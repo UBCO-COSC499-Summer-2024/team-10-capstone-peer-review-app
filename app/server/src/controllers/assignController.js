@@ -112,8 +112,8 @@ export const updateAssignmentInClass = [
 		{
 			...assignmentData,
 			assignmentFilePath: fileUrl || assignmentData.assignmentFilePath,
-			rubricId: assignmentData.rubricId, // Add this line
-			allowedFileTypes: assignmentData.allowedFileTypes, // Add this line
+			rubricId: assignmentData.rubricId,
+			allowedFileTypes: assignmentData.allowedFileTypes,
 		}
 	);
   

@@ -349,7 +349,7 @@ const EditAssignment = ({ refresh }) => {
             <Select 
               onValueChange={(value) => setFormData(prev => ({ ...prev, categoryId: value }))}
               value={formData.categoryId}
-              defaultValue={formData.categoryId} // Add this line
+              defaultValue={formData.categoryId}
             >
               <SelectTrigger className={errors.categoryId ? "border-red-500" : ""} id='category'>
                 <SelectValue placeholder="Select category..."/>
@@ -370,7 +370,7 @@ const EditAssignment = ({ refresh }) => {
             <Select 
               onValueChange={(value) => setFormData(prev => ({ ...prev, rubricId: value }))}
               value={formData.rubricId}
-              defaultValue={formData.rubricId} // Add this line
+              defaultValue={formData.rubricId}
             >
               <SelectTrigger className={errors.rubricId ? "border-red-500" : ""} id='rubric'>
                 <SelectValue placeholder="Select a rubric" />

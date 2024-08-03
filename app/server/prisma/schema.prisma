@@ -84,8 +84,8 @@ model Assignment {
   allowedFileTypes      String[]
   assignmentFilePath    String?
   classes               Class             @relation(fields: [classId], references: [classId], onDelete: Cascade)
-  categoryId            String? // Add this line
-  category              Category?         @relation(fields: [categoryId], references: [categoryId]) // Add this line
+  categoryId            String?
+  category              Category?         @relation(fields: [categoryId], references: [categoryId])
   rubric                Rubric?           @relation(fields: [rubricId], references: [rubricId])
   submissions           Submission[]
   reviewOption          String?

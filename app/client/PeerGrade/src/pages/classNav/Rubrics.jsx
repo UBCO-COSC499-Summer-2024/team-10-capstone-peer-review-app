@@ -22,7 +22,7 @@ const Rubrics = () => {
   const [rubricToDelete, setRubricToDelete] = useState(null);
   const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
   const [rubricToEdit, setRubricToEdit] = useState(null);
-  const [editDrawerKey, setEditDrawerKey] = useState(0); // Add this line
+  const [editDrawerKey, setEditDrawerKey] = useState(0);
   const [confirmDeleteRubric, setConfirmDeleteRubric] = useState(false);
 
 
@@ -92,7 +92,7 @@ const Rubrics = () => {
       if (response.data && response.data) {
         setRubricToEdit(response.data);
         setIsEditDrawerOpen(true);
-        setEditDrawerKey(prevKey => prevKey + 1); // Add this line
+        setEditDrawerKey(prevKey => prevKey + 1);
       }
     } catch (error) {
       console.error('Error fetching rubric details:', error);
@@ -257,7 +257,7 @@ const Rubrics = () => {
       </Drawer>
 
       <EditRubric 
-        key={editDrawerKey} // Add this line
+        key={editDrawerKey}
         isOpen={isEditDrawerOpen}
         onClose={handleCloseEditDrawer}
         rubricData={rubricToEdit}

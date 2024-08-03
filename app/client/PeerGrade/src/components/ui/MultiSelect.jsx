@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -17,10 +18,11 @@ const MultiSelect = ({ options, value, onChange, placeholder }) => {
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="w-full justify-start">
+        <Button variant="outline" className="w-full justify-between">
           {value.length > 0 
             ? `${value.length} selected`
             : placeholder || "Select options"}
+            {isOpen ? <ChevronUp className='w-4 h-4'/> : <ChevronDown className='w-4 h-4'/>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="min-w-[200px] p-0">

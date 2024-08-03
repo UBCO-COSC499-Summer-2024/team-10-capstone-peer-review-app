@@ -63,7 +63,7 @@ describe('ReceivedReviews Component', () => {
 
   test('calls onViewDetails when view buttons are clicked', () => {
     render(<ReceivedReviews receivedReviews={mockReceivedReviews} onViewDetails={mockOnViewDetails} />);
-    const viewButtons = screen.getAllByText('View in Dialog');
+    const viewButtons = screen.getAllByText('View Grades');
     fireEvent.click(viewButtons[0]);
     expect(mockOnViewDetails).toHaveBeenCalled();
   });

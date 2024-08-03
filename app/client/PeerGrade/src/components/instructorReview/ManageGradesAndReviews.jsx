@@ -45,7 +45,8 @@ import {
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
-	DialogFooter
+	DialogFooter,
+	DialogDescription
 } from "@/components/ui/dialog";
 import InfoButton from "@/components/global/InfoButton";
 import MultiSelect from "@/components/ui/MultiSelect";
@@ -192,73 +193,67 @@ const ManageGradesAndReviews = () => {
 	};
 
 	const handleAssignReviewers = async () => {
-		if (!selectedSubmission) {
-			toast({
-				title: "Error",
-				description: "No submission selected. Please try again.",
-				variant: "destructive"
-			});
-			return;
-		}
+		const reviews = await reviewAPI.getAllReviews(
+			selectedAssignment.assignmentId
+		);
+		const assignedReviewIds = reviews.data
+			.filter(
+				(review) =>
+					review.isPeerReview &&
+					review.reviewerId === selectedSubmission.submitterId
+			)
+			.map((review) => review.submissionId);
+		setSelectedReviewers(assignedReviewIds);
 
-		if (!isDueDatePassed(selectedAssignment.dueDate)) {
-			toast({
-				title: "Action not allowed",
-				description:
-					"You must wait for the due date to pass before assigning reviewers",
-				variant: "warning"
-			});
-			return;
-		}
-
-		try {
-			const reviews = await reviewAPI.getAllReviews(
-				selectedSubmission.submissionId
-			);
-			const existingReviewerIds = reviews.data
-				.filter(
-					(review) =>
-						review.isPeerReview &&
-						review.reviewerId !== selectedSubmission.submitterId
-				)
-				.map((review) => review.reviewerId);
-			setSelectedReviewers(existingReviewerIds);
-
-			console.log("existing reviewers:", existingReviewerIds);
-			setAssignReviewersDialogOpen(true);
-		} catch (error) {
-			console.error("Error fetching existing reviewers:", error);
-			toast({
-				title: "Error",
-				description: "Failed to fetch existing reviewers",
-				variant: "destructive"
-			});
-		}
+		setAssignReviewersDialogOpen(true);
 	};
 
 	const handleAssignReviewersSubmit = async () => {
 		try {
 			const existingReviews = await reviewAPI.getPeerReviews(
-				selectedSubmission.submissionId
+				selectedAssignment.assignmentId
 			);
-			for (const review of existingReviews.data) {
-				if (!selectedReviewers.includes(review.reviewerId)) {
+
+			console.log("existingReviews:", existingReviews.data);
+			const reviewerSubmissions = existingReviews.data.filter(
+				(review) => review.reviewerId === selectedSubmission.submitterId
+			);
+
+			console.log("reviewerSubmissions:", reviewerSubmissions);
+
+			for (const review of reviewerSubmissions) {
+				if (!selectedReviewers.includes(review.submissionId)) {
 					await reviewAPI.deleteReview(review.reviewId);
+					console.log("deleted review:", review.reviewId);
 				}
 			}
 
-			for (const reviewerId of selectedReviewers) {
-				if (!existingReviews.data.some((r) => r.reviewerId === reviewerId)) {
+			for (const submissionId of selectedReviewers) {
+				if (!reviewerSubmissions.some((r) => r.submissionId === submissionId)) {
+					const revieweeStudent = studentsWithSubmissions.find(
+						(s) => s.submission && s.submission.submissionId === submissionId
+					);
+
+					if (!revieweeStudent) {
+						console.error(
+							`No matching student found for submissionId: ${submissionId}`
+						);
+						continue; // Skip this iteration if no matching student is found
+					}
+
 					const blankReview = {
-						submissionId: selectedSubmission.submissionId,
+						submissionId: submissionId,
 						reviewGrade: 0,
-						reviewerId: reviewerId,
-						revieweeId: selectedSubmission.submitterId,
+						reviewerId: selectedSubmission.submitterId,
+						revieweeId: revieweeStudent.userId,
 						isPeerReview: true,
 						isGroup: false,
 						criterionGrades: []
 					};
-					await reviewAPI.createReview(reviewerId, blankReview);
+					await reviewAPI.createReview(
+						selectedSubmission.submitterId,
+						blankReview
+					);
 				}
 			}
 
@@ -270,14 +265,14 @@ const ManageGradesAndReviews = () => {
 			);
 			toast({
 				title: "Success",
-				description: "Reviewers assigned successfully",
+				description: "Peer reviews updated successfully",
 				variant: "default"
 			});
 		} catch (error) {
-			console.error("Error updating reviewers:", error);
+			console.error("Error updating peer reviews:", error);
 			toast({
 				title: "Error",
-				description: "Failed to update reviewers",
+				description: "Failed to update peer reviews",
 				variant: "destructive"
 			});
 		}
@@ -531,11 +526,13 @@ const ManageGradesAndReviews = () => {
 									aria-expanded={openClass}
 									className="w-[200px] justify-between"
 								>
-									{selectedClass
-										? classes.find((cls) => cls.classId === selectedClass)
-												?.classname
-										: "Select Class"}
-									<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+									<span className="truncate mr-2">
+										{selectedClass
+											? classes.find((cls) => cls.classId === selectedClass)
+													?.classname
+											: "Select Class"}
+									</span>
+									<ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
 								</Button>
 							</PopoverTrigger>
 							<PopoverContent className="w-[200px] p-0">
@@ -588,10 +585,12 @@ const ManageGradesAndReviews = () => {
 									className="w-[200px] justify-between"
 									disabled={!selectedClass}
 								>
-									{selectedAssignment
-										? selectedAssignment.title
-										: "Select Assignment"}
-									<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+									<span className="truncate mr-2">
+										{selectedAssignment
+											? selectedAssignment.title
+											: "Select Assignment"}
+									</span>
+									<ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
 								</Button>
 							</PopoverTrigger>
 							<PopoverContent className="w-[200px] p-0">
@@ -827,7 +826,7 @@ const ManageGradesAndReviews = () => {
 																				"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
 																		)}
 																	>
-																		Assign Reviewers
+																		Assign Peer Reviews
 																	</Button>
 																	<Button
 																		variant="outline"
@@ -879,17 +878,21 @@ const ManageGradesAndReviews = () => {
 			>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>Assign Peer Reviewers</DialogTitle>
+						<DialogTitle>Assign Peer Reviews</DialogTitle>
+						<DialogDescription>
+							Select the students you want to create peer reviews for.
+						</DialogDescription>
 					</DialogHeader>
 					<div className="space-y-4 min-h-[4vh] flex items-center justify-center">
 						<MultiSelect
-							options={allStudents
+							options={studentsWithSubmissions
 								.filter(
 									(student) =>
-										student.userId !== selectedSubmission?.submitterId
+										student.userId !== selectedSubmission?.submitterId &&
+										student.hasSubmitted
 								)
 								.map((student) => ({
-									value: student.userId,
+									value: student.submission.submissionId,
 									label: `${student.firstname} ${student.lastname}`
 								}))}
 							value={selectedReviewers}
@@ -898,7 +901,7 @@ const ManageGradesAndReviews = () => {
 					</div>
 					<DialogFooter>
 						<Button onClick={handleAssignReviewersSubmit}>
-							Update Reviewers
+							Update Peer Reviews
 						</Button>
 					</DialogFooter>
 				</DialogContent>

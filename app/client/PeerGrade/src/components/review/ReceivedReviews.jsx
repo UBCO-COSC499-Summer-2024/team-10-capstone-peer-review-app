@@ -218,7 +218,7 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 											className="p-0 h-auto mr-4"
 											onClick={() => onViewDetails(review, true)}
 										>
-											View in Dialog
+											View Grade
 										</Button>
 										<Button
 											variant="link"
@@ -226,7 +226,7 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 											className="p-0 h-auto"
 											onClick={() => onViewDetails(review, false)}
 										>
-											View Peer Reviews Summary
+											View all Grades and Reviews
 										</Button>
 									</div>
 								</div>

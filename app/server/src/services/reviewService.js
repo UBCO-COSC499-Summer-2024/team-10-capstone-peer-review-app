@@ -491,8 +491,11 @@ const assignRandomPeerReviews = async (assignmentId, reviewsPerStudent) => {
 			};
 		});
 	} catch (error) {
-		console.error("Error in assignRandomPeerReviews:", error);
-		throw new apiError("Failed to assign peer reviews: " + error.message, 500);
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw error;
+		}
 	}
 };
 

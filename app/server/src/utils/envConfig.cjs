@@ -3,7 +3,6 @@ const path = require("path");
 
 function setupEnv() {
 	const env = process.env.NODE_ENV;
-	console.log("The Node Environment is set to: ", env);
 
 	let envPath = "";
 	switch (env) {

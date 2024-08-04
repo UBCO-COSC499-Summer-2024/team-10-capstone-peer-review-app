@@ -1,324 +1,235 @@
-// import prisma from "../../../prisma/prismaClient";
-// import reviewService from "../../../src/services/reviewService.js";
-// import authService from "../../../src/services/authService.js";
-// import apiError from "../../../src/utils/apiError";
-// import e from "express";
+import prisma from "../../../prisma/prismaClient.js";
+import reviewService from "../../../src/services/reviewService.js";
+import apiError from "../../../src/utils/apiError.js";
 
-// let user;
-// beforeAll(async () => {
-//     await prisma.$connect();
-//     // const userData = {
-//     //     email: "verified@example.com",
-//     //     password: "password123",
-//     //     firstname: "Verified",
-//     //     lastname: "User",
-//     //     role: "STUDENT"
-//     // };
+beforeAll(async () => {
+	await prisma.$connect();
+});
 
-//     // await authService.registerUser(userData);
-//     // await prisma.user.update({
-//     //     where: { email: userData.email },
-//     //     data: { isEmailVerified: true, isRoleActivated: true }
-//     // });
+afterAll(async () => {
+	await prisma.$disconnect();
+});
 
-//     // user = await authService.loginUser(
-//     //     userData.email,
-//     //     userData.password
-//     // );
-// });
+describe("reviewService Integration Tests", () => {
+	let testInstructor,
+		testStudent1,
+		testStudent2,
+		testClass,
+		testAssignment,
+		testSubmission,
+		testReview;
 
-// afterAll(async () => {
-//     await prisma.$disconnect();
-// });
+	beforeEach(async () => {
+		await prisma.$transaction(async (prisma) => {
+			// Clean up
+			await prisma.criterionGrade.deleteMany();
+			await prisma.review.deleteMany();
+			await prisma.submission.deleteMany();
+			await prisma.assignment.deleteMany();
+			await prisma.class.deleteMany();
+			await prisma.user.deleteMany();
 
-// beforeEach(async () => {
-//     await prisma.review.deleteMany();
-// });
+			// Create test users
+			testInstructor = await prisma.user.create({
+				data: {
+					email: "instructor@example.com",
+					password: "password123",
+					firstname: "Test",
+					lastname: "Instructor",
+					role: "INSTRUCTOR"
+				}
+			});
 
-// describe("Review Service Integration Tests", () => {
-//     describe("createReview", () => {
-//         it("should create a new review", async () => {
-//             const reviewData = {
-//                 submissionId: "testSubmissionId", // change ids to original ids
-//                 reviewerId: "testReviewerId",
-//                 revieweeId: "testRevieweeId",
-//                 reviewGrade: 5,
-//                 isPeerReview: true
-//             };
+			testStudent1 = await prisma.user.create({
+				data: {
+					email: "student1@example.com",
+					password: "password123",
+					firstname: "Test",
+					lastname: "Student1",
+					role: "STUDENT"
+				}
+			});
 
-//             const review = await reviewService.createReview(userId, reviewData);
+			testStudent2 = await prisma.user.create({
+				data: {
+					email: "student2@example.com",
+					password: "password123",
+					firstname: "Test",
+					lastname: "Student2",
+					role: "STUDENT"
+				}
+			});
 
-//             expect(review).not.toBeNull();
-//         });
+			// Create test class
+			testClass = await prisma.class.create({
+				data: {
+					classname: "Test Class",
+					description: "Test Description",
+					startDate: new Date(),
+					endDate: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000),
+					instructorId: testInstructor.userId
+				}
+			});
 
-//         it("should throw an error if the submission does not exist", async () => {
-//             const reviewData = {
-//                 submissionId: "nonExistentSubmissionId",
-//                 reviewerId: "testReviewerId",
-//                 revieweeId: "testRevieweeId",
-//                 reviewGrade: 5,
-//                 isPeerReview: true
-//             };
+			// Create test assignment
+			testAssignment = await prisma.assignment.create({
+				data: {
+					title: "Test Assignment",
+					description: "Test Description",
+					dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+					maxSubmissions: 1,
+					classId: testClass.classId
+				}
+			});
 
-//             await expect(reviewService.createReview(reviewData)).rejects.toThrow(
-//                 apiError
-//             );
-//         });
+			// Create test submission
+			testSubmission = await prisma.submission.create({
+				data: {
+					assignmentId: testAssignment.assignmentId,
+					submitterId: testStudent1.userId
+				}
+			});
 
-//         it("should throw an error if the reviewer does not exist", async () => {
-//             const reviewData = {
-//                 submissionId: "testSubmissionId",
-//                 reviewerId: "nonExistentReviewerId",
-//                 revieweeId: "testRevieweeId",
-//                 reviewGrade: 5,
-//                 isPeerReview: true
-//             };
+			// Create test review
+			testReview = await prisma.review.create({
+				data: {
+					submissionId: testSubmission.submissionId,
+					reviewerId: testInstructor.userId,
+					revieweeId: testStudent1.userId,
+					reviewGrade: 85,
+					isPeerReview: false
+				}
+			});
+		});
+	});
 
-//             await expect(reviewService.createReview(reviewData)).rejects.toThrow(
-//                 apiError
-//             );
-//         });
+	describe("getReviewById", () => {
+		it("should retrieve a review by its ID", async () => {
+			const review = await reviewService.getReviewById(testReview.reviewId);
+			expect(review).toBeTruthy();
+			expect(review.reviewId).toBe(testReview.reviewId);
+		});
 
-//         it("should throw an error if the reviewee does not exist", async () => {
-//             const reviewData = {
-//                 submissionId: "testSubmissionId",
-//                 reviewerId: "testReviewerId",
-//                 revieweeId: "nonExistentRevieweeId",
-//                 reviewGrade: 5,
-//                 isPeerReview: true
-//             };
+		it("should throw an error if the review is not found", async () => {
+			await expect(
+				reviewService.getReviewById("non-existent-id")
+			).rejects.toThrow("Review not found");
+		});
+	});
 
-//             await expect(reviewService.createReview(reviewData)).rejects.toThrow(
-//                 apiError
-//             );
-//         });
+	describe("getPeerReviews", () => {
+		it("should retrieve peer reviews for a submission", async () => {
+			const peerReview = await prisma.review.create({
+				data: {
+					submissionId: testSubmission.submissionId,
+					reviewerId: testStudent2.userId,
+					revieweeId: testStudent1.userId,
+					reviewGrade: 80,
+					isPeerReview: true
+				}
+			});
 
-//         it("should throw an error if the review grade is not a number", async () => {
-//             const reviewData = {
-//                 submissionId: "testSubmissionId",
-//                 reviewerId: "testReviewerId",
-//                 revieweeId: "testRevieweeId",
-//                 reviewGrade: "notANumber",
-//                 isPeerReview: true
-//             };
+			const peerReviews = await reviewService.getPeerReviews(
+				testSubmission.submissionId
+			);
+			expect(peerReviews).toHaveLength(1);
+			expect(peerReviews[0].reviewId).toBe(peerReview.reviewId);
+		});
+	});
 
-//             await expect(reviewService.createReview(reviewData)).rejects.toThrow(
-//                 apiError
-//             );
-//         });
-//     });
+	describe("getInstructorReview", () => {
+		it("should retrieve the instructor review for a submission", async () => {
+			const instructorReview = await reviewService.getInstructorReview(
+				testSubmission.submissionId
+			);
+			expect(instructorReview).toBeTruthy();
+			expect(instructorReview.reviewerId).toBe(testInstructor.userId);
+		});
+	});
 
-//     describe("getReviewById", () => {
-//         it("should return a review by ID", async () => {
-//             const reviewData = {
-//                 submissionId: "testSubmissionId",
-//                 reviewerId: "testReviewerId",
-//                 revieweeId: "testRevieweeId",
-//                 reviewGrade: 5,
-//                 isPeerReview: true
-//             };
+	describe("createReview", () => {
+		it("should create a new review", async () => {
+			const newReview = {
+				submissionId: testSubmission.submissionId,
+				revieweeId: testStudent1.userId,
+				reviewGrade: 90,
+				isPeerReview: true,
+				criterionGrades: [
+					{ criterionId: "test-criterion-id", grade: 5, comment: "Good job" }
+				]
+			};
 
-//             const review = await reviewService.createReview(reviewData);
+			const createdReview = await reviewService.createReview(
+				testStudent2.userId,
+				newReview
+			);
+			expect(createdReview).toBeTruthy();
+			expect(createdReview.reviewGrade).toBe(90);
+			expect(createdReview.criterionGrades).toHaveLength(1);
+		});
+	});
 
-//             const foundReview = await reviewService.getReviewById(review.reviewId);
+	describe("updateReview", () => {
+		it("should update an existing review", async () => {
+			const updateData = {
+				reviewGrade: 95,
+				criterionGrades: [
+					{
+						criterionId: "test-criterion-id",
+						grade: 5,
+						comment: "Excellent work"
+					}
+				]
+			};
 
-//             expect(foundReview).not.toBeNull();
-//         });
+			const updatedReview = await reviewService.updateReview(
+				testReview.reviewId,
+				updateData
+			);
+			expect(updatedReview).toBeTruthy();
+			expect(updatedReview.reviewGrade).toBe(95);
+		});
+	});
 
-//         it("should throw an error if the review does not exist", async () => {
-//             await expect(reviewService.getReviewById("nonExistentReviewId")).rejects.toThrow(
-//                 apiError
-//             );
-//         });
-//     });
+	describe("deleteReview", () => {
+		it("should delete a review", async () => {
+			await reviewService.deleteReview(testReview.reviewId);
+			const deletedReview = await prisma.review.findUnique({
+				where: { reviewId: testReview.reviewId }
+			});
+			expect(deletedReview).toBeNull();
+		});
+	});
 
-//     describe("updateReview", () => {
-//         it("should update a review", async () => {
-//             const reviewData = {
-//                 submissionId: "testSubmissionId",
-//                 reviewerId: "testReviewerId",
-//                 revieweeId: "testRevieweeId",
-//                 reviewGrade: 5,
-//                 isPeerReview: true
-//             };
+	describe("assignRandomPeerReviews", () => {
+		it("should assign random peer reviews for an assignment", async () => {
+			// Create more submissions for this test
+			await prisma.submission.createMany({
+				data: [
+					{
+						assignmentId: testAssignment.assignmentId,
+						submitterId: testStudent2.userId
+					},
+					{
+						assignmentId: testAssignment.assignmentId,
+						submitterId: testInstructor.userId
+					}
+				]
+			});
 
-//             const review = await reviewService.createReview(reviewData);
+			const result = await reviewService.assignRandomPeerReviews(
+				testAssignment.assignmentId,
+				1
+			);
+			expect(result.assignedReviews).toBeGreaterThan(0);
+		});
 
-//             const updatedReview = await reviewService.updateReview(review.reviewId, {
-//                 reviewGrade: 4
-//             });
+		it("should throw an error if there are not enough submissions", async () => {
+			await expect(
+				reviewService.assignRandomPeerReviews(testAssignment.assignmentId, 2)
+			).rejects.toThrow("Not enough submissions to assign peer reviews");
+		});
+	});
 
-//             expect(updatedReview.reviewGrade).toBe(4);
-//         });
-
-//         it("should throw an error if the review does not exist", async () => {
-//             await expect(reviewService.updateReview("nonExistentReviewId", { reviewGrade: 4 })).rejects.toThrow(
-//                 apiError
-//             );
-//         });
-//     });
-
-//     describe("deleteReview", () => {
-//         it("should delete a review", async () => {
-//             const reviewData = {
-//                 submissionId: "testSubmissionId",
-//                 reviewerId: "testReviewerId",
-//                 revieweeId: "testRevieweeId",
-//                 reviewGrade: 5,
-//                 isPeerReview: true
-//             };
-
-//             const review = await reviewService.createReview(reviewData);
-
-//             await reviewService.deleteReview(review.reviewId);
-
-//             await expect(reviewService.getReviewById(review.reviewId)).rejects.toThrow(
-//                 apiError
-//             );
-//         });
-
-//         it("should throw an error if the review does not exist", async () => {
-//             await expect(reviewService.deleteReview("nonExistentReviewId")).rejects.toThrow(
-//                 apiError
-//             );
-//         });
-//     });
-
-//     describe("getPeerReviewsBySubmissionId", () => {
-//         it("should return all peer reviews for a submission", async () => {
-//             const reviewData = {
-//                 submissionId: "testSubmissionId",
-//                 reviewerId: "testReviewerId",
-//                 revieweeId: "testRevieweeId",
-//                 reviewGrade: 5,
-//                 isPeerReview: true
-//             };
-
-//             await reviewService.createReview(reviewData);
-
-//             const reviews = await reviewService.getPeerReviews("testSubmissionId");
-
-//             expect(reviews).not.toBeNull();
-//         });
-
-//         it("should throw an error if the submission does not exist", async () => {
-//             await expect(reviewService.getPeerReviewsBySubmissionId("nonExistentSubmissionId")).rejects.toThrow(
-//                 apiError
-//             );
-//         });
-//     });
-
-//     describe("getInstructorReviewsBySubmissionId", () => {
-//         it("should return all instructor reviews for a submission", async () => {
-//             const reviewData = {
-//                 submissionId: "testSubmissionId",
-//                 reviewerId: "testReviewerId",
-//                 revieweeId: "testRevieweeId",
-//                 reviewGrade: 5,
-//                 isPeerReview: false
-//             };
-
-//             await reviewService.createReview(reviewData);
-
-//             const reviews = await reviewService.getInstructorReview("testSubmissionId");
-
-//             expect(reviews).not.toBeNull();
-//         });
-
-//         it("should throw an error if the submission does not exist", async () => {
-//             await expect(reviewService.getInstructionReviewsBySubmissionId("nonExistentSubmissionId")).rejects.toThrow(
-//                 apiError
-//             );
-//         });
-//     });
-
-//     describe("getAllReviews", () => {
-//         it("should return all reviews", async () => {
-//             const reviewData = {
-//                 submissionId: "testSubmissionId",
-//                 reviewerId: "testReviewerId",
-//                 revieweeId: "testRevieweeId",
-//                 reviewGrade: 5,
-//                 isPeerReview: true
-//             };
-
-//             await reviewService.createReview(reviewData);
-
-//             const reviews = await reviewService.getAllReviews();
-
-//             expect(reviews).not.toBeNull();
-//         });
-//     });
-
-//     describe("getReviewDetails", () => {
-//         it("should return review details", async () => {
-//             const reviewData = {
-//                 submissionId: "testSubmissionId",
-//                 reviewerId: "testReviewerId",
-//                 revieweeId: "testRevieweeId",
-//                 reviewGrade: 5,
-//                 isPeerReview: true
-//             };
-
-//             const review = await reviewService.createReview(reviewData);
-
-//             const reviewDetails = await reviewService.getReviewDetails(review.reviewId);
-
-//             expect(reviewDetails).not.toBeNull();
-//         });
-
-//         it("should throw an error if the review does not exist", async () => {
-//             await expect(reviewService.getReviewDetails("nonExistentReviewId")).rejects.toThrow(
-//                 apiError
-//             );
-//         });
-//     });
-
-//     describe("getReviewsAssignedToUser", () => {
-//         it("should return all reviews assigned to a user", async () => {
-//             const reviewData = {
-//                 submissionId: "testSubmissionId",
-//                 reviewerId: "testReviewerId",
-//                 revieweeId: "testRevieweeId",
-//                 reviewGrade: 5,
-//                 isPeerReview: true
-//             };
-
-//             await reviewService.createReview(reviewData);
-
-//             const reviews = await reviewService.getReviewsAssigned(userId);
-
-//             expect(reviews).not.toBeNull();
-//         });
-
-//         it("should throw an error if the user does not exist", async () => {
-//             await expect(reviewService.getReviewsAssignedToUser("nonExistentUserId")).rejects.toThrow(
-//                 apiError
-//             );
-//         });
-//     });
-
-//     describe("getReviewsRecievedByUser", () => {
-//         it("should return all reviews recieved by a user", async () => {
-//             const reviewData = {
-//                 submissionId: "testSubmissionId",
-//                 reviewerId: "testReviewerId",
-//                 revieweeId: "testRevieweeId",
-//                 reviewGrade: 5,
-//                 isPeerReview: true
-//             };
-
-//             await reviewService.createReview(reviewData);
-
-//             const reviews = await reviewService.getReviewsReceived(userId);
-
-//             expect(reviews).not.toBeNull();
-//         });
-
-//         it("should throw an error if the user does not exist", async () => {
-//             await expect(reviewService.getReviewsRecievedByUser("nonExistentUserId")).rejects.toThrow(
-//                 apiError
-//             );
-//         });
-//     });
-// });
+	// Add more tests for other functions...
+});

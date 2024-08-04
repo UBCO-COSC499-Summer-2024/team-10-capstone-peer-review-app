@@ -24,7 +24,6 @@ function shuffleArray(array) {
  */
 const getReviewById = async (reviewId) => {
 	try {
-		console.log("Fetching review with ID:", reviewId);
 		const review = await prisma.review.findUnique({
 			where: {
 				reviewId: reviewId
@@ -69,7 +68,6 @@ const getReviewById = async (reviewId) => {
 
 		// Check if review exists
 		if (!review) {
-			console.log("No review found for ID:", reviewId);
 			throw new apiError("Review not found", 404);
 		}
 
@@ -81,7 +79,6 @@ const getReviewById = async (reviewId) => {
 
 		return reviewWithPeerFlag;
 	} catch (error) {
-		console.error("Error in getReviewById:", error);
 		throw new apiError(
 			`Failed to retrieve single review: ${error.message}`,
 			500
@@ -185,7 +182,6 @@ const getInstructorReview = async (submissionId) => {
 
 		return instructorReview; // This will be null if no review is found
 	} catch (error) {
-		console.error("Error in getInstructorReview:", error);
 		throw new apiError("Failed to retrieve instructor review", 500);
 	}
 };
@@ -241,7 +237,6 @@ const getAllReviews = async () => {
 
 		return reviews;
 	} catch (error) {
-		console.error("Error in getAllReviews:", error);
 		throw new apiError("Failed to retrieve reviews", 500);
 	}
 };
@@ -290,7 +285,6 @@ const getReviewsForAssignment = async (assignmentId) => {
 
 		return reviews;
 	} catch (error) {
-		console.error("Error in getReviewsForAssignment:", error);
 		throw new apiError(
 			`Failed to retrieve reviews for assignment: ${error.message}`,
 			500
@@ -311,8 +305,6 @@ const updateReview = async (reviewId, review) => {
 	const { criterionGrades, ...reviewData } = review;
 
 	try {
-		console.log("Updating review:", reviewId, reviewData);
-
 		// Start a transaction
 		const updatedReview = await prisma.$transaction(async (prisma) => {
 			// Update the review data
@@ -323,8 +315,6 @@ const updateReview = async (reviewId, review) => {
 				data: reviewData
 			});
 
-			console.log("Review updated:", updatedReview);
-
 			// Delete existing criterion grades
 			await prisma.criterionGrade.deleteMany({
 				where: {
@@ -334,7 +324,6 @@ const updateReview = async (reviewId, review) => {
 
 			// Create new criterion grades
 			if (criterionGrades && criterionGrades.length > 0) {
-				console.log("Creating new criterion grades:", criterionGrades);
 				await prisma.criterionGrade.createMany({
 					data: criterionGrades.map((cg) => ({
 						reviewId: reviewId,
@@ -359,7 +348,6 @@ const updateReview = async (reviewId, review) => {
 
 		return updatedReview;
 	} catch (error) {
-		console.error("Error in updateReview:", error);
 		throw new apiError(`Failed to update review: ${error.message}`, 500);
 	}
 };
@@ -424,7 +412,6 @@ const createReview = async (userId, review) => {
 
 		return newReview;
 	} catch (error) {
-		console.error("Error in createReview:", error);
 		throw new apiError(`Failed to create review: ${error.message}`, 500);
 	}
 };
@@ -661,7 +648,6 @@ const getReviewsAssigned = async (userId) => {
 		});
 		return reviewsAssigned;
 	} catch (error) {
-		console.error("Error in getReviewsAssigned:", error);
 		throw new apiError(
 			`Failed to retrieve user reviews: ${error.message}`,
 			500
@@ -713,7 +699,6 @@ const getReviewsReceived = async (userId) => {
 		});
 		return reviewsReceived;
 	} catch (error) {
-		console.error("Error in getReviewsReceived:", error);
 		throw new apiError(
 			`Failed to retrieve user reviews: ${error.message}`,
 			500

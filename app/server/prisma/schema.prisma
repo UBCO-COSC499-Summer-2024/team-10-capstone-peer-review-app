@@ -56,7 +56,7 @@ model Class {
   usersInClass  UserInClass[]
   Assignments   Assignment[]
   categories    Category[]
-  instructor    User            @relation("InstructorClasses", fields: [instructorId], references: [userId]) // Only one instructor per class 
+  instructor    User            @relation("InstructorClasses", fields: [instructorId], references: [userId], onDelete: Cascade) // Only one instructor per class 
   EnrollRequest EnrollRequest[]
   rubrics       Rubric[]
   todos         Todo[]
@@ -190,7 +190,7 @@ model Criterion {
   title            String
   maxMark          Int
   minMark          Int
-  rubric           Rubric            @relation(fields: [rubricId], references: [rubricId])
+  rubric           Rubric            @relation(fields: [rubricId], references: [rubricId], onDelete: Cascade)
   criterionRatings CriterionRating[]
   criterionGrades  CriterionGrade[]
 }

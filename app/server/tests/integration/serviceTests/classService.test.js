@@ -1,334 +1,477 @@
-import prisma from "../../../prisma/prismaClient";
+import prisma from "../../../prisma/prismaClient.js";
 import classService from "../../../src/services/classService.js";
-import authService from "../../../src/services/authService.js";
-import apiError from "../../../src/utils/apiError";
-import e from "express";
+import apiError from "../../../src/utils/apiError.js";
+import {
+	sendNotificationToRole,
+	sendNotificationToUser
+} from "../../../src/services/notifsService.js";
 
-let user;
+// Mock the notification service
+jest.mock("../../../src/services/notifsService.js", () => ({
+	sendNotificationToRole: jest.fn(),
+	sendNotificationToUser: jest.fn()
+}));
+
 beforeAll(async () => {
-    await prisma.$connect();
-    const userData = {
-        email: "verified@example.com",
-        password: "password123",
-        firstname: "Verified",
-        lastname: "User",
-        role: "STUDENT"
-    };
-
-    await authService.registerUser(userData);
-    await prisma.user.update({
-        where: { email: userData.email },
-        data: { isEmailVerified: true, isRoleActivated: true }
-    });
-
-    user = await authService.loginUser(
-        userData.email,
-        userData.password
-    );
+	await prisma.$connect();
 });
 
 afterAll(async () => {
-    await prisma.user.deleteMany();
-    await prisma.$disconnect();
+	await prisma.$disconnect();
 });
 
-beforeEach(async () => {
-    await prisma.class.deleteMany();
-});
+describe("classService Integration Tests", () => {
+	let testInstructor, testStudent, testClass, testGroup;
 
-describe("Class Service Integration Tests", () => {
-    describe("createClass", () => {
-        it("should create a new class", async () => {
-            expect(user).toBeTruthy();
-            const testClass = {
-                //instructorId: user.userId,
-                classname: "Test Class",
-                description: "This is a test class",
-                startDate: "2024-05-01T00:00:00Z",
-                endDate: "2024-08-30T23:59:59Z",
-                term: "Spring 2024",
-                classSize: 4
-            };
+	beforeEach(async () => {
+		await prisma.$transaction(async (prisma) => {
+			// Clean up
+			await prisma.userInClass.deleteMany();
+			await prisma.group.deleteMany();
+			await prisma.class.deleteMany();
+			await prisma.user.deleteMany();
 
-            const newClass = await classService.createClass(testClass, user.userId);
+			// Create test instructor
+			testInstructor = await prisma.user.create({
+				data: {
+					email: "instructor@example.com",
+					password: "password123",
+					firstname: "Test",
+					lastname: "Instructor",
+					role: "INSTRUCTOR"
+				}
+			});
 
-            expect(newClass).toBeTruthy();
-            expect(newClass.classname).toBe(testClass.classname);
-            expect(newClass.description).toBe(testClass.description);
-            expect(newClass.startDate).toBe(testClass.startDate);
-            expect(newClass.endDate).toBe(testClass.endDate);
-            expect(newClass.instructorId).toBe(testClass.instructorId);
-        });
-    });
+			// Create test student
+			testStudent = await prisma.user.create({
+				data: {
+					email: "student@example.com",
+					password: "password123",
+					firstname: "Test",
+					lastname: "Student",
+					role: "STUDENT"
+				}
+			});
 
-    // describe("createClass with invalid data", () => {
-    //     it("should not create a new class with invalid data", async () => {
-    //         const testClass = {
-    //             classname: "Test Class",
-    //             description: 5,
-    //             startDate: "2024-05-01",
-    //             endDate: "2024-08-30",
-    //             instructorId: 1
-    //         };
+			// Create test class
+			testClass = await prisma.class.create({
+				data: {
+					classname: "Test Class",
+					description: "Test Description",
+					startDate: new Date(),
+					endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+					instructorId: testInstructor.userId,
+					classSize: 30
+				}
+			});
 
-    //         try {
-    //             await classService.createClass(testClass);
-    //         } catch (error) {
-    //             expect(error).toBeInstanceOf(apiError);
-    //             expect(error.message).toContain("Invalid class data provided.");
-    //         }
-    //     });
-    // });
+			// Create test group
+			testGroup = await prisma.group.create({
+				data: {
+					classId: testClass.classId,
+					groupName: "Test Group",
+					groupSize: 5
+				}
+			});
+		});
+	});
 
-    // describe("getClasses", () => {
-    //     it("should return all classes", async () => {
-    //         const testClass = {
-    //             //instructorId: user.userId,
-    //             classname: "Test Class",
-    //             description: "This is a test class",
-    //             startDate: "2024-05-01T00:00:00Z",
-    //             endDate: "2024-08-30T23:59:59Z",
-    //             term: "Spring 2024",
-    //             classSize: 4
-    //         };
+	describe("getAllClasses", () => {
+		it("should retrieve all classes with counts", async () => {
+			const classes = await classService.getAllClasses();
+			expect(classes).toHaveLength(1);
+			expect(classes[0]).toHaveProperty("assignmentCount");
+			expect(classes[0]).toHaveProperty("userCount");
+		});
+	});
 
-    //         await classService.createClass(testClass);
+	describe("getAllClassesUserIsNotIn", () => {
+		it("should retrieve classes user is not in", async () => {
+			const classes = await classService.getAllClassesUserIsNotIn(
+				testStudent.userId
+			);
+			expect(classes).toHaveLength(1);
+			expect(classes[0]).toHaveProperty("availableSeats");
+		});
+	});
 
-    //         const classes = await classService.getAllClasses();
+	describe("getStudentsByClass", () => {
+		it("should retrieve students in a class", async () => {
+			await prisma.userInClass.create({
+				data: {
+					userId: testStudent.userId,
+					classId: testClass.classId
+				}
+			});
+			const students = await classService.getStudentsByClass(testClass.classId);
+			expect(students).toHaveLength(1);
+			expect(students[0].userId).toBe(testStudent.userId);
+		});
+	});
 
-    //         expect(classes).toBeTruthy();
-    //         expect(classes.length).toBe(1);
-    //         expect(classes[0].classname).toBe(testClass.classname);
-    //         expect(classes[0].description).toBe(testClass.description);
-    //         expect(classes[0].startDate).toBe(testClass.startDate.toISOString());
+	describe("getInstructorByClass", () => {
+		it("should retrieve the instructor of a class", async () => {
+			const instructor = await classService.getInstructorByClass(
+				testClass.classId
+			);
+			expect(instructor.userId).toBe(testInstructor.userId);
+		});
+	});
 
-    //     });
-    // });
+	describe("createClass", () => {
+		it("should create a new class", async () => {
+			const newClassData = {
+				classname: "New Test Class",
+				description: "New Test Description",
+				startDate: new Date(),
+				endDate: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000),
+				term: "Fall 2023",
+				classSize: 25
+			};
+			const newClass = await classService.createClass(
+				newClassData,
+				testInstructor.userId
+			);
+			expect(newClass.classname).toBe(newClassData.classname);
+			expect(sendNotificationToRole).toHaveBeenCalled();
+		});
 
-    // describe("getClassById", () => {
-    //     it("should return a class by ID", async () => {
-    //         const testClass = {
-    //             //instructorId: user.userId,
-    //             classname: "Test Class",
-    //             description: "This is a test class",
-    //             startDate: "2024-05-01T00:00:00Z",
-    //             endDate: "2024-08-30T23:59:59Z",
-    //             term: "Spring 2024",
-    //             classSize: 4
-    //         };
-    //         const newClass = await classService.createClass(testClass);
+		it("should throw an error if start date is after end date", async () => {
+			const invalidClassData = {
+				classname: "Invalid Class",
+				description: "Invalid Description",
+				startDate: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000),
+				endDate: new Date(),
+				term: "Fall 2023",
+				classSize: 25
+			};
+			await expect(
+				classService.createClass(invalidClassData, testInstructor.userId)
+			).rejects.toThrow("Invalid class data provided.");
+		});
+	});
 
-    //         const classData = await classService.getClassById(newClass.classId);
+	describe("updateClass", () => {
+		it("should update a class", async () => {
+			const updateData = { classname: "Updated Class Name" };
+			const updatedClass = await classService.updateClass(
+				testClass.classId,
+				updateData
+			);
+			expect(updatedClass.classname).toBe(updateData.classname);
+			expect(sendNotificationToRole).toHaveBeenCalled();
+		});
 
-    //         expect(classData).toBeTruthy();
-    //         expect(classData.classname).toBe(testClass.classname);
-    //         expect(classData.description).toBe(testClass.description);
-    //         // expect(classData.startDate).toBe(testClass.startDate.toISOString());
-    //         // expect(classData.endDate).toBe(testClass.endDate.toISOString());
-    //         expect(classData.instructorId).toBe(testClass.instructorId);
-    //     });
-    // });
+		it("should throw an error if new class size is less than current number of students", async () => {
+			await prisma.userInClass.create({
+				data: {
+					userId: testStudent.userId,
+					classId: testClass.classId
+				}
+			});
+			const updateData = { classSize: 0 };
+			await expect(
+				classService.updateClass(testClass.classId, updateData)
+			).rejects.toThrow(
+				"The new class size given is less than the number of students in the class"
+			);
+		});
+	});
 
-    // describe("updateClass", () => {
-    //     it("should update a class", async () => {
-    //         const testClass = {
-    //             //instructorId: user.userId,
-    //             classname: "Test Class",
-    //             description: "This is a test class",
-    //             startDate: "2024-05-01T00:00:00Z",
-    //             endDate: "2024-08-30T23:59:59Z",
-    //             term: "Spring 2024",
-    //             classSize: 4
-    //         };
+	describe("addStudentToClass", () => {
+		it("should add a student to a class", async () => {
+			await classService.addStudentToClass(
+				testClass.classId,
+				testStudent.userId
+			);
+			const students = await classService.getStudentsByClass(testClass.classId);
+			expect(students).toHaveLength(1);
+			expect(students[0].userId).toBe(testStudent.userId);
+			expect(sendNotificationToUser).toHaveBeenCalled();
+		});
 
-    //         const newClass = await classService.createClass(testClass);
+		it("should throw an error if adding student exceeds class size", async () => {
+			await prisma.class.update({
+				where: { classId: testClass.classId },
+				data: { classSize: 1 }
+			});
+			await classService.addStudentToClass(
+				testClass.classId,
+				testStudent.userId
+			);
+			const anotherStudent = await prisma.user.create({
+				data: {
+					email: "another@example.com",
+					password: "password123",
+					firstname: "Another",
+					lastname: "Student",
+					role: "STUDENT"
+				}
+			});
+			await expect(
+				classService.addStudentToClass(testClass.classId, anotherStudent.userId)
+			).rejects.toThrow("Adding student exceeds class size");
+		});
+	});
 
-    //         const updatedClass = await classService.updateClass(newClass.classId, {
-    //                 //instructorId: user.userId,
-    //                 classname: "Updated Test Class",
-    //                 description: "This is an updated test class",
-    //                 startDate: "2024-05-01T00:00:00Z",
-    //                 endDate: "2024-08-30T23:59:59Z",
-    //                 term: "Spring 2024",
-    //                 classSize: 4
-    //         });
+	describe("addGroupToClass", () => {
+		it("should add a group to a class", async () => {
+			const groupData = { groupName: "New Group", groupSize: 5 };
+			const newGroup = await classService.addGroupToClass(
+				testClass.classId,
+				groupData
+			);
+			expect(newGroup.groupName).toBe(groupData.groupName);
+			expect(newGroup.classId).toBe(testClass.classId);
+		});
+	});
 
-    //         expect(updatedClass).toBeTruthy();
-    //         expect(updatedClass.classname).toBe("Updated Class");
-    //         expect(updatedClass.description).toBe("This is an updated class");
-    //     });
-//     });
+	describe("addGroupMember", () => {
+		it("should add a student to a group", async () => {
+			await classService.addGroupMember(testGroup.groupId, testStudent.userId);
+			const groupMembers = await classService.getGroupMembers(
+				testGroup.groupId
+			);
+			expect(groupMembers).toHaveLength(1);
+			expect(groupMembers[0].userId).toBe(testStudent.userId);
+			expect(sendNotificationToUser).toHaveBeenCalled();
+		});
 
-    // describe("deleteClass", () => {
-    //     it("should delete a class", async () => {
-    //         const testClass = {
-    //             //instructorId: user.userId,
-    //             classname: "Test Class",
-    //             description: "This is a test class",
-    //             startDate: "2024-05-01T00:00:00Z",
-    //             endDate: "2024-08-30T23:59:59Z",
-    //             term: "Spring 2024",
-    //             classSize: 4
-    //         };
+		it("should throw an error if adding student exceeds group size", async () => {
+			await prisma.group.update({
+				where: { groupId: testGroup.groupId },
+				data: { groupSize: 1 }
+			});
+			await classService.addGroupMember(testGroup.groupId, testStudent.userId);
+			const anotherStudent = await prisma.user.create({
+				data: {
+					email: "another@example.com",
+					password: "password123",
+					firstname: "Another",
+					lastname: "Student",
+					role: "STUDENT"
+				}
+			});
+			await expect(
+				classService.addGroupMember(testGroup.groupId, anotherStudent.userId)
+			).rejects.toThrow("Adding student exceeds group size");
+		});
+	});
 
-    //         const newClass = await classService.createClass(testClass);
+	describe("deleteClass", () => {
+		it("should delete a class", async () => {
+			await classService.deleteClass(testClass.classId);
+			const deletedClass = await prisma.class.findUnique({
+				where: { classId: testClass.classId }
+			});
+			expect(deletedClass).toBeNull();
+			expect(sendNotificationToRole).toHaveBeenCalled();
+		});
+	});
 
-    //         await classService.deleteClass(newClass.classId);
+	describe("removeStudentFromClass", () => {
+		it("should remove a student from a class", async () => {
+			await prisma.userInClass.create({
+				data: {
+					userId: testStudent.userId,
+					classId: testClass.classId
+				}
+			});
+			await classService.removeStudentFromClass(
+				testClass.classId,
+				testStudent.userId
+			);
+			const studentsInClass = await classService.getStudentsByClass(
+				testClass.classId
+			);
+			expect(studentsInClass).toHaveLength(0);
+			expect(sendNotificationToUser).toHaveBeenCalled();
+		});
 
-    //         const classes = await classService.getAllClasses();
+		it("should throw an error if student is not in the class", async () => {
+			await expect(
+				classService.removeStudentFromClass(
+					testClass.classId,
+					testStudent.userId
+				)
+			).rejects.toThrow("Student is not enrolled in this class.");
+		});
+	});
 
-    //         expect(classes).toBeTruthy();
-    //         expect(classes.length).toBe(0);
-    //     });
-    // });
+	describe("removeGroupFromClass", () => {
+		it("should remove a group from a class", async () => {
+			await classService.removeGroupFromClass(testGroup.groupId);
+			const deletedGroup = await prisma.group.findUnique({
+				where: { groupId: testGroup.groupId }
+			});
+			expect(deletedGroup).toBeNull();
+		});
 
-    // describe("enrollStudent", () => {
-    //     it("should enroll a student in a class", async () => {
-    //         const testClass = {
-    //             //instructorId: user.userId,
-    //             classname: "Test Class",
-    //             description: "This is a test class",
-    //             startDate: "2024-05-01T00:00:00Z",
-    //             endDate: "2024-08-30T23:59:59Z",
-    //             term: "Spring 2024",
-    //             classSize: 4
-    //         };
+		it("should throw an error if group is not found", async () => {
+			await expect(
+				classService.removeGroupFromClass("non-existent-id")
+			).rejects.toThrow("Group not found");
+		});
+	});
 
-    //         const newClass = await classService.createClass(testClass);
+	describe("updateGroupInClass", () => {
+		it("should update a group in a class", async () => {
+			const updateData = { groupName: "Updated Group Name" };
+			const updatedGroup = await classService.updateGroupInClass(
+				testGroup.groupId,
+				updateData
+			);
+			expect(updatedGroup.groupName).toBe(updateData.groupName);
+		});
 
-    //         const student = {
-    //             userId: 2,
-    //             classId: newClass.classId
-    //         };
+		it("should throw an error if group is not found", async () => {
+			await expect(
+				classService.updateGroupInClass("non-existent-id", {})
+			).rejects.toThrow("Group not found");
+		});
+	});
 
-    //         const enrolledStudent = await classService.enrollStudent(student);
+	describe("getGroupInClass", () => {
+		it("should retrieve a group in a class", async () => {
+			const group = await classService.getGroupInClass(
+				testClass.classId,
+				testGroup.groupId
+			);
+			expect(group.groupId).toBe(testGroup.groupId);
+		});
 
-    //         expect(enrolledStudent).toBeTruthy();
-    //         expect(enrolledStudent.userId).toBe(student.userId);
-    //         expect(enrolledStudent.classId).toBe(student.classId);
-    //     });
-    // });
+		it("should throw an error if group is not found", async () => {
+			await expect(
+				classService.getGroupInClass(testClass.classId, "non-existent-id")
+			).rejects.toThrow("Group not found");
+		});
+	});
 
-    // describe("getStudentsInClass", () => {
-    //     it("should return all students in a class", async () => {
-    //         const testClass = {
-    //             //instructorId: user.userId,
-    //             classname: "Test Class",
-    //             description: "This is a test class",
-    //             startDate: "2024-05-01T00:00:00Z",
-    //             endDate: "2024-08-30T23:59:59Z",
-    //             term: "Spring 2024",
-    //             classSize: 4
-    //         };
+	describe("getGroupsInClass", () => {
+		it("should retrieve all groups in a class", async () => {
+			const groups = await classService.getGroupsInClass(testClass.classId);
+			expect(groups).toHaveLength(1);
+			expect(groups[0].groupId).toBe(testGroup.groupId);
+		});
 
-    //         const newClass = await classService.createClass(testClass);
+		it("should throw an error if class is not found", async () => {
+			await expect(
+				classService.getGroupsInClass("non-existent-id")
+			).rejects.toThrow("Class not found");
+		});
+	});
 
-    //         const student = {
-    //             userId: 2,
-    //             classId: newClass.classId
-    //         };
+	describe("removeGroupMember", () => {
+		it("should remove a student from a group", async () => {
+			await prisma.group.update({
+				where: { groupId: testGroup.groupId },
+				data: { students: { connect: { userId: testStudent.userId } } }
+			});
+			await classService.removeGroupMember(
+				testGroup.groupId,
+				testStudent.userId
+			);
+			const groupMembers = await classService.getGroupMembers(
+				testGroup.groupId
+			);
+			expect(groupMembers).toHaveLength(0);
+			expect(sendNotificationToUser).toHaveBeenCalled();
+		});
 
-    //         await classService.enrollStudent(student);
+		it("should throw an error if group or student is not found", async () => {
+			await expect(
+				classService.removeGroupMember(testGroup.groupId, "non-existent-id")
+			).rejects.toThrow("Group not found with student");
+		});
+	});
 
-    //         const students = await classService.getStudentsByClass(newClass.classId);
+	describe("isUserInGroup", () => {
+		it("should return true if user is in a group", async () => {
+			await prisma.group.update({
+				where: { groupId: testGroup.groupId },
+				data: { students: { connect: { userId: testStudent.userId } } }
+			});
+			const isInGroup = await classService.isUserInGroup(
+				testClass.classId,
+				testStudent.userId
+			);
+			expect(isInGroup).toBe(true);
+		});
 
-    //         expect(students).toBeTruthy();
-    //         expect(students.length).toBe(1);
-    //         expect(students[0].userId).toBe(student.userId);
-    //         expect(students[0].classId).toBe(student.classId);
-    //     });
-    // });
+		it("should return false if user is not in a group", async () => {
+			const isInGroup = await classService.isUserInGroup(
+				testClass.classId,
+				testStudent.userId
+			);
+			expect(isInGroup).toBe(false);
+		});
 
-    // describe("removeStudentFromClass", () => {
-    //     it("should remove a student from a class", async () => {
-    //         const testClass = {
-    //             //instructorId: user.userId,
-    //             classname: "Test Class",
-    //             description: "This is a test class",
-    //             startDate: "2024-05-01T00:00:00Z",
-    //             endDate: "2024-08-30T23:59:59Z",
-    //             term: "Spring 2024",
-    //             classSize: 4
-    //         };
+		it("should throw an error if class is not found", async () => {
+			await expect(
+				classService.isUserInGroup("non-existent-id", testStudent.userId)
+			).rejects.toThrow("Class not found");
+		});
+	});
 
-    //         const newClass = await classService.createClass(testClass);
+	describe("getStudentsNotInAnyGroup", () => {
+		it("should retrieve students not in any group", async () => {
+			await prisma.userInClass.create({
+				data: {
+					userId: testStudent.userId,
+					classId: testClass.classId
+				}
+			});
+			const studentsNotInGroup = await classService.getStudentsNotInAnyGroup(
+				testClass.classId
+			);
+			expect(studentsNotInGroup).toHaveLength(1);
+			expect(studentsNotInGroup[0].userId).toBe(testStudent.userId);
+		});
 
-    //         const student = {
-    //             userId: 2,
-    //             classId: newClass.classId
-    //         };
+		it("should return an empty array if all students are in groups", async () => {
+			await prisma.userInClass.create({
+				data: {
+					userId: testStudent.userId,
+					classId: testClass.classId
+				}
+			});
+			await prisma.group.update({
+				where: { groupId: testGroup.groupId },
+				data: { students: { connect: { userId: testStudent.userId } } }
+			});
+			const studentsNotInGroup = await classService.getStudentsNotInAnyGroup(
+				testClass.classId
+			);
+			expect(studentsNotInGroup).toHaveLength(0);
+		});
 
-    //         await classService.enrollStudent(student);
+		it("should throw an error if class is not found", async () => {
+			await expect(
+				classService.getStudentsNotInAnyGroup("non-existent-id")
+			).rejects.toThrow("Class not found");
+		});
+	});
 
-    //         await classService.removeStudentFromClass(student.userId, student.classId);
+	describe("getCategoriesByClassId", () => {
+		it("should retrieve categories for a class", async () => {
+			const category = await prisma.category.create({
+				data: {
+					name: "Test Category",
+					classId: testClass.classId
+				}
+			});
+			const categories = await classService.getCategoriesByClassId(
+				testClass.classId
+			);
+			expect(categories).toHaveLength(1);
+			expect(categories[0].name).toBe(category.name);
+		});
 
-    //         const students = await classService.getStudentsByClass(newClass.classId);
-
-    //         expect(students).toBeTruthy();
-    //         expect(students.length).toBe(0);
-    //     });
-    // });
-
-    // describe("getClassesByInstructor", () => {
-    //     it("should return all classes by instructor ID", async () => {
-    //         const testClass = {
-    //             //instructorId: user.userId,
-    //             classname: "Test Class",
-    //             description: "This is a test class",
-    //             startDate: "2024-05-01T00:00:00Z",
-    //             endDate: "2024-08-30T23:59:59Z",
-    //             term: "Spring 2024",
-    //             classSize: 4
-    //         };
-
-    //             await classService.createClass(testClass);
-
-    //             const classes = await classService.getClassesByInstructor(instructor.userId);
-
-    //             expect(classes).toBeTruthy();
-    //             expect(classes.length).toBe(1);
-    //             expect(classes[0].instructorId).toBe(instructor.userId);
-    //         });
-    //     });
-    // });
-
-    // describe("getClassesByStudent", () => {
-    //     it("should return all classes by student ID", async () => {
-    //         const student = {
-    //             userId: 2,
-    //             email: "abc@gcom",
-    //             password: "123",
-    //             firstname: "abc",
-    //             lastname: "def",
-    //             role: "STUDENT",
-    //             isEmailVerified: true,
-    //             isRoleActivated: true
-    //         };
-
-    //         const testClass = {
-    //             //instructorId: user.userId,
-    //             classname: "Test Class",
-    //             description: "This is a test class",
-    //             startDate: "2024-05-01T00:00:00Z",
-    //             endDate: "2024-08-30T23:59:59Z",
-    //             term: "Spring 2024",
-    //             classSize: 4
-    //         };
-
-    //         const newClass = await classService.createClass(testClass);
-
-    //         const studentClass = {
-    //             userId: student.userId,
-    //             classId: newClass.classId
-    //         };
-
-    //         await classService.enrollStudent(studentClass);
-
-    //         const classes = await classService.getClassesByStudent(student.userId);
-
-    //         expect(classes).toBeTruthy();
-    //         expect(classes.length).toBe(1);
-    //         expect(classes[0].classId).toBe(newClass.classId);
-    //     });
-    // });
+		it("should return an empty array if no categories exist", async () => {
+			const categories = await classService.getCategoriesByClassId(
+				testClass.classId
+			);
+			expect(categories).toHaveLength(0);
+		});
+	});
 });

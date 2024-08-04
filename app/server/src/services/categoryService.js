@@ -14,33 +14,34 @@ import apiError from "../utils/apiError.js";
  * @throws {apiError} - If the class is not found or there is an error retrieving the categories
  */
 const getAllCategories = async (classId) => {
-    try {
-        const classA = await prisma.class.findUnique({
-            where: {
-                classId: classId,
-            },
-        });
+	try {
+		const classA = await prisma.class.findUnique({
+			where: {
+				classId: classId
+			}
+		});
 
-        // check if class exists
-        if (!classA) {
-            throw new apiError(`Class not found`, 404);
-        }
+		// check if class exists
+		if (!classA) {
+			throw new apiError(`Class not found`, 404);
+		}
 
-        const categories = await prisma.category.findMany({
-            where: {
-                classId: classId,
-            }, include: {
-                assignments: true
-            }
-        });
+		const categories = await prisma.category.findMany({
+			where: {
+				classId: classId
+			},
+			include: {
+				assignments: true
+			}
+		});
 
-        return categories;
-    } catch (error) {
-        if (error instanceof apiError) {
-            throw error;
-        }
-        throw new apiError("Failed to get categories" + error, 500);
-    }
+		return categories;
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		}
+		throw new apiError("Failed to get categories" + error, 500);
+	}
 };
 
 /**
@@ -52,41 +53,41 @@ const getAllCategories = async (classId) => {
  * @throws {apiError} - If a category with the same name already exists, the class is not found, or there is an error creating the category
  */
 const createCategory = async (classId, name) => {
-    try {
-        const categories = await prisma.category.findMany({
-            where: {
-                name: name,
-            },
-        });
+	try {
+		const categories = await prisma.category.findMany({
+			where: {
+				name: name
+			}
+		});
 
-        // check if category with the same name already exists
-        if (categories.length > 0) {
-            throw new apiError(`Category with name ${name} already exists`, 400);
-        }
+		// check if category with the same name already exists
+		if (categories.length > 0) {
+			throw new apiError(`Category with name ${name} already exists`, 400);
+		}
 
-        const classA = await prisma.class.findUnique({
-            where: {
-                classId: classId,
-            },
-        });
+		const classA = await prisma.class.findUnique({
+			where: {
+				classId: classId
+			}
+		});
 
-        // check if class exists
-        if (!classA) {
-            throw new apiError(`Class not found`, 404);
-        }
+		// check if class exists
+		if (!classA) {
+			throw new apiError(`Class not found`, 404);
+		}
 
-        return await prisma.category.create({
-            data: {
-                classId: classId,
-                name: name,
-            },
-        });
-    } catch (error) {
-        if (error instanceof apiError) {
-            throw error;
-        }
-        throw new apiError("Failed to create category", 500);
-    }
+		return await prisma.category.create({
+			data: {
+				classId: classId,
+				name: name
+			}
+		});
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		}
+		throw new apiError("Failed to create category", 500);
+	}
 };
 
 /**
@@ -98,45 +99,45 @@ const createCategory = async (classId, name) => {
  * @throws {apiError} - If the category is not found, a category with the same name already exists, or there is an error updating the category
  */
 const updateCategory = async (categoryId, name) => {
-    try {
-        const category = await prisma.category.findUnique({
-            where: {
-                categoryId: categoryId,
-            },
-        });
+	try {
+		const category = await prisma.category.findUnique({
+			where: {
+				categoryId: categoryId
+			}
+		});
 
-        // check if category exists
-        if (!category) {
-            throw new apiError(`Category not found`, 404);
-        }
+		// check if category exists
+		if (!category) {
+			throw new apiError(`Category not found`, 404);
+		}
 
-        const categories = await prisma.category.findMany({
-            where: {
-                name: name,
-            },
-        });
+		const categories = await prisma.category.findMany({
+			where: {
+				name: name
+			}
+		});
 
-        // check if category with the same name already exists
-        if (categories.length > 0) {
-            throw new apiError(`Category with name ${name} already exists`, 400);
-        }
+		// check if category with the same name already exists
+		if (categories.length > 0) {
+			throw new apiError(`Category with name ${name} already exists`, 400);
+		}
 
-        const updatedCategory = await prisma.category.update({
-            where: {
-                categoryId: categoryId,
-            },
-            data: {
-                name: name,
-            },
-        });
+		const updatedCategory = await prisma.category.update({
+			where: {
+				categoryId: categoryId
+			},
+			data: {
+				name: name
+			}
+		});
 
-        return updatedCategory;
-    } catch (error) {
-        if (error instanceof apiError) {
-            throw error;
-        }
-        throw new apiError("Failed to update category", 500);
-    }
+		return updatedCategory;
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		}
+		throw new apiError("Failed to update category", 500);
+	}
 };
 
 /**
@@ -147,45 +148,43 @@ const updateCategory = async (categoryId, name) => {
  * @throws {apiError} - If the category is not found, the category has assignments, or there is an error deleting the category
  */
 const deleteCategory = async (categoryId) => {
-    try {
-        const category = await prisma.category.findUnique({
-            where: {
-                categoryId: categoryId,
-            },
-        });
+	try {
+		const category = await prisma.category.findUnique({
+			where: {
+				categoryId: categoryId
+			}
+		});
 
-        // check if category exists
-        if (!category) {
-            throw new apiError(`Category not found`, 404);
-        }
+		// check if category exists
+		if (!category) {
+			throw new apiError(`Category not found`, 404);
+		}
 
-        const categoryAssignments = await prisma.assignment.updateMany({
-            where: {
-                categoryId: categoryId
-            },
-            data: {
-                categoryId: null
-            }
-        });
+		const categoryAssignments = await prisma.assignment.updateMany({
+			where: {
+				categoryId: categoryId
+			},
+			data: {
+				categoryId: null
+			}
+		});
 
-        // check if category has assignments
-        if (categoryAssignments.length > 0) {
-            throw new apiError(`Category has assignments, cannot delete`, 400);
-        }
+		// check if category has assignments
+		if (categoryAssignments.length > 0) {
+			throw new apiError(`Category has assignments, cannot delete`, 400);
+		}
 
-        return await prisma.category.delete({
-            where: {
-                categoryId: categoryId,
-            },
-        });
-    } catch (error) {
-        if (error instanceof apiError) {
-            console.log(error);
-            throw error;
-        }
-        console.log(error);
-        throw new apiError("Failed to delete category" + error, 500);
-    }
+		return await prisma.category.delete({
+			where: {
+				categoryId: categoryId
+			}
+		});
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		}
+		throw new apiError("Failed to delete category" + error, 500);
+	}
 };
 
 /**
@@ -196,18 +195,18 @@ const deleteCategory = async (categoryId) => {
  * @throws {apiError} - If there is an error retrieving the category assignments
  */
 const getCategoryAssignments = async (categoryId) => {
-    try {
-        return await prisma.assignment.findMany({
-            where: {
-                categoryId: categoryId,
-            },
-        });
-    } catch (error) {
-        if (error instanceof apiError) {
-            throw error;
-        }
-        throw new apiError("Failed to get category assignments", 500);
-    }
+	try {
+		return await prisma.assignment.findMany({
+			where: {
+				categoryId: categoryId
+			}
+		});
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		}
+		throw new apiError("Failed to get category assignments", 500);
+	}
 };
 
 /**
@@ -219,64 +218,67 @@ const getCategoryAssignments = async (categoryId) => {
  * @throws {apiError} - If the category or assignment is not found, the assignment already exists in the category, the assignment doesn't belong to the same class as the category, or there is an error adding the assignment to the category
  */
 const addAssignmentToCategory = async (categoryId, assignmentId) => {
-    try {
-        const category = await prisma.category.findUnique({
-            where: {
-                categoryId: categoryId,
-            },
-        });
+	try {
+		const category = await prisma.category.findUnique({
+			where: {
+				categoryId: categoryId
+			}
+		});
 
-        // check if category exists
-        if (!category) {
-            throw new apiError(`Category not found`, 404);
-        }
+		// check if category exists
+		if (!category) {
+			throw new apiError(`Category not found`, 404);
+		}
 
-        const assignment = await prisma.assignment.findUnique({
-            where: {
-                assignmentId: assignmentId,
-            },
-        });
+		const assignment = await prisma.assignment.findUnique({
+			where: {
+				assignmentId: assignmentId
+			}
+		});
 
-        // check if assignment exists
-        if (!assignment) {
-            throw new apiError(`Assignment not found`, 404);
-        }
+		// check if assignment exists
+		if (!assignment) {
+			throw new apiError(`Assignment not found`, 404);
+		}
 
-        const categoryAssignment = await prisma.assignment.findUnique({
-            where: {
-                assignmentId: assignmentId,
-                categoryId: categoryId
-            }
-        });
+		const categoryAssignment = await prisma.assignment.findUnique({
+			where: {
+				assignmentId: assignmentId,
+				categoryId: categoryId
+			}
+		});
 
-        // check if assignment already exists in category
-        if (categoryAssignment) {
-            throw new apiError(`Assignment already exists in category`, 400);
-        }
+		// check if assignment already exists in category
+		if (categoryAssignment) {
+			throw new apiError(`Assignment already exists in category`, 400);
+		}
 
-        // check if assignment belongs to the same class as category
-        if (category.classId !== assignment.classId) {
-            throw new apiError(`Assignment doesn't belong to the same class as category`, 400);
-        }
+		// check if assignment belongs to the same class as category
+		if (category.classId !== assignment.classId) {
+			throw new apiError(
+				`Assignment doesn't belong to the same class as category`,
+				400
+			);
+		}
 
-        return await prisma.category.update({
-            where: {
-                categoryId: categoryId,
-            },
-            data: {
-                assignments: {
-                    connect: {
-                        assignmentId: assignmentId,
-                    },
-                },
-            },
-        });
-    } catch (error) {
-        if (error instanceof apiError) {
-            throw error;
-        }
-        throw new apiError("Failed to add assignment to category", 500);
-    }
+		return await prisma.category.update({
+			where: {
+				categoryId: categoryId
+			},
+			data: {
+				assignments: {
+					connect: {
+						assignmentId: assignmentId
+					}
+				}
+			}
+		});
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		}
+		throw new apiError("Failed to add assignment to category", 500);
+	}
 };
 
 /**
@@ -288,74 +290,80 @@ const addAssignmentToCategory = async (categoryId, assignmentId) => {
  * @throws {apiError} - If the category or assignment is not found, the assignment doesn't exist in the category, the assignment doesn't belong to the same class as the category, or there is an error deleting the assignment from the category
  */
 const deleteAssignmentFromCategory = async (categoryId, assignmentId) => {
-    try {
-        const category = await prisma.category.findUnique({
-            where: {
-                categoryId: categoryId,
-            },
-        });
+	try {
+		const category = await prisma.category.findUnique({
+			where: {
+				categoryId: categoryId
+			}
+		});
 
-        // check if category exists
-        if (!category) {
-            throw new apiError(`Category not found`, 404);
-        }
+		// check if category exists
+		if (!category) {
+			throw new apiError(`Category not found`, 404);
+		}
 
-        const assignment = await prisma.assignment.findUnique({
-            where: {
-                assignmentId: assignmentId,
-            },
-        });
+		const assignment = await prisma.assignment.findUnique({
+			where: {
+				assignmentId: assignmentId
+			}
+		});
 
-        // check if assignment exists
-        if (!assignment) {
-            throw new apiError(`Assignment with not found`, 404);
-        }
+		// check if assignment exists
+		if (!assignment) {
+			throw new apiError(`Assignment with not found`, 404);
+		}
 
-        const categoryAssignment = await prisma.assignment.findUnique({
-            where: {
-                assignmentId: assignmentId,
-                categoryId: categoryId
-            }
-        });
+		const categoryAssignment = await prisma.assignment.findUnique({
+			where: {
+				assignmentId: assignmentId,
+				categoryId: categoryId
+			}
+		});
 
-        // check if the category has the assignment
-        if (!categoryAssignment) {
-            throw new apiError(`Assignment doesn't exists in category`, 400);
-        }
+		// check if the category has the assignment
+		if (!categoryAssignment) {
+			throw new apiError(`Assignment doesn't exists in category`, 400);
+		}
 
-        // check if the category and assignment class is the same
-        if (category.classId !== assignment.classId) {
-            throw new apiError(`Assignment doesn't belong to the same class as category`, 400);
-        }
+		// check if the category and assignment class is the same
+		if (category.classId !== assignment.classId) {
+			throw new apiError(
+				`Assignment doesn't belong to the same class as category`,
+				400
+			);
+		}
 
-        const updatedCategory = await prisma.category.update({
-            where: {
-                categoryId: categoryId,
-            },
-            data: {
-                assignments: {
-                    disconnect: {
-                        assignmentId: assignmentId,
-                    },
-                },
-            },
-        });
+		const updatedCategory = await prisma.category.update({
+			where: {
+				categoryId: categoryId
+			},
+			data: {
+				assignments: {
+					disconnect: {
+						assignmentId: assignmentId
+					}
+				}
+			}
+		});
 
-        return updatedCategory;
-    } catch (error) {
-        if (error instanceof apiError) {
-            throw error;
-        }
-        throw new apiError("Failed to delete assignment from category" + error, 500);
-    }
+		return updatedCategory;
+	} catch (error) {
+		if (error instanceof apiError) {
+			throw error;
+		}
+		throw new apiError(
+			"Failed to delete assignment from category" + error,
+			500
+		);
+	}
 };
 
 export default {
-    getAllCategories,
-    createCategory,
-    updateCategory,
-    deleteCategory,
-    getCategoryAssignments,
-    addAssignmentToCategory,
-    deleteAssignmentFromCategory,
+	getAllCategories,
+	createCategory,
+	updateCategory,
+	deleteCategory,
+	getCategoryAssignments,
+	addAssignmentToCategory,
+	deleteAssignmentFromCategory
 };

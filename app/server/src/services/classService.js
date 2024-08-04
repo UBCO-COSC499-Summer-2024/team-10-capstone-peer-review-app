@@ -5,7 +5,10 @@
 
 import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
-import { sendNotificationToRole, sendNotificationToUser } from "./notifsService.js";
+import {
+	sendNotificationToRole,
+	sendNotificationToUser
+} from "./notifsService.js";
 
 /**
  * @async
@@ -38,7 +41,7 @@ const getAllClasses = async () => {
 		const classesWithCounts = classes.map((classItem) => ({
 			...classItem,
 			assignmentCount: classItem.Assignments.length,
-			userCount: classItem.usersInClass.length,
+			userCount: classItem.usersInClass.length
 		}));
 
 		return classesWithCounts;
@@ -60,42 +63,47 @@ const getAllClasses = async () => {
  */
 const getAllClassesUserIsNotIn = async (userId) => {
 	try {
-	  // Get all classes
-	  const allClasses = await prisma.class.findMany({
-		include: {
-		  usersInClass: true,
-		  instructor: {
-			select: {
-			  userId: true,
-			  email: true,
-			  firstname: true,
-			  lastname: true
+		// Get all classes
+		const allClasses = await prisma.class.findMany({
+			include: {
+				usersInClass: true,
+				instructor: {
+					select: {
+						userId: true,
+						email: true,
+						firstname: true,
+						lastname: true
+					}
+				}
 			}
-		  }
-		}
-	  });
-	  
-  
-	  // Filter out classes the user is in and calculate available seats
-	  const filteredClasses = allClasses.filter(classItem => {
-		const isUserInClass = classItem.usersInClass.some(user => user.userId === userId);
-		const availableSeats = classItem.classSize - classItem.usersInClass.length;
-		
-		// Add availableSeats to the class object
-		classItem.availableSeats = availableSeats;
-  
-		// Remove usersInClass from the response to avoid sending unnecessary data
-		delete classItem.usersInClass;
-  
-		return !isUserInClass;
-	  });
-  
-	  return filteredClasses;
+		});
+
+		// Filter out classes the user is in and calculate available seats
+		const filteredClasses = allClasses.filter((classItem) => {
+			const isUserInClass = classItem.usersInClass.some(
+				(user) => user.userId === userId
+			);
+			const availableSeats =
+				classItem.classSize - classItem.usersInClass.length;
+
+			// Add availableSeats to the class object
+			classItem.availableSeats = availableSeats;
+
+			// Remove usersInClass from the response to avoid sending unnecessary data
+			delete classItem.usersInClass;
+
+			return !isUserInClass;
+		});
+
+		return filteredClasses;
 	} catch (error) {
-	  throw new apiError(`Failed to retrieve classes user is not in ${error}`, 500);
+		throw new apiError(
+			`Failed to retrieve classes user is not in ${error}`,
+			500
+		);
 	}
-  };
-  
+};
+
 /**
  * @async
  * @function getStudentsByClass
@@ -105,30 +113,34 @@ const getAllClassesUserIsNotIn = async (userId) => {
  * @throws {apiError} If there is an error retrieving the students.
  */
 const getStudentsByClass = async (classId) => {
-    try {
-        const classWithStudents = await prisma.userInClass.findMany({
-            where: {
-                classId: classId
-            },
-            include: {
-                user: {
-                    select: {
-                        userId: true,
-                        email: true,
-                        firstname: true,
-                        lastname: true
-                    }
-                }
-            }
-        });
+	try {
+		const classWithStudents = await prisma.userInClass.findMany({
+			where: {
+				classId: classId
+			},
+			include: {
+				user: {
+					select: {
+						userId: true,
+						email: true,
+						firstname: true,
+						lastname: true
+					}
+				}
+			}
+		});
 
-        // Extract unique students based on userId since this seems to return as many entries as there are matching in UserInClass
-        const uniqueStudents = Array.from(new Map(classWithStudents.map(student => [student.user.userId, student])).values()).map(entry => entry.user);
+		// Extract unique students based on userId since this seems to return as many entries as there are matching in UserInClass
+		const uniqueStudents = Array.from(
+			new Map(
+				classWithStudents.map((student) => [student.user.userId, student])
+			).values()
+		).map((entry) => entry.user);
 
-        return uniqueStudents;
-    } catch (error) {
-        throw new apiError("Failed to retrieve students in class", 500);
-    }
+		return uniqueStudents;
+	} catch (error) {
+		throw new apiError("Failed to retrieve students in class", 500);
+	}
 };
 
 /**
@@ -231,7 +243,8 @@ const getClassById = async (classId) => {
  */
 const createClass = async (newClass, instructorId) => {
 	try {
-		const { classname, description, startDate, endDate, term, classSize } = newClass;
+		const { classname, description, startDate, endDate, term, classSize } =
+			newClass;
 		if (startDate >= endDate) {
 			throw new apiError("Invalid class data provided.", 400);
 		}
@@ -248,7 +261,13 @@ const createClass = async (newClass, instructorId) => {
 			}
 		});
 
-		await sendNotificationToRole(null, `A new class '${classname}' has been created`, "", "ADMIN", 'class');
+		await sendNotificationToRole(
+			null,
+			`A new class '${classname}' has been created`,
+			"",
+			"ADMIN",
+			"class"
+		);
 		return createdClass;
 	} catch (error) {
 		if (error instanceof apiError) {
@@ -269,31 +288,38 @@ const createClass = async (newClass, instructorId) => {
  */
 const updateClass = async (classId, updateData) => {
 	try {
+		// Get the most up-to-date class information
+		const classInfo = await prisma.class.findUnique({
+			where: { classId },
+			include: { usersInClass: true }
+		});
+
+		if (!classInfo) {
+			throw new apiError("Class not found", 404);
+		}
+
+		if (
+			updateData.classSize !== undefined &&
+			updateData.classSize < classInfo.usersInClass.length
+		) {
+			throw new apiError(
+				"The new class size given is less than the number of students in the class",
+				400
+			);
+		}
+
 		const updatedClass = await prisma.class.update({
-			where: {
-				classId: classId
-			},
+			where: { classId },
 			data: updateData
 		});
 
-		const classInfo = await prisma.class.findUnique({
-			where: {
-				classId: classId
-			},
-			include: {
-				usersInClass: true
-			}
-		});
-
-		// Check if new class size (if given) is less than the current number of students in the class
-		if (
-			updateData.classSize &&
-			updateData.classSize < classInfo.usersInClass.length
-		) {
-			throw new apiError("The new class size given is less than the number of students in the class", 400);
-		}
-
-		await sendNotificationToRole(null, `The class '${classInfo.classname}' has been updated`, "", "ADMIN", 'class');
+		await sendNotificationToRole(
+			null,
+			`The class '${classInfo.classname}' has been updated`,
+			"",
+			"ADMIN",
+			"class"
+		);
 		return updatedClass;
 	} catch (error) {
 		if (error instanceof apiError) {
@@ -318,8 +344,14 @@ const deleteClass = async (classId) => {
 			}
 		});
 
-		await sendNotificationToRole(null, `The class '${classInfo.classname}' has been deleted`, "", "ADMIN", 'class');
-		
+		await sendNotificationToRole(
+			null,
+			`The class '${classInfo.classname}' has been deleted`,
+			"",
+			"ADMIN",
+			"class"
+		);
+
 		await prisma.class.delete({
 			where: {
 				classId: classId
@@ -383,7 +415,13 @@ const addStudentToClass = async (classId, studentId) => {
 			}
 		});
 
-		await sendNotificationToUser(null, `You've been added to the class ${classInfo.classname}`, "", studentId, 'class');
+		await sendNotificationToUser(
+			null,
+			`You've been added to the class ${classInfo.classname}`,
+			"",
+			studentId,
+			"class"
+		);
 
 		return userInfo;
 	} catch (error) {
@@ -441,7 +479,13 @@ const addStudentsByEmail = async (classId, emails) => {
 						});
 						results.valid.push({ email, userId: user.userId });
 						currentClassSize++;
-						await sendNotificationToUser(null, `You've been added to the class ${classInfo.classname}`, "", user.userId, 'class');
+						await sendNotificationToUser(
+							null,
+							`You've been added to the class ${classInfo.classname}`,
+							"",
+							user.userId,
+							"class"
+						);
 					} else {
 						results.invalid.push({ email, reason: "Class is full" });
 					}
@@ -488,7 +532,7 @@ const removeStudentFromClass = async (classId, studentId) => {
 
 		// Step 3: Check if the record exists
 		if (!userInClass) {
-			throw new Error("Student is not enrolled in this class.");
+			throw new apiError("Student is not enrolled in this class.", 404);
 		}
 
 		// Step 4: Delete the record
@@ -504,8 +548,14 @@ const removeStudentFromClass = async (classId, studentId) => {
 		const classInfo = await prisma.class.findUnique({
 			where: { classId }
 		});
-		
-		await sendNotificationToUser(null, `You've been removed from the class ${classInfo.classname}`, "", studentId, 'class');
+
+		await sendNotificationToUser(
+			null,
+			`You've been removed from the class ${classInfo.classname}`,
+			"",
+			studentId,
+			"class"
+		);
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
@@ -647,7 +697,7 @@ const updateGroupInClass = async (groupId, updateData) => {
  * @param {string} groupId - The ID of the group.
  * @returns {Promise<Object>} The group object.
  * @throws {apiError} If the class or group is not found or there is an error retrieving the group.
- */	
+ */
 const getGroupInClass = async (classId, groupId) => {
 	try {
 		const classInfo = await prisma.class.findUnique({
@@ -783,7 +833,13 @@ const addGroupMember = async (groupId, userId) => {
 			}
 		});
 
-		await sendNotificationToUser(null, `You've been added to the group ${group.groupName}`, classInfo.classname, userId, 'group');
+		await sendNotificationToUser(
+			null,
+			`You've been added to the group ${group.groupName}`,
+			classInfo.classname,
+			userId,
+			"group"
+		);
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
@@ -842,7 +898,13 @@ const removeGroupMember = async (groupId, userId) => {
 			}
 		});
 
-		await sendNotificationToUser(null, `You've been removed from the group ${group.groupName}`, classInfo.classname, userId, 'group');
+		await sendNotificationToUser(
+			null,
+			`You've been removed from the group ${group.groupName}`,
+			classInfo.classname,
+			userId,
+			"group"
+		);
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
@@ -987,7 +1049,6 @@ const getStudentsNotInAnyGroup = async (classId) => {
 				(groupStudent) => groupStudent.userId === student.userId
 			);
 		});
-		console.log("hey", studentsNotInAnyGroup);
 		return studentsNotInAnyGroup;
 	} catch (error) {
 		if (error instanceof apiError) {

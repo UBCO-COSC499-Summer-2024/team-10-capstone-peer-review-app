@@ -1,311 +1,217 @@
-import prisma from "../../../prisma/prismaClient";
+import prisma from "../../../prisma/prismaClient.js";
 import categoryService from "../../../src/services/categoryService.js";
-import authService from "../../../src/services/authService.js";
-import apiError from "../../../src/utils/apiError";
-import e from "express";
+import apiError from "../../../src/utils/apiError.js";
 
-let user;
 beforeAll(async () => {
-    await prisma.$connect();
-    // const userData = {
-    //     email: "verified@example.com",
-    //     password: "password123",
-    //     firstname: "Verified",
-    //     lastname: "User",
-    //     role: "STUDENT"
-    // };
-
-    // await authService.registerUser(userData);
-    // await prisma.user.update({
-    //     where: { email: userData.email },
-    //     data: { isEmailVerified: true, isRoleActivated: true }
-    // });
-
-    // user = await authService.loginUser(
-    //     userData.email,
-    //     userData.password
-    // );
+	await prisma.$connect();
 });
 
 afterAll(async () => {
-    await prisma.$disconnect();
+	await prisma.$disconnect();
 });
 
-beforeEach(async () => {
-    await prisma.category.deleteMany();
-});
+describe("categoryService Integration Tests", () => {
+	let testInstructor, testClass, testCategory, testAssignment;
 
-describe("Category Service Integration Tests", () => {
-    describe("createCategory", () => {
-        it("should create a new category", async () => {
-            const testCategory = {
-                classId: "1", // Adjust this ID to be a valid class ID
-                name: "Test Category"
-            };
+	beforeEach(async () => {
+		await prisma.$transaction(async (prisma) => {
+			// Clean up
+			await prisma.assignment.deleteMany();
+			await prisma.category.deleteMany();
+			await prisma.class.deleteMany();
+			await prisma.user.deleteMany();
 
-            const category = await categoryService.createCategory(testCategory);
+			testInstructor = await prisma.user.create({
+				data: {
+					email: "instructor@example.com",
+					password: "password123",
+					firstname: "Test",
+					lastname: "Instructor",
+					role: "INSTRUCTOR"
+				}
+			});
 
-            expect(category).toBeTruthy();
-            expect(category.name).toBe(testCategory.name);
-        });
+			// Create test class
+			testClass = await prisma.class.create({
+				data: {
+					classname: "Test Class",
+					description: "Test Description",
+					startDate: new Date(),
+					endDate: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000),
+					instructorId: testInstructor.userId
+				}
+			});
 
-        it("should throw an error if the class ID is invalid", async () => {
-            const testCategory = {
-                classId: "invalid-id",
-                name: "Test Category"
-            };
+			// Create test categorys
+			testCategory = await prisma.category.create({
+				data: {
+					name: "Test Category",
+					classId: testClass.classId
+				}
+			});
 
-            try {
-                await categoryService.createCategory(testCategory);
-            } catch (error) {
-                expect(error).toBeInstanceOf(apiError);
-                expect(error.message).toBe("Class not found");
-            }
-        });
+			// Create test assignment
+			testAssignment = await prisma.assignment.create({
+				data: {
+					title: "Test Assignment",
+					description: "Test Description",
+					dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+					maxSubmissions: 1,
+					classId: testClass.classId,
+					categoryId: testCategory.categoryId
+				}
+			});
+		});
+	});
 
-        it("should throw an error if the category name is already taken", async () => {
-            const testCategory = {
-                classId: "1",
-                name: "Test Category"
-            };
+	describe("getAllCategories", () => {
+		it("should retrieve all categories for a class", async () => {
+			const categories = await categoryService.getAllCategories(
+				testClass.classId
+			);
+			expect(categories).toHaveLength(1);
+			expect(categories[0].name).toBe(testCategory.name);
+		});
 
-            await categoryService.createCategory(testCategory);
+		it("should throw an error if the class is not found", async () => {
+			await expect(
+				categoryService.getAllCategories("non-existent-id")
+			).rejects.toThrow("Class not found");
+		});
+	});
 
-            try {
-                await categoryService.createCategory(testCategory);
-            } catch (error) {
-                expect(error).toBeInstanceOf(apiError);
-                expect(error.message).toBe("Category name is already taken");
-            }
-        });
-    });
+	describe("createCategory", () => {
+		it("should create a new category", async () => {
+			const newCategory = await categoryService.createCategory(
+				testClass.classId,
+				"New Category"
+			);
+			expect(newCategory).toBeTruthy();
+			expect(newCategory.name).toBe("New Category");
+		});
 
-    describe("updateCategory", () => {
-        it("should update a category", async () => {
-            const testCategory = {
-                classId: "1",
-                name: "Test Category"
-            };
+		it("should throw an error if a category with the same name already exists", async () => {
+			await expect(
+				categoryService.createCategory(testClass.classId, testCategory.name)
+			).rejects.toThrow("Category with name Test Category already exists");
+		});
+	});
 
-            const category = await categoryService.createCategory(testCategory);
+	describe("updateCategory", () => {
+		it("should update a category", async () => {
+			const updatedCategory = await categoryService.updateCategory(
+				testCategory.categoryId,
+				"Updated Category"
+			);
+			expect(updatedCategory.name).toBe("Updated Category");
+		});
 
-            const updatedCategory = await categoryService.updateCategory(category.categoryId, "Updated Category");
+		it("should throw an error if the category is not found", async () => {
+			await expect(
+				categoryService.updateCategory("non-existent-id", "New Name")
+			).rejects.toThrow("Category not found");
+		});
+	});
 
-            expect(updatedCategory).toBeTruthy();
-            expect(updatedCategory.name).toBe("Updated Category");
-        });
+	describe("deleteCategory", () => {
+		it("should delete a category", async () => {
+			await categoryService.deleteCategory(testCategory.categoryId);
+			const deletedCategory = await prisma.category.findUnique({
+				where: { categoryId: testCategory.categoryId }
+			});
+			expect(deletedCategory).toBeNull();
+		});
 
+		it("should throw an error if the category is not found", async () => {
+			await expect(
+				categoryService.deleteCategory("non-existent-id")
+			).rejects.toThrow("Category not found");
+		});
+	});
 
-        it("should throw an error if the category name is already taken", async () => {
-            const testCategory = {
-                classId: "1",
-                name: "Test Category"
-            };
+	describe("getCategoryAssignments", () => {
+		it("should retrieve assignments for a category", async () => {
+			const assignments = await categoryService.getCategoryAssignments(
+				testCategory.categoryId
+			);
+			expect(assignments).toHaveLength(1);
+			expect(assignments[0].title).toBe(testAssignment.title);
+		});
+	});
 
-            const category = await categoryService.createCategory(testCategory);
+	describe("addAssignmentToCategory", () => {
+		it("should add an assignment to a category", async () => {
+			const newAssignment = await prisma.assignment.create({
+				data: {
+					title: "New Assignment",
+					description: "New Description",
+					dueDate: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000),
+					maxSubmissions: 2,
+					classId: testClass.classId
+				}
+			});
 
-            const testCategory2 = {
-                classId: "1",
-                name: "Test Category 2"
-            };
+			await categoryService.addAssignmentToCategory(
+				testCategory.categoryId,
+				newAssignment.assignmentId
+			);
 
-            const category2 = await categoryService.createCategory(testCategory2);
+			// Fetch the updated category with assignments
+			const updatedCategory = await prisma.category.findUnique({
+				where: { categoryId: testCategory.categoryId },
+				include: { assignments: true }
+			});
 
-            try {
-                await categoryService.updateCategory(category.categoryId, "Test Category 2");
-            } catch (error) {
-                expect(error).toBeInstanceOf(apiError);
-                expect(error.message).toBe("Category name is already taken");
-            }
-        });
-    });
+			// Check if the assignment is in the category
+			expect(
+				updatedCategory.assignments.some(
+					(assignment) => assignment.assignmentId === newAssignment.assignmentId
+				)
+			).toBe(true);
+		});
+	});
 
-    describe("deleteCategory", () => {
-        it("should delete a category", async () => {
-            const testCategory = {
-                classId: "1",
-                name: "Test Category"
-            };
+	it("should throw an error if the assignment already exists in the category", async () => {
+		await expect(
+			categoryService.addAssignmentToCategory(
+				testCategory.categoryId,
+				testAssignment.assignmentId
+			)
+		).rejects.toThrow("Assignment already exists in category");
+	});
 
-            const category = await categoryService.createCategory(testCategory);
+	describe("deleteAssignmentFromCategory", () => {
+		it("should delete an assignment from a category", async () => {
+			await categoryService.deleteAssignmentFromCategory(
+				testCategory.categoryId,
+				testAssignment.assignmentId
+			);
 
-            await categoryService.deleteCategory(category.categoryId);
+			const updatedCategory = await prisma.category.findUnique({
+				where: { categoryId: testCategory.categoryId },
+				include: { assignments: true }
+			});
 
-            const deletedCategory = await prisma.category.findUnique({
-                where: {
-                    categoryId: category.categoryId
-                }
-            });
+			// Check if the assignment is not in the category
+			expect(
+				updatedCategory.assignments.some(
+					(assignment) =>
+						assignment.assignmentId === testAssignment.assignmentId
+				)
+			).toBe(false);
+		});
 
-            expect(deletedCategory).toBeNull();
-        });
-    });
-
-    describe("getAllCategories", () => {
-        it("should return all categories", async () => {
-            const testCategory = {
-                classId: "1",
-                name: "Test Category"
-            };
-
-            const category = await categoryService.createCategory(testCategory);
-
-            const categories = await categoryService.getAllCategories();
-
-            expect(categories).toBeTruthy();
-            expect(categories.length).toBe(1);
-            expect(categories[0].name).toBe(category.name);
-        });
-    });
-
-    describe("getCategoryAssignments", () => {
-        it("should return all assignments for a category", async () => {
-            const testCategory = {
-                classId: "1",
-                name: "Test Category"
-            };
-
-            const category = await categoryService.createCategory(testCategory);
-
-            const testAssignment = {
-                classId: "1",
-                categoryId: category.categoryId,
-                title: "Test Assignment",
-                description: "Test Assignment Description",
-                dueDate: "2023-06-01T00:00:00.000Z",
-                maxSubmissions: 1,
-                isGroupAssignment: false,
-                assignmentType: "URL",
-                assignmentFilePath: "path/to/assignment"
-            };
-
-            const assignment = await prisma.assignment.create({
-                data: testAssignment
-            });
-
-            const assignments = await categoryService.getCategoryAssignments(category.categoryId);
-
-            expect(assignments).toBeTruthy();
-            expect(assignments.length).toBe(1);
-            expect(assignments[0].title).toBe(assignment.title);
-        });
-    });
-
-    describe("addAssignmentToCategory", () => {
-
-        it("should add an assignment to a category", async () => {
-            const testCategory = {
-                classId: "1",
-                name: "Test Category"
-            };
-
-            const category = await categoryService.createCategory(testCategory);
-
-            const testAssignment = {
-                classId: "1",
-                categoryId: category.categoryId,
-                title: "Test Assignment",
-                description: "Test Assignment Description",
-                dueDate: "2023-06-01T00:00:00.000Z",
-                maxSubmissions: 1,
-                isGroupAssignment: false,
-                assignmentType: "URL",
-                assignmentFilePath: "path/to/assignment"
-            };
-
-            const assignment = await prisma.assignment.create({
-                data: testAssignment
-            });
-
-            const categoryAssignment = await categoryService.addAssignmentToCategory(category.categoryId, assignment.assignmentId);
-
-            expect(categoryAssignment).toBeTruthy();
-            expect(categoryAssignment.assignments[0].title).toBe(testAssignment.title);
-        });
-
-        it("should throw an error if the category ID is invalid", async () => {
-            const testAssignment = {
-                classId: "1",
-                categoryId: "invalid-id",
-                title: "Test Assignment",
-                description: "Test Assignment Description",
-                dueDate: "2023-06-01T00:00:00.000Z",
-                maxSubmissions: 1,
-                isGroupAssignment: false,
-                assignmentType: "URL",
-                assignmentFilePath: "path/to/assignment"
-            };
-
-            try {
-                await categoryService.addAssignmentToCategory("invalid-id", testAssignment);
-            } catch (error) {
-                expect(error).toBeInstanceOf(apiError);
-                expect(error.message).toBe("Category not found");
-            }
-        });
-    });
-
-    describe("deleteAssignmentFromCategory", () => {
-        it("should delete an assignment from a category", async () => {
-            const testCategory = {
-                classId: "1",
-                name: "Test Category"
-            };
-
-            const category = await categoryService.createCategory(testCategory);
-
-            const testAssignment = {
-                classId: "1",
-                categoryId: category.categoryId,
-                title: "Test Assignment",
-                description: "Test Assignment Description",
-                dueDate: "2023-06-01T00:00:00.000Z",
-                maxSubmissions: 1,
-                isGroupAssignment: false,
-                assignmentType: "URL",
-                assignmentFilePath: "path/to/assignment"
-            };
-
-            const assignment = await prisma.assignment.create({
-                data: testAssignment
-            });
-
-            await categoryService.addAssignmentToCategory(category.categoryId, assignment.assignmentId);
-
-            await categoryService.deleteAssignmentFromCategory(category.categoryId, assignment.assignmentId);
-
-            const categoryAssignment = await prisma.category.findUnique({
-                where: {
-                    categoryId: category.categoryId
-                },
-                include: {
-                    assignments: true
-                }
-            });
-
-            expect(categoryAssignment).toBeTruthy();
-            expect(categoryAssignment.assignments.length).toBe(0);
-        });
-
-        it("should throw an error if the category ID is invalid", async () => {
-            const testAssignment = {
-                classId: "1",
-                categoryId: "invalid-id",
-                title: "Test Assignment",
-                description: "Test Assignment Description",
-                dueDate: "2023-06-01T00:00:00.000Z",
-                maxSubmissions: 1,
-                isGroupAssignment: false,
-                assignmentType: "URL",
-                assignmentFilePath: "path/to/assignment"
-            };
-
-            try {
-                await categoryService.deleteAssignmentFromCategory("invalid-id", testAssignment);
-            } catch (error) {
-                expect(error).toBeInstanceOf(apiError);
-                expect(error.message).toBe("Category not found");
-            }
-        });
-    });
+		it("should throw an error if the assignment doesn't exist in the category", async () => {
+			await categoryService.deleteAssignmentFromCategory(
+				testCategory.categoryId,
+				testAssignment.assignmentId
+			);
+			await expect(
+				categoryService.deleteAssignmentFromCategory(
+					testCategory.categoryId,
+					testAssignment.assignmentId
+				)
+			).rejects.toThrow("Assignment doesn't exists in category");
+		});
+	});
 });

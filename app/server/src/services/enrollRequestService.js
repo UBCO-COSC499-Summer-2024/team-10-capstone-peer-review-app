@@ -140,7 +140,7 @@ export async function updateEnrollRequestStatus(
 	try {
 		const updatedRequest = await prisma.enrollRequest.update({
 			where: { enrollRequestId },
-			data: { status, receiverMessage }
+			data: { status, recipientMessage: receiverMessage }
 		});
 
 		// If the request is approved, add the user to the class
@@ -191,7 +191,6 @@ export async function deleteEnrollRequest(enrollRequestId, userId) {
 			where: { enrollRequestId }
 		});
 
-		// Check if the request exists or the user is authorized to delete it
 		if (!request || request.userId !== userId) {
 			throw new apiError("Enrollment request not found or unauthorized", 404);
 		}
@@ -200,7 +199,11 @@ export async function deleteEnrollRequest(enrollRequestId, userId) {
 			where: { enrollRequestId }
 		});
 	} catch (error) {
-		throw new apiError("Error deleting enrollment request", 500);
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Error deleting enrollment request", 500);
+		}
 	}
 }
 

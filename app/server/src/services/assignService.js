@@ -28,8 +28,6 @@ import { format } from "date-fns";
  * @returns {Promise<object>} The created assignment with rubric.
  */
 const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
-	console.log("assignmentFilePath:", assignmentData.assignmentFilePath);
-	console.log("Received assignment data in service:", assignmentData);
 	try {
 		// get the class with class ID
 		const classInfo = await prisma.class.findUnique({
@@ -85,7 +83,6 @@ const addAssignmentToClass = async (classId, categoryId, assignmentData) => {
 
 		return assignmentWithRubric;
 	} catch (error) {
-		console.error("Error adding assignment:", error);
 		if (error instanceof apiError) {
 			throw error;
 		} else {
@@ -174,12 +171,12 @@ const updateAssignmentInClass = async (
 			include: { Assignments: true }
 		});
 
-	  // check if exists
+		// check if exists
 		if (!classInfo) {
 			throw new apiError("Class not found", 404);
 		}
 
-	  // Check if the assignment exists
+		// Check if the assignment exists
 		const assignment = await prisma.assignment.findUnique({
 			where: { assignmentId }
 		});
@@ -245,7 +242,7 @@ const updateAssignmentInClass = async (
 			throw new apiError("Failed to update assignment in class", 500);
 		}
 	}
-  };
+};
 
 /**
  * @desc Get an assignment in a class.
@@ -270,7 +267,7 @@ const getAssignmentInClass = async (classId, assignmentId, userId = "") => {
 			}
 		});
 
-	  // check if class exists
+		// check if class exists
 		if (!classInfo) {
 			throw new apiError("Class not found", 404);
 		}
@@ -285,7 +282,7 @@ const getAssignmentInClass = async (classId, assignmentId, userId = "") => {
 			}
 		});
 
-	  // check if assignment exists
+		// check if assignment exists
 		if (!assignment) {
 			throw new apiError("Assignment not found", 404);
 		}
@@ -298,7 +295,7 @@ const getAssignmentInClass = async (classId, assignmentId, userId = "") => {
 			});
 
 			// check if the user exists
-		if (!user) {
+			if (!user) {
 				throw new apiError("User not found", 404);
 			}
 
@@ -380,7 +377,7 @@ const getAllAssignmentsByClassId = async (classId, userId = "") => {
 			}
 		});
 
-	  // check if class exists
+		// check if class exists
 		if (!classInfo) {
 			throw new apiError("Class not found", 404);
 		}
@@ -395,7 +392,7 @@ const getAllAssignmentsByClassId = async (classId, userId = "") => {
 			});
 
 			// check if user exists
-		if (!user) {
+			if (!user) {
 				throw new apiError("User not found", 404);
 			}
 
@@ -438,7 +435,11 @@ const getAllAssignmentsByClassId = async (classId, userId = "") => {
  * @throws {apiError} If the extension is not created.
  * @returns {Promise<object>} The new extension.
  */
-const extendDeadlineForStudent = async (studentId, assignmentId, newDueDate) => {
+const extendDeadlineForStudent = async (
+	studentId,
+	assignmentId,
+	newDueDate
+) => {
 	try {
 		const assignment = await prisma.assignment.findUnique({
 			where: { assignmentId }
@@ -488,7 +489,7 @@ const extendDeadlineForStudent = async (studentId, assignmentId, newDueDate) => 
 	}
 };
 
-/** 
+/**
  * @desc Delete the extended deadline for a student on an assignment.
  * @async
  * @param {string} studentId - The ID of the student.
@@ -527,13 +528,10 @@ const deleteExtendedDeadlineForStudent = async (studentId, assignmentId) => {
 		return deletedExtension;
 	} catch (error) {
 		if (error instanceof apiError) {
-			console.log(error);
 			throw error;
 		} else if (error.code === "P2025") {
-			console.log("Record not found");
 			throw new apiError("Record not found", 404);
 		} else {
-			console.log(error);
 			throw new apiError("Failed to delete extended due date", 500);
 		}
 	}
@@ -565,16 +563,14 @@ const deleteExtendedDeadlineForStudent = async (studentId, assignmentId) => {
  * @throws {apiError} If the assignment with rubric is not created.
  * @returns {Promise<object>} The created assignment with rubric.
  */
-const addAssignmentWithRubric = async (classId, categoryId, assignmentData, rubricData, creatorId) => {
+const addAssignmentWithRubric = async (
+	classId,
+	categoryId,
+	assignmentData,
+	rubricData,
+	creatorId
+) => {
 	try {
-		console.log("Received data in service:", {
-			classId,
-			categoryId,
-			assignmentData,
-			rubricData,
-			creatorId
-		});
-
 		// Calculate totalMarks
 		const totalMarks = rubricData.criteria.reduce((total, criterion) => {
 			return (
@@ -614,8 +610,6 @@ const addAssignmentWithRubric = async (classId, categoryId, assignmentData, rubr
 			}
 		});
 
-		console.log("Created rubric:", newRubric);
-
 		// Then create the assignment with the new rubric
 		const newAssignment = await prisma.assignment.create({
 			data: {
@@ -631,11 +625,8 @@ const addAssignmentWithRubric = async (classId, categoryId, assignmentData, rubr
 			}
 		});
 
-		console.log("Created assignment:", newAssignment);
-
 		return { assignment: newAssignment, rubric: newRubric };
 	} catch (error) {
-		console.error("Detailed error in addAssignmentWithRubric:", error);
 		throw new apiError(
 			`Failed to add assignment with rubric: ${error.message}`,
 			500

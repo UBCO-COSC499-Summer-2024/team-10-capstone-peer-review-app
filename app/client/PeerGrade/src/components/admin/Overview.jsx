@@ -1,21 +1,21 @@
+// The main function of this component is to display an overview of the admin's users, classes, and assignments.
+// It takes in a title, data, and columns as props.
+// The component also uses the useUser and useClass hooks to fetch user and class data where its needed.
+// It also uses the getAllUsers, getAllClasses, and getAllAssignments functions to fetch data.
+
 import { useEffect, useState } from "react";
 import {
 	UsersIcon,
 	AcademicCapIcon,
 	DocumentTextIcon,
-	ChatBubbleLeftRightIcon,
-	CheckCircleIcon,
-	XCircleIcon
 } from "@heroicons/react/24/outline";
 import StatCard from "@/components/admin/stats/StatCard";
 import DataTable from "@/components/ui/data-table";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { useClass } from "@/contexts/contextHooks/useClass";
-import { getUsersByRole, getAllUsers } from "@/api/userApi";
-import { getAllClasses } from "@/api/classApi";
+import { getAllUsers } from "@/api/userApi";
 import { getAllAssignments } from "@/api/assignmentApi";
 
 const Overview = () => {

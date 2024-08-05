@@ -1,4 +1,8 @@
-import { useEffect, useState } from "react";
+// The main function of this component is to display a drawer for role approval with a title, description, and action buttons.
+// It takes in a children component, a handleApprove function, a handleDeny function, a handlePending function,
+// a isLoading boolean, a isDrawerOpen boolean, and a closeDrawer function as props.
+// The component also uses the roleRequest and isLoading props to determine which action button to display.
+
 import {
 	Drawer,
 	DrawerClose,
@@ -10,8 +14,6 @@ import {
 	DrawerTrigger
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-
-import { updateRoleRequestStatus } from "@/api/authApi";
 
 const RoleApprovalDrawer = ({
 	children,

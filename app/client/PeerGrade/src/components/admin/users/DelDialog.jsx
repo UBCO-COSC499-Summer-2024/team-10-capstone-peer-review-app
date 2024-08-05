@@ -1,3 +1,7 @@
+// The main function of this component is to display a deletion dialog with a title, description, and action buttons.
+// It takes in a title, description, and two button labels as props.
+// The component also takes in a handleActionClick function as a prop, which is called when the user clicks the action button.
+
 import {
 	AlertDialog,
 	AlertDialogAction,

@@ -1,3 +1,7 @@
+// The main function of this component is to display a table of users that the admin can view on the admin ui users tab.
+// It takes in a title, data, and columns as props.
+// The component also uses the useUser and useClass hooks to fetch user and class data where its needed.
+
 import { useState, useEffect } from "react";
 import {
 	Table,
@@ -33,7 +37,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { cn } from "@/utils/utils";
-import { getClassesByUserId, deleteClass, getAllClasses } from "@/api/classApi";
 import { useClass } from "@/contexts/contextHooks/useClass";
 import DeleteClassDialog from "@/components/manageClass/DeleteClassDialog";
 
@@ -63,7 +66,7 @@ function ClassTable() {
 	const { user, userLoading } = useUser();
 	const navigate = useNavigate();
 
-	const { classes, isClassLoading, removeClass } = useClass();
+	const { classes, removeClass } = useClass();
 
 	if (!userLoading && (!user || user.role !== "ADMIN")) {
 		return <div>You do not have permission to view this page.</div>;
@@ -85,6 +88,7 @@ function ClassTable() {
 		});
 	};
 
+	// Search bar filter function
 	const handleFilterChange = (e) => {
 		setFilter({
 			...filter,
@@ -115,6 +119,7 @@ function ClassTable() {
 		}
 	};
 
+	// Filter classes based on search query, instructor query, and term
 	const filteredClasses = classes
 		.filter(
 			(classItem) =>

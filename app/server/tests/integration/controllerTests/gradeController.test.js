@@ -18,19 +18,19 @@ describe("Grade Controller", () => {
 
 	describe("POST /grade/createGrade", () => {
 		it("should create a new grade", async () => {
-            const testGrade = {
-                reviewId: "1", // Adjust this ID to be a valid review ID
-                grade: 90,
-                criterionId: "1", // Adjust this ID to be a valid criterion ID
-                comment: "comment"
-            };
+			const testGrade = {
+				reviewId: "1", // Adjust this ID to be a valid review ID
+				grade: 90,
+				criterionId: "1", // Adjust this ID to be a valid criterion ID
+				comment: "comment"
+			};
 
-            const res = await request(API_URL)
-                .post("/grade/createGrade")
-                .send(testGrade);
+			const res = await request(API_URL)
+				.post("/grade/createGrade")
+				.send(testGrade);
 
-            expect(res.statusCode).toBe(200);
-            expect(res.body.status).toBe("Success");
+			expect(res.statusCode).toBe(200);
+			expect(res.body.status).toBe("Success");
 		});
 	});
 });

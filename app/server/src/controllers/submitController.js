@@ -19,7 +19,7 @@ const upload = multer({ storage: multer.memoryStorage() });
  * @async
  * @desc Create a new submission for a student for a specific assignment, with a file upload (file is required for submission)
  * @param {Object} req - The request object containing the studentId, assignmentId, and file
- * @function createSubmission	
+ * @function createSubmission
  * @returns {Object} - The response object or error message when the file is not uploaded
  */
 export const createSubmission = [

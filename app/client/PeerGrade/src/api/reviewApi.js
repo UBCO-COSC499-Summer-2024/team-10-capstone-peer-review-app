@@ -1,3 +1,21 @@
+// getReviewById: Fetch a review by its ID
+// getPeerReviews: Fetch peer reviews for a submission
+// getReviewsForAssignment: Fetch all reviews for an assignment
+// getInstructorReview: Fetch the instructor's review for a submission
+// getReviewsAssigned: Fetch reviews assigned to the user
+// getReviewsReceived: Fetch reviews received by the user
+// getAllReviews: Fetch all reviews for a submission, including criterion grades
+// createReview: Create a new review
+// assignRandomPeerReviews: Assign peer reviews randomly for an assignment
+// updateReview: Update a review by its ID
+// deleteReview: Delete a review by its ID
+// getGrades: Fetch all grades
+// getSubmissionGrade: Fetch the grade for a specific submission
+// getReviewDetails: Fetch detailed information for a specific review
+// updateGrade: Update a grade by its ID
+// deleteGrade: Delete a grade by its ID
+
+
 import axios from "axios";
 import showStatusToast from "@/utils/showToastStatus";
 

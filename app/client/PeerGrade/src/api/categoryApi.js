@@ -1,4 +1,12 @@
-// src/api/categoryApi.js
+// This code provides a set of API functions to handle category management functionalities within a class. 
+// The functionalities include:
+
+// 1. createCategory: Creates a new category within a specified class.
+// 2. getAllCategoriesInClass: Retrieves all categories within a specified class.
+// 3. updateCategory: Updates the name of an existing category by its ID.
+// 4. deleteCategory: Deletes a category by its ID.
+
+// Each function handles API calls using axios and throws errors with appropriate messages if the calls fail.
 
 import axios from 'axios';
 

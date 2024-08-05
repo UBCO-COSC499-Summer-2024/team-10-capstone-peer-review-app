@@ -141,61 +141,66 @@ export async function getUserClasses(userId) {
  */
 export async function getUserAssignments(userId) {
 	try {
-	  // Find the user along with their classes and extended due dates
-	  const user = await prisma.user.findUnique({
-		where: { userId },
-		include: {
-		  classes: true,
-		  classesInstructed: true,
-		  extendedDueDates: true
-		}
-	  });
-
-	  // If the user is not found, throw an error
-	  if (!user) {
-		throw new apiError(404, "User not found");
-	  }
-  
-	  // Determine which classes to retrieve assignments for based on the user's role
-	  let classIds;
-	  if (user.role === "STUDENT") {
-		classIds = user.classes.map(userClass => userClass.classId);
-	  } else {
-		classIds = user.classesInstructed.map(classInstructed => classInstructed.classId);
-	  }
-  
-	  // Retrieve assignments based on class IDs
-	  const assignments = await prisma.assignment.findMany({
-		where: { classId: { in: classIds } },
-		include: { classes: true } // Include related `classes` field
-	  });
-  
-	  // If the user is a student, apply the extended due dates
-	  if (user.role === "STUDENT") {
-		// Map extended due dates to their corresponding assignment IDs
-		const extendedDueDatesMap = user.extendedDueDates.reduce((map, extendedDueDate) => {
-		  map[extendedDueDate.assignmentId] = extendedDueDate.newDueDate;
-		  return map;
-		}, {});
-  
-		// Override assignments' due dates if extended due dates exist
-		assignments.forEach(assignment => {
-		  if (extendedDueDatesMap[assignment.assignmentId]) {
-			// If there's an extended due date, replace the original due date
-			assignment.dueDate = extendedDueDatesMap[assignment.assignmentId];
-		  }
+		// Find the user along with their classes and extended due dates
+		const user = await prisma.user.findUnique({
+			where: { userId },
+			include: {
+				classes: true,
+				classesInstructed: true,
+				extendedDueDates: true
+			}
 		});
-	  }
-  
-	  return assignments;
+
+		// If the user is not found, throw an error
+		if (!user) {
+			throw new apiError(404, "User not found");
+		}
+
+		// Determine which classes to retrieve assignments for based on the user's role
+		let classIds;
+		if (user.role === "STUDENT") {
+			classIds = user.classes.map((userClass) => userClass.classId);
+		} else {
+			classIds = user.classesInstructed.map(
+				(classInstructed) => classInstructed.classId
+			);
+		}
+
+		// Retrieve assignments based on class IDs
+		const assignments = await prisma.assignment.findMany({
+			where: { classId: { in: classIds } },
+			include: { classes: true } // Include related `classes` field
+		});
+
+		// If the user is a student, apply the extended due dates
+		if (user.role === "STUDENT") {
+			// Map extended due dates to their corresponding assignment IDs
+			const extendedDueDatesMap = user.extendedDueDates.reduce(
+				(map, extendedDueDate) => {
+					map[extendedDueDate.assignmentId] = extendedDueDate.newDueDate;
+					return map;
+				},
+				{}
+			);
+
+			// Override assignments' due dates if extended due dates exist
+			assignments.forEach((assignment) => {
+				if (extendedDueDatesMap[assignment.assignmentId]) {
+					// If there's an extended due date, replace the original due date
+					assignment.dueDate = extendedDueDatesMap[assignment.assignmentId];
+				}
+			});
+		}
+
+		return assignments;
 	} catch (error) {
-	  if (error instanceof apiError) {
-		throw error;
-	  } else {
-		throw error;
-	  }
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw error;
+		}
 	}
-};  
+}
 
 /**
  * @desc Retrieves all groups for a user.
@@ -240,7 +245,7 @@ export async function getAllGroups() {
 	try {
 		const groupsInfo = await prisma.group.findMany();
 		// If no groups are found, throw an error
-		if (!groupsInfo) {
+		if (!groupsInfo || groupsInfo.length === 0) {
 			throw new apiError("Groups not found", 404);
 		}
 

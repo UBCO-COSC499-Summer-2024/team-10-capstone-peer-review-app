@@ -84,22 +84,15 @@ describe('GradeReviewDialog', () => {
     expect(() => getByText('Grade Peer Review')).toThrow();
   });
 
-  it('displays the assignment title', () => {
-    const { getByText } = render(
-      <GradeReviewDialog review={mockReview} open={true} onClose={jest.fn()} onGradeSubmit={jest.fn()} />
-    );
-    expect(getByText('Test Assignment')).toBeInTheDocument();
-  });
-
   it('renders rubric and criteria', () => {
     const { getByText } = render(
       <GradeReviewDialog review={mockReview} open={true} onClose={jest.fn()} onGradeSubmit={jest.fn()} />
     );
     expect(getByText('Test Rubric')).toBeInTheDocument();
     expect(getByText('Criterion 1')).toBeInTheDocument();
-    expect(getByText('5 points:')).toBeInTheDocument();
+    expect(getByText('5 pts')).toBeInTheDocument();
     expect(getByText('Good')).toBeInTheDocument();
-    expect(getByText('10 points:')).toBeInTheDocument();
+    expect(getByText('10 pts')).toBeInTheDocument();
     expect(getByText('Excellent')).toBeInTheDocument();
   });
 

@@ -36,8 +36,8 @@ describe('GradeCard Component', () => {
     expect(viewAssignmentButton).toBeInTheDocument();
   });
 
-  test('renders View Grade Details button and triggers onViewGradeDetails', () => {
-    const viewGradeDetailsButton = screen.getByText('View Grade Details');
+  test('renders View Grade button and triggers onViewGradeDetails', () => {
+    const viewGradeDetailsButton = screen.getByText('View Grade');
     fireEvent.click(viewGradeDetailsButton);
     expect(mockOnViewGradeDetails).toHaveBeenCalled();
   });

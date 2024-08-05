@@ -21,11 +21,11 @@ The Peer Grade is a peer review application that allows students to submit assig
 
 1. Navigate to `/app/` directory
 2. Start Docker engine
-3. Run `docker compose -f docker-compose.yml up -d`
+3. Run `docker compose -f docker-compose-dev.yml up -d`
 4. Visit `localhost:3000` in your browser
 
 ### Nodemailer and .env files
-Currently, the .env files for our project exist in our repo. We know this may be a security issue however since the repo is only between our client and ourselves we found it easier to manage our repo activities by having the information easily accessible. The nodemailer functions use a designated peer-grade Gmail account made specifically for this application however the user may wish to change the details. When/if you do that, please ensure an app password is enabled and linked through the preferred gmail account and update the nodemailer credentials on the .env files. The .env file also includes the current credentials needed for running the database connections.
+Currently, the .env files for our project exist in our repo. We know this is a security issue however since the repo is only between our client and ourselves we found it easier to manage our repo activities by having the information easily accessible. Also, there are no API-KEYS current within the env vars, only JWT, Cookie, and nodemailer secrets. The nodemailer functions use a designated peer-grade Gmail account made specifically for this application however the user may wish to change the details. When/if you do that, please ensure an app password is enabled and linked through the preferred gmail account and update the nodemailer credentials on the .env files. The .env file also includes the current credentials needed for running the database connections.
 
 
 ## 🌟 Features
@@ -75,7 +75,7 @@ npm run test
 ### Backend Integration tests (Dockerised Test Container)
 ```bash
 cd /app/
-docker compose -f docker-compose.test.yml up -d
+docker compose -f docker-compose-test.yml up -d
 ```
 ## 👨‍💻 Development Documentation
 ### Visit our [Development Documentation](./app/README.md) to learn more about our Peer Grade application's development process.

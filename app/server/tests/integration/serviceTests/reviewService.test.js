@@ -231,5 +231,97 @@ describe("reviewService Integration Tests", () => {
 		});
 	});
 
-	// Add more tests for other functions...
+	describe("getAllReviews", () => {
+		it("should retrieve all reviews", async () => {
+			const allReviews = await reviewService.getAllReviews();
+			expect(allReviews.length).toBeGreaterThan(0);
+			expect(allReviews[0]).toHaveProperty("reviewId");
+		});
+	});
+
+	describe("getReviewsForAssignment", () => {
+		it("should retrieve all reviews for an assignment", async () => {
+			const assignmentReviews = await reviewService.getReviewsForAssignment(
+				testAssignment.assignmentId
+			);
+			expect(assignmentReviews.length).toBeGreaterThan(0);
+			expect(assignmentReviews[0].submission.assignmentId).toBe(
+				testAssignment.assignmentId
+			);
+		});
+	});
+
+	describe("getReviewDetails", () => {
+		it("should retrieve the details of a review", async () => {
+			const reviewDetails = await reviewService.getReviewDetails(
+				testReview.reviewId
+			);
+			expect(reviewDetails).toBeTruthy();
+			expect(reviewDetails.reviewId).toBe(testReview.reviewId);
+		});
+
+		it("should throw an error if the review is not found", async () => {
+			await expect(
+				reviewService.getReviewDetails("non-existent-id")
+			).rejects.toThrow("Review not found");
+		});
+	});
+
+	describe("getReviewsAssigned", () => {
+		it("should retrieve all reviews assigned to a user", async () => {
+			const assignedReviews = await reviewService.getReviewsAssigned(
+				testInstructor.userId
+			);
+			expect(assignedReviews.length).toBeGreaterThan(0);
+			expect(assignedReviews[0].reviewerId).toBe(testInstructor.userId);
+		});
+	});
+
+	describe("getReviewsReceived", () => {
+		it("should retrieve all reviews received by a user", async () => {
+			const receivedReviews = await reviewService.getReviewsReceived(
+				testStudent1.userId
+			);
+			expect(receivedReviews.length).toBeGreaterThan(0);
+			expect(receivedReviews[0].revieweeId).toBe(testStudent1.userId);
+		});
+	});
+
+	describe("assignRandomPeerReviews", () => {
+		it("should assign random peer reviews for an assignment", async () => {
+			// Create more submissions for this test
+			await prisma.submission.createMany({
+				data: [
+					{
+						assignmentId: testAssignment.assignmentId,
+						submitterId: testStudent2.userId
+					},
+					{
+						assignmentId: testAssignment.assignmentId,
+						submitterId: testInstructor.userId
+					}
+				]
+			});
+
+			const result = await reviewService.assignRandomPeerReviews(
+				testAssignment.assignmentId,
+				1
+			);
+			expect(result.assignedReviews).toBeGreaterThan(0);
+		});
+
+		it("should throw an error if there are not enough submissions", async () => {
+			await expect(
+				reviewService.assignRandomPeerReviews(testAssignment.assignmentId, 2)
+			).rejects.toThrow("Not enough submissions to assign peer reviews");
+		});
+
+		it("should throw an error if reviews per student is less than 1", async () => {
+			await expect(
+				reviewService.assignRandomPeerReviews(testAssignment.assignmentId, 0)
+			).rejects.toThrow(
+				"Reviews per student must be greater than or equal to 1"
+			);
+		});
+	});
 });

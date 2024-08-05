@@ -1,3 +1,13 @@
+// getNotifications: Fetch all notifications for a user
+// getNotification: Fetch a specific notification by ID
+// updateNotification: Update a specific notification by ID
+// deleteNotification: Delete a specific notification by ID
+// sendNotificationToClass: Send a notification to a specific class
+// sendNotificationToGroup: Send a notification to a specific group
+// sendNotificationToRole: Send a notification to a specific role
+// sendNotificationToAll: Send a notification to all users
+
+
 import axios from "axios";
 import showStatusToast from "@/utils/showToastStatus";
 

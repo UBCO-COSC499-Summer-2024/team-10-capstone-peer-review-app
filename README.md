@@ -24,6 +24,10 @@ The Peer Grade is a peer review application that allows students to submit assig
 3. Run `docker compose -f docker-compose.yml up -d`
 4. Visit `localhost:3000` in your browser
 
+### Nodemailer and .env files
+Currently, the .env files for our project exist in our repo. We know this may be a security issue however since the repo is only between our client and ourselves we found it easier to manage our repo activities by having the information easily accessible. The nodemailer functions use a designated peer-grade Gmail account made specifically for this application however the user may wish to change the details. When/if you do that, please ensure an app password is enabled and linked through the preferred gmail account and update the nodemailer credentials on the .env files. The .env file also includes the current credentials needed for running the database connections.
+
+
 ## 🌟 Features
 
 ### 👥 For Students

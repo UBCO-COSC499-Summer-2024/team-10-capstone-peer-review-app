@@ -68,6 +68,8 @@ const Reviews = () => {
 		// Re-fetch data when the dialog is closed
 	};
 
+	console.log("selectedReview in Reviews", selectedReview);
+
 	const renderInfoDialog = () => {
 		if (infoStep === 1) {
 			return (
@@ -176,7 +178,6 @@ const Reviews = () => {
 			>
 				{renderInfoDialog()}
 			</Dialog>
-
 			<ViewReviewGradeDialog
 				review={selectedReview}
 				open={isDialogOpen}

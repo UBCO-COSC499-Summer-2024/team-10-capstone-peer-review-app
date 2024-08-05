@@ -119,7 +119,7 @@ model Submission {
   finalGrade         Int? // Final grade of the Submission, default to the instructor grade?
   submissionComment  String?
   assignment         Assignment        @relation(fields: [assignmentId], references: [assignmentId], onDelete: Cascade)
-  submitter          User              @relation(fields: [submitterId], references: [userId])
+  submitter          User              @relation(fields: [submitterId], references: [userId], onDelete: Cascade)
   submitterGroup     Group?            @relation(fields: [submitterGroupId], references: [groupId])
   reviews            Review[]
   GroupSubmission    GroupSubmission[]
@@ -130,7 +130,7 @@ model CommentChain {
   assignmentId   String
   studentId      String
   assignment     Assignment @relation(fields: [assignmentId], references: [assignmentId], onDelete: Cascade)
-  student        User       @relation("StudentCommentChains", fields: [studentId], references: [userId])
+  student        User       @relation("StudentCommentChains", fields: [studentId], references: [userId], onDelete: Cascade)
   comments       Comment[]
 
   @@unique([assignmentId, studentId])
@@ -167,8 +167,8 @@ model Review {
   isPeerReview    Boolean          @default(false)
   reviewGrade     Int // Total grade of the review = sum of criterionGrades
   submission      Submission       @relation(fields: [submissionId], references: [submissionId], onDelete: Cascade)
-  reviewer        User             @relation("Reviewer", fields: [reviewerId], references: [userId])
-  reviewee        User             @relation("Reviewee", fields: [revieweeId], references: [userId])
+  reviewer        User             @relation("Reviewer", fields: [reviewerId], references: [userId], onDelete: Cascade)
+  reviewee        User             @relation("Reviewee", fields: [revieweeId], references: [userId], onDelete: Cascade)
   criterionGrades CriterionGrade[]
 }
 
@@ -190,7 +190,7 @@ model Criterion {
   title            String
   maxMark          Int
   minMark          Int
-  rubric           Rubric            @relation(fields: [rubricId], references: [rubricId])
+  rubric           Rubric            @relation(fields: [rubricId], references: [rubricId], onDelete: Cascade)
   criterionRatings CriterionRating[]
   criterionGrades  CriterionGrade[]
 }
@@ -211,7 +211,7 @@ model CriterionGrade {
   criterionId      String
   grade            Int
   comment          String? // Add this field for comments
-  review           Review    @relation(fields: [reviewId], references: [reviewId])
+  review           Review    @relation(fields: [reviewId], references: [reviewId], onDelete: Cascade)
   criterion        Criterion @relation(fields: [criterionId], references: [criterionId], onDelete: Cascade)
 
   @@unique([criterionId, reviewId], name: "UniqueCriteronGradePerReview") // Ensure unique combination of criterionId and reviewId

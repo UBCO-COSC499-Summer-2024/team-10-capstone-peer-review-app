@@ -1,3 +1,19 @@
+// This code defines several API functions for managing assignments in a class setting. 
+// The functionalities include:
+
+// 1. addAssignmentToClass: Adds an assignment to a class with form data handling and validation.
+// 2. addAssignmentWithRubric: Adds an assignment with rubric data to a class.
+// 3. updateAssignmentInClass: Updates an existing assignment in a class.
+// 4. removeAssignmentFromClass: Removes an assignment from a class.
+// 5. getAssignmentInClass: Retrieves a specific assignment by class ID and assignment ID.
+// 6. getAllAssignments: Retrieves all assignments.
+// 7. getAllAssignmentsByClassId: Retrieves all assignments for a specific class ID.
+// 8. addAssignmentToCategory: Adds an assignment to a specific category within a class.
+// 9. extendDeadlineForStudent: Extends the deadline for a student on a specific assignment.
+// 10. deleteExtendedDeadlineForStudent: Deletes an extended deadline for a student on a specific assignment.
+
+// The handleError function is used to handle errors and display appropriate status messages.
+
 import axios from "axios";
 import showStatusToast from "@/utils/showToastStatus";
 

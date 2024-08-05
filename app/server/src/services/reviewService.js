@@ -600,7 +600,11 @@ const getReviewDetails = async (reviewId) => {
 
 		return review;
 	} catch (error) {
-		throw new apiError("Failed to retrieve review details", 500);
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to retrieve review details", 500);
+		}
 	}
 };
 

@@ -23,6 +23,8 @@ describe("reviewService Integration Tests", () => {
 		await prisma.$transaction(async (prisma) => {
 			// Clean up
 			await prisma.criterionGrade.deleteMany();
+			await prisma.criterion.deleteMany();
+			await prisma.rubric.deleteMany();
 			await prisma.review.deleteMany();
 			await prisma.submission.deleteMany();
 			await prisma.assignment.deleteMany();
@@ -148,6 +150,31 @@ describe("reviewService Integration Tests", () => {
 	});
 
 	describe("createReview", () => {
+		let testCriterion;
+
+		beforeEach(async () => {
+			// Create a test rubric
+			const testRubric = await prisma.rubric.create({
+				data: {
+					creatorId: testInstructor.userId,
+					classId: testClass.classId,
+					title: "Test Rubric",
+					description: "Test Rubric Description",
+					totalMarks: 100
+				}
+			});
+
+			// Create a test criterion
+			testCriterion = await prisma.criterion.create({
+				data: {
+					rubricId: testRubric.rubricId,
+					title: "Test Criterion",
+					maxMark: 10,
+					minMark: 0
+				}
+			});
+		});
+
 		it("should create a new review", async () => {
 			const newReview = {
 				submissionId: testSubmission.submissionId,
@@ -155,7 +182,11 @@ describe("reviewService Integration Tests", () => {
 				reviewGrade: 90,
 				isPeerReview: true,
 				criterionGrades: [
-					{ criterionId: "test-criterion-id", grade: 5, comment: "Good job" }
+					{
+						criterionId: testCriterion.criterionId,
+						grade: 5,
+						comment: "Good job"
+					}
 				]
 			};
 
@@ -170,12 +201,37 @@ describe("reviewService Integration Tests", () => {
 	});
 
 	describe("updateReview", () => {
+		let testCriterion;
+
+		beforeEach(async () => {
+			// Create a test rubric
+			const testRubric = await prisma.rubric.create({
+				data: {
+					creatorId: testInstructor.userId,
+					classId: testClass.classId,
+					title: "Test Rubric",
+					description: "Test Rubric Description",
+					totalMarks: 100
+				}
+			});
+
+			// Create a test criterion
+			testCriterion = await prisma.criterion.create({
+				data: {
+					rubricId: testRubric.rubricId,
+					title: "Test Criterion",
+					maxMark: 10,
+					minMark: 0
+				}
+			});
+		});
+
 		it("should update an existing review", async () => {
 			const updateData = {
 				reviewGrade: 95,
 				criterionGrades: [
 					{
-						criterionId: "test-criterion-id",
+						criterionId: testCriterion.criterionId,
 						grade: 5,
 						comment: "Excellent work"
 					}

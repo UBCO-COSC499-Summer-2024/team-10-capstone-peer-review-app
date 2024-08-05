@@ -1,4 +1,3 @@
-
 /**
  * @module rubricController
  * @desc Controller module for handling rubric-related operations
@@ -16,13 +15,17 @@ import asyncErrorHandler from "../utils/asyncErrorHandler.js";
  * @returns {Object} The updated class object
  */
 export const addRubricsToAssignment = asyncErrorHandler(async (req, res) => {
-    const { userId, assignmentId, rubricData } = req.body;
-    const updatedClass = await rubricService.createRubricsForAssignment(userId, assignmentId, rubricData);
-    return res.status(200).json({
-        status: "Success",
-        message: "Rubric successfully added to assignment",
-        data: updatedClass,
-    });
+	const { userId, assignmentId, rubricData } = req.body;
+	const updatedClass = await rubricService.createRubricsForAssignment(
+		userId,
+		assignmentId,
+		rubricData
+	);
+	return res.status(200).json({
+		status: "Success",
+		message: "Rubric successfully added to assignment",
+		data: updatedClass
+	});
 });
 
 /**
@@ -32,15 +35,18 @@ export const addRubricsToAssignment = asyncErrorHandler(async (req, res) => {
  * @param {Object} req - The request object containing the rubricId
  * @returns {Object} The updated class object
  */
-export const deleteRubricsFromAssignment = asyncErrorHandler(async (req, res) => {
-	const { rubricId } = req.body;
-	const updatedClass = await rubricService.deleteRubricsFromAssignment(rubricId);
-	return res.status(200).json({
-		status: "Success",
-		message: "Rubric successfully removed from assignment",
-		data: updatedClass,
-	});
-});
+export const deleteRubricsFromAssignment = asyncErrorHandler(
+	async (req, res) => {
+		const { rubricId } = req.body;
+		const updatedClass =
+			await rubricService.deleteRubricsFromAssignment(rubricId);
+		return res.status(200).json({
+			status: "Success",
+			message: "Rubric successfully removed from assignment",
+			data: updatedClass
+		});
+	}
+);
 
 /**
  * @async
@@ -49,15 +55,20 @@ export const deleteRubricsFromAssignment = asyncErrorHandler(async (req, res) =>
  * @param {Object} req - The request object containing the rubricId and updateData
  * @returns {Object} The updated class object
  */
-export const updateRubricsForAssignment = asyncErrorHandler(async (req, res) => {
-	const { rubricId, updateData } = req.body;
-	const updatedClass = await rubricService.updateRubricsForAssignment(rubricId, updateData);
-	return res.status(200).json({
-		status: "Success",
-		message: "Rubric successfully updated in assignment",
-		data: updatedClass,
-	});
-});
+export const updateRubricsForAssignment = asyncErrorHandler(
+	async (req, res) => {
+		const { rubricId, updateData } = req.body;
+		const updatedClass = await rubricService.updateRubricsForAssignment(
+			rubricId,
+			updateData
+		);
+		return res.status(200).json({
+			status: "Success",
+			message: "Rubric successfully updated in assignment",
+			data: updatedClass
+		});
+	}
+);
 
 /**
  * @async
@@ -71,7 +82,7 @@ export const getRubricsInAssignment = asyncErrorHandler(async (req, res) => {
 	const rubricData = await rubricService.getRubricsForAssignment(assignmentId);
 	return res.status(200).json({
 		status: "Success",
-		data: rubricData,
+		data: rubricData
 	});
 });
 
@@ -85,7 +96,7 @@ export const getAllRubrics = asyncErrorHandler(async (req, res) => {
 	const rubrics = await rubricService.getAllRubrics();
 	return res.status(200).json({
 		status: "Success",
-		data: rubrics,
+		data: rubrics
 	});
 });
 
@@ -101,7 +112,7 @@ export const getAllRubricsInClass = asyncErrorHandler(async (req, res) => {
 	const rubrics = await rubricService.getAllRubricsInClass(classId);
 	return res.status(200).json({
 		status: "Success",
-		data: rubrics,
+		data: rubrics
 	});
 });
 
@@ -118,7 +129,7 @@ export const getRubricById = asyncErrorHandler(async (req, res) => {
 	const rubric = await rubricService.getRubricById(rubricId);
 	return res.status(200).json({
 		status: "Success",
-		data: rubric,
+		data: rubric
 	});
 });
 
@@ -151,7 +162,8 @@ export const addCriterionToRubric = asyncErrorHandler(async (req, res) => {
  */
 export const removeCriterionFromRubric = asyncErrorHandler(async (req, res) => {
 	const { criterionId } = req.body;
-	const updatedClass = await rubricService.deleteCriterionForRubric(criterionId);
+	const updatedClass =
+		await rubricService.deleteCriterionForRubric(criterionId);
 	return res.status(200).json({
 		status: "Success",
 		message: "Criterion successfully removed from rubric",
@@ -217,79 +229,6 @@ export const addCriterionRating = asyncErrorHandler(async (req, res) => {
 
 /**
  * @async
- * @function addCriterionGrade
- * @desc Adds a grade to a criterion
- * @param {Object} req - The request object containing the rubricId and criterionData
- * @returns {Object} The updated class object
- */
-export const addCriterionGrade = asyncErrorHandler(async (req, res) => {
-	const { rubricId, criterionData } = req.body;
-	const updatedClass = await rubricService.createCriterionForRubric(
-		rubricId,
-		criterionData
-	);
-	return res.status(200).json({
-		status: "Success",
-		message: "Criterion successfully added to rubric",
-		data: updatedClass
-	});
-});
-
-/**
- * @async
- * @function removeCriterionGrade
- * @desc Removes a grade from a criterion
- * @param {Object} req - The request object containing the criterionId
- * @returns {Object} The updated class object
- */
-export const removeCriterionGrade = asyncErrorHandler(async (req, res) => {
-	const { criterionId } = req.body;
-	const updatedClass = await rubricService.deleteCriterionForRubric(criterionId);
-	return res.status(200).json({
-		status: "Success",
-		message: "Criterion successfully removed from rubric",
-		data: updatedClass
-	});
-});
-
-/**
- * @async
- * @function updateCriterionGrade
- * @desc Updates a grade in a criterion
- * @param {Object} req - The request object containing the criterionId and updateData
- * @returns {Object} The updated class object
- */
-export const updateCriterionGrade = asyncErrorHandler(async (req, res) => {
-	const { criterionId, updateData } = req.body;
-	const updatedClass = await rubricService.updateCriterionForRubric(
-		criterionId,
-		updateData
-	);
-	return res.status(200).json({
-		status: "Success",
-		message: "Criterion successfully updated in rubric",
-		data: updatedClass
-	});
-});
-
-/**
- * @async
- * @function getCriterionGrade
- * @desc Gets the grade in a criterion
- * @param {Object} req - The request object containing the rubricId
- * @returns {Object} The criterion data
- */
-export const getCriterionGrade = asyncErrorHandler(async (req, res) => {
-	const { rubricId } = req.body;
-	const criterionData = await rubricService.getCriterionForRubric(rubricId);
-	return res.status(200).json({
-		status: "Success",
-		data: criterionData
-	});
-});
-
-/**
- * @async
  * @function linkRubricToAssignments
  * @desc Links a rubric to multiple assignments and checks if the rubric or assignment exists or is array else converts to array
  * @param {Object} req - The request object containing the rubricId and assignmentIds
@@ -303,14 +242,19 @@ export const linkRubricToAssignments = asyncErrorHandler(async (req, res) => {
 			message: "Invalid input: rubricId and assignmentIds are required"
 		});
 	}
-	
-	const assignmentIdsArray = Array.isArray(assignmentIds) ? assignmentIds : [assignmentIds];
-	
-	const result = await rubricService.linkRubricToAssignments(rubricId, assignmentIdsArray);
+
+	const assignmentIdsArray = Array.isArray(assignmentIds)
+		? assignmentIds
+		: [assignmentIds];
+
+	const result = await rubricService.linkRubricToAssignments(
+		rubricId,
+		assignmentIdsArray
+	);
 	return res.status(200).json({
 		status: "Success",
 		message: "Rubric successfully linked to assignments",
-		data: result,
+		data: result
 	});
 });
 
@@ -323,17 +267,10 @@ export default {
 	getAllRubrics,
 	getAllRubricsInClass,
 	getRubricById,
-
 	addCriterionToRubric,
 	removeCriterionFromRubric,
 	updateCriterionInRubric,
 	getCriterionInRubric,
-
-	addCriterionGrade,
-	removeCriterionGrade,
-	updateCriterionGrade,
-	getCriterionGrade,
 	addCriterionRating,
-
-	linkRubricToAssignments,
+	linkRubricToAssignments
 };

@@ -650,6 +650,5 @@ export default {
 	updateCriterionForRubric,
 	deleteCriterionForRubric,
 	createCriterionRating,
-
 	linkRubricToAssignments
 };

@@ -15,19 +15,14 @@ import {
 	deleteRubricsFromAssignment,
 	updateRubricsForAssignment,
 	getRubricsInAssignment,
-	addCriterionGrade,
-	removeCriterionGrade,
-	updateCriterionGrade,
-	getCriterionGrade,
 	addCriterionRating,
 	linkRubricToAssignments
-	
 } from "../controllers/rubricController.js";
 
 import {
 	ensureUser,
 	ensureInstructorOrAdmin,
-	ensureAdmin,
+	ensureAdmin
 } from "../middleware/ensureUserTypes.js";
 
 const router = express.Router();
@@ -56,9 +51,7 @@ router
  * @returns {Object} - The response object with the rubric data
  */
 
-router
-	.route("/remove-rubric")
-	.post( deleteRubricsFromAssignment);
+router.route("/remove-rubric").post(deleteRubricsFromAssignment);
 
 /**
  * @route POST /rubric/update-rubrics
@@ -80,9 +73,7 @@ router
  * @param {Object} req - The request object containing the assignmentId
  * @returns {Object} - The response object with the rubric data
  */
-router
-	.route("/get-rubrics")
-	.post(ensureUser, getRubricsInAssignment);
+router.route("/get-rubrics").post(ensureUser, getRubricsInAssignment);
 
 /**
  * @route POST /rubric/get-all-rubrics
@@ -116,9 +107,7 @@ router
  * @param {Object} req - The request object containing the rubricId
  * @returns {Object} - The response object with the rubric data
  */
-router
-	.route("/get-rubric-by-id")
-	.post( getRubricById);
+router.route("/get-rubric-by-id").post(getRubricById);
 
 // Criterion Routes
 
@@ -181,59 +170,6 @@ router
 router
 	.route("/add-criterion-rating")
 	.post(ensureUser, ensureInstructorOrAdmin, addCriterionRating);
-  
-  //add update and delete here for rating
-
-// Criterion Grade Routes
-
-/**
- * @route POST /rubric/give-criterion-grade
- * @function addCriterionGrade
- * @desc Give a grade to a criterion
- * @middleware ensureUser, ensureInstructorOrAdmin
- * @param {Object} req - The request object containing the grade data
- * @returns {Object} - The response object with the grade data
- */
-router
-	.route("/give-criterion-grade")
-	.post(ensureUser, ensureInstructorOrAdmin, addCriterionGrade);
-
-/**
- * @route POST /rubric/remove-criterion-grade
- * @function removeCriterionGrade
- * @desc Remove a grade from a criterion
- * @middleware ensureUser, ensureInstructorOrAdmin
- * @param {Object} req - The request object containing the grade data
- * @returns {Object} - The response object with the grade data
- */
-router
-	.route("/remove-criterion-grade")
-	.post(ensureUser, ensureInstructorOrAdmin, removeCriterionGrade);
-
-/**
- * @route POST /rubric/update-criterion-grade
- * @function updateCriterionGrade
- * @desc Update a grade for a criterion
- * @middleware ensureUser, ensureInstructorOrAdmin
- * @param {Object} req - The request object containing the grade data
- * @returns {Object} - The response object with the grade data
- */
-router
-	.route("/update-criterion-grade")
-	.post(ensureUser, ensureInstructorOrAdmin, updateCriterionGrade);
-
-/**
- * @route POST /rubric/get-criterion-grade
- * @function getCriterionGrade
- * @desc Get a grade for a criterion
- * @middleware ensureUser, ensureInstructorOrAdmin
- * @param {Object} req - The request object containing the grade data
- * @returns {Object} - The response object with the grade data
- */
-
-router
-	.route("/get-criterion-grade")
-	.post(ensureUser, ensureInstructorOrAdmin, getCriterionGrade);
 
 /**
  * @route POST /rubric/link-rubric-to-assignment
@@ -247,6 +183,5 @@ router
 router
 	.route("/link-rubric-to-assignment")
 	.post(ensureUser, ensureInstructorOrAdmin, linkRubricToAssignments);
-
 
 export default router;

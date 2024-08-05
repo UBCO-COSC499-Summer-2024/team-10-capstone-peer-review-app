@@ -22,10 +22,6 @@ import { ensureInstructor } from "../middleware/ensureUserTypes.js";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-	res.status(200).send("Review route is working!");
-});
-
 /**
  * @route POST /review/studentReview
  * @desc Get peer reviews for a student
@@ -87,7 +83,7 @@ router.post("/allReviews", getAllReviews);
  */
 router.post("/reviewId", getReviewById);
 
-/**	
+/**
  * @route POST /review/createReview
  * @desc Create a new review
  * @function createReview

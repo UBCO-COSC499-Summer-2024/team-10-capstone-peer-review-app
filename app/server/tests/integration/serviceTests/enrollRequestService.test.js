@@ -202,9 +202,7 @@ describe("enrollRequestService Integration Tests", () => {
 					"non-existent-id",
 					testUser.userId
 				)
-			).rejects.toThrow(
-				new apiError("Enrollment request not found or unauthorized", 404)
-			);
+			).rejects.toThrow(new apiError("Enrollment request not found", 404));
 		});
 	});
 });

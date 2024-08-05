@@ -58,6 +58,6 @@ router.route("/user").get(getEnrollRequestsForUser);
 router
 	.route("/:enrollRequestId")
 	.put(ensureInstructorOrAdmin, updateEnrollRequestStatus)
-	.delete(deleteEnrollRequest);
+	.delete(ensureInstructorOrAdmin, deleteEnrollRequest);
 
 export default router;

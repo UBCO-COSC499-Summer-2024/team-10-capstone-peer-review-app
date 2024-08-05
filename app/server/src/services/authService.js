@@ -3,13 +3,15 @@ import jwt from "jsonwebtoken";
 import prisma from "../../prisma/prismaClient.js";
 import sendEmail from "../utils/mailer.js";
 import apiError from "../utils/apiError.js";
-import { sendNotificationToRole, sendNotificationToUser } from "./notifsService.js";
+import {
+	sendNotificationToRole,
+	sendNotificationToUser
+} from "./notifsService.js";
 
 /**
  * @module authService
  * @desc This module provides authentication services for user registration, login, email verification, password reset, and role requests.
  */
-
 
 const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS, 10);
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -22,7 +24,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
  * @returns {Promise<Object|null>} - The user object if found, otherwise null.
  */
 async function checkUserByEmail(email) {
-	return await prisma.user.findUnique({ where: { email } } );
+	return await prisma.user.findUnique({ where: { email } });
 }
 
 /**
@@ -48,10 +50,10 @@ async function checkRequestByEmail(email) {
  * @returns {string} - The capitalized string.
  */
 function capitalizeFirstLetter(string) {
-    if (!string) {
-		return '';
+	if (!string) {
+		return "";
 	}
-    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+	return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
 /**
@@ -397,9 +399,15 @@ async function createRoleRequest(userId, role) {
 	});
 
 	const userInfo = await prisma.user.findUnique({
-		where: { userId: userId },
+		where: { userId: userId }
 	});
-	await sendNotificationToRole(null, `The user ${userInfo.firstname} ${userInfo.lastname} has submitted a role request`, `Request: Switch to ${capitalizeFirstLetter(role)}`, "ADMIN", 'role-request');
+	await sendNotificationToRole(
+		null,
+		`The user ${userInfo.firstname} ${userInfo.lastname} has submitted a role request`,
+		`Request: Switch to ${capitalizeFirstLetter(role)}`,
+		"ADMIN",
+		"role-request"
+	);
 }
 
 /**
@@ -554,8 +562,14 @@ export async function approveRoleRequest(roleRequestId) {
 		`Role Request Approval for ${user.firstname} ${user.lastname}`,
 		htmlContent
 	);
-	
-	await sendNotificationToUser(null, `Your role request for ${capitalizeFirstLetter(roleRequest.roleRequested)} has been approved`, `You can now log in as a ${capitalizeFirstLetter(roleRequest.roleRequested)}`, user.userId, 'role-request');
+
+	await sendNotificationToUser(
+		null,
+		`Your role request for ${capitalizeFirstLetter(roleRequest.roleRequested)} has been approved`,
+		`You can now log in as a ${capitalizeFirstLetter(roleRequest.roleRequested)}`,
+		user.userId,
+		"role-request"
+	);
 	// TODO: Add logic to remove previous role requests after its been approved?
 }
 
@@ -604,7 +618,13 @@ export async function denyRoleRequest(roleRequestId) {
 			`Role Request Denial for ${user.firstname} ${user.lastname}`,
 			htmlContent
 		);
-		await sendNotificationToUser(null, `Your role request for ${capitalizeFirstLetter(roleRequest.roleRequested)} has been denied`, `Please reach out to an admin if you believe this is an error`, user.userId, 'role-request');
+		await sendNotificationToUser(
+			null,
+			`Your role request for ${capitalizeFirstLetter(roleRequest.roleRequested)} has been denied`,
+			`Please reach out to an admin if you believe this is an error`,
+			user.userId,
+			"role-request"
+		);
 		// TODO: Add logic to remove previous role requests after its been denied? If a user is denied, they should be able to apply for a new role request
 	} catch (error) {
 		if (error instanceof apiError) {

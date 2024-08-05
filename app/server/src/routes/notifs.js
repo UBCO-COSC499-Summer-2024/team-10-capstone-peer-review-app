@@ -5,14 +5,14 @@
 import express from "express";
 import {
 	getNotifications,
-    getNotification,
-    updateNotification,
-    deleteNotification,
+	getNotification,
+	updateNotification,
+	deleteNotification,
 	sendNotificationToClass,
 	sendNotificationToGroup,
 	sendNotificationToRole,
-    sendNotificationToAll,
-    sendNotificationToUser
+	sendNotificationToAll,
+	sendNotificationToUser
 } from "../controllers/notifsController.js";
 
 import {
@@ -21,11 +21,6 @@ import {
 } from "../middleware/ensureUserTypes.js";
 
 const router = express.Router();
-
-
-router.get("/", (req, res) => {
-	res.status(200).send("Notif route is working!");
-});
 
 /**
  * @route GET or DELETE or PUT /notifs/:notificationId
@@ -55,7 +50,9 @@ router.route("/get-notifications").post(getNotifications);
  * @param {Object} req - The request object containing the userId and the notification data
  * @returns {Object} - The response object with the notification data
  */
-router.route("/send-to-user").post(ensureInstructorOrAdmin, sendNotificationToUser);
+router
+	.route("/send-to-user")
+	.post(ensureInstructorOrAdmin, sendNotificationToUser);
 /**
  * @route POST /notifs/send-to-class
  * @desc Send a notification to a class
@@ -64,7 +61,9 @@ router.route("/send-to-user").post(ensureInstructorOrAdmin, sendNotificationToUs
  * @returns {Object} - The response object with the notification data
  * @middleware ensureInstructorOrAdmin
  */
-router.route("/send-to-class").post(ensureInstructorOrAdmin, sendNotificationToClass);
+router
+	.route("/send-to-class")
+	.post(ensureInstructorOrAdmin, sendNotificationToClass);
 /**
  * @route POST /notifs/send-to-group
  * @desc Send a notification to a group

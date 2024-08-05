@@ -60,7 +60,11 @@ export async function createEnrollRequest(userId, classId, senderMessage) {
 
 		return enrollRequest;
 	} catch (error) {
-		throw new apiError(error.message, 500);
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to create enrollment request", 500);
+		}
 	}
 }
 
@@ -169,11 +173,13 @@ export async function updateEnrollRequestStatus(
 
 		return updatedRequest;
 	} catch (error) {
+		if (error.code === "P2025") {
+			throw new apiError("Enrollment request not found", 404);
+		}
 		if (error instanceof apiError) {
 			throw error;
-		} else {
-			throw error;
 		}
+		throw new apiError("Error updating enrollment request", 500);
 	}
 }
 
@@ -185,14 +191,14 @@ export async function updateEnrollRequestStatus(
  * @param {number} userId - The ID of the user making the request.
  * @throws {apiError} If the enrollment request is not found or if the user is not authorized to delete the request.
  */
-export async function deleteEnrollRequest(enrollRequestId, userId) {
+export async function deleteEnrollRequest(enrollRequestId) {
 	try {
 		const request = await prisma.enrollRequest.findUnique({
 			where: { enrollRequestId }
 		});
 
-		if (!request || request.userId !== userId) {
-			throw new apiError("Enrollment request not found or unauthorized", 404);
+		if (!request) {
+			throw new apiError("Enrollment request not found", 404);
 		}
 
 		await prisma.enrollRequest.delete({

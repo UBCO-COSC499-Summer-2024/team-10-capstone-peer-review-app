@@ -56,7 +56,7 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 	};
 
 	const calculatePercentageGrade = (review) => {
-		console.log("Review object:", JSON.stringify(review, null, 2));
+		// console.log("Review object:", JSON.stringify(review, null, 2));
 		if (!review.criterionGrades || review.criterionGrades.length === 0) {
 			return "Not graded";
 		}
@@ -163,6 +163,8 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 		}
 	};
 
+	console.log("selectedReview", selectedReview);
+
 	const renderAssignmentCard = (group) => {
 		const { assignment, reviews } = group;
 		const isExpanded = expandedAssignments[assignment.assignmentId];
@@ -249,7 +251,7 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 										className="p-0 h-auto mr-4"
 										onClick={() => onViewDetails(review, true)}
 									>
-										View in Dialog
+										View Grade
 									</Button>
 									<Button
 										variant="link"

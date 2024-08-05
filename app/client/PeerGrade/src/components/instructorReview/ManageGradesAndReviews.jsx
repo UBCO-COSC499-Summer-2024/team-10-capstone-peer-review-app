@@ -45,9 +45,10 @@ import {
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
-	DialogFooter
+	DialogFooter,
+	DialogDescription
 } from "@/components/ui/dialog";
-import InfoButton from '@/components/global/InfoButton';
+import InfoButton from "@/components/global/InfoButton";
 import MultiSelect from "@/components/ui/MultiSelect";
 import { toast } from "@/components/ui/use-toast";
 import {
@@ -84,7 +85,7 @@ const ManageGradesAndReviews = () => {
 	const [assignReviewersDialogOpen, setAssignReviewersDialogOpen] =
 		useState(false);
 	const [selectedReviewers, setSelectedReviewers] = useState([]);
-	const [allStudents, setAllStudents] = useState([]);
+	const [selectedStudent, setSelectedStudent] = useState(null);
 	const [autoAssignDialogOpen, setAutoAssignDialogOpen] = useState(false);
 	const [reviewsPerStudent, setReviewsPerStudent] = useState(1);
 	const [rubric, setRubric] = useState(null);
@@ -157,8 +158,6 @@ const ManageGradesAndReviews = () => {
 			});
 
 			setStudentsWithSubmissions(studentsWithSubmissionStatus);
-			setAllStudents(students);
-			console.log("students:", allStudents);
 		} catch (error) {
 			toast({
 				title: "Error",
@@ -173,7 +172,6 @@ const ManageGradesAndReviews = () => {
 			const rubricData = await getRubricsForAssignment(assignmentId);
 			setRubric(rubricData.data);
 		} catch (error) {
-			console.error("Error fetching rubric:", error);
 			toast({
 				title: "Error",
 				description: "Failed to fetch rubric",
@@ -183,54 +181,53 @@ const ManageGradesAndReviews = () => {
 	};
 
 	const isDueDatePassed = (dueDate) => {
+		// Comment this in disable due date restrictions
+		// return true;
 		if (!dueDate) return false;
 		const currentDate = new Date();
 		const assignmentDueDate = new Date(dueDate);
 		return currentDate > assignmentDueDate;
-		// comment this in to test
-		// return true;
 	};
 
 	const handleAssignReviewers = async () => {
 		if (!selectedSubmission) {
 			toast({
 				title: "Error",
-				description: "No submission selected. Please try again.",
+				description: "No submission selected.",
 				variant: "destructive"
 			});
 			return;
 		}
 
-		if (!isDueDatePassed(selectedAssignment.dueDate)) {
+		const student = studentsWithSubmissions.find(
+			(s) => s.userId === selectedSubmission.submitterId
+		);
+
+		if (!student) {
 			toast({
-				title: "Action not allowed",
-				description:
-					"You must wait for the due date to pass before assigning reviewers",
-				variant: "warning"
+				title: "Error",
+				description: "Student information not found.",
+				variant: "destructive"
 			});
 			return;
 		}
 
 		try {
-			const reviews = await reviewAPI.getAllReviews(
+			const reviews = await reviewAPI.getPeerReviews(
 				selectedSubmission.submissionId
 			);
-			const existingReviewerIds = reviews.data
-				.filter(
-					(review) =>
-						review.isPeerReview &&
-						review.reviewerId !== selectedSubmission.submitterId
-				)
-				.map((review) => review.reviewerId);
-			setSelectedReviewers(existingReviewerIds);
 
-			console.log("existing reviewers:", existingReviewerIds);
+			const assignedReviewerIds = reviews.data
+				.filter((review) => review.isPeerReview)
+				.map((review) => review.reviewerId);
+
+			setSelectedReviewers(assignedReviewerIds);
+			setSelectedStudent(student);
 			setAssignReviewersDialogOpen(true);
 		} catch (error) {
-			console.error("Error fetching existing reviewers:", error);
 			toast({
 				title: "Error",
-				description: "Failed to fetch existing reviewers",
+				description: "Failed to fetch current peer reviewers.",
 				variant: "destructive"
 			});
 		}
@@ -241,19 +238,32 @@ const ManageGradesAndReviews = () => {
 			const existingReviews = await reviewAPI.getPeerReviews(
 				selectedSubmission.submissionId
 			);
+
+			// Remove reviews for unselected reviewers
 			for (const review of existingReviews.data) {
 				if (!selectedReviewers.includes(review.reviewerId)) {
 					await reviewAPI.deleteReview(review.reviewId);
 				}
 			}
 
+			// Add new reviews for newly selected reviewers
 			for (const reviewerId of selectedReviewers) {
 				if (!existingReviews.data.some((r) => r.reviewerId === reviewerId)) {
+					const revieweeStudent = studentsWithSubmissions.find(
+						(s) => s.userId === selectedSubmission.submitterId
+					);
+
+					if (!revieweeStudent) {
+						console.error(
+							`No matching student found for submissionId: ${selectedSubmission.submissionId}`
+						);
+						continue;
+					}
+
 					const blankReview = {
 						submissionId: selectedSubmission.submissionId,
 						reviewGrade: 0,
-						reviewerId: reviewerId,
-						revieweeId: selectedSubmission.submitterId,
+						revieweeId: revieweeStudent.userId,
 						isPeerReview: true,
 						isGroup: false,
 						criterionGrades: []
@@ -270,14 +280,13 @@ const ManageGradesAndReviews = () => {
 			);
 			toast({
 				title: "Success",
-				description: "Reviewers assigned successfully",
+				description: "Peer reviews updated successfully",
 				variant: "default"
 			});
 		} catch (error) {
-			console.error("Error updating reviewers:", error);
 			toast({
 				title: "Error",
-				description: "Failed to update reviewers",
+				description: "Failed to update peer reviews",
 				variant: "destructive"
 			});
 		}
@@ -314,7 +323,6 @@ const ManageGradesAndReviews = () => {
 				variant: "default"
 			});
 		} catch (error) {
-			console.error("Error assigning peer reviews:", error);
 			toast({
 				title: "Error",
 				description: "Failed to assign peer reviews",
@@ -456,7 +464,6 @@ const ManageGradesAndReviews = () => {
 				variant: "default"
 			});
 		} catch (error) {
-			console.error("Error submitting/updating grade:", error);
 			toast({
 				title: "Error",
 				description: "Failed to submit/update grade",
@@ -474,31 +481,42 @@ const ManageGradesAndReviews = () => {
 	const infoContent = {
 		title: "Manage Reviews and Submissions",
 		description: (
-		  <>
-			<p>This page allows you to manage and grade student submissions for all your classes and assignments:</p>
-			<ul className="list-disc list-inside mt-2">
-			  <li>Select a class and an assignment to view submissions</li>
-			  <li>Search for specific students using the search bar</li>
-			  <li>View submission details:
-				<ul className="list-disc list-inside ml-4">
-				  <li>Submission status (Submitted or No Submission)</li>
-				  <li>Latest grade (if graded)</li>
-				  <li>All attempts for each student</li>
+			<>
+				<p>
+					This page allows you to manage and grade student submissions for all
+					your classes and assignments:
+				</p>
+				<ul className="list-disc list-inside mt-2">
+					<li>Select a class and an assignment to view submissions</li>
+					<li>Search for specific students using the search bar</li>
+					<li>
+						View submission details:
+						<ul className="list-disc list-inside ml-4">
+							<li>Submission status (Submitted or No Submission)</li>
+							<li>Latest grade (if graded)</li>
+							<li>All attempts for each student</li>
+						</ul>
+					</li>
+					<li>
+						Actions for each submission:
+						<ul className="list-disc list-inside ml-4">
+							<li>View the submission details</li>
+							<li>Download the submitted file</li>
+							<li>Grade or re-grade the submission</li>
+						</ul>
+					</li>
 				</ul>
-			  </li>
-			  <li>Actions for each submission:
-				<ul className="list-disc list-inside ml-4">
-				  <li>View the submission details</li>
-				  <li>Download the submitted file</li>
-				  <li>Grade or re-grade the submission</li>
-				</ul>
-			  </li>
-			</ul>
-			<p className="mt-2">Use the accordion to expand and collapse student details for better visibility.</p>
-			<p className="mt-2">The grading dialog allows you to assign scores based on the rubric criteria and provide comments for each criterion.</p>
-		  </>
+				<p className="mt-2">
+					Use the accordion to expand and collapse student details for better
+					visibility.
+				</p>
+				<p className="mt-2">
+					The grading dialog allows you to assign scores based on the rubric
+					criteria and provide comments for each criterion.
+				</p>
+			</>
 		)
-	  };
+	};
 
 	return (
 		<Card className="w-full">
@@ -520,11 +538,13 @@ const ManageGradesAndReviews = () => {
 									aria-expanded={openClass}
 									className="w-[200px] justify-between"
 								>
-									{selectedClass
-										? classes.find((cls) => cls.classId === selectedClass)
-												?.classname
-										: "Select Class"}
-									<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+									<span className="truncate mr-2">
+										{selectedClass
+											? classes.find((cls) => cls.classId === selectedClass)
+													?.classname
+											: "Select Class"}
+									</span>
+									<ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
 								</Button>
 							</PopoverTrigger>
 							<PopoverContent className="w-[200px] p-0">
@@ -577,10 +597,12 @@ const ManageGradesAndReviews = () => {
 									className="w-[200px] justify-between"
 									disabled={!selectedClass}
 								>
-									{selectedAssignment
-										? selectedAssignment.title
-										: "Select Assignment"}
-									<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+									<span className="truncate mr-2">
+										{selectedAssignment
+											? selectedAssignment.title
+											: "Select Assignment"}
+									</span>
+									<ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
 								</Button>
 							</PopoverTrigger>
 							<PopoverContent className="w-[200px] p-0">
@@ -639,6 +661,7 @@ const ManageGradesAndReviews = () => {
 								/>
 							</div>
 							<Button
+								variant="secondary"
 								onClick={() => setAutoAssignDialogOpen(true)}
 								disabled={!isDueDatePassed(selectedAssignment.dueDate)}
 								className={cn(
@@ -744,7 +767,7 @@ const ManageGradesAndReviews = () => {
 																			handleViewSubmission(student.submission)
 																		}
 																	>
-																		View
+																		View Submission
 																	</Button>
 																	<Button
 																		variant="outline"
@@ -816,7 +839,7 @@ const ManageGradesAndReviews = () => {
 																				"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
 																		)}
 																	>
-																		Assign Reviewers
+																		Assign Peer Reviews
 																	</Button>
 																	<Button
 																		variant="outline"
@@ -838,7 +861,7 @@ const ManageGradesAndReviews = () => {
 																				"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
 																		)}
 																	>
-																		View Peer Reviews
+																		View Peer Reviews Received
 																	</Button>
 																</div>
 															</TableCell>
@@ -868,14 +891,19 @@ const ManageGradesAndReviews = () => {
 			>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>Assign Peer Reviewers</DialogTitle>
+						<DialogTitle>Manually Assign Peer Reviews</DialogTitle>
+						<DialogDescription>
+							Select the students who will peer-review{" "}
+							{selectedStudent?.firstname} {selectedStudent?.lastname}
+						</DialogDescription>
 					</DialogHeader>
 					<div className="space-y-4 min-h-[4vh] flex items-center justify-center">
 						<MultiSelect
-							options={allStudents
+							options={studentsWithSubmissions
 								.filter(
 									(student) =>
-										student.userId !== selectedSubmission?.submitterId
+										student.userId !== selectedSubmission?.submitterId &&
+										student.hasSubmitted
 								)
 								.map((student) => ({
 									value: student.userId,
@@ -887,7 +915,7 @@ const ManageGradesAndReviews = () => {
 					</div>
 					<DialogFooter>
 						<Button onClick={handleAssignReviewersSubmit}>
-							Update Reviewers
+							Update Peer Reviews
 						</Button>
 					</DialogFooter>
 				</DialogContent>

@@ -44,7 +44,6 @@ const ViewAllPeerReviewsDialog = ({ submissionId, open, onClose }) => {
 	};
 
 	const calculateGradePercentage = (review) => {
-		console.log("review", review);
 		if (
 			!review ||
 			!review.criterionGrades ||

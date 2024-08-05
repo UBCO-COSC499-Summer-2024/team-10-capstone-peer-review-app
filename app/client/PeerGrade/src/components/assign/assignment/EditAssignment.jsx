@@ -43,7 +43,7 @@ const fileTypeOptions = [
 	{ value: "png", label: "PNG" }
 ];
 
-const EditAssignment = () => {
+const EditAssignment = ({ refresh }) => {
 	const navigate = useNavigate();
 	const { classId, assignmentId } = useParams();
 
@@ -209,6 +209,7 @@ const EditAssignment = () => {
 				});
 
 				navigate(`/class/${classId}/assignment/${assignmentId}`);
+				refresh();
 			} else {
 				toast({
 					title: "Error",
@@ -343,62 +344,47 @@ const EditAssignment = () => {
 						)}
 					</div>
 
-					<div>
-						<label>Category</label>
-						<Select
-							onValueChange={(value) =>
-								setFormData((prev) => ({ ...prev, categoryId: value }))
-							}
-							value={formData.categoryId}
-							defaultValue={formData.categoryId} // Add this line
-						>
-							<SelectTrigger
-								className={errors.categoryId ? "border-red-500" : ""}
-							>
-								<SelectValue placeholder="Select category..." />
-							</SelectTrigger>
-							<SelectContent>
-								{categories.map((category) => (
-									<SelectItem
-										key={category.categoryId}
-										value={category.categoryId}
-									>
-										{category.name}
-									</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
-						{errors.categoryId && (
-							<p className="text-red-500 text-sm mt-1">{errors.categoryId}</p>
-						)}
-					</div>
+          <div>
+            <label htmlFor='category'>Category</label>
+            <Select 
+              onValueChange={(value) => setFormData(prev => ({ ...prev, categoryId: value }))}
+              value={formData.categoryId}
+              defaultValue={formData.categoryId}
+            >
+              <SelectTrigger className={errors.categoryId ? "border-red-500" : ""} id='category'>
+                <SelectValue placeholder="Select category..."/>
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map((category) => (
+                  <SelectItem key={category.categoryId} value={category.categoryId}>
+                    {category.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.categoryId && <p className="text-red-500 text-sm mt-1">{errors.categoryId}</p>}
+          </div>
 
-					<div>
-						<label>Rubric</label>
-						<Select
-							onValueChange={(value) =>
-								setFormData((prev) => ({ ...prev, rubricId: value }))
-							}
-							value={formData.rubricId}
-							defaultValue={formData.rubricId} // Add this line
-						>
-							<SelectTrigger
-								className={errors.rubricId ? "border-red-500" : ""}
-							>
-								<SelectValue placeholder="Select a rubric" />
-							</SelectTrigger>
-							<SelectContent>
-								{rubrics.map((rubric) => (
-									<SelectItem key={rubric.rubricId} value={rubric.rubricId}>
-										{rubric.title}
-									</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
-						{errors.rubricId && (
-							<p className="text-red-500 text-sm mt-1">{errors.rubricId}</p>
-						)}
-					</div>
+          <div>
+            <label htmlFor='rubric'>Rubric</label>
+            <Select 
+              onValueChange={(value) => setFormData(prev => ({ ...prev, rubricId: value }))}
+              value={formData.rubricId}
+              defaultValue={formData.rubricId}
+            >
+              <SelectTrigger className={errors.rubricId ? "border-red-500" : ""} id='rubric'>
+                <SelectValue placeholder="Select a rubric" />
+              </SelectTrigger>
+              <SelectContent>
+                {rubrics.map((rubric) => (
+                  <SelectItem key={rubric.rubricId} value={rubric.rubricId}>
+                    {rubric.title}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.rubricId && <p className="text-red-500 text-sm mt-1">{errors.rubricId}</p>}
+          </div>
 
 					<div>
 						<label>Allowed File Types</label>

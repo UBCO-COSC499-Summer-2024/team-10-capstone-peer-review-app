@@ -24,7 +24,6 @@ const AdminDashboard = () => {
 					<TabsTrigger value="users">Users</TabsTrigger>
 					<TabsTrigger value="classes">Classes</TabsTrigger>
 					<TabsTrigger value="assignments">Assignments</TabsTrigger>
-					{/* <TabsTrigger value="peer-reviews">Peer-reviews</TabsTrigger> */}
 					<TabsTrigger value="groups">Groups</TabsTrigger>
 					<TabsTrigger value="reports">Reports</TabsTrigger>
 					<TabsTrigger value="notifications">Notifications</TabsTrigger>
@@ -40,9 +39,6 @@ const AdminDashboard = () => {
 				</TabsContent>
 				<TabsContent value="assignments">
 					<Assignments />
-				</TabsContent>
-				<TabsContent value="peer-reviews">
-					<PRassign />
 				</TabsContent>
 				<TabsContent value="groups">
 					<Groups />

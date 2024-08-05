@@ -9,7 +9,7 @@ const StatCard = ({
 	return (
 			<Card className="w-full flex items-center justify-between bg-white shadow-md rounded-lg">
 				<CardHeader className=" border-r-3">
-					<CardTitle className="text-xl font-bold">{title}</CardTitle>
+					<CardTitle className="text-xl font-bold" data-testid={`${title}-title`}>{title}</CardTitle>
 					<CardDescription className="text-gray-500">
 						{description}
 					</CardDescription>
@@ -17,7 +17,7 @@ const StatCard = ({
 				<CardContent className="flex flex-col space-y-2 items-center justify-center">
         			<div>{icon}</div> 
 					<div className="flex items-center space-x-2">
-						<span className="text-gray-700 text-lg">{number}</span>
+						<span className="text-gray-700 text-lg" data-testid={`${title}-number`}>{number}</span>
 					</div>
 				</CardContent>
 			</Card>

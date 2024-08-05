@@ -536,7 +536,7 @@ const ManageGradesAndReviews = () => {
 									variant="outline"
 									role="combobox"
 									aria-expanded={openClass}
-									className="w-[200px] justify-between"
+									className="min-w-[200px] justify-between"
 								>
 									<span className="truncate mr-2">
 										{selectedClass
@@ -594,7 +594,7 @@ const ManageGradesAndReviews = () => {
 									variant="outline"
 									role="combobox"
 									aria-expanded={openAssignment}
-									className="w-[200px] justify-between"
+									className="min-w-[200px] justify-between"
 									disabled={!selectedClass}
 								>
 									<span className="truncate mr-2">
@@ -652,7 +652,7 @@ const ManageGradesAndReviews = () => {
 					{selectedClass && selectedAssignment && (
 						<>
 							<div className="flex items-center flex-grow">
-								<Search className="mr-2 h-4 w-4 text-gray-500" />
+								{/* <Search className="mr-2 h-4 w-4 text-gray-500" /> */}
 								<Input
 									placeholder="Search by student name"
 									value={searchTerm}

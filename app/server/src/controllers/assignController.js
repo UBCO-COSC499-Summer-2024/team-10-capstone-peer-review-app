@@ -112,51 +112,37 @@ export const removeAssignmentFromClass = asyncErrorHandler(async (req, res) => {
 export const updateAssignmentInClass = [
 	upload.single("file"),
 	asyncErrorHandler(async (req, res) => {
-		const classId = req.body.classId;
-		const assignmentId = req.body.assignmentId;
-		const categoryId = req.body.categoryId;
-		const assignmentData = JSON.parse(req.body.assignmentData);
-
-		console.log('Received assignment data for update:', assignmentData);  // Add this line for debugging
-
-		let fileUrl = null;
-		if (req.file) {
-			const uniqueFilename = `${uuidv4()}${path.extname(req.file.originalname)}`;
-			const filePath = path.join(UPLOAD_PATH, uniqueFilename);
-
-			// Ensure the upload directory exists
-			fs.mkdirSync(UPLOAD_PATH, { recursive: true });
-
-			// Write the file to the shared volume
-			fs.writeFileSync(filePath, req.file.buffer);
-
-			// Construct the URL that Nginx will serve
-			fileUrl = `${BASE_URL}/${uniqueFilename}`;
-		}
-
-		const updatedAssignment = await assignService.updateAssignmentInClass(
-			classId,
-			assignmentId,
-			categoryId,
-			{
-				...assignmentData,
-				assignmentFilePath: fileUrl || assignmentData.assignmentFilePath,
-				rubricId: assignmentData.rubricId, // Add this line
-				allowedFileTypes: assignmentData.allowedFileTypes, // Add this line
-			}
-		);
-
-		if (updatedAssignment) {
-			return res.status(200).json({
-				status: 'Success',
-				message: 'Assignment successfully updated',
-				data: updatedAssignment
-			});
-		} else {
-			return res.status(500).json({
-				status: 'Error',
-				message: 'Failed to update assignment'
-			});
+	  const classId = req.body.classId;
+	  const assignmentId = req.body.assignmentId;
+	  const categoryId = req.body.categoryId;
+	  const assignmentData = JSON.parse(req.body.assignmentData);
+  
+	  console.log('Received assignment data for update:', assignmentData);  // Add this line for debugging
+  
+	  let fileUrl = null;
+	  if (req.file) {
+		const uniqueFilename = `${uuidv4()}${path.extname(req.file.originalname)}`;
+		const filePath = path.join(UPLOAD_PATH, uniqueFilename);
+  
+		// Ensure the upload directory exists
+		fs.mkdirSync(UPLOAD_PATH, { recursive: true });
+  
+		// Write the file to the shared volume
+		fs.writeFileSync(filePath, req.file.buffer);
+  
+		// Construct the URL that Nginx will serve
+		fileUrl = `${BASE_URL}/${uniqueFilename}`;
+	  }
+  
+	  const updatedAssignment = await assignService.updateAssignmentInClass(
+		classId,
+		assignmentId,
+		categoryId,
+		{
+			...assignmentData,
+			assignmentFilePath: fileUrl || assignmentData.assignmentFilePath,
+			rubricId: assignmentData.rubricId,
+			allowedFileTypes: assignmentData.allowedFileTypes,
 		}
 	})
 ];

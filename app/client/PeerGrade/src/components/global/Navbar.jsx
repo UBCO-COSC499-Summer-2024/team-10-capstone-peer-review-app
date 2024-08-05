@@ -190,7 +190,9 @@ export default function AppNavbar() {
 									)}
 								>
 									<ClipboardList className="w-5 h-5 mb-1" />
-									<span className="md:block">Grades & Reviews</span>
+									<span className="md:block">
+										{user.role === "STUDENT" ? "Grades & Reviews" : "Grading & Reviews"}
+									</span>
 								</Link>
 							</NavigationMenuItem>
 							{(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (

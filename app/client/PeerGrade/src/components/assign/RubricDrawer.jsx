@@ -123,12 +123,13 @@ const RubricDrawer = ({ isOpen, onClose, onSubmit, children }) => {
                                 onClick={() => removeRating(index, ratingIndex)}
                                 variant="outline"
                                 className="h-8 w-8 p-0 flex items-center justify-center"
+                                data-testid={`remove-rating-${index}-${ratingIndex}`}
                               >
                                 <Minus className="h-4 w-4" />
                               </Button>
                             </div>
                           ))}
-                          <Button onClick={() => addRating(index)} variant="outline" className="h-8 w-8 p-0 flex items-center justify-center">
+                          <Button onClick={() => addRating(index)} variant="outline" className="h-8 w-8 p-0 flex items-center justify-center" data-testid={`add-rating-${index}`}>
                             <Plus className="h-4 w-4" />
                           </Button>
                         </div>
@@ -151,6 +152,7 @@ const RubricDrawer = ({ isOpen, onClose, onSubmit, children }) => {
                         <Button
                           onClick={() => removeCriteria(index)}
                           variant="destructive"
+                          data-testid={`remove-criteria-${index}`}
                         >
                           <Trash className="h-4 w-4"/>
                         </Button>
@@ -159,7 +161,7 @@ const RubricDrawer = ({ isOpen, onClose, onSubmit, children }) => {
                   ))}
                   <TableRow>
                     <TableCell colSpan="4" className="text-center">
-                      <Button onClick={addCriteria} variant="outline" className="h-8 w-8 p-0 flex items-center justify-center">
+                      <Button onClick={addCriteria} variant="outline" className="h-8 w-8 p-0 flex items-center justify-center" data-testid="add-criteria">
                         <Plus className="h-4 w-4" />
                       </Button>
                     </TableCell>
@@ -173,6 +175,7 @@ const RubricDrawer = ({ isOpen, onClose, onSubmit, children }) => {
             <Button
               className="w-1/2 bg-green-100"
               onClick={() => {
+                console.log("aaaa",errorMessage);
                 if (!errorMessage) {
                   onSubmit(rubric);
                 }

@@ -268,7 +268,7 @@ const Submissions = (assignment) => {
 
 	const isDueDatePassed = () => {
 		const currentDate = new Date();
-		const assignmentDueDate = new Date(assignment.assignment.dueDate);
+		const assignmentDueDate = new Date(assignment.dueDate);
 		return currentDate > assignmentDueDate;
 	};
 

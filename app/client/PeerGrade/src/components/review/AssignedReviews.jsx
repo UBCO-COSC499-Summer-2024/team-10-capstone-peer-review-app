@@ -185,9 +185,9 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 							onClick={() => toggleExpanded(assignment.assignmentId)}
 						>
 							{isExpanded ? (
-								<ChevronUp className="h-4 w-4" />
+								<ChevronUp className="h-4 w-4" data-testid='expander-close' />
 							) : (
-								<ChevronDown className="h-4 w-4" />
+								<ChevronDown className="h-4 w-4" data-testid='expander-open' />
 							)}
 						</Button>
 					</div>
@@ -215,7 +215,9 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 					}`}
 				>
 					<CardContent className="bg-slate-50 rounded-xl mt-2">
-						{reviews.map((review, index) => (
+						{reviews
+                            .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+                            .map((review, index) => (
 							<div
 								key={review.reviewId}
 								className="mb-2 p-3 bg-white rounded-lg shadow-sm"

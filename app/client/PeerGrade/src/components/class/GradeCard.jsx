@@ -42,7 +42,7 @@ const GradeCard = ({
             variant="outline" 
             size="sm"
           >
-            View Grade Details
+            View Grade
           </Button>
         </div>
       </AlertDescription>

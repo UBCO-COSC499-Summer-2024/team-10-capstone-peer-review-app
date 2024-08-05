@@ -9,19 +9,7 @@ import { useUser } from "@/contexts/contextHooks/useUser";
 import { Pencil, Trash2, Eye, Info, ChevronDown } from 'lucide-react';
 import { deleteRubricsFromAssignment, getAllRubricsInClass, getRubricById } from '@/api/rubricApi';
 import EditRubric from '@/components/rubrics/EditRubric';
-import {
-  AlertDialog,
-  AlertDialogTrigger,
-  AlertDialogPortal,
-  AlertDialogOverlay,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogFooter,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogAction,
-  AlertDialogCancel
-} from '@/components/ui/alert-dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import InfoButton from '@/components/global/InfoButton';
 
 const Rubrics = () => {
@@ -30,11 +18,11 @@ const Rubrics = () => {
   const [rubrics, setRubrics] = useState([]);
   const [selectedRubric, setSelectedRubric] = useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [rubricToDelete, setRubricToDelete] = useState(null);
   const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
   const [rubricToEdit, setRubricToEdit] = useState(null);
-  const [editDrawerKey, setEditDrawerKey] = useState(0); // Add this line
+  const [editDrawerKey, setEditDrawerKey] = useState(0);
   const [confirmDeleteRubric, setConfirmDeleteRubric] = useState(false);
 
 
@@ -70,7 +58,7 @@ const Rubrics = () => {
         await deleteRubricsFromAssignment(rubricToDelete.rubricId);
         await fetchData(); // Wait for the data to be fetched
         setIsDrawerOpen(false);
-        setIsAlertDialogOpen(false);
+        setIsDialogOpen(false);
       } catch (error) {
         console.error('Error deleting rubric:', error);
       }
@@ -104,7 +92,7 @@ const Rubrics = () => {
       if (response.data && response.data) {
         setRubricToEdit(response.data);
         setIsEditDrawerOpen(true);
-        setEditDrawerKey(prevKey => prevKey + 1); // Add this line
+        setEditDrawerKey(prevKey => prevKey + 1);
       }
     } catch (error) {
       console.error('Error fetching rubric details:', error);
@@ -150,41 +138,53 @@ const Rubrics = () => {
   return (
     <div className="p-6 bg-muted rounded-lg">
       <h1 className="text-3xl font-bold mb-8 text-gray-800">Rubrics</h1>
-      <div className="flex flex-wrap gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         {rubrics.length === 0 ? (
           <div className="col-span-full text-center text-gray-500">No rubrics found</div>
         ) : (
           rubrics.map((rubric) => (
-            <Card key={rubric.rubricId} className="hover:shadow-md min-w-[300px] transition-shadow bg-white">
+            <Card key={rubric.rubricId} className="hover:shadow-md transition-shadow bg-white flex flex-col h-full">
               <CardHeader className="pb-2 flex justify-between">
-                 <div>
-                    <CardTitle className="text-xl font-semibold text-gray-800">{rubric.title}</CardTitle>
-                    <CardDescription className="text-sm text-gray-600 line-clamp-2">{rubric.description}</CardDescription>
+                  <div>
+                      <CardTitle className="text-xl font-semibold text-gray-800 mb-2">{rubric.title}</CardTitle>
+                      <CardDescription className="text-sm text-gray-600 line-clamp-2">{rubric.description}</CardDescription>
                   </div>
                   <div>
-                    <Badge variant="outline" className="text-xs flex justify-center items-center bg-success/30">
-                      {rubric.totalMarks} Points
-                    </Badge>
+                      <Badge variant="outline" className="text-xs flex justify-center items-center bg-success/30">
+                          {rubric.totalMarks} Points
+                      </Badge>
                   </div>
               </CardHeader>
-              <CardContent className="pt-2">
-              
+              <CardContent className="pt-2 flex-grow">
+                
               </CardContent>
-              <CardFooter>
-                <Button 
-                  onClick={() => handleRubricClick(rubric.rubricId)} 
-                  className="w-1/2 bg-gray-100 text-gray-800 hover:bg-gray-200 mr-2"
-                  variant="ghost"
-                >
-                  <Eye className="mr-2 h-4 w-4" /> View Details
-                </Button>
-                <Button 
-                  onClick={() => handleEditRubricClick(rubric.rubricId)} 
-                  className="w-1/2 bg-blue-100 text-blue-800 hover:bg-blue-200"
-                  variant="ghost"
-                >
-                  <Pencil className="mr-2 h-4 w-4" /> Edit Rubric
-                </Button>
+              <CardFooter className="mt-auto">
+                  <Button 
+                      onClick={() => handleRubricClick(rubric.rubricId)} 
+                      className="w-2/5 bg-gray-100 text-gray-800 hover:bg-gray-200 mr-2"
+                      variant="ghost"
+                  >
+                      <Eye className="mr-2 h-4 w-4" /> View Details
+                  </Button>
+                  <Button 
+                      onClick={() => handleEditRubricClick(rubric.rubricId)} 
+                      className="w-2/5 bg-blue-100 text-blue-800 hover:bg-blue-200 mr-2"
+                      variant="ghost"
+                  >
+                      <Pencil className="mr-2 h-4 w-4" /> Edit Rubric
+                  </Button>
+                  <Button 
+                    onClick={() => {
+                      console.log('Delete rubric:', rubric);
+                      setRubricToDelete(rubric);
+                      setConfirmDeleteRubric(false);
+                      setIsDialogOpen(true);
+                    }} 
+                    variant="destructive"
+                    className="w-1/5"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
               </CardFooter>
             </Card>
           ))
@@ -198,35 +198,6 @@ const Rubrics = () => {
               <DrawerTitle className="text-2xl">{selectedRubric?.title}</DrawerTitle>
               <DrawerDescription>{selectedRubric?.description}</DrawerDescription>
             </div>
-            <AlertDialog open={isAlertDialogOpen} onOpenChange={setIsAlertDialogOpen}>
-              <AlertDialogTrigger asChild>
-                <Button 
-                  onClick={() => {
-                    setRubricToDelete(selectedRubric);
-                    setConfirmDeleteRubric(false);
-                    setIsAlertDialogOpen(true);
-                  }} 
-                  variant="destructive"
-                  size="sm"
-                >
-                  <Trash2 className="h-4 w-4" /> <span className="ml-2">Delete Rubric</span>
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent className={confirmDeleteRubric ? "text-white bg-red-500 border-red-800 z-[2000]" : "z-[2000]"}>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>{confirmDeleteRubric ? "Confirm " : ""}Delete Rubric</AlertDialogTitle>
-                  <AlertDialogDescription className={confirmDeleteRubric ? "text-white" : ""}>
-                    Are you {confirmDeleteRubric ? "really " : ""}sure you want to delete this rubric? This action cannot be undone.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel asChild>
-                    <Button variant="outline" className={confirmDeleteRubric ? "text-black" : ""}>Cancel</Button>
-                  </AlertDialogCancel>
-                  <Button variant="destructive" onClick={handleDeleteRubric}>Delete</Button>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
             </div>
           </DrawerHeader>
           <div className="p-4 bg-gray-100 rounded-md mb-4">
@@ -258,7 +229,7 @@ const Rubrics = () => {
                         {criterion.criterionRatings && criterion.criterionRatings.map((rating, ratingIndex) => (
                           <div key={ratingIndex} className="flex items-center bg-gray-100 rounded p-2">
                             <p className="text-sm mr-2">{rating.description}</p>
-                            <Badge variant="secondary">{rating.points}</Badge>
+                            <Badge variant="secondary">{rating.points} pts</Badge>
                           </div>
                         ))}
                       </div>
@@ -286,12 +257,26 @@ const Rubrics = () => {
       </Drawer>
 
       <EditRubric 
-        key={editDrawerKey} // Add this line
+        key={editDrawerKey}
         isOpen={isEditDrawerOpen}
         onClose={handleCloseEditDrawer}
         rubricData={rubricToEdit}
         onRubricUpdated={handleRubricUpdated}
       />
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className={confirmDeleteRubric ? "text-white bg-red-500 border-red-800 z-[2000]" : "z-[2000]"}>
+          <DialogHeader>
+            <DialogTitle>{confirmDeleteRubric ? "Confirm " : ""}Delete Rubric</DialogTitle>
+            <DialogDescription className={confirmDeleteRubric ? "text-white" : ""}>
+              Are you {confirmDeleteRubric ? "really " : ""}sure you want to delete the rubric '{rubricToDelete?.title}'? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" className={confirmDeleteRubric ? "text-black" : ""} onClick={() => setIsDialogOpen(false)}>Cancel</Button>
+            <Button variant="destructive" onClick={handleDeleteRubric}>Delete</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       <InfoButton content={rubricsInfoContent} />
 
     </div>

@@ -114,9 +114,9 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 								onClick={() => toggleExpanded(assignment.assignmentId)}
 							>
 								{isExpanded ? (
-									<ChevronUp className="h-4 w-4" />
+									<ChevronUp className="h-4 w-4" data-testid='expander-close' />
 								) : (
-									<ChevronDown className="h-4 w-4" />
+									<ChevronDown className="h-4 w-4" data-testid='expander-open' />
 								)}
 							</Button>
 						)}

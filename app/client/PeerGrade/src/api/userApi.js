@@ -1,3 +1,19 @@
+// getAllUsers: Fetch all users
+// getUsersByRole: Fetch users by role
+// isEmailVerifiedJWT: Check if email is verified
+// getGroups: Fetch groups for a user
+// getAllGroups: Fetch all groups
+// updateProfile: Update profile for a user
+// sendReportToInstructor: Send report to instructor
+// sendReportToAdmin: Send report to admin
+// getSentReports: Fetch sent reports
+// getInstructorReports: Fetch instructor reports
+// getAdminReports: Fetch admin reports
+// unResolveReport: Unresolve report
+// resolveReport: Resolve report
+// deleteReport: Delete report
+// getMyGrades: Fetch grades for the user
+
 import axios from "axios";
 import showStatusToast from "@/utils/showToastStatus";
 

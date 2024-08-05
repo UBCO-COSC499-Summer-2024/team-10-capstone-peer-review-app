@@ -162,8 +162,8 @@ const NotificationsPanel = () => {
 					<Label htmlFor="classes">Class</Label>
 					<div className='w-full flex items-center space-x-4'>
 						<Select value={selectedClass} onValueChange={setSelectedClass}>
-							<SelectTrigger id="classes">
-								<SelectValue placeholder="Select class" />
+							<SelectTrigger id="classes" data-testid='test'>
+								<SelectValue placeholder="Select class"/>
 							</SelectTrigger>
 							<SelectContent>
 								{classes.map((currentClass) => (

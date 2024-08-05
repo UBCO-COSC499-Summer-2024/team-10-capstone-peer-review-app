@@ -18,6 +18,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
   useEffect(() => {
     if (rubricData) {
       setEditedRubricData(rubricData);
+      console.log('rubricData:', rubricData);
       validateRubric(rubricData);
     }
   }, [rubricData]);
@@ -58,12 +59,13 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
       criteria: [
         ...prevData.criteria,
         {
-          id: Date.now(), // Use a unique identifier
+          criterionId: Date.now(), // Use a unique identifier
           title: "",
           criterionRatings: [{ description: "", points: "" }]
         }
       ]
     }));
+    console.log('editedRubricData:', editedRubricData.criteria);
     validateRubric();
   };
 
@@ -90,6 +92,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
           : c
       )
     }));
+    console.log('editedRubricData:', editedRubricData.criteria);
     validateRubric();
   };
 
@@ -198,7 +201,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
             </TableHeader>
             <TableBody>
               {editedRubricData.criteria.map((criterion) => (
-                <TableRow key={criterion.criterionId} className="border-b">
+                <TableRow key={criterion.criterionId} className="border-b" id={criterion.criterionId}>
                   <TableCell className="font-medium border-r p-0">
                     <div className="flex items-center justify-between p-2">
                       {editing === `${criterion.criterionId}-criteria` ? (
@@ -291,6 +294,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
                               size="icon"
                               className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 h-6 w-6 rounded-full bg-red-100 border border-destructive border-dashed"
                               onClick={() => removeRating(criterion.criterionId, index)}
+                              data-testid={`remove-rating-${criterion.criterionId}-${index}`}
                             >
                               <Minus className="h-3 w-3 text-destructive" />
                             </Button>
@@ -301,6 +305,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
                               size="icon"
                               className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full h-6 w-6 rounded-full bg-green-100 border border-success border-dashed"
                               onClick={() => addRating(criterion.criterionId)}
+                              data-testid={`add-rating-${criterion.criterionId}`}
                             >
                               <Plus className="h-3 w-3 text-green-500" />
                             </Button>
@@ -320,6 +325,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
                       size="icon"
                       className="h-full w-full bg-red-100 p-2"
                       onClick={() => removeCriterion(criterion.criterionId)}
+                      data-testid={`remove-criterion-${criterion.criterionId}`}
                     >
                       <Trash2 className="h-4 w-4 text-destructive" />
                     </Button>
@@ -332,6 +338,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
                     variant="ghost"
                     className="w-full h-12 border border-success border-dashed bg-green-50"
                     onClick={addCriterion}
+                    data-testid="add-criterion"
                   >
                     <Plus className="h-4 w-4 text-green-500" />
                   </Button>

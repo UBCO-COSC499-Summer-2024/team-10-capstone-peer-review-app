@@ -124,6 +124,7 @@ const RubricDataTable = ({ rubricData, setRubricData, setIsValid }) => {
                                     onClick={() => removeCriteria(index)}
                                     variant={"destructive"}
                                     className={"absolute bottom-0 right-0 bg-destructive text-destructive hover:bg-white hover:text-destructive hover:cursor-pointer w-8 h-8 flex justify-center items-center"}
+                                    data-testid={`remove-criterion-${index}`}
                                 >
                                     <Trash className="h-4 w-4"/>
                                 </Badge>
@@ -152,6 +153,7 @@ const RubricDataTable = ({ rubricData, setRubricData, setIsValid }) => {
                                                     onClick={() => removeRating(index, ratingIndex)}
                                                     className="flex-1 max-w-[10px] text-white bg-destructive hover:bg-destructive-dark"
                                                     variant="ghost"
+                                                    data-testid={`remove-rating-${index}-${ratingIndex}`}
                                                 >
                                                     <Minus className="h-4 w-4" />
                                                 </Button>
@@ -159,6 +161,7 @@ const RubricDataTable = ({ rubricData, setRubricData, setIsValid }) => {
                                                     onClick={() => addRating(index)}
                                                     variant="ghost"
                                                     className="flex-1 max-w-[10px] bg-success"
+                                                    data-testid={`add-rating-${index}-${ratingIndex}`}
                                                 >
                                                     <Plus className="h-4 w-4" />
                                                 </Button>
@@ -181,7 +184,7 @@ const RubricDataTable = ({ rubricData, setRubricData, setIsValid }) => {
                 </TableBody>
             </Table>
             <div className="flex justify-between items-center">
-                <Button variant="outline" onClick={addCriteria}>
+                <Button variant="outline" onClick={addCriteria} data-testid='add-criterion' >
                     <Plus className="h-4 w-4 mr-2" /> Add Criterion
                 </Button>
                 <div>Total Points: {calculateTotalPoints()}</div>

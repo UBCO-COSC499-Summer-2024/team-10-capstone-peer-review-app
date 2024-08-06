@@ -278,6 +278,7 @@ const ExtendDeadlinesDialog = ({
 						className="bg-gray-500 hover:bg-gray-400 text-white hover:text-white"
 						variant="ghost"
 						onClick={() => setOpenExtendDeadlines(false)}
+						data-testid="close-extend-deadlines"
 					>
 						Close
 					</Button>

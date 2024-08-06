@@ -108,6 +108,8 @@ export async function sendVerificationEmail(email) {
 		const user = await checkUserByEmail(email);
 		if (!user) {
 			throw new apiError("No user with that email", 404);
+		} else if (user.isEmailVerified) {
+			throw new apiError("Email is already verified", 400);
 		}
 
 		const verifyEmailToken = jwt.sign({ email }, JWT_SECRET, {

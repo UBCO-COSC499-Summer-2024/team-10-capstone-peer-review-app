@@ -79,6 +79,7 @@ describe('RegisterCard', () => {
   });
 
   it('shows validation errors for password mismatch and missing role', async () => {
+    registerUser.mockResolvedValueOnce({ status: 'Fail' });
     render(<RegisterCard onSwitchToLogin={onSwitchToLogin} />);
 
     fireEvent.change(screen.getByLabelText('First Name:'), { target: { value: 'John' } });

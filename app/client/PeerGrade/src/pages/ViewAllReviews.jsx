@@ -137,7 +137,7 @@ const ViewAllReviews = () => {
 									<CardTitle className="text-primary">
 										{!review.submission.assignment.isPeerReviewAnonymous
 											? `Peer Review from ${review.reviewer.firstname} ${review.reviewer.lastname}`
-											: `Peer Review: ${index + 1}`}
+											: `Peer Reviewer ${index + 1}`}
 									</CardTitle>
 								</CardHeader>
 								<CardContent>

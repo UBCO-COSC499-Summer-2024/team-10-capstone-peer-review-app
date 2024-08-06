@@ -25,7 +25,7 @@ const ProtectedRoute = ({ element, allowedRoles }) => {
 	if (userLoading) {
 		return (
 			<div className="flex justify-center items-center h-screen">
-				<Loader className="w-16 h-16 animate-spin text-stone-800" />
+				<Loader className="w-16 h-16 animate-spin text-stone-800" data-testid="loader" />
 			</div>
 		);
 	}

@@ -1,6 +1,14 @@
 import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
 
+// Fisher-Yates (Knuth) Shuffle Algorithm for the randomzation of Auto Assign
+function shuffleArray(array) {
+	for (let i = array.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[array[i], array[j]] = [array[j], array[i]];
+	}
+	return array;
+}
 // Review operations
 const getReviewById = async (reviewId) => {
 	try {
@@ -358,7 +366,7 @@ const createReview = async (userId, review) => {
 
 const assignRandomPeerReviews = async (assignmentId, reviewsPerStudent) => {
 	try {
-		if (reviewsPerStudent === 0 || reviewsPerStudent < 1) {
+		if (reviewsPerStudent < 1) {
 			throw new apiError(
 				"Reviews per student must be greater than or equal to 1",
 				400
@@ -375,10 +383,16 @@ const assignRandomPeerReviews = async (assignmentId, reviewsPerStudent) => {
 
 			const submissionCount = latestSubmissions.length;
 
-			// Check if there are enough submissions for the required number of reviews
-			if (submissionCount < 2 || submissionCount <= reviewsPerStudent) {
+			if (submissionCount < 2) {
 				throw new apiError(
-					`Not enough submissions to assign ${reviewsPerStudent} peer reviews per student. At least ${reviewsPerStudent + 1} submissions are required.`,
+					"Not enough submissions to assign peer reviews. At least 2 submissions are required.",
+					400
+				);
+			}
+
+			if (submissionCount <= reviewsPerStudent) {
+				throw new apiError(
+					`Not enough submissions to assign ${reviewsPerStudent} reviews per student. At least ${reviewsPerStudent + 1} submissions are required.`,
 					400
 				);
 			}
@@ -395,61 +409,64 @@ const assignRandomPeerReviews = async (assignmentId, reviewsPerStudent) => {
 				}
 			});
 
-			const submittingStudentIds = new Set(
-				latestSubmissions.map((s) => s.submitterId)
+			const submittingStudentIds = latestSubmissions.map((s) => s.submitterId);
+
+			// Map to keep track of how many reviews each student has been assigned
+			const reviewsAssignedToStudent = new Map(
+				submittingStudentIds.map((id) => [
+					id,
+					existingPeerReviews.filter((er) => er.reviewerId === id).length
+				])
 			);
-			const shuffledSubmissions = latestSubmissions.sort(
-				() => 0.5 - Math.random()
-			);
+
 			const reviewAssignments = [];
 
-			for (const reviewerId of submittingStudentIds) {
-				let assignedPeerReviews = existingPeerReviews.filter(
-					(r) => r.reviewerId === reviewerId
-				).length;
-				let attempts = 0;
-				const maxAttempts = submissionCount * 2; // Arbitrary limit to prevent infinite loops
+			// Iterate through each submission
+			for (const submission of latestSubmissions) {
+				const potentialReviewers = shuffleArray(
+					submittingStudentIds.filter((id) => id !== submission.submitterId)
+				);
+
+				let assignedReviewsForThisSubmission = 0;
 
 				while (
-					assignedPeerReviews < reviewsPerStudent &&
-					attempts < maxAttempts
+					assignedReviewsForThisSubmission < reviewsPerStudent &&
+					potentialReviewers.length > 0
 				) {
-					for (
-						let j = 0;
-						j < shuffledSubmissions.length &&
-						assignedPeerReviews < reviewsPerStudent;
-						j++
-					) {
-						const submissionToReview = shuffledSubmissions[j];
-						if (
-							submissionToReview.submitterId !== reviewerId &&
-							!reviewAssignments.some(
-								(ra) =>
-									ra.reviewerId === reviewerId &&
-									ra.submissionId === submissionToReview.submissionId
-							) &&
-							!existingPeerReviews.some(
+					const reviewerId = potentialReviewers.pop();
+					const currentReviewsForReviewer =
+						reviewsAssignedToStudent.get(reviewerId);
+
+					// Check if this reviewer can be assigned to this submission
+					if (currentReviewsForReviewer < reviewsPerStudent) {
+						const alreadyAssigned =
+							existingPeerReviews.some(
 								(er) =>
 									er.reviewerId === reviewerId &&
-									er.submissionId === submissionToReview.submissionId
-							)
-						) {
+									er.submissionId === submission.submissionId
+							) ||
+							reviewAssignments.some(
+								(ra) =>
+									ra.reviewerId === reviewerId &&
+									ra.submissionId === submission.submissionId
+							);
+
+						if (!alreadyAssigned) {
+							// Add this review assignment to our list
 							reviewAssignments.push({
-								submissionId: submissionToReview.submissionId,
+								submissionId: submission.submissionId,
 								reviewerId: reviewerId,
-								revieweeId: submissionToReview.submitterId
+								revieweeId: submission.submitterId
 							});
-							assignedPeerReviews++;
+
+							// Increment counters
+							reviewsAssignedToStudent.set(
+								reviewerId,
+								currentReviewsForReviewer + 1
+							);
+							assignedReviewsForThisSubmission++;
 						}
 					}
-					attempts++;
-				}
-
-				if (assignedPeerReviews < reviewsPerStudent) {
-					throw new apiError(
-						`Unable to assign ${reviewsPerStudent} unique peer reviews for each student. Please reduce the number of reviews per student or wait for more submissions.`,
-						400
-					);
 				}
 			}
 
@@ -462,15 +479,27 @@ const assignRandomPeerReviews = async (assignmentId, reviewsPerStudent) => {
 						reviewGrade: 0
 					}))
 				});
+			} else {
+				throw new apiError(
+					`Maximum amount of peer reviews per student (${reviewsPerStudent}) has already been achieved for this assignment.`,
+					400
+				);
 			}
 
 			return {
-				assignedReviews: reviewAssignments.length
+				assignedReviews: reviewAssignments.length,
+				totalReviewsPerStudent: Object.fromEntries(reviewsAssignedToStudent)
 			};
 		});
 	} catch (error) {
-		console.error("Error in assignRandomPeerReviews:", error);
-		throw new apiError("Failed to assign peer reviews: " + error.message, 500);
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError(
+				`Failed to assign peer reviews: ${error.message}`,
+				500
+			);
+		}
 	}
 };
 

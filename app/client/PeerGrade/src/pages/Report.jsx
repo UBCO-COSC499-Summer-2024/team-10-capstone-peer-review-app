@@ -224,8 +224,8 @@ const Report = () => {
 												<SelectValue placeholder="Select recipient" />
 											</SelectTrigger>
 											<SelectContent>
-												<SelectItem value="INSTRUCTOR">Instructor</SelectItem>
-												<SelectItem value="ADMIN">Admin</SelectItem>
+												<SelectItem value="INSTRUCTOR" data-testid='instructor-option'>Instructor</SelectItem>
+												<SelectItem value="ADMIN" data-testid='admin-option'>Admin</SelectItem>
 											</SelectContent>
 										</Select>
 									</div>

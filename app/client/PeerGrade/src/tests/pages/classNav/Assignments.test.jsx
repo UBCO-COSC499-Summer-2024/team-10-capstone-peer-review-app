@@ -2,8 +2,8 @@ import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import Files from '@/pages/classNav/Files';
-import { getAllAssignmentsByClassId } from '@/api/assignmentApi';
+import Assignments from '@/pages/classNav/Assignments';
+import { getAllAssignmentsByClassId, removeAssignmentFromClass } from '@/api/assignmentApi';
 import { useUser } from '@/contexts/contextHooks/useUser';
 
 jest.mock('@/api/assignmentApi');
@@ -26,7 +26,7 @@ const mockAssignments = [
   },
 ];
 
-describe('Files Component', () => {
+describe('Assignments Component', () => {
   const renderComponent = (userRole = 'STUDENT') => {
     useParams.mockReturnValue({ classId: '123' });
     useUser.mockReturnValue({
@@ -37,7 +37,7 @@ describe('Files Component', () => {
     render(
       <BrowserRouter>
         <Routes>
-          <Route path="*" element={<Files />} />
+          <Route path="*" element={<Assignments />} />
         </Routes>
       </BrowserRouter>
     );
@@ -62,20 +62,18 @@ describe('Files Component', () => {
     });
   });
 
-  test('renders edit and delete buttons for non-student roles', async () => {
+  test('renders delete button for non-student roles', async () => {
     renderComponent('INSTRUCTOR');
 
     await waitFor(() => {
-      expect(screen.getAllByText('Edit')).toHaveLength(mockAssignments.length);
       expect(screen.getAllByText('Delete')).toHaveLength(mockAssignments.length);
     });
   });
 
-  test('does not render edit and delete buttons for student role', async () => {
+  test('does not render delete button for student role', async () => {
     renderComponent('STUDENT');
 
     await waitFor(() => {
-      expect(screen.queryByText('Edit')).toBeNull();
       expect(screen.queryByText('Delete')).toBeNull();
     });
   });
@@ -103,6 +101,68 @@ describe('Files Component', () => {
     await waitFor(() => {
       expect(screen.queryByText('Assignment 1')).toBeNull();
       expect(screen.queryByText('Assignment 2')).toBeNull();
+    });
+  });
+
+  test('handles delete assignment correctly', async () => {
+    renderComponent('INSTRUCTOR');
+    removeAssignmentFromClass.mockResolvedValue({ status: 'Success', data: {} });
+
+    await waitFor(() => {
+      fireEvent.click(screen.getByTestId('delete-assignment-1'));
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('Delete Assignment')).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      fireEvent.click(screen.getByTestId('delete-assignment'));
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('Confirm Delete Assignment')).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      fireEvent.click(screen.getByTestId('delete-assignment'));
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByText('Confirm Delete Assignment')).toBeNull();
+      expect(removeAssignmentFromClass).toHaveBeenCalledWith('1');
+      expect(screen.queryByText('Assignment 1')).toBeNull();
+    });
+  });
+
+  test('handles delete assignment errors gracefully', async () => {
+    renderComponent('INSTRUCTOR');
+    removeAssignmentFromClass.mockRejectedValue(new Error('Error deleting assignment'));
+
+    await waitFor(() => {
+      fireEvent.click(screen.getByTestId('delete-assignment-1'));
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('Delete Assignment')).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      fireEvent.click(screen.getByTestId('delete-assignment'));
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('Confirm Delete Assignment')).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      fireEvent.click(screen.getByTestId('delete-assignment'));
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByText('Confirm Delete Assignment')).toBeNull();
+      expect(removeAssignmentFromClass).toHaveBeenCalledWith('1');
+      expect(screen.getByText('Assignment 1')).toBeInTheDocument();
     });
   });
 });

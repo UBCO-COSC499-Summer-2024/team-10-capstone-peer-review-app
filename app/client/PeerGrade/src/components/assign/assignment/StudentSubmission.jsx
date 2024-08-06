@@ -66,7 +66,9 @@ const Submission = ({ refresh, switchToViewOnSubmit }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        console.log("hey");
         if (!file) {
+            console.log("uhoh");
             toast({ title: "Error", description: "Please select a file to upload", variant: "destructive" });
             return;
         }
@@ -131,14 +133,14 @@ const Submission = ({ refresh, switchToViewOnSubmit }) => {
             accessorKey: "criterionRatings",
             header: "Ratings",
             cell: ({ cell }) => (
-                <ul className="list-disc pl-4">
+                <div className="flex gap-2 w-full items-center justify-center flex-wrap">
                     {cell.getValue().map((rating, idx) => (
-                        <li key={idx} className='flex mb-5 bg-gray-200 rounded-lg p-2 justify-between items-start '>
+                        <li key={idx} className='flex bg-gray-200 rounded-lg p-2 justify-center items-center w-auto'>
                                 <span>{rating.description}</span>
-                                <span className='font-bold border border-black rounded-full p-1 w-6 h-6 flex justify-center items-center'>{rating.points}</span>
+                                <span className='font-bold border border-black rounded-full ml-2 p-2 h-6 flex justify-center items-center'>{rating.points} pts</span>
                         </li>
                     ))}
-                </ul>
+                </div>
             )
         },
         {
@@ -156,7 +158,7 @@ const Submission = ({ refresh, switchToViewOnSubmit }) => {
                             <Tabs defaultValue="file-upload" className="space-y-4">
                                 <TabsList className="bg-muted">
                                     <TabsTrigger value="file-upload">File Upload</TabsTrigger>
-                                    {<TabsTrigger value="text-submission">Text Submission</TabsTrigger>}
+                                    <TabsTrigger value="text-submission">Text Submission</TabsTrigger>
                                 </TabsList>
                                 <TabsContent value="file-upload">
                                     <div className="p-4 w-full bg-white border border-gray-300 rounded-md">
@@ -167,6 +169,7 @@ const Submission = ({ refresh, switchToViewOnSubmit }) => {
                                                 type="file"
                                                 onChange={handleFileChange}
                                                 className="w-full border border-gray-300 p-2 mt-4 rounded-md"
+                                                data-testid="file-input"
                                             />
                                             <Button type="submit" variant="default" className="mt-4 w-full">Submit</Button>
                                         </form>
@@ -188,6 +191,7 @@ const Submission = ({ refresh, switchToViewOnSubmit }) => {
                                                 className="w-full border border-gray-300 p-2 rounded-md"
                                                 rows="5"
                                                 placeholder="Write your submission here..."
+                                                data-testid="text-input"
                                             />
                                             <Button type="submit" variant="default" className="mt-4 w-full">Submit</Button>
                                         </form>

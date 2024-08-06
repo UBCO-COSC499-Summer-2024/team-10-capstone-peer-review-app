@@ -125,10 +125,6 @@ const reviewAPI = {
 				userId,
 				review
 			});
-			showStatusToast({
-				status: "Success",
-				message: "Review created successfully."
-			});
 			return response.data;
 		} catch (error) {
 			handleError(error);
@@ -179,10 +175,6 @@ const reviewAPI = {
 		try {
 			const response = await axios.delete(`${BASE_URL}/review/deleteReview`, {
 				data: { reviewId }
-			});
-			showStatusToast({
-				status: "Success",
-				message: "Review deleted successfully."
 			});
 			return response.data;
 		} catch (error) {

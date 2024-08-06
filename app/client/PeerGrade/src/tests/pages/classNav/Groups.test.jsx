@@ -126,7 +126,6 @@ describe('Groups Component', () => {
       expect(screen.getByText("Group 1")).toBeInTheDocument();
     });
 
-    console.log(document.body.innerHTML);
     fireEvent.click(await screen.findByText('Leave'));
 
     await waitFor(() => expect(leaveGroup).toHaveBeenCalledWith('1'));
@@ -163,7 +162,7 @@ describe('Groups Component', () => {
   test('edits a group', async () => {
     getAllGroupsByClass.mockResolvedValueOnce({
       data: [
-        { groupId: '1', groupName: 'Group 1', groupDescription: 'Description 1', students: [] },
+        { groupId: '1', groupName: 'Group 1', groupDescription: 'Description 1', groupSize: 2, students: [] },
       ],
     });
     getGroups.mockResolvedValueOnce({
@@ -171,7 +170,11 @@ describe('Groups Component', () => {
     });
     updateGroup.mockResolvedValueOnce({
         status: 'Success',
-        data: { groupId: '1', groupName: 'Updated Group', groupDescription: 'Updated Description', students: [] },
+        data: { groupId: '1', groupName: 'Updated Group', groupDescription: 'Updated Description', groupSize: 2, students: [] },
+    });
+    getUsersNotInGroups.mockResolvedValueOnce({
+      status: 'Success',
+      data: []
     });
     mockUser.role = 'INSTRUCTOR';
 
@@ -214,7 +217,7 @@ describe('Groups Component', () => {
     });
     getUsersNotInGroups.mockResolvedValueOnce({
       status: 'Success',
-      data: []
+      data: [mockUser]
     });
 
     render(

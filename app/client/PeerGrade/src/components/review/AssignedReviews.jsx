@@ -56,7 +56,7 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 	};
 
 	const calculatePercentageGrade = (review) => {
-		console.log("Review object:", JSON.stringify(review, null, 2));
+		// console.log("Review object:", JSON.stringify(review, null, 2));
 		if (!review.criterionGrades || review.criterionGrades.length === 0) {
 			return "Not graded";
 		}
@@ -163,6 +163,8 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 		}
 	};
 
+	console.log("selectedReview", selectedReview);
+
 	const renderAssignmentCard = (group) => {
 		const { assignment, reviews } = group;
 		const isExpanded = expandedAssignments[assignment.assignmentId];
@@ -183,9 +185,9 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 							onClick={() => toggleExpanded(assignment.assignmentId)}
 						>
 							{isExpanded ? (
-								<ChevronUp className="h-4 w-4" />
+								<ChevronUp className="h-4 w-4" data-testid='expander-close' />
 							) : (
-								<ChevronDown className="h-4 w-4" />
+								<ChevronDown className="h-4 w-4" data-testid='expander-open' />
 							)}
 						</Button>
 					</div>
@@ -213,7 +215,9 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 					}`}
 				>
 					<CardContent className="bg-slate-50 rounded-xl mt-2">
-						{reviews.map((review, index) => (
+						{reviews
+                            .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+                            .map((review, index) => (
 							<div
 								key={review.reviewId}
 								className="mb-2 p-3 bg-white rounded-lg shadow-sm"
@@ -249,7 +253,7 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 										className="p-0 h-auto mr-4"
 										onClick={() => onViewDetails(review, true)}
 									>
-										View in Dialog
+										View Grade
 									</Button>
 									<Button
 										variant="link"

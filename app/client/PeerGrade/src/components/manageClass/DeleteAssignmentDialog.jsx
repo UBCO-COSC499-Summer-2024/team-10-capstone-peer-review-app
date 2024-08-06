@@ -26,6 +26,7 @@ const DeleteAssignmentDialog = ({ dialogOpen, setDialogOpen, confirmDelete, sele
                     <Button
                         variant="destructive"
                         onClick={handleDeleteAssignment}
+                        data-testid="delete-assignment"
                         className={confirmDelete ? "shadow-md shadow-red-900" : ""}
                     >
                         Delete

@@ -35,10 +35,9 @@ const AddClassModal = ({ show, onClose }) => {
 			setError("Please select an end date that is after the start date.");
 			return;
 			// !!! TODO: CHECK FOR THIS IN THE BACK-END TOO.
-		} else if (startDate === endDate) {
+		} else if (startDate.getTime() === endDate.getTime()) {
 			setError("Please select an end date that is not the same as the start date.");
 			return;
-			// !!! TODO: CHECK FOR THIS IN THE BACK-END TOO.
 		}
 
 		const newClass = {
@@ -150,11 +149,7 @@ const AddClassModal = ({ show, onClose }) => {
 									id="startDate"
 								>
 									<CalendarIcon className="mr-2 h-4 w-4" />
-									{startDate ? (
-										format(startDate, "PPP")
-									) : (
-										<span>Pick a date</span>
-									)}
+									{startDate ? format(startDate, "PPP") : <span>Pick a date</span>}
 								</Button>
 							</PopoverTrigger>
 							<PopoverContent className="w-auto p-0">
@@ -185,7 +180,7 @@ const AddClassModal = ({ show, onClose }) => {
 										"w-[200px] font-normal bg-white flex flex-start",
 										!endDate && "text-muted-foreground"
 									)}
-									id="startDate"
+									id="endDate"
 								>
 									<CalendarIcon className="mr-2 h-4 w-4" />
 									{endDate ? format(endDate, "PPP") : <span>Pick a date</span>}

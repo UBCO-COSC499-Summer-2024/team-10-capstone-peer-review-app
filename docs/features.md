@@ -1,5 +1,5 @@
 
-# 32/34 Developed 
+# 33/35 Developed 
 
 **User Registration and Profile Management**
   - [x] All users are able to register (with email address)

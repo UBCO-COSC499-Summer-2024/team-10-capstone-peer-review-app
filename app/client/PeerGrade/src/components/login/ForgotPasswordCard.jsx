@@ -34,7 +34,7 @@ const ForgotPasswordCard = ({ onSwitchToLogin }) => {
 	const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
 	const query = useQuery();
-	const forgotPasswordToken = query.get("forgotPasswordToken") || "";
+	const [forgotPasswordToken] = useState(query.get("forgotPasswordToken") || "");
 
 	// TODO => Refactor to use apiCalls file instead so we dont have a ton of server calls in the component files
 	useEffect(() => {
@@ -45,10 +45,10 @@ const ForgotPasswordCard = ({ onSwitchToLogin }) => {
 				console.log(response);
 				if (response && response.status === "Success") {
 					setTokenValid(true);
-					// query.delete("forgotPasswordToken");
-					// navigate("/", {
-					// 	replace: true
-					// });
+					query.delete("forgotPasswordToken");
+					navigate("/", {
+						replace: true
+					});
 				} else {
 					setTokenValid(false);
 					setError(response.message);

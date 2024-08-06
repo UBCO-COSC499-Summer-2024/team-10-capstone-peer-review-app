@@ -94,6 +94,7 @@ const ResendVerifEmailCard = ({ onSwitchToLogin }) => {
 								type="submit"
 								className="w-full px-4 py-2 text-sm font-medium text-white bg-[#111827] border border-transparent rounded-md shadow-sm hover:bg-[#374151] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 flex justify-center items-center"
 								disabled={isLoading}
+								data-testid='resend-verification-email-button'
 							>
 								{isLoading ? <LoaderCircle className="animate-spin h-5 w-5" /> : "Resend Verification Email"}
 							</button>

@@ -113,36 +113,37 @@ const RoleRequestsCard = ({
 					<div className="flex ml-2 flex-col items-end space-y-2">
 						{isLoading ? (
 								<LoaderCircle className="h-4 w-4 mr-1 animate-spin text-gray-800" />
-							) : (
-								<>
-									<div className="flex items-center justify-center">
-										<Button
-											variant="ghost"
-											size="icon"
-											className="h-5 w-5 p-0 mr-1"
-											onClick={handleApproveClick}
-											disabled={isLoading}
-										>
-											<Check className="h-4 w-4 text-green-600" />
-										</Button>
-										<Button
-											variant="ghost"
-											size="icon"
-											className="h-5 w-5 p-0 self-end"
-											onClick={handleDenyClick}
-											disabled={isLoading}
-										>
-											<X className="h-4 w-4 text-red-600" />
-										</Button>
-									</div>
-									<DelDialog handleActionClick={handleDeleteClick}>
-										<Button variant="ghost" size="icon" className="h-5 w-5 p-0">
-											<Trash className="h-4 w-4 text-red-600" />
-										</Button>
-									</DelDialog>
-								</>
-							)}
-						
+						) : (
+							<>
+								<div className="flex items-center justify-center">
+									<Button
+										variant="ghost"
+										size="icon"
+										className="h-5 w-5 p-0 mr-1"
+										onClick={handleApproveClick}
+										disabled={isLoading}
+										data-testid={`approve-role-req-${roleRequest.roleRequestId}`}
+									>
+										<Check className="h-4 w-4 text-green-600" />
+									</Button>
+									<Button
+										variant="ghost"
+										size="icon"
+										className="h-5 w-5 p-0 self-end"
+										onClick={handleDenyClick}
+										disabled={isLoading}
+										data-testid={`unapprove-role-req-${roleRequest.roleRequestId}`}
+									>
+										<X className="h-4 w-4 text-red-600" />
+									</Button>
+								</div>
+								<DelDialog handleActionClick={handleDeleteClick}>
+									<Button variant="ghost" size="icon" className="h-5 w-5 p-0" data-testid={`delete-role-req-${roleRequest.roleRequestId}`}>
+										<Trash className="h-4 w-4 text-red-600" />
+									</Button>
+								</DelDialog>
+							</>
+						)}
 					</div>
 				</div>
 			</Alert>

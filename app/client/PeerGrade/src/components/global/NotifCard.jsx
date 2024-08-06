@@ -22,6 +22,7 @@ const NotifCard = ({ notificationData, deleteNotifCall }) => {
 					variant="ghost"
 					size="icon"
 					className="h-5 w-5 p-0"
+					data-testid={`delete-notification-${notificationData.notificationId}`}
 					onClick={() => deleteNotifCall(notificationData.notificationId)}
 				>
 					<X className="h-4 w-4 text-gray-600" />

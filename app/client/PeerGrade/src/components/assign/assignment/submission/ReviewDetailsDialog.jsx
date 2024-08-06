@@ -24,7 +24,6 @@ const ReviewDetailsDialog = ({ submissionId, open, onClose }) => {
 			try {
 				const review = await reviewAPI.getInstructorReview(submissionId);
 				if (review.data) {
-					console.log("review.data", review.data);
 					setReviewDetails(review.data);
 				}
 			} catch (error) {

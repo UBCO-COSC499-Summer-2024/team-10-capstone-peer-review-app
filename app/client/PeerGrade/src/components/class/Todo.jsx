@@ -112,6 +112,7 @@ const Todo = ({ classId, userId }) => {
 										handleToggleTodo(todo.todoId, checked)
 									}
 									className="h-5 w-5"
+									data-testid={`toggle-todo-${todo.todoId}`}
 								/>
 								<span
 									className={`text-sm ${
@@ -128,6 +129,7 @@ const Todo = ({ classId, userId }) => {
 								size="sm"
 								onClick={() => handleDeleteTodo(todo.todoId)}
 								className="text-muted-foreground hover:text-destructive"
+								data-testid={`delete-todo-${todo.todoId}`}
 							>
 								<Trash2 className="h-4 w-4" />
 							</Button>

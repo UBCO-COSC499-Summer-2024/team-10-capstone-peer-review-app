@@ -422,6 +422,7 @@ const Class = () => {
 																	onClick={() =>
 																		handleDeleteCategory(category.categoryId)
 																	}
+																	data-testid='delete-dialog-button'
 																>
 																	Delete
 																</Button>

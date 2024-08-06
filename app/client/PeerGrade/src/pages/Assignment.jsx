@@ -758,7 +758,7 @@ const Assignment = () => {
 				{user.role !== "STUDENT" && (
 					<>
 						<TabsContent value="edit">
-							<EditAssignment assignment={assignment} />
+							<EditAssignment assignment={assignment} refresh={refreshToggle} />
 						</TabsContent>
 						<TabsContent value="submissions">
 							<Submissions

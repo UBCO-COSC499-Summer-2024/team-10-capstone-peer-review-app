@@ -125,7 +125,7 @@ function Dashboard() {
     <Alert key={assignment.assignmentId} className="mb-4">
       <AlertTitle className="flex justify-between items-center">
         <span>{assignment.title}</span>
-        <Link to={`/class/${assignment.classId}`}><Badge variant="default">{assignment.classes.classname}</Badge></Link>
+        <Link to={`/class/${assignment.classId}`}><Badge variant="default" className='text-center'>{assignment.classes.classname}</Badge></Link>
       </AlertTitle>
       <AlertDescription className="flex justify-between items-center mt-2">
         <span className="flex items-center">

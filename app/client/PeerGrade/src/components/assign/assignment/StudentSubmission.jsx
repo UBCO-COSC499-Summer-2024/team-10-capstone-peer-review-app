@@ -65,7 +65,9 @@ const Submission = ({ refresh, switchToViewOnSubmit }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        console.log("hey");
         if (!file) {
+            console.log("uhoh");
             toast({ title: "Error", description: "Please select a file to upload", variant: "destructive" });
             return;
         }
@@ -130,14 +132,14 @@ const Submission = ({ refresh, switchToViewOnSubmit }) => {
             accessorKey: "criterionRatings",
             header: "Ratings",
             cell: ({ cell }) => (
-                <ul className="list-disc pl-4">
+                <div className="flex gap-2 w-full items-center justify-center flex-wrap">
                     {cell.getValue().map((rating, idx) => (
-                        <li key={idx} className='flex mb-5 bg-gray-200 rounded-lg p-2 justify-between items-start '>
+                        <li key={idx} className='flex bg-gray-200 rounded-lg p-2 justify-center items-center w-auto'>
                                 <span>{rating.description}</span>
-                                <span className='font-bold border border-black rounded-full p-1 w-6 h-6 flex justify-center items-center'>{rating.points}</span>
+                                <span className='font-bold border border-black rounded-full ml-2 p-2 h-6 flex justify-center items-center'>{rating.points} pts</span>
                         </li>
                     ))}
-                </ul>
+                </div>
             )
         },
         {
@@ -155,39 +157,28 @@ const Submission = ({ refresh, switchToViewOnSubmit }) => {
                             <Tabs defaultValue="file-upload" className="space-y-4">
                                 <TabsList className="bg-muted">
                                     <TabsTrigger value="file-upload">File Upload</TabsTrigger>
-                                    {<TabsTrigger value="text-submission">Text Submission</TabsTrigger>}
+                                    <TabsTrigger value="text-submission">Text Submission</TabsTrigger>
                                 </TabsList>
                                 <TabsContent value="file-upload">
-                                    {/* <Accordion type="single" collapsible className="bg-gray-100 rounded-lg px-6">
-                                        <AccordionItem value="submit-assignment">
-                                            <AccordionTrigger className="text-gray-600 hover:text-gray-800 flex items-center">
-                                                <div className='flex justify-between items-center w-full mr-3'>
-                                                <FileUp className="h-4 w-4 mr-2" />
-                                                <span>Submit Assignment</span>
-                                                </div>
-                                            </AccordionTrigger>
-                                            <AccordionContent> */}
-                                                <div className="p-4 w-full bg-white border border-gray-300 rounded-md">
-                                                    <h2 className="text-xl font-bold">Submit Your Assignment</h2>
-                                                    {assignment.allowedFileTypes.length > 0 && <span className='text-gray-500 italic'>Allowed file types are: {assignment.allowedFileTypes.join(', ')}</span>}
-                                                    <form onSubmit={handleSubmit}>
-                                                        <input
-                                                            type="file"
-                                                            onChange={handleFileChange}
-                                                            className="w-full border border-gray-300 p-2 mt-4 rounded-md"
-                                                        />
-                                                        <Button type="submit" variant="default" className="mt-4 w-full">Submit</Button>
-                                                    </form>
-                                                    {submissionMessage && (
-                                                        <div className="mt-4 p-2 bg-green-100 border border-green-400 rounded-md flex items-center">
-                                                            <CheckCircle className="text-green-600 mr-2" />
-                                                            <span>{submissionMessage}</span>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            {/* </AccordionContent>
-                                        </AccordionItem>
-                                    </Accordion> */}
+                                    <div className="p-4 w-full bg-white border border-gray-300 rounded-md">
+                                        <h2 className="text-xl font-bold">Submit Your Assignment</h2>
+                                        {assignment.allowedFileTypes.length > 0 && <span className='text-gray-500 italic'>Allowed file types are: {assignment.allowedFileTypes.join(', ')}</span>}
+                                        <form onSubmit={handleSubmit}>
+                                            <input
+                                                type="file"
+                                                onChange={handleFileChange}
+                                                className="w-full border border-gray-300 p-2 mt-4 rounded-md"
+                                                data-testid="file-input"
+                                            />
+                                            <Button type="submit" variant="default" className="mt-4 w-full">Submit</Button>
+                                        </form>
+                                        {submissionMessage && (
+                                            <div className="mt-4 p-2 bg-green-100 border border-green-400 rounded-md flex items-center">
+                                                <CheckCircle className="text-green-600 mr-2" />
+                                                <span>{submissionMessage}</span>
+                                            </div>
+                                        )}
+                                    </div>
                                 </TabsContent>
                                 <TabsContent value="text-submission">
                                     <div className="p-4 w-full bg-white border border-gray-300 rounded-md">
@@ -199,6 +190,7 @@ const Submission = ({ refresh, switchToViewOnSubmit }) => {
                                                 className="w-full border border-gray-300 p-2 rounded-md"
                                                 rows="5"
                                                 placeholder="Write your submission here..."
+                                                data-testid="text-input"
                                             />
                                             <Button type="submit" variant="default" className="mt-4 w-full">Submit</Button>
                                         </form>

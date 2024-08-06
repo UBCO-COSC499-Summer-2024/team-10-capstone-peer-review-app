@@ -10,7 +10,7 @@ import {
 	TableRow
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Download, Search } from "lucide-react";
+import { Download, Search, Info } from "lucide-react";
 import { getSubmissionsForAssignment } from "@/api/submitApi";
 import { getStudentsByClassId } from "@/api/classApi";
 import { getRubricsForAssignment } from "@/api/rubricApi";
@@ -29,20 +29,11 @@ import ReviewDetailsDialog from "./submission/ReviewDetailsDialog";
 import ViewSubmissionDialog from "./submission/ViewSubmissionDialog";
 import GradeSubmissionDialog from "./submission/GradeSubmissionDialog";
 import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle,
-	DialogFooter
-} from "@/components/ui/dialog";
-import { Info } from "lucide-react";
-import {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
 	TooltipTrigger
 } from "@/components/ui/tooltip";
-import MultiSelect from "@/components/ui/MultiSelect";
 
 const Submissions = (assignment) => {
 	const { user } = useUser();
@@ -56,14 +47,6 @@ const Submissions = (assignment) => {
 	const [gradeDialogOpen, setGradeDialogOpen] = useState(false);
 	const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
 	const [selectedSubmissionId, setSelectedSubmissionId] = useState(null);
-	const [assignReviewersDialogOpen, setAssignReviewersDialogOpen] =
-		useState(false);
-	const [selectedReviewers, setSelectedReviewers] = useState([]);
-	const [currentSubmission, setCurrentSubmission] = useState(null);
-	const [allStudents, setAllStudents] = useState([]);
-	const [existingReviewers, setExistingReviewers] = useState([]);
-	const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
-	const [reviewersToDelete, setReviewersToDelete] = useState([]);
 	const [searchTerm, setSearchTerm] = useState("");
 
 	// Fetch initial data when component mounts
@@ -119,7 +102,6 @@ const Submissions = (assignment) => {
 						};
 					})
 				);
-				setAllStudents(studentsResponse.data);
 				setStudentsWithSubmissions(studentsWithSubmissionStatus);
 
 				setRubric(rubricData.data);
@@ -139,111 +121,6 @@ const Submissions = (assignment) => {
 
 		fetchData();
 	}, [assignmentId, classId]);
-
-	// Handle assigning reviewers to a submission
-	const handleAssignReviewers = async (submission) => {
-		setCurrentSubmission(submission);
-		try {
-			const reviews = await reviewAPI.getAllReviews(submission.submissionId);
-			const existingReviewerIds = reviews.data
-				.filter(
-					(review) =>
-						review.isPeerReview && review.reviewerId !== submission.submitterId
-				)
-				.map((review) => review.reviewerId);
-			setSelectedReviewers(existingReviewerIds);
-			setExistingReviewers(existingReviewerIds);
-		} catch (error) {
-			console.error("Error fetching existing reviewers:", error);
-			toast({
-				title: "Error",
-				description: "Failed to fetch existing reviewers",
-				variant: "destructive"
-			});
-		}
-
-		setAssignReviewersDialogOpen(true);
-	};
-
-	// Handle submission of assigned reviewers
-	const handleAssignReviewersSubmit = () => {
-		const reviewersToRemove = existingReviewers.filter(
-			(id) => !selectedReviewers.includes(id)
-		);
-		if (reviewersToRemove.length > 0) {
-			setReviewersToDelete(reviewersToRemove);
-			setAssignReviewersDialogOpen(false);
-			setConfirmDialogOpen(true);
-		} else {
-			updateReviewers();
-		}
-	};
-
-	// Handle confirmation of reviewer deletion
-	const handleConfirmDelete = () => {
-		updateReviewers();
-		setConfirmDialogOpen(false);
-	};
-
-	// Handle cancellation of reviewer deletion
-	const handleCancelDelete = () => {
-		setConfirmDialogOpen(false);
-		setAssignReviewersDialogOpen(true);
-		setSelectedReviewers(existingReviewers);
-	};
-
-	// Update reviewers for a submission
-	const updateReviewers = async () => {
-		try {
-			// Delete reviews for unchecked existing reviewers
-			for (const reviewerId of existingReviewers) {
-				if (!selectedReviewers.includes(reviewerId)) {
-					const peerReviewsResponse = await reviewAPI.getPeerReviews(
-						currentSubmission.submissionId
-					);
-					const peerReviews = peerReviewsResponse.data;
-					const reviewToDelete = peerReviews.find(
-						(review) => review.reviewerId === reviewerId
-					);
-					if (reviewToDelete) {
-						await reviewAPI.deleteReview(reviewToDelete.reviewId);
-					}
-				}
-			}
-
-			// Create new blank reviews for newly selected reviewers
-			for (const reviewerId of selectedReviewers) {
-				if (!existingReviewers.includes(reviewerId)) {
-					const blankReview = {
-						submissionId: currentSubmission.submissionId,
-						reviewGrade: 0,
-						reviewerId: reviewerId,
-						revieweeId: currentSubmission.submitterId,
-						isPeerReview: true,
-						isGroup: false,
-						criterionGrades: []
-					};
-					await reviewAPI.createReview(reviewerId, blankReview);
-				}
-			}
-
-			setConfirmDialogOpen(false);
-			setAssignReviewersDialogOpen(false);
-
-			// Reset states
-			setCurrentSubmission(null);
-			setSelectedReviewers([]);
-			setExistingReviewers([]);
-			setReviewersToDelete([]);
-		} catch (error) {
-			console.error("Error updating reviewers:", error);
-			toast({
-				title: "Error",
-				description: "Failed to update reviewers",
-				variant: "destructive"
-			});
-		}
-	};
 
 	// Handle downloading a submission
 	const handleDownload = (submission) => {
@@ -391,7 +268,7 @@ const Submissions = (assignment) => {
 
 	const isDueDatePassed = () => {
 		const currentDate = new Date();
-		const assignmentDueDate = new Date(assignment.assignment.dueDate);
+		const assignmentDueDate = new Date(assignment.dueDate);
 		return currentDate > assignmentDueDate;
 	};
 
@@ -433,8 +310,8 @@ const Submissions = (assignment) => {
 							</TooltipTrigger>
 							<TooltipContent>
 								<p>
-									Grading, viewing grades, and assigning reviewers are only
-									available after the due date.
+									Grading and viewing grades are only available after the due
+									date.
 								</p>
 							</TooltipContent>
 						</Tooltip>
@@ -525,21 +402,7 @@ const Submissions = (assignment) => {
 																					"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
 																			)}
 																		>
-																			View Grades
-																		</Button>
-																		<Button
-																			variant="outline"
-																			size="sm"
-																			onClick={() =>
-																				handleAssignReviewers(submission)
-																			}
-																			disabled={!isDueDatePassed()}
-																			className={cn(
-																				!isDueDatePassed() &&
-																					"bg-yellow-100 hover:bg-yellow-200 text-yellow-800"
-																			)}
-																		>
-																			Assign Reviewers
+																			View Grade
 																		</Button>
 																	</>
 																)}
@@ -583,68 +446,6 @@ const Submissions = (assignment) => {
 					open={reviewDialogOpen}
 					onClose={() => setReviewDialogOpen(false)}
 				/>
-				<Dialog
-					open={assignReviewersDialogOpen}
-					onOpenChange={setAssignReviewersDialogOpen}
-				>
-					<DialogContent>
-						<DialogHeader>
-							<DialogTitle>Assign Peer Reviewers</DialogTitle>
-						</DialogHeader>
-						<div className="space-y-4 min-h-[4vh] flex items-center justify-center">
-							<MultiSelect
-								options={allStudents
-									.filter(
-										(student) =>
-											student.userId !== currentSubmission?.submitterId
-									)
-									.map((student) => ({
-										value: student.userId,
-										label: `${student.firstname} ${student.lastname}`
-									}))}
-								value={selectedReviewers}
-								onChange={setSelectedReviewers}
-							/>
-						</div>
-						<DialogFooter>
-							<Button onClick={handleAssignReviewersSubmit}>
-								Update Reviewers
-							</Button>
-						</DialogFooter>
-					</DialogContent>
-				</Dialog>
-
-				<Dialog open={confirmDialogOpen} onOpenChange={setConfirmDialogOpen}>
-					<DialogContent>
-						<DialogHeader>
-							<DialogTitle>Confirm Reviewer Removal</DialogTitle>
-						</DialogHeader>
-						<div>
-							Are you sure you want to remove the following reviewers? Their
-							reviews will be deleted:
-							<ul className="list-disc pl-5 mt-2">
-								{reviewersToDelete.map((reviewerId) => {
-									const reviewer = allStudents.find(
-										(student) => student.userId === reviewerId
-									);
-									return (
-										<li key={reviewerId}>
-											{reviewer
-												? `${reviewer.firstname} ${reviewer.lastname}`
-												: reviewerId}
-										</li>
-									);
-								})}
-							</ul>
-						</div>
-						<DialogFooter>
-							<Button variant="outline" onClick={handleCancelDelete}>
-								Cancel
-							</Button>
-							<Button onClick={handleConfirmDelete}>Confirm</Button>
-						</DialogFooter>
-					</DialogContent>
-				</Dialog>
 			</Card>
 			{/* Rubrics Card */}
 			<Card className="mt-4">

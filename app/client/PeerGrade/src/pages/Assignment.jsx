@@ -40,6 +40,7 @@ import {
 	getCommentsForAssignment
 } from "@/api/commentApi";
 import { Input } from "@/components/ui/input";
+import InfoButton from "@/components/global/InfoButton";
 
 const NonPDFFileDownload = ({ url, fileName }) => {
 	const fileType = url.split(".").pop().toUpperCase();
@@ -69,9 +70,9 @@ const Assignment = () => {
 	const [refresh, setRefresh] = useState(false);
 	const [comments, setComments] = useState([]);
 	const [newComment, setNewComment] = useState("");
-	const [selectedStudent, setSelectedStudent] = useState(null);
 	const [selectedStudentForChat, setSelectedStudentForChat] = useState(null);
 	const [isTransitioning, setIsTransitioning] = useState(false);
+	const [currentView, setCurrentView] = useState("view");
 	const navigate = useNavigate();
 	const scrollAreaRef = useRef(null);
 	const selectedStudentIdRef = useRef(null);
@@ -228,7 +229,6 @@ const Assignment = () => {
 		setIsTransitioning(true);
 		setTimeout(() => {
 			setSelectedStudentForChat(student);
-			setSelectedStudent(student ? student.student.userId : null);
 			setIsTransitioning(false);
 		}, 300);
 	};
@@ -465,12 +465,115 @@ const Assignment = () => {
 		);
 	};
 
+	const getInfoContent = () => {
+		if (user.role === "STUDENT") {
+			return {
+				title: "Assignment Overview",
+				description: (
+					<>
+						<p>
+							This page allows you to view and interact with your assignment:
+						</p>
+						<ul className="list-disc list-inside mt-2">
+							<li>View assignment details and instructions</li>
+							<li>See the due date and submission requirements</li>
+							<li>Submit your work (if the deadline hasn't passed)</li>
+							<li>View your submitted work and grades (if available)</li>
+							<li>Communicate with your instructor through comments</li>
+						</ul>
+						<p className="mt-2">
+							Use the tabs at the top to switch between viewing the assignment
+							and submitting your work.
+						</p>
+					</>
+				)
+			};
+		} else if (user.role === "INSTRUCTOR" || user.role === "ADMIN") {
+			switch (currentView) {
+				case "view":
+					return {
+						title: "Assignment Overview (Instructor View)",
+						description: (
+							<>
+								<p>
+									As an instructor, you can manage all aspects of this
+									assignment:
+								</p>
+								<ul className="list-disc list-inside mt-2">
+									<li>View the full assignment details</li>
+									<li>Edit the assignment using the 'Edit Assignment' tab</li>
+									<li>
+										View and grade student submissions using the 'View
+										Submissions' tab
+									</li>
+									<li>Communicate with students through comments</li>
+									<li>Extend deadlines for individual students if needed</li>
+								</ul>
+								<p className="mt-2">
+									Use the tabs at the top to access different functions.
+								</p>
+							</>
+						)
+					};
+				case "edit":
+					return {
+						title: "Edit Assignment",
+						description: (
+							<>
+								<p>Here you can modify the assignment details:</p>
+								<ul className="list-disc list-inside mt-2">
+									<li>Update the title, description, and due date</li>
+									<li>Change the maximum number of submission attempts</li>
+									<li>Modify the category and rubric</li>
+									<li>Adjust allowed file types for submissions</li>
+									<li>Upload or replace assignment files</li>
+									<li>Extend deadlines for specific students</li>
+								</ul>
+								<p className="mt-2">
+									Remember to save your changes after editing.
+								</p>
+							</>
+						)
+					};
+				case "submissions":
+					return {
+						title: "View Submissions",
+						description: (
+							<>
+								<p>Manage and review student submissions:</p>
+								<ul className="list-disc list-inside mt-2">
+									<li>See a list of all student submissions</li>
+									<li>View submission details and downloaded files</li>
+									<li>Grade submissions using the assigned rubric</li>
+									<li>Provide feedback and comments to students</li>
+									<li>Track late submissions and extended deadlines</li>
+								</ul>
+								<p className="mt-2">
+									Use the table to sort and filter submissions as needed.
+								</p>
+							</>
+						)
+					};
+				default:
+					return {
+						title: "Assignment Management",
+						description:
+							"Select a tab to view or manage different aspects of this assignment."
+					};
+			}
+		}
+	};
+
+	const switchToViewOnSubmit = () => {
+		setCurrentView("view");
+	};
+
 	return (
 		<div className="container mx-auto px-4">
 			<Card className="mb-8 bg-card">
 				<CardHeader>
-					<div className="flex w-full items-center justify-between">
-						<div className="flex items-center ">
+					<div className="flex flex-col sm:flex-row w-full items-start sm:items-center justify-between gap-4">
+						<div className="flex items-start w-full sm:w-3/5">
 							<div className="flex rounded-lg mr-2">
 								<Button
 									onClick={handleBackClick}
@@ -480,23 +583,37 @@ const Assignment = () => {
 									<ArrowLeft className="h-5 w-5" />
 								</Button>
 							</div>
-							<div className="flex flex-col justify-center space-y-1">
+							<div className="flex flex-col justify-center space-y-1 w-full">
 								<CardTitle className="text-2xl font-bold w-full">
 									{assignment.title}
 								</CardTitle>
-								<CardDescription>{assignment.description}</CardDescription>
+								<CardDescription className="w-full sm:w-4/5 line-clamp-5">
+									{assignment.description}
+								</CardDescription>
 							</div>
 						</div>
-						<span className="text-md font-semibold">
-							Due Date: {new Date(assignment.dueDate).toLocaleDateString()}
-						</span>
+						<div className="flex flex-col items-end w-full sm:w-2/5">
+							<span className="text-md font-semibold">
+								Due Date: {new Date(assignment.dueDate).toLocaleDateString()} @
+								11:59 PM
+							</span>
+							<p className="text-sm italic bg-slate-200 p-1 px-2 rounded mt-1 text-right">
+								Assignments are due at 11:59 PM for the specified due date
+							</p>
+						</div>
 					</div>
 				</CardHeader>
 			</Card>
-
-			<Tabs defaultValue="view" className="space-y-4">
+			<Tabs
+				defaultValue="view"
+				value={currentView}
+				className="space-y-4"
+				onValueChange={(value) => setCurrentView(value)}
+			>
 				{(user.role !== "STUDENT" ||
-					new Date(assignment.dueDate) >= new Date()) && (
+					(user.role === "STUDENT" &&
+						assignment.maxSubmissions - submissions?.length > 0 &&
+						new Date(assignment.dueDate) >= new Date())) && (
 					<TabsList className="bg-muted">
 						<TabsTrigger value="view">View Assignment</TabsTrigger>
 						{user.role !== "STUDENT" && (
@@ -577,6 +694,16 @@ const Assignment = () => {
 												)}
 											</div>
 										</div>
+										<Separator className="my-4" />
+										<div className="flex justify-between items-center space-x-2">
+											<span>Attempts Left:</span>
+											<span>
+												{submissions &&
+												assignment.maxSubmissions - submissions?.length > 0
+													? assignment.maxSubmissions - submissions?.length
+													: "0"}
+											</span>
+										</div>
 										{submissions.length > 0 && (
 											<div>
 												<Separator className="my-4" />
@@ -592,20 +719,27 @@ const Assignment = () => {
 												<div className="flex justify-between items-center space-x-2">
 													<span>Submissions:</span>
 													<div className="flex flex-col">
-														{submissions.reverse().map((submission, index) => (
-															<Button
-																onClick={() => {
-																	setSelectedSubmission(submission);
-																	setViewDialogOpen(true);
-																}}
-																key={index}
-																variant="ghost"
-																className="flex items-center space-x-2"
-															>
-																<FileText className="h-5 w-5" />
-																<span>Submission {index + 1}</span>
-															</Button>
-														))}
+														{submissions
+															.sort(
+																(a, b) =>
+																	new Date(b.createdAt) - new Date(a.createdAt)
+															)
+															.map((submission, index) => (
+																<Button
+																	onClick={() => {
+																		setSelectedSubmission(submission);
+																		setViewDialogOpen(true);
+																	}}
+																	key={submission.submissionId}
+																	variant="ghost"
+																	className="flex items-center space-x-2"
+																>
+																	<FileText className="h-5 w-5" />
+																	<span>
+																		Attempt {submissions.length - index}
+																	</span>
+																</Button>
+															))}
 													</div>
 												</div>
 											</div>
@@ -640,6 +774,7 @@ const Assignment = () => {
 						<Submission
 							assignmentId={assignmentId}
 							refresh={refreshToggle}
+							switchToViewOnSubmit={switchToViewOnSubmit}
 							assignment={assignment}
 						/>
 					</TabsContent>
@@ -651,6 +786,7 @@ const Assignment = () => {
 				onClose={() => setViewDialogOpen(false)}
 				onDownload={handleDownload}
 			/>
+			<InfoButton content={getInfoContent()} />
 		</div>
 	);
 };

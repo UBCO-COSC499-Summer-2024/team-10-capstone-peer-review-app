@@ -16,12 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 
-const GradeSubmissionDialog = ({
-	rubric,
-	open,
-	onClose,
-	onGradeSubmit
-}) => (
+const GradeSubmissionDialog = ({ rubric, open, onClose, onGradeSubmit }) => (
 	<Dialog open={open} onOpenChange={onClose}>
 		<DialogContent className="max-w-lg h-[80vh] overflow-hidden flex flex-col">
 			<DialogHeader>
@@ -36,16 +31,14 @@ const GradeSubmissionDialog = ({
 				)}
 				{rubric && (
 					<div>
-						{console.log("rubric from grade submission dialog", rubric)}
 						<Card className="mb-6">
 							<CardHeader>
 								<CardTitle>{rubric.title}</CardTitle>
 							</CardHeader>
 							<CardContent>
 								{rubric.criteria.map((criterion, criterionIndex) => {
-									const totalRatingPoints = criterion.criterionRatings.reduce(
-										(sum, rating) => sum + rating.points,
-										0
+									const maxRatingPoints = Math.max(
+										...criterion.criterionRatings.map(rating => rating.points)
 									);
 									return (
 										<div key={criterionIndex} className="mb-6 last:mb-0">
@@ -81,12 +74,12 @@ const GradeSubmissionDialog = ({
 														id={`grade-${criterion.criterionId}`}
 														type="number"
 														min="0"
-														max={totalRatingPoints}
+														max={maxRatingPoints}
 														name={`grade-${criterion.criterionId}`}
 														defaultValue="0"
 														className="w-[80px] mr-2"
 													/>
-													<span className="text-sm">/ {totalRatingPoints}</span>
+													<span className="text-sm">/ {maxRatingPoints}</span>
 												</div>
 											</div>
 											<Textarea

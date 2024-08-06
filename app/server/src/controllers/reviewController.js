@@ -1,6 +1,7 @@
 // Import necessary modules and services
 import reviewService from "../services/reviewService.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
+import apiError from "../utils/apiError.js";
 
 // Controller methods for review operations
 
@@ -77,13 +78,6 @@ export const createReview = asyncErrorHandler(async (req, res) => {
 export const assignRandomPeerReviews = asyncErrorHandler(async (req, res) => {
 	const { assignmentId, reviewsPerStudent } = req.body;
 
-	if (!assignmentId || !reviewsPerStudent) {
-		throw new apiError(
-			"Assignment ID and number of reviews per student are required",
-			400
-		);
-	}
-
 	const result = await reviewService.assignRandomPeerReviews(
 		assignmentId,
 		reviewsPerStudent
@@ -119,6 +113,7 @@ export const getReviewsAssigned = asyncErrorHandler(async (req, res) => {
 export const getReviewsReceived = asyncErrorHandler(async (req, res) => {
 	const userId = req.user.userId;
 	const reviewsReceived = await reviewService.getReviewsReceived(userId);
+	console.log("reviewsReceived", reviewsReceived);
 	return res.status(200).json({
 		status: "Success",
 		data: reviewsReceived

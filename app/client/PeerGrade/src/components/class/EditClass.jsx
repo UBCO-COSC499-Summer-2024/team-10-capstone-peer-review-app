@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -36,8 +36,11 @@ import {
 	AlertDialogTitle
 } from "@/components/ui/alert-dialog";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import InfoButton from '@/components/global/InfoButton';
 
 import { useClass } from "@/contexts/contextHooks/useClass";
+import { getClassById } from "@/api/classApi";
+import EditClassDialog from "../manageClass/EditClassModal";
 
 // Zod schema for form validation
 const FormSchema = z
@@ -78,11 +81,14 @@ const FormSchema = z
 	});
 
 const EditClass = ({ classItem }) => {
+	const { classId } = useParams();
 	const [open, setOpen] = useState(false);
 	const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 	const [formError, setFormError] = useState("");
+	const [classData, setClassData] = useState(classItem);
 	const location = useLocation();
 	const navigate = useNavigate();
+	const wasDirectlyAccessed = classId && location.pathname.includes("edit");
 
 	const { updateClasses, isClassLoading } = useClass();
 
@@ -98,21 +104,26 @@ const EditClass = ({ classItem }) => {
 		}
 	});
 
-	// Fetch form values from classItem
+	// Fetch form values from classItem or w classId if accessed directly
 	useEffect(() => {
-		const fetchClassData = async (classItem) => {
+		const fetchClassData = async (classData) => {
+			if (wasDirectlyAccessed) {
+				const response = await getClassById(classId);
+				console.log("test", response.data);
+				setClassData(response.data);
+			}
 			form.reset({
-				classname: classItem.classname,
-				description: classItem.description,
-				startDate: parseISO(classItem.startDate),
-				endDate: parseISO(classItem.endDate),
-				term: classItem.term || undefined,
-				classSize: classItem.classSize
+				classname: classData.classname,
+				description: classData.description,
+				startDate: parseISO(classData.startDate),
+				endDate: parseISO(classData.endDate),
+				term: classData.term || undefined,
+				classSize: classData.classSize
 			});
-		};
+		}
 
-		fetchClassData(classItem);
-	}, [classItem, form]);
+		fetchClassData(classData);
+	}, [classItem, classData, form, wasDirectlyAccessed]);
 
 	const onSubmit = async (updateData) => {
 		setIsConfirmOpen(true);
@@ -122,7 +133,7 @@ const EditClass = ({ classItem }) => {
 		setIsConfirmOpen(false);
 		setFormError("");
 		try {
-			await updateClasses(classItem.classId, form.getValues());
+			await updateClasses(classData.classId, form.getValues());
 			// Optionally, you can navigate back or show a success message here
 		} catch (error) {
 			setFormError("Failed to update class. Please try again.");
@@ -133,8 +144,23 @@ const EditClass = ({ classItem }) => {
 		navigate(-1);
 	};
 
-	const wasDirectlyAccessed =
-		location.pathname === `/class/${classItem.classId}/edit`;
+	const editClassInfoContent = {
+		title: "About Editing a Class",
+		description: (
+		<>
+			<p>This page allows you to edit the details of an existing class:</p>
+			<ul className="list-disc list-inside mt-2">
+			<li>Update the class name and description</li>
+			<li>Modify the start and end dates</li>
+			<li>Change the term information</li>
+			<li>Adjust the maximum class size</li>
+			</ul>
+			<p className="mt-2">All fields are required except for the Term field.</p>
+			<p className="mt-2">After making changes, click 'Submit' to save your updates. You'll be asked to confirm before the changes are applied.</p>
+			<p className="mt-2">Note: Changing the class size may affect student enrollment if the new size is smaller than the current number of enrolled students.</p>
+		</>
+		)
+	};
 
 	return (
 		<div className="flex bg-white justify-left flex-row p-4 w-full">
@@ -348,6 +374,7 @@ const EditClass = ({ classItem }) => {
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>
+			<InfoButton content={editClassInfoContent} />
 		</div>
 	);
 };

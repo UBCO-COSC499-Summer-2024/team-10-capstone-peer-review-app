@@ -28,6 +28,7 @@ import {
 	CommandList
 } from "@/components/ui/command";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import InfoButton from '@/components/global/InfoButton';
 
 const Groups = () => {
 	const { classId } = useParams();
@@ -297,6 +298,37 @@ const Groups = () => {
 			});
 		}
 	};
+
+	const groupsInfoContent = {
+		title: "About Class Groups",
+		description: (
+		  <>
+			<p>This page allows you to manage groups within the class:</p>
+			<ul className="list-disc list-inside mt-2">
+			  <li>View all existing groups</li>
+			  <li>Search for specific groups</li>
+			  {user.role === "STUDENT" && (
+				<>
+				  <li>Join available groups</li>
+				  <li>Leave groups you're currently in</li>
+				</>
+			  )}
+			  {(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (
+				<>
+				  <li>Create new groups</li>
+				  <li>Edit existing groups</li>
+				  <li>Delete groups</li>
+				  <li>Add or remove students from groups</li>
+				</>
+			  )}
+			</ul>
+			<p className="mt-2">Click on a group to expand and see its members.</p>
+			{(user.role === "INSTRUCTOR" || user.role === "ADMIN") && (
+			  <p className="mt-2">Use the 'Add Group' button to create new groups and manage their members.</p>
+			)}
+		  </>
+		)
+	  };
 
 	return (
 		<div className="w-full p-6  ">
@@ -630,6 +662,8 @@ const Groups = () => {
 					</form>
 				</DialogContent>
 			</Dialog>
+			<InfoButton content={groupsInfoContent} />
+
 		</div>
 	);
 };

@@ -28,23 +28,23 @@ const Users = () => {
 	const [usersData, setUsersData] = useState([]);
 	const [roleRequests, setRoleRequests] = useState([]);
 
-	useEffect(() => {
-		const fetchRoleRequests = async () => {
-			const allRoleRequests = await getAllRoleRequests();
-			if (allRoleRequests.status === "Success") {
-				setRoleRequests(allRoleRequests.data);
-			}
-			console.log("roleRequestsData: ", roleRequests);
-		};
-	
-		const fetchUsers = async () => {
-			const allUsers = await getAllUsers();
-			if (allUsers.status === "Success") {
-				setUsersData(allUsers.data);
-			}
-			console.log("usersData: ", usersData);
-		};
+	const fetchRoleRequests = async () => {
+		const allRoleRequests = await getAllRoleRequests();
+		if (allRoleRequests.status === "Success") {
+			setRoleRequests(allRoleRequests.data);
+		}
+		console.log("roleRequestsData: ", roleRequests);
+	};
 
+	const fetchUsers = async () => {
+		const allUsers = await getAllUsers();
+		if (allUsers.status === "Success") {
+			setUsersData(allUsers.data);
+		}
+		console.log("usersData: ", usersData);
+	};
+
+	useEffect(() => {
 		fetchUsers();
 		fetchRoleRequests();
 	}, []);
@@ -79,7 +79,11 @@ const Users = () => {
 				<div className="flex flex-col w-1/2 overflow-y-auto rounded-md">
 					<h1 className="text-2xl font-semibold mb-6">Role Requests</h1>
 					<div className="p-5 bg-white rounded-lg space-y-1">
-						{roleRequests.length === 0 && <div className="text-gray-500 text-sm px-6">No role requests were found.</div>}
+						{roleRequests.length === 0 && (
+							<div className="text-gray-500 text-sm px-6">
+								No role requests were found.
+							</div>
+						)}
 						{roleRequests.map((roleRequest) => {
 							const { color } = getStatusDetails(roleRequest.status);
 							return (

@@ -1,5 +1,5 @@
 
-# 31/34 Developed 
+# 32/34 Developed 
 
 **User Registration and Profile Management**
   - [x] All users are able to register (with email address)
@@ -7,7 +7,7 @@
   - [x] Users will be able to modify their personal details to keep their profile up-to-date
 
 **Instructor Features**
-  - [x] Instructors are able to manage enrollemnet requests from students
+  - [x] Instructors are able to manage enrollment requests from students
   - [x] Instructors are able to add and remove students in their classes
   - [x] Instructors are able to create/edit/remove classes
   - [x] Instructors are able to create/edit/remove categories within a class (to organize assignments by category)
@@ -17,7 +17,7 @@
   - [x] Instructors are able to leave feedback on student assignments and reviews
   - [x] Instructors will be able to randomly assign peer reviewers for individual assignments 
   - [x] Instructors will be able to release peer review feedback
-  - [x] Instructors can set timelines for assignment submissions
+  - [x] Instructors can set timelines for assignment submissions 
   - [x] Instructor will be able to restrict submission files/links (i.e. only accept .PDF or .ZIP or only google docs links) 
   - [x] Instructor must be able to set the peer reviews should be anonymous or not anonymous 
   - [x] Instructors will be able to extend deadlines for students 
@@ -27,8 +27,8 @@
   - [x] Students are able to join classes/enroll in multiple classes
   - [x] Students are able to submit assignments
   - [x] Students will be able to re-submit assignments if still within the submission window
-  - [x] Students are able to anonymously leave feedback on other students’ assignments
-  - [x] Students (and Instructors) can create personal TODO's for each of their classes
+  - [x] Students are able to anonymously / not anonymously leave feedback on other students’ assignments
+  - [x] Students (and Instructors) can create personal TODO's for each of their classes (Unique for each user and class)
 
 **Admin Features**
   - [x] Admin can view all data table information that exists on the database

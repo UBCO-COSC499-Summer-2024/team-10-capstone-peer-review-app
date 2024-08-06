@@ -1,7 +1,10 @@
+// The main function of this component is to display the submission details for a submission and allow the user to download the submission file
+// The component is used in the AssignmentDetails component
+
 import React, { useState, useEffect } from "react";
 import { Dialog, LargeDialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Download, Info } from "lucide-react";
+import { Info } from "lucide-react";
 import PDFViewer from "@/components/assign/PDFViewer";
 import {
 	Tooltip,

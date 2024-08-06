@@ -1,3 +1,6 @@
+// The main function of this component is to display the review details for a submission and allow the user to view the grades and comments for each criterion
+// The component is used in the AssignmentDetails component
+
 import React, { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -38,10 +41,6 @@ const ReviewDetailsDialog = ({ submissionId, open, onClose }) => {
         }
     }, [submissionId, open]);
 
-    const getTotalMaxPoints = () => {
-        if (!reviewDetails || !reviewDetails.criterionGrades) return 0;
-        return reviewDetails.criterionGrades.reduce((total, cg) => total + cg.criterion.maxMark, 0);
-    };
 
     const getPercentageGrade = () => {
         if (!reviewDetails || !reviewDetails.criterionGrades) return 0;

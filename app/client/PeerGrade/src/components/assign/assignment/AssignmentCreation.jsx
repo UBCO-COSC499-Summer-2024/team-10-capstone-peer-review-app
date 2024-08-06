@@ -1,3 +1,5 @@
+// The main function of this component is to create a new assignment and add it to a class
+
 import React, { useRef, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { format } from 'date-fns';
@@ -102,17 +104,20 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
     }
   };
 
+  // Handles changes to form inputs
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  // Handles file uploads
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     setSelectedFileName(selectedFile.name);
     setFormData(prev => ({ ...prev, file: selectedFile }));
   };
 
+  // Handles changes to the rubric selection
   const handleRubricSelection = (value) => {
     setFormData(prev => ({
       ...prev,
@@ -121,12 +126,14 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
     setNewRubricData(null);  // Clear any new rubric data when selecting an existing rubric
   };
 
+  // Resets the rubric selection
   const resetRubric = () => {
     setNewRubricData(null);
     setFormData(prev => ({ ...prev, rubricId: '' }));
     setIsRubricFormOpen(false);
   };
 
+  // Validates the form inputs
   const validateForm = () => {
     const newErrors = {};
 
@@ -142,6 +149,7 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
     return Object.keys(newErrors).length === 0;
   };
 
+  // Handles form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     

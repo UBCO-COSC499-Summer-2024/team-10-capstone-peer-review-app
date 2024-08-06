@@ -143,7 +143,7 @@ export const updateAssignmentInClass = [
 			assignmentFilePath: fileUrl || assignmentData.assignmentFilePath,
 			rubricId: assignmentData.rubricId,
 			allowedFileTypes: assignmentData.allowedFileTypes,
-		}
+		});
 	})
 ];
 

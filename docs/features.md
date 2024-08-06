@@ -1,5 +1,5 @@
 
-# 32/34 Developed 
+# 31/34 Developed 
 
 **User Registration and Profile Management**
   - [x] All users are able to register (with email address)
@@ -16,7 +16,7 @@
   - [x] Instructors are able to reply to any comments for an assignment
   - [x] Instructors are able to leave feedback on student assignments and reviews
   - [x] Instructors will be able to randomly assign peer reviewers for individual assignments 
-  - [x] Instructors will be able to manually release peer review feedback, or automatically after the due date for the review portion is passed 
+  - [x] Instructors will be able to release peer review feedback
   - [x] Instructors can set timelines for assignment submissions
   - [x] Instructor will be able to restrict submission files/links (i.e. only accept .PDF or .ZIP or only google docs links) 
   - [x] Instructor must be able to set the peer reviews should be anonymous or not anonymous 

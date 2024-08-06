@@ -1,14 +1,15 @@
+// The main function of this component is to view and submit an assignment
+
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileUp, CheckCircle, Text } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { getAssignmentInClass } from '@/api/assignmentApi';
 import { getRubricsForAssignment } from '@/api/rubricApi';
 import { createSubmission } from '@/api/submitApi';
 import { useUser } from "@/contexts/contextHooks/useUser";
 import DataTable from '@/components/ui/data-table';
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { toast } from '@/components/ui/use-toast';
 
@@ -158,36 +159,24 @@ const Submission = ({ refresh, switchToViewOnSubmit }) => {
                                     {<TabsTrigger value="text-submission">Text Submission</TabsTrigger>}
                                 </TabsList>
                                 <TabsContent value="file-upload">
-                                    {/* <Accordion type="single" collapsible className="bg-gray-100 rounded-lg px-6">
-                                        <AccordionItem value="submit-assignment">
-                                            <AccordionTrigger className="text-gray-600 hover:text-gray-800 flex items-center">
-                                                <div className='flex justify-between items-center w-full mr-3'>
-                                                <FileUp className="h-4 w-4 mr-2" />
-                                                <span>Submit Assignment</span>
-                                                </div>
-                                            </AccordionTrigger>
-                                            <AccordionContent> */}
-                                                <div className="p-4 w-full bg-white border border-gray-300 rounded-md">
-                                                    <h2 className="text-xl font-bold">Submit Your Assignment</h2>
-                                                    {assignment.allowedFileTypes.length > 0 && <span className='text-gray-500 italic'>Allowed file types are: {assignment.allowedFileTypes.join(', ')}</span>}
-                                                    <form onSubmit={handleSubmit}>
-                                                        <input
-                                                            type="file"
-                                                            onChange={handleFileChange}
-                                                            className="w-full border border-gray-300 p-2 mt-4 rounded-md"
-                                                        />
-                                                        <Button type="submit" variant="default" className="mt-4 w-full">Submit</Button>
-                                                    </form>
-                                                    {submissionMessage && (
-                                                        <div className="mt-4 p-2 bg-green-100 border border-green-400 rounded-md flex items-center">
-                                                            <CheckCircle className="text-green-600 mr-2" />
-                                                            <span>{submissionMessage}</span>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            {/* </AccordionContent>
-                                        </AccordionItem>
-                                    </Accordion> */}
+                                    <div className="p-4 w-full bg-white border border-gray-300 rounded-md">
+                                        <h2 className="text-xl font-bold">Submit Your Assignment</h2>
+                                        {assignment.allowedFileTypes.length > 0 && <span className='text-gray-500 italic'>Allowed file types are: {assignment.allowedFileTypes.join(', ')}</span>}
+                                        <form onSubmit={handleSubmit}>
+                                            <input
+                                                type="file"
+                                                onChange={handleFileChange}
+                                                className="w-full border border-gray-300 p-2 mt-4 rounded-md"
+                                            />
+                                            <Button type="submit" variant="default" className="mt-4 w-full">Submit</Button>
+                                        </form>
+                                        {submissionMessage && (
+                                            <div className="mt-4 p-2 bg-green-100 border border-green-400 rounded-md flex items-center">
+                                                <CheckCircle className="text-green-600 mr-2" />
+                                                <span>{submissionMessage}</span>
+                                            </div>
+                                        )}
+                                    </div>
                                 </TabsContent>
                                 <TabsContent value="text-submission">
                                     <div className="p-4 w-full bg-white border border-gray-300 rounded-md">

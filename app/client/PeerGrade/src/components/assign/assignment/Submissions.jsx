@@ -1,3 +1,5 @@
+// The main component for the assignment submissions page (within assignments.jsx page)
+
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -255,6 +257,7 @@ const Submissions = (assignment) => {
 		document.body.removeChild(link);
 	};
 
+	// Fetch the rubric for the assignment
 	const fetchRubrics = async (assignmentId) => {
 		try {
 			const rubricData = await getRubricsForAssignment(assignmentId);
@@ -267,6 +270,7 @@ const Submissions = (assignment) => {
 		}
 	};
 
+	// Handle submitting a grade for a submission
 	const handleGradeSubmit = async (event) => {
 		event.preventDefault();
 

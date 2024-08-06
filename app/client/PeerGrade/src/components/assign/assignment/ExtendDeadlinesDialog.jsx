@@ -1,4 +1,5 @@
-// ExtendDeadlinesDialog.jsx
+// The main function of this component is to extend deadlines for students
+
 import React, { useState } from "react";
 import { format } from "date-fns";
 import {
@@ -50,6 +51,7 @@ const ExtendDeadlinesDialog = ({
 	const [selectStudentOpen, setSelectStudentOpen] = useState(false);
 	const [selectNewDueDateOpen, setSelectNewDueDateOpen] = useState(false);
 
+	// function to handle adding an extended deadline
 	const handleAddExtendedDueDate = async () => {
 		if (selectedStudent && newDueDate) {
 			const response = await extendDeadlineForStudent(
@@ -88,6 +90,7 @@ const ExtendDeadlinesDialog = ({
 		}
 	};
 
+	// function to handle deleting an extended deadline
 	const handleDeleteExtendedDueDate = async (studentId) => {
 		if (confirmDelete === studentId) {
 			setConfirmDelete("");

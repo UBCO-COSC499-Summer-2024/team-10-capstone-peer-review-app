@@ -1,3 +1,5 @@
+// The component for displaying a PDF on Assignment and submission related pages/components
+
 import React from "react";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 import { toolbarPlugin } from "@react-pdf-viewer/toolbar";
@@ -22,17 +24,21 @@ const PDFViewer = ({ url, scale = 1 }) => {
 		};
 	};
 
+	// Render the modified toolbar
 	const renderToolbar = (Toolbar) => (
 		<Toolbar>{renderDefaultToolbar(transform)}</Toolbar>
 	);
 
+	// Create an instance of the default layout plugin
 	const defaultLayoutPluginInstance = defaultLayoutPlugin({
 		renderToolbar,
 		sidebarTabs: (defaultTabs) => []
 	});
 
+	// Set the height of the viewer
 	const height = 750 * scale + "px";
 
+	//Handle downloading the PDF
 	const handleDownload = () => {
 		const link = document.createElement("a");
 		link.href = url;

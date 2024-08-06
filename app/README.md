@@ -23,7 +23,7 @@ The backend code is located in the `app/server` directory.
 To set up the application for local development, follow these steps:
 1. Clone the repository:
    ```bash
-   git clone https://github.com/PeerGrade/PeerGrade.git
+   git clone https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app.git
    ```
 2. Navigate to the `/app/` directory
 
@@ -34,10 +34,10 @@ To deploy the application using Docker, follow these steps:
 2. Ensure you have a `.env` file in `/app/.env`
 3. Run:
    ```bash
-   docker compose -f docker-compose.yml up -d
+   docker compose -f docker-compose-dev.yml up -d
 
    # To stop the container
-   docker compose -f docker-compose.yml down
+   docker compose -f docker-compose-dev.yml down
    ```
 
 ## Manual Deployment

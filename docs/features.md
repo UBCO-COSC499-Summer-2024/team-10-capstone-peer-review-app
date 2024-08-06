@@ -1,5 +1,5 @@
 
-# 32/34 Developed 
+# 33/35 Developed 
 
 **User Registration and Profile Management**
   - [x] All users are able to register (with email address)
@@ -33,6 +33,7 @@
 
 **Admin Features**
   - [x] Admin can view all data table information that exists on the database
+  - [x] Admins can manage role requests
 
 **System Features**
   - [x] System will accept links such as google doc, google drive, github etc. as submission links 

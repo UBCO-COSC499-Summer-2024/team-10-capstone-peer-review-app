@@ -36,6 +36,7 @@ const Todo = ({ classId, userId }) => {
 
 	const handleAddTodo = async () => {
 		try {
+			if (!newTodoContent) return;
 			const response = await createTodo(classId, newTodoContent);
 			setTodos([response.data, ...todos]);
 			setNewTodoContent("");

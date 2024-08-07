@@ -34,15 +34,13 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Completed Backend documentations
+* Completed Backend tests
+* Worked on video presentation for the client meeting
 
 ## Goals for next cycle
-* 
-* 
-* 
-  
+* Finish the individual reports
+* Look for additonal refactoring tasks
   
 
 # Bhavya's Log for Cycle 18

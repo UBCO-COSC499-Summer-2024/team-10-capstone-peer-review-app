@@ -1,3 +1,6 @@
+// This component displays a dialog with all enrollment requests for a class. 
+// It shows the status of each request, allows the user to approve or deny requests, and allows the user to delete requests.
+
 import { useState, useEffect } from "react";
 import {
 	Dialog,
@@ -30,12 +33,14 @@ const ManageEnrollmentsModal = ({ open, onOpenChange, classItem }) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const { toast } = useToast();
 
+	// Fetch the enrollment requests when the dialog is opened and the class changes
 	useEffect(() => {
 		if (open && classItem) {
 			fetchEnrollRequests();
 		}
 	}, [open, classItem]);
 
+	// Fetch the filtered enrollment requests when the search term changes
 	useEffect(() => {
 		const lowercasedFilter = searchTerm.toLowerCase();
 		const filtered = enrollRequests.filter((request) =>
@@ -46,6 +51,7 @@ const ManageEnrollmentsModal = ({ open, onOpenChange, classItem }) => {
 		setFilteredRequests(filtered);
 	}, [searchTerm, enrollRequests]);
 
+	// Fetch the enrollment requests when the class changes
 	const fetchEnrollRequests = async () => {
 		setIsLoading(true);
 		try {
@@ -59,6 +65,7 @@ const ManageEnrollmentsModal = ({ open, onOpenChange, classItem }) => {
 		}
 	};
 
+	// Handle updating the status of an enrollment request
 	const handleUpdateStatus = async (enrollRequestId, status) => {
 		try {
 			await updateEnrollRequestStatus(enrollRequestId, status);
@@ -72,6 +79,7 @@ const ManageEnrollmentsModal = ({ open, onOpenChange, classItem }) => {
 		}
 	};
 
+	// Handle deleting an enrollment request
 	const handleDeleteRequest = async (enrollRequestId, userId) => {
 		try {
 			await deleteEnrollRequest(enrollRequestId, userId);
@@ -89,6 +97,7 @@ const ManageEnrollmentsModal = ({ open, onOpenChange, classItem }) => {
 		}
 	};
 
+	// Get the color of the status based on the status
 	const getStatusColor = (status) => {
 		switch (status) {
 			case "APPROVED":

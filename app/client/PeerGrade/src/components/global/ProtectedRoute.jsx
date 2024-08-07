@@ -1,4 +1,6 @@
-import { Navigate, useNavigate, useLocation } from "react-router-dom";
+// The component for checking if a user is authenticated and has the required role to access a page (used in App.jsx Routes)
+
+import { useNavigate } from "react-router-dom";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { useToast } from "@/components/ui/use-toast";
 import { Loader } from "lucide-react";
@@ -9,6 +11,7 @@ const ProtectedRoute = ({ element, allowedRoles }) => {
 	const navigate = useNavigate();
 	const { toast } = useToast();
 
+	// Redirect the user to the dashboard if they are not authenticated or have the wrong role
 	useEffect(() => {
 		if (!userLoading && user) {
 			if (!allowedRoles.includes(user.role)) {
@@ -22,6 +25,7 @@ const ProtectedRoute = ({ element, allowedRoles }) => {
 		}
 	}, [user, userLoading]);
 
+	// Display a loader while the user is loading
 	if (userLoading) {
 		return (
 			<div className="flex justify-center items-center h-screen">
@@ -35,13 +39,6 @@ const ProtectedRoute = ({ element, allowedRoles }) => {
 	}
 
 	return null;
-
-	// If the user is not authenticated / logged in, redirect them to the login page
-
-	// If the user has been authenticated but is in the login page, redirect them to the dashboard
-	// Have the check valid session here
-
-	// If the user is authenticated and has the required role, render the element
 };
 
 export default ProtectedRoute;

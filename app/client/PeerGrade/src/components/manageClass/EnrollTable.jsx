@@ -1,3 +1,5 @@
+// The component for displaying an enrollment request table in the Manage class view page for instructors
+
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";

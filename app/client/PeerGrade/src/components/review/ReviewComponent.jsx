@@ -1,3 +1,6 @@
+// Component for displaying a review Card
+
+
 import React from "react";
 import {
 	Accordion,
@@ -17,8 +20,10 @@ const ReviewComponent = ({ review }) => {
 		return <div>No review data available</div>;
 	}
 
+	// Check if the review has grades
 	const hasGrades = review.criterionGrades && review.criterionGrades.length > 0;
 
+	// Calculate the percentage grade for a review
 	const calculateGradePercentage = (review) => {
 		if (
 			!review ||
@@ -56,6 +61,7 @@ const ReviewComponent = ({ review }) => {
 			: 0;
 	};
 
+	// Render the component based on the review data
 	if (!hasGrades) {
 		return (
 			<div className="bg-slate-100 p-4 rounded-lg">

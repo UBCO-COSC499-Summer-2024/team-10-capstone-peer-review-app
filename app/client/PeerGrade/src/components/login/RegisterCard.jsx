@@ -1,3 +1,5 @@
+// the Register User content  for the register tab on Login page.
+
 import { useEffect, useState } from "react";
 
 import { cn } from "@/utils/utils";
@@ -50,12 +52,13 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 		role: ""
 	});
 
-	// TODO add loading state before switching to login -> Also disable register user button to prevent multiple requests
-
+	
 	useEffect(() => {
 		// Reset apiError when clent-side errorState changes
 		setApiError("");
 	}, [errorState]);
+
+	// Validate the field based on the field name and value
 	const validateField = (fieldName, value) => {
 		let error = '';
 		const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -86,6 +89,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 		}));
 	  };
 
+	  // Validate the fields based on the errorState
 	  const validateFields = () => {
 		validateField('password', password);
 		validateField('confirmPassword', confirmPassword);
@@ -93,8 +97,8 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 	  
 		return Object.values(errorState).every((error) => error === "");
 	  };
-
 	  
+	// Render the client-side errors
 	const renderClientErrors = () => {
 		return Object.keys(errorState).map((key) => {
 			if (errorState[key]) {
@@ -108,6 +112,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 		});
 	};
 
+	// Handle registering the user
 	const handleRegister = async (e) => {
 		e.preventDefault();
 
@@ -136,6 +141,7 @@ const RegisterCard = ({ onSwitchToLogin }) => {
 		setIsLoading(false);
 	};
 
+	// Define the role options for the form
 	const roleOptions = [
 		{
 			role: "STUDENT",

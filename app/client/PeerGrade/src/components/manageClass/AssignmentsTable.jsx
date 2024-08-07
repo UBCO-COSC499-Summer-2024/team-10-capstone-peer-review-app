@@ -1,3 +1,5 @@
+// The component for displaying an assignments table in the Manage class page for instructors
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -19,12 +21,14 @@ const AssignmentsTable = ({
   const [selectedAssignment, setSelectedAssignment] = useState(null);
   const [deleteAssignmentOpen, setDeleteAssignmentOpen] = useState(false);
 
+  // Handle deleting an assignment
   const handleDeleteClick = (assignment) => {
     setConfirmDelete(false);
     setSelectedAssignment(assignment);
     setDeleteAssignmentOpen(true);
   };
 
+  // Handle deleting an assignment
   const handleDeleteAssignment = async () => {
     if (confirmDelete && selectedAssignment) {
         setConfirmDelete(false);

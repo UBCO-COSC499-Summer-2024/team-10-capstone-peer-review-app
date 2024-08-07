@@ -1,3 +1,5 @@
+// The component for displaying a login content for the login page (login tab view)
+
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
@@ -51,7 +53,6 @@ const LoginCard = ({
 	const navigate = useNavigate();
 
 	// Use Effect to check if the email verification JWT send in the url
-	// TODO: Look into why toasts pop up twice, and how to remove token after it renders once
 	useEffect(() => {
 		const verifyEmail = async () => {
 			if (verifyEmailToken && !verificationSuccessful) {

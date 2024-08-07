@@ -1,3 +1,6 @@
+// This component displays a dialog with a form to add a new class. 
+// It allows the user to enter the class name, description, start and end dates, and term.
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { useClass } from "@/contexts/contextHooks/useClass";
@@ -22,6 +25,7 @@ const AddClassModal = ({ show, onClose }) => {
 
 	const { isClassLoading, addClass } = useClass();
 
+	// Handle submitting the form
 	const handleSubmit = (e) => {
 		e.preventDefault();
 

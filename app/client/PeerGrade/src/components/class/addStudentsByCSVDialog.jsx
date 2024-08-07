@@ -1,3 +1,5 @@
+// The component for adding students by CSV Files
+
 import { useState, useCallback, useMemo, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import Papa from "papaparse";
@@ -40,6 +42,7 @@ const AddStudentsByCSVDialog = ({
 	const [invalidEmail, setInvalidEmail] = useState(false);
 	const { toast } = useToast();
 
+	// Reset the state of the component
 	const resetState = () => {
 		setEmails([]);
 		setNewEmail("");
@@ -60,6 +63,7 @@ const AddStudentsByCSVDialog = ({
 		}
 	}, [open, isClosing]);
 
+	// Handle file drop
 	const onDrop = useCallback(
 		(acceptedFiles, rejectedFiles) => {
 			if (rejectedFiles && rejectedFiles.length > 0) {
@@ -131,6 +135,7 @@ const AddStudentsByCSVDialog = ({
 		[emails, toast]
 	);
 
+	// Get the root props and input props for the file drop
 	const { getRootProps, getInputProps, isDragActive } = useDropzone({
 		onDrop,
 		accept: {
@@ -139,6 +144,7 @@ const AddStudentsByCSVDialog = ({
 		maxFiles: 1
 	});
 
+	// Handle adding a new email to the list
 	const handleAddEmail = () => {
 		if (newEmail && emailRegex.test(newEmail)) {
 			if (emails.includes(newEmail)) {
@@ -163,10 +169,12 @@ const AddStudentsByCSVDialog = ({
 		}
 	};
 
+	// Handle removing an email from the list
 	const handleRemoveEmail = (email) => {
 		setEmails(emails.filter((e) => e !== email));
 	};
 
+	// Handle submitting the form
 	const handleSubmit = async () => {
 		const response = await addStudentsByEmail(classId, emails);
 		setResults(response.data);
@@ -176,16 +184,19 @@ const AddStudentsByCSVDialog = ({
 		}
 	};
 
+	// Handle closing the dialog
 	const handleClose = () => {
 		setIsClosing(true);
 		onOpenChange(false);
 		onStudentsAdded();
 	};
 
+	// Toggle the view of the results
 	const toggleView = () => {
 		setShowResults(!showResults);
 	};
 
+	// Filter the emails based on the search term
 	const filteredEmails = useMemo(() => {
 		return emails.filter((email) =>
 			email.toLowerCase().includes(searchTerm.toLowerCase())

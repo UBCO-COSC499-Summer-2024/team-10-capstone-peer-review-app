@@ -42,6 +42,20 @@ const RubricCreationForm = ({
 	const [hasNegativePoints, setHasNegativePoints] = useState(false);
 	const [editing, setEditing] = useState(null);
 
+	// Workaround to fix the drawer pushing the navbar up
+	useEffect(() => {
+		if(isOpen) {
+			// Workaround to fix the drawer pushing the navbar up
+			const timer = setTimeout(() => {
+			document.body.style.top = '0px';
+			console.log("Drawer opened, body top style set to 0px");
+			}, 0); // Timeout of 0 ensures the style is applied right after DOM updates
+
+			// Clean up function to clear the timer
+			return () => clearTimeout(timer);
+		}
+		}, [isOpen]);
+		
 	useEffect(() => {
 		if (resetTrigger) {
 			clearForm();
@@ -62,6 +76,7 @@ const RubricCreationForm = ({
 		]
 	};
 
+	
 	const clearForm = () => {
 		setRubricData(initialRubricData);
 		setEditing(null);
@@ -217,6 +232,8 @@ const RubricCreationForm = ({
 		}
 		return "Create New Rubric";
 	};
+
+
 
 	return (
 		<Drawer open={isOpen} onOpenChange={setIsOpen}>

@@ -1,3 +1,5 @@
+// The component for editing a class on Class.jsx menu tab "Edit"
+
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -40,7 +42,6 @@ import InfoButton from '@/components/global/InfoButton';
 
 import { useClass } from "@/contexts/contextHooks/useClass";
 import { getClassById } from "@/api/classApi";
-import EditClassDialog from "../manageClass/EditClassModal";
 
 // Zod schema for form validation
 const FormSchema = z
@@ -82,7 +83,6 @@ const FormSchema = z
 
 const EditClass = ({ classItem }) => {
 	const { classId } = useParams();
-	const [open, setOpen] = useState(false);
 	const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 	const [formError, setFormError] = useState("");
 	const [classData, setClassData] = useState(classItem);
@@ -92,6 +92,7 @@ const EditClass = ({ classItem }) => {
 
 	const { updateClasses, isClassLoading } = useClass();
 
+	// Create a form instance
 	const form = useForm({
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
@@ -125,10 +126,12 @@ const EditClass = ({ classItem }) => {
 		fetchClassData(classData);
 	}, [classItem, classData, form, wasDirectlyAccessed]);
 
+	// Handle form submission
 	const onSubmit = async (updateData) => {
 		setIsConfirmOpen(true);
 	};
 
+	// Handle confirmation of form submission
 	const handleConfirmedSubmit = async () => {
 		setIsConfirmOpen(false);
 		setFormError("");
@@ -140,10 +143,12 @@ const EditClass = ({ classItem }) => {
 		}
 	};
 
+	// Handle clicking the back button
 	const handleBackClick = () => {
 		navigate(-1);
 	};
 
+	// Define the content for the info button
 	const editClassInfoContent = {
 		title: "About Editing a Class",
 		description: (

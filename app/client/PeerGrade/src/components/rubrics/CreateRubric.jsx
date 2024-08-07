@@ -1,3 +1,5 @@
+// This is the component for the Instructors to create a new rubric using the action button on Class.jsx
+
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
@@ -30,12 +32,14 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
   const { user } = useUser();
   const { toast } = useToast();
 
+  // Fetch the rubrics when the drawer is opened
   useEffect(() => {
     if (!isCreateDrawerOpen) {
       fetchRubrics();
     }
   }, [isCreateDrawerOpen]);
 
+  // Validate the rubric data when it changes
   useEffect(() => {
     validateRubric();
   }, [newRubricData, selectedAssignments]);

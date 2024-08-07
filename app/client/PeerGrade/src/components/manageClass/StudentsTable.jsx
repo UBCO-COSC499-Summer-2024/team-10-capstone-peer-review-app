@@ -1,3 +1,6 @@
+// The component for displaying a students table in the Manage class page for instructors
+// It allows the user to search for students, add new students, and delete students.
+
 import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -30,15 +33,15 @@ const StudentsTable = ({
 	const [selectedStudent, setSelectedStudent] = useState({});
 	const [deleteStudentOpen, setDeleteStudentOpen] = useState(false);
 
+  // Handle deleting a student via the backend
 	const handleDeleteClick = (selectedStudent) => {
-		// handles the actual click event to delete a student
 		setConfirmDelete(false);
 		setSelectedStudent(selectedStudent);
 		setDeleteStudentOpen(true);
 	};
 
+  // Handle deleting a student via the backend
   const handleDeleteStudent = async () => {
-    // handles the deletion of a student via the backend
 		if (confirmDelete) {
 			setConfirmDelete(false);
 			if (selectedStudent) {

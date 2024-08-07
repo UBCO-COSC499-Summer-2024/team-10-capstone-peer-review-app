@@ -1,3 +1,5 @@
+// The component for adding a new todo in a class (in home page for a class view - Class.jsx)
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,10 +18,12 @@ const Todo = ({ classId, userId }) => {
 	const [newTodoContent, setNewTodoContent] = useState("");
 	const { toast } = useToast();
 
+	// Fetch the todos when the classId or userId changes
 	useEffect(() => {
 		fetchTodos();
 	}, [classId, userId]);
 
+	// Fetch the todos from the server
 	const fetchTodos = async () => {
 		try {
 			const response = await getTodosByClassAndUser(classId);
@@ -34,6 +38,7 @@ const Todo = ({ classId, userId }) => {
 		}
 	};
 
+	// Handle adding a new todo
 	const handleAddTodo = async () => {
 		try {
 			const response = await createTodo(classId, newTodoContent);
@@ -49,6 +54,7 @@ const Todo = ({ classId, userId }) => {
 		}
 	};
 
+	// Handle toggling the completion of a todo
 	const handleToggleTodo = async (todoId, completed) => {
 		try {
 			await updateTodo(todoId, { completed });
@@ -67,6 +73,7 @@ const Todo = ({ classId, userId }) => {
 		}
 	};
 
+	// Handle deleting a todo
 	const handleDeleteTodo = async (todoId) => {
 		try {
 			await deleteTodo(todoId);

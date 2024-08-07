@@ -1,3 +1,6 @@
+// The render card for assigned reviews in the Reviews Tab for students
+// It shows the reviewer, reviewee, and review details.
+
 import React, { useState, useMemo } from "react";
 import {
 	Card,
@@ -22,6 +25,7 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 	const [gradeDialogOpen, setGradeDialogOpen] = useState(false);
 	const [viewDialogOpen, setViewDialogOpen] = useState(false);
 
+	// Group the reviews by assignment
 	const groupedReviews = useMemo(() => {
 		return assignedReviews.reduce((acc, review) => {
 			const assignmentId = review.submission.assignment.assignmentId;
@@ -36,6 +40,7 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 		}, {});
 	}, [assignedReviews]);
 
+	// Filter the assignments based on the search term
 	const filteredAssignments = useMemo(() => {
 		return Object.values(groupedReviews).filter(
 			(group) =>
@@ -48,6 +53,7 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 		);
 	}, [groupedReviews, searchTerm]);
 
+	// Toggle the expanded state of an assignment
 	const toggleExpanded = (assignmentId) => {
 		setExpandedAssignments((prev) => ({
 			...prev,
@@ -55,8 +61,8 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 		}));
 	};
 
+	// Calculate the percentage grade for a review
 	const calculatePercentageGrade = (review) => {
-		// console.log("Review object:", JSON.stringify(review, null, 2));
 		if (!review.criterionGrades || review.criterionGrades.length === 0) {
 			return "Not graded";
 		}
@@ -76,16 +82,19 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 			: "0%";
 	};
 
+	// Handle viewing the details of a review
 	const handleViewDialogOpen = (review) => {
 		setSelectedReview(review);
 		setViewDialogOpen(true);
 	};
 
+	// Handle grading a review
 	const handleGradeReview = (review) => {
 		setSelectedReview(review);
 		setGradeDialogOpen(true);
 	};
 
+	// Handle submitting the grade for a review
 	const handleGradeSubmit = async (event) => {
 		event.preventDefault();
 
@@ -163,8 +172,7 @@ const AssignedReviews = ({ assignedReviews, onViewDetails, onUpdate }) => {
 		}
 	};
 
-	console.log("selectedReview", selectedReview);
-
+	// Render the assignment card
 	const renderAssignmentCard = (group) => {
 		const { assignment, reviews } = group;
 		const isExpanded = expandedAssignments[assignment.assignmentId];

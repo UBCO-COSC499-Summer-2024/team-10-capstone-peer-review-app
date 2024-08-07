@@ -12,6 +12,12 @@
   
 
 ## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Client side comments** *(Total duration: 4.2 hours)*  
+
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, August 06, 2024, 02:31 PM - Sunday, August 06, 2024, 06:01 PM *(0.7 hours)*  
+
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, August 06, 2024, 08:09 PM - Sunday, August 06, 2024, 08:52 PM *(3.5 hours)*  
+
 &nbsp; &nbsp; :watch: **Individual Report** *(Total duration: 18.3 hours)*  
   
 &nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, August 04, 2024, 03:40 PM - Sunday, August 04, 2024, 06:07 PM *(2.4 hours)*  
@@ -56,14 +62,12 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* We are finally at the finish line ❗🤯❗
+* I spent a lot of time this cycle on my report since we completed all development tasks (aside from bugs)
+* I also spent time making client-side code comments through each file.
 
 ## Goals for next cycle
-* 
-* 
-* 
+* It was a great last few months, but it is time to get some sleep 😴 🛌
   
   
 

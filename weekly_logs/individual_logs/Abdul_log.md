@@ -1,4 +1,96 @@
 
+# Abdul's Log for Cycle 19
+
+
+## Thursday, August 01, 2024, 05:22 PM - Tuesday, August 06, 2024, 05:22 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[302](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/302)**: View Peer Reviews card should be scrollable as it wasn't apparent the list of grades were. (Avg grade was separate, hence was unscrollable)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[301](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/301)**: Refresh the Assignment's info when its information is edited by the instructor.  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[299](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/299)**: 'Assign Peer Reviewers' button (for a submission) - could have Down Arrow in the Student Selection dropdown  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[298](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/298)**: Text (label) changes across the app  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[297](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/297)**: When one or less than all Peer Reviews have been graded, the Average Grade in 'View Peer Reviews' is off  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[296](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/296)**: Grading Peer Reviews moves it to the bottom of the list  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[172](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/172)**: Refactor front-end test  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug, type: testing, type: refactor 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Working on fixing Forgot Password bugs** *(Total duration: 0.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, August 06, 2024, 01:15 PM - Tuesday, August 06, 2024, 02:02 PM *(0.8 hours)*  
+  
+&nbsp; &nbsp; :watch: **Worked on merging PR's and fixing merge-related bugs** *(Total duration: 0.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, August 04, 2024, 05:30 PM - Sunday, August 04, 2024, 06:05 PM *(0.6 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on implementing Testing Round feedback** *(Total duration: 3.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, August 03, 2024, 02:11 AM - Saturday, August 03, 2024, 05:08 AM *(3.0 hours)*  
+  
+&nbsp; &nbsp; :watch: **Working on front-end test refactors** *(Total duration: 5.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, August 01, 2024, 11:01 PM - Friday, August 02, 2024, 04:07 AM *(5.1 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[303](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/303)**: Front-end unit tests & refactoring elements acc. to Testing Round 2 feedback  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[303](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/303)**: Front-end unit tests & refactoring elements acc. to Testing Round 2 feedback  
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[302](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/302)**: View Peer Reviews card should be scrollable as it wasn't apparent the list of grades were. (Avg grade was separate, hence was unscrollable)  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[301](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/301)**: Refresh the Assignment's info when its information is edited by the instructor.  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[299](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/299)**: 'Assign Peer Reviewers' button (for a submission) - could have Down Arrow in the Student Selection dropdown  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[298](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/298)**: Text (label) changes across the app  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[297](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/297)**: When one or less than all Peer Reviews have been graded, the Average Grade in 'View Peer Reviews' is off  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[296](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/296)**: Grading Peer Reviews moves it to the bottom of the list  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[172](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/172)**: Refactor front-end test  
+  
+
+## In-progress tasks:
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Abdul's Log for Cycle 18
 
 

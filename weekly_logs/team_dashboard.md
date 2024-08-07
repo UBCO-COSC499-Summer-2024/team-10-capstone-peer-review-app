@@ -1,4 +1,48 @@
 
+# Team 10's Team Dashboard for Cycle 19
+
+
+## Thursday, August 01, 2024, 05:22 PM - Tuesday, August 06, 2024, 05:22 PM
+
+
+### Major features worked on in c-19
+*  
+  
+*  
+  
+*  
+  
+
+### Major features completed in c-19
+*  
+  
+*  
+  
+*  
+  
+
+### Major features to work on for c-20
+*  
+  
+*  
+  
+*  
+  
+
+### Team Issues and Hurdles for c-19
+*  
+  
+*  
+  
+*  
+  
+
+### Clockify Dashboard for this Week
+
+![Clockify Dashboard for c-19](./team_dashboard_images/clockify_dashboards/clockify_dashboard_c19.png)
+  
+  
+
 # Team 10's Team Dashboard for Cycle 18
 
 

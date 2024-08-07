@@ -1,4 +1,42 @@
 
+# Team 10's Team Log for Cycle 19
+
+
+## Thursday, August 01, 2024, 05:22 PM - Tuesday, August 06, 2024, 05:22 PM
+
+
+## Tasks currently in the Backlog for c-19:
+![Tasks in Backlog for c-19](./team_log_images/backlog_issues/backlog_issues_c19.png)  
+  
+
+## Tasks currently in Progress for c-19:
+![Tasks in progress for c-19](./team_log_images/in_progress_issues/in_progress_issues_c19.png)  
+  
+
+## Tasks currently in Review for c-19:
+![Tasks in review for c-19](./team_log_images/in_review_issues/in_review_issues_c19.png)  
+  
+
+## Tasks Done for c-19:
+![Tasks done for c-19](./team_log_images/done_issues/done_issues_c19.png)  
+  
+
+## Overall Burn-up Chart of Tasks
+![Burn-Up Chart for c-19](./team_log_images/burnup_charts/burnup_chart_c19.png)  
+  
+
+## Test Reports for c-19
+
+#### Front-end Testing for c-19
+![Front-end Tests for c-19](./team_log_images/front_end_tests/front_end_tests_c19.png)  
+  
+
+#### Back-end Testing for c-19
+![Back end Tests for c-19](./team_log_images/back_end_tests/back_end_tests_c19.png)  
+  
+  
+  
+
 # Team 10's Team Log for Cycle 18
 
 

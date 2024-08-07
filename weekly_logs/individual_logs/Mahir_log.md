@@ -1,4 +1,72 @@
 
+# Mahir's Log for Cycle 19
+
+
+## Thursday, August 01, 2024, 05:22 PM - Tuesday, August 06, 2024, 05:22 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[292](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/292)**: User Guide Documentation (Readme)  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: documentation 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Individual Report** *(Total duration: 18.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, August 04, 2024, 03:40 PM - Sunday, August 04, 2024, 06:07 PM *(2.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, August 04, 2024, 12:51 PM - Sunday, August 04, 2024, 03:24 PM *(2.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, August 04, 2024, 03:39 AM - Sunday, August 04, 2024, 04:55 AM *(1.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, August 04, 2024, 12:24 AM - Sunday, August 04, 2024, 01:05 AM *(0.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, August 03, 2024, 11:37 PM - Sunday, August 04, 2024, 12:18 AM *(0.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, August 03, 2024, 10:59 PM - Saturday, August 03, 2024, 11:20 PM *(0.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, August 03, 2024, 08:43 PM - Saturday, August 03, 2024, 10:55 PM *(2.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, August 03, 2024, 04:52 PM - Saturday, August 03, 2024, 05:38 PM *(0.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, August 03, 2024, 03:49 PM - Saturday, August 03, 2024, 04:34 PM *(0.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, August 03, 2024, 12:43 PM - Saturday, August 03, 2024, 02:09 PM *(1.4 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, August 02, 2024, 02:18 PM - Friday, August 02, 2024, 02:49 PM *(0.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, August 02, 2024, 12:55 PM - Friday, August 02, 2024, 01:24 PM *(0.5 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Friday, August 02, 2024, 01:05 AM - Friday, August 02, 2024, 02:25 AM *(1.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, August 01, 2024, 08:26 PM - Thursday, August 01, 2024, 10:43 PM *(2.3 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, August 01, 2024, 07:46 PM - Thursday, August 01, 2024, 08:22 PM *(0.6 hours)*  
+  
+
+## All Features worked on this cycle:
+
+## Features completed on this cycle:
+
+## Completed tasks:
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[292](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/292)**: User Guide Documentation (Readme)  
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Mahir's Log for Cycle 18
 
 

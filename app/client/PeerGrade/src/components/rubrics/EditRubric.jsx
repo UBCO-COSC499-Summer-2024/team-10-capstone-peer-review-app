@@ -1,3 +1,5 @@
+// This component is used to edit an existing rubric on Rubrics tab in class.jsx
+
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
@@ -23,6 +25,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
     }
   }, [rubricData]);
 
+  // Validate the edited rubric data before updating the rubric
   const validateRubric = () => {
     if (!editedRubricData) return;
 
@@ -43,6 +46,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
     setHasNegativePoints(hasNegative);
   };
 
+  // Update the edited rubric data when an edit is made
   const handleEdit = (criterionId, field, value) => {
     setEditedRubricData(prevData => ({
       ...prevData,
@@ -53,6 +57,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
     validateRubric();
   };
 
+  // Add a new criterion to the edited rubric data
   const addCriterion = () => {
     setEditedRubricData(prevData => ({
       ...prevData,
@@ -69,6 +74,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
     validateRubric();
   };
 
+  // Remove a criterion from the edited rubric data
   const removeCriterion = (id) => {
     setEditedRubricData(prevData => ({
       ...prevData,
@@ -77,6 +83,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
     validateRubric();
   };
 
+  // Add a new rating to a criterion
   const addRating = (criterionId) => {
     setEditedRubricData(prevData => ({
       ...prevData,
@@ -96,6 +103,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
     validateRubric();
   };
 
+  // Remove a rating from a criterion
   const removeRating = (criterionId, ratingIndex) => {
     setEditedRubricData(prevData => ({
       ...prevData,
@@ -111,6 +119,7 @@ const EditRubric = ({ isOpen, onClose, rubricData, onRubricUpdated }) => {
     validateRubric();
   };
 
+  // Update the rubric on the server
   const handleUpdateRubric = async () => {
     try {
         const updatedRubricData = {

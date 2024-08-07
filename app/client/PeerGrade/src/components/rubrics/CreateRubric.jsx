@@ -57,6 +57,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
     }
   }, [isCreateDrawerOpen]);
 
+  // Fetch rubrics on component mount
   const fetchRubrics = async () => {
     try {
       const response = await getAllRubrics();
@@ -73,6 +74,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
     }
   };
 
+  // Create a rubric and link it to the selected assignments
   const handleCreateRubric = async () => {
     if (selectedAssignments.length === 0) {
       toast({
@@ -83,6 +85,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
       return;
     }
   
+    // Format the rubric data for the API
     const formattedRubricData = {
       title: newRubricData.title,
       description: newRubricData.description,
@@ -147,11 +150,13 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
     }
   };
 
+  // Update the selected assignments state when the multiselect changes
   const handleAssignmentSelection = (selectedValues) => {
     console.log('Selected assignments:', selectedValues);
     setSelectedAssignments(selectedValues);
   };
 
+  // Update the rubric data when an edit is made
   const handleEdit = (id, field, value) => {
     setNewRubricData(prevData => ({
       ...prevData,
@@ -161,6 +166,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
     }));
   };
 
+  // Add a new criterion to the rubric data
   const addCriterion = () => {
     setNewRubricData(prevData => ({
       ...prevData,
@@ -176,6 +182,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
     }));
   };
 
+  // Remove a criterion from the rubric data
   const removeCriterion = (id) => {
     setNewRubricData(prevData => ({
       ...prevData,
@@ -183,6 +190,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
     }));
   };
 
+  // Validate the rubric data before creating a rubric
   const validateRubric = () => {
     const isValid = newRubricData.title.trim() !== "" &&
       newRubricData.criteria.length > 0 &&
@@ -202,6 +210,7 @@ const CreateRubric = ({ classId, assignments, onRubricCreated }) => {
     setHasNegativePoints(hasNegative);
   };
 
+  // Add a new rating to a criterion
   const addRating = (criterionId, index) => {
     setNewRubricData(prevData => ({
       ...prevData,

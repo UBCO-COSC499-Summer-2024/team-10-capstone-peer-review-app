@@ -1,3 +1,7 @@
+// This component is used to display the students for a class
+// It shows the students/Instructor with their names and avatars
+// It also allows the user to delete students if they are instructors
+
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -61,6 +65,7 @@ const People = ({ classId }) => {
 	const [myGroups, setMyGroups] = useState([]);
 	const [open, setOpen] = useState(false);
 
+	// Fetch instructor on component mount
 	useEffect(() => {
 		const fetchInstructor = async () => {
 			const instructor = await getInstructorByClassId(classId);
@@ -91,6 +96,7 @@ const People = ({ classId }) => {
 		fetchInstructor();
 	}, [user, userLoading, classId]);
 
+	// Fetch students on component mount
 	useEffect(() => {
 		const fetchStudents = async () => {
 			const students = await getStudentsByClassId(classId);
@@ -103,6 +109,7 @@ const People = ({ classId }) => {
 		fetchStudents();
 	}, [user, userLoading, classId]);
 
+	// Refresh students on component mount
 	const refreshStudents = async () => {
 		const students = await getStudentsByClassId(classId);
 		if (students.status === "Success") {
@@ -110,6 +117,7 @@ const People = ({ classId }) => {
 		}
 	};
 
+	// Fetch students on component mount
 	useEffect(() => {
 		if (user.role === "INSTRUCTOR" || user.role === "ADMIN") {
 			const fetchAllStudents = async () => {
@@ -139,8 +147,8 @@ const People = ({ classId }) => {
 		}
 	}, [user, userLoading, students]);
 
+	// Handle the student selection
 	const handleStudentSelection = (studentId) => {
-		// deals with selecting/deselecting students to add to the class
 		setSelectedStudents((prevSelected) => {
 			if (prevSelected.includes(studentId)) {
 				return prevSelected.filter((id) => id !== studentId);
@@ -150,20 +158,21 @@ const People = ({ classId }) => {
 		});
 	};
 
+	// Handle the delete student click event
 	const handleDeleteClick = (selectedStudent) => {
-		// handles the actual click event to delete a student
 		setConfirmDelete(false);
 		setSelectedStudent(selectedStudent);
 		console.log(selectedStudents);
 		setDialogOpen(true);
 	};
 
+	// Handle the add student click event
 	const handleAddClick = () => {
-		// handles the actual click event to add a student
 		setSelectedStudents([]);
 		setAddDialogOpen(true);
 	};
 
+	// Filter students by search term
 	const filteredStudents = students.filter((student) =>
 		`${student.firstname} ${student.lastname}`
 			.toLowerCase()
@@ -174,8 +183,8 @@ const People = ({ classId }) => {
 		.toLowerCase()
 		.includes(searchTerm.toLowerCase());
 
+	// Handle the delete student confirmation
 	const handleDeleteStudent = async () => {
-		// handles the deletion of a student via the backend
 		if (confirmDelete) {
 			setConfirmDelete(false);
 			if (selectedStudent) {
@@ -204,6 +213,7 @@ const People = ({ classId }) => {
 		}
 	};
 
+	// Handle the add student form submission
 	const handleSubmit = async (e) => {
 		// handles the submission of the form to add students to the class
 		e.preventDefault();
@@ -229,12 +239,14 @@ const People = ({ classId }) => {
 		setAddDialogOpen(false);
 	};
 
+	// Get the initials of a student
 	const getInitials = (firstName, lastName) => {
 		const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : "";
 		const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : "";
 		return `${firstInitial}${lastInitial}`;
 	};
 
+	// Information content for the people help guide (infoButton click render)
 	const peopleInfoContent = {
 		title: "About Class Participants",
 		description: (

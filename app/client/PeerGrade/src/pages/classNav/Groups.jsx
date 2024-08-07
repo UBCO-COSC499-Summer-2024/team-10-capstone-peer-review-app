@@ -1,3 +1,7 @@
+// This component is used to display the groups for a class
+// It shows the groups with their names and sizes
+// It also allows the user to create new groups, edit existing groups, delete groups, and add or remove students from groups
+
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
@@ -55,6 +59,7 @@ const Groups = () => {
 	const [studentOptions, setStudentOptions] = useState([]);					// for adding students to a group
 	const [selectedStudents, setSelectedStudents] = useState([]); 
 
+	// Fetch groups on component mount
 	useEffect(() => {
 		if (user) {
 			const fetchAllGroups = async () => {
@@ -89,6 +94,7 @@ const Groups = () => {
 		}
 	}, [user, userLoading, classId, refresh]);
 
+	//Fetch users not in groups on component mount
 	useEffect(() => {
 		if (user && (user.role === "INSTRUCTOR" || user.role === "ADMIN")) {
 			const fetchUsersNotInGroups = async () => {
@@ -107,14 +113,17 @@ const Groups = () => {
 		}
 	}, [user, userLoading, classId, refresh, addGroupDialogOpen, editDialogOpen]);
 
+	// Filter groups by search term
 	const filteredGroups = groups.filter((group) =>
 		group.groupName.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 
+	// Toggle the expanded state of a group
 	const toggleGroup = (groupId) => {
 		setExpandedGroup(expandedGroup === groupId ? null : groupId);
 	};
 
+	// Add students to a group
 	const handleAddStudents = (groupId) => {
 		if (selectedStudents.length > 0) {
 			const groupMemberAdd = async (studentId) => {
@@ -130,6 +139,7 @@ const Groups = () => {
 		}
 	};
 
+	// Handle the add group form submission
 	const handleAddSubmit = (e) => {
 		e.preventDefault();
 		const newGroup = {
@@ -159,6 +169,7 @@ const Groups = () => {
 		groupCreate();
 	};
 
+	// Handle the edit group form submission
 	const handleEditSubmit = (e) => {
 		e.preventDefault();
 		const updatedData = {
@@ -185,6 +196,7 @@ const Groups = () => {
 		groupEdit();
 	};
 
+	// Join a group
 	const handleJoinGroup = async (groupId) => {
 		const groupData = await joinGroup(groupId);
 		if (groupData.status === "Success") {
@@ -195,6 +207,7 @@ const Groups = () => {
 		}
 	};
 
+	// Leave a group
 	const handleLeaveGroup = async (groupId) => {
 		const groupData = await leaveGroup(groupId);
 		if (groupData.status === "Success") {
@@ -205,6 +218,7 @@ const Groups = () => {
 		}
 	};
 
+	// Delete a group
 	const handleDeleteGroup = async (groupId) => {
 		if (confirmDelete) {
 			setConfirmDelete(false);
@@ -221,6 +235,7 @@ const Groups = () => {
 		}
 	};
 
+	// Delete a group member
 	const handleDeleteGroupMember = async (groupId, userId) => {
 		if (confirmDelete) {
 			setConfirmDelete(false);
@@ -237,11 +252,13 @@ const Groups = () => {
 		}
 	};
 
+	//Handle the add group click event
 	const handleAddGroupClick = () => {
 		setSelectedStudents([]);
 		setAddGroupDialogOpen(true);
 	};
 
+	// Handle the delete group click event
 	const handleDeleteGroupClick = (group) => {
 		setSelectedGroup(group);
 		setDeleteTarget('group');
@@ -249,6 +266,7 @@ const Groups = () => {
 		setDeleteConfirmDialogOpen(true);
 	};
 
+	// Handle the delete group member click event
 	const handleDeleteGroupMemberClick = (group, groupMember) => {
 		setSelectedGroup(group);
 		setSelectedGroupMember(groupMember);
@@ -257,6 +275,7 @@ const Groups = () => {
 		setDeleteConfirmDialogOpen(true);
 	};
 
+	// Handle the edit group click event
 	const handleEditGroupClick = (group) => {
 		setSelectedGroup(group);
 		setGroupName(group.groupName);
@@ -266,6 +285,7 @@ const Groups = () => {
 		setEditDialogOpen(true);
 	};
 
+	// Handle the student selection
 	const handleStudentSelection = (studentId) => {
 		// deals with selecting/deselecting students to add to the class
 		setSelectedStudents((prevSelected) => {
@@ -277,28 +297,8 @@ const Groups = () => {
 		});
 	};
 
-	const filterStudentOptions = (group) => {
-		const selectedStudentIds = group.students.map((student) => student.userId);
-		// Filter out the selected students from the studentOptions
-		return studentOptions.filter(
-			(option) => !selectedStudentIds.includes(option.studentId)
-		);
-	};
-
-	const fetchUserGroups = async () => {
-		try {
-			const groups = await getGroups(user.userId);
-			console.log("my groups", groups.data);
-			setMyGroups(Array.isArray(groups.data) ? groups.data.filter(group => group.classId === classId) : []);
-		} catch (error) {
-			toast({
-				title: "Error",
-				description: "Failed to fetch user's groups",
-				variant: "destructive"
-			});
-		}
-	};
-
+	
+	// Info help guide content for the groups tab (infoButton click render)
 	const groupsInfoContent = {
 		title: "About Class Groups",
 		description: (

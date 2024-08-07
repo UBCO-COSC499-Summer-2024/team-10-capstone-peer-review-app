@@ -63,8 +63,9 @@
 
 ## Recap on goals from last cycle
 * We are finally at the finish line ❗🤯❗
-* I spent a lot of time this cycle on my report since we completed all development tasks (aside from bugs)
+* I spent time creating the user guide documentation for the project
 * I also spent time making client-side code comments through each file.
+* A lot of time doing the individual report aswell since we completed all development tasks (aside from bugs)
 
 ## Goals for next cycle
 * It was a great last few months, but it is time to get some sleep 😴 🛌

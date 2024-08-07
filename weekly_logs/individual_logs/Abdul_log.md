@@ -33,7 +33,10 @@
 &nbsp; &nbsp; :large_blue_circle: **Issue-[172](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/172)**: Refactor front-end test  
   
 &nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: bug, type: testing, type: refactor 
-  
+
+&nbsp; &nbsp; :large_blue_circle: Recorded video for the demo video for the client meeting on the 7th.
+
+&nbsp; &nbsp; :large_blue_circle: Set up a base template of the final presentation for us to start from
 
 ## Time entries from Clockify on this cycle:
 &nbsp; &nbsp; :watch: **Working on fixing Forgot Password bugs** *(Total duration: 0.8 hours)*  

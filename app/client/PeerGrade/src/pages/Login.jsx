@@ -1,3 +1,7 @@
+// This is the login page for the PeerGrade application. It allows the user to log in, register, or reset their password.
+// The login page is divided into different tabs for different sections of the login process (Login, Register, Forgot Password, New Role Request, etc.)
+// The tabs are a separate component that is rendered in the login page.
+
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 

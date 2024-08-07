@@ -1,3 +1,6 @@
+// This is the page for viewing peer reviews. It displays a list of all reviews, allows the user to view the grades for each review, and displays the comments for each review.
+// the reviews are divided into different tabs for different sections of the peer review process (Assigned/Received)
+
 import { useState, useEffect, useCallback } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import reviewAPI from "@/api/reviewApi";
@@ -28,6 +31,7 @@ const Reviews = () => {
 	const { user } = useUser();
 	const navigate = useNavigate();
 
+	// Fetch the data for the peer review page
 	const fetchData = useCallback(async () => {
 		if (!user) return;
 
@@ -45,10 +49,12 @@ const Reviews = () => {
 		}
 	}, [user]);
 
+	// Fetch the data when the user changes
 	useEffect(() => {
 		fetchData();
 	}, [fetchData]);
 
+	// Handle viewing reviews in a dialog or in the main page
 	const handleViewReviews = async (review, inDialog = true) => {
 		await fetchData();
 
@@ -70,6 +76,7 @@ const Reviews = () => {
 
 	console.log("selectedReview in Reviews", selectedReview);
 
+	// Render the info dialog for the peer review page (infoButton guide content)
 	const renderInfoDialog = () => {
 		if (infoStep === 1) {
 			return (

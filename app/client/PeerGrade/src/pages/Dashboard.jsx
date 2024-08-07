@@ -1,3 +1,7 @@
+// This is the main dashboard for the student user. The user can view various information about their assignments, reviews, and grades.
+// It is divided into different containers for different sections of the information (Assignments, Reviews, Grades, etc.)
+// Anouncements is currently displaying notifications however, the intention was to create an announcemnts feature given more project time.
+
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import GradeCard from "@/components/class/GradeCard";
@@ -24,7 +28,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 
 function Dashboard() {
   const { user, userLoading } = useUser();
-  const { classes, isClassLoading } = useClass();
   const [isLoading, setIsLoading] = useState(false);
   const [assignments, setAssignments] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -37,6 +40,7 @@ function Dashboard() {
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  // Fetch the data for the dashboard
   useEffect(() => {
     if (user) {
       const fetchData = async () => {
@@ -72,6 +76,7 @@ function Dashboard() {
     }
   }, [user]);
 
+  // Handle deleting a notification
   const handleDeleteNotif = async (notificationId) => {
     const deleteNotif = await deleteNotification(notificationId);
     if (deleteNotif.status === "Success") {
@@ -85,12 +90,15 @@ function Dashboard() {
     }
   };
 
+  // Filter the assignments and reviews for the current date
   const currentDate = new Date();
   
+  // Filter the assignments for the current date
   const assignmentData = assignments.filter(
     (assignment) => new Date(assignment.dueDate) > currentDate && assignment.evaluation_type !== "peer"
   );
 
+  // Filter the reviews for the current date
   const reviewData = reviews.filter(
     (review) => {
       const reviewDueDate = new Date(review.submission.assignment.dueDate);
@@ -99,10 +107,12 @@ function Dashboard() {
   );
 
 
+  // Handle viewing the grade details for a review
   const handleViewGradeDetails = (reviewId) => {
     navigate('/peer-review', { state: { defaultTab: 'received', reviewId } });
   };
 
+  // Map the grade data for the current date
   const gradeData = allReviews
   .filter(review => 
     review.reviewer.role === 'INSTRUCTOR' &&
@@ -121,6 +131,7 @@ function Dashboard() {
   }));
 
 
+  // Render the assignment alert for the dashboard
   const renderAssignmentAlert = (assignment) => (
     <Alert key={assignment.assignmentId} className="mb-4">
       <AlertTitle className="flex justify-between items-center">
@@ -144,6 +155,7 @@ function Dashboard() {
     </Alert>
   );
 
+  // Render the review alert for the dashboard
   const renderReviewAlert = (review) => (
     <Alert key={review.reviewId} className="mb-4">
       <AlertTitle className="flex justify-between items-center">
@@ -175,6 +187,7 @@ function Dashboard() {
     </Alert>
   );
 
+  // Render the info dialog for the dashboard (infoButton guide content)
   const renderInfoDialog = () => {
     if (infoStep === 1) {
       return (

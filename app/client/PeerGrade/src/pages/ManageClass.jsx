@@ -1,4 +1,6 @@
-// ManageClass.jsx
+// This is the page for managing classes. It displays a list of all classes the user is teaching, allows the user to add a new class, and displays the enrollment requests for each class.
+// It also hosts the add class modal and the info button guide content.
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -16,6 +18,7 @@ const ManageClass = () => {
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [pendingApprovals, setPendingApprovals] = useState({});
 
+  // Fetch the pending approvals for each class
   useEffect(() => {
     const fetchPendingApprovals = async () => {
       const approvals = {};
@@ -33,6 +36,7 @@ const ManageClass = () => {
     fetchPendingApprovals();
   }, [classes]);
 
+  // Get the info content for the manage class page (infoButton guide content)
   const infoContent = {
     title: "Manage Classes",
     description: (

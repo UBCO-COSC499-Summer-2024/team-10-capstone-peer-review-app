@@ -1,3 +1,6 @@
+// This is a component for student enrolment requests. The page renders a list of all classes the user is enrolled in, and allows the user to view the status of each enrollment request.
+// The enrollment requests are divided into different status badges for different types of the enrollment request stages (Pending, Approved, Rejected)
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,13 +20,11 @@ import {
 	DialogTitle,
 	DialogDescription,
 	DialogFooter,
-	DialogTrigger
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
 import {
 	Plus,
-	Users,
 	FileQuestion,
 	ChevronLeft,
 	ChevronRight,
@@ -62,23 +63,28 @@ const StudentEnrollmentRequests = () => {
 
 	const ITEMS_PER_PAGE = 3;
 
+	// Fetch the classes and enrollment requests for the user
 	useEffect(() => {
 		fetchClasses();
 		fetchEnrollRequests();
 	}, []);
 
+	// Filter the classes based on the search term
 	useEffect(() => {
 		filterClasses();
 	}, [searchTerm, allClasses]);
 
+	// Set the showClassesTable state based on the filteredClasses length
 	useEffect(() => {
 		setShowClassesTable(filteredClasses.length > 0);
 	}, [filteredClasses]);
 
+	// Set the showRequestsTable state based on the enrollRequests length
 	useEffect(() => {
 		setShowRequestsTable(enrollRequests.length > 0);
 	}, [enrollRequests]);
 
+	// Fetch the classes the user is not in
 	const fetchClasses = async () => {
 		setIsLoading(true);
 		try {
@@ -102,6 +108,7 @@ const StudentEnrollmentRequests = () => {
 		}
 	};
 
+	// Fetch the enrollment requests for the user
 	const fetchEnrollRequests = async () => {
 		try {
 			const requests = await getEnrollRequestsForUser();
@@ -117,6 +124,7 @@ const StudentEnrollmentRequests = () => {
 		}
 	};
 
+	// Filter the classes based on the search term
 	const filterClasses = () => {
 		const filtered = allClasses.filter((classItem) =>
 			classItem.classname.toLowerCase().includes(searchTerm.toLowerCase())
@@ -125,15 +133,18 @@ const StudentEnrollmentRequests = () => {
 		setCurrentClassPage(1);
 	};
 
+	// Handle opening the enroll dialog for a class
 	const handleOpenEnrollDialog = (classItem) => {
 		setSelectedClass(classItem);
 	};
 
+	// Handle closing the enroll dialog
 	const handleCloseEnrollDialog = () => {
 		setSelectedClass(null);
 		setEnrollMessage("");
 	};
 
+	// Handle sending an enrollment request
 	const handleEnrollRequest = async () => {
 		if (!selectedClass) return;
 
@@ -151,21 +162,25 @@ const StudentEnrollmentRequests = () => {
 		}
 	};
 
+	// Paginate the classes
 	const paginatedClasses = filteredClasses.slice(
 		(currentClassPage - 1) * ITEMS_PER_PAGE,
 		currentClassPage * ITEMS_PER_PAGE
 	);
 
+	// Paginate the enrollment requests
 	const paginatedRequests = enrollRequests.slice(
 		(currentRequestPage - 1) * ITEMS_PER_PAGE,
 		currentRequestPage * ITEMS_PER_PAGE
 	);
 
+	// Truncate the description of a class or enrollment request
 	const truncateDescription = (description, maxLength = 50) => {
 		if (description.length <= maxLength) return description;
 		return description.slice(0, maxLength) + "...";
 	};
 
+	// Render the info dialog for the enrollment requests page (infoButton guide content)
 	const renderInfoDialog = () => {
 		if (infoStep === 1) {
 			return (
@@ -231,6 +246,7 @@ const StudentEnrollmentRequests = () => {
 		}
 	};
 
+	// Render the pagination for the enrollment requests page
 	const renderPagination = (currentPage, setCurrentPage, totalItems) => {
 		const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
 

@@ -1,3 +1,6 @@
+// This is the page for viewing notifications. It displays a list of all notifications the user has received, and allows the user to delete a notification.
+
+
 import React, { useState, useEffect, useCallback } from "react";
 import { useUser } from "@/contexts/contextHooks/useUser";
 import NotifCard from "@/components/global/NotifCard";
@@ -7,6 +10,7 @@ export default function Notifications() {
   const { user, userLoading } = useUser();
   const [notifications, setNotifications] = useState([]);
 
+  // Fetch the notifications for the user
   const fetchNotifications = useCallback(async () => {
     if (user && !userLoading) {
       try {
@@ -18,6 +22,7 @@ export default function Notifications() {
     }
   }, [user, userLoading]);
 
+  // Fetch the notifications every 10 seconds
   useEffect(() => {
     fetchNotifications();
     const intervalId = setInterval(fetchNotifications, 10000); // Poll every 10 seconds
@@ -25,6 +30,7 @@ export default function Notifications() {
     return () => clearInterval(intervalId);
   }, [fetchNotifications]);
 
+  // Handle deleting a notification
   const handleDeleteNotif = async (notificationId) => {
     const deleteNotif = await deleteNotification(notificationId);
     if (deleteNotif.status === "Success") {

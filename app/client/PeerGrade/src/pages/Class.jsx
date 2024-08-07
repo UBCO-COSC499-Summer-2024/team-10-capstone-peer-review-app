@@ -1,3 +1,8 @@
+// This is the page for viewing a class. It displays the class details, allows the user to view the assignments, and displays the peer review information for the class.
+// It also hosts the rubrics for the class and the assignments.
+// The class page is divided into different tabs for different sections of the class (Assignments, People, Groups, Rubrics, etc.)
+// The tabs are a separate component that is rendered in the class page.
+
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Menubar, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
@@ -74,6 +79,7 @@ const Class = () => {
 
 	const classItem = classes.find((classItem) => classItem.classId === classId);
 
+	// Fetch the class data
 	const fetchClassData = async () => {
 		try {
 			const [fetchedAssignments, fetchedCategories] = await Promise.all([
@@ -92,6 +98,7 @@ const Class = () => {
 		}
 	};
 
+	// Fetch the peer review data
 	const fetchReviews = async () => {
 		try {
 			let response;
@@ -111,6 +118,7 @@ const Class = () => {
 		}
 	};
 
+	// Calculate the grades for the class (either averages all student reviews for instructors or individual reviews for students)
 	const calculateGrades = (reviews) => {
 		let totalInstructorPoints = 0;
 		let totalPeerPoints = 0;
@@ -162,6 +170,7 @@ const Class = () => {
 		}
 	};
 
+	// Get the color class for the grade (50> red, 50-75 = amber, 75< = green)
 	const getGradeColorClass = (grade) => {
 		if (grade === "No grades") return "text-gray-500";
 		const numericGrade = parseFloat(grade);
@@ -170,6 +179,7 @@ const Class = () => {
 		return "text-green-500";
 	};
 
+	// Handle adding a category
 	const handleAddCategory = async () => {
 		try {
 			const response = await createCategory(classId, newCategoryName);
@@ -192,6 +202,7 @@ const Class = () => {
 		}
 	};
 
+	// Handle editing a category
 	const handleEditCategory = async () => {
 		try {
 			const response = await updateCategory(
@@ -216,6 +227,7 @@ const Class = () => {
 		}
 	};
 
+	// Handle deleting a category
 	const handleDeleteCategory = async (categoryId) => {
 		if (confirmDeleteCategory) {
 			setConfirmDeleteCategory(false);
@@ -241,6 +253,7 @@ const Class = () => {
 		}
 	};
 
+	// Fetch the class data when the user changes
 	useEffect(() => {
 		if (!userLoading && user) {
 			fetchClassData();
@@ -248,6 +261,7 @@ const Class = () => {
 		}
 	}, [classId, user, userLoading, currentView]);
 
+	// Fetch the class data when the rubric is created
 	useEffect(() => {
 		if (rubricCreated && currentView === "rubrics") {
 			fetchClassData();
@@ -255,17 +269,20 @@ const Class = () => {
 		}
 	}, [rubricCreated, currentView]);
 
+	// Open the first category when the categories are loaded
 	useEffect(() => {
 		if (categories.length > 0 && openAccordion === null) {
 			setOpenAccordion(categories[0].categoryId);
 		}
 	}, [categories]);
 
+	// Handle changing the current view
 	const handleViewChange = (view) => {
 		setCurrentView(view);
 		fetchClassData();
 	};
 
+	// Handle creating a rubric
 	const handleRubricCreated = (newRubric) => {
 		setRubricCreated(true);
 		if (currentView === "rubrics") {
@@ -277,6 +294,7 @@ const Class = () => {
 		return <div>Class not found</div>;
 	}
 
+	// Get the info content for the class page (infoButton guide content)
 	const globalInfoContent = {
 		title: "About the Classroom",
 		description: (
@@ -320,6 +338,7 @@ const Class = () => {
 		)
 	};
 
+	// Render the content for the current view
 	const renderContent = () => {
 		switch (currentView) {
 			case "people":
@@ -483,6 +502,7 @@ const Class = () => {
 		}
 	};
 
+	// Render the class page
 	return (
 		<div className="w-full px-6">
 			<div className="flex flex-col gap-1 mt-5 mb-6 rounded-lg">

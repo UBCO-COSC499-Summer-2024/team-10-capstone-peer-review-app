@@ -1,4 +1,6 @@
-// src/pages/AdminDashboard.jsx
+// This is the main dashboard for the admin user. The user can view various information about the system.
+// It is divided into different tabs for different sections of the system (Users, Classes, Assignments, Groups, Peer reivew, etc.)
+
 import Overview from "@/components/admin/Overview";
 import Users from "@/components/admin/Users";
 import Search from "@/components/admin/Search";
@@ -8,7 +10,6 @@ import Reports from "@/pages/Reports";
 import NotificationsPanel from "@/components/admin/NotificationsPanel";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useUser } from "@/contexts/contextHooks/useUser";
-import PRassign from "@/components/admin/PRassign";
 
 const AdminDashboard = () => {
 	const { user, userLoading } = useUser();

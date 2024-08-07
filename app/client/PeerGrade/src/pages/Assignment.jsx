@@ -1,3 +1,6 @@
+// This is the page for viewing an assignment. It displays the assignment details, allows the user to download the assignment file, and displays the submissions for the assignment.
+// This also details any submission information for the student and hosts the comments container for the assignment 
+
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import {
@@ -5,17 +8,12 @@ import {
 	CardHeader,
 	CardTitle,
 	CardContent,
-	CardFooter,
 	CardDescription
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
 	ArrowLeft,
-	Calendar,
 	FileText,
-	Users,
-	Edit,
-	Upload,
 	Download
 } from "lucide-react";
 import PDFViewer from "@/components/assign/PDFViewer";
@@ -31,7 +29,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import ViewSubmissionDialog from "@/components/assign/assignment/submission/ViewSubmissionDialog";
 import {
-	getStudentSubmission,
 	getStudentSubmissionForAssignment
 } from "@/api/submitApi";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -77,9 +74,11 @@ const Assignment = () => {
 	const scrollAreaRef = useRef(null);
 	const selectedStudentIdRef = useRef(null);
 
+	// Check if the assignment file is a PDF
 	const isPDF =
 		assignment?.assignmentFilePath?.toLowerCase().endsWith(".pdf") || false;
 
+	// Fetch the assignment data
 	useEffect(() => {
 		const fetchAssignment = async () => {
 			try {
@@ -130,6 +129,7 @@ const Assignment = () => {
 		}
 	}, [user, userLoading, classId, assignmentId, refresh]);
 
+	// Fetch the comments for the assignment
 	useEffect(() => {
 		const fetchComments = async () => {
 			try {
@@ -165,10 +165,12 @@ const Assignment = () => {
 		return () => clearInterval(intervalId); // Clean up on unmount
 	}, [assignmentId]);
 
+	// Scroll to the bottom of the comments container when theres a new comment
 	useEffect(() => {
 		scrollToBottom();
 	}, [comments]);
 
+	// Scroll to the bottom of the comments container
 	const scrollToBottom = () => {
 		if (scrollAreaRef.current) {
 			const scrollElement = scrollAreaRef.current.querySelector(
@@ -180,6 +182,7 @@ const Assignment = () => {
 		}
 	};
 
+	// Fetch the comments for the assignment when the initially uploads/ is updated/every 10 seconds
 	useEffect(() => {
 		const fetchComments = async () => {
 			try {
@@ -197,6 +200,7 @@ const Assignment = () => {
 		return () => clearInterval(intervalId); // Clean up on unmount
 	}, [assignmentId]);
 
+	// Fetch the comments for the assignment when the selected student changes
 	useEffect(() => {
 		const fetchComments = async () => {
 			try {
@@ -225,6 +229,7 @@ const Assignment = () => {
 		return () => clearInterval(intervalId); // Clean up on unmount
 	}, [assignmentId, selectedStudentForChat]);
 
+	// Handle selecting a student for chat
 	const handleStudentSelect = (student) => {
 		setIsTransitioning(true);
 		setTimeout(() => {
@@ -237,6 +242,7 @@ const Assignment = () => {
 		navigate(`/class/${classId}`);
 	};
 
+	// Handle downloading a submission file
 	const handleDownload = (submission) => {
 		const link = document.createElement("a");
 		link.href = submission.submissionFilePath;
@@ -246,10 +252,12 @@ const Assignment = () => {
 		document.body.removeChild(link);
 	};
 
+	// Toggle the refresh state
 	const refreshToggle = () => {
 		setRefresh(!refresh);
 	};
 
+	// Handle adding a comment
 	const handleAddComment = async () => {
 		if (!newComment.trim()) {
 			return; // Don't send empty comments
@@ -304,6 +312,7 @@ const Assignment = () => {
 		}
 	};
 
+	// Render the student comments
 	if (userLoading || !assignment) {
 		return (
 			<div className="flex justify-center items-center h-screen">
@@ -312,6 +321,7 @@ const Assignment = () => {
 		);
 	}
 
+	// Render the student comments container view
 	const renderStudentComments = () => (
 		<Card className="bg-card">
 			<CardHeader>
@@ -359,6 +369,7 @@ const Assignment = () => {
 		</Card>
 	);
 
+	// Render the instructor comments container view (an easy access hub for all students that made a comment)
 	const renderInstructorComments = () => {
 		const studentsWithComments =
 			comments.length > 0
@@ -465,6 +476,7 @@ const Assignment = () => {
 		);
 	};
 
+	// Get the info content for the assignment page (infoButton guide content)
 	const getInfoContent = () => {
 		if (user.role === "STUDENT") {
 			return {
@@ -564,6 +576,7 @@ const Assignment = () => {
 		}
 	};
 
+	// Switch to the view tab when the assignment is submitted
 	const switchToViewOnSubmit = () => {
 		setCurrentView("view");
 	};

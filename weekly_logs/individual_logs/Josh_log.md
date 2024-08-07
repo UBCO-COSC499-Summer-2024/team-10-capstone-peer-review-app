@@ -62,17 +62,14 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Finish up back-end tests
+* Work on Final Report
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Work on Final Report 
+* Hopefully the presentation goes well! 
   
   
-
 # Josh's Log for Cycle 18
 
 

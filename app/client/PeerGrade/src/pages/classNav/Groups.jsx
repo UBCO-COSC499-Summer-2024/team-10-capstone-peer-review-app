@@ -518,7 +518,7 @@ const Groups = () => {
 						}
 						<DialogFooter>
 							<Button type="button" onClick={() => setAddGroupDialogOpen(false)}>Cancel</Button>
-							<Button variant="destructive" type="submit">Submit</Button>
+							<Button type="submit">Submit</Button>
 						</DialogFooter>
 					</form>
 				</DialogContent>
@@ -657,7 +657,7 @@ const Groups = () => {
 						</div>
 						<DialogFooter>
 							<Button type="button" onClick={() => setEditDialogOpen(false)}>Cancel</Button>
-							<Button variant="destructive" type="submit">Submit</Button>
+							<Button type="submit">Submit</Button>
 						</DialogFooter>
 					</form>
 				</DialogContent>

@@ -671,7 +671,7 @@ const Class = () => {
 						<Card>
 							<CardContent className="text-center py-6 relative">
 								<span
-									className={`block text-4xl font-bold ${getGradeColorClass(avgPeerGrade)}`}
+									className={`block text-4xl font-bold ${getGradeColorClass(avgPeerGrade)} mb-2`}
 								>
 									{avgPeerGrade}
 								</span>

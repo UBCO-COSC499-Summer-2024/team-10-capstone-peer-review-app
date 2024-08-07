@@ -40,7 +40,7 @@ const Settings = () => {
 			email
 		};
 
-		// NEED TO IMPLEMENT A CHECK MAYBE FOR VERIFYING IF ITS A VALID EMAIL
+		// NEED TO IMPLEMENT A CHECK FOR VERIFYING IF ITS A VALID EMAIL & IF IT BELONGS TO THE USER
 
 		const updateUserProfile = async () => {
 			const updatedProfile = await updateProfile(user.userId, updatedData);

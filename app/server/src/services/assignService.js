@@ -203,7 +203,7 @@ const updateAssignmentInClass = async (
 				title: updateData.title,
 				description: updateData.description,
 				dueDate: updateData.dueDate,
-				maxSubmissions: updateData.maxSubmissions,
+				maxSubmissions: parseInt(updateData.maxSubmissions, 10),
 				isPeerReviewAnonymous: updateData.isPeerReviewAnonymous,
 				reviewOption: updateData.reviewOption,
 				assignmentFilePath: updateData.assignmentFilePath,
@@ -239,6 +239,7 @@ const updateAssignmentInClass = async (
 		if (error instanceof apiError) {
 			throw error;
 		} else {
+			console.error("Error in updateAssignmentInClass:", error);
 			throw new apiError("Failed to update assignment in class", 500);
 		}
 	}

@@ -25,7 +25,7 @@ export const register = asyncErrorHandler(async (req, res) => {
 	await authService.sendVerificationEmail(userRegisterInfo.email);
 	return res.status(200).json({
 		status: "Success",
-		message: `Account successfully created! Verification email sent to ${userRegisterInfo.email}.`,
+		message: `Account successfully created! Verification email sent to ${userRegisterInfo.email}.`
 	});
 });
 
@@ -50,7 +50,7 @@ export const login = asyncErrorHandler(async (req, res, next) => {
 		return res.status(200).json({
 			status: "Success",
 			message: "You have been logged in!",
-			userRole: user.role,
+			userRole: user.role
 		});
 	});
 });
@@ -78,7 +78,7 @@ export const logout = asyncErrorHandler(async (req, res, next) => {
 			res.clearCookie("connect.sid");
 			res.status(200).json({
 				status: "Success",
-				message: "You have been logged out!",
+				message: "You have been logged out!"
 			});
 		});
 	});
@@ -96,7 +96,7 @@ export const forgotPassword = asyncErrorHandler(async (req, res) => {
 	await authService.sendForgotPasswordEmail(email);
 	return res.status(200).json({
 		status: "Success",
-		message: "Password reset email sent",
+		message: "Password reset email sent"
 	});
 });
 
@@ -112,7 +112,7 @@ export const resetPassword = asyncErrorHandler(async (req, res) => {
 	await authService.resetPassword(token, newPassword);
 	return res.status(200).json({
 		status: "Success",
-		message: "Password has been reset",
+		message: "Password has been reset"
 	});
 });
 
@@ -128,7 +128,7 @@ export const resendVerificationEmail = asyncErrorHandler(async (req, res) => {
 	await authService.sendVerificationEmail(email);
 	return res.status(200).json({
 		status: "Success",
-		message: "Verification email resent",
+		message: "Verification email resent"
 	});
 });
 
@@ -144,7 +144,7 @@ export const confirmEmail = asyncErrorHandler(async (req, res) => {
 	await authService.confirmEmail(token);
 	return res.status(200).json({
 		status: "Success",
-		message: "Email has been verified",
+		message: "Email has been verified"
 	});
 });
 
@@ -162,7 +162,7 @@ export const isEmailVerifiedJWT = asyncErrorHandler(async (req, res) => {
 	if (isVerified) {
 		return res.status(200).json({
 			status: "Success",
-			message: "Email is verified",
+			message: "Email is verified"
 		});
 	} else {
 		return res.status(403).json({
@@ -217,13 +217,13 @@ export const currentUser = asyncErrorHandler(async (req, res, next) => {
 		return res.status(200).json({
 			userInfo: userInfo,
 			status: "Success",
-			message: "Current user fetched successfully!",
+			message: "Current user fetched successfully!"
 		});
 	} catch (error) {
 		// Handle errors from getCurrentUser
 		return res.status(500).json({
 			status: "Error",
-			message: "Failed to fetch user information",
+			message: "Failed to fetch user information"
 		});
 	}
 });
@@ -239,7 +239,7 @@ export const getAllRoleRequests = asyncErrorHandler(async (req, res) => {
 	return res.status(200).json({
 		status: "Success",
 		message: "Role requests retrieved",
-		data: requests,
+		data: requests
 	});
 });
 
@@ -255,7 +255,7 @@ export const deleteRoleRequest = asyncErrorHandler(async (req, res) => {
 	await authService.deleteRoleRequest(roleRequestId);
 	return res.status(200).json({
 		status: "Success",
-		message: `Role request: ${roleRequestId} deleted`,
+		message: `Role request deleted`
 	});
 });
 
@@ -271,7 +271,7 @@ export const approveRoleRequest = asyncErrorHandler(async (req, res) => {
 	await authService.approveRoleRequest(roleRequestId);
 	return res.status(200).json({
 		status: "Success",
-		message: "Role request approved",
+		message: "Role request approved"
 	});
 });
 
@@ -287,7 +287,7 @@ export const denyRoleRequest = asyncErrorHandler(async (req, res) => {
 	await authService.denyRoleRequest(roleRequestId);
 	return res.status(200).json({
 		status: "Success",
-		message: "Role request denied",
+		message: "Role request denied"
 	});
 });
 
@@ -304,7 +304,7 @@ export const updateRoleRequestStatus = asyncErrorHandler(async (req, res) => {
 	await authService.updateRoleRequestStatus(roleRequestId, status);
 	return res.status(200).json({
 		status: "Success",
-		message: "Role request updated",
+		message: "Role request updated"
 	});
 });
 
@@ -320,7 +320,7 @@ export const applyForNewRoleRequest = asyncErrorHandler(async (req, res) => {
 	await authService.applyForNewRoleRequest(email, role);
 	return res.status(200).json({
 		status: "Success",
-		message: "Role request sent",
+		message: "Role request sent"
 	});
 });
 

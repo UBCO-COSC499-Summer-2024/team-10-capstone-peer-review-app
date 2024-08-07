@@ -22,6 +22,7 @@ afterAll(async () => {
 
 beforeEach(async () => {
 	await prisma.user.deleteMany();
+	await prisma.class.deleteMany();
 	await prisma.roleRequest.deleteMany();
 });
 

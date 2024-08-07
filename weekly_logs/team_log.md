@@ -32,8 +32,11 @@ None!
   
 
 #### Back-end Testing for c-19
-![Back end Tests for c-16](./team_log_images/back_end_tests/back_end_unit_tests_c19.png)  
-![Back end Tests for c-16](./team_log_images/back_end_tests/back_end_integration_tests_c19.png)    
+Unit:
+![Back end Tests for c-19](./team_log_images/back_end_tests/back_end_unit_tests_c19.png)  
+
+Integration:
+![Back end Tests for c-19](./team_log_images/back_end_tests/back_end_integration_tests_c19.png)    
   
   
 

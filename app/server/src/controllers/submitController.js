@@ -1,3 +1,8 @@
+/**
+ * @module submitController
+ * @desc Controller for handling submission-related operations
+ */
+
 import multer from "multer";
 import path from "path";
 import fs from "fs";
@@ -10,6 +15,13 @@ const UPLOAD_PATH = "/usr/server/uploads/submissions";
 
 const upload = multer({ storage: multer.memoryStorage() });
 
+/**
+ * @async
+ * @desc Create a new submission for a student for a specific assignment, with a file upload (file is required for submission)
+ * @param {Object} req - The request object containing the studentId, assignmentId, and file
+ * @function createSubmission
+ * @returns {Object} - The response object or error message when the file is not uploaded
+ */
 export const createSubmission = [
 	upload.single("file"),
 	asyncErrorHandler(async (req, res) => {
@@ -64,6 +76,13 @@ export const createSubmission = [
 	})
 ];
 
+/**
+ * @async
+ * @desc Get the submission of a student
+ * @function getStudentSubmission
+ * @param {Object} req - The request object containing the studentId if the student is logged in
+ * @returns {Object} - The response object or error message when the studentId is not provided
+ */
 export const getStudentSubmission = asyncErrorHandler(async (req, res) => {
 	const studentId = req.user.userId;
 	if (!studentId) {
@@ -79,6 +98,13 @@ export const getStudentSubmission = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+/**
+ * @async
+ * @desc Get the submission of a student for a specific assignment
+ * @param {Object} req - The request object containing the studentId if the user is logged in and assignmentId
+ * @function getStudentSubmissionForAssignment
+ * @returns {Object} - The response object or error message when the studentId is not provided
+ */
 export const getStudentSubmissionForAssignment = asyncErrorHandler(
 	async (req, res) => {
 		const studentId = req.body.userId;
@@ -100,6 +126,13 @@ export const getStudentSubmissionForAssignment = asyncErrorHandler(
 	}
 );
 
+/**
+ * @async
+ * @desc Get all submissions for a specific assignment
+ * @param {Object} req - The request object containing the assignmentId
+ * @function getSubmissionsForAssignment
+ * @returns {Object} - The response object
+ */
 export const getSubmissionsForAssignment = asyncErrorHandler(
 	async (req, res) => {
 		const assignmentId = req.body.assignmentId;
@@ -112,6 +145,13 @@ export const getSubmissionsForAssignment = asyncErrorHandler(
 	}
 );
 
+/**
+ * @async
+ * @desc Update a submission
+ * @function updateSubmission
+ * @param {Object} req - The request object containing the submissionId and submission data
+ * @returns {Object} - The response object
+ */
 export const updateSubmission = asyncErrorHandler(async (req, res) => {
 	const { submissionId, submission } = req.body;
 	const updatedSubmission = await submitService.updateSubmission(
@@ -124,6 +164,13 @@ export const updateSubmission = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+/**
+ * @async
+ * @desc Delete a submission
+ * @param {Object} req - The request object containing the submissionId
+ * @function deleteSubmission
+ * @returns {Object} - The response object
+ */
 export const deleteSubmission = asyncErrorHandler(async (req, res) => {
 	const submissionId = req.body.submissionId;
 	const deletedSubmission = await submitService.deleteSubmission(submissionId);

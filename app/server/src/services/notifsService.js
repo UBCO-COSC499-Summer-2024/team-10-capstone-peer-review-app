@@ -1,10 +1,18 @@
+/**
+ * @module notifsService
+ */
+
 import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
-import pkg from '@prisma/client';
 import classService from "./classService.js";
 
-const { PrismaClientKnownRequestError } = pkg;
-
+/**
+ * @desc Retrieves notifications for a specific user in descending order.
+ * @async
+ * @param {string} userId - The ID of the user.
+ * @returns {Promise<Array>} - An array of notifications.
+ * @throws {apiError} - If there is an error fetching the notifications.
+ */
 export async function getNotifications(userId) {
 	try {
 		const notifs = await prisma.notification.findMany({
@@ -12,8 +20,8 @@ export async function getNotifications(userId) {
 				receiverId: userId
 			},
 			orderBy: {
-			  createdAt: 'desc', // Sorting by createdAt in descending order (most recent first)
-			},
+				createdAt: "desc" // Sorting by createdAt in descending order (most recent first)
+			}
 		});
 		return notifs;
 	} catch (error) {
@@ -25,6 +33,13 @@ export async function getNotifications(userId) {
 	}
 }
 
+/**
+ * @desc Retrieves a specific notification by its ID.
+ * @async
+ * @param {string} notificationId - The ID of the notification.
+ * @returns {Promise<Object>} - The notification object.
+ * @throws {apiError} - If there is an error fetching the notification.
+ */
 export async function getNotification(notificationId) {
 	try {
 		const notif = await prisma.notification.findUnique({
@@ -42,6 +57,14 @@ export async function getNotification(notificationId) {
 	}
 }
 
+/**
+ * @desc Updates a specific notification by its ID.
+ * @async
+ * @param {string} notificationId - The ID of the notification.
+ * @param {Object} updateData - The data to update the notification with.
+ * @returns {Promise<Object>} - The updated notification object.
+ * @throws {apiError} - If there is an error updating the notification.
+ */
 export async function updateNotification(notificationId, updateData) {
 	try {
 		const updatedNotif = await prisma.notification.update({
@@ -60,6 +83,12 @@ export async function updateNotification(notificationId, updateData) {
 	}
 }
 
+/**
+ * @desc Deletes a specific notification by its ID.
+ * @async
+ * @param {string} notificationId - The ID of the notification.
+ * @throws {apiError} - If there is an error deleting the notification.
+ */
 export async function deleteNotification(notificationId) {
 	try {
 		await prisma.notification.delete({
@@ -76,7 +105,24 @@ export async function deleteNotification(notificationId) {
 	}
 }
 
-export async function sendNotificationToUser(userId, title, content, receiverId, type) {
+/**
+ * @desc Sends a notification to a specific user.
+ * @async
+ * @param {string} userId - The ID of the sender.
+ * @param {string} title - The title of the notification.
+ * @param {string} content - The content of the notification.
+ * @param {string} receiverId - The ID of the receiver.
+ * @param {string} type - The type of the notification.
+ * @returns {Promise<Object>} - A success message.
+ * @throws {apiError} - If there is an error sending the notification.
+ */
+export async function sendNotificationToUser(
+	userId,
+	title,
+	content,
+	receiverId,
+	type
+) {
 	try {
 		const usersWithRole = await prisma.user.findUnique({
 			where: { userId: receiverId }
@@ -89,10 +135,13 @@ export async function sendNotificationToUser(userId, title, content, receiverId,
 				content: content,
 				senderId: userId,
 				type: type || null
-			} 
+			}
 		});
 
-		return { status: "Success", message: "Notification sent to user successfully" };
+		return {
+			status: "Success",
+			message: "Notification sent to user successfully"
+		};
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
@@ -102,11 +151,28 @@ export async function sendNotificationToUser(userId, title, content, receiverId,
 	}
 }
 
-export async function sendNotificationToClass(userId, title, content, classId, type) {
+/**
+ * @desc Sends a notification to all users in a specific class.
+ * @async
+ * @param {string} userId - The ID of the sender.
+ * @param {string} title - The title of the notification.
+ * @param {string} content - The content of the notification.
+ * @param {string} classId - The ID of the class.
+ * @param {string} type - The type of the notification.
+ * @returns {Promise<Object>} - A success message.
+ * @throws {apiError} - If there is an error sending the notification.
+ */
+export async function sendNotificationToClass(
+	userId,
+	title,
+	content,
+	classId,
+	type
+) {
 	try {
 		const usersInClass = await classService.getStudentsByClass(classId);
-		
-		const notifications = usersInClass.map(user => ({
+
+		const notifications = usersInClass.map((user) => ({
 			receiverId: user.userId,
 			title: title,
 			content: content,
@@ -116,7 +182,10 @@ export async function sendNotificationToClass(userId, title, content, classId, t
 
 		await prisma.notification.createMany({ data: notifications });
 
-		return { status: "Success", message: "Notifications sent to class successfully" };
+		return {
+			status: "Success",
+			message: "Notifications sent to class successfully"
+		};
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
@@ -126,7 +195,24 @@ export async function sendNotificationToClass(userId, title, content, classId, t
 	}
 }
 
-export async function sendNotificationToGroup(userId, title, content, groupId, type) {
+/**
+ * @desc Sends a notification to all users in a specific group.
+ * @async
+ * @param {string} userId - The ID of the sender.
+ * @param {string} title - The title of the notification.
+ * @param {string} content - The content of the notification.
+ * @param {string} groupId - The ID of the group.
+ * @param {string} type - The type of the notification.
+ * @returns {Promise<Object>} - A success message.
+ * @throws {apiError} - If there is an error sending the notification.
+ */
+export async function sendNotificationToGroup(
+	userId,
+	title,
+	content,
+	groupId,
+	type
+) {
 	try {
 		const group = await prisma.group.findUnique({
 			where: {
@@ -137,13 +223,17 @@ export async function sendNotificationToGroup(userId, title, content, groupId, t
 			}
 		});
 
+		// Check if the group exists or has students
 		if (!group) {
 			throw new apiError("Group not found", 404);
 		} else if (group.students.length === 0) {
-			throw new apiError("No users found to send notifications to in the group", 404);
+			throw new apiError(
+				"No users found to send notifications to in the group",
+				404
+			);
 		}
 
-		const notifications = group.students.map(user => ({
+		const notifications = group.students.map((user) => ({
 			receiverId: user.userId,
 			title: title,
 			content: content,
@@ -153,7 +243,10 @@ export async function sendNotificationToGroup(userId, title, content, groupId, t
 
 		await prisma.notification.createMany({ data: notifications });
 
-		return { status: "Success", message: "Notifications sent to group successfully" };
+		return {
+			status: "Success",
+			message: "Notifications sent to group successfully"
+		};
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
@@ -163,13 +256,30 @@ export async function sendNotificationToGroup(userId, title, content, groupId, t
 	}
 }
 
-export async function sendNotificationToRole(userId, title, content, role, type) {
+/**
+ * @desc Sends a notification to all users with a specific role.
+ * @async
+ * @param {string} userId - The ID of the sender.
+ * @param {string} title - The title of the notification.
+ * @param {string} content - The content of the notification.
+ * @param {string} role - The role of the users.
+ * @param {string} type - The type of the notification.
+ * @returns {Promise<Object>} - A success message.
+ * @throws {apiError} - If there is an error sending the notification.
+ */
+export async function sendNotificationToRole(
+	userId,
+	title,
+	content,
+	role,
+	type
+) {
 	try {
 		const usersWithRole = await prisma.user.findMany({
 			where: { role: role }
 		});
 
-		const notifications = usersWithRole.map(user => ({
+		const notifications = usersWithRole.map((user) => ({
 			receiverId: user.userId,
 			title: title,
 			content: content,
@@ -179,36 +289,55 @@ export async function sendNotificationToRole(userId, title, content, role, type)
 
 		await prisma.notification.createMany({ data: notifications });
 
-		return { status: "Success", message: "Notifications sent to role successfully" };
+		return {
+			status: "Success",
+			message: "Notifications sent to role successfully"
+		};
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
 		} else {
-			throw new apiError("Failed to send notification to everyone of the role " + role, 500);
+			throw new apiError(
+				"Failed to send notification to everyone of the role " + role,
+				500
+			);
 		}
 	}
 }
 
+/**
+ * @desc Sends a notification to all users except the current user.
+ * @async
+ * @param {string} userId - The ID of the sender.
+ * @param {string} title - The title of the notification.
+ * @param {string} content - The content of the notification.
+ * @param {string} type - The type of the notification.
+ * @returns {Promise<Object>} - A success message.
+ * @throws {apiError} - If there is an error sending the notification.
+ */
 export async function sendNotificationToAll(userId, title, content, type) {
 	try {
 		const users = await prisma.user.findMany({
 			where: {
 				userId: {
 					not: userId
-			  	}
+				}
 			}
 		});
 
-		const notifications = users.map(user => ({
+		const notifications = users.map((user) => ({
 			receiverId: user.userId,
 			title: title,
 			content: content,
-			senderId: userId,
+			senderId: userId
 		}));
 
 		await prisma.notification.createMany({ data: notifications });
 
-		return { status: "Success", message: "Notifications sent to every user (excluding current user)" };
+		return {
+			status: "Success",
+			message: "Notifications sent to every user (excluding current user)"
+		};
 	} catch (error) {
 		if (error instanceof apiError) {
 			throw error;
@@ -218,9 +347,8 @@ export async function sendNotificationToAll(userId, title, content, type) {
 	}
 }
 
-
 export default {
-    getNotifications,
+	getNotifications,
 	getNotification,
 	updateNotification,
 	deleteNotification,

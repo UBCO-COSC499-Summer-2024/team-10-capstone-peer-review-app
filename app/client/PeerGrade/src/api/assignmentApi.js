@@ -17,8 +17,6 @@ export const addAssignmentToClass = async (formData) => {
       console.warn('allowedFileTypes is empty or not set');
     }
 
-    // Log the assignmentData for debugging
-    console.log('Assignment Data being sent:', assignmentData);
 
     const response = await axios.post('/api/assignment/add-assignment', formData, {
       headers: {
@@ -32,7 +30,6 @@ export const addAssignmentToClass = async (formData) => {
         message: "The assignment has been successfully created."
       });
     }
-    console.log('Updated assignment data:', response.data);
 
     return response.data;
   } catch (error) {
@@ -62,7 +59,6 @@ export const addAssignmentWithRubric = async (data) => {
     });
     return response.data;
   } catch (error) {
-    console.error('Error adding assignment with rubric:', error);
     throw error;
   }
 };
@@ -81,7 +77,6 @@ export const updateAssignmentInClass = async (formData) => {
           message: "The assignment has been successfully updated."
         });
       }
-      console.log('Updated assignment data:', response.data);
       return response.data;
 
     } catch (error) {
@@ -97,7 +92,6 @@ export const updateAssignmentInClass = async (formData) => {
         });
         return response.data;
     } catch (error) {
-        console.error("Error in removeAssignmentFromClass API call:", error.response?.data || error.message);
         handleError(error);
         throw error;
     }

@@ -1,4 +1,75 @@
 
+# Josh's Log for Cycle 19
+
+
+## Thursday, August 01, 2024, 05:22 PM - Tuesday, August 06, 2024, 05:22 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[283](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/283)**: Refactor seed to include more students, associated / detailed rubrics for assignments / and submissions (even if its text).   
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[230](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/230)**: Personalized TODO creator for each class? extra feature  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: refactor, type: database, type: UI, Reach 
+  
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Completing Individual Report** *(Total duration: 4.1 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, August 06, 2024, 09:30 AM - Tuesday, August 06, 2024, 01:36 PM *(4.1 hours)*  
+  
+&nbsp; &nbsp; :watch: **Cleaning up back-end tests / creates some new ones** *(Total duration: 7.0 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, August 04, 2024, 06:11 PM - Sunday, August 04, 2024, 10:45 PM *(4.6 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Sunday, August 04, 2024, 09:32 AM - Sunday, August 04, 2024, 11:59 AM *(2.5 hours)*  
+  
+&nbsp; &nbsp; :watch: **Looking into Manage Reviews Bug + Assign Reviewers bug** *(Total duration: 3.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, August 03, 2024, 04:11 PM - Saturday, August 03, 2024, 05:25 PM *(1.2 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Saturday, August 03, 2024, 10:58 AM - Saturday, August 03, 2024, 01:33 PM *(2.6 hours)*  
+  
+&nbsp; &nbsp; :watch: **Setting up Peer Test Event** *(Total duration: 0.8 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Thursday, August 01, 2024, 06:45 PM - Thursday, August 01, 2024, 07:35 PM *(0.8 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[305](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/305)**: User Guide  
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[304](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/304)**: Fixing Bugs in Manage Reviews + some style changes   
+  
+&nbsp; &nbsp; :arrows_clockwise: **PR-[293](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/293)**: Logs review for cycle 18   
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[304](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/304)**: Fixing Bugs in Manage Reviews + some style changes   
+  
+&nbsp; &nbsp; :arrow_heading_up: **PR-[293](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/293)**: Logs review for cycle 18   
+  
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[283](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/283)**: Refactor seed to include more students, associated / detailed rubrics for assignments / and submissions (even if its text).   
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[230](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/230)**: Personalized TODO creator for each class? extra feature  
+  
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[198](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/198)**: Writing new back-end tests for dockerized test enviroment. Start with services, then controllers  
+  
+
+## Recap on goals from last cycle
+* Finish up back-end tests
+* Work on Final Report
+
+## Goals for next cycle
+* Work on Final Report 
+* Hopefully the presentation goes well! 
+  
+  
 # Josh's Log for Cycle 18
 
 

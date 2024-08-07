@@ -530,12 +530,12 @@ const removeStudentFromClass = async (classId, studentId) => {
 			}
 		});
 
-		// Step 3: Check if the record exists
+		// Check if the record exists
 		if (!userInClass) {
 			throw new apiError("Student is not enrolled in this class.", 404);
 		}
 
-		// Step 4: Delete the record
+		// Delete the record
 		await prisma.userInClass.delete({
 			where: {
 				UserInClassId: {
@@ -544,6 +544,47 @@ const removeStudentFromClass = async (classId, studentId) => {
 				}
 			}
 		});
+
+		// Delete user's submissions for the class
+		await prisma.submission.deleteMany({
+			where: {
+				submitterId: studentId,
+				assignment: {
+					classId: classId
+				}
+			}
+		});
+
+		// Delete user's enrollment requests for the class
+		await prisma.enrollRequest.deleteMany({
+			where: {
+				userId: studentId,
+				classId: classId
+			}
+		});
+
+		const groupsWithStudent = await prisma.group.findMany({
+			where: {
+				classId: classId,
+				students: {
+					some: {
+						userId: studentId
+					}
+				}
+			}
+		});
+
+		// Remove user from each group individually
+		for (const group of groupsWithStudent) {
+			await prisma.group.update({
+				where: { groupId: group.groupId },
+				data: {
+					students: {
+						disconnect: [{ userId: studentId }]
+					}
+				}
+			});
+		}
 
 		const classInfo = await prisma.class.findUnique({
 			where: { classId }
@@ -560,6 +601,7 @@ const removeStudentFromClass = async (classId, studentId) => {
 		if (error instanceof apiError) {
 			throw error;
 		} else {
+			console.log(error);
 			throw new apiError("Failed to remove student from class", 500);
 		}
 	}

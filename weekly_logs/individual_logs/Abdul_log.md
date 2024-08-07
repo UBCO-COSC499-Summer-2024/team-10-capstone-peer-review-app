@@ -79,15 +79,16 @@
 
 ## In-progress tasks:
 
+No coding tasks.
+
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Finally. Testing took a bit but it's finally done.
+* Implemented most of the Testing Round 2 feedback too.
+* I feel satisfied with the work we put in and sort of satisfied with the project we came up with in the end! Definitely did a lot more than I expected to.
 
 ## Goals for next cycle
-* 
-* 
-* 
+* Final Presentation prep needs to be done.
+* Get the Individual Report finished up. Currently have System Architecture & Features You Individually Completed remaining to complete for my first draft. May have to submit it on the 9th as we are allowed to as far as I know. Worst case scenario, I believe I can submit a completed version on the 8th as well, if need be.
   
   
 

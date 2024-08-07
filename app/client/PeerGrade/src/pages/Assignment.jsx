@@ -166,7 +166,7 @@ const Assignment = () => {
 	}, [assignmentId]);
 
 	useEffect(() => {
-		scrollToBottom();
+		// scrollToBottom();
 	}, [comments]);
 
 	const scrollToBottom = () => {
@@ -294,7 +294,7 @@ const Assignment = () => {
 			}
 
 			setNewComment("");
-			setTimeout(scrollToBottom, 100); // Scroll to bottom after a short delay to ensure the new comment is rendered
+			// setTimeout(scrollToBottom, 100); // Scroll to bottom after a short delay to ensure the new comment is rendered
 		} catch (error) {
 			toast({
 				title: "Error",

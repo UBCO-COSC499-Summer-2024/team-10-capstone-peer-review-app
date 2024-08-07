@@ -1,6 +1,19 @@
+/**
+ * @file todoController.js
+ * @module todoController
+ * @desc Provides functions for todo operations
+ */
 import todoService from "../services/todoService.js";
 import asyncErrorHandler from "../utils/asyncErrorHandler.js";
 
+/**
+ * @async
+ * @function getTodosByClassAndUser
+ * @desc Retrieves all todos for a user in a class
+ * @param {Request} req - The request object containing the class ID and user ID, if the user is authenticated
+ * @returns {Promise<Response>} The response object
+ * @throws {ApiError} If failed to retrieve todos
+ */
 export const getTodosByClassAndUser = asyncErrorHandler(async (req, res) => {
 	const { classId } = req.params;
 	const userId = req.user.userId;
@@ -11,6 +24,13 @@ export const getTodosByClassAndUser = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+/**
+ * @async
+ * @function createTodo
+ * @desc Creates a new todo
+ * @param {Request} req - The request object containing the class ID, user ID, and todo content
+ * @returns {Promise<Response>} The response object
+ */
 export const createTodo = asyncErrorHandler(async (req, res) => {
 	const { classId } = req.params;
 	const userId = req.user.userId;
@@ -22,6 +42,13 @@ export const createTodo = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+/**
+ * @async
+ * @function updateTodo
+ * @desc Updates a todo
+ * @param {Request} req - The request object containing the todo ID and updates
+ * @returns {Promise<Response>} The response object
+ */
 export const updateTodo = asyncErrorHandler(async (req, res) => {
 	const { todoId } = req.params;
 	const updates = req.body;
@@ -32,6 +59,13 @@ export const updateTodo = asyncErrorHandler(async (req, res) => {
 	});
 });
 
+/**
+ * @async
+ * @function deleteTodo
+ * @desc Deletes a todo
+ * @param {Request} req - The request object containing the todo ID
+ * @returns {Promise<Response>} The response object
+ */
 export const deleteTodo = asyncErrorHandler(async (req, res) => {
 	const { todoId } = req.params;
 	await todoService.deleteTodo(todoId);

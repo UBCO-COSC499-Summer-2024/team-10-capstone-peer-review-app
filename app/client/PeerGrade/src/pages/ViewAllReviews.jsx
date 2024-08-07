@@ -85,12 +85,18 @@ const ViewAllReviews = () => {
 
 	// Calculate the average peer grade
 	const calculateAveragePeerGrade = () => {
-		if (peerReviews.length === 0) return 0;
-		const totalPercentage = peerReviews.reduce(
+		const filteredReviews = peerReviews.filter(
+			review => review.criterionGrades && review.criterionGrades.length > 0
+		);
+	
+		if (filteredReviews.length === 0) return 0;
+	
+		const totalPercentage = filteredReviews.reduce(
 			(sum, review) => sum + parseFloat(calculateGradePercentage(review)),
 			0
 		);
-		return (totalPercentage / peerReviews.length).toFixed(2);
+	
+		return (totalPercentage / filteredReviews.length).toFixed(2);
 	};
 
 	if (loading) {

@@ -1,3 +1,7 @@
+/**
+ * @module services/reviewService
+ * @desc Provides functions for review operations
+ */
 import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
 
@@ -10,9 +14,16 @@ function shuffleArray(array) {
 	return array;
 }
 // Review operations
+
+/**
+ * @desc Retrieves a review by its ID.
+ * @async
+ * @param {string} reviewId - The ID of the review.
+ * @returns {Promise<Object>} - The review object.
+ * @throws {apiError} - If there is an error fetching the review or the review is not found.
+ */
 const getReviewById = async (reviewId) => {
 	try {
-		console.log("Fetching review with ID:", reviewId);
 		const review = await prisma.review.findUnique({
 			where: {
 				reviewId: reviewId
@@ -55,8 +66,8 @@ const getReviewById = async (reviewId) => {
 			}
 		});
 
+		// Check if review exists
 		if (!review) {
-			console.log("No review found for ID:", reviewId);
 			throw new apiError("Review not found", 404);
 		}
 
@@ -68,7 +79,6 @@ const getReviewById = async (reviewId) => {
 
 		return reviewWithPeerFlag;
 	} catch (error) {
-		console.error("Error in getReviewById:", error);
 		throw new apiError(
 			`Failed to retrieve single review: ${error.message}`,
 			500
@@ -76,6 +86,13 @@ const getReviewById = async (reviewId) => {
 	}
 };
 
+/**
+ * @desc Retrieves all peer reviews for a submission.
+ * @async
+ * @param {string} submissionId - The ID of the submission.
+ * @returns {Promise<Array>} - An array of peer reviews.
+ * @throws {apiError} - If there is an error fetching the peer reviews.
+ */
 const getPeerReviews = async (submissionId) => {
 	try {
 		const peerReviews = await prisma.review.findMany({
@@ -119,6 +136,13 @@ const getPeerReviews = async (submissionId) => {
 	}
 };
 
+/**
+ * @desc Retrieves the instructor review for a submission.
+ * @async
+ * @param {string} submissionId - The ID of the submission.
+ * @returns {Promise<Object>} - The instructor review object.
+ * @throws {apiError} - If there is an error fetching the instructor review.
+ */
 const getInstructorReview = async (submissionId) => {
 	try {
 		const instructorReview = await prisma.review.findFirst({
@@ -158,11 +182,16 @@ const getInstructorReview = async (submissionId) => {
 
 		return instructorReview; // This will be null if no review is found
 	} catch (error) {
-		console.error("Error in getInstructorReview:", error);
 		throw new apiError("Failed to retrieve instructor review", 500);
 	}
 };
 
+/**
+ * @desc Retrieves all reviews.
+ * @async
+ * @returns {Promise<Array>} - An array of all reviews.
+ * @throws {apiError} - If there is an error fetching the reviews.
+ */
 const getAllReviews = async () => {
 	try {
 		const reviews = await prisma.review.findMany({
@@ -208,11 +237,17 @@ const getAllReviews = async () => {
 
 		return reviews;
 	} catch (error) {
-		console.error("Error in getAllReviews:", error);
 		throw new apiError("Failed to retrieve reviews", 500);
 	}
 };
 
+/**
+ * @desc Retrieves all reviews for an assignment.
+ * @async
+ * @param {string} assignmentId - The ID of the assignment.
+ * @returns {Promise<Array>} - An array of reviews.
+ * @throws {apiError} - If there is an error fetching the reviews.
+ */
 const getReviewsForAssignment = async (assignmentId) => {
 	try {
 		const reviews = await prisma.review.findMany({
@@ -250,7 +285,6 @@ const getReviewsForAssignment = async (assignmentId) => {
 
 		return reviews;
 	} catch (error) {
-		console.error("Error in getReviewsForAssignment:", error);
 		throw new apiError(
 			`Failed to retrieve reviews for assignment: ${error.message}`,
 			500
@@ -258,12 +292,19 @@ const getReviewsForAssignment = async (assignmentId) => {
 	}
 };
 
+/**
+ * @desc Updates a review.
+ * @async
+ * @param {string} reviewId - The ID of the review.
+ * @param {Object} review - The updated review object.
+ * @returns {Promise<Object>} - The updated review object.
+ * @throws {apiError} - If there is an error updating the review.
+ * @throws {apiError} - If the review is not found.
+ */
 const updateReview = async (reviewId, review) => {
 	const { criterionGrades, ...reviewData } = review;
 
 	try {
-		console.log("Updating review:", reviewId, reviewData);
-
 		// Start a transaction
 		const updatedReview = await prisma.$transaction(async (prisma) => {
 			// Update the review data
@@ -274,8 +315,6 @@ const updateReview = async (reviewId, review) => {
 				data: reviewData
 			});
 
-			console.log("Review updated:", updatedReview);
-
 			// Delete existing criterion grades
 			await prisma.criterionGrade.deleteMany({
 				where: {
@@ -285,7 +324,6 @@ const updateReview = async (reviewId, review) => {
 
 			// Create new criterion grades
 			if (criterionGrades && criterionGrades.length > 0) {
-				console.log("Creating new criterion grades:", criterionGrades);
 				await prisma.criterionGrade.createMany({
 					data: criterionGrades.map((cg) => ({
 						reviewId: reviewId,
@@ -310,11 +348,18 @@ const updateReview = async (reviewId, review) => {
 
 		return updatedReview;
 	} catch (error) {
-		console.error("Error in updateReview:", error);
 		throw new apiError(`Failed to update review: ${error.message}`, 500);
 	}
 };
 
+/**
+ * @desc Deletes a review.
+ * @async
+ * @param {string} reviewId - The ID of the review.
+ * @throws {apiError} - If there is an error deleting the review.
+ * @throws {apiError} - If the review is not found.
+ * @returns {Promise<void>}
+ */
 const deleteReview = async (reviewId) => {
 	try {
 		await prisma.review.delete({
@@ -329,6 +374,14 @@ const deleteReview = async (reviewId) => {
 	}
 };
 
+/**
+ * @desc Creates a new review.
+ * @async
+ * @param {string} userId - The ID of the user creating the review.
+ * @param {Object} review - The review object to be created.
+ * @returns {Promise<Object>} - The newly created review object.
+ * @throws {apiError} - If there is an error creating the review.
+ */
 const createReview = async (userId, review) => {
 	try {
 		// Remove isGroup from the review object
@@ -359,11 +412,18 @@ const createReview = async (userId, review) => {
 
 		return newReview;
 	} catch (error) {
-		console.error("Error in createReview:", error);
 		throw new apiError(`Failed to create review: ${error.message}`, 500);
 	}
 };
 
+/**
+ * @desc Assigns random peer reviews for an assignment.
+ * @async
+ * @param {string} assignmentId - The ID of the assignment.
+ * @param {number} reviewsPerStudent - The number of reviews to assign per student.
+ * @returns {Promise<Object>} - The number of peer reviews assigned.
+ * @throws {apiError} - If there is an error assigning peer reviews.
+ */
 const assignRandomPeerReviews = async (assignmentId, reviewsPerStudent) => {
 	try {
 		if (reviewsPerStudent < 1) {
@@ -429,6 +489,7 @@ const assignRandomPeerReviews = async (assignmentId, reviewsPerStudent) => {
 
 				let assignedReviewsForThisSubmission = 0;
 
+				// Assign reviews until the required number is reached
 				while (
 					assignedReviewsForThisSubmission < reviewsPerStudent &&
 					potentialReviewers.length > 0
@@ -503,6 +564,14 @@ const assignRandomPeerReviews = async (assignmentId, reviewsPerStudent) => {
 	}
 };
 
+/**
+ * @desc Retrieves the details of a review.
+ * @async
+ * @param {string} reviewId - The ID of the review.
+ * @returns {Promise<Object>} - The review details.
+ * @throws {apiError} - If there is an error fetching the review details.
+ * @throws {apiError} - If the review is not found.
+ */
 const getReviewDetails = async (reviewId) => {
 	try {
 		const review = await prisma.review.findUnique({
@@ -531,10 +600,21 @@ const getReviewDetails = async (reviewId) => {
 
 		return review;
 	} catch (error) {
-		throw new apiError("Failed to retrieve review details", 500);
+		if (error instanceof apiError) {
+			throw error;
+		} else {
+			throw new apiError("Failed to retrieve review details", 500);
+		}
 	}
 };
 
+/**
+ * @desc Retrieves all reviews assigned to a user.
+ * @async
+ * @param {string} userId - The ID of the user.
+ * @returns {Promise<Array>} - An array of reviews assigned to the user.
+ * @throws {apiError} - If there is an error fetching the reviews.
+ */
 const getReviewsAssigned = async (userId) => {
 	try {
 		const reviewsAssigned = await prisma.review.findMany({
@@ -572,7 +652,6 @@ const getReviewsAssigned = async (userId) => {
 		});
 		return reviewsAssigned;
 	} catch (error) {
-		console.error("Error in getReviewsAssigned:", error);
 		throw new apiError(
 			`Failed to retrieve user reviews: ${error.message}`,
 			500
@@ -580,6 +659,13 @@ const getReviewsAssigned = async (userId) => {
 	}
 };
 
+/**
+ * @desc Retrieves all reviews received by a user.
+ * @async
+ * @param {string} userId - The ID of the user.
+ * @returns {Promise<Array>} - An array of reviews received by the user.
+ * @throws {apiError} - If there is an error fetching the reviews.
+ */
 const getReviewsReceived = async (userId) => {
 	try {
 		const reviewsReceived = await prisma.review.findMany({
@@ -617,7 +703,6 @@ const getReviewsReceived = async (userId) => {
 		});
 		return reviewsReceived;
 	} catch (error) {
-		console.error("Error in getReviewsReceived:", error);
 		throw new apiError(
 			`Failed to retrieve user reviews: ${error.message}`,
 			500

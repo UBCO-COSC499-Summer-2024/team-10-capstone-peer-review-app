@@ -1,6 +1,17 @@
+/**
+ * @module commentService
+ */
+
 import prisma from "../../prisma/prismaClient.js";
 import apiError from "../utils/apiError.js";
 
+/**
+ * @desc Get or create a comment chain for a specific assignment and student.
+ * @async
+ * @param {number} assignmentId - The ID of the assignment.
+ * @param {number} studentId - The ID of the student.
+ * @returns {Promise<Object>} The comment chain object.
+ */
 const getOrCreateCommentChain = async (assignmentId, studentId) => {
   let commentChain = await prisma.commentChain.findUnique({
     where: {
@@ -23,6 +34,16 @@ const getOrCreateCommentChain = async (assignmentId, studentId) => {
   return commentChain;
 };
 
+/**
+ * @desc Add a comment to an assignment.
+ * @async
+ * @param {uuid} assignmentId - The ID of the assignment.
+ * @param {uuid} userId - The ID of the user adding the comment.
+ * @param {string} content - The content of the comment.
+ * @param {uuid} studentId - The ID of the student.
+ * @returns {Promise<Object>} The created comment object.
+ * @throws {apiError} If there is an error adding the comment.
+ */
 const addCommentToAssignment = async (assignmentId, userId, content, studentId) => {
   try {
     const commentChain = await getOrCreateCommentChain(assignmentId, studentId);
@@ -55,6 +76,14 @@ const addCommentToAssignment = async (assignmentId, userId, content, studentId) 
   }
 };
 
+/**
+ * Get comments for an assignment.
+ * @async
+ * @param {number} assignmentId - The ID of the assignment.
+ * @param {number} userId - The ID of the user.
+ * @returns {Promise<Array>} An array of comment objects.
+ * @throws {apiError} If there is an error getting the comments.
+ */
 const getCommentsForAssignment = async (assignmentId, userId) => {
   try {
     const user = await prisma.user.findUnique({

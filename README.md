@@ -47,6 +47,10 @@ Currently, the .env files for our project exist in our repo. We know this is a s
 
 ### Checkout [detailed features](./docs/features.md) to see the detailed checklist of features
 
+**Features Demo: (click to play)**
+
+# [![Video Title](https://img.youtube.com/vi/RmxuVjH2d0Y/0.jpg)](https://www.youtube.com/watch?v=RmxuVjH2d0Y)
+
 
 ## 🧑‍💻 Tech Stack
 

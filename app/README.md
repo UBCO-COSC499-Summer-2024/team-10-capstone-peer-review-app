@@ -9,6 +9,10 @@ The client-side of Peer Grade is built using:
 
 The frontend code is located in the `app/client/PeerGrade` directory.
 
+**!!Important!!**
+
+- For the student's CSV Upload feature on the instructor end, the format for the CSV file is "email@gmail.com, test@gmail.com, ..."
+
 ### 🖧 Server-Side (Backend)
 The server-side is powered by Node.js and Express.js, with the following structure:
 - **Middlewares**: Handle cross-cutting concerns like authentication and error handling

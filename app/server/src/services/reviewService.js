@@ -441,6 +441,8 @@ const assignRandomPeerReviews = async (assignmentId, reviewsPerStudent) => {
 				include: { submitter: true }
 			});
 
+			console.log(latestSubmissions);
+
 			const submissionCount = latestSubmissions.length;
 
 			if (submissionCount < 2) {

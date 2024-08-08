@@ -432,7 +432,7 @@ const People = ({ classId }) => {
 							<Button onClick={() => setAddDialogOpen(false)} type="button">
 								Cancel
 							</Button>
-							<Button variant="destructive" type="submit">
+							<Button type="submit">
 								Submit
 							</Button>
 						</DialogFooter>

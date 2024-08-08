@@ -66,7 +66,6 @@ const Submission = ({ refresh, switchToViewOnSubmit }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log("hey");
         if (!file) {
             console.log("uhoh");
             toast({ title: "Error", description: "Please select a file to upload", variant: "destructive" });

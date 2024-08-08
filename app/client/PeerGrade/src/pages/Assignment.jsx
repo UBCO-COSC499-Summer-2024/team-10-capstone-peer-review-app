@@ -167,7 +167,7 @@ const Assignment = () => {
 
 	// Scroll to the bottom of the comments container when theres a new comment
 	useEffect(() => {
-		scrollToBottom();
+		// scrollToBottom();
 	}, [comments]);
 
 	// Scroll to the bottom of the comments container
@@ -302,7 +302,7 @@ const Assignment = () => {
 			}
 
 			setNewComment("");
-			setTimeout(scrollToBottom, 100); // Scroll to bottom after a short delay to ensure the new comment is rendered
+			// setTimeout(scrollToBottom, 100); // Scroll to bottom after a short delay to ensure the new comment is rendered
 		} catch (error) {
 			toast({
 				title: "Error",

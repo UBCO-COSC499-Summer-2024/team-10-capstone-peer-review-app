@@ -1,3 +1,6 @@
+// Breif Decription: This component displays a dialog with all peer reviews for a submission. 
+// It shows the average peer grade, and allows the user to view the peer reviews.
+
 import React, { useState, useEffect } from "react";
 import {
 	Dialog,
@@ -20,12 +23,14 @@ const ViewAllPeerReviewsDialog = ({ submissionId, open, onClose }) => {
 
 	const isInstructor = user.role === "INSTRUCTOR";
 
+	// Fetch the peer reviews when the dialog is opened and the submission ID changes
 	useEffect(() => {
 		if (open && submissionId) {
 			fetchPeerReviews();
 		}
 	}, [open, submissionId]);
 
+	// Fetch the peer reviews for the submission ID
 	const fetchPeerReviews = async () => {
 		try {
 			setLoading(true);
@@ -43,6 +48,7 @@ const ViewAllPeerReviewsDialog = ({ submissionId, open, onClose }) => {
 		}
 	};
 
+	// Calculate the grade percentage for a review
 	const calculateGradePercentage = (review) => {
 		if (
 			!review ||
@@ -79,6 +85,7 @@ const ViewAllPeerReviewsDialog = ({ submissionId, open, onClose }) => {
 			: 0;
 	};
 
+	// Calculate the average peer grade
 	const calculateAveragePeerGrade = () => {
 		const filteredReviews = peerReviews.filter(
 			review => review.criterionGrades && review.criterionGrades.length > 0

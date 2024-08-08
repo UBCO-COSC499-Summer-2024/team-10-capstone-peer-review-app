@@ -1,3 +1,7 @@
+// The main function of this component is to display the linked rubric for a submission and allow the user to grade the submission
+// The component also allows the user to submit the grades for the submission
+// The component is used in the AssignmentDetails component
+
 import React from "react";
 import {
 	Dialog,

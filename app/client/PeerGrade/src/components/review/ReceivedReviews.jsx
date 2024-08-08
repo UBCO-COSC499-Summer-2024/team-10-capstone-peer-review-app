@@ -1,3 +1,6 @@
+// This is the rendered view for a received review in the Reviews Tab for students
+// It shows the reviewer, reviewee, and review details.
+
 import React, { useState, useMemo } from "react";
 import {
 	Card,
@@ -16,17 +19,18 @@ import {
 	ChevronUp,
 	Clock,
 	Check,
-	Clipboard
 } from "lucide-react";
 
 const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [expandedAssignments, setExpandedAssignments] = useState({});
 
+	// Check if a review is graded
 	const isReviewGraded = (review) => {
 		return review.criterionGrades && review.criterionGrades.length > 0;
 	};
 
+	//Group the reviews by assignment
 	const groupedReviews = useMemo(() => {
 		return receivedReviews.reduce((acc, review) => {
 			const assignmentId = review.submission.assignment.assignmentId;
@@ -41,6 +45,7 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 		}, {});
 	}, [receivedReviews]);
 
+	// Filter the assignments based on the search term
 	const filteredAssignments = useMemo(() => {
 		return Object.values(groupedReviews).filter(
 			(group) =>
@@ -60,6 +65,7 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 		}));
 	};
 
+	// Calculate the percentage grade for a review
 	const calculatePercentageGrade = (review, assignment) => {
 		if (!isReviewGraded(review)) {
 			return "Not graded";
@@ -86,6 +92,7 @@ const ReceivedReviews = ({ receivedReviews, onViewDetails }) => {
 			: "0%";
 	};
 
+    // Render the assignment card
 	const renderAssignmentCard = (group) => {
 		const { assignment, reviews } = group;
 		const isExpanded = expandedAssignments[assignment.assignmentId];

@@ -1,3 +1,7 @@
+// The main function of this component is to display a table of groups that the admin can view on the admin ui groups tab.
+// It takes in a title, data, and columns as props.
+// The component also uses the useUser and useClass hooks to fetch user and class data where its needed.
+
 import React, { useEffect, useState } from 'react';
 import DataTable from '@/components/ui/data-table';
 import { getAllGroups } from '@/api/userApi';

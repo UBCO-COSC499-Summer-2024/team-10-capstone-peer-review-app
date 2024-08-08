@@ -1,3 +1,8 @@
+// The main function of this component is to display a chart of user registration trends.
+// It takes in data, a title, x-axis label, y-axis label, and an array of filter types.
+// The component uses the filterTypes array to determine which users to display in the chart.
+// It also uses the userType state to filter the data based on the selected filter type.
+
 import React, { useState, useMemo } from 'react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';

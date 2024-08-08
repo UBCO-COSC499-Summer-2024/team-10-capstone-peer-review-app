@@ -1,3 +1,9 @@
+// The main function of this component is to display a table of peer reviews and reviews that the admin can view on the admin ui peer-reviews tab.
+// It takes in a title, data, and columns as props.
+// The component also uses the useUser and useClass hooks to fetch user and class data where its needed.
+
+// IMPORTANT: this component is rendering mock created data for peer reviews and reviews. It is not connected to any actual data.
+
 import React from 'react';
 import DataTable from '@/components/ui/data-table';
 

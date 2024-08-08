@@ -1,3 +1,5 @@
+// The component for displaying a class card in the Manage class page for instructors
+
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Users, FileText, Eye, Settings } from "lucide-react";
@@ -7,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 const ClassCard = ({ classItem, pendingApprovals }) => {
   const navigate = useNavigate();
 
+  // Truncate the description if it's longer than 100 characters
   const truncateDescription = (text, maxLength = 100) => {
     if (text.length <= maxLength) return text;
     return text.substr(0, maxLength) + '...';

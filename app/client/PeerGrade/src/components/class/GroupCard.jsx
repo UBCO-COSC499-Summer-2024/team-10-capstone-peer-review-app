@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+// The component for displaying a group card
+
+import React from "react";
 import {
 	Card,
 	CardHeader,
-	CardFooter,
 	CardTitle,
 	CardDescription,
 	CardContent
@@ -15,20 +16,9 @@ import {
 	CarouselPrevious,
   } from "@/components/ui/carousel"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import {
-	Popover,
-	PopoverTrigger,
-	PopoverContent
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 const GroupCard = ({ groups }) => {
-
-	const getGroupMembers = (groupId) => {
-		return groups.filter((group) => group.groupId === groupId);
-	};
-
 	return (
 		<div className="w-full">
 			{groups.length === 0 && <div className="text-sm text-black text-center px-6 pb-6">No groups found.<p className="mt-2">Join or create a group in any class to see it here!</p></div>}

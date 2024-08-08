@@ -1,3 +1,7 @@
+// This is the page for viewing the review dashboard for instructors .it allows you to select a class, the assignment and then displays all 
+// The submission information for each student of that clss who is a part of the assignment selected
+// Furthermore, the instrucgtor is present action buttons depending on the staet of submission.
+
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -56,12 +60,14 @@ const ManageReviews = () => {
 	const [rubrics, setRubrics] = useState([]);
 	const [totalPoints, setTotalPoints] = useState(0);
 
+	// Fetch the assignments and rubrics for the selected class
 	useEffect(() => {
 		if (classes && classes.length > 0 && selectedClass) {
 			fetchAssignments(selectedClass);
 		}
 	}, [selectedClass, classes]);
 
+	// Fetch the submissions and rubrics for the selected assignment
 	useEffect(() => {
 		if (selectedAssignment) {
 			fetchSubmissions(selectedAssignment);
@@ -69,6 +75,7 @@ const ManageReviews = () => {
 		}
 	}, [selectedAssignment]);
 
+	// Fetch the assignments for the selected class
 	const fetchAssignments = async (classId) => {
 		try {
 			const response = await getAllAssignmentsByClassId(classId);
@@ -82,6 +89,7 @@ const ManageReviews = () => {
 		}
 	};
 
+	// Fetch the submissions for the selected assignment
 	const fetchSubmissions = async (assignmentId) => {
 		try {
 			const response = await getSubmissionsForAssignment(assignmentId);
@@ -139,6 +147,7 @@ const ManageReviews = () => {
 		}
 	};
 
+	// Fetch the rubrics for the selected assignment
 	const fetchRubrics = async (assignmentId) => {
 		try {
 			const rubricData = await getRubricsForAssignment(assignmentId);
@@ -158,10 +167,12 @@ const ManageReviews = () => {
 		}
 	};
 
+	// Filter the students with submissions based on the search term
 	const filteredStudents = studentsWithSubmissions.filter((student) =>
 		student.name.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 
+	// Handle downloading a submission file
 	const handleDownload = (submission) => {
 		const link = document.createElement("a");
 		link.href = submission.submissionFilePath;
@@ -171,11 +182,13 @@ const ManageReviews = () => {
 		document.body.removeChild(link);
 	};
 
+	// Handle grading a submission
 	const handleGradeSubmission = (submission) => {
 		setSelectedSubmission(submission);
 		setGradeDialogOpen(true);
 	};
 
+	// Handle submitting a grade for a submission
 	const handleGradeSubmit = async (event) => {
 		event.preventDefault();
 

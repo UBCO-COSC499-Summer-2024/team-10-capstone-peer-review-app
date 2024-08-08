@@ -1,3 +1,6 @@
+// This component displays a dialog with a form to grade a review. 
+// It allows the user to grade the review and provide comments for each criterion.
+
 import React from "react";
 import {
 	Dialog,

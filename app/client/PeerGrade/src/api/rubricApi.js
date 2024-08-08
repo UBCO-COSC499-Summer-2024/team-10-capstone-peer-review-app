@@ -1,3 +1,12 @@
+// getRubricsForAssignment: Fetch all rubrics for a specific assignment
+// getAllRubrics: Fetch all rubrics
+// getAllRubricsInClass: Fetch all rubrics in a specific class
+// getRubricById: Fetch a rubric by its ID
+// addRubricToAssignment: Add a rubric to an assignment
+// deleteRubricsFromAssignment: Delete a rubric from an assignment
+// updateRubricsForAssignment: Update a rubric for an assignment
+// linkRubricToAssignment: Link a rubric to multiple assignments
+
 import axios from "axios";
 import showStatusToast from "@/utils/showToastStatus";
 

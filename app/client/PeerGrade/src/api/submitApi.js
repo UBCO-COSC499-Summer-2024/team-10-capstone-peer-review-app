@@ -1,5 +1,12 @@
-import axios from "axios";
-import showStatusToast from "@/utils/showToastStatus";
+// getStudentSubmission: Fetch all submissions for a specific student
+// getStudentSubmissionForAssignment: Fetch all submissions for a specific student and assignment
+// getSubmissionsForAssignment: Fetch all submissions for a specific assignment
+// createSubmission: Create a new submission
+// updateSubmission: Update a submission
+// deleteSubmission: Delete a submission
+
+import axios from 'axios';
+import showStatusToast from '@/utils/showToastStatus';
 
 const BASE = "/api"; // Adjust this URL as needed
 

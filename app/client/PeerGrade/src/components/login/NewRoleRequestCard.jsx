@@ -1,3 +1,6 @@
+// This component displays a card with a form to request a new role. 
+// It allows the user to enter their email and select the role they'd like to re-request.
+
 import { useState } from "react";
 import {
 	Card,
@@ -19,17 +22,20 @@ const NewRoleRequestCard = ({ onSwitchToLogin }) => {
 	const [error, setError] = useState("");
 	const [success, setSuccess] = useState(false);
 
+	// Handle input changes in the form
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
 		setRequestDetails((prev) => ({ ...prev, [name]: value }));
 		setError(""); // Clear error when user starts typing
 	};
 
+	// Validate the email
 	const validateEmail = (email) => {
 		const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 		return re.test(String(email).toLowerCase());
 	};
 
+	// Handle submitting the form
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setError("");

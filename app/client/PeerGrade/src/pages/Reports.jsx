@@ -1,16 +1,15 @@
+// This is the page for viewing previously sent reports. It displays a list of all reports, allows the user to delete a report, and displays the details of a report (status info).
+
 import React, { useState, useEffect } from 'react';
-import { Card, CardDescription, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { useToast } from '@/components/ui/use-toast';
+import { Card, CardContent } from '@/components/ui/card';
 import { useUser } from "@/contexts/contextHooks/useUser";
-import { X, Check, CircleHelp, Trash2 } from "lucide-react";
+import { X, Check, Trash2 } from "lucide-react";
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';	
 import { getAdminReports, getInstructorReports, unResolveReport, resolveReport, deleteReport } from '@/api/userApi';
-import { formatDistanceToNow } from "date-fns";
 import ReportCard from '@/components/global/ReportCard';
 
 const Reports = ({ role }) => {
-    const { toast } = useToast();
     const { user, userLoading } = useUser();
     const [reports, setReports] = useState([]);
     const [refresh, setRefresh] = useState(false);
@@ -18,6 +17,7 @@ const Reports = ({ role }) => {
 	const [confirmDelete, setConfirmDelete] = useState(false);
 	const [selectedReport, setSelectedReport] = useState({});
 
+	// Fetch the reports for the selected role
 	useEffect(() => {
         const fetchReports = async () => {
             let allReports = [];
@@ -48,6 +48,7 @@ const Reports = ({ role }) => {
         }
     }, [user, userLoading, role, refresh]);
 
+	// Handle deleting a report
 	const handleDeleteReport = async () => {
 		if (confirmDelete) {
 			const response = await deleteReport(selectedReport.reportId);
@@ -61,11 +62,13 @@ const Reports = ({ role }) => {
 		}
 	};
 
+	// Handle trashing a report
 	const handleTrashClick = (report) => {
 		setSelectedReport(report);
 		setOpen(true);
 	};
 
+	// Handle unresolving a report
 	const handleUnResolveClick = async (reportId) => {
 		const response = await unResolveReport(reportId);
 		if (response.status === "Success") {
@@ -73,6 +76,7 @@ const Reports = ({ role }) => {
 		}
 	};
 
+	// Handle resolving a report
 	const handleResolveClick = async (reportId) => {
 		const response = await resolveReport(reportId);
 		if (response.status === "Success") {

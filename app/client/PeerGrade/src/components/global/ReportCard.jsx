@@ -1,3 +1,5 @@
+// The component for displaying a report card in Report.jsx page
+
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { formatDistanceToNow } from 'date-fns';

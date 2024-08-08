@@ -1,3 +1,5 @@
+// The component for displaying a form for adding a new student to a class
+
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,7 +20,6 @@ import {
 import {
 	Form,
 	FormControl,
-	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
@@ -77,6 +78,7 @@ const EditClassDialog = ({ open, onOpenChange, classItem }) => {
 	const [formError, setFormError] = useState("");
 	const { updateClasses, isClassLoading } = useClass();
 
+	// Create a form instance
 	const form = useForm({
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
@@ -89,6 +91,7 @@ const EditClassDialog = ({ open, onOpenChange, classItem }) => {
 		}
 	});
 
+	// Reset the form when the class item changes
 	useEffect(() => {
 		if (classItem) {
 			form.reset({
@@ -102,6 +105,7 @@ const EditClassDialog = ({ open, onOpenChange, classItem }) => {
 		}
 	}, [classItem, form]);
 
+	// Handle form submission
 	const onSubmit = async (updateData) => {
 		setFormError("");
 		try {

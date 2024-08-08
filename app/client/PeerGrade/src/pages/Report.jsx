@@ -1,9 +1,9 @@
+// This is the page for managing reports and viewing previously sent reports. It allows the user to send a report, view all reports, and view previously sent reports.
+// It also hosts the send report modal and the info button guide content.
+
 import React, { useState, useEffect } from "react";
 import {
 	Card,
-	CardHeader,
-	CardTitle,
-	CardDescription,
 	CardContent,
 	CardFooter
 } from "@/components/ui/card";
@@ -11,7 +11,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { X, Check, CircleHelp, Trash2 } from "lucide-react";
 import {
 	Select,
 	SelectTrigger,
@@ -31,7 +30,6 @@ import {
 	getSentReports
 } from "@/api/userApi";
 import Reports from "@/pages/Reports";
-import { formatDistanceToNow } from "date-fns";
 import ReportCard from "@/components/global/ReportCard";
 
 const Report = () => {
@@ -46,6 +44,7 @@ const Report = () => {
 	const [reports, setReports] = useState([]);
 	const [refresh, setRefresh] = useState(false);
 
+	// Fetch the instructors for the selected class
 	useEffect(() => {
 		if (!userLoading && user && user.role !== "ADMIN") {
 			if (
@@ -92,6 +91,7 @@ const Report = () => {
 		}
 	}, [user, userLoading, role, classes, isClassLoading, refresh]);
 
+	// Handle submitting a report
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
@@ -151,6 +151,7 @@ const Report = () => {
 		setReportContent("");
 	};
 
+	// Get the info content for the report page (infoButton guide content)
 	const infoContent = {
 		title: "Reports Management",
 		description: (

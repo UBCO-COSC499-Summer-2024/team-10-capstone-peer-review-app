@@ -1,14 +1,15 @@
+// The main function of this component is to view and submit an assignment
+
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileUp, CheckCircle, Text } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { getAssignmentInClass } from '@/api/assignmentApi';
 import { getRubricsForAssignment } from '@/api/rubricApi';
 import { createSubmission } from '@/api/submitApi';
 import { useUser } from "@/contexts/contextHooks/useUser";
 import DataTable from '@/components/ui/data-table';
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { toast } from '@/components/ui/use-toast';
 

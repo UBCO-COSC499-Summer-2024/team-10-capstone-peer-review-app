@@ -1,3 +1,6 @@
+// The main function of this component is to display the submission details for a submission and allow the user to download the submission file
+// The component is used in the AssignmentDetails component
+
 import React, { useState, useEffect } from "react";
 import {
 	Dialog,

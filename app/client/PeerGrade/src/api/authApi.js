@@ -1,3 +1,26 @@
+// This code provides a set of API functions to handle user authentication and role management functionalities. 
+// The functionalities include:
+
+// 1. getCurrentUser: Retrieves the current authenticated user's details.
+// 2. registerUser: Registers a new user with the provided details.
+// 3. loginUser: Logs in a user with the given email and password.
+// 4. logoutUser: Logs out the current user.
+// 5. resendVerificationEmail: Resends the email verification link to the user's email.
+// 6. confirmEmail: Confirms the user's email using a token.
+// 7. isEmailVerifiedJWT: Checks if the email is verified using a JWT token.
+// 8. sendForgotPasswordEmail: Sends a forgot password email to the user's email.
+// 9. resetPassword: Resets the user's password using a token and new password.
+// 10. getAllRoleRequests: Retrieves all role requests.
+// 11. deleteRoleRequest: Deletes a role request by ID.
+// 12. approveRoleRequest: Approves a role request by ID.
+// 13. denyRoleRequest: Denies a role request by ID.
+// 14. pendRoleRequest: Marks a role request as pending by ID.
+// 15. updateRoleRequestStatus: Updates the status of a role request by ID.
+// 16. applyForNewRoleRequest: Applies for a new role request with the provided details.
+
+// The handleError function is used to handle errors and display appropriate status messages.
+
+
 import axios from "axios";
 import showStatusToast from "@/utils/showToastStatus";
 

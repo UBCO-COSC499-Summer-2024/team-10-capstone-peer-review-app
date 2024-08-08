@@ -1,3 +1,12 @@
+// createEnrollRequest: Creates a new enrollment request with class ID and sender message.
+// getEnrollRequestsForUser: Retrieves all enrollment requests for the logged-in user.
+// deleteEnrollRequest: Deletes an enrollment request using the request ID and user ID.
+// getEnrollRequestsForClass: Retrieves all enrollment requests for a specific class using the class ID.
+// updateEnrollRequestStatus: Updates the status of an enrollment request using the request ID, status, and receiver message.
+// getAllEnrollRequests: Retrieves all enrollment requests (for admin use).
+// Error Handling:
+// handleError: Displays a status toast with the error message if the API request fails. Logs unexpected errors to the console.
+
 import axios from "axios";
 import showStatusToast from "@/utils/showToastStatus";
 

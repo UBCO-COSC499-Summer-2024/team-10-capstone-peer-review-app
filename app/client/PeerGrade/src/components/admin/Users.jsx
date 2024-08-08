@@ -1,3 +1,8 @@
+// The main function of this component is to display a table of users that the admin can view on the admin ui users tab.
+// It takes in a title, data, and columns as props.
+// The component also uses the useUser and useClass hooks to fetch user and class data where its needed.
+// It also uses the getAllUsers and getAllRoleRequests functions to fetch data.
+
 import DataTable from "@/components/ui/data-table";
 import DataChart from "@/components/admin/stats/data-chart";
 
@@ -12,28 +17,17 @@ const userColumns = [
 	{ accessorKey: "firstname", header: "First Name" },
 	{ accessorKey: "lastname", header: "Last Name" },
 	{ accessorKey: "email", header: "Email" },
-	// { accessorKey: "password", header: "Password" },
 	{ accessorKey: "role", header: "Role" },
 	{ accessorKey: "isEmailVerified", header: "Email Verified" },
 	{ accessorKey: "isRoleActivated", header: "Role Activated" },
 	{ accessorKey: "createdAt", header: "Date Joined" },
 	{ accessorKey: "updatedAt", header: "Last Updated" }
-	// { accessorKey: "classes", header: "Classes" },
-	// { accessorKey: "submissions", header: "Submissions" },
-	// { accessorKey: "reviewsDone", header: "Reviews Done" },
-	// { accessorKey: "reviewsRecieved", header: "Reviews Received" },
-	// { accessorKey: "classesInstructed", header: "Classes Instructed" },
-	// { accessorKey: "Rubric", header: "Rubric" },
-	// { accessorKey: "learningInstitution", header: "Learning Institution" },
-	// { accessorKey: "description", header: "Description" }
 ];
 
 const Users = () => {
 	const [usersData, setUsersData] = useState([]);
 	const [roleRequests, setRoleRequests] = useState([]);
 
-	// TODO -> decrypt passwords for admins to view them in plain text
-	// Abdul - i don't think admins should be able to view passwords (change them, maybe, but not view them)
 	const fetchRoleRequests = async () => {
 		const allRoleRequests = await getAllRoleRequests();
 		if (allRoleRequests.status === "Success") {

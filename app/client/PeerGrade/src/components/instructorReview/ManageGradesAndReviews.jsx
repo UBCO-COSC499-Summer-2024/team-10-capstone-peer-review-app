@@ -1,3 +1,8 @@
+// The component for manage grades and reviews in a class for instructor Reviews tab
+// Breif Decription: This page allows you to manage and grade student submissions for all your classes and assignments. 
+// It provides a list of students with submissions, allows you to view submission details, download the submitted file, 
+// grade or re-grade the submission, and assign peer reviews.
+
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -100,12 +105,14 @@ const ManageGradesAndReviews = () => {
 		setSelectedSubmissionForPeerReviews
 	] = useState(null);
 
+	// Fetch the assignments when the selected class changes
 	useEffect(() => {
 		if (selectedClass) {
 			fetchAssignments(selectedClass);
 		}
 	}, [selectedClass]);
 
+	// Fetch the students and submissions when the selected class and assignment changes
 	useEffect(() => {
 		if (selectedClass && selectedAssignment) {
 			fetchStudentsAndSubmissions(
@@ -116,6 +123,7 @@ const ManageGradesAndReviews = () => {
 		}
 	}, [selectedClass, selectedAssignment]);
 
+	// Fetch the rubrics when the selected assignment changes
 	const fetchAssignments = async (classId) => {
 		try {
 			const response = await getAllAssignmentsByClassId(classId);
@@ -129,6 +137,7 @@ const ManageGradesAndReviews = () => {
 		}
 	};
 
+	// Fetch the students and submissions for the selected class and assignment
 	const fetchStudentsAndSubmissions = async (classId, assignmentId) => {
 		try {
 			const [studentsResponse, submissionsResponse] = await Promise.all([
@@ -167,6 +176,7 @@ const ManageGradesAndReviews = () => {
 		}
 	};
 
+	// Fetch the rubrics for the selected assignment
 	const fetchRubrics = async (assignmentId) => {
 		try {
 			const rubricData = await getRubricsForAssignment(assignmentId);
@@ -180,6 +190,7 @@ const ManageGradesAndReviews = () => {
 		}
 	};
 
+	// Check if the due date has passed for the selected assignment
 	const isDueDatePassed = (dueDate) => {
 		// Comment this in disable due date restrictions
 		// return true;
@@ -189,6 +200,7 @@ const ManageGradesAndReviews = () => {
 		return currentDate > assignmentDueDate;
 	};
 
+	// Handle assigning reviewers to the selected submission
 	const handleAssignReviewers = async () => {
 		if (!selectedSubmission) {
 			toast({
@@ -233,6 +245,7 @@ const ManageGradesAndReviews = () => {
 		}
 	};
 
+	// Handle assigning reviewers to the selected submission
 	const handleAssignReviewersSubmit = async () => {
 		try {
 			const existingReviews = await reviewAPI.getPeerReviews(
@@ -292,11 +305,13 @@ const ManageGradesAndReviews = () => {
 		}
 	};
 
+	// Handle viewing all peer reviews for the selected submission
 	const handleViewAllPeerReviews = (submissionId) => {
 		setSelectedSubmissionForPeerReviews(submissionId);
 		setViewAllPeerReviewsDialogOpen(true);
 	};
 
+	// Handle auto-assigning peer reviews for the selected submission
 	const handleAutoAssignPeerReviews = async () => {
 		if (!isDueDatePassed(selectedAssignment.dueDate)) {
 			toast({
@@ -331,6 +346,7 @@ const ManageGradesAndReviews = () => {
 		}
 	};
 
+	// Handle downloading the submission file
 	const handleDownload = (submission) => {
 		const link = document.createElement("a");
 		link.href = submission.submissionFilePath;
@@ -340,11 +356,13 @@ const ManageGradesAndReviews = () => {
 		document.body.removeChild(link);
 	};
 
+	// Handle viewing the submission details
 	const handleViewSubmission = (submission) => {
 		setSelectedSubmission(submission);
 		setViewDialogOpen(true);
 	};
 
+	// Handle grading the submission
 	const handleGradeAssignment = async (submission) => {
 		if (!isDueDatePassed(selectedAssignment.dueDate)) {
 			toast({
@@ -367,6 +385,7 @@ const ManageGradesAndReviews = () => {
 		setGradeDialogOpen(true);
 	};
 
+	// Handle viewing the review details
 	const handleViewReviewDetails = async (submissionId) => {
 		if (!isDueDatePassed(selectedAssignment.dueDate)) {
 			toast({
@@ -384,6 +403,7 @@ const ManageGradesAndReviews = () => {
 		setReviewDialogOpen(true);
 	};
 
+	// Handle submitting the grade for the selected submission
 	const handleGradeSubmit = async (event) => {
 		event.preventDefault();
 
@@ -472,12 +492,14 @@ const ManageGradesAndReviews = () => {
 		}
 	};
 
+	// Filter the students based on the search term
 	const filteredStudents = studentsWithSubmissions.filter((student) =>
 		`${student.firstname} ${student.lastname}`
 			.toLowerCase()
 			.includes(searchTerm.toLowerCase())
 	);
 
+	// Define the info content for the page help guide
 	const infoContent = {
 		title: "Manage Reviews and Submissions",
 		description: (

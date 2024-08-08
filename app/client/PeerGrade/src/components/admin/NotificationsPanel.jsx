@@ -1,3 +1,8 @@
+// The main function of this component is to display a form for sending notifications to users, groups, classes, and all users.
+// It takes in a title, description, and button label as props.
+// The component also uses the useUser and useClass hooks to fetch user and class data where its needed.
+// It also uses the sendNotificationToClass, sendNotificationToGroup, sendNotificationToRole, and sendNotificationToAll functions to send notifications.
+
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -7,7 +12,6 @@ import { getAllGroups } from '@/api/userApi';
 import { useUser } from "@/contexts/contextHooks/useUser";
 import { useClass } from "@/contexts/contextHooks/useClass";
 import { useToast } from '@/components/ui/use-toast';
-import { Separator } from '../ui/separator';
 
 const NotificationsPanel = () => {
 	const { user, userLoading } = useUser();

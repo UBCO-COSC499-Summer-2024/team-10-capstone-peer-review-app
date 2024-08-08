@@ -1,9 +1,10 @@
+// Component for displaying a dialog with Grade review details
+// This component is used in the Reviews Tab for students and Submissions Tab for instructors 
+
 import React from "react";
 import {
 	Dialog,
 	DialogContent,
-	DialogHeader,
-	DialogTitle
 } from "@/components/ui/dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -12,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 const ViewReviewGradeDialog = ({ review, open, onClose, onUpdate }) => {
+	// Get the total maximum points for the rubric
 	const getTotalMaxPoints = () => {
 		if (
 			!review ||
@@ -26,6 +28,7 @@ const ViewReviewGradeDialog = ({ review, open, onClose, onUpdate }) => {
 		);
 	};
 
+	// Get the percentage grade for the review
 	const getPercentageGrade = () => {
 		if (!review || !review.criterionGrades) return 0;
 		const totalGrade = review.criterionGrades.reduce(
@@ -38,14 +41,6 @@ const ViewReviewGradeDialog = ({ review, open, onClose, onUpdate }) => {
 			: 0;
 	};
 
-	const handleClose = async () => {
-		onClose();
-		if (onUpdate) {
-			await onUpdate();
-		}
-	};
-
-	console.log("review", review);
 
 	return (
 		<Dialog open={open} onOpenChange={onClose}>

@@ -1,3 +1,5 @@
+// This is the page for viewing all reviews for a submission. It displays the grades for the instructor and the average peer grade for the submission.
+
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -17,6 +19,7 @@ const ViewAllReviews = () => {
 	const [loading, setLoading] = useState(true);
 	const navigate = useNavigate();
 
+	// Fetch the data for the view all reviews page
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -42,6 +45,7 @@ const ViewAllReviews = () => {
 		fetchData();
 	}, [submissionId]);
 
+	// Calculate the grade percentage for a review
 	const calculateGradePercentage = (review) => {
 		if (
 			!review ||
@@ -79,6 +83,7 @@ const ViewAllReviews = () => {
 			: 0;
 	};
 
+	// Calculate the average peer grade
 	const calculateAveragePeerGrade = () => {
 		const filteredReviews = peerReviews.filter(
 			review => review.criterionGrades && review.criterionGrades.length > 0

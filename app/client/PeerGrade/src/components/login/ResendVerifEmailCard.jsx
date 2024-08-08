@@ -1,3 +1,6 @@
+// This component displays a card with a form to resend the verification email. 
+// It allows the user to enter their email and submit the form to send a new verification email.
+
 import { useState } from "react";
 import {
 	Card,
@@ -17,17 +20,20 @@ const ResendVerifEmailCard = ({ onSwitchToLogin }) => {
 	const [error, setError] = useState("");
 	const [success, setSuccess] = useState(false);
 
+	// Handle input changes in the form
 	const handleInputChange = (e) => {
 		const { value } = e.target;
 		setEmail(value);
 		setError(""); // Clear error when user starts typing
 	};
 
+	// Validate the email
 	const validateEmail = (email) => {
 		const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 		return re.test(String(email).toLowerCase());
 	};
 
+	// Handle submitting the form
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setError("");

@@ -1,3 +1,6 @@
+// The main function of this component is to display a card with a title, number, icon, and description.
+// It takes in a title, number, icon, and description as props.
+
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 
 const StatCard = ({

@@ -1,3 +1,5 @@
+// The main function of this component is to edit an assignment and add it to a class
+
 import React, { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { format, setHours, setMinutes, setSeconds } from "date-fns";
@@ -34,6 +36,7 @@ import {
 } from "@/api/assignmentApi";
 import ExtendDeadlinesDialog from "./ExtendDeadlinesDialog";
 
+// file type options for the file upload
 const fileTypeOptions = [
 	{ value: "pdf", label: "PDF" },
 	{ value: "doc", label: "DOC" },
@@ -46,10 +49,10 @@ const fileTypeOptions = [
 const EditAssignment = ({ refresh }) => {
 	const navigate = useNavigate();
 	const { classId, assignmentId } = useParams();
-
 	const [openExtendDeadlines, setOpenExtendDeadlines] = useState(false);
 	const fileInputRef = useRef(null);
 
+  // useState to store the form data
 	const [formData, setFormData] = useState({
 		title: "",
 		description: "",
@@ -72,6 +75,7 @@ const EditAssignment = ({ refresh }) => {
 	const [confirmDelete, setConfirmDelete] = useState(""); // Student ID to confirm delete
 	const [errors, setErrors] = useState({});
 
+  // useEffect to fetch assignment data and categories and rubrics when the classId or assignmentId changes
 	useEffect(() => {
 		const fetchAssignmentAndData = async () => {
 			try {
@@ -135,17 +139,20 @@ const EditAssignment = ({ refresh }) => {
 		fetchAssignmentAndData();
 	}, [classId, assignmentId]);
 
+  // function to handle input changes
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
 		setFormData((prev) => ({ ...prev, [name]: value }));
 	};
 
+  // function to handle file changes
 	const handleFileChange = (event) => {
 		const selectedFile = event.target.files[0];
 		setSelectedFileName(selectedFile.name);
 		setFormData((prev) => ({ ...prev, file: selectedFile }));
 	};
 
+  // function to validate the form
 	const validateForm = () => {
 		const newErrors = {};
 		if (!formData.title.trim()) newErrors.title = "Title is required";
@@ -163,6 +170,7 @@ const EditAssignment = ({ refresh }) => {
 		return Object.keys(newErrors).length === 0;
 	};
 
+  // function to handle form submission
 	const onSubmit = async (e) => {
 		e.preventDefault();
 		if (!validateForm()) {
@@ -174,6 +182,7 @@ const EditAssignment = ({ refresh }) => {
 			return;
 		}
 
+    // create a FormData object to send the data
 		const formDataToSend = new FormData();
 		formDataToSend.append("classId", classId);
 		formDataToSend.append("assignmentId", assignmentId);

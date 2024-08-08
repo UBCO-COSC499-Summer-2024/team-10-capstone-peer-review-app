@@ -1,9 +1,11 @@
+// The component for displaying the dashboard for a class in the Manage class view page for instructors
+
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useClass } from "@/contexts/contextHooks/useClass";
 import EditClassDialog from "@/components/manageClass/EditClassModal";
-import { Users, FileText, Edit, Plus, MinusCircle, FileUp, ChevronLeft, ChevronRight, FileQuestion, Trash2, Check } from "lucide-react";
+import { Edit, ChevronLeft, ChevronRight, Trash2, Check } from "lucide-react";
 import StudentsTable from "@/components/manageClass/StudentsTable";
 import EnrollTable from "@/components/manageClass/EnrollTable";
 import AssignmentsTable from "@/components/manageClass/AssignmentsTable";
@@ -13,7 +15,6 @@ import {
   DialogHeader, 
   DialogTitle, 
   DialogFooter,
-  DialogTrigger
 } from "@/components/ui/dialog";
 import {
   Popover,
@@ -28,7 +29,6 @@ import {
   CommandItem,
   CommandList
 } from "@/components/ui/command";
-import { Badge } from "@/components/ui/badge";
 import AddStudentsByCSVDialog from "@/components/class/addStudentsByCSVDialog";
 import { getStudentsByClassId, removeStudentFromClass, addStudentToClass, deleteClass } from "@/api/classApi";
 import { getAllAssignmentsByClassId, removeAssignmentFromClass } from "@/api/assignmentApi";
@@ -67,6 +67,7 @@ const ManageClassDashboard = () => {
   const [selectedAssignment, setSelectedAssignment] = useState(null);
   const [deleteAssignmentDialogOpen, setDeleteAssignmentDialogOpen] = useState(false);
 
+  // Fetch the assignments when the class changes
   useEffect(() => {
     const fetchAssignments = async () => {
       try {
@@ -80,12 +81,8 @@ const ManageClassDashboard = () => {
     fetchAssignments();
   }, [classId]);
 
-  const handleDeleteAssignmentClick = (assignment) => {
-    setConfirmDeleteAssignment(false);
-    setSelectedAssignment(assignment);
-    setDeleteAssignmentDialogOpen(true);
-  };
 
+  // Handle deleting an assignment
   const handleDeleteAssignment = async () => {
     if (confirmDeleteAssignment) {
       setConfirmDeleteAssignment(false);
@@ -121,6 +118,7 @@ const ManageClassDashboard = () => {
     }
   };
 
+  // Fetch the class data when the class changes
   useEffect(() => {
     const currentClass = classes.find((c) => c.classId === classId);
     setClassData(currentClass);
@@ -128,6 +126,7 @@ const ManageClassDashboard = () => {
     fetchEnrollRequests();
   }, [classId, classes]);
 
+  // Fetch the students when the class changes
   const fetchStudents = async () => {
     const studentsData = await getStudentsByClassId(classId);
     if (studentsData.status === "Success") {
@@ -135,6 +134,7 @@ const ManageClassDashboard = () => {
     }
   };
 
+  // Fetch the enrollment requests when the class changes
   const fetchEnrollRequests = async () => {
     const requests = await getEnrollRequestsForClass(classId);
     if (requests.status === "Success") {
@@ -142,6 +142,7 @@ const ManageClassDashboard = () => {
     }
   };
 
+  // Fetch all students when the user changes
   useEffect(() => {
     if (user.role === "INSTRUCTOR" || user.role === "ADMIN") {
       const fetchAllStudents = async () => {
@@ -166,24 +167,8 @@ const ManageClassDashboard = () => {
     }
   }, [user, students]);
 
-  const handleDeleteStudent = async (student) => {
-    const result = await removeStudentFromClass(classId, student.userId);
-    if (result.status === "Success") {
-      setStudents(students.filter(s => s.userId !== student.userId));
-      toast({
-        title: "Success",
-        description: "Student removed from class",
-        variant: "positive"
-      });
-    } else {
-      toast({
-        title: "Error",
-        description: "Failed to remove student",
-        variant: "destructive"
-      });
-    }
-  };
   
+  // Handle adding students to the class
   const handleAddStudents = async (e) => {
     e.preventDefault();
     if (selectedStudents.length > 0) {
@@ -203,6 +188,7 @@ const ManageClassDashboard = () => {
     setSelectedStudents([]);
   };
 
+  // Handle updating an enrollment request  
   const handleUpdateEnrollRequest = async (enrollRequestId, status) => {
     try {
       const result = await updateEnrollRequestStatus(enrollRequestId, status);
@@ -245,6 +231,7 @@ const ManageClassDashboard = () => {
     }
   };
 
+  // Handle deleting an enrollment request
   const handleDeleteEnrollRequest = async (enrollRequestId, userId) => {
     try {
       const result = await deleteEnrollRequest(enrollRequestId, userId);
@@ -268,15 +255,18 @@ const ManageClassDashboard = () => {
     }
   };
 
+  // Handle editing the class
   const handleEditClass = () => {
     setEditModalOpen(true);
   };
 
+	// Handle deleting the class
 	const handleDeleteClass = (selected_class) => {
 		setConfirmDeleteClass(false);
 		setDeleteClassDialogOpen(true);
 	};
 
+  // Handle deleting the class
 	const deleteClass = async () => {
 		if (confirmDeleteClass) {
 			setConfirmDeleteAssignment(false);
@@ -295,17 +285,12 @@ const ManageClassDashboard = () => {
 		}
 	};
 
+  // Filter the students based on the search term
   const filteredStudents = students.filter((student) =>
     `${student.firstname} ${student.lastname}`
       .toLowerCase()
       .includes(searchTerm.toLowerCase())
   );
-
-  const getInitials = (firstName, lastName) => {
-    const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : "";
-    const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : "";
-    return `${firstInitial}${lastInitial}`;
-  };
 
   const indexOfLastStudent = currentStudentPage * itemsPerPage;
   const indexOfFirstStudent = indexOfLastStudent - itemsPerPage;
@@ -315,6 +300,7 @@ const ManageClassDashboard = () => {
   const indexOfFirstEnrollRequest = indexOfLastEnrollRequest - itemsPerPage;
   const currentEnrollRequests = enrollRequests.slice(indexOfFirstEnrollRequest, indexOfLastEnrollRequest);
 
+  // Render the pagination
   const renderPagination = (currentPage, setCurrentPage, totalItems) => {
     const totalPages = Math.ceil(totalItems / itemsPerPage);
     

@@ -1,12 +1,12 @@
+// The main function of this component is to create a new assignment and add it to a class
+
+
 import React, { useRef, useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { format, setHours, setMinutes, setSeconds } from "date-fns";
 import {
 	Plus,
 	Calendar as CalendarIcon,
-	ChevronDown as ChevronDownIcon,
-	ChevronUp as ChevronUpIcon,
-	Check as CheckIcon,
 	Upload
 } from "lucide-react";
 import MultiSelect from "@/components/ui/MultiSelect";
@@ -22,12 +22,6 @@ import {
 	PopoverContent,
 	PopoverTrigger
 } from "@/components/ui/popover";
-import {
-	Command,
-	CommandGroup,
-	CommandItem,
-	CommandList
-} from "@/components/ui/command";
 import {
 	Select,
 	SelectContent,
@@ -47,6 +41,7 @@ import InfoButton from "@/components/global/InfoButton";
 
 import { useUser } from "@/contexts/contextHooks/useUser";
 
+// file type options for the file upload
 const fileTypeOptions = [
 	{ value: "pdf", label: "PDF" },
 	{ value: "doc", label: "DOC" },
@@ -79,6 +74,7 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
 	const [newCategoryName, setNewCategoryName] = useState("");
 	const [isCreatingCategory, setIsCreatingCategory] = useState(false);
 
+  // useEffect to fetch categories and rubrics when the classId changes
 	useEffect(() => {
 		const fetchCategoriesAndRubrics = async () => {
 			try {
@@ -96,6 +92,7 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
 		fetchCategoriesAndRubrics();
 	}, [classId]);
 
+  // function to create a new category
 	const handleCreateCategory = async () => {
 		if (!newCategoryName.trim()) {
 			toast({
@@ -132,17 +129,20 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
 		}
 	};
 
+  // function to handle input changes
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
 		setFormData((prev) => ({ ...prev, [name]: value }));
 	};
 
+  // function to handle file changes
 	const handleFileChange = (event) => {
 		const selectedFile = event.target.files[0];
 		setSelectedFileName(selectedFile.name);
 		setFormData((prev) => ({ ...prev, file: selectedFile }));
 	};
 
+  // function to handle rubric selection
 	const handleRubricSelection = (value) => {
 		setFormData((prev) => ({
 			...prev,
@@ -151,12 +151,14 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
 		setNewRubricData(null); // Clear any new rubric data when selecting an existing rubric
 	};
 
+  // function to reset the rubric selection
 	const resetRubric = () => {
 		setNewRubricData(null);
 		setFormData((prev) => ({ ...prev, rubricId: "" }));
 		setIsRubricFormOpen(false);
 	};
 
+  // function to validate the form
 	const validateForm = () => {
 		const newErrors = {};
 
@@ -176,6 +178,8 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
 		return Object.keys(newErrors).length === 0;
 	};
 
+
+  // function to handle form submission
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
@@ -255,6 +259,7 @@ const AssignmentCreation = ({ onAssignmentCreated }) => {
 		}
 	};
 
+  // assignment creation info tag (help guide) content
 	const assignmentCreationInfoContent = {
 		title: "Creating a New Assignment",
 		description: (

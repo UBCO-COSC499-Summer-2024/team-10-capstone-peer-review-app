@@ -1,3 +1,34 @@
+// Class Management:
+
+// getAllClasses: Retrieves all classes.
+// getAllClassesUserisNotIn: Retrieves all classes a user is not enrolled in.
+// getInstructorByClassId: Retrieves the instructor of a specific class by class ID.
+// getStudentsByClassId: Retrieves all students in a specific class by class ID.
+// getClassesByUserId: Retrieves all classes a user is enrolled in by user ID.
+// getClassById: Retrieves a specific class by class ID.
+// getCategoriesByClassId: Retrieves categories associated with a specific class by class ID.
+// createClass: Creates a new class.
+// updateClass: Updates an existing class by class ID.
+// deleteClass: Deletes a class by class ID.
+// addStudentToClass: Adds a student to a class by class ID and student ID.
+// addStudentsByEmail: Adds students to a class by class ID and email addresses.
+// removeStudentFromClass: Removes a student from a class by class ID and student ID.
+// Group Management:
+
+// getAllGroupsByClass: Retrieves all groups within a class.
+// createGroup: Creates a new group within a class.
+// deleteGroup: Deletes a group by group ID.
+// updateGroup: Updates a group by group ID.
+// joinGroup: Joins a group by group ID.
+// leaveGroup: Leaves a group by group ID.
+// addGroupMember: Adds a member to a group by group ID and user ID.
+// deleteGroupMember: Removes a member from a group by group ID and user ID.
+// getUsersNotInGroups: Retrieves users not in any groups within a class.
+// Assignment Management:
+
+// getAllAssignments: Retrieves all assignments for a user by user ID.
+// The code includes error handling via a handleError function, which displays appropriate error messages using showStatusToast
+
 import axios from "axios";
 import showStatusToast from "@/utils/showToastStatus";
 

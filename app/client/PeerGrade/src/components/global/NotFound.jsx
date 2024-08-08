@@ -1,3 +1,5 @@
+// The component for displaying a 404 page when a user tries to access a page that doesn't exist
+
 import { Link } from "react-router-dom";
 import { useUser } from "@/contexts/contextHooks/useUser";
 

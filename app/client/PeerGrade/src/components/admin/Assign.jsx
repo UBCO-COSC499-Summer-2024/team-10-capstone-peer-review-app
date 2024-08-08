@@ -1,3 +1,7 @@
+// The main function of this component is to display a table of assignments that the admin can view on the admin ui assignments tab.
+// It takes in a title, data, and columns as props.
+// The component also uses the useUser and useClass hooks to fetch user and class data where its needed.
+
 import React, { useState, useEffect } from 'react';
 import DataTable from '@/components/ui/data-table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

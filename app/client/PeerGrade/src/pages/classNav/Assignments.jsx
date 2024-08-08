@@ -1,3 +1,8 @@
+// Brief description of the component
+// This component is used to display the assignments for a class
+// It shows the assignments with their titles and due dates
+// It also allows the user to delete assignments if they are instructors
+
 import { useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -18,6 +23,7 @@ const Assignments = () => {
 	const [selectedAssignment, setSelectedAssignment] = useState({});
 	const [dialogOpen, setDialogOpen] = useState(false);
 
+    // Fetch assignments on component mount
     useEffect(() => {
         const fetchAssignments = async () => {
             try {
@@ -31,6 +37,7 @@ const Assignments = () => {
         fetchAssignments();
     }, [user, classId]);
 
+	// Handle the delete assignment click event
 	const handleDeleteClick = (assignment) => {
 		// handles the actual click event to delete an assignment
 		setConfirmDelete(false);
@@ -38,6 +45,7 @@ const Assignments = () => {
 		setDialogOpen(true);
 	};
 
+    // Handle the delete assignment confirmation
 	const handleDeleteAssignment = async () => {
         if (confirmDelete) {
             setConfirmDelete(false);
@@ -68,6 +76,7 @@ const Assignments = () => {
     };
 
 
+    // Information content for the assignments help guide (infoButton click render)
     const assignmentsInfoContent = {
         title: "About Assignments",
         description: (

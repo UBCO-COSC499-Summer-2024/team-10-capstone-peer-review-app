@@ -1,3 +1,5 @@
+// The component for displaying a dialog to confirm deleting a class
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import {

@@ -1,3 +1,5 @@
+// This component is used to create a new rubric within an assignment creation form
+
 import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -41,7 +43,8 @@ const RubricCreationForm = ({
 	const [isValid, setIsValid] = useState(false);
 	const [hasNegativePoints, setHasNegativePoints] = useState(false);
 	const [editing, setEditing] = useState(null);
-
+		
+	// Reset the form when the reset trigger is true
 	useEffect(() => {
 		if (resetTrigger) {
 			clearForm();
@@ -49,6 +52,7 @@ const RubricCreationForm = ({
 		}
 	}, [resetTrigger]);
 
+	// Initialize the rubric data with default values
 	const initialRubricData = {
 		title: "",
 		description: "",
@@ -62,6 +66,7 @@ const RubricCreationForm = ({
 		]
 	};
 
+	// Clear the form when the drawer is closed
 	const clearForm = () => {
 		setRubricData(initialRubricData);
 		setEditing(null);
@@ -70,10 +75,12 @@ const RubricCreationForm = ({
 		onRubricChange(initialRubricData);
 	};
 
+	// Validate the rubric data before creating a rubric
 	useEffect(() => {
 		validateRubric();
 	}, [rubricData]);
 
+	// Workaround to fix the drawer pushing the navbar up
 	useEffect(() => {
 	if (isOpen) {
 		// Workaround to fix the drawer pushing the navbar up
@@ -87,6 +94,7 @@ const RubricCreationForm = ({
 	}
 	}, [isOpen]);
 
+	// Update the rubric data when a field is changed
 	const handleChange = (field, value) => {
 		setRubricData((prev) => {
 			const newData = { ...prev, [field]: value };
@@ -95,6 +103,7 @@ const RubricCreationForm = ({
 		});
 	};
 
+	// Add a new criterion to the rubric data
 	const addCriterion = () => {
 		setRubricData((prev) => {
 			const newData = {
@@ -113,6 +122,7 @@ const RubricCreationForm = ({
 		});
 	};
 
+	// Remove a criterion from the rubric data
 	const removeCriterion = (id) => {
 		setRubricData((prev) => {
 			const newData = {
@@ -139,6 +149,7 @@ const RubricCreationForm = ({
 		});
 	};
 
+	// Remove a rating from a criterion
 	const removeRating = (criterionId, ratingIndex) => {
 		setRubricData((prev) => {
 			const newData = {
@@ -154,6 +165,7 @@ const RubricCreationForm = ({
 		});
 	};
 
+	// Update the rubric data when an edit is made
 	const handleEdit = (criterionId, field, value, ratingIndex = null) => {
 		setRubricData((prev) => {
 			const newData = {
@@ -176,6 +188,7 @@ const RubricCreationForm = ({
 		});
 	};
 
+	// Validate the rubric data before creating a rubric
 	const validateRubric = () => {
 		const isValid =
 			rubricData.title.trim() !== "" &&
@@ -205,11 +218,13 @@ const RubricCreationForm = ({
 		console.log("Has negative points:", hasNegative);
 	};
 
+	// Save the rubric data when the save button is clicked
 	const handleSaveRubric = () => {
 		onRubricChange(rubricData);
 		setIsOpen(false);
 	};
 
+	// Get the trigger text for the drawer
 	const getTriggerText = () => {
 		if (rubricData.title) {
 			const words = rubricData.title.split(" ");

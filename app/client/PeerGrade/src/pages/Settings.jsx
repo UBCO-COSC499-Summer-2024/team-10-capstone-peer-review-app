@@ -1,3 +1,5 @@
+// This is page for editng user details. For now only name change is the functionality of this page however the intention is to add more functionality in the future. 
+// example future functionality could be adding a profile picture, adding a bio, light/dark mode, notificiation preferences, email/password chagne, etc.
 import React, { useState, useEffect } from "react";
 import {
 	Card,
@@ -23,6 +25,7 @@ const Settings = () => {
 	const [lastname, setLastname] = useState("");
 	const [email, setEmail] = useState("");
 
+	// Fetch the user data when the user changes
 	useEffect(() => {
 		if (!userLoading && user) {
 			setFirstname(user.firstname || "");
@@ -31,6 +34,7 @@ const Settings = () => {
 		}
 	}, [user, userLoading]);
 
+	// Handle saving the user profile
 	const handleSaveProfile = (e) => {
 		e.preventDefault();
 
@@ -41,7 +45,6 @@ const Settings = () => {
 		};
 
 		// NEED TO IMPLEMENT A CHECK FOR VERIFYING IF ITS A VALID EMAIL & IF IT BELONGS TO THE USER
-
 		const updateUserProfile = async () => {
 			const updatedProfile = await updateProfile(user.userId, updatedData);
 			if (updatedProfile.status === "Success") {

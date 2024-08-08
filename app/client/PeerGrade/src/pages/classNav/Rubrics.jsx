@@ -1,3 +1,7 @@
+// This component is used to display the rubrics for a class
+// It shows the rubrics with their titles and total points
+// It also allows the user to create new rubrics, edit existing rubrics, delete rubrics, and add or remove criteria from rubrics
+
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -25,11 +29,12 @@ const Rubrics = () => {
   const [editDrawerKey, setEditDrawerKey] = useState(0);
   const [confirmDeleteRubric, setConfirmDeleteRubric] = useState(false);
 
-
+  // Fetch rubrics on component mount
   useEffect(() => {
     fetchData();
   }, [classId]);
 
+  // Fetch rubrics on component mount
   const fetchData = async () => {
     try {
       const rubricsResponse = await getAllRubricsInClass(classId);
@@ -44,6 +49,7 @@ const Rubrics = () => {
     }
   };
 
+  // Calculate the total points for a rubric
   const calculateTotalPoints = (rubric) => {
     if (!rubric || !rubric.criteria) return 0;
     return rubric.criteria.reduce((total, criterion) => 
@@ -51,6 +57,7 @@ const Rubrics = () => {
     );
   };
 
+  // Handle the delete rubric confirmation
   const handleDeleteRubric = async () => {
     if (confirmDeleteRubric) {
       setConfirmDeleteRubric(false);
@@ -67,6 +74,7 @@ const Rubrics = () => {
     }
   };
 
+  // Handle the rubric click event
   const handleRubricClick = async (rubricId) => {
     try {
       const response = await getRubricById(rubricId);
@@ -82,10 +90,7 @@ const Rubrics = () => {
     }
   };
 
-  const handleRubricCreated = () => {
-    fetchRubrics();
-  };
-
+  // Handle the rubric creation
   const handleEditRubricClick = async (rubricId) => {
     try {
       const response = await getRubricById(rubricId);
@@ -99,11 +104,13 @@ const Rubrics = () => {
     }
   };
 
+  // Handle the edit rubric drawer close
   const handleCloseEditDrawer = () => {
     setIsEditDrawerOpen(false);
     setRubricToEdit(null);
   };
 
+  // Handle the rubric update
   const handleRubricUpdated = (updatedRubric) => {
     setRubrics(prevRubrics => prevRubrics.map(rubric => 
       rubric.rubricId === updatedRubric.rubricId ? updatedRubric : rubric
@@ -111,6 +118,7 @@ const Rubrics = () => {
     handleCloseEditDrawer(); // Close the drawer after updating
   };
 
+  // Information content for the rubrics help guide (infoButton click render)
   const rubricsInfoContent = {
     title: "About Rubrics",
     description: (

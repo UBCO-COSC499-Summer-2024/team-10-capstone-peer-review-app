@@ -1,3 +1,5 @@
+// The card and functions renderd when the user clicks the forgot password button in the login page
+
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
@@ -36,7 +38,7 @@ const ForgotPasswordCard = ({ onSwitchToLogin }) => {
 	const query = useQuery();
 	const [forgotPasswordToken] = useState(query.get("forgotPasswordToken") || "");
 
-	// TODO => Refactor to use apiCalls file instead so we dont have a ton of server calls in the component files
+	// Check if the token is valid and set the tokenValid state
 	useEffect(() => {
 		if (forgotPasswordToken && !password) {
 			const verifyEmail = async () => {
@@ -59,6 +61,7 @@ const ForgotPasswordCard = ({ onSwitchToLogin }) => {
 		}
 	}, [forgotPasswordToken]);
 
+	// Handle submitting the form
 	const handleSubmit = (e) => {
 		e.preventDefault();
 

@@ -1,3 +1,9 @@
+// These functions handle adding comments to an assignment and retrieving comments for a specific assignment. Here is a brief explanation and the refined code:
+
+// addCommentToAssignment: Sends a POST request to add a comment to a specific assignment, using the assignment ID, comment content, and student ID.
+// getCommentsForAssignment: Sends a GET request to retrieve all comments for a specific assignment using the assignment ID.
+
+
 import axios from "axios";
 
 const BASE_URL = "/api";

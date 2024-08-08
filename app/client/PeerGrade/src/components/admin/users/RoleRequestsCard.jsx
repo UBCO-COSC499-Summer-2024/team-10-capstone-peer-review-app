@@ -1,3 +1,8 @@
+// The main function of this component is to display a role requestcard with a title, description, and action buttons.
+// It takes in a key, roleRequest, refreshRoleRequests, title, and description as props.
+// The component also uses the isDrawerOpen, isLoading, and closeDrawer props to determine which action button to display.
+// It also uses the handleApprove, handleDeny, handlePending, and handleDelete functions to handle the action buttons.
+
 import { useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";

@@ -1,3 +1,5 @@
+// The component for the navigation bar at the top of the page
+
 import * as React from "react";
 import { useState, useEffect, useCallback } from "react";
 import { cn } from "@/utils/utils";
@@ -51,6 +53,7 @@ export default function AppNavbar() {
 	const [notifications, setNotifications] = useState([]);
 	const [notificationCount, setNotificationCount] = useState(0);
 
+	// Fetch the notifications when the user changes
 	const fetchNotifications = useCallback(async () => {
 		if (user) {
 			try {
@@ -69,6 +72,7 @@ export default function AppNavbar() {
 		}
 	}, [user, toast]);
 
+	// Fetch the notifications every 10 seconds
 	useEffect(() => {
 		fetchNotifications();
 		const intervalId = setInterval(fetchNotifications, 10000); // Poll every 10 seconds
@@ -76,6 +80,8 @@ export default function AppNavbar() {
 		return () => clearInterval(intervalId);
 	}, [fetchNotifications]);
 
+
+	// Handle deleting a notification
 	const handleDeleteNotif = async (notificationId) => {
 		const deleteNotif = await deleteNotification(notificationId);
 		if (deleteNotif.status === "Success") {
@@ -88,6 +94,7 @@ export default function AppNavbar() {
 		}
 	};
 
+	// Fetch the notifications every 10 seconds
 	useEffect(() => {
 		fetchNotifications();
 		const intervalId = setInterval(fetchNotifications, 10000); // Poll every 10 seconds
@@ -95,6 +102,7 @@ export default function AppNavbar() {
 		return () => clearInterval(intervalId);
 	}, [fetchNotifications]);
 
+	// Close the notification card when the user clicks outside of it
 	useEffect(() => {
 		const handleClickOutside = (event) => {
 			if (isCardVisible && !event.target.closest(".notification-card")) {
@@ -108,6 +116,7 @@ export default function AppNavbar() {
 		};
 	}, [isCardVisible]);
 
+	// Handle logging out the user
 	const handleLogout = async () => {
 		try {
 			await logoutUser();
@@ -122,16 +131,19 @@ export default function AppNavbar() {
 		}
 	};
 
+	// Get the initials of the user's name
 	const getInitials = (firstName, lastName) => {
 		const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : "";
 		const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : "";
 		return `${firstInitial}${lastInitial}`;
 	};
 
+	// Check if the current path is active
 	const isActive = (path) => {
 		return location.pathname === path || location.pathname.startsWith(path);
 	};
 
+	// Toggle the visibility of the notification card
 	const toggleCardVisibility = () => {
 		if (isCardVisible) {
 			setCardOpacity(0);

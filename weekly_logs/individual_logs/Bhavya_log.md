@@ -30,14 +30,11 @@
 ## In-progress tasks:
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Worked on individual reports 
+* Worked on presentation
 
 ## Goals for next cycle
-* 
-* 
-* 
+* NA
   
   
 

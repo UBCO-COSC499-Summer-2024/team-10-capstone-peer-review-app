@@ -1,4 +1,44 @@
 
+# Mahir's Log for Cycle 20
+
+
+## Tuesday, August 06, 2024, 05:23 PM - Thursday, August 08, 2024, 05:23 PM
+
+
+## Tasks worked on this cycle:
+
+## Time entries from Clockify on this cycle:
+&nbsp; &nbsp; :watch: **Client side comments** *(Total duration: 0.7 hours)*  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :clock10: Tuesday, August 06, 2024, 08:09 PM - Tuesday, August 06, 2024, 08:52 PM *(0.7 hours)*  
+  
+
+## All Features worked on this cycle:
+&nbsp; &nbsp; :arrows_clockwise: **PR-[306](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/306)**: Logs review!  
+  
+
+## Features completed on this cycle:
+&nbsp; &nbsp; :arrow_heading_up: **PR-[306](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/pull/306)**: Logs review!  
+  
+
+## Completed tasks:
+
+## In-progress tasks:
+&nbsp; &nbsp; :orange_circle: **Issue-[292](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/292)**: User Guide Documentation (Readme)  
+  
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Mahir's Log for Cycle 19
 
 

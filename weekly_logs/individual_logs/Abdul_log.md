@@ -1,4 +1,34 @@
 
+# Abdul's Log for Cycle 20
+
+
+## Tuesday, August 06, 2024, 05:23 PM - Thursday, August 08, 2024, 05:23 PM
+
+
+## Tasks worked on this cycle:
+
+## Time entries from Clockify on this cycle:
+
+## All Features worked on this cycle:
+
+## Features completed on this cycle:
+
+## Completed tasks:
+
+## In-progress tasks:
+
+## Recap on goals from last cycle
+* 
+* 
+* 
+
+## Goals for next cycle
+* 
+* 
+* 
+  
+  
+
 # Abdul's Log for Cycle 19
 
 

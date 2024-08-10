@@ -1,0 +1,48 @@
+import React, { useState } from 'react';
+import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+const MultiSelect = ({ options, value, onChange, placeholder }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleToggleOption = (optionValue) => {
+    const newValue = value.includes(optionValue)
+      ? value.filter(v => v !== optionValue)
+      : [...value, optionValue];
+    onChange(newValue);
+  };
+
+  return (
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <PopoverTrigger asChild>
+        <Button variant="outline" className="w-full justify-between">
+          {value.length > 0 
+            ? `${value.length} selected`
+            : placeholder || "Select options"}
+            {isOpen ? <ChevronUp className='w-4 h-4'/> : <ChevronDown className='w-4 h-4'/>}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="min-w-[200px] p-0">
+        <ScrollArea>
+          {options.map((option) => (
+            <div key={option.value} className="flex items-center space-x-2 p-2">
+              <Checkbox
+                id={option.value}
+                checked={value.includes(option.value)}
+                onCheckedChange={() => handleToggleOption(option.value)}
+              />
+              <label htmlFor={option.value} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                {option.label}
+              </label>
+            </div>
+          ))}
+        </ScrollArea>
+      </PopoverContent>
+    </Popover>
+  );
+};
+
+export default MultiSelect;

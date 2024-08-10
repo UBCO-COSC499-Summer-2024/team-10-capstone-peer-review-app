@@ -1,0 +1,58 @@
+# Github Action/Bash Script to send Discord Notifications when an Issue is assigned
+
+# First maps all of of the users to their Discord IDs, then loops through a Json array
+# of the assignee(s) and adds them to a list of embedded discord mentions (the <@ID> format)
+# The script then sends a notification to Discord with the assignee(s) mentioned with curl and
+# the data is sent as Discord's embedded json message format
+name: Discord Notification on Issue Assigned
+
+on:
+  issues:
+    types: [assigned]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  discord_notification_issue_assigned:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Send notification to Discord on Issue Assigned
+      run: |
+        declare -A map 
+        map["JoshFarwig"]="<@239921359847817216>"
+        map["mahirr476"]="<@706320638301962291>"
+        map["Bhavya290223"]="<@788404909107052546>"
+        map["namekeptanonymous"]="<@312212189056466944>"
+
+        ISSUE_API_URL="${{ github.event.issue.url }}"
+        ISSUE_JSON=$(curl -H "Authorization: token ${{ secrets.ISSUE_ASSIGN_DISCORD_GITHUB_TOKEN }}" -X GET $ISSUE_API_URL)
+        ASSIGNEES=$(echo $ISSUE_JSON | jq -r '.assignees[] | "- " + .login') 
+        MENTIONS=""
+        for assignee in $(echo $ISSUE_JSON | jq -r '.assignees[] | .login'); do
+          MENTIONS+="${map[$assignee]}\n"
+        done
+
+        ISSUE_TITLE_ESCAPED=$(echo "${{ github.event.issue.title }}" | sed 's/"/\\"/g' | sed "s/'/\\'/g" | sed 's/`/\\`/g')
+
+        curl -H "Content-Type: application/json" \
+            -X POST \
+            -d '{
+              "username": "Github",
+              "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+              "content": "'"${MENTIONS//$'\n'/'\n'}"'",
+              "embeds": [{
+                "title": "Issue Assigned",
+                "url": "${{ github.event.issue.html_url }}",
+                "author": {
+                  "name": "${{ github.event.issue.user.login }}",
+                  "icon_url": "${{ github.event.issue.user.avatar_url }}"
+                },
+                "fields": [
+                  {"name": "Title", "value": "'"${ISSUE_TITLE_ESCAPED//$'\n'/'\n'}"'", "inline": false},
+                  {"name": "Assignees", "value": "'"${ASSIGNEES//$'\n'/'\n'}"'"", "inline": false}
+                ]
+              }]
+            }' \
+            ${{ secrets.ISSUE_ASSIGN_DISCORD_WEBHOOK_URL }}

@@ -1,0 +1,50 @@
+name: Automated Logs Workflow
+
+on:
+  schedule:
+    - cron: '0 0 * * 3,5'  # Run at 5 PM (UTC-7) on Tuesday and Thursday, which is midnight UTC on Wednesday and Friday
+  workflow_dispatch:
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout to logsReview branch
+      uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.AUTOMATED_LOG_TOKEN }}
+        ref: 'logsReview'
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyGithub
+        pip install pytz
+
+    - name: Run Automated Team Log Script
+      env:
+        AUTOMATED_LOG_TOKEN : ${{ secrets.AUTOMATED_LOG_TOKEN }}
+      run: python .github/workflows/scripts/automated-team-log-dashboard.py
+
+    - name: Run Automated Individual Logs Script
+      env:
+        AUTOMATED_LOG_TOKEN : ${{ secrets.AUTOMATED_LOG_TOKEN }}
+        CLOCKIFY_API_KEY : ${{ secrets.CLOCKIFY_API_KEY }}
+      run: python .github/workflows/scripts/automated-individual-logs.py
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.email "ghactions@gmail.com"
+        git config --global user.name "Automated Individual Logs"
+        git add -A
+        git commit -m "Created Log templates: make sure to fill them out and review eachother's commits!"
+        git push
+
+
+
+  

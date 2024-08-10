@@ -6,16 +6,13 @@
 
 
 ## Tasks currently in the Backlog for c-20:
-![Tasks in Backlog for c-20](./team_log_images/backlog_issues/backlog_issues_c20.png)  
-  
+None!
 
 ## Tasks currently in Progress for c-20:
-![Tasks in progress for c-20](./team_log_images/in_progress_issues/in_progress_issues_c20.png)  
-  
+None!
 
 ## Tasks currently in Review for c-20:
-![Tasks in review for c-20](./team_log_images/in_review_issues/in_review_issues_c20.png)  
-  
+None!  
 
 ## Tasks Done for c-20:
 ![Tasks done for c-20](./team_log_images/done_issues/done_issues_c20.png)  
@@ -28,12 +25,15 @@
 ## Test Reports for c-20
 
 #### Front-end Testing for c-20
-![Front-end Tests for c-20](./team_log_images/front_end_tests/front_end_tests_c20.png)  
+![Front-end Tests for c-20](./team_log_images/front_end_tests/front_end_tests_c19.png)  
   
 
 #### Back-end Testing for c-20
-![Back end Tests for c-20](./team_log_images/back_end_tests/back_end_tests_c20.png)  
-  
+Unit:
+![Back end Tests for c-19](./team_log_images/back_end_tests/back_end_unit_tests_c19.png)  
+
+Integration:
+![Back end Tests for c-19](./team_log_images/back_end_tests/back_end_integration_tests_c19.png)    
   
   
 

@@ -28,14 +28,13 @@
   
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* User guide is merged!
+* I spent most of the week preparing slides and finishing my individual report. Not much to log on clockify as they weren't team related tasks. 
+
 
 ## Goals for next cycle
-* 
-* 
-* 
+* SLEEP!
+
   
   
 

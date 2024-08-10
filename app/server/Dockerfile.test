@@ -1,0 +1,31 @@
+
+# IDK why but node-18 does not create the openssl issue
+FROM node:20-slim 
+
+# Arguments for database and backend configurations
+ARG TEST_DB_PORT 
+ARG TEST_DB_NAME
+ARG TEST_BACKEND_PORT
+
+ENV NODE_ENV=test
+
+# nstall openSSL for prisma, and netcat for testing
+RUN apt-get update -y && \
+    apt-get install -y openssl netcat-openbsd && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set the working directory
+WORKDIR /usr/server/ 
+
+# Copy the package.json and package-lock.json files
+COPY package.json /usr/server/package.json
+COPY package-lock.json /usr/server/package-lock.json
+
+RUN npm ci
+
+COPY . /usr/server/
+
+EXPOSE ${TEST_BACKEND_PORT} 
+
+CMD ["npm", "run", "start:test"]

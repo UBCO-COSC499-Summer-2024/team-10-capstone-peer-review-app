@@ -1,0 +1,36 @@
+{
+	"root": true,
+	"env": {
+		"node": true
+	},
+	"parserOptions": {
+		"ecmaVersion": "latest",
+		"sourceType": "module"
+	},
+	"settings": {
+		"import/resolver": {
+			"node": {
+				"extensions": [".js"]
+			}
+		}
+	},
+	"plugins": ["import"],
+	"extends": [
+		"eslint:recommended",
+		"plugin:import/errors",
+		"eslint-config-prettier"
+	],
+	"rules": {
+		// Maybe add plugin-node, plugin-security, plugin-jest?
+		"import/no-unresolved": "off", // Doesn't recognize aliases, not sure how to fix this
+		// Need to turn off since jest requires commonjs modules for now
+		// "import/no-commonjs":["warn"], // Warn on CommonJS `require` and `module.exports`, Should be using ES6 imports if can
+		"no-unused-vars": ["warn"], // warn unused variables,
+		"no-undef": ["off"], // warn undef variables, turning off for jest
+		"no-const-assign": ["error"], // disallow reassigning const variables
+		"no-var": ["error"], // require let or const instead of var
+		"eqeqeq": ["error"], // require the use of === and !==,
+		"curly": ["error"], // enforce consistent brace style for all control statements
+		"camelcase": ["warn"] // enforce camelcase naming convention
+	}
+}

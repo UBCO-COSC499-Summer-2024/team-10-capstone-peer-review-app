@@ -1,0 +1,18 @@
+services:
+
+  db-only:
+    image: postgres:latest
+    container_name: db-only
+    env_file:
+      - ./server/.env.dev
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - db-only-data:/var/lib/postgresql/data
+
+volumes:
+  db-only-data:

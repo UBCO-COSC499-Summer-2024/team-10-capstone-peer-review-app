@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    font-family: "Nunito Sans", sans-serif;
+}
+
+.hide-arrows {
+    -moz-appearance: textfield;
+}
+
+.hide-arrows::-webkit-outer-spin-button,
+.hide-arrows::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+} 
+
+svg {
+    flex-shrink: 0;
+}
+
+.main-container {
+  min-height: 800px;
+  margin-left: 160px;
+}
+
+.gradient-background {
+  background: linear-gradient(135deg, #eceff1, #b0bec5);
+
+}
+
+
+
+main {
+  min-height: 100vh;
+}
+
+@media (min-width: 1024px) {
+  .main-container {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+.fade-in {
+  opacity: 1;
+  transition: opacity 300ms ease-in;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 300ms ease-out;
+}
+
+

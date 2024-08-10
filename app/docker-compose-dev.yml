@@ -1,0 +1,92 @@
+services:
+
+  db:
+    container_name: peergrade-db-dev
+    image: postgres:latest
+    env_file:
+      - ./server/envs/.env.dev
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - ${DB_PORT}:5432
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - peergrade-dev-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  server:
+    container_name: peergrade-server-dev
+    env_file:
+      - ./server/envs/.env.dev
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+      args:
+      - BACKEND_PORT=${BACKEND_PORT} 
+      - DB_NAME=${DB_NAME} 
+      - DB_PORT=${DB_PORT} 
+    ports:
+      - ${BACKEND_PORT}:5001 
+      - 5555:5555
+    volumes:
+      - ./server:/usr/server
+      - server_node_modules:/usr/server/node_modules
+      - uploads:/usr/server/uploads  
+    networks:
+      - peergrade-dev-network
+    depends_on:
+      db: 
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost ${BACKEND_PORT} || exit 1"]
+      interval: 5s
+      timeout: 2s
+      retries: 3
+      start_period: 5s
+
+
+  client:
+    container_name: peergrade-client-dev
+    env_file:
+      - ./client/PeerGrade/envs/.env.dev
+    build:
+      context: ./client/PeerGrade
+      dockerfile: Dockerfile.dev
+      args:
+        - FRONTEND_PORT=${FRONTEND_PORT}
+    ports:
+      - ${FRONTEND_PORT}:3000
+    volumes:
+      - ./client/PeerGrade:/usr/client 
+      - client_node_modules:/usr/client/node_modules
+    networks:
+      - peergrade-dev-network
+    depends_on:
+      server: 
+        condition: service_healthy 
+
+  file_storage:
+    image: nginx:alpine
+    volumes:
+      - uploads:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8080:80"
+
+volumes:
+  db-data: 
+  server_node_modules:
+  client_node_modules:
+  uploads:  
+
+networks:
+  peergrade-dev-network:
+    name: peergrade-dev-network 

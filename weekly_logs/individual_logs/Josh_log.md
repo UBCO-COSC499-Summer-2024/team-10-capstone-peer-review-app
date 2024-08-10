@@ -24,15 +24,10 @@
 ## In-progress tasks:
 
 ## Recap on goals from last cycle
-* 
-* 
-* 
+* Finishing up Final report + pres
 
 ## Goals for next cycle
-* 
-* 
-* 
-  
+* None! Just need to get this report in lol
   
 
 # Josh's Log for Cycle 19

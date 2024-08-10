@@ -6,35 +6,26 @@
 
 
 ### Major features worked on in c-20
-*  
-  
-*  
-  
-*  
+*  User Guide 
+
+*  Merge to master branch from dev branch (all work merged)
+
+*  Individual reports and Final slide creations
+
   
 
 ### Major features completed in c-20
-*  
+*  User Guide was merged in
   
-*  
-  
-*  
+*  Merge to master branch from dev branch (all work merged)
   
 
 ### Major features to work on for c-21
-*  
-  
-*  
-  
-*  
+*  NA
   
 
 ### Team Issues and Hurdles for c-20
-*  
-  
-*  
-  
-*  
+*  NA
   
 
 ### Clockify Dashboard for this Week

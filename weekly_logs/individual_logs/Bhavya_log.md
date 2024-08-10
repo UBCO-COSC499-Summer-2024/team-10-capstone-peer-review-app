@@ -1,4 +1,43 @@
 
+# Bhavya's Log for Cycle 20
+
+
+## Tuesday, August 06, 2024, 05:23 PM - Thursday, August 08, 2024, 05:23 PM
+
+
+## Tasks worked on this cycle:
+&nbsp; &nbsp; :large_blue_circle: **Issue-[286](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/286)**: Backend Documentation  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: documentation 
+  
+&nbsp; &nbsp; :large_blue_circle: **Issue-[198](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/198)**: Writing new back-end tests for dockerized test enviroment. Start with services, then controllers  
+  
+&nbsp; &nbsp; &nbsp; &nbsp; :label: **Labels**: type: testing, type: database, type: api 
+  
+
+## Time entries from Clockify on this cycle:
+
+## All Features worked on this cycle:
+
+## Features completed on this cycle:
+
+## Completed tasks:
+&nbsp; &nbsp; :purple_circle: **Issue-[286](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/286)**: Backend Documentation  
+  
+&nbsp; &nbsp; :purple_circle: **Issue-[198](https://github.com/UBCO-COSC499-Summer-2024/team-10-capstone-peer-review-app/issues/198)**: Writing new back-end tests for dockerized test enviroment. Start with services, then controllers  
+  
+
+## In-progress tasks:
+
+## Recap on goals from last cycle
+* Worked on individual reports 
+* Worked on presentation
+
+## Goals for next cycle
+* NA
+  
+  
+
 # Bhavya's Log for Cycle 19
 
 

@@ -1,4 +1,16 @@
 
+# Abdul's Log for Cycle 20
+
+
+## Tuesday, August 06, 2024, 05:23 PM - Thursday, August 08, 2024, 05:23 PM
+
+No tasks nor Clockify entries available as we mostly focused on the final presentation during this cycle.
+
+## Recap on goals from last cycle
+* We're done!!!
+* Would've liked to have done more of the report by this time but I think I can get it done before tonight.
+    
+
 # Abdul's Log for Cycle 19
 
 

@@ -1,4 +1,39 @@
 
+# Team 10's Team Dashboard for Cycle 20
+
+
+## Tuesday, August 06, 2024, 05:23 PM - Thursday, August 08, 2024, 05:23 PM
+
+
+### Major features worked on in c-20
+*  User Guide 
+
+*  Merge to master branch from dev branch (all work merged)
+
+*  Individual reports and Final slide creations
+
+  
+
+### Major features completed in c-20
+*  User Guide was merged in
+  
+*  Merge to master branch from dev branch (all work merged)
+  
+
+### Major features to work on for c-21
+*  NA
+  
+
+### Team Issues and Hurdles for c-20
+*  NA
+  
+
+### Clockify Dashboard for this Week
+
+![Clockify Dashboard for c-20](./team_dashboard_images/clockify_dashboards/clockify_dashboard_c20.png)
+  
+  
+
 # Team 10's Team Dashboard for Cycle 19
 
 
